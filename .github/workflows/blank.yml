@@ -359,16 +359,16 @@ jobs:
 
           	if source == "grimbird" {
           		if category == "ru" || (strings.HasPrefix(category, "ru-") && !strings.Contains(category, "blocked")) {
-          			return "ru"
+          			return "RU"
           		}
           	}
 
           	if (source == "golukon" || source == "loyalsoldier") && category == "ru" {
-          		return "ru"
+          		return "RU"
           	}
 
           	if source == "kirill" && category == "whitelist" {
-          		return "ru"
+          		return "RU"
           	}
 
           	return ""
@@ -412,7 +412,7 @@ jobs:
           		}
 
           		result.Entry = append(result.Entry, &router.GeoIP{
-          			CountryCode: name,
+          			CountryCode: strings.ToUpper(name),
           			Cidr:        cidrs,
           		})
           	}
@@ -439,7 +439,7 @@ jobs:
           	sort.Strings(names)
 
           	for _, name := range names {
-          		fmt.Fprintf(file, "%s\t%d\n", name, len(categories[name]))
+          		fmt.Fprintf(file, "%s\t%d\n", strings.ToUpper(name), len(categories[name]))
           	}
 
           	return nil
@@ -449,7 +449,7 @@ jobs:
           	text := `GeoIP Russia Pure RU (IPv4 only, no PRIVATE, no exclusions):
 
           OUTPUT CATEGORIES:
-          - ru: single merged IPv4 category containing all accepted Russian GeoIP, service-specific,
+          - RU: single merged IPv4 category containing all accepted Russian GeoIP, service-specific,
             and whitelist-derived routes.
 
           INCLUDED SOURCES:
@@ -516,6 +516,7 @@ jobs:
 
           	categories := make(map[string]*ipTrie)
           	ensureCategory := func(name string) *ipTrie {
+          		name = strings.ToUpper(name)
           		if categories[name] == nil {
           			categories[name] = newIPTrie()
           		}
@@ -554,7 +555,7 @@ jobs:
           			fmt.Printf("Loaded %-18s matched_ipv4_cidrs=%d\n", source.name, srcAdded)
 
           		case "text":
-          			lines, added, err := loadTextPrefixes(ensureCategory("ru"), source.path)
+          			lines, added, err := loadTextPrefixes(ensureCategory("RU"), source.path)
           			if err != nil {
           				panic(fmt.Errorf("%s: %w", source.name, err))
           			}
@@ -576,8 +577,8 @@ jobs:
           		}
           	}
 
-          	if len(final["ru"]) == 0 {
-          		panic("ru category is empty")
+          	if len(final["RU"]) == 0 {
+          		panic("RU category is empty")
           	}
 
           	data, err := writeOutput(final, outputPath)
