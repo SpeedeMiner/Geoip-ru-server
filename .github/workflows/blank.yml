@@ -31,6 +31,12 @@ jobs:
       # Current project data: ~849 IPv4 CIDRs / ~62 services; merged into geoip:ru.
       W1ZARDZ_RU_IP_URL: https://raw.githubusercontent.com/w1zardz/amnezia-vpn-russia-split-tunneling/master/dist/ru-direct-ipv4.txt
 
+      # Deny-only masks: explicitly excluded from final geoip:ru.
+      ANTIFILTER_BLOCKED_IP_URL: https://antifilter.download/list/ipresolve.lst
+      ANTIFILTER_BLOCKED_SUBNET_URL: https://antifilter.download/list/subnet.lst
+      ANTIFILTER_BLOCKED_COMMUNITY_URL: https://community.antifilter.download/list/community.lst
+      REFILTER_IP_URL: https://raw.githubusercontent.com/1andrevich/Re-filter-lists/main/ipsum.lst
+
       OUTPUT_FILE: geoip_RU.dat
       CATEGORY_FILE: geoip_RU_categories.txt
       SOURCE_FILE: geoip_RU_sources.txt
@@ -64,6 +70,12 @@ jobs:
 
           curl -fL --retry 5 --retry-all-errors "$W1ZARDZ_RU_IP_URL" -o w1zardz-ru-ipv4.txt
 
+          # Download blocked lists for exclusion only; they are never output as a category.
+          curl -fL --retry 5 --retry-all-errors "$ANTIFILTER_BLOCKED_IP_URL" -o antifilter-ipresolve.lst
+          curl -fL --retry 5 --retry-all-errors "$ANTIFILTER_BLOCKED_SUBNET_URL" -o antifilter-subnet.lst
+          curl -fL --retry 5 --retry-all-errors "$ANTIFILTER_BLOCKED_COMMUNITY_URL" -o antifilter-community.lst
+          curl -fL --retry 5 --retry-all-errors "$REFILTER_IP_URL" -o refilter-ipsum.lst
+
           for file in \
             grimbird-geoip.dat \
             golukon-geoip.dat \
@@ -71,7 +83,11 @@ jobs:
             hydra-whitelist.txt \
             kirill-geoip.dat \
             hxehex-whitelist.txt \
-            w1zardz-ru-ipv4.txt; do
+            w1zardz-ru-ipv4.txt \
+            antifilter-ipresolve.lst \
+            antifilter-subnet.lst \
+            antifilter-community.lst \
+            refilter-ipsum.lst; do
             test -s "$file"
           done
 
@@ -82,7 +98,11 @@ jobs:
             hydra-whitelist.txt \
             kirill-geoip.dat \
             hxehex-whitelist.txt \
-            w1zardz-ru-ipv4.txt
+            w1zardz-ru-ipv4.txt \
+            antifilter-ipresolve.lst \
+            antifilter-subnet.lst \
+            antifilter-community.lst \
+            refilter-ipsum.lst
 
       - name: Create client GeoIP aggregator
         shell: bash
@@ -343,23 +363,23 @@ jobs:
           			if field == "" {
           				continue
           			}
-          
+
           			if prefix, err := netip.ParsePrefix(field); err == nil {
-          				lines++
           				if prefix.Addr().Is4() {
           					insert4(trie, prefix)
           					added++
           				}
-          				break
-          			}
-          
-          			if addr, err := netip.ParseAddr(field); err == nil {
           				lines++
+          				continue
+          			}
+
+          			if addr, err := netip.ParseAddr(field); err == nil {
           				if addr.Is4() {
           					insert4(trie, netip.PrefixFrom(addr, 32))
           					added++
           				}
-          				break
+          				lines++
+          				continue
           			}
           		}
           	}
@@ -371,15 +391,37 @@ jobs:
           	return lines, added, nil
           }
           
+          func isBlockedCategory(category string) bool {
+          	category = normalizeName(category)
+          	blocked := []string{
+          		"ru-blocked",
+          		"ru-blocked-community",
+          		"re-filter",
+          		"category-ban-ru",
+          	}
+          	for _, name := range blocked {
+          		if category == name {
+          			return true
+          		}
+          	}
+          	for _, token := range []string{"blocked", "blacklist", "deny", "antifilter", "re-filter"} {
+          		if strings.Contains(category, token) {
+          			return true
+          		}
+          	}
+          	return false
+          }
+
           func serviceCategory(source, category string) string {
           	source = normalizeName(source)
           	category = normalizeName(category)
 
+          	if isBlockedCategory(category) {
+          		return ""
+          	}
+
           	if source == "grimbird" {
-          		switch category {
-          		case "ru", "ru-yandex", "ru-ozon", "ru-analytics",
-          			"ru-banks", "ru-wildberries", "ru-payments",
-          			"ru-vk", "ru-mts", "ru-cdn":
+          		if category == "ru" || strings.HasPrefix(category, "ru-") {
           			return "ru"
           		}
           	}
@@ -478,7 +520,7 @@ jobs:
             whitelist-derived and separately validated Russian routes from the configured sources.
           
           INCLUDED SOURCES:
-          - GrimbirdUsers/ru-routing-dat
+          - GrimbirdUsers/ru-routing-dat (ru and all ru-* entries merged into ru)
           - golukon/russia-only-geoip
           - Loyalsoldier/geoip
           - hydraponique/roscomvpn-geoip (merged into ru)
@@ -488,7 +530,7 @@ jobs:
           
           EXPLICITLY NOT USED:
           - runetfreedom/russia-blocked-geoip
-          - antifilter / re-filter / RKN blocked-IP sources
+          - antifilter / re-filter / RKN blocked-IP sources are deny-only masks and are excluded from ru
           - foreign/global CDN ASN lists as standalone categories
           - IPv6 input
           - RFC1918 / CGNAT / loopback / link-local / multicast / reserved IPv4
@@ -499,7 +541,8 @@ jobs:
           2. All accepted source prefixes are merged into the single ru category.
           3. Built-in special/private/reserved IPv4 ranges are subtracted from the output category.
           4. Adjacent and nested prefixes are coalesced with a radix trie.
-          5. No BLOCK or PROXY addresses are injected into the ru category.
+          5. Blocked/re-filter ranges are subtracted from ru before output.
+          6. No BLOCK or PROXY addresses are injected into the ru category.
           `
           	return os.WriteFile(path, []byte(text), 0644)
           }
@@ -532,8 +575,8 @@ jobs:
           }
           
           func main() {
-          	if len(os.Args) != 11 {
-          		fmt.Fprintf(os.Stderr, "usage: %s <grimbird> <golukon> <loyalsoldier> <hydra-whitelist> <kirill> <hxehex-whitelist> <w1zardz> <output> <manifest> <sources>\n", os.Args[0])
+          	if len(os.Args) != 15 {
+          		fmt.Fprintf(os.Stderr, "usage: %s <grimbird> <golukon> <loyalsoldier> <hydra-whitelist> <kirill> <hxehex-whitelist> <w1zardz> <antifilter-ipresolve> <antifilter-subnet> <antifilter-community> <refilter-ipsum> <output> <manifest> <sources>\n", os.Args[0])
           		os.Exit(2)
           	}
           
@@ -544,9 +587,13 @@ jobs:
           	kirillPath := os.Args[5]
           	hxehexPath := os.Args[6]
           	w1zardzPath := os.Args[7]
-          	outputPath := os.Args[8]
-          	manifestPath := os.Args[9]
-          	sourcesPath := os.Args[10]
+          	antifilterIPResolvePath := os.Args[8]
+          	antifilterSubnetPath := os.Args[9]
+          	antifilterCommunityPath := os.Args[10]
+          	refilterIPPath := os.Args[11]
+          	outputPath := os.Args[12]
+          	manifestPath := os.Args[13]
+          	sourcesPath := os.Args[14]
           
           	sources := []sourceFile{
           		{"grimbird", grimbirdPath, "dat"},
@@ -558,6 +605,19 @@ jobs:
           		{"w1zardz", w1zardzPath, "text"},
           	}
           
+          	blocked := newIPTrie()
+          	for _, path := range []string{
+          		antifilterIPResolvePath,
+          		antifilterSubnetPath,
+          		antifilterCommunityPath,
+          		refilterIPPath,
+          	} {
+          		if _, _, err := loadTextPrefixes(blocked, path); err != nil {
+          			panic(fmt.Errorf("blocked source %s: %w", path, err))
+          		}
+          	}
+          	blocked.compress()
+
           	categories := make(map[string]*ipTrie)
           
           	ensureCategory := func(name string) *ipTrie {
@@ -626,6 +686,7 @@ jobs:
           	for name, trie := range categories {
           		trie.compress()
           		trie.subtract(privateMask)
+          		trie.subtract(blocked)
           		trie.compress()
           
           		prefixes := trie.toPrefixes4()
@@ -683,6 +744,10 @@ jobs:
             kirill-geoip.dat \
             hxehex-whitelist.txt \
             w1zardz-ru-ipv4.txt \
+            antifilter-ipresolve.lst \
+            antifilter-subnet.lst \
+            antifilter-community.lst \
+            refilter-ipsum.lst \
             "$OUTPUT_FILE" \
             "$CATEGORY_FILE" \
             "$SOURCE_FILE"
@@ -754,7 +819,7 @@ jobs:
             - IPv6 is not included.
             - PRIVATE is not included as an output category.
             - RFC1918, CGNAT, loopback, link-local, multicast and reserved IPv4 are removed.
-            - RKN / blocked / proxy lists are not merged into geoip:ru.
+            - RKN / blocked / proxy lists are used only as deny masks and are subtracted from geoip:ru.
             - Whitelist-derived and service-derived source ranges are intentionally merged into geoip:ru.
 
       - name: Publish release branch
