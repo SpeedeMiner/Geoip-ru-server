@@ -17,19 +17,18 @@ jobs:
       contents: write
 
     env:
-      # Base RU GeoIP + service-specific Russian IP categories.
+      # All accepted Russian/whitelist-derived IPv4 sources are merged into one geoip:ru category.
       GRIMBIRD_GEOIP_URL: https://raw.githubusercontent.com/GrimbirdUsers/ru-routing-dat/main/geoip.dat
       GOLOKON_GEOIP_URL: https://github.com/golukon/russia-only-geoip/releases/latest/download/geoip.dat
       LOYALSOLDIER_GEOIP_URL: https://raw.githubusercontent.com/Loyalsoldier/geoip/release/geoip.dat
 
-      # Whitelist sources are kept as a separate category and are NOT merged
-      # into geoip:ru. This prevents "whitelist" from masquerading as country GeoIP.
+      # Whitelist-derived IPv4 sources are merged into geoip:ru by request.
       HYDRA_WHITELIST_URL: https://raw.githubusercontent.com/hydraponique/roscomvpn-geoip/release/text/whitelist.txt
       KIRILL_GEOIP_URL: https://github.com/kirilllavrov/RU-domain-list-for-whitelist/releases/latest/download/geoip.dat
       HXEHEX_WHITELIST_URL: https://raw.githubusercontent.com/hxehex/russia-mobile-internet-whitelist/main/cidrwhitelist.txt
 
       # Service-derived, country-validated IPv4 routes.
-      # Current project data: ~849 IPv4 CIDRs / ~62 services.
+      # Current project data: ~849 IPv4 CIDRs / ~62 services; merged into geoip:ru.
       W1ZARDZ_RU_IP_URL: https://raw.githubusercontent.com/w1zardz/amnezia-vpn-russia-split-tunneling/master/dist/ru-direct-ipv4.txt
 
       OUTPUT_FILE: geoip_RU.dat
@@ -375,51 +374,31 @@ jobs:
           func serviceCategory(source, category string) string {
           	source = normalizeName(source)
           	category = normalizeName(category)
-          
+
           	if source == "grimbird" {
           		switch category {
-          		case "ru":
+          		case "ru", "ru-yandex", "ru-ozon", "ru-analytics",
+          			"ru-banks", "ru-wildberries", "ru-payments",
+          			"ru-vk", "ru-mts", "ru-cdn":
           			return "ru"
-          		case "ru-yandex":
-          			return "ru-yandex"
-          		case "ru-ozon":
-          			return "ru-ozon"
-          		case "ru-analytics":
-          			return "ru-analytics"
-          		case "ru-banks":
-          			return "ru-banks"
-          		case "ru-wildberries":
-          			return "ru-wildberries"
-          		case "ru-payments":
-          			return "ru-payments"
-          		case "ru-vk":
-          			return "ru-vk"
-          		case "ru-mts":
-          			return "ru-mts"
-          		case "ru-cdn":
-          			return "ru-cdn"
           		}
           	}
-          
+
           	if source == "golukon" && category == "ru" {
           		return "ru"
           	}
-          
+
           	if source == "loyalsoldier" && category == "ru" {
           		return "ru"
           	}
-          
+
           	if source == "kirill" && category == "whitelist" {
-          		return "whitelist"
+          		return "ru"
           	}
-          
-          	if source == "davoyan" && category == "wl-ru" {
-          		return "whitelist"
-          	}
-          
+
           	return ""
           }
-          
+
           func sortPrefixes(prefixes []netip.Prefix) []netip.Prefix {
           	sort.Slice(prefixes, func(i, j int) bool {
           		a, b := prefixes[i], prefixes[j]
@@ -495,18 +474,8 @@ jobs:
           	text := `GeoIP Russia CLIENT v16 (IPv4 only, no PRIVATE):
           
           OUTPUT CATEGORIES:
-          - ru: strict Russian IPv4 country space merged from several GeoIP sources.
-          - whitelist: separate whitelist space; NOT claimed to be country-only.
-          - ru-yandex: Yandex-related Russian IPv4 ranges.
-          - ru-ozon: Ozon-related Russian IPv4 ranges.
-          - ru-analytics: Russian analytics/metrics-related IPv4 ranges.
-          - ru-banks: Russian bank-related IPv4 ranges.
-          - ru-wildberries: Wildberries-related Russian IPv4 ranges.
-          - ru-payments: Russian payment-system IPv4 ranges.
-          - ru-vk: VK-related Russian IPv4 ranges.
-          - ru-mts: MTS-related Russian IPv4 ranges.
-          - ru-cdn: Russian CDN IPv4 ranges.
-          - ru-services: service-derived Russian IPv4 ranges from a separately validated source.
+          - ru: single merged IPv4 category containing all accepted Russian GeoIP, service-specific,
+            whitelist-derived and separately validated Russian routes from the configured sources.
           
           INCLUDED SOURCES:
           - GrimbirdUsers/ru-routing-dat
@@ -527,10 +496,10 @@ jobs:
           
           Processing:
           1. Only IPv4 prefixes are accepted from every source.
-          2. Built-in special/private/reserved IPv4 ranges are subtracted from every output category.
-          3. Source-specific service categories are kept separate.
+          2. All accepted source prefixes are merged into the single `ru` category.
+          3. Built-in special/private/reserved IPv4 ranges are subtracted from the output category.
           4. Adjacent and nested prefixes are coalesced with a radix trie.
-          5. No BLOCK or PROXY addresses are injected into the RU categories.
+          5. No BLOCK or PROXY addresses are injected into the `ru` category.
           `
           	return os.WriteFile(path, []byte(text), 0644)
           }
@@ -633,10 +602,8 @@ jobs:
           		case "text":
           			target := ""
           			switch source.name {
-          			case "hydra-whitelist", "kirill", "hxehex-whitelist":
-          				target = "whitelist"
-          			case "w1zardz":
-          				target = "ru-services"
+          			case "hydra-whitelist", "kirill", "hxehex-whitelist", "w1zardz":
+          				target = "ru"
           			}
           
           			if target == "" {
@@ -780,18 +747,7 @@ jobs:
 
             ## Output categories
 
-            - `geoip:ru` — merged Russian IPv4 space.
-            - `geoip:whitelist` — separate whitelist IPv4 space.
-            - `geoip:ru-yandex`
-            - `geoip:ru-ozon`
-            - `geoip:ru-analytics`
-            - `geoip:ru-banks`
-            - `geoip:ru-wildberries`
-            - `geoip:ru-payments`
-            - `geoip:ru-vk`
-            - `geoip:ru-mts`
-            - `geoip:ru-cdn`
-            - `geoip:ru-services`
+            - `geoip:ru` — single merged Russian IPv4 category containing all configured source ranges.
 
             ## Important
 
@@ -799,7 +755,7 @@ jobs:
             - PRIVATE is not included as an output category.
             - RFC1918, CGNAT, loopback, link-local, multicast and reserved IPv4 are removed.
             - RKN / blocked / proxy lists are not merged into `geoip:ru`.
-            - `geoip:whitelist` remains a separate category and is not presented as country GeoIP.
+            - Whitelist-derived and service-derived source ranges are intentionally merged into `geoip:ru`.
 
       - name: Publish release branch
         shell: bash
