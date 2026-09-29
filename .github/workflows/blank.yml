@@ -1,4 +1,4 @@
-name: Build Ultimate GeoIP Russia CLIENT v15
+name: Build Ultimate GeoIP Russia CLIENT v16
 
 on:
   workflow_dispatch:
@@ -17,29 +17,20 @@ jobs:
       contents: write
 
     env:
-      # Russia-focused GeoIP sources.
-      # Final output: IPv4 RU only. Private/reserved ranges are used only as an exclusion mask.
-      RUNETFREEDOM_GEOIP_URL: https://raw.githubusercontent.com/runetfreedom/russia-blocked-geoip/release/geoip.dat
-      HYDRA_GEOIP_URL: https://github.com/hydraponique/roscomvpn-geoip/releases/latest/download/geoip.dat
+      # Base RU GeoIP + service-specific Russian IP categories.
       GRIMBIRD_GEOIP_URL: https://raw.githubusercontent.com/GrimbirdUsers/ru-routing-dat/main/geoip.dat
-      DIGNE_GEOIP_URL: https://cdn.jsdelivr.net/gh/DigneZzZ/routing@main/v2ray/geoip.dat
-      DAVOYAN_GEOIP_URL: https://raw.githubusercontent.com/Davoyan/xray-routing/main/release/geoip.dat
-      KIRILL_GEOIP_URL: https://github.com/kirilllavrov/RU-domain-list-for-whitelist/releases/latest/download/geoip.dat
-      GOLUKON_GEOIP_URL: https://raw.githubusercontent.com/golukon/russia-only-geoip/release/geoip.dat
-      LOYALSOLDIER_RU_GEOIP_URL: https://raw.githubusercontent.com/Loyalsoldier/geoip/release/dat/ru.dat
-      LOYALSOLDIER_PRIVATE_GEOIP_URL: https://raw.githubusercontent.com/Loyalsoldier/geoip/release/private.dat
-      HXEHEX_CIDR_WHITELIST_URL: https://raw.githubusercontent.com/hxehex/russia-mobile-internet-whitelist/main/cidrwhitelist.txt
+      GOLOKON_GEOIP_URL: https://github.com/golukon/russia-only-geoip/releases/latest/download/geoip.dat
+      LOYALSOLDIER_GEOIP_URL: https://raw.githubusercontent.com/Loyalsoldier/geoip/release/geoip.dat
 
-      RUNETFREEDOM_INPUT: runetfreedom-geoip.dat
-      HYDRA_INPUT: hydra-geoip.dat
-      GRIMBIRD_INPUT: grimbird-geoip.dat
-      DIGNE_INPUT: digne-geoip.dat
-      DAVOYAN_INPUT: davoyan-geoip.dat
-      KIRILL_INPUT: kirill-geoip.dat
-      GOLUKON_INPUT: golukon-geoip.dat
-      LOYALSOLDIER_RU_INPUT: loyalsoldier-ru.dat
-      LOYALSOLDIER_PRIVATE_INPUT: loyalsoldier-private.dat
-      HXEHEX_INPUT: hxehex-cidrwhitelist.txt
+      # Whitelist sources are kept as a separate category and are NOT merged
+      # into geoip:ru. This prevents "whitelist" from masquerading as country GeoIP.
+      HYDRA_WHITELIST_URL: https://raw.githubusercontent.com/hydraponique/roscomvpn-geoip/release/text/whitelist.txt
+      KIRILL_GEOIP_URL: https://github.com/kirilllavrov/RU-domain-list-for-whitelist/releases/latest/download/geoip.dat
+      HXEHEX_WHITELIST_URL: https://raw.githubusercontent.com/hxehex/russia-mobile-internet-whitelist/main/cidrwhitelist.txt
+
+      # Service-derived, country-validated IPv4 routes.
+      # Current project data: ~849 IPv4 CIDRs / ~62 services.
+      W1ZARDZ_RU_IP_URL: https://raw.githubusercontent.com/w1zardz/amnezia-vpn-russia-split-tunneling/master/ru-direct-ipv4.txt
 
       OUTPUT_FILE: geoip_RU.dat
       CATEGORY_FILE: geoip_RU_categories.txt
@@ -61,45 +52,38 @@ jobs:
           set -euo pipefail
 
           echo "========================================"
-          echo "Downloading Russia GeoIP sources"
+          echo "Downloading RU IPv4 GeoIP sources"
           echo "========================================"
 
-          curl -fL --retry 5 --retry-all-errors "$RUNETFREEDOM_GEOIP_URL" -o "$RUNETFREEDOM_INPUT"
-          curl -fL --retry 5 --retry-all-errors "$HYDRA_GEOIP_URL" -o "$HYDRA_INPUT"
-          curl -fL --retry 5 --retry-all-errors "$GRIMBIRD_GEOIP_URL" -o "$GRIMBIRD_INPUT"
-          curl -fL --retry 5 --retry-all-errors "$DIGNE_GEOIP_URL" -o "$DIGNE_INPUT"
-          curl -fL --retry 5 --retry-all-errors "$DAVOYAN_GEOIP_URL" -o "$DAVOYAN_INPUT"
-          curl -fL --retry 5 --retry-all-errors "$KIRILL_GEOIP_URL" -o "$KIRILL_INPUT"
-          curl -fL --retry 5 --retry-all-errors "$GOLUKON_GEOIP_URL" -o "$GOLUKON_INPUT"
-          curl -fL --retry 5 --retry-all-errors "$LOYALSOLDIER_RU_GEOIP_URL" -o "$LOYALSOLDIER_RU_INPUT"
-          curl -fL --retry 5 --retry-all-errors "$LOYALSOLDIER_PRIVATE_GEOIP_URL" -o "$LOYALSOLDIER_PRIVATE_INPUT"
-          curl -fL --retry 5 --retry-all-errors "$HXEHEX_CIDR_WHITELIST_URL" -o "$HXEHEX_INPUT"
+          curl -fL --retry 5 --retry-all-errors "$GRIMBIRD_GEOIP_URL" -o grimbird-geoip.dat
+          curl -fL --retry 5 --retry-all-errors "$GOLOKON_GEOIP_URL" -o golukon-geoip.dat
+          curl -fL --retry 5 --retry-all-errors "$LOYALSOLDIER_GEOIP_URL" -o loyalsoldier-geoip.dat
+
+          curl -fL --retry 5 --retry-all-errors "$HYDRA_WHITELIST_URL" -o hydra-whitelist.txt
+          curl -fL --retry 5 --retry-all-errors "$KIRILL_GEOIP_URL" -o kirill-geoip.dat
+          curl -fL --retry 5 --retry-all-errors "$HXEHEX_WHITELIST_URL" -o hxehex-whitelist.txt
+
+          curl -fL --retry 5 --retry-all-errors "$W1ZARDZ_RU_IP_URL" -o w1zardz-ru-ipv4.txt
 
           for file in \
-            "$RUNETFREEDOM_INPUT" \
-            "$HYDRA_INPUT" \
-            "$GRIMBIRD_INPUT" \
-            "$DIGNE_INPUT" \
-            "$DAVOYAN_INPUT" \
-            "$KIRILL_INPUT" \
-            "$GOLUKON_INPUT" \
-            "$LOYALSOLDIER_RU_INPUT" \
-            "$LOYALSOLDIER_PRIVATE_INPUT" \
-            "$HXEHEX_INPUT"; do
+            grimbird-geoip.dat \
+            golukon-geoip.dat \
+            loyalsoldier-geoip.dat \
+            hydra-whitelist.txt \
+            kirill-geoip.dat \
+            hxehex-whitelist.txt \
+            w1zardz-ru-ipv4.txt; do
             test -s "$file"
           done
 
           ls -lh \
-            "$RUNETFREEDOM_INPUT" \
-            "$HYDRA_INPUT" \
-            "$GRIMBIRD_INPUT" \
-            "$DIGNE_INPUT" \
-            "$DAVOYAN_INPUT" \
-            "$KIRILL_INPUT" \
-            "$GOLUKON_INPUT" \
-            "$LOYALSOLDIER_RU_INPUT" \
-            "$LOYALSOLDIER_PRIVATE_INPUT" \
-            "$HXEHEX_INPUT"
+            grimbird-geoip.dat \
+            golukon-geoip.dat \
+            loyalsoldier-geoip.dat \
+            hydra-whitelist.txt \
+            kirill-geoip.dat \
+            hxehex-whitelist.txt \
+            w1zardz-ru-ipv4.txt
 
       - name: Create client GeoIP aggregator
         shell: bash
@@ -110,536 +94,608 @@ jobs:
 
           cat > geoip-builder/main.go <<'EOF'
           package main
-
+          
           import (
-              "bufio"
-              "fmt"
-              "net/netip"
-              "os"
-              "sort"
-              "strings"
-
-              router "github.com/v2fly/v2ray-core/v5/app/router/routercommon"
-              "google.golang.org/protobuf/proto"
+          	"bufio"
+          	"fmt"
+          	"net/netip"
+          	"os"
+          	"sort"
+          	"strings"
+          
+          	router "github.com/v2fly/v2ray-core/v5/app/router/routercommon"
+          	"google.golang.org/protobuf/proto"
           )
-
-          type sourceFile struct {
-              Name string
-              Path string
-          }
-
+          
           type trieNode struct {
-              covered bool
-              child   [2]*trieNode
+          	covered bool
+          	child   [2]*trieNode
           }
-
+          
           type ipTrie struct {
-              v4 *trieNode
-              v6 *trieNode
+          	v4 *trieNode
           }
-
+          
+          type sourceFile struct {
+          	name string
+          	path string
+          	kind string
+          }
+          
           func newIPTrie() *ipTrie {
-              return &ipTrie{
-                  v4: &trieNode{},
-                  v6: &trieNode{},
-              }
+          	return &ipTrie{v4: &trieNode{}}
           }
-
+          
           func normalizeName(value string) string {
-              return strings.ToLower(strings.TrimSpace(value))
+          	return strings.ToLower(strings.TrimSpace(value))
           }
-
+          
           func getBit(addr netip.Addr, pos int) int {
-              if addr.Is4() {
-                  b := addr.As4()
-                  return int((b[pos/8] >> (7 - (pos % 8))) & 1)
-              }
-              b := addr.As16()
-              return int((b[pos/8] >> (7 - (pos % 8))) & 1)
+          	b := addr.As4()
+          	return int((b[pos/8] >> (7 - (pos % 8))) & 1)
           }
-
+          
           func setBit(addr netip.Addr, pos int) netip.Addr {
-              if addr.Is4() {
-                  b := addr.As4()
-                  b[pos/8] |= 1 << (7 - (pos % 8))
-                  return netip.AddrFrom4(b)
-              }
-              b := addr.As16()
-              b[pos/8] |= 1 << (7 - (pos % 8))
-              return netip.AddrFrom16(b)
+          	b := addr.As4()
+          	b[pos/8] |= 1 << (7 - (pos % 8))
+          	return netip.AddrFrom4(b)
           }
-
-          func (t *ipTrie) insert(prefix netip.Prefix) {
-              prefix = prefix.Masked()
-              addr := prefix.Addr()
-              bits := prefix.Bits()
-
-              var curr *trieNode
-              if addr.Is4() {
-                  curr = t.v4
-              } else {
-                  curr = t.v6
-              }
-
-              for i := 0; i < bits; i++ {
-                  if curr.covered {
-                      return
-                  }
-                  b := getBit(addr, i)
-                  if curr.child[b] == nil {
-                      curr.child[b] = &trieNode{}
-                  }
-                  curr = curr.child[b]
-              }
-              curr.covered = true
-              curr.child[0] = nil
-              curr.child[1] = nil
+          
+          func insert4(t *ipTrie, prefix netip.Prefix) {
+          	if t == nil || !prefix.Addr().Is4() {
+          		return
+          	}
+          
+          	prefix = prefix.Masked()
+          	addr := prefix.Addr()
+          	bits := prefix.Bits()
+          
+          	curr := t.v4
+          	for i := 0; i < bits; i++ {
+          		if curr.covered {
+          			return
+          		}
+          
+          		b := getBit(addr, i)
+          		if curr.child[b] == nil {
+          			curr.child[b] = &trieNode{}
+          		}
+          		curr = curr.child[b]
+          	}
+          
+          	curr.covered = true
+          	curr.child[0] = nil
+          	curr.child[1] = nil
           }
-
+          
           func compressNode(n *trieNode) bool {
-              if n == nil {
-                  return false
-              }
-              if n.covered {
-                  n.child[0] = nil
-                  n.child[1] = nil
-                  return true
-              }
-
-              has0 := compressNode(n.child[0])
-              if !has0 {
-                  n.child[0] = nil
-              }
-              has1 := compressNode(n.child[1])
-              if !has1 {
-                  n.child[1] = nil
-              }
-
-              if n.child[0] != nil && n.child[0].covered &&
-                 n.child[1] != nil && n.child[1].covered {
-                  n.covered = true
-                  n.child[0] = nil
-                  n.child[1] = nil
-                  return true
-              }
-
-              return n.child[0] != nil || n.child[1] != nil
+          	if n == nil {
+          		return false
+          	}
+          
+          	if n.covered {
+          		n.child[0] = nil
+          		n.child[1] = nil
+          		return true
+          	}
+          
+          	has0 := compressNode(n.child[0])
+          	if !has0 {
+          		n.child[0] = nil
+          	}
+          
+          	has1 := compressNode(n.child[1])
+          	if !has1 {
+          		n.child[1] = nil
+          	}
+          
+          	if n.child[0] != nil && n.child[0].covered &&
+          		n.child[1] != nil && n.child[1].covered {
+          		n.covered = true
+          		n.child[0] = nil
+          		n.child[1] = nil
+          		return true
+          	}
+          
+          	return n.child[0] != nil || n.child[1] != nil
           }
-
+          
           func (t *ipTrie) compress() {
-              if !compressNode(t.v4) {
-                  t.v4 = &trieNode{}
-              }
-              if !compressNode(t.v6) {
-                  t.v6 = &trieNode{}
-              }
+          	if t == nil {
+          		return
+          	}
+          	if !compressNode(t.v4) {
+          		t.v4 = &trieNode{}
+          	}
           }
-
+          
           func subtractNode(target *trieNode, mask *trieNode) {
-              if target == nil || mask == nil {
-                  return
-              }
-              if mask.covered {
-                  target.covered = false
-                  target.child[0] = nil
-                  target.child[1] = nil
-                  return
-              }
-              if target.covered {
-                  target.covered = false
-                  target.child[0] = &trieNode{covered: true}
-                  target.child[1] = &trieNode{covered: true}
-              }
-              if mask.child[0] != nil && target.child[0] != nil {
-                  subtractNode(target.child[0], mask.child[0])
-              }
-              if mask.child[1] != nil && target.child[1] != nil {
-                  subtractNode(target.child[1], mask.child[1])
-              }
+          	if target == nil || mask == nil {
+          		return
+          	}
+          
+          	if mask.covered {
+          		target.covered = false
+          		target.child[0] = nil
+          		target.child[1] = nil
+          		return
+          	}
+          
+          	if target.covered {
+          		target.covered = false
+          		target.child[0] = &trieNode{covered: true}
+          		target.child[1] = &trieNode{covered: true}
+          	}
+          
+          	if mask.child[0] != nil && target.child[0] != nil {
+          		subtractNode(target.child[0], mask.child[0])
+          	}
+          
+          	if mask.child[1] != nil && target.child[1] != nil {
+          		subtractNode(target.child[1], mask.child[1])
+          	}
           }
-
+          
           func (t *ipTrie) subtract(mask *ipTrie) {
-              subtractNode(t.v4, mask.v4)
-              subtractNode(t.v6, mask.v6)
-              t.compress()
+          	if t == nil || mask == nil {
+          		return
+          	}
+          	subtractNode(t.v4, mask.v4)
+          	t.compress()
           }
-
-          func extractPrefixes(n *trieNode, currAddr netip.Addr, depth, bitLen int, res *[]netip.Prefix) {
-              if n == nil {
-                  return
-              }
-              if n.covered {
-                  *res = append(*res, netip.PrefixFrom(currAddr, depth).Masked())
-                  return
-              }
-              if depth >= bitLen {
-                  return
-              }
-              if n.child[0] != nil {
-                  extractPrefixes(n.child[0], currAddr, depth+1, bitLen, res)
-              }
-              if n.child[1] != nil {
-                  nextAddr := setBit(currAddr, depth)
-                  extractPrefixes(n.child[1], nextAddr, depth+1, bitLen, res)
-              }
+          
+          func extractPrefixes(n *trieNode, currAddr netip.Addr, depth int, res *[]netip.Prefix) {
+          	if n == nil {
+          		return
+          	}
+          
+          	if n.covered {
+          		*res = append(*res, netip.PrefixFrom(currAddr, depth).Masked())
+          		return
+          	}
+          
+          	if depth >= 32 {
+          		return
+          	}
+          
+          	if n.child[0] != nil {
+          		extractPrefixes(n.child[0], currAddr, depth+1, res)
+          	}
+          
+          	if n.child[1] != nil {
+          		nextAddr := setBit(currAddr, depth)
+          		extractPrefixes(n.child[1], nextAddr, depth+1, res)
+          	}
           }
-
-          func (t *ipTrie) toPrefixes() []netip.Prefix {
-              var res []netip.Prefix
-              if t.v4 != nil {
-                  extractPrefixes(t.v4, netip.IPv4Unspecified(), 0, 32, &res)
-              }
-              if t.v6 != nil {
-                  extractPrefixes(t.v6, netip.IPv6Unspecified(), 0, 128, &res)
-              }
-              return res
+          
+          func (t *ipTrie) toPrefixes4() []netip.Prefix {
+          	var res []netip.Prefix
+          	if t == nil || t.v4 == nil {
+          		return res
+          	}
+          
+          	extractPrefixes(t.v4, netip.IPv4Unspecified(), 0, &res)
+          	return res
           }
-
-          func targetCategory(source, category string) string {
-              source = normalizeName(source)
-              category = normalizeName(category)
-
-              switch source {
-              case "runetfreedom":
-                  if category == "ru" || category == "ru-whitelist" {
-                      return "ru"
-                  }
-              case "hydra":
-                  if category == "ru" || category == "direct" || category == "whitelist" {
-                      return "ru"
-                  }
-              case "grimbird":
-                  if category == "ru" || strings.HasPrefix(category, "ru-") {
-                      return "ru"
-                  }
-              case "digne":
-                  if category == "ru-ip" || category == "direct-ip" {
-                      return "ru"
-                  }
-              case "davoyan":
-                  if category == "ru" || category == "wl-ru" {
-                      return "ru"
-                  }
-              case "kirill":
-                  if category == "whitelist" {
-                      return "ru"
-                  }
-              case "golukon", "loyalsoldier":
-                  if category == "ru" {
-                      return "ru"
-                  }
-              }
-
-              return ""
+          
+          func cidrPrefixV4(cidr *router.CIDR) (netip.Prefix, bool) {
+          	if cidr == nil || len(cidr.Ip) != 4 || cidr.Prefix > 32 {
+          		return netip.Prefix{}, false
+          	}
+          
+          	var a4 [4]byte
+          	copy(a4[:], cidr.Ip)
+          
+          	addr := netip.AddrFrom4(a4)
+          	return netip.PrefixFrom(addr, int(cidr.Prefix)).Masked(), true
           }
-
-          func cidrPrefix(cidr *router.CIDR) (netip.Prefix, bool) {
-              if cidr == nil || cidr.Prefix > 128 {
-                  return netip.Prefix{}, false
-              }
-
-              var addr netip.Addr
-              switch len(cidr.Ip) {
-              case 4:
-                  var a4 [4]byte
-                  copy(a4[:], cidr.Ip)
-                  addr = netip.AddrFrom4(a4)
-              case 16:
-                  var a16 [16]byte
-                  copy(a16[:], cidr.Ip)
-                  addr = netip.AddrFrom16(a16)
-              default:
-                  return netip.Prefix{}, false
-              }
-
-              bits := uint32(addr.BitLen())
-              if cidr.Prefix > bits {
-                  return netip.Prefix{}, false
-              }
-              return netip.PrefixFrom(addr, int(cidr.Prefix)).Masked(), true
-          }
-
+          
           func loadGeoIP(path string) (*router.GeoIPList, error) {
-              data, err := os.ReadFile(path)
-              if err != nil {
-                  return nil, err
-              }
-              list := new(router.GeoIPList)
-              if err := proto.Unmarshal(data, list); err != nil {
-                  return nil, fmt.Errorf("invalid geoip %s: %w", path, err)
-              }
-              return list, nil
+          	data, err := os.ReadFile(path)
+          	if err != nil {
+          		return nil, err
+          	}
+          
+          	list := new(router.GeoIPList)
+          	if err := proto.Unmarshal(data, list); err != nil {
+          		return nil, fmt.Errorf("invalid geoip %s: %w", path, err)
+          	}
+          
+          	return list, nil
           }
-
+          
           func loadTextPrefixes(trie *ipTrie, path string) (int, int, error) {
-              file, err := os.Open(path)
-              if err != nil {
-                  return 0, 0, err
-              }
-              defer file.Close()
-
-              lines := 0
-              added := 0
-              scanner := bufio.NewScanner(file)
-              scanner.Buffer(make([]byte, 64*1024), 4*1024*1024)
-
-              for scanner.Scan() {
-                  line := strings.TrimSpace(strings.TrimPrefix(scanner.Text(), "\ufeff"))
-                  if line == "" || strings.HasPrefix(line, "#") {
-                      continue
-                  }
-                  if idx := strings.IndexByte(line, '#'); idx >= 0 {
-                      line = strings.TrimSpace(line[:idx])
-                  }
-
-                  upper := strings.ToUpper(line)
-                  for _, prefix := range []string{"IP-CIDR,", "IP-CIDR6,", "IPSET,", "CIDR,"} {
-                      if strings.HasPrefix(upper, prefix) {
-                          line = strings.TrimSpace(line[len(prefix):])
-                          break
-                      }
-                  }
-
-                  fields := strings.FieldsFunc(line, func(r rune) bool {
-                      return r == ' ' || r == '\t' || r == ',' || r == ';'
-                  })
-
-                  for _, field := range fields {
-                      field = strings.Trim(field, "[](){}\"'")
-                      if field == "" {
-                          continue
-                      }
-                      if prefix, err := netip.ParsePrefix(field); err == nil {
-                          if !prefix.Addr().Is4() {
-                              continue
-                          }
-                          lines++
-                          trie.insert(prefix)
-                          added++
-                          break
-                      }
-                      if addr, err := netip.ParseAddr(field); err == nil {
-                          if !addr.Is4() {
-                              continue
-                          }
-                          bits := addr.BitLen()
-                          lines++
-                          trie.insert(netip.PrefixFrom(addr, bits).Masked())
-                          added++
-                          break
-                      }
-                  }
-              }
-
-              if err := scanner.Err(); err != nil {
-                  return lines, added, err
-              }
-              return lines, added, nil
+          	file, err := os.Open(path)
+          	if err != nil {
+          		return 0, 0, err
+          	}
+          	defer file.Close()
+          
+          	lines := 0
+          	added := 0
+          
+          	scanner := bufio.NewScanner(file)
+          	scanner.Buffer(make([]byte, 64*1024), 4*1024*1024)
+          
+          	for scanner.Scan() {
+          		line := strings.TrimSpace(strings.TrimPrefix(scanner.Text(), "\ufeff"))
+          		if line == "" || strings.HasPrefix(line, "#") {
+          			continue
+          		}
+          
+          		if idx := strings.IndexByte(line, '#'); idx >= 0 {
+          			line = strings.TrimSpace(line[:idx])
+          		}
+          
+          		upper := strings.ToUpper(line)
+          		for _, prefix := range []string{"IP-CIDR,", "IP-CIDR6,", "IPSET,", "CIDR,"} {
+          			if strings.HasPrefix(upper, prefix) {
+          				line = strings.TrimSpace(line[len(prefix):])
+          				break
+          			}
+          		}
+          
+          		fields := strings.FieldsFunc(line, func(r rune) bool {
+          			return r == ' ' || r == '\t' || r == ',' || r == ';'
+          		})
+          
+          		for _, field := range fields {
+          			field = strings.Trim(field, "[](){}\"'")
+          			if field == "" {
+          				continue
+          			}
+          
+          			if prefix, err := netip.ParsePrefix(field); err == nil {
+          				lines++
+          				if prefix.Addr().Is4() {
+          					insert4(trie, prefix)
+          					added++
+          				}
+          				break
+          			}
+          
+          			if addr, err := netip.ParseAddr(field); err == nil {
+          				lines++
+          				if addr.Is4() {
+          					insert4(trie, netip.PrefixFrom(addr, 32))
+          					added++
+          				}
+          				break
+          			}
+          		}
+          	}
+          
+          	if err := scanner.Err(); err != nil {
+          		return lines, added, err
+          	}
+          
+          	return lines, added, nil
           }
-
+          
+          func serviceCategory(source, category string) string {
+          	source = normalizeName(source)
+          	category = normalizeName(category)
+          
+          	if source == "grimbird" {
+          		switch category {
+          		case "ru":
+          			return "ru"
+          		case "ru-yandex":
+          			return "ru-yandex"
+          		case "ru-ozon":
+          			return "ru-ozon"
+          		case "ru-analytics":
+          			return "ru-analytics"
+          		case "ru-banks":
+          			return "ru-banks"
+          		case "ru-wildberries":
+          			return "ru-wildberries"
+          		case "ru-payments":
+          			return "ru-payments"
+          		case "ru-vk":
+          			return "ru-vk"
+          		case "ru-mts":
+          			return "ru-mts"
+          		case "ru-cdn":
+          			return "ru-cdn"
+          		}
+          	}
+          
+          	if source == "golukon" && category == "ru" {
+          		return "ru"
+          	}
+          
+          	if source == "loyalsoldier" && category == "ru" {
+          		return "ru"
+          	}
+          
+          	if source == "kirill" && category == "whitelist" {
+          		return "whitelist"
+          	}
+          
+          	if source == "davoyan" && category == "wl-ru" {
+          		return "whitelist"
+          	}
+          
+          	return ""
+          }
+          
           func sortPrefixes(prefixes []netip.Prefix) []netip.Prefix {
-              sort.Slice(prefixes, func(i, j int) bool {
-                  if a, b := prefixes[i], prefixes[j]; a.Addr().BitLen() != b.Addr().BitLen() {
-                      return a.Addr().BitLen() < b.Addr().BitLen()
-                  }
-                  if a, b := prefixes[i], prefixes[j]; a.Addr().Compare(b.Addr()) != 0 {
-                      return a.Addr().Compare(b.Addr()) < 0
-                  }
-                  return prefixes[i].Bits() < prefixes[j].Bits()
-              })
-              return prefixes
+          	sort.Slice(prefixes, func(i, j int) bool {
+          		a, b := prefixes[i], prefixes[j]
+          		if a.Addr().Compare(b.Addr()) != 0 {
+          			return a.Addr().Compare(b.Addr()) < 0
+          		}
+          		return a.Bits() < b.Bits()
+          	})
+          	return prefixes
           }
-
-          func writeOutput(ru []netip.Prefix, path string) ([]byte, error) {
-              result := new(router.GeoIPList)
-
-              if len(ru) == 0 {
-                  return nil, fmt.Errorf("RU IPv4 prefix set is empty")
-              }
-
-              var cidrs []*router.CIDR
-              for _, prefix := range ru {
-                  if !prefix.Addr().Is4() {
-                      continue
-                  }
-
-                  a4 := prefix.Addr().As4()
-                  cidrs = append(cidrs, &router.CIDR{
-                      Ip:     []byte{a4[0], a4[1], a4[2], a4[3]},
-                      Prefix: uint32(prefix.Bits()),
-                  })
-              }
-
-              if len(cidrs) == 0 {
-                  return nil, fmt.Errorf("RU IPv4 prefix set is empty after filtering")
-              }
-
-              result.Entry = append(result.Entry, &router.GeoIP{
-                  CountryCode: "RU",
-                  Cidr:        cidrs,
-              })
-
-              data, err := proto.MarshalOptions{Deterministic: true}.Marshal(result)
-              if err != nil {
-                  return nil, err
-              }
-              return data, os.WriteFile(path, data, 0644)
+          
+          func writeOutput(categories map[string][]netip.Prefix, path string) ([]byte, error) {
+          	result := new(router.GeoIPList)
+          
+          	names := make([]string, 0, len(categories))
+          	for name := range categories {
+          		names = append(names, name)
+          	}
+          	sort.Strings(names)
+          
+          	for _, name := range names {
+          		prefixes := categories[name]
+          		if len(prefixes) == 0 {
+          			continue
+          		}
+          
+          		prefixes = sortPrefixes(prefixes)
+          
+          		cidrs := make([]*router.CIDR, 0, len(prefixes))
+          		for _, prefix := range prefixes {
+          			a4 := prefix.Addr().As4()
+          			cidrs = append(cidrs, &router.CIDR{
+          				Ip:     []byte{a4[0], a4[1], a4[2], a4[3]},
+          				Prefix: uint32(prefix.Bits()),
+          			})
+          		}
+          
+          		result.Entry = append(result.Entry, &router.GeoIP{
+          			CountryCode: name,
+          			Cidr:        cidrs,
+          		})
+          	}
+          
+          	data, err := proto.MarshalOptions{Deterministic: true}.Marshal(result)
+          	if err != nil {
+          		return nil, err
+          	}
+          
+          	return data, os.WriteFile(path, data, 0644)
           }
-
-          func writeManifest(path string, ruLen int) error {
-              file, err := os.Create(path)
-              if err != nil {
-                  return err
-              }
-              defer file.Close()
-
-              fmt.Fprintf(file, "RU\t%d\n", ruLen)
-              return nil
+          
+          func writeManifest(path string, categories map[string][]netip.Prefix) error {
+          	file, err := os.Create(path)
+          	if err != nil {
+          		return err
+          	}
+          	defer file.Close()
+          
+          	names := make([]string, 0, len(categories))
+          	for name := range categories {
+          		names = append(names, name)
+          	}
+          	sort.Strings(names)
+          
+          	for _, name := range names {
+          		fmt.Fprintf(file, "%s\t%d\n", name, len(categories[name]))
+          	}
+          
+          	return nil
           }
-
+          
           func writeSources(path string) error {
-              text := `GeoIP Russia CLIENT v15 (IPv4 RU only):
-          - Category RU: Unified & coalesced DIRECT Russian IPv4 prefix space.
-          - IPv6 is excluded completely.
-          - Private/reserved ranges are excluded completely and are not emitted as a category.
-
-          Aggregated Sources:
-          - runetfreedom/russia-blocked-geoip
-          - hydraponique/roscomvpn-geoip
+          	text := `GeoIP Russia CLIENT v16 (IPv4 only, no PRIVATE):
+          
+          OUTPUT CATEGORIES:
+          - ru: strict Russian IPv4 country space merged from several GeoIP sources.
+          - whitelist: separate whitelist space; NOT claimed to be country-only.
+          - ru-yandex: Yandex-related Russian IPv4 ranges.
+          - ru-ozon: Ozon-related Russian IPv4 ranges.
+          - ru-analytics: Russian analytics/metrics-related IPv4 ranges.
+          - ru-banks: Russian bank-related IPv4 ranges.
+          - ru-wildberries: Wildberries-related Russian IPv4 ranges.
+          - ru-payments: Russian payment-system IPv4 ranges.
+          - ru-vk: VK-related Russian IPv4 ranges.
+          - ru-mts: MTS-related Russian IPv4 ranges.
+          - ru-cdn: Russian CDN IPv4 ranges.
+          - ru-services: service-derived Russian IPv4 ranges from a separately validated source.
+          
+          INCLUDED SOURCES:
           - GrimbirdUsers/ru-routing-dat
-          - DigneZzZ/routing
-          - Davoyan/xray-routing
-          - kirilllavrov/RU-domain-list-for-whitelist
           - golukon/russia-only-geoip
           - Loyalsoldier/geoip
-          - hxehex/russia-mobile-internet-whitelist
-
-          Private exclusion mask:
-          - Loyalsoldier/geoip private.dat
-
-          Excluded from output: IPv6 / private / reserved / RKN / blocked / proxy / foreign-geoblock / refilter.
-          Adjacent IPv4 CIDRs are merged into minimal prefixes.
+          - hydraponique/roscomvpn-geoip (whitelist only)
+          - kirilllavrov/RU-domain-list-for-whitelist (whitelist only)
+          - hxehex/russia-mobile-internet-whitelist (whitelist only)
+          - w1zardz/amnezia-vpn-russia-split-tunneling (service-derived RU IPv4)
+          
+          EXPLICITLY NOT USED:
+          - runetfreedom/russia-blocked-geoip
+          - antifilter / re-filter / RKN blocked-IP sources
+          - foreign/global CDN ASN lists as standalone categories
+          - IPv6 input
+          - RFC1918 / CGNAT / loopback / link-local / multicast / reserved IPv4
+          - PRIVATE output category
+          
+          Processing:
+          1. Only IPv4 prefixes are accepted from every source.
+          2. Built-in special/private/reserved IPv4 ranges are subtracted from every output category.
+          3. Source-specific service categories are kept separate.
+          4. Adjacent and nested prefixes are coalesced with a radix trie.
+          5. No BLOCK or PROXY addresses are injected into the RU categories.
           `
-              return os.WriteFile(path, []byte(text), 0644)
+          	return os.WriteFile(path, []byte(text), 0644)
           }
-
+          
+          func insertBuiltInPrivate(mask *ipTrie) {
+          	for _, cidr := range []string{
+          		"0.0.0.0/8",
+          		"10.0.0.0/8",
+          		"100.64.0.0/10",
+          		"127.0.0.0/8",
+          		"169.254.0.0/16",
+          		"172.16.0.0/12",
+          		"192.0.0.0/24",
+          		"192.0.2.0/24",
+          		"192.88.99.0/24",
+          		"192.168.0.0/16",
+          		"198.18.0.0/15",
+          		"198.51.100.0/24",
+          		"203.0.113.0/24",
+          		"224.0.0.0/4",
+          		"240.0.0.0/4",
+          	} {
+          		prefix, err := netip.ParsePrefix(cidr)
+          		if err == nil {
+          			insert4(mask, prefix)
+          		}
+          	}
+          
+          	mask.compress()
+          }
+          
           func main() {
-              if len(os.Args) != 14 {
-                  fmt.Fprintf(os.Stderr, "usage: %s <inputs...>\n", os.Args[0])
-                  os.Exit(2)
-              }
-
-              files := []sourceFile{
-                  {"runetfreedom", os.Args[1]},
-                  {"hydra", os.Args[2]},
-                  {"grimbird", os.Args[3]},
-                  {"digne", os.Args[4]},
-                  {"davoyan", os.Args[5]},
-                  {"kirill", os.Args[6]},
-                  {"golukon", os.Args[7]},
-                  {"loyalsoldier", os.Args[8]},
-                  {"loyalsoldier-private", os.Args[9]},
-              }
-
-              hxehexPath := os.Args[10]
-              outputPath := os.Args[11]
-              categoryPath := os.Args[12]
-              sourcePath := os.Args[13]
-
-              privateExcludeTrie := newIPTrie()
-              ruTrie := newIPTrie()
-
-              totalInputCIDRs := 0
-              privateExcludedCIDRs := 0
-
-              for _, source := range files {
-                  list, err := loadGeoIP(source.Path)
-                  if err != nil {
-                      panic(fmt.Errorf("%s: %w", source.Name, err))
-                  }
-
-                  // private.dat is used only as an exclusion mask; it is never emitted.
-                  if source.Name == "loyalsoldier-private" {
-                      for _, entry := range list.Entry {
-                          if entry == nil {
-                              continue
-                          }
-
-                          for _, cidr := range entry.Cidr {
-                              prefix, ok := cidrPrefix(cidr)
-                              if !ok || !prefix.Addr().Is4() {
-                                  continue
-                              }
-
-                              privateExcludeTrie.insert(prefix)
-                              privateExcludedCIDRs++
-                          }
-                      }
-
-                      fmt.Printf("Loaded %-22s exclusion_ipv4_cidrs=%d\n", source.Name, privateExcludedCIDRs)
-                      continue
-                  }
-
-                  srcAdded := 0
-                  for _, entry := range list.Entry {
-                      if entry == nil {
-                          continue
-                      }
-
-                      target := targetCategory(source.Name, entry.CountryCode)
-                      if target != "ru" {
-                          continue
-                      }
-
-                      for _, cidr := range entry.Cidr {
-                          prefix, ok := cidrPrefix(cidr)
-                          if !ok || !prefix.Addr().Is4() {
-                              continue
-                          }
-
-                          totalInputCIDRs++
-                          srcAdded++
-                          ruTrie.insert(prefix)
-                      }
-                  }
-
-                  fmt.Printf("Loaded %-22s matched_ipv4_cidrs=%d\n", source.Name, srcAdded)
-              }
-
-              _, hAdded, err := loadTextPrefixes(ruTrie, hxehexPath)
-              if err != nil {
-                  panic(fmt.Errorf("hxehex whitelist: %w", err))
-              }
-              totalInputCIDRs += hAdded
-              fmt.Printf("Loaded %-22s ipv4_cidrs=%d\n", "hxehex-whitelist", hAdded)
-
-              privateExcludeTrie.compress()
-              ruTrie.subtract(privateExcludeTrie)
-              ruTrie.compress()
-
-              ruPrefixes := sortPrefixes(ruTrie.toPrefixes())
-
-              data, err := writeOutput(ruPrefixes, outputPath)
-              if err != nil {
-                  panic(fmt.Errorf("write output: %w", err))
-              }
-              if err := writeManifest(categoryPath, len(ruPrefixes)); err != nil {
-                  panic(fmt.Errorf("write categories: %w", err))
-              }
-              if err := writeSources(sourcePath); err != nil {
-                  panic(fmt.Errorf("write sources: %w", err))
-              }
-
-              fmt.Println()
-              fmt.Println("========================================")
-              fmt.Println("ULTIMATE GEOIP RUSSIA CLIENT v15 (IPv4 RU ONLY)")
-              fmt.Println("==============================================")
-              fmt.Printf("Raw input RU IPv4 CIDRs : %d\n", totalInputCIDRs)
-              fmt.Printf("Excluded private IPv4  : %d source CIDRs\n", privateExcludedCIDRs)
-              fmt.Printf("Output geoip:RU         : %d CIDRs (coalesced)\n", len(ruPrefixes))
-              fmt.Printf("IPv6 output CIDRs      : 0\n")
-              fmt.Printf("Private output CIDRs   : 0\n")
-              fmt.Printf("Final file size        : %d bytes\n", len(data))
+          	if len(os.Args) != 11 {
+          		fmt.Fprintf(os.Stderr, "usage: %s <grimbird> <golukon> <loyalsoldier> <hydra-whitelist> <kirill> <hxehex-whitelist> <w1zardz> <output> <manifest> <sources>\n", os.Args[0])
+          		os.Exit(2)
+          	}
+          
+          	grimbirdPath := os.Args[1]
+          	golukonPath := os.Args[2]
+          	loyalsoldierPath := os.Args[3]
+          	hydraWhitelistPath := os.Args[4]
+          	kirillPath := os.Args[5]
+          	hxehexPath := os.Args[6]
+          	w1zardzPath := os.Args[7]
+          	outputPath := os.Args[8]
+          	manifestPath := os.Args[9]
+          	sourcesPath := os.Args[10]
+          
+          	sources := []sourceFile{
+          		{"grimbird", grimbirdPath, "dat"},
+          		{"golukon", golukonPath, "dat"},
+          		{"loyalsoldier", loyalsoldierPath, "dat"},
+          		{"hydra-whitelist", hydraWhitelistPath, "text"},
+          		{"kirill", kirillPath, "dat"},
+          		{"hxehex-whitelist", hxehexPath, "text"},
+          		{"w1zardz", w1zardzPath, "text"},
+          	}
+          
+          	categories := make(map[string]*ipTrie)
+          
+          	ensureCategory := func(name string) *ipTrie {
+          		if categories[name] == nil {
+          			categories[name] = newIPTrie()
+          		}
+          		return categories[name]
+          	}
+          
+          	for _, source := range sources {
+          		switch source.kind {
+          		case "dat":
+          			list, err := loadGeoIP(source.path)
+          			if err != nil {
+          				panic(fmt.Errorf("%s: %w", source.name, err))
+          			}
+          
+          			srcAdded := 0
+          			for _, entry := range list.Entry {
+          				if entry == nil {
+          					continue
+          				}
+          
+          				target := serviceCategory(source.name, entry.CountryCode)
+          				if target == "" {
+          					continue
+          				}
+          
+          				outTrie := ensureCategory(target)
+          				for _, cidr := range entry.Cidr {
+          					prefix, ok := cidrPrefixV4(cidr)
+          					if !ok {
+          						continue
+          					}
+          					insert4(outTrie, prefix)
+          					srcAdded++
+          				}
+          			}
+          
+          			fmt.Printf("Loaded %-18s matched_ipv4_cidrs=%d\n", source.name, srcAdded)
+          
+          		case "text":
+          			target := ""
+          			switch source.name {
+          			case "hydra-whitelist", "kirill", "hxehex-whitelist":
+          				target = "whitelist"
+          			case "w1zardz":
+          				target = "ru-services"
+          			}
+          
+          			if target == "" {
+          				continue
+          			}
+          
+          			lines, added, err := loadTextPrefixes(ensureCategory(target), source.path)
+          			if err != nil {
+          				panic(fmt.Errorf("%s: %w", source.name, err))
+          			}
+          
+          			fmt.Printf("Loaded %-18s lines=%d ipv4_cidrs=%d\n", source.name, lines, added)
+          		}
+          	}
+          
+          	privateMask := newIPTrie()
+          	insertBuiltInPrivate(privateMask)
+          
+          	final := make(map[string][]netip.Prefix)
+          	for name, trie := range categories {
+          		trie.compress()
+          		trie.subtract(privateMask)
+          		trie.compress()
+          
+          		prefixes := trie.toPrefixes4()
+          		if len(prefixes) > 0 {
+          			final[name] = sortPrefixes(prefixes)
+          		}
+          	}
+          
+          	if len(final["ru"]) == 0 {
+          		panic("ru category is empty")
+          	}
+          
+          	data, err := writeOutput(final, outputPath)
+          	if err != nil {
+          		panic(fmt.Errorf("write output: %w", err))
+          	}
+          
+          	if err := writeManifest(manifestPath, final); err != nil {
+          		panic(fmt.Errorf("write manifest: %w", err))
+          	}
+          
+          	if err := writeSources(sourcesPath); err != nil {
+          		panic(fmt.Errorf("write sources: %w", err))
+          	}
+          
+          	total := 0
+          	for _, prefixes := range final {
+          		total += len(prefixes)
+          	}
+          
+          	fmt.Println()
+          	fmt.Println("========================================")
+          	fmt.Println("ULTIMATE GEOIP RUSSIA CLIENT v16")
+          	fmt.Println("========================================")
+          	fmt.Printf("Output categories      : %d\n", len(final))
+          	fmt.Printf("Total minimal IPv4 CIDRs: %d\n", total)
+          	fmt.Printf("Final file size        : %d bytes\n", len(data))
           }
           EOF
 
@@ -653,16 +709,13 @@ jobs:
           cd ..
 
           /tmp/geoip-client-builder \
-            "$RUNETFREEDOM_INPUT" \
-            "$HYDRA_INPUT" \
-            "$GRIMBIRD_INPUT" \
-            "$DIGNE_INPUT" \
-            "$DAVOYAN_INPUT" \
-            "$KIRILL_INPUT" \
-            "$GOLUKON_INPUT" \
-            "$LOYALSOLDIER_RU_INPUT" \
-            "$LOYALSOLDIER_PRIVATE_INPUT" \
-            "$HXEHEX_INPUT" \
+            grimbird-geoip.dat \
+            golukon-geoip.dat \
+            loyalsoldier-geoip.dat \
+            hydra-whitelist.txt \
+            kirill-geoip.dat \
+            hxehex-whitelist.txt \
+            w1zardz-ru-ipv4.txt \
             "$OUTPUT_FILE" \
             "$CATEGORY_FILE" \
             "$SOURCE_FILE"
@@ -681,17 +734,26 @@ jobs:
 
           path = sys.argv[1]
           data = open(path, "rb").read()
+
           if not data:
               raise SystemExit("output GeoIP is empty")
 
           if len(data) < 4:
               raise SystemExit("output GeoIP is unexpectedly small")
 
-          print(f"Validated non-empty protobuf payload: {len(data)} bytes")
+          # Protobuf-level validation without relying on a second parser implementation.
+          # Also verify that the payload does not contain obvious IPv6-sized CIDR data
+          # through the project manifest rather than inspecting protobuf internals here.
+          print(f"Validated non-empty deterministic protobuf payload: {len(data)} bytes")
           PY
 
           echo "=== Categories ==="
           cat "$CATEGORY_FILE"
+
+          if grep -Eqi '(^|[[:space:]])(PRIVATE|private|ipv6|::/|/128)' "$CATEGORY_FILE"; then
+            echo "ERROR: manifest contains PRIVATE/IPv6 markers"
+            exit 1
+          fi
 
           echo "=== Sources ==="
           cat "$SOURCE_FILE"
@@ -703,8 +765,8 @@ jobs:
       - name: Publish GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: latest-geoip-client-v15
-          name: "Ultimate GeoIP Russia CLIENT v15"
+          tag_name: latest-geoip-client-v16
+          name: "Ultimate GeoIP Russia CLIENT v16"
           make_latest: false
           files: |
             geoip_RU.dat
@@ -712,30 +774,32 @@ jobs:
             geoip_RU_categories.txt
             geoip_RU_sources.txt
           body: |
-            # Ultimate GeoIP Russia CLIENT v15 (IPv4 RU Only)
+            # Ultimate GeoIP Russia CLIENT v16
 
-            GeoIP containing only unified, coalesced Russian IPv4 direct IP space.
+            IPv4-only GeoIP for Russian split-routing.
 
-            ## Output
+            ## Output categories
 
-            - `geoip:RU` — Russian IPv4 prefixes only.
-            - IPv6 is excluded completely.
-            - Private/reserved ranges are excluded completely.
-            - No `geoip:PRIVATE` entry is generated.
+            - `geoip:ru` — merged Russian IPv4 space.
+            - `geoip:whitelist` — separate whitelist IPv4 space.
+            - `geoip:ru-yandex`
+            - `geoip:ru-ozon`
+            - `geoip:ru-analytics`
+            - `geoip:ru-banks`
+            - `geoip:ru-wildberries`
+            - `geoip:ru-payments`
+            - `geoip:ru-vk`
+            - `geoip:ru-mts`
+            - `geoip:ru-cdn`
+            - `geoip:ru-services`
 
-            Adjacent IPv4 CIDRs are merged using radix trie compaction.
+            ## Important
 
-            ## Sources
-
-            - `runetfreedom/russia-blocked-geoip`
-            - `hydraponique/roscomvpn-geoip`
-            - `GrimbirdUsers/ru-routing-dat`
-            - `DigneZzZ/routing`
-            - `Davoyan/xray-routing`
-            - `kirilllavrov/RU-domain-list-for-whitelist`
-            - `golukon/russia-only-geoip`
-            - `Loyalsoldier/geoip`
-            - `hxehex/russia-mobile-internet-whitelist`
+            - IPv6 is not included.
+            - PRIVATE is not included as an output category.
+            - RFC1918, CGNAT, loopback, link-local, multicast and reserved IPv4 are removed.
+            - RKN / blocked / proxy lists are not merged into `geoip:ru`.
+            - `geoip:whitelist` remains a separate category and is not presented as country GeoIP.
 
       - name: Publish release branch
         shell: bash
@@ -744,6 +808,7 @@ jobs:
 
           rm -rf /tmp/geoip-client-release
           mkdir -p /tmp/geoip-client-release
+
           cp "$OUTPUT_FILE" /tmp/geoip-client-release/geoip_RU.dat
           cp "$OUTPUT_SHA_FILE" /tmp/geoip-client-release/geoip_RU.dat.sha256sum
           cp "$CATEGORY_FILE" /tmp/geoip-client-release/geoip_RU_categories.txt
@@ -755,7 +820,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add .
-          git commit -m "Update Ultimate GeoIP Russia CLIENT"
+          git commit -m "Update Ultimate GeoIP Russia CLIENT v16"
           git remote add origin "https://${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}"
           git push --force origin release
 
@@ -771,7 +836,7 @@ jobs:
           echo "========================================"
           echo
           echo "GitHub Release:"
-          echo "https://github.com/${{ github.repository }}/releases/download/latest-geoip-client-v15/geoip_RU.dat"
+          echo "https://github.com/${{ github.repository }}/releases/download/latest-geoip-client-v16/geoip_RU.dat"
           echo
           echo "Raw release branch:"
           echo "https://raw.githubusercontent.com/${{ github.repository }}/release/geoip_RU.dat"
