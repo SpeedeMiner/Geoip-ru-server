@@ -1,0 +1,18 @@
+GeoIP Russia Pure RU (IPv4 only, no PRIVATE, no exclusions):
+
+OUTPUT CATEGORIES:
+- RU: single merged IPv4 category containing all accepted Russian GeoIP, service-specific,
+  and whitelist-derived routes.
+
+INCLUDED SOURCES:
+- GrimbirdUsers/ru-routing-dat (ru and ru-* entries)
+- golukon/russia-only-geoip
+- Loyalsoldier/geoip
+- hydraponique/roscomvpn-geoip (whitelist)
+- kirilllavrov/RU-domain-list-for-whitelist
+- hxehex/russia-mobile-internet-whitelist
+- w1zardz/amnezia-vpn-russia-split-tunneling (ru-direct-ipv4)
+
+EXCLUDED:
+- RFC1918 / CGNAT / loopback / link-local / multicast / reserved IPv4
+- Blocked/Antifilter deny masks are NOT subtracted (networks remain intact)
