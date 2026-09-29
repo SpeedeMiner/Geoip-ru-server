@@ -481,9 +481,9 @@ jobs:
           - GrimbirdUsers/ru-routing-dat
           - golukon/russia-only-geoip
           - Loyalsoldier/geoip
-          - hydraponique/roscomvpn-geoip (whitelist only)
-          - kirilllavrov/RU-domain-list-for-whitelist (whitelist only)
-          - hxehex/russia-mobile-internet-whitelist (whitelist only)
+          - hydraponique/roscomvpn-geoip (merged into ru)
+          - kirilllavrov/RU-domain-list-for-whitelist (merged into ru)
+          - hxehex/russia-mobile-internet-whitelist (merged into ru)
           - w1zardz/amnezia-vpn-russia-split-tunneling (service-derived RU IPv4)
           
           EXPLICITLY NOT USED:
@@ -496,10 +496,10 @@ jobs:
           
           Processing:
           1. Only IPv4 prefixes are accepted from every source.
-          2. All accepted source prefixes are merged into the single `ru` category.
+          2. All accepted source prefixes are merged into the single ru category.
           3. Built-in special/private/reserved IPv4 ranges are subtracted from the output category.
           4. Adjacent and nested prefixes are coalesced with a radix trie.
-          5. No BLOCK or PROXY addresses are injected into the `ru` category.
+          5. No BLOCK or PROXY addresses are injected into the ru category.
           `
           	return os.WriteFile(path, []byte(text), 0644)
           }
@@ -747,15 +747,15 @@ jobs:
 
             ## Output categories
 
-            - `geoip:ru` — single merged Russian IPv4 category containing all configured source ranges.
+            - geoip:ru — single merged Russian IPv4 category containing all configured source ranges.
 
             ## Important
 
             - IPv6 is not included.
             - PRIVATE is not included as an output category.
             - RFC1918, CGNAT, loopback, link-local, multicast and reserved IPv4 are removed.
-            - RKN / blocked / proxy lists are not merged into `geoip:ru`.
-            - Whitelist-derived and service-derived source ranges are intentionally merged into `geoip:ru`.
+            - RKN / blocked / proxy lists are not merged into geoip:ru.
+            - Whitelist-derived and service-derived source ranges are intentionally merged into geoip:ru.
 
       - name: Publish release branch
         shell: bash
