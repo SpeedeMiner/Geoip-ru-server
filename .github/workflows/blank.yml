@@ -30,7 +30,7 @@ jobs:
 
       # Service-derived, country-validated IPv4 routes.
       # Current project data: ~849 IPv4 CIDRs / ~62 services.
-      W1ZARDZ_RU_IP_URL: https://raw.githubusercontent.com/w1zardz/amnezia-vpn-russia-split-tunneling/master/ru-direct-ipv4.txt
+      W1ZARDZ_RU_IP_URL: https://raw.githubusercontent.com/w1zardz/amnezia-vpn-russia-split-tunneling/master/dist/ru-direct-ipv4.txt
 
       OUTPUT_FILE: geoip_RU.dat
       CATEGORY_FILE: geoip_RU_categories.txt
