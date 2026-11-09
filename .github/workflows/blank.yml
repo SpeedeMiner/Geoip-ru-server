@@ -2959,6 +2959,14 @@ jobs:
           } >> "$QUALITY_REPORT"
           sha256sum "$BLOCKED_IP_INPUT" > "$BLOCKED_IP_SHA_FILE"
 
+          # Generate the protobuf checksum BEFORE the build-artifact gate below.
+          # The Go builder writes geoip_RU.dat but intentionally does not write a sidecar.
+          test -s "$OUTPUT_FILE" || { echo "::error::GeoIP protobuf was not created: $OUTPUT_FILE"; exit 1; }
+          rm -f "$OUTPUT_SHA_FILE"
+          sha256sum "$OUTPUT_FILE" > "$OUTPUT_SHA_FILE"
+          test -s "$OUTPUT_SHA_FILE" || { echo "::error::Failed to create protobuf SHA256 file: $OUTPUT_SHA_FILE"; exit 1; }
+          sha256sum -c "$OUTPUT_SHA_FILE"
+
           for file in "$OUTPUT_FILE" "$OUTPUT_SHA_FILE" "$BLOCKED_IP_SHA_FILE" "$CATEGORY_FILE" "$SOURCE_FILE" "$SOURCE_COUNTS" "$CATEGORY_AUDIT" "$QUALITY_REPORT" "$PROVENANCE_FILE" "$ASN_MANIFEST" "$COMPANY_ASN_MANIFEST" "$ASN_STATS" "$BY_KZ_ASN_REGISTRY" "$BLOCKED_IP_INPUT" "$BLOCKED_REVIEW_INPUT" "$BLOCKED_STATS_INPUT" "$BLOCKED_CHECKSUMS_INPUT" "$BLOCKED_IP_RAW_INPUT" "$BLOCKED_IPRESOLVE_INPUT" "$BLOCKED_SUBNET_INPUT"; do
             test -s "$file" || { echo "::error::Missing or empty build artifact: $file"; exit 1; }
           done
@@ -2967,6 +2975,10 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          # Re-check the checksum in the independent quality-validation step.
+          test -s "$OUTPUT_FILE" || { echo "::error::Missing protobuf: $OUTPUT_FILE"; exit 1; }
+          test -s "$OUTPUT_SHA_FILE" || { echo "::error::Missing protobuf checksum: $OUTPUT_SHA_FILE"; exit 1; }
+          sha256sum -c "$OUTPUT_SHA_FILE"
           python3 - "$OUTPUT_FILE" "$ASN_MANIFEST" "$COMPANY_ASN_MANIFEST" "$ASN_STATS" "$RIR_STATS" "$SOURCE_COUNTS" "$QUALITY_REPORT" "$PROVENANCE_FILE" "$CATEGORY_AUDIT" "$BY_KZ_ASN_REGISTRY" "$BLOCKED_IP_INPUT" "$BLOCKED_REVIEW_INPUT" "$BLOCKED_STATS_INPUT" "$BLOCKED_CHECKSUMS_INPUT" <<'PY'
           import os, sys
           from collections import defaultdict
@@ -3195,7 +3207,7 @@ jobs:
           echo "=== Quality report ==="
           cat "$QUALITY_REPORT"
           echo "=== SHA256 ==="
-          sha256sum "$OUTPUT_FILE" > "$OUTPUT_SHA_FILE"
+          sha256sum -c "$OUTPUT_SHA_FILE"
           cat "$OUTPUT_SHA_FILE"
 
       - name: Publish GitHub Release
