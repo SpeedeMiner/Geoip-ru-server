@@ -3167,7 +3167,7 @@ jobs:
           if count_line not in quality_text:
               raise SystemExit("Quality report is missing or disagrees with the curated company-ASN registry count")
           for marker in (
-              "Unique prefixes originated by curated Russian-company ASNs:",
+              "Unique prefixes originated by curated Russian-company/affiliate ASNs:",
               "Company ASN ipverse countryCode distribution (audit only):",
               "Country handling: ipverse countryCode is not used as an inclusion filter",
               "Per-ASN evidence and prefix counts:",
