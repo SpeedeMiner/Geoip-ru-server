@@ -3045,6 +3045,20 @@ jobs:
                       raise SystemExit(f"Unexpected unavailable input in provenance manifest: {row}")
               else:
                   raise SystemExit(f"Unknown input provenance status: {status}")
+          expected_input_files = {
+              "hydra-geoip.dat", "grimbird-geoip.dat", "digne-geoip.dat", "davoyan-geoip.dat",
+              "kirill-geoip.dat", "golukon-geoip.dat", "v2fly-geoip.dat", "v2fly-geoip.dat.sha256sum",
+              "loyalsoldier-ru.dat", "loyalsoldier-by.dat", "loyalsoldier-private.dat",
+              "hxehex-cidrwhitelist.txt", "w1zardz-ru-ipv4.txt",
+              "delegated-afrinic-latest", "delegated-apnic-latest", "delegated-arin-extended-latest",
+              "delegated-lacnic-latest", "delegated-ripencc-latest", "iana-ipv4-special-registry.csv",
+              "iana-ipv6-special-registry.csv", "as-ip-blocks.tar.gz",
+              "antifilter-ip.lst", "antifilter-ipresolve.lst", "antifilter-subnet.lst",
+              "antifilter-community.lst", "refilter-ipsum.lst",
+          }
+          missing_input_files = sorted(expected_input_files - seen_input_files)
+          if missing_input_files:
+              raise SystemExit("Input provenance is missing downloaded source files: " + ", ".join(missing_input_files))
 
           import ipaddress
           with open(by_kz_asns, encoding="utf-8") as source:
@@ -3364,6 +3378,10 @@ jobs:
 
             ## Attribution
             - v2fly/geoip is licensed CC-BY-SA-4.0; upstream README also identifies DB-IP data under CC-BY-4.0. Preserve applicable upstream notices.
+
+            ## Input-source provenance
+            - geoip_RU_input_provenance.tsv records the exact URL selected for each downloaded input, SHA-256, byte size, and download status; its sidecar checksum is published alongside it.
+            - The manifest makes the exact bytes consumed by a build auditable, but it does not pin mutable upstream branches/releases or independently archive every source payload.
 
       - name: Publish release branch
         shell: bash
