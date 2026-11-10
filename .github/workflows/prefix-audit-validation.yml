@@ -100,6 +100,8 @@ jobs:
               "AS202611", "AS9123", "AS57724", "AS208677", "AS210756",
               "AS49505", "AS50340", "AS28709", "AS47541", "AS47542",
               "AS47764", "AS3216", "AS8359", "AS9049", "AS12389", "AS12714",
+              "AS13238", "AS20485", "AS25513", "AS35237", "AS44386",
+              "AS48858", "AS57073", "AS200350", "AS201512", "AS215013",
           }
           required = {
               "ASN", "COMPANY_GROUP", "ALLOWLIST_ENTITY_OR_NOTE", "RIPE_AS_NAME",
