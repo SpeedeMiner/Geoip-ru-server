@@ -319,12 +319,12 @@ def select_fair_provider_tasks(
                 continue
             bundle = bundles[round_index]
             remaining = budget - len(selected)
-            if remaining >= len(bundle):
-                selected.extend(bundle)
-                complete_bundles += 1
-            elif remaining:
-                selected.extend(bundle[:remaining])
-                partial_bundles += 1
+            if remaining < len(bundle):
+                # Never split DNS/HTTPS or address-family pairs for one provider/target.
+                # Leave a small unused budget rather than creating a misleading partial bundle.
+                break
+            selected.extend(bundle)
+            complete_bundles += 1
             if len(selected) >= budget:
                 break
         if len(selected) >= budget:
@@ -345,6 +345,7 @@ def select_fair_provider_tasks(
         "countries_selected": countries_selected,
         "complete_target_bundles": complete_bundles,
         "partial_target_bundles": partial_bundles,
+        "budget_unused_for_bundle_alignment": budget - len(selected),
         "min_tasks_for_all_providers": len(provider_keys) * len(bundle_order),
     }
     return selected, meta
