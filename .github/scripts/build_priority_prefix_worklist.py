@@ -4,6 +4,8 @@ from __future__ import annotations
 import argparse
 import csv
 import ipaddress
+import re
+from datetime import date
 from collections import Counter
 from pathlib import Path
 
@@ -88,7 +90,15 @@ def build_worklist(evidence: Path, output: Path, stats_path: Path,
             raise ValueError(f"invalid family or non-REVIEW triage row: {prefix}")
     spot_scope_relations: dict[str, str] = {}
     for prefix, row in spots.items():
-        if row.get("STATUS") != "CHECKED_2026-11-10" or not row.get("SUMMARY", "").strip():
+        status = row.get("STATUS", "").strip()
+        match = re.fullmatch(r"CHECKED_(\\d{4}-\\d{2}-\\d{2})", status)
+        if not match or not row.get("SUMMARY", "").strip():
+            raise ValueError(f"invalid or undated spot-check row: {prefix}")
+        try:
+            checked_date = date.fromisoformat(match.group(1))
+        except ValueError as exc:
+            raise ValueError(f"invalid or undated spot-check row: {prefix}") from exc
+        if checked_date.isoformat() != match.group(1):
             raise ValueError(f"invalid or undated spot-check row: {prefix}")
         target = ipaddress.ip_network(prefix, strict=True)
         observed = [ipaddress.ip_network(x.strip(), strict=True)
