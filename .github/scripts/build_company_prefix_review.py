@@ -17,6 +17,7 @@ import json
 import re
 import sys
 import tarfile
+from collections import defaultdict
 from pathlib import Path
 from typing import Iterable
 
@@ -331,7 +332,7 @@ def build_review(
                 prefix,
                 f"IPv{net.version}",
                 net.num_addresses,
-                join_values(item["company_asns"].__iter__() if False else (f"AS{asn}" for asn in item["company_asns"])),
+                join_values(f"AS{asn}" for asn in item["company_asns"]),
                 join_values(item["company_groups"]),
                 join_values(item["entities"]),
                 join_values(item["evidence"]),
