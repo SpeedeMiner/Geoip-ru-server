@@ -66,3 +66,6 @@ jobs:
           test -s "$workdir/geoip_RU_company_prefix_review_stats.txt"
           echo "Current release prefix-review smoke test:"
           cat "$workdir/geoip_RU_company_prefix_review_stats.txt"
+          echo "Company-origin prefixes without a selected regional RIR-RU/BY/KZ origin:"
+          awk -F '\t' '$1 !~ /^#/ && $1 != "PREFIX" && $11 == "COMPANY_ASN_ONLY" { print $1 "\tcompany_asn=" $4 "\tipverse_country=" $8 }' \
+            "$workdir/geoip_RU_company_prefix_review.tsv"
