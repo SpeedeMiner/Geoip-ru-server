@@ -34,3 +34,35 @@ jobs:
 
       - name: Parse workflow YAML
         run: ruby -e 'require "yaml"; YAML.load_file(ARGV.fetch(0)); puts "Workflow YAML parsed successfully"' .github/workflows/blank.yml
+
+      - name: Smoke test prefix review against current published v35 snapshots
+        shell: bash
+        run: |
+          set -euo pipefail
+          base="https://github.com/${GITHUB_REPOSITORY}/releases/download/latest-geoip-client-v35"
+          workdir="$(mktemp -d)"
+          trap 'rm -rf "$workdir"' EXIT
+
+          for file in \
+            geoip_RU_company_asns.txt \
+            geoip_RU_company_asn_manifest.tsv \
+            geoip_RU_BY_KZ_asn_bgp_prefixes.txt \
+            geoip_RU_input_provenance.tsv; do
+            curl --fail --location --silent --show-error \
+              --retry 3 --retry-all-errors --retry-delay 2 \
+              "$base/$file" -o "$workdir/$file"
+            test -s "$workdir/$file"
+          done
+
+          python3 .github/scripts/build_company_prefix_review.py \
+            --company-asns "$workdir/geoip_RU_company_asns.txt" \
+            --company-manifest "$workdir/geoip_RU_company_asn_manifest.tsv" \
+            --regional-prefixes "$workdir/geoip_RU_BY_KZ_asn_bgp_prefixes.txt" \
+            --input-provenance "$workdir/geoip_RU_input_provenance.tsv" \
+            --output "$workdir/geoip_RU_company_prefix_review.tsv" \
+            --stats "$workdir/geoip_RU_company_prefix_review_stats.txt"
+
+          test -s "$workdir/geoip_RU_company_prefix_review.tsv"
+          test -s "$workdir/geoip_RU_company_prefix_review_stats.txt"
+          echo "Current release prefix-review smoke test:"
+          cat "$workdir/geoip_RU_company_prefix_review_stats.txt"
