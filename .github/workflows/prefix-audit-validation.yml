@@ -449,6 +449,28 @@ jobs:
           if any(row["STATUS"] != "REVIEW" for row in holder_summary):
               raise SystemExit("RDAP holder summary contains a non-REVIEW status")
 
+          irr_metadata = json.loads(
+              Path("prefix-audit/priority-prefix-evidence/irr_sources_metadata.json").read_text(encoding="utf-8")
+          )
+          source_containers = [irr_metadata.get("sources", {}), irr_metadata.get("grs-sources", {})]
+          metadata_sources = set()
+          for container in source_containers:
+              sources = container.get("source", []) if isinstance(container, dict) else []
+              if isinstance(sources, dict):
+                  sources = [sources]
+              for item in sources if isinstance(sources, list) else []:
+                  if isinstance(item, dict):
+                      name = str(item.get("name") or item.get("id") or "").strip().upper()
+                      if name:
+                          metadata_sources.add(name)
+          required_ripe_sources = {
+              "RIPE", "AFRINIC-GRS", "APNIC-GRS", "ARIN-GRS",
+              "JPIRR-GRS", "LACNIC-GRS", "RADB-GRS", "RIPE-GRS",
+          }
+          if not required_ripe_sources.issubset(metadata_sources):
+              raise SystemExit(
+                  f"RIPE metadata omitted documented GRS source names: {sorted(required_ripe_sources - metadata_sources)}"
+              )
           irr_summary = read_tsv(Path("prefix-audit/priority-prefix-evidence/irr_prefix_summary.tsv"))
           irr_objects = read_tsv(Path("prefix-audit/priority-prefix-evidence/irr_route_objects.tsv"))
           if len(irr_summary) != 56 or {row["PREFIX"] for row in irr_summary} != priority_prefixes:
@@ -458,8 +480,9 @@ jobs:
           for row in irr_summary:
               if row["STATUS"] != "REVIEW":
                   raise SystemExit(f"IRR summary has non-REVIEW status for {row['PREFIX']}")
-              if "RIPE" not in row["QUERY_SCOPE_SOURCES"].split(","):
-                  raise SystemExit(f"RIPE source missing from IRR query scope for {row['PREFIX']}")
+              if not required_ripe_sources.issubset(set(row["QUERY_SCOPE_SOURCES"].split(","))):
+                  missing_sources = sorted(required_ripe_sources - set(row["QUERY_SCOPE_SOURCES"].split(",")))
+                  raise SystemExit(f"Documented RIPE/GRS sources missing for {row['PREFIX']}: {missing_sources}")
               exact_count = int(row["IRR_EXACT_OBJECTS"])
               matched_count = int(row["IRR_EXACT_BGP_ORIGIN_MATCH_OBJECTS"])
               if matched_count > exact_count:
