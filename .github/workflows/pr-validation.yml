@@ -7,6 +7,7 @@ on:
     paths:
       - ".github/scripts/**"
       - ".github/workflows/**"
+      - ".github/audits/**"
 
 permissions:
   contents: read
@@ -296,3 +297,88 @@ jobs:
             "$generated/geoip_RU_selected_origin_prefix_review.tsv" \
             "$generated/geoip_RU_selected_origin_prefix_review_stats.txt" \
             "$generated/geoip_RU_BY_KZ_asn_bgp_prefixes.txt"
+
+          # Reconcile the hand-reviewed company/legal-entity matrix against the
+          # exact 36-entry allowlist and ASN manifest used by the current release.
+          python3 - "$workdir/geoip_RU_company_asns.txt" \
+            "$generated/geoip_RU_company_asn_manifest.tsv" \
+            .github/audits/company_asn_legal_evidence.tsv <<'PY'
+          import csv
+          import sys
+          from pathlib import Path
+
+          allowlist_path, manifest_path, audit_path = map(Path, sys.argv[1:])
+          allowlist = {}
+          for number, raw in enumerate(allowlist_path.read_text(encoding="utf-8").splitlines(), 1):
+              line = raw.strip()
+              if not line or line.startswith("#"):
+                  continue
+              fields = line.split("\t")
+              if len(fields) != 4:
+                  raise SystemExit(f"Malformed company allowlist line {number}: expected four TSV fields")
+              asn = fields[0].upper()
+              if asn in allowlist:
+                  raise SystemExit(f"Duplicate ASN in company allowlist: {asn}")
+              allowlist[asn] = fields
+
+          with manifest_path.open(encoding="utf-8", newline="") as source:
+              rows = list(csv.DictReader(source, delimiter="\t"))
+          manifest = {row["ASN"].upper(): row for row in rows}
+          if len(manifest) != len(rows):
+              raise SystemExit("Duplicate ASN in generated company manifest")
+
+          with audit_path.open(encoding="utf-8", newline="") as source:
+              audit_rows = list(csv.DictReader(source, delimiter="\t"))
+          audit = {row["ASN"].upper(): row for row in audit_rows}
+          if len(audit) != len(audit_rows):
+              raise SystemExit("Duplicate ASN in company/legal evidence audit")
+
+          expected = set(allowlist)
+          if len(expected) != 36:
+              raise SystemExit(f"Expected 36 curated company ASNs, found {len(expected)}")
+          for label, observed in (("generated company manifest", set(manifest)), ("legal evidence audit", set(audit))):
+              if observed != expected:
+                  raise SystemExit(
+                      f"{label} ASN set does not match allowlist: "
+                      f"missing={sorted(expected - observed)} extra={sorted(observed - expected)}"
+                  )
+
+          required_columns = {
+              "COMPANY_GROUP", "ALLOWLIST_ENTITY_OR_NOTE", "RIPE_ORGANISATION_NAME",
+              "ASN_ENTITY_ASSESSMENT", "V35_IPVERSE_ACTIVE", "V35_IPVERSE_COUNTRY_CODE",
+              "V35_IPV4_PREFIXES", "V35_IPV6_PREFIXES", "REVIEW_FLAG", "ASSESSMENT_NOTE",
+              "EVIDENCE_URLS",
+          }
+          for asn, allow_row in allowlist.items():
+              audit_row = audit[asn]
+              manifest_row = manifest[asn]
+              if audit_row["COMPANY_GROUP"] != allow_row[1]:
+                  raise SystemExit(f"{asn}: company group mismatch in legal evidence audit")
+              if audit_row["ALLOWLIST_ENTITY_OR_NOTE"] != allow_row[2]:
+                  raise SystemExit(f"{asn}: entity/note mismatch against curated allowlist")
+              if audit_row["V35_IPVERSE_ACTIVE"] != manifest_row["ACTIVE_IN_IPVERSE"]:
+                  raise SystemExit(f"{asn}: active flag mismatch against current manifest")
+              expected_country = manifest_row["IPVERSE_COUNTRY_CODE"] or "-"
+              if audit_row["V35_IPVERSE_COUNTRY_CODE"] != expected_country:
+                  raise SystemExit(f"{asn}: ipverse countryCode mismatch against current manifest")
+              for audit_column, manifest_column in (
+                  ("V35_IPV4_PREFIXES", "IPV4_PREFIXES"),
+                  ("V35_IPV6_PREFIXES", "IPV6_PREFIXES"),
+              ):
+                  if audit_row[audit_column] != manifest_row[manifest_column]:
+                      raise SystemExit(f"{asn}: {audit_column} mismatch against current manifest")
+              if required_columns - set(audit_row):
+                  raise SystemExit(f"{asn}: missing audit columns {sorted(required_columns - set(audit_row))}")
+              if not audit_row["RIPE_ORGANISATION_NAME"] or not audit_row["ASN_ENTITY_ASSESSMENT"]:
+                  raise SystemExit(f"{asn}: missing ASN registry organization/assessment")
+              if not audit_row["ASSESSMENT_NOTE"].strip():
+                  raise SystemExit(f"{asn}: missing assessment caveat")
+              urls = [value for value in audit_row["EVIDENCE_URLS"].split(";") if value]
+              if not urls or any(not value.startswith("https://") for value in urls):
+                  raise SystemExit(f"{asn}: missing or non-HTTPS evidence URL")
+              if audit_row["V35_IPVERSE_ACTIVE"] not in {"yes", "no"}:
+                  raise SystemExit(f"{asn}: invalid v35 active flag")
+              if audit_row["REVIEW_FLAG"].strip() == "":
+                  raise SystemExit(f"{asn}: empty review flag")
+          print(f"Validated {len(audit)} company ASN legal-evidence rows against the exact allowlist and generated v35 manifest")
+          PY
