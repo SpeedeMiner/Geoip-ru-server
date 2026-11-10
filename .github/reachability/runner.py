@@ -459,13 +459,14 @@ def collect_ripe_atlas(
     providers: dict[tuple[str, int], dict[str, Any]],
     budget: int,
 ) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
-    """Create a capped set of one-off Atlas TLS-certificate measurements."""
+    """Create capped Atlas TLS measurements from probes verified by country and ASN."""
     api_key = os.environ.get("RIPE_ATLAS_API_KEY", "").strip()
     if not api_key:
         return [{
             "source": "ripe_atlas", "result": "SKIPPED_API_KEY_NOT_CONFIGURED",
             "note": "Set repository secret RIPE_ATLAS_API_KEY with measurement-creation permission.",
         }], []
+
     tasks: list[dict[str, Any]] = []
     for target in targets:
         for country in sorted(set(target["country_scope"])):
@@ -477,19 +478,70 @@ def collect_ripe_atlas(
     selected, rotation = rotate_tasks(tasks, max(1, budget))
     rows: list[dict[str, Any]] = []
     raw: list[dict[str, Any]] = []
+    probe_cache: dict[tuple[str, int, int], dict[str, Any] | None] = {}
+    created: list[dict[str, Any]] = []
+
     for task in selected:
+        country, asn, af = task["country"], task["asn"], task["af"]
+        cache_key = (country, asn, af)
+        if cache_key not in probe_cache:
+            asn_field = "asn_v4" if af == 4 else "asn_v6"
+            params = urllib.parse.urlencode({
+                "country_code": country,
+                "status_name": "Connected",
+                asn_field: asn,
+                "page_size": 25,
+            })
+            try:
+                _, payload, _ = request_json(f"{RIPE_ATLAS_API}/probes/?{params}", timeout=30)
+                probe_list = payload.get("results", []) if isinstance(payload, dict) else []
+                candidates = []
+                for probe in probe_list:
+                    try:
+                        probe_asn = int(probe.get(asn_field) or 0)
+                    except (TypeError, ValueError):
+                        probe_asn = 0
+                    if (probe_asn == asn and str(probe.get("country_code") or "").upper() == country
+                            and str(probe.get("status_name") or "").lower() == "connected"):
+                        candidates.append(probe)
+                candidates.sort(key=lambda p: int(p.get("id", 0)))
+                probe_cache[cache_key] = candidates[0] if candidates else None
+                raw.append({
+                    "source": "ripe_atlas_probe_selection",
+                    "country": country, "asn": asn, "ip_family": af,
+                    "probe_count_in_first_page": len(candidates),
+                    "selected_probe_id": candidates[0].get("id") if candidates else None,
+                })
+            except APIError as exc:
+                probe_cache[cache_key] = None
+                raw.append({
+                    "source": "ripe_atlas_probe_selection",
+                    "country": country, "asn": asn, "ip_family": af, "error": str(exc),
+                })
+        probe = probe_cache[cache_key]
         target = task["target"]
+        if not probe:
+            rows.append({
+                "source": "ripe_atlas", "country_requested": country,
+                "asn_requested": asn, "target_id": target["id"],
+                "ip_family": af, "result": "NO_MATCHING_CONNECTED_PROBE",
+            })
+            continue
+
+        probe_id = int(probe["id"])
         definition = {
             "target": target["domain"],
-            "description": f"Geoip-ru-server reachability {task['country']} AS{task['asn']} IPv{task['af']} {target['id']}",
+            "description": f"Geoip-ru-server reachability {country} AS{asn} IPv{af} {target['id']}",
             "type": "sslcert",
-            "af": task["af"],
+            "af": af,
             "port": target["port"],
             "resolve_on_probe": True,
+            "is_oneoff": True,
+            "is_public": False,
         }
         body = {
             "definitions": [definition],
-            "probes": [{"requested": 1, "type": "asn", "value": task["asn"]}],
+            "probes": [{"requested": 1, "type": "probes", "value": str(probe_id)}],
             "is_oneoff": True,
             "is_public": False,
         }
@@ -502,33 +554,72 @@ def collect_ripe_atlas(
                 timeout=30,
             )
             ids = payload.get("measurements") or []
-            rows.append({
+            measurement_id = int(ids[0]) if ids else 0
+            row = {
                 "source": "ripe_atlas",
-                "country_requested": task["country"],
-                "asn_requested": task["asn"],
+                "country_requested": country,
+                "asn_requested": asn,
+                "probe_id": probe_id,
+                "probe_country": probe.get("country_code", ""),
+                "probe_asn": probe.get("asn_v4" if af == 4 else "asn_v6", ""),
                 "target_id": target["id"],
                 "target_domain": target["domain"],
-                "ip_family": task["af"],
-                "measurement_id": ids[0] if ids else "",
-                "result": "MEASUREMENT_CREATED" if ids else "API_ERROR",
-                "note": "One-off SSL certificate measurement; result collection is a later extension.",
-            })
+                "ip_family": af,
+                "measurement_id": measurement_id or "",
+                "result": "MEASUREMENT_CREATED" if measurement_id else "API_ERROR",
+                "measurement_result": "PENDING",
+            }
+            rows.append(row)
+            if measurement_id:
+                created.append({"row": row, "measurement_id": measurement_id})
             raw.append({"source": "ripe_atlas", "request": body, "response": payload})
         except APIError as exc:
             rows.append({
-                "source": "ripe_atlas",
-                "country_requested": task["country"],
-                "asn_requested": task["asn"],
-                "target_id": target["id"],
-                "ip_family": task["af"],
-                "result": "API_ERROR",
-                "error": str(exc),
+                "source": "ripe_atlas", "country_requested": country,
+                "asn_requested": asn, "probe_id": probe_id,
+                "target_id": target["id"], "ip_family": af,
+                "result": "API_ERROR", "error": str(exc),
             })
             raw.append({"source": "ripe_atlas", "request": body, "error": str(exc)})
+
+    # Atlas measurements are asynchronous. Collect results for a bounded period;
+    # records still pending remain explicitly pending and can be fetched later by ID.
+    pending = list(created)
+    for attempt in range(6):
+        if not pending:
+            break
+        still_pending = []
+        for item in pending:
+            mid = item["measurement_id"]
+            try:
+                _, payload, _ = request_json(
+                    f"{RIPE_ATLAS_API}/measurements/{mid}/results/?format=json",
+                    headers={"Authorization": f"Key {api_key}"},
+                    timeout=25,
+                )
+                result_items = payload if isinstance(payload, list) else payload.get("results", [])
+                raw.append({"source": "ripe_atlas_results", "measurement_id": mid, "response": payload})
+                if result_items:
+                    item["row"]["measurement_result"] = "RESULTS_AVAILABLE"
+                    item["row"]["result_count"] = len(result_items)
+                    item["row"]["result_excerpt"] = json.dumps(result_items[:3], ensure_ascii=False)[:1500]
+                else:
+                    still_pending.append(item)
+            except APIError as exc:
+                item["row"]["result_error"] = str(exc)
+                still_pending.append(item)
+            time.sleep(0.25)
+        pending = still_pending
+        if pending and attempt < 5:
+            time.sleep(12)
+    for item in pending:
+        item["row"]["measurement_result"] = "PENDING_RESULTS_FETCH_BY_ID"
     rows.append({
         "source": "ripe_atlas", "result": "BUDGET",
         "total_possible_tasks": len(tasks), "selected_tasks": len(selected),
         "rotation_offset": rotation["offset"],
+        "created_measurements": len(created),
+        "results_still_pending": len(pending),
     })
     return rows, raw
 
