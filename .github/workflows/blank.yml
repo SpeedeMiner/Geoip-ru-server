@@ -54,6 +54,8 @@ jobs:
       PROVENANCE_FILE: geoip_RU_additional_provenance.tsv
       ASN_MANIFEST: geoip_RU_BY_KZ_asn_manifest.txt
       COMPANY_ASN_MANIFEST: geoip_RU_company_asn_manifest.tsv
+      COMPANY_PREFIX_REVIEW: geoip_RU_company_prefix_review.tsv
+      COMPANY_PREFIX_REVIEW_STATS: geoip_RU_company_prefix_review_stats.txt
       ASN_STATS: geoip_RU_BY_KZ_asn_stats.txt
       SOURCE_COUNTS: geoip_RU_source_counts.txt
       CATEGORY_AUDIT: geoip_RU_category_audit.tsv
@@ -1180,7 +1182,17 @@ jobs:
           python3 extract_ru_asn_prefixes.py "$IPVERSE_BGP_ARCHIVE" "$RU_ASN_REGISTRY" "$BY_KZ_ASN_REGISTRY" \
             "$COMPANY_ASN_REGISTRY" "$RU_PREFIX_INPUT" "$GLOBAL_BGP_PREFIX_INPUT" \
             "$ASN_MANIFEST" "$COMPANY_ASN_MANIFEST" "$ASN_STATS"
-          for file in "$RU_PREFIX_INPUT" "$GLOBAL_BGP_PREFIX_INPUT" "$ASN_MANIFEST" "$COMPANY_ASN_MANIFEST" "$ASN_STATS" "$BY_KZ_ASN_REGISTRY"; do
+          # ASN membership identifies prefixes for review; it is not prefix-level
+          # proof of ownership, control, geography, or DIRECT suitability.
+          python3 .github/scripts/build_company_prefix_review.py \
+            --company-asns "$COMPANY_ASN_REGISTRY" \
+            --company-manifest "$COMPANY_ASN_MANIFEST" \
+            --regional-prefixes "$RU_PREFIX_INPUT" \
+            --input-provenance "$INPUT_PROVENANCE" \
+            --output "$COMPANY_PREFIX_REVIEW" \
+            --stats "$COMPANY_PREFIX_REVIEW_STATS"
+
+          for file in "$RU_PREFIX_INPUT" "$GLOBAL_BGP_PREFIX_INPUT" "$ASN_MANIFEST" "$COMPANY_ASN_MANIFEST" "$ASN_STATS" "$BY_KZ_ASN_REGISTRY" "$COMPANY_PREFIX_REVIEW" "$COMPANY_PREFIX_REVIEW_STATS"; do
             test -s "$file" || { echo "::error::Missing BGP artifact: $file"; exit 1; }
           done
 
@@ -2974,6 +2986,10 @@ jobs:
             printf 'Country metadata policy: ipverse countryCode is audit-only and is never an inclusion filter for allowlisted company-ASN origins.\n'
             printf 'Per-ASN evidence and prefix counts: %s\n\n' "$COMPANY_ASN_MANIFEST"
             cat "$ASN_STATS"
+            printf '\n=== COMPANY PREFIX-LEVEL REVIEW QUEUE ===\n'
+            printf 'Per-prefix review report: %s\n' "$COMPANY_PREFIX_REVIEW"
+            cat "$COMPANY_PREFIX_REVIEW_STATS"
+            printf 'All company-origin prefixes remain REVIEW until prefix-level evidence is assessed; this report does not change the GeoIP output.\n'
             printf '\n=== BLOCKED SOURCE INGESTION AUDIT ===\n'
             printf 'Approved exclusions: %s\n' "$BLOCKED_IP_INPUT"
             printf 'Review-only candidates (never carved): %s\n' "$BLOCKED_REVIEW_INPUT"
@@ -2994,7 +3010,7 @@ jobs:
           test -s "$OUTPUT_SHA_FILE" || { echo "::error::Failed to create protobuf SHA256 file: $OUTPUT_SHA_FILE"; exit 1; }
           sha256sum -c "$OUTPUT_SHA_FILE"
 
-          for file in "$OUTPUT_FILE" "$OUTPUT_SHA_FILE" "$BLOCKED_IP_SHA_FILE" "$CATEGORY_FILE" "$SOURCE_FILE" "$SOURCE_COUNTS" "$CATEGORY_AUDIT" "$QUALITY_REPORT" "$PROVENANCE_FILE" "$ASN_MANIFEST" "$COMPANY_ASN_MANIFEST" "$ASN_STATS" "$BY_KZ_ASN_REGISTRY" "$BLOCKED_IP_INPUT" "$BLOCKED_REVIEW_INPUT" "$BLOCKED_STATS_INPUT" "$BLOCKED_CHECKSUMS_INPUT" "$BLOCKED_IP_RAW_INPUT" "$BLOCKED_IPRESOLVE_INPUT" "$BLOCKED_SUBNET_INPUT" "$INPUT_PROVENANCE" "$INPUT_PROVENANCE_SHA"; do
+          for file in "$OUTPUT_FILE" "$OUTPUT_SHA_FILE" "$BLOCKED_IP_SHA_FILE" "$CATEGORY_FILE" "$SOURCE_FILE" "$SOURCE_COUNTS" "$CATEGORY_AUDIT" "$QUALITY_REPORT" "$PROVENANCE_FILE" "$ASN_MANIFEST" "$COMPANY_ASN_MANIFEST" "$ASN_STATS" "$BY_KZ_ASN_REGISTRY" "$COMPANY_PREFIX_REVIEW" "$COMPANY_PREFIX_REVIEW_STATS" "$BLOCKED_IP_INPUT" "$BLOCKED_REVIEW_INPUT" "$BLOCKED_STATS_INPUT" "$BLOCKED_CHECKSUMS_INPUT" "$BLOCKED_IP_RAW_INPUT" "$BLOCKED_IPRESOLVE_INPUT" "$BLOCKED_SUBNET_INPUT" "$INPUT_PROVENANCE" "$INPUT_PROVENANCE_SHA"; do
             test -s "$file" || { echo "::error::Missing or empty build artifact: $file"; exit 1; }
           done
 
@@ -3008,16 +3024,61 @@ jobs:
           sha256sum -c "$OUTPUT_SHA_FILE"
           test -s "$INPUT_PROVENANCE_SHA" || { echo "::error::Missing input provenance checksum"; exit 1; }
           sha256sum -c "$INPUT_PROVENANCE_SHA"
-          python3 - "$OUTPUT_FILE" "$ASN_MANIFEST" "$COMPANY_ASN_MANIFEST" "$ASN_STATS" "$RIR_STATS" "$SOURCE_COUNTS" "$QUALITY_REPORT" "$PROVENANCE_FILE" "$CATEGORY_AUDIT" "$BY_KZ_ASN_REGISTRY" "$BLOCKED_IP_INPUT" "$BLOCKED_REVIEW_INPUT" "$BLOCKED_STATS_INPUT" "$BLOCKED_CHECKSUMS_INPUT" "$INPUT_PROVENANCE" <<'PY'
+          python3 - "$OUTPUT_FILE" "$ASN_MANIFEST" "$COMPANY_ASN_MANIFEST" "$ASN_STATS" "$RIR_STATS" "$SOURCE_COUNTS" "$QUALITY_REPORT" "$PROVENANCE_FILE" "$CATEGORY_AUDIT" "$BY_KZ_ASN_REGISTRY" "$BLOCKED_IP_INPUT" "$BLOCKED_REVIEW_INPUT" "$BLOCKED_STATS_INPUT" "$BLOCKED_CHECKSUMS_INPUT" "$INPUT_PROVENANCE" "$COMPANY_PREFIX_REVIEW" "$COMPANY_PREFIX_REVIEW_STATS" <<'PY'
           import os, sys
           from collections import defaultdict
-          output, manifest, company_manifest, bgp_stats, rir_stats, counts, quality, provenance, category_audit, by_kz_asns, blocked_ips, blocked_review, blocked_stats, blocked_checksums, input_provenance = sys.argv[1:]
+          output, manifest, company_manifest, bgp_stats, rir_stats, counts, quality, provenance, category_audit, by_kz_asns, blocked_ips, blocked_review, blocked_stats, blocked_checksums, input_provenance, company_prefix_review, company_prefix_review_stats = sys.argv[1:]
           minimums = ((output, 4), (manifest, 100), (company_manifest, 300), (bgp_stats, 100), (rir_stats, 100),
                       (counts, 100), (quality, 1600), (provenance, 50), (category_audit, 50), (by_kz_asns, 100), (blocked_ips, 10000),
-                      (blocked_review, 20), (blocked_stats, 100), (blocked_checksums, 200), (input_provenance, 100))
+                      (blocked_review, 20), (blocked_stats, 100), (blocked_checksums, 200), (input_provenance, 100),
+                      (company_prefix_review, 100), (company_prefix_review_stats, 100))
           for path, minimum in minimums:
               if not os.path.isfile(path) or os.path.getsize(path) < minimum:
                   raise SystemExit(f"Missing or unexpectedly small v35 artifact: {path}")
+
+          company_prefix_header = [
+              "PREFIX", "FAMILY", "ADDRESS_COUNT", "COMPANY_ASNS", "COMPANY_GROUPS",
+              "LEGAL_ENTITIES", "ASN_EVIDENCE_URLS", "IPVERSE_ASN_COUNTRY_CODES",
+              "ALL_ORIGIN_ASNS", "REGIONAL_RIR_ASN_ORIGIN", "INCLUSION_BASIS",
+              "RPKI_STATUS", "IRR_STATUS", "STATUS", "CURRENT_PIPELINE_EVIDENCE",
+              "REVIEW_REASON", "GENERATED_UTC", "BGP_SNAPSHOT_SHA256", "BGP_SNAPSHOT_URL",
+          ]
+          with open(company_prefix_review, encoding="utf-8") as source:
+              company_prefix_rows = [line.rstrip("\\n").split("\\t") for line in source if line.strip() and not line.startswith("#")]
+          if not company_prefix_rows or company_prefix_rows[0] != company_prefix_header:
+              raise SystemExit("Company prefix review manifest has an unexpected schema")
+          company_prefix_entries = company_prefix_rows[1:]
+          if not company_prefix_entries:
+              raise SystemExit("Company prefix review manifest is empty")
+          company_prefix_seen = set()
+          for row in company_prefix_entries:
+              if len(row) != len(company_prefix_header):
+                  raise SystemExit(f"Malformed company prefix review row: {row}")
+              prefix, family, addresses, company_asns = row[0], row[1], row[2], row[3]
+              try:
+                  network = ipaddress.ip_network(prefix, strict=True)
+              except ValueError as exc:
+                  raise SystemExit(f"Invalid prefix in company review manifest: {prefix}: {exc}")
+              if prefix in company_prefix_seen:
+                  raise SystemExit(f"Duplicate company-origin prefix in review manifest: {prefix}")
+              company_prefix_seen.add(prefix)
+              if family != ("IPv4" if network.version == 4 else "IPv6") or addresses != str(network.num_addresses):
+                  raise SystemExit(f"Company prefix review family/address count mismatch: {row}")
+              if not company_asns or row[13] != "REVIEW":
+                  raise SystemExit(f"Company prefix is not explicitly held for review: {row}")
+              if row[11] != "NOT_QUERIED" or row[12] != "NOT_QUERIED":
+                  raise SystemExit(f"Unverified RPKI/IRR status must remain NOT_QUERIED: {row}")
+              if row[14] != "PRESENT_IN_SELECTED_BGP_INPUT":
+                  raise SystemExit(f"Unexpected company prefix pipeline evidence: {row[14]}")
+          for required_prefix in ("45.148.65.0/24", "2a14:48c6::/48"):
+              if required_prefix not in company_prefix_seen:
+                  raise SystemExit(f"Yandex Turkey AS212066 prefix is missing from prefix review: {required_prefix}")
+          company_review_stats = open(company_prefix_review_stats, encoding="utf-8").read()
+          expected_prefix_count = f"Unique prefixes with at least one company origin ASN: {len(company_prefix_entries)}"
+          if expected_prefix_count not in company_review_stats:
+              raise SystemExit("Company prefix review statistics do not reconcile with prefix manifest rows")
+          if "Prefix review status: REVIEW for every row" not in company_review_stats:
+              raise SystemExit("Company prefix review stats do not state the review-only policy")
 
           with open(input_provenance, encoding="utf-8") as source:
               provenance_rows = [line.rstrip("\n").split("\t") for line in source if line.strip()]
@@ -3219,6 +3280,7 @@ jobs:
               "Loyalsoldier/v2fly overlap as share of union address space", "IPv6 address-space equivalent in /32-sized units",
               "Reconciled source role totals:", "Grimbird and Digne are treated as one correlated group",
               "curated Russian-company ASN allowlist", "regardless of ipverse countryCode",
+              "COMPANY PREFIX-LEVEL REVIEW QUEUE", "All company-origin prefixes remain REVIEW",
               "Yandex Turkey AS212066 verified origin prefixes: 45.148.65.0/24, 2a14:48c6::/48",
               "Yandex Turkey AS212066 observed selected prefixes: 2 of 2",
               "Yandex Turkey AS212066 final DIRECT prefix checks (after PRIVATE/blocked carve): 2 of 2",
@@ -3259,6 +3321,8 @@ jobs:
           print("Exact same-prefix BGP announcements are distinguished from address-space overlap.")
           print("Trusted-source overlap is measured by exact address-space intersection, not CIDR-count subtraction.")
           print("Raw source categories reconcile with assigned builder roles, including ignored categories.")
+          print(f"Company-origin prefixes held in prefix-level REVIEW queue: {len(company_prefix_entries)}")
+          print("RPKI/IRR are explicitly NOT_QUERIED; no prefix ownership is inferred from ASN affiliation.")
           PY
 
 
@@ -3310,6 +3374,8 @@ jobs:
             geoip_RU_blocked_sources.sha256
             geoip_RU_input_provenance.tsv
             geoip_RU_input_provenance.tsv.sha256sum
+            geoip_RU_company_prefix_review.tsv
+            geoip_RU_company_prefix_review_stats.txt
             antifilter-ip.lst
             antifilter-ipresolve.lst
             antifilter-subnet.lst
@@ -3379,6 +3445,11 @@ jobs:
             ## Attribution
             - v2fly/geoip is licensed CC-BY-SA-4.0; upstream README also identifies DB-IP data under CC-BY-4.0. Preserve applicable upstream notices.
 
+            ## Company prefix-level review
+            - geoip_RU_company_prefix_review.tsv lists every prefix in the selected BGP input that has at least one company-allowlisted origin ASN.
+            - Every row is marked REVIEW; RPKI and IRR are NOT_QUERIED. ASN membership is not treated as proof of ownership, control, or DIRECT suitability.
+            - This is an audit queue only. It does not change the current RU/BY/KZ routing output; any migration to per-prefix approval requires evidence and an address-space impact review.
+
             ## Input-source provenance
             - geoip_RU_input_provenance.tsv records the exact URL selected for each downloaded input, SHA-256, byte size, and download status; its sidecar checksum is published alongside it.
             - The manifest makes the exact bytes consumed by a build auditable, but it does not pin mutable upstream branches/releases or independently archive every source payload.
@@ -3395,7 +3466,7 @@ jobs:
             "$OUTPUT_FILE" "$OUTPUT_SHA_FILE" "$CATEGORY_FILE" "$SOURCE_FILE" \
             "$SOURCE_COUNTS" "$CATEGORY_AUDIT" "$QUALITY_REPORT" "$PROVENANCE_FILE" "$ASN_MANIFEST" "$COMPANY_ASN_MANIFEST" "$COMPANY_ASN_REGISTRY" "$ASN_STATS" \
             "$RU_PREFIX_INPUT" "$RU_ASN_REGISTRY" "$BY_KZ_ASN_REGISTRY" "$RIR_PREFIX_INPUT" "$RIR_STATS" "$GLOBAL_BGP_PREFIX_INPUT" \
-            "$BLOCKED_IP_INPUT" "$BLOCKED_IP_SHA_FILE" "$BLOCKED_REVIEW_INPUT" "$BLOCKED_STATS_INPUT" "$BLOCKED_CHECKSUMS_INPUT" "$INPUT_PROVENANCE" "$INPUT_PROVENANCE_SHA"; do
+            "$BLOCKED_IP_INPUT" "$BLOCKED_IP_SHA_FILE" "$BLOCKED_REVIEW_INPUT" "$BLOCKED_STATS_INPUT" "$BLOCKED_CHECKSUMS_INPUT" "$INPUT_PROVENANCE" "$INPUT_PROVENANCE_SHA" "$COMPANY_PREFIX_REVIEW" "$COMPANY_PREFIX_REVIEW_STATS"; do
             cp "$file" /tmp/geoip-client-release/"$(basename "$file")"
           done
           cd /tmp/geoip-client-release
@@ -3427,6 +3498,8 @@ jobs:
           purge_jsdelivr "geoip_RU_additional_provenance.tsv"
           purge_jsdelivr "geoip_RU_input_provenance.tsv"
           purge_jsdelivr "geoip_RU_input_provenance.tsv.sha256sum"
+          purge_jsdelivr "geoip_RU_company_prefix_review.tsv"
+          purge_jsdelivr "geoip_RU_company_prefix_review_stats.txt"
           purge_jsdelivr "geoip_RU_blocked_ip_exclusions.txt"
 
       - name: Print download and audit URLs
@@ -3438,6 +3511,7 @@ jobs:
           echo "Quality report: https://raw.githubusercontent.com/${{ github.repository }}/release/geoip_RU_quality_report.txt"
           echo "Additional prefix provenance: https://raw.githubusercontent.com/${{ github.repository }}/release/geoip_RU_additional_provenance.tsv"
           echo "Input source hashes: https://raw.githubusercontent.com/${{ github.repository }}/release/geoip_RU_input_provenance.tsv"
+          echo "Company prefix review: https://raw.githubusercontent.com/${{ github.repository }}/release/geoip_RU_company_prefix_review.tsv"
           echo "Source contribution report: https://raw.githubusercontent.com/${{ github.repository }}/release/geoip_RU_source_counts.txt"
           echo "ASN manifest: https://raw.githubusercontent.com/${{ github.repository }}/release/geoip_RU_asn_manifest.txt"
           echo "Company ASN manifest: https://raw.githubusercontent.com/${{ github.repository }}/release/geoip_RU_company_asn_manifest.tsv"
