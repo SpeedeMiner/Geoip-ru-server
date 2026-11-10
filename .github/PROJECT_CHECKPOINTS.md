@@ -16,10 +16,11 @@ Append-only recovery log for the Geoip-ru-server audit work. Keep each completed
 - **Project:** Geoip-ru-server; production baseline is v37.
 - **PR #3:** merged; merge/base commit on `main`: `c71b5eff48f34b363ef2430ba6b5c41603f36126`.
 - **PR #4:** [Add current exact-origin checks for archived RPKI-invalid prefixes](https://github.com/SpeedeMiner/Geoip-ru-server/pull/4); branch `audit/prefix-review-current-p1-2026-11`; open, Draft, unmerged. Journal introduction commit: `c315b9d8b51224dd4935eba23fd60df4e36ed7d6`; follow-up checkpoint-entry commit: `365b8c508e8c7bebf4c17bc99465a84466fb31c7`. The branch contains the log; re-check the live branch ref and compare it with `main` before resuming.
-- **Latest code validation:** [GitHub Actions run #81](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/42855998169), run ID `42855998169`, completed successfully on code head `aa2858573e7e3adc9be3a5e194f825f56569312c`; all 16 major workflow steps passed.
-- **Latest artifact:** [v37-prefix-audit-4](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/42855998169/artifacts/13782199711), artifact ID `13782199711`, SHA-256 `03c44f71366c10a2f44bb03de837d64599ea231d5f6f09b764544a74fa07ce53`. The ZIP has 25 files. Reconciliation TSV SHA-256: `7b543988bf7999167dc033d870160b460efd3dfa6f5bd585ed7359c39c13b8ed`. Worklist TSV SHA-256: `dbacae414baac4649232902180854b622c9dc496f0b471f3fe0c9083bc2858ca`.
-- **Verified output:** 56 worklist rows (52 MOAS, four company-only), 22 external spot-check records; NLRI scope: EXACT_ONLY=5, EXACT_AND_MORE_SPECIFIC=12, MORE_SPECIFIC_ONLY=5. Archived-invalid reconciliation: 19 unique prefixes / 20 exact prefix-origin pairs; all 19 rows remain `STATUS=REVIEW`. Classes: exact-origin set changed=12; exact MOAS with changed per-origin RPKI status=1; exact MOAS with one origin still unconfirmed=1; more-specific-only/no exact verdict=5.
-- **Next step:** refresh a synchronized full RIB plus one current VRP set for unresolved exact-prefix cases. Highest-priority checks: `93.181.240.0/20` (test AS12389 and AS13118 on exact /20, and AS12389 separately on child `93.181.248.0/21`); then the five parent NLRI with only child-route observations: `37.19.32.0/20`, `77.45.128.0/17`, `94.131.190.0/23`, `95.158.192.0/18`, `213.154.160.0/19`. Do not project child-route origin/ROA state onto a covering prefix.
+- **Last completed code validation:** [GitHub Actions run #81](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/42855998169), run ID `42855998169`, completed successfully on code head `aa2858573e7e3adc9be3a5e194f825f56569312c`; all 16 major workflow steps passed. This run predates the current exact-origin ledger refresh and is not a validation of the current head.
+- **Last verified artifact (pre-refresh):** [v37-prefix-audit-4](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/42855998169/artifacts/13782199711), artifact ID `13782199711`, SHA-256 `03c44f71366c10a2f44bb03de837d64599ea231d5f6f09b764544a74fa07ce53`. It is superseded by the next run after the current exact-origin ledger refresh.
+- **Last verified output before refresh:** 56 worklist rows (52 MOAS, four company-only), 22 external spot-check records; NLRI scope EXACT_ONLY=5, EXACT_AND_MORE_SPECIFIC=12, MORE_SPECIFIC_ONLY=5. The current source refresh changes the expected scope to 5/16/1 and classes to 16 exact-origin-set changes, one changed MOAS status, one unresolved MOAS and one more-specific-only case; every reconciliation row remains `STATUS=REVIEW`. These refreshed counts still require CI confirmation.
+- **Current branch head after refresh:** `7eccd1034d63f2dc46d63ae1d5a500ee5c70d94f`; exact-origin ledger, assessment seed and workflow validator have been refreshed. Verify the live branch ref before resuming.
+- **Next step:** run PR validation on the refreshed head; verify the generated artifact has NLRI scope EXACT_ONLY=5, EXACT_AND_MORE_SPECIFIC=16, MORE_SPECIFIC_ONLY=1 and reconciliation classes 16/1/1/1, with all 19 rows still `REVIEW`. Then update the PR description and perform final readiness checks. Remaining review caveats are `93.181.240.0/20` (non-synchronous exact /20 vs child /21 observations) and `94.131.190.0/23` (two observed /24 children; exact /23 not established in checked sources). Do not project child-route origin/ROA state onto a covering prefix.
 - **Safety boundary:** PR #4 is audit-only. Do not merge it, mark it ready, change the company ASN allowlist, alter DIRECT selection, modify production `main`/`release`, or republish the mutable release without a separate explicit approval.
 
 ## Completed stage records
@@ -69,3 +70,17 @@ Use one concise record per completed stage:
 - CI: <run ID + URL + conclusion>; artifact SHA-256: <digest, if any>.
 - Resume from: <next concrete step>.
 ```
+
+
+### 2026-11-10 — Refreshed exact-origin NLRI evidence — DONE
+
+- Updated the external spot-check ledger in commit `bbfb59bb8b76ac5514d4fd1dfd8956f835a64ae8` using current prefix-level BGP/RPKI views.
+- Exact parent routes now independently observed: `37.19.32.0/20` AS34267, `77.45.128.0/17` AS21017, `95.158.192.0/18` AS35125 and `213.154.160.0/19` AS31133. Their AS12389/AS20632 children remain separate more-specific NLRI.
+- `94.131.190.0/23` remains child-only: checked sources show `.190/24` and `.191/24` from AS215013/AS219109 with valid ROAs, but no exact /23 verdict. This is not treated as proof of global withdrawal.
+- `93.181.240.0/20` remains an unresolved exact-origin discrepancy: the current AS13118 inventory shows exact /20 with valid ROA; AS12389 is shown on child /21; older IPinfo data showed an exact MOAS. Sources are not a synchronized full RIB/VRP set.
+
+### 2026-11-10 — CI scope and reconciliation assertions refreshed — DONE
+
+- Updated the analyst assessment seed in commit `e004cde88b5592f9f125f5d5acc84358dc0b4c8a`: four former child-only cases now have exact parent origin evidence and remain `STATUS=REVIEW`.
+- Updated workflow relation/count assertions in commit `7eccd1034d63f2dc46d63ae1d5a500ee5c70d94f`: exact scope counts expected 5/16/1; reconciliation classes expected 16/1/1/1; exact-scope rows 18 and more-specific-only rows 1.
+- CI has not yet been rerun on this refreshed head. Resume from the workflow validation run and artifact review, not from the earlier run #81.
