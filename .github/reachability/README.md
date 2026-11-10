@@ -50,6 +50,16 @@ rounded down to a multiple of four so a provider/target bundle is never split.
 The summary records discovered provider pairs, covered/uncovered pairs and
 country coverage. Rate limiting stops new submissions and is recorded.
 
+A daily run is a **rotating sample**, not a complete provider-by-target census.
+For example, the expanded 30-target run selected 45 bundles across 39 provider
+pairs: every hostname appeared at least once, but only 30 of the 90 possible
+source-country/target combinations were observed that day (RU 21, KZ 6, BY 3).
+The UTC rotation changes both provider and target selection over successive
+days. Full provider-by-target coverage must therefore be assessed over a
+multi-day series of successful runs; do not infer that every provider can reach
+every listed target from one daily artifact. The daily schedule becomes active
+only after this workflow is merged into the repository's default branch.
+
 The Globalping \`eyeball-network\` tag is not a residential-connection
 attestation. The country, ASN and tags returned by the actual test result are
 checked before the observation is accepted.
