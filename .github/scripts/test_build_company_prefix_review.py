@@ -72,8 +72,8 @@ class CompanyPrefixReviewTests(unittest.TestCase):
                 company, manifest, prefixes, provenance, archive, output, stats
             )
             self.assertEqual(total, 3)
-            self.assertEqual(company_only, 2)
-            self.assertEqual(regional_company, 1)
+            self.assertEqual(company_only, 1)
+            self.assertEqual(regional_company, 2)
             with output.open(encoding="utf-8", newline="") as handle:
                 rows = [row for row in csv.reader(handle, delimiter="\t") if row]
             header = next(row for row in rows if row[0] == "PREFIX")
@@ -98,17 +98,20 @@ class CompanyPrefixReviewTests(unittest.TestCase):
             self.assertEqual(company_only_v4["INCLUSION_BASIS"], "COMPANY_ASN_ONLY")
             self.assertEqual(company_only_v4["GLOBAL_BGP_MOAS"], "no")
             self.assertEqual(company_only_v4["GLOBAL_BGP_ORIGIN_ASNS"], "AS64500")
-            company_only_v6 = data["2001:db8:100::/48"]
-            self.assertEqual(company_only_v6["FAMILY"], "IPv6")
-            self.assertEqual(company_only_v6["GLOBAL_BGP_ORIGIN_ASNS"], "AS64501")
-            self.assertEqual(company_only_v6["REGIONAL_RIR_ASN_ORIGIN"], "yes")
-            details_v6 = json.loads(company_only_v6["COMPANY_ASN_DETAILS_JSON"])
+            regional_company_v6 = data["2001:db8:100::/48"]
+            self.assertEqual(regional_company_v6["FAMILY"], "IPv6")
+            self.assertEqual(regional_company_v6["GLOBAL_BGP_ORIGIN_ASNS"], "AS64501")
+            self.assertEqual(regional_company_v6["REGIONAL_RIR_ASN_ORIGIN"], "yes")
+            self.assertEqual(regional_company_v6["INCLUSION_BASIS"], "REGIONAL_RIR_ASN_ORIGIN+COMPANY_ASN")
+            details_v6 = json.loads(regional_company_v6["COMPANY_ASN_DETAILS_JSON"])
             self.assertEqual(details_v6[0]["ipverse_country_code"], "KZ")
             self.assertEqual(details_v6[0]["also_rir_ru"], "no")
             self.assertEqual(details_v6[0]["also_rir_by_kz"], "yes")
             stats_text = stats.read_text(encoding="utf-8")
             self.assertIn("Prefixes with multiple global BGP origin ASNs (MOAS): 1", stats_text)
             self.assertIn("Company-only IPv4 address-space union (independent; may overlap other classes): 256", stats_text)
+            self.assertIn("Company-only IPv6 address-space union (independent; may overlap other classes): 0", stats_text)
+            self.assertIn("Company+regional-origin IPv6 address-space union (independent): 1208925819614629174706176", stats_text)
             self.assertIn("Company-origin IPv6 address-space union: 1208925819614629174706176", stats_text)
 
     def test_missing_company_registry_entry_in_manifest_fails(self):
