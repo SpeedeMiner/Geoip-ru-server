@@ -80,7 +80,7 @@ class ReconciliationTests(unittest.TestCase):
             spots=self.read_rows(spot_path)
             spots[0]["STATUS"]="CHECKED_2026-02-30"
             self.write(spot_path,spots)
-            with self.assertRaisesRegex(ValueError,"external spot-check row is missing or date-mismatched"):
+            with self.assertRaisesRegex(ValueError,"invalid spot-check calendar date"):
                 build_reconciliation(evidence,seed,root/"out.tsv",root/"stats.txt",expected_count=2)
 
     def read_rows(self,path):
