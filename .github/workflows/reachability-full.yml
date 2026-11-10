@@ -59,7 +59,7 @@ jobs:
         run: |
           set -euo pipefail
           cd .github/reachability/inventory
-          GOTOOLCHAIN=local go mod download
+          GOTOOLCHAIN=local go mod tidy
           GOTOOLCHAIN=local go test ./...
           GOTOOLCHAIN=local go build -o ../../../geoip-reachability-inventory .
           cd ../../..
