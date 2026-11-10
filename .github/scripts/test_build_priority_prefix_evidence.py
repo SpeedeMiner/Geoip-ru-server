@@ -253,6 +253,15 @@ class PriorityPrefixEvidenceTests(unittest.TestCase):
             self.assertEqual(result["irr_query_statuses"], {"OK": 56})
             self.assertEqual(result["irr_exact_route_objects"], 56)
             self.assertEqual(result["irr_exact_origin_matches"], 56)
+            expected_sources = {
+                "RIPE", "RIPE-GRS", "AFRINIC-GRS", "APNIC-GRS", "ARIN-GRS",
+                "JPIRR-GRS", "LACNIC-GRS", "RADB-GRS",
+            }
+            self.assertEqual(set(result["irr_sources"]), expected_sources)
+            self.assertTrue(all(
+                expected_sources.issubset(set(row["QUERY_SCOPE_SOURCES"].split(",")))
+                for row in irr_summary
+            ))
 
             with (output / "priority_prefixes.tsv").open(encoding="utf-8", newline="") as handle:
                 priority = list(csv.DictReader(handle, delimiter="\t"))
