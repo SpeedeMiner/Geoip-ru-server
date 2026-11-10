@@ -51,7 +51,7 @@ class WorklistTests(unittest.TestCase):
                 row("198.18.0.0/23", "MOAS"),
             ]
             spots = [
-                {"PREFIX":"198.51.100.0/24","STATUS":"CHECKED_2026-11-10","OBSERVED_PREFIXES":"198.51.100.0/24","SUMMARY":"exact scope","SOURCE_URLS":"https://example.test/source"},
+                {"PREFIX":"198.51.100.0/24","STATUS":"CHECKED_2026-11-11","OBSERVED_PREFIXES":"198.51.100.0/24","SUMMARY":"exact scope","SOURCE_URLS":"https://example.test/source"},
                 {"PREFIX":"198.18.0.0/23","STATUS":"CHECKED_2026-11-10","OBSERVED_PREFIXES":"198.18.1.0/24","SUMMARY":"more-specific only; not the covering prefix","SOURCE_URLS":"https://example.test/more-specific"},
             ]
             evidence = self.build_inputs(root, rows, spots)
@@ -62,11 +62,19 @@ class WorklistTests(unittest.TestCase):
             self.assertEqual(result["rows"], 5)
             self.assertEqual([r["PREFIX"] for r in got], ["198.51.100.0/24","192.0.2.0/24","203.0.113.0/24","2001:db8::/48","198.18.0.0/23"])
             self.assertEqual(got[0]["PRIMARY_REVIEW_TRACK"], "RPKI_INVALID_ORIGIN_REVALIDATION")
-            self.assertEqual(got[0]["EXTERNAL_SPOT_CHECK_STATUS"], "CHECKED_2026-11-10")
+            self.assertEqual(got[0]["EXTERNAL_SPOT_CHECK_STATUS"], "CHECKED_2026-11-11")
             self.assertEqual(got[0]["EXTERNAL_SPOT_CHECK_SCOPE_RELATION"], "EXACT_ONLY")
             self.assertEqual(got[4]["EXTERNAL_SPOT_CHECK_SCOPE_RELATION"], "MORE_SPECIFIC_ONLY")
             self.assertTrue(all(r["STATUS"] == "REVIEW" for r in got))
             self.assertIn("no row is approved", stats.read_text(encoding="utf-8"))
+
+    def test_rejects_invalid_spot_check_calendar_date(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root=Path(tmp)
+            spots=[{"PREFIX":"192.0.2.0/24","STATUS":"CHECKED_2026-02-30","OBSERVED_PREFIXES":"192.0.2.0/24","SUMMARY":"bad date","SOURCE_URLS":"https://example.test/source"}]
+            evidence=self.build_inputs(root,[row("192.0.2.0/24","MOAS")],spots)
+            with self.assertRaisesRegex(ValueError,"invalid or undated"):
+                build_worklist(evidence,root/"out.tsv",root/"stats.txt",expected_scope=None)
 
     def test_rejects_non_review_row(self):
         with tempfile.TemporaryDirectory() as tmp:
