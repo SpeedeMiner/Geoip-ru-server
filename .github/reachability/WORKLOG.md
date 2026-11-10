@@ -4,7 +4,7 @@ This file is the durable resume point for work on PR #5. Update it after each
 completed phase. Read this file and \`CHECKPOINT.json\` before continuing after
 a conversation or network interruption.
 
-## Current state — updated after first-result audit and fair-scheduler implementation
+## Current state — fair scheduler CI passed; corrected full measurement next
 
 - Repository: \`SpeedeMiner/Geoip-ru-server\`
 - PR: https://github.com/SpeedeMiner/Geoip-ru-server/pull/5
@@ -36,7 +36,9 @@ a conversation or network interruption.
 ### Phase 3 — CI
 - Reachability validation passed on the PR head:
   https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/42856736740
-- The successful validation includes Python syntax + JSON validation, 16 Python unit tests at the latest run, Go formatting, Go tests and Go build. If test count is changed later, record the new count here.
+- After the scheduler correction, the latest successful validation is:
+  https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/42859512809
+- That run passed all 21 Python unit tests, Go formatting, Go tests and Go build.
 - Earlier failures were corrected before the successful run:
   - Go formatting in test source;
   - dependency checksum generation by \`go mod tidy\`;
@@ -109,7 +111,7 @@ After the fair scheduler lands:
 | Inventory exporter | DONE | full workflow run #42856671346 |
 | Globalping/OONI/Atlas collectors | DONE, first-run observations obtained | artifact #13782748149 |
 | CI validation | DONE | run #42856736740 passed |
-| Balanced provider scheduling | IMPLEMENTED; CI pending | commit 66eef61 |
-| Repeat full measurement after scheduler fix | TODO | — |
+| Balanced provider scheduling | DONE; CI green | commit 66eef61; run #42859512809 |
+| Repeat full measurement after scheduler fix | IN PROGRESS | workflow run to be started from the corrected scheduler |
 | Interpret coverage and OONI anomalies | TODO | — |
 | PR final review | TODO | PR #5 remains Draft |
