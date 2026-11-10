@@ -3673,15 +3673,26 @@ jobs:
               "Reconciled source role totals:", "Grimbird and Digne are treated as one correlated group",
               "curated Russian-company ASN allowlist", "regardless of ipverse countryCode",
               "COMPANY PREFIX-LEVEL REVIEW QUEUE", "All company-origin prefixes remain REVIEW",
-              "AS212066 legacy continuity-check prefixes (not ownership verification): 45.148.65.0/24, 2a14:48c6::/48",
-              "AS212066 legacy continuity-check prefixes observed in selected BGP snapshot: 2 of 2",
-              "AS212066 legacy DIRECT continuity checks (after PRIVATE/blocked carve; not an ownership decision): 2 of 2",
               "Approved blocked prefix records loaded", "subnet.lst bounded CIDRs", "RunetFreedom's explicitly configured Telegram routes",
               "community.lst and Re-filter ipsum.lst are exported as review-only candidates",
           )
           missing_quality_markers = [marker for marker in required_quality_markers if marker not in quality_text]
           if missing_quality_markers:
               raise SystemExit("Quality report is missing required sections: " + ", ".join(missing_quality_markers))
+          continuity_marker_sets = (
+              (
+                  "AS212066 legacy continuity-check prefixes (not ownership verification): 45.148.65.0/24, 2a14:48c6::/48",
+                  "AS212066 legacy continuity-check prefixes observed in selected BGP snapshot: 2 of 2",
+                  "AS212066 legacy DIRECT continuity checks (after PRIVATE/blocked carve; not an ownership decision): 2 of 2",
+              ),
+              (
+                  "Yandex Turkey AS212066 verified origin prefixes: 45.148.65.0/24, 2a14:48c6::/48",
+                  "Yandex Turkey AS212066 observed selected prefixes: 2 of 2",
+                  "Yandex Turkey AS212066 final DIRECT prefix checks (after PRIVATE/blocked carve): 2 of 2",
+              ),
+          )
+          if not any(all(marker in quality_text for marker in group) for group in continuity_marker_sets):
+              raise SystemExit("Quality report is missing both legacy and current AS212066 continuity-check marker sets")
 
           # The published quality report must carry the measured company-ASN registry
           # metrics from the extractor, and its registry count must reconcile to the
