@@ -54,6 +54,6 @@ jobs:
           set -euo pipefail
           cd .github/reachability/inventory
           test -z "$(gofmt -d main.go main_test.go)"
-          GOTOOLCHAIN=local go mod download
+          GOTOOLCHAIN=local go mod tidy
           GOTOOLCHAIN=local go test ./...
           GOTOOLCHAIN=local go build -o /tmp/geoip-reachability-inventory .
