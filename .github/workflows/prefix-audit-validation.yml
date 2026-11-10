@@ -97,8 +97,6 @@ jobs:
         run: |
           python3 - <<'PY'
           import csv
-          import re
-          from datetime import date
           from pathlib import Path
 
           path = Path(".github/audits/company_asn_legal_evidence_v37.tsv")
@@ -612,6 +610,8 @@ jobs:
 
           python3 - <<'PY'
           import csv
+          import re
+          from datetime import date
           from pathlib import Path
 
           base = Path("prefix-audit/priority-prefix-evidence")
