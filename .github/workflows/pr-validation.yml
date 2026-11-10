@@ -26,11 +26,62 @@ jobs:
         with:
           persist-credentials: false
 
+      - name: Setup Go
+        # v7.0.0; keep the PR test runtime pinned like the production workflow.
+        uses: actions/setup-go@0778a10ce47b5d450cf60fb94fafad4330008a35
+        with:
+          go-version: "1.26.10"
+
       - name: Compile Python scripts
         run: python3 -m compileall -q .github/scripts
 
       - name: Run Python unit tests
         run: python3 -m unittest discover -s .github/scripts -p 'test_*.py' -v
+
+      - name: Extract embedded Go builder and run Go unit tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          export GOTOOLCHAIN=local
+          export GO_TEST_DIR="$RUNNER_TEMP/geoip-builder-pr-ci"
+          mkdir -p "$GO_TEST_DIR"
+
+          python3 - <<'PY'
+          import pathlib
+          import textwrap
+
+          source = pathlib.Path(".github/workflows/blank.yml").read_text(encoding="utf-8").splitlines()
+          required = {"main.go", "main_test.go"}
+          found = {}
+          for index, line in enumerate(source):
+              for filename in required:
+                  if line.strip() == f"cat > geoip-builder/{filename} <<'GO'":
+                      body = []
+                      for candidate in source[index + 1:]:
+                          if candidate.strip() == "GO":
+                              break
+                          body.append(candidate)
+                      else:
+                          raise SystemExit(f"Unterminated Go heredoc for {filename}")
+                      if filename in found:
+                          raise SystemExit(f"Duplicate Go heredoc for {filename}")
+                      found[filename] = textwrap.dedent("\n".join(body)) + "\n"
+          missing = required - set(found)
+          if missing:
+              raise SystemExit("Missing embedded Go sources: " + ", ".join(sorted(missing)))
+          output = pathlib.Path(__import__("os").environ["GO_TEST_DIR"])
+          for filename, contents in found.items():
+              (output / filename).write_text(contents, encoding="utf-8")
+          print(f"Extracted {len(found)} embedded Go source files into {output}")
+          PY
+
+          cd "$GO_TEST_DIR"
+          gofmt -w main.go main_test.go
+          go mod init geoip-builder-pr-ci
+          go get github.com/v2fly/v2ray-core/v5/app/router/routercommon@v5.56.0
+          go get google.golang.org/protobuf@v1.36.12
+          go mod tidy
+          go test ./...
 
       - name: Compile inline Python heredocs in the main workflow
         shell: bash
