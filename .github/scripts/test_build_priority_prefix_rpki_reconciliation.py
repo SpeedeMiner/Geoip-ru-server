@@ -21,16 +21,16 @@ class ReconciliationTests(unittest.TestCase):
              "RPKI_INVALID_ORIGINS":"AS34567","TRIAGE_FLAGS":"RPKI_INVALID_ASN","STATUS":"REVIEW"},
         ]
         worklist=[
-            {"PREFIX":"192.0.2.0/24","EXTERNAL_SPOT_CHECK_STATUS":"CHECKED_2026-11-10",
+            {"PREFIX":"192.0.2.0/24","EXTERNAL_SPOT_CHECK_STATUS":"CHECKED_2026-11-11",
              "EXTERNAL_SPOT_CHECK_SCOPE_RELATION":"EXACT_AND_MORE_SPECIFIC","STATUS":"REVIEW"},
-            {"PREFIX":"198.51.100.0/24","EXTERNAL_SPOT_CHECK_STATUS":"CHECKED_2026-11-10",
+            {"PREFIX":"198.51.100.0/24","EXTERNAL_SPOT_CHECK_STATUS":"CHECKED_2026-11-11",
              "EXTERNAL_SPOT_CHECK_SCOPE_RELATION":"MORE_SPECIFIC_ONLY","STATUS":"REVIEW"},
         ]
         spots=[
-            {"PREFIX":"192.0.2.0/24","STATUS":"CHECKED_2026-11-10",
+            {"PREFIX":"192.0.2.0/24","STATUS":"CHECKED_2026-11-11",
              "OBSERVED_PREFIXES":"192.0.2.0/24 | 192.0.2.0/25","SUMMARY":"exact MOAS note",
              "SOURCE_URLS":"https://example.test/192"},
-            {"PREFIX":"198.51.100.0/24","STATUS":"CHECKED_2026-11-10",
+            {"PREFIX":"198.51.100.0/24","STATUS":"CHECKED_2026-11-11",
              "OBSERVED_PREFIXES":"198.51.100.0/25","SUMMARY":"child-only note",
              "SOURCE_URLS":"https://example.test/198"},
         ]
@@ -72,6 +72,20 @@ class ReconciliationTests(unittest.TestCase):
             self.assertEqual(by["198.51.100.0/24"]["EXTERNAL_EXACT_ORIGIN_ASNS"],"")
             self.assertTrue(all(r["STATUS"]=="REVIEW" for r in rows))
             self.assertIn("synchronized full-RIB",stats.read_text(encoding="utf-8"))
+
+    def test_rejects_invalid_spot_check_calendar_date(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root=Path(tmp); evidence,seed=self.setup_inputs(root)
+            spot_path=evidence/"priority_prefix_external_spot_checks_v37.tsv"
+            spots=self.read_rows(spot_path)
+            spots[0]["STATUS"]="CHECKED_2026-02-30"
+            self.write(spot_path,spots)
+            with self.assertRaisesRegex(ValueError,"external spot-check row is missing or date-mismatched"):
+                build_reconciliation(evidence,seed,root/"out.tsv",root/"stats.txt",expected_count=2)
+
+    def read_rows(self,path):
+        with path.open(encoding="utf-8",newline="") as f:
+            return list(csv.DictReader(f,delimiter="\\t"))
 
     def test_rejects_missing_archived_invalid_pair(self):
         with tempfile.TemporaryDirectory() as tmp:
