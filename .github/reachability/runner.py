@@ -474,6 +474,23 @@ def collect_ooni(targets: list[dict[str, Any]], providers: dict[tuple[str, int],
     return rows, raw
 
 
+def atlas_probe_matches(
+    probe: dict[str, Any], country: str, asn: int, af: int
+) -> bool:
+    asn_field = "asn_v4" if af == 4 else "asn_v6"
+    status = probe.get("status") or {}
+    status_name = status.get("name") if isinstance(status, dict) else probe.get("status_name")
+    try:
+        probe_asn = int(probe.get(asn_field) or 0)
+    except (TypeError, ValueError):
+        return False
+    return (
+        probe_asn == asn
+        and str(probe.get("country_code") or "").upper() == country
+        and str(status_name or "").lower() == "connected"
+    )
+
+
 def collect_ripe_atlas(
     targets: list[dict[str, Any]],
     providers: dict[tuple[str, int], dict[str, Any]],
@@ -517,12 +534,7 @@ def collect_ripe_atlas(
                 probe_list = payload.get("results", []) if isinstance(payload, dict) else []
                 candidates = []
                 for probe in probe_list:
-                    try:
-                        probe_asn = int(probe.get(asn_field) or 0)
-                    except (TypeError, ValueError):
-                        probe_asn = 0
-                    if (probe_asn == asn and str(probe.get("country_code") or "").upper() == country
-                            and str(probe.get("status_name") or "").lower() == "connected"):
+                    if atlas_probe_matches(probe, country, asn, af):
                         candidates.append(probe)
                 candidates.sort(key=lambda p: int(p.get("id", 0)))
                 probe_cache[cache_key] = candidates[0] if candidates else None
@@ -563,7 +575,6 @@ def collect_ripe_atlas(
             "definitions": [definition],
             "probes": [{"requested": 1, "type": "probes", "value": str(probe_id)}],
             "is_oneoff": True,
-            "is_public": False,
         }
         try:
             _, payload, _ = request_json(
