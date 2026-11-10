@@ -275,7 +275,7 @@ jobs:
               report, re.MULTILINE,
           )
           expected_selected = re.search(
-              r"^Unique prefixes in DIRECT ASN-origin/pinned layer \\(RIR-RU/BY/KZ OR company allowlist\\): ([0-9]+)$",
+              r"^Unique prefixes in DIRECT ASN-origin/pinned layer .+: ([0-9]+)$",
               report, re.MULTILINE,
           )
           if not expected_company or not expected_selected:
