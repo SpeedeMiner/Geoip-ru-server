@@ -667,10 +667,11 @@ def build_evidence(company_queue: Path, output_dir: Path, max_workers: int = 5) 
             # RIPE and RIPE-GRS can return the same logical route object.
             # Count distinct RPSL object content once, but retain the registry
             # sources that independently returned that content.
+            # RPSL route/route6 object identity is the exact prefix plus origin
+            # ASN within a given object type. Registry replicas may carry different
+            # metadata snapshots for that same logical route object.
             object_identity_fields = (
-                "QUERY_PREFIX", "OBJECT_TYPE", "ROUTE_PREFIX", "OBJECT_KEY", "ORIGIN_ASN",
-                "EXACT_PREFIX_MATCH", "GLOBAL_BGP_ORIGIN_MATCH", "MNT_BY", "ORG", "DESCR",
-                "REMARKS", "MEMBER_OF", "CREATED", "LAST_MODIFIED",
+                "QUERY_PREFIX", "OBJECT_TYPE", "ROUTE_PREFIX", "ORIGIN_ASN",
             )
             unique_by_signature: dict[tuple[str, ...], dict[str, str]] = {}
             for obj in objects:
@@ -718,9 +719,7 @@ def build_evidence(company_queue: Path, output_dir: Path, max_workers: int = 5) 
     # Preserve source-specific rows above, and also emit a deduplicated logical
     # object table. Multiple GRS/RIPE sources may mirror identical RPSL content.
     object_identity_fields = (
-        "QUERY_PREFIX", "OBJECT_TYPE", "ROUTE_PREFIX", "OBJECT_KEY", "ORIGIN_ASN",
-        "EXACT_PREFIX_MATCH", "GLOBAL_BGP_ORIGIN_MATCH", "MNT_BY", "ORG", "DESCR",
-        "REMARKS", "MEMBER_OF", "CREATED", "LAST_MODIFIED",
+        "QUERY_PREFIX", "OBJECT_TYPE", "ROUTE_PREFIX", "ORIGIN_ASN",
     )
     deduplicated_groups: dict[tuple[str, ...], list[dict[str, str]]] = collections.defaultdict(list)
     for row in irr_object_rows:
@@ -728,10 +727,21 @@ def build_evidence(company_queue: Path, output_dir: Path, max_workers: int = 5) 
         deduplicated_groups[signature].append(row)
     irr_unique_objects: list[dict[str, str]] = []
     for signature, matching_rows in deduplicated_groups.items():
+        decision_flags = {
+            (row["EXACT_PREFIX_MATCH"], row["GLOBAL_BGP_ORIGIN_MATCH"])
+            for row in matching_rows
+        }
+        if len(decision_flags) != 1:
+            raise ValueError(f"RIPE/GRS sources disagree on exact-prefix/origin flags for {signature}")
         unique_row = {key: value for key, value in matching_rows[0].items() if key != "REGISTRY_SOURCE"}
         unique_row["REGISTRY_SOURCES"] = ",".join(sorted({
             row["REGISTRY_SOURCE"] for row in matching_rows if row["REGISTRY_SOURCE"]
         }))
+        # Keep source-specific descriptions/maintainers visible after deduplication.
+        for field in ("MNT_BY", "ORG", "DESCR", "REMARKS", "MEMBER_OF", "CREATED", "LAST_MODIFIED"):
+            unique_row[field] = " | ".join(sorted({
+                row[field] for row in matching_rows if row.get(field)
+            }))
         irr_unique_objects.append(unique_row)
     irr_unique_objects.sort(key=lambda row: (
         row["QUERY_PREFIX"], row["ORIGIN_ASN"], row["ROUTE_PREFIX"], row["REGISTRY_SOURCES"]
