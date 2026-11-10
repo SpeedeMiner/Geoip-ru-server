@@ -1,14 +1,14 @@
 {
   "schema_version": 1,
-  "updated_at_utc": "2026-11-10T18:43:06.230Z",
+  "updated_at_utc": "2026-11-10T18:48:07.450Z",
   "repository": "SpeedeMiner/Geoip-ru-server",
   "pull_request": 5,
   "pull_request_url": "https://github.com/SpeedeMiner/Geoip-ru-server/pull/5",
   "branch": "feature/reachability-full-ru-kz-by",
-  "recorded_pr_head_before_checkpoint_commit": "75cf61bcddcf8854030fcee056561b702e484b64",
+  "recorded_pr_head_before_checkpoint_commit": "9ea9471e5c2cdecfdddc56ea0038c7d06b01fa26",
   "base_sha": "a68e5d6589361814cb1cfedd2af7857e4af806fa",
-  "state": "VERIFYING_NO_PROBE_CLASSIFICATION",
-  "current_phase": "NO_PROBE_CLASSIFICATION_FULL_RUN_IN_PROGRESS",
+  "state": "READY_FOR_OWNER_REVIEW",
+  "current_phase": "FINAL_PR_OWNER_REVIEW",
   "completed": [
     "repository_reconnaissance",
     "protobuf_inventory_exporter",
@@ -57,26 +57,36 @@
     "full_run_provider_prefix_ip_exact_reconciliation_61_73",
     "full_run_ooni_anomaly_review_19_unconfirmed",
     "globalping_dns_no_answers_summary_metric",
-    "dns_no_answer_summary_metric_unit_tested"
+    "dns_no_answer_summary_metric_unit_tested",
+    "globalping_ipv4_dns_no_probe_classification",
+    "no_probe_country_metrics",
+    "no_probe_classification_unit_tests_28",
+    "no_probe_classification_validation_ci_42877605801",
+    "no_probe_classification_full_run_42877815872",
+    "no_probe_classification_artifact_sha_verified",
+    "no_probe_and_api_error_counts_reconciled_with_raw_jsonl",
+    "final_run_inventory_prefix_and_exact_ip_quality_checks",
+    "final_run_ooni_anomaly_review_19_unconfirmed",
+    "final_worklog_synchronized_with_latest_run"
   ],
-  "latest_successful_validation_run": 42875324510,
-  "latest_successful_validation_commit": "8dd5fd2cb22df18b04944c19782f3aed12566022",
+  "latest_successful_validation_run": 42877605801,
+  "latest_successful_validation_commit": "c6b86d8b92bac5777c73634d921835fee687573b",
   "test_counts": {
-    "python_unit_tests": 27,
+    "python_unit_tests": 28,
     "python_unit_tests_status": "PASS",
     "go_tests_status": "PASS",
     "go_build_status": "PASS",
     "gofmt_status": "PASS"
   },
-  "latest_successful_full_run": 42874077069,
-  "latest_full_run_commit": "e6612071a4839e8151c9823bf43d6af84fe643c7",
+  "latest_successful_full_run": 42877815872,
+  "latest_full_run_commit": "401830a0bdcef35f20fe67e90fbaef7e72129ca6",
   "latest_artifact": {
-    "name": "geoip-ru-reachability-42874077069",
-    "artifact_id": 13790094804,
-    "sha256": "df2aac10fb88eb6beac6bf728c206b8f2f52f916da20b72e6221e1a57cb384e5",
-    "bytes": 1076911,
-    "expires_at_utc": "2026-12-10T18:22:45Z",
-    "local_inspection_archive": "/mnt/data/reachability-structured-summary-42874077069.zip",
+    "name": "geoip-ru-reachability-42877815872",
+    "artifact_id": 13791344001,
+    "sha256": "d4858a2ed63f208fd5146ae06b4fb586410e37db6b90e7232aacdab5ab01a137",
+    "bytes": 1075992,
+    "expires_at_utc": "2026-12-10T18:44:29Z",
+    "local_inspection_archive": "/mnt/data/reachability-no-probe-fixed-42877815872.zip",
     "local_sha256_verified": true
   },
   "final_measurement_metrics": {
@@ -85,45 +95,46 @@
     "target_count": 30,
     "target_controls": 2,
     "target_services": 28,
-    "globalping_online_probes": 5537,
-    "provider_pairs_found": 36,
-    "provider_pairs_covered": 36,
+    "globalping_online_probes": 5536,
+    "provider_pairs_found": 38,
+    "provider_pairs_covered": 38,
     "provider_pairs_uncovered": 0,
     "provider_pairs_by_country": {
-      "RU": 27,
+      "RU": 29,
       "KZ": 6,
       "BY": 3
     },
     "observed_probe_results_by_country": {
-      "RU": 114,
+      "RU": 109,
       "KZ": 18,
-      "BY": 11
+      "BY": 15
     },
     "globalping_tasks": 180,
     "complete_target_bundles": 45,
     "partial_target_bundles": 0,
     "result_counts": {
-      "ACCESSIBLE": 37,
+      "ACCESSIBLE": 38,
       "DNS_ANSWER": 55,
-      "DNS_NO_ANSWER": 35,
+      "DNS_NO_ANSWER": 33,
       "INCONCLUSIVE": 16,
-      "NO_IPV6_PROBE": 37,
+      "NO_IPV6_PROBE": 35,
+      "NO_PROBE": 3,
       "API_ERROR": 0
     },
     "no_ipv6_probe_by_country": {
-      "RU": 30,
+      "RU": 28,
       "KZ": 6,
       "BY": 1
     },
     "provider_pairs_with_accessible_https": 31,
-    "provider_pairs_with_dns_answer": 36,
-    "provider_prefix_rows": 61,
-    "provider_ip_rows": 73,
+    "provider_pairs_with_dns_answer": 37,
+    "provider_prefix_rows": 60,
+    "provider_ip_rows": 70,
     "provider_prefix_ip_set_mismatches": 0,
     "provider_ip_outside_prefix": 0,
-    "ru_prefixes_with_accessible_endpoint": 23,
-    "ru_prefixes_dns_only": 17,
-    "ru_prefixes_dns_and_inconclusive_http": 4,
+    "ru_prefixes_with_accessible_endpoint": 24,
+    "ru_prefixes_dns_only": 15,
+    "ru_prefixes_dns_and_inconclusive_http": 5,
     "ru_prefixes_without_target_match": 76187,
     "ooni_observations": 987,
     "ooni_anomaly_review": 19,
@@ -131,10 +142,10 @@
     "ooni_anomaly_failure": 0,
     "ripe_atlas": "SKIPPED_API_KEY_NOT_CONFIGURED",
     "distinct_targets_observed": 30,
-    "target_country_pairs_observed": 30,
+    "target_country_pairs_observed": 32,
     "target_country_pairs_possible": 90,
     "target_country_pairs_by_country": {
-      "RU": 21,
+      "RU": 23,
       "KZ": 6,
       "BY": 3
     },
@@ -143,6 +154,9 @@
     "summary_metrics_in_latest_artifact": true,
     "summary_metrics_available_from_next_full_run": true,
     "automated_summary_fields": [
+      "globalping_dns_no_answers",
+      "globalping_no_probe_count",
+      "globalping_no_probe_by_country",
       "globalping_ipv6_probe_unavailable_by_country",
       "globalping_distinct_targets_observed",
       "globalping_observed_target_country_pairs",
@@ -151,21 +165,30 @@
       "globalping_provider_target_bundles_observed"
     ],
     "provider_target_bundles_observed": 45,
-    "dns_no_answer_count_in_latest_artifact": false,
+    "dns_no_answer_count_in_latest_artifact": true,
     "dns_no_answer_count_raw_derived": 35,
-    "dns_no_answer_metric_available_from_next_full_run": true
+    "dns_no_answer_metric_available_from_next_full_run": true,
+    "no_probe_count": 3,
+    "no_probe_by_country": {
+      "RU": 3
+    },
+    "observed_provider_pairs_with_results": 37,
+    "dns_no_answer_count": 33,
+    "api_error_count": 0,
+    "no_probe_classification_verified": true
   },
   "interpretation_limits": [
     "The 30 hostname catalogue (2 controls + 28 services) is an expanded pilot, not a comprehensive inventory of brand domains, APIs or mobile-app endpoints.",
-    "The latest single run covered all 30 hostnames but only 30 of 90 possible source-country/target pairs (RU 21, KZ 6, BY 3); daily UTC rotation must accumulate across future runs.",
+    "The latest run covered all 30 hostnames but only 32 of 90 possible source-country/target pairs (RU 23, KZ 6, BY 3); daily UTC rotation must accumulate across future runs.",
     "NO_MATCHED_ENDPOINT means not tested by the configured target set, not inaccessible.",
     "DNS AAAA is a DNS query, not an IPv6 transport/TLS test.",
-    "NO_IPV6_PROBE is probe coverage absence, not evidence of blocking; latest split RU 30, KZ 6, BY 1.",
+    "NO_IPV6_PROBE is IPv6 measurement-probe absence, not evidence of blocking; latest split RU 28, KZ 6, BY 1.",
+    "NO_PROBE is a missing matching IPv4/DNS probe (latest 3 from RU), not an API failure or a reachability verdict.",
+    "The latest run has zero API_ERROR results after no_probes_found classification.",
     "Globalping eyeball-network is not proof that the probe is on a residential/home connection.",
     "OONI anomaly observations in the latest run are all confirmed=false and failure=false; they remain review-only signals.",
     "Latest full run uses current published v37 inventory: 76,231 RU CIDRs plus 151 PRIVATE CIDRs.",
-    "The latest full run observed 36 source country/ASN pairs (RU 27, KZ 6, BY 3), not the same provider sample as the earlier 39-pair run.",
-    "The JSON DNS_NO_ANSWER summary counter was added and CI-tested after the latest full artifact; that artifact's raw JSONL contains 35 DNS_NO_ANSWER observations."
+    "The PR branch is behind current main by 29 commits but has 11 isolated reachability files and GitHub currently reports mergeable=true; do not force-rewrite history without a clear reason."
   ],
   "policy_invariants": {
     "geoip_RU_dat_mutated": false,
@@ -179,13 +202,12 @@
     "eyeball_network_is_proof_of_residential": false
   },
   "next_steps": [
-    "Check full run 42877815872; do not start another run while it is in progress. On success download artifact, verify digest, reconcile NO_PROBE by country and API_ERROR count with raw JSONL.",
-    "Owner review PR #5; it remains Draft and must not be merged without explicit approval.",
-    "Update/rebase PR branch onto current main in a controlled operation only after current full run verification, then rerun CI and assess conflicts.",
-    "Review the 30-target catalogue against project-approved first-party service/API inventory; one daily sample is only 30/90 source-country/target pairs.",
-    "Daily schedule activates only after merge into repository default branch; assess multi-day coverage then.",
+    "Owner review of PR #5; it remains Draft and must not be merged without explicit owner approval.",
+    "Review the 30-target catalogue against the project-approved first-party service/API inventory; one daily sample is only 32/90 source-country/target pairs.",
+    "Decide whether to update the PR branch history onto current main. It is 29 commits behind but GitHub currently reports mergeable=true and the PR changes only the 11 reachability diagnostic files; no force rewrite is necessary for the current PR to remain mergeable.",
+    "Daily schedule becomes active only after merge into the repository default branch; assess multi-day provider/target coverage after owner approval.",
     "Optionally configure RIPE_ATLAS_API_KEY if Atlas measurements are desired.",
-    "Keep observations review-only; do not modify geoip_RU.dat or classify untested prefixes as blocked."
+    "Keep all observations review-only; do not modify geoip_RU.dat or classify untested prefixes as blocked."
   ],
   "ci_policy": {
     "push_validation_paths": [
@@ -209,18 +231,5 @@
     "manual_dispatch_available_on_feature_branch": true,
     "daily_schedule_effective_only_after_default_branch_merge": true,
     "temporary_full_workflow_push_trigger_removed": true
-  },
-  "in_progress_full_run": {
-    "run_id": 42877815872,
-    "trigger_commit": "401830a0bdcef35f20fe67e90fbaef7e72129ca6",
-    "cleanup_commit": "b1c603a7c36cc714f14ff6634160a78ffc7e2b99",
-    "status": "IN_PROGRESS_AT_LAST_CHECK",
-    "artifact_uploaded": false,
-    "expected_new_fields": [
-      "globalping_no_probe_count",
-      "globalping_no_probe_by_country"
-    ],
-    "expected_classification": "HTTP 422 no_probes_found is NO_PROBE for IPv4 HTTPS and DNS; HTTPS IPv6 remains NO_IPV6_PROBE.",
-    "next_action": "Check run 42877815872 and verify artifact; do not start duplicate."
   }
 }
