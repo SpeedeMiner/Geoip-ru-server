@@ -52,6 +52,18 @@ def _read_tsv(path: Path) -> list[list[str]]:
         raise ValueError(f"cannot read {path}: {exc}") from exc
 
 
+def _sha256_file(path: Path) -> str:
+    """Hash an input file without loading the entire file into memory."""
+    digest = hashlib.sha256()
+    try:
+        with path.open("rb") as handle:
+            for chunk in iter(lambda: handle.read(1024 * 1024), b""):
+                digest.update(chunk)
+    except OSError as exc:
+        raise ValueError(f"cannot hash {path}: {exc}") from exc
+    return digest.hexdigest()
+
+
 def read_company_registry(path: Path) -> dict[int, dict[str, str]]:
     rows = _read_tsv(path)
     companies: dict[int, dict[str, str]] = {}
@@ -250,6 +262,12 @@ def build_review(
     countries = read_company_manifest(company_manifest, companies)
     snapshot_sha, snapshot_url = read_bgp_snapshot(input_provenance, bgp_archive)
     generated = dt.datetime.now(dt.timezone.utc).isoformat()
+    input_hashes = {
+        "company_registry": _sha256_file(company_registry),
+        "company_manifest": _sha256_file(company_manifest),
+        "selected_prefixes": _sha256_file(regional_prefixes),
+        "input_provenance": _sha256_file(input_provenance),
+    }
 
     records: dict[str, dict[str, object]] = {}
     try:
@@ -324,6 +342,10 @@ def build_review(
         handle.write(f"# Generated UTC: {generated}\n")
         handle.write(f"# BGP source URL: {snapshot_url}\n")
         handle.write(f"# BGP source SHA256: {snapshot_sha}\n")
+        handle.write(f"# Company ASN registry SHA256: {input_hashes['company_registry']}\n")
+        handle.write(f"# Company ASN manifest SHA256: {input_hashes['company_manifest']}\n")
+        handle.write(f"# Selected prefix input SHA256: {input_hashes['selected_prefixes']}\n")
+        handle.write(f"# Input provenance SHA256: {input_hashes['input_provenance']}\n")
         handle.write("# RPKI and IRR were not queried by this report; NOT_QUERIED is not a negative result.\n")
         handle.write("# Every row is REVIEW; this file does not approve or reject a prefix and does not alter the current GeoIP output.\n")
         writer = csv.writer(handle, delimiter="\t", lineterminator="\n")
@@ -400,6 +422,10 @@ def build_review(
         f"Generated UTC: {generated}",
         f"BGP snapshot URL: {snapshot_url}",
         f"BGP snapshot SHA256: {snapshot_sha}",
+        f"Company ASN registry SHA256: {input_hashes['company_registry']}",
+        f"Company ASN manifest SHA256: {input_hashes['company_manifest']}",
+        f"Selected prefix input SHA256: {input_hashes['selected_prefixes']}",
+        f"Input provenance SHA256: {input_hashes['input_provenance']}",
         f"Company ASN registry entries: {len(companies)}",
         f"Unique prefixes with at least one company origin ASN: {len(all_prefixes)}",
         f"Prefixes with multiple global BGP origin ASNs (MOAS): {moas_count}",
