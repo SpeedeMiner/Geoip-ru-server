@@ -7,6 +7,8 @@ on:
     paths:
       - ".github/reachability/runner.py"
       - ".github/reachability/test_runner.py"
+      - ".github/reachability/vpn_gate.py"
+      - ".github/reachability/test_vpn_gate.py"
       - ".github/reachability/targets.json"
       - ".github/reachability/inventory/**"
       - ".github/workflows/reachability-validation.yml"
@@ -17,6 +19,8 @@ on:
     paths:
       - ".github/reachability/runner.py"
       - ".github/reachability/test_runner.py"
+      - ".github/reachability/vpn_gate.py"
+      - ".github/reachability/test_vpn_gate.py"
       - ".github/reachability/targets.json"
       - ".github/reachability/inventory/**"
       - ".github/workflows/reachability-validation.yml"
@@ -51,7 +55,7 @@ jobs:
         run: |
           set -euo pipefail
           python3 --version
-          python3 -m py_compile .github/reachability/runner.py .github/reachability/test_runner.py
+          python3 -m py_compile .github/reachability/runner.py .github/reachability/test_runner.py .github/reachability/vpn_gate.py .github/reachability/test_vpn_gate.py
           python3 -m json.tool .github/reachability/targets.json >/dev/null
           python3 -m unittest discover -s .github/reachability -p 'test_*.py' -v
 
