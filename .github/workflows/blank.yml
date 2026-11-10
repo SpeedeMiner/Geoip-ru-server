@@ -2994,6 +2994,99 @@ jobs:
             })
            }
           }
+
+          func TestTrieUnionIntersectionSubtractSetProperties(t *testing.T) {
+           left := newIPTrie()
+           left.insert(mustPrefix(t, "192.0.2.0/25"))
+           right := newIPTrie()
+           right.insert(mustPrefix(t, "192.0.2.64/26"))
+
+           union := cloneTrie(left)
+           unionInto(union, right)
+           intersection := cloneTrie(left)
+           intersection.intersect(right)
+           difference := cloneTrie(left)
+           difference.subtract(right)
+
+           leftCount := countAddressSpace(left.toPrefixes(), 32)
+           rightCount := countAddressSpace(right.toPrefixes(), 32)
+           unionCount := countAddressSpace(union.toPrefixes(), 32)
+           intersectionCount := countAddressSpace(intersection.toPrefixes(), 32)
+           differenceCount := countAddressSpace(difference.toPrefixes(), 32)
+
+           if unionCount.Cmp(big.NewInt(128)) != 0 {
+            t.Fatalf("union must contain exactly 128 addresses, got %s", unionCount)
+           }
+           if intersectionCount.Cmp(big.NewInt(64)) != 0 || intersectionCount.Cmp(leftCount) > 0 || intersectionCount.Cmp(rightCount) > 0 {
+            t.Fatalf("intersection must be a subset of both operands with 64 addresses, got %s", intersectionCount)
+           }
+           if differenceCount.Cmp(big.NewInt(64)) != 0 || differenceCount.Cmp(leftCount) > 0 {
+            t.Fatalf("subtract must not increase coverage and should leave 64 addresses, got %s", differenceCount)
+           }
+           if unionCount.Cmp(new(big.Int).Add(new(big.Int).Set(intersectionCount), new(big.Int).Add(differenceCount, new(big.Int).Sub(rightCount, intersectionCount)))) != 0 {
+            t.Fatalf("union address accounting does not reconcile: union=%s intersection=%s difference=%s right=%s", unionCount, intersectionCount, differenceCount, rightCount)
+           }
+
+           contains := func(trie *ipTrie, value string) bool {
+            addr := netip.MustParseAddr(value)
+            probe := newIPTrie()
+            probe.insert(netip.PrefixFrom(addr, addr.BitLen()))
+            probe.subtract(trie)
+            return len(probe.toPrefixes()) == 0
+           }
+           for _, value := range []string{"192.0.2.0", "192.0.2.63", "192.0.2.64", "192.0.2.127"} {
+            if !contains(union, value) {
+             t.Errorf("union is missing %s", value)
+            }
+           }
+           for _, value := range []string{"192.0.2.64", "192.0.2.127"} {
+            if !contains(intersection, value) {
+             t.Errorf("intersection is missing shared address %s", value)
+            }
+            if contains(difference, value) {
+             t.Errorf("subtraction retained removed address %s", value)
+            }
+           }
+           if !contains(difference, "192.0.2.63") {
+            t.Fatal("subtraction removed an address outside the right-hand set")
+           }
+
+           adjacent := newIPTrie()
+           adjacent.insert(mustPrefix(t, "198.51.100.0/25"))
+           adjacent.insert(mustPrefix(t, "198.51.100.128/25"))
+           normalized := adjacent.toPrefixes()
+           if len(normalized) != 1 || normalized[0].String() != "198.51.100.0/24" {
+            t.Fatalf("adjacent prefixes must collapse without changing address space: %#v", normalized)
+           }
+           roundTrip := newIPTrie()
+           for _, prefix := range normalized {
+            roundTrip.insert(prefix)
+           }
+           if got := roundTrip.toPrefixes(); len(got) != 1 || got[0] != normalized[0] {
+            t.Fatalf("normalization must be idempotent: first=%v second=%v", normalized, got)
+           }
+          }
+
+          func FuzzCIDRPrefixCanonicalAndBounded(f *testing.F) {
+           f.Add([]byte{192, 0, 2, 0}, uint32(24))
+           f.Add(netip.MustParseAddr("::ffff:192.0.2.1").AsSlice(), uint32(128))
+           f.Add([]byte{192, 0, 2, 1}, uint32(33))
+           f.Fuzz(func(t *testing.T, raw []byte, prefixLength uint32) {
+            if len(raw) != 4 && len(raw) != 16 {
+             return
+            }
+            prefix, ok := cidrPrefix(&router.CIDR{Ip: raw, Prefix: prefixLength})
+            if !ok {
+             return
+            }
+            if !prefix.IsValid() || prefix != prefix.Masked() {
+             t.Fatalf("accepted CIDR is not valid and canonical: %v", prefix)
+            }
+            if prefixLength > uint32(prefix.Addr().BitLen()) {
+             t.Fatalf("accepted prefix length exceeds address width: %v", prefix)
+            }
+           })
+          }
           GO
 
           gofmt -w geoip-builder/main.go geoip-builder/main_test.go
