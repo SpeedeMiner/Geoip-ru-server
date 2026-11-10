@@ -180,6 +180,10 @@ def build_worklist(evidence: Path, output: Path, stats_path: Path,
     ]
     stats.extend(f"Track {k}: {v}" for k, v in sorted(tracks.items()))
     stats.extend(f"Priority {k}: {v}" for k, v in sorted(priorities.items()))
+    stats.extend(
+        f"External spot-check scope {relation}: {count}"
+        for relation, count in sorted(Counter(spot_scope_relations.values()).items())
+    )
     stats_path.parent.mkdir(parents=True, exist_ok=True)
     stats_path.write_text("\n".join(stats) + "\n", encoding="utf-8")
     return {"rows": len(result), "priorities": dict(priorities), "tracks": dict(tracks), "spot_checks": len(spots)}
