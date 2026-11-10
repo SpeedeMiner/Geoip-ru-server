@@ -165,3 +165,20 @@ Durable resume point for PR #5. After any conversation/network interruption, rea
 - No measurement workflow re-run; no GeoIP protobuf, production builder, allowlist, DIRECT policy, main or release changes.
 - Validation note: the push path filter includes `runner.py`, `test_runner.py` and `targets.json`, but the available GitHub connector did not expose push-triggered run records or commit statuses in this session. Do not treat the previous green run #42877605801 as validation of these later code changes.
 - Resume from: confirm `Reachability validation` success for current branch head `07f6d90867ef27af4970be74087acb68eb91ee5c` (expected 29 Python tests plus Go formatting/tests/build). Keep PR #5 Draft; no merge or branch rewrite.
+
+
+### 2026-11-11 — Add Russian ISP VPN Gate measurement backend — IMPLEMENTED / VALIDATION PENDING
+
+- Revisited the original PR #5 intent: tests should originate from real Russian ISP access networks, not infer "home" access from Globalping's `eyeball-network` tag.
+- Added `.github/reachability/vpn_gate.py`. It reads the official VPN Gate CSV API, selects only records whose country code is RU and which have a public IPv4/OpenVPN profile, caps the default pilot at 3 nodes (hard maximum 6), and tests only target catalogue entries whose source-country scope includes RU.
+- Added safe OpenVPN profile reconstruction. The downloaded profile is parsed but not executed. A minimal client profile is rebuilt from the API-advertised IP and validated port/protocol plus inline CA/TLS material; arbitrary script, plugin, route, config-file and external-file directives are not copied.
+- Added fail-closed tunnel handling: IPv4 OUTPUT allows only the exact VPN transport endpoint and the tunnel interface; host IPv6 OUTPUT is blocked; DNS is temporarily set to 1.1.1.1 only after the tunnel route is installed; no target requests are sent until the actual public egress IP is verified as RU. A non-RU exit is rejected.
+- For each confirmed RU exit, the collector records exit IP, country, ASN/prefix/organization metadata and maps the exact exit IP against the published RU/PRIVATE inventory. It emits `vpn_gate_providers.tsv`, `vpn_gate_measurements.jsonl`, `vpn_gate_geoip_candidates.tsv`, `vpn_gate_raw.jsonl` and `vpn_gate_summary.json`. Candidate rows remain review-only and never modify GeoIP data.
+- Added `.github/reachability/test_vpn_gate.py` with CSV filtering, unsupported/malformed-profile rejection, remote-IP replacement, and script/plugin stripping tests.
+- Added manual-only workflow `.github/workflows/reachability-vpn-gate.yml`. It downloads/verifies the exact published release protobuf, exports full RU/PRIVATE inventory, installs OpenVPN/iptables, and runs a small user-selected pilot. It is not added to the daily schedule and does not require repository secrets.
+- Extended `Reachability validation` path filters and syntax checks to include the VPN Gate collector and its tests. Updated the README with workflow usage, privacy considerations and evidence limits.
+- Important limit: VPN Gate volunteer ownership plus a RU exit and ISP/ASN metadata do not attest that a node is a household residential line. The output labels the vantage as volunteer-access-network / residential-unverified. Operator and network type must be independently reviewed before changing the RU list.
+- No VPN connection or target measurement was launched in this coding session. CI for the new backend is pending; no prior green run validates these new files.
+- No changes to `geoip_RU.dat`, production builder, release assets, DIRECT policy, ASN allowlists, `main`, or PR #6. PR #5 remains Draft.
+- Code commit before the documentation checkpoint: `2d67db9d360c835dea93752f60bd5a097cab154f`. Expected validation: existing Python 29 + 6 new VPN Gate tests = 35 total, plus existing Go formatting/tests/build.
+- Resume from: verify validation on `2d67db9d360c835dea93752f60bd5a097cab154f`; after it passes, launch the manual workflow with 1–3 servers, inspect the artifacts and actual RU exit IP/ASN/ISP attribution, then decide whether to widen coverage.
