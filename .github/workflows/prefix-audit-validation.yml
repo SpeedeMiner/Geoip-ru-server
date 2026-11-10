@@ -610,8 +610,6 @@ jobs:
 
           python3 - <<'PY'
           import csv
-          import re
-          from datetime import date
           from pathlib import Path
 
           base = Path("prefix-audit/priority-prefix-evidence")
@@ -660,6 +658,8 @@ jobs:
 
           python3 - <<'PY'
           import csv
+          import re
+          from datetime import date
           from pathlib import Path
 
           base = Path("prefix-audit/priority-prefix-evidence")
@@ -699,7 +699,7 @@ jobs:
               raise SystemExit("External spot-check scope does not match the twenty-two reviewed prefixes")
           for row in spot_rows:
               status = row["EXTERNAL_SPOT_CHECK_STATUS"]
-              match = re.fullmatch(r"CHECKED_(\\d{4}-\\d{2}-\\d{2})", status)
+              match = re.fullmatch(r"CHECKED_(\d{4}-\d{2}-\d{2})", status)
               if not match:
                   raise SystemExit("Invalid spot-check timestamp")
               try:
