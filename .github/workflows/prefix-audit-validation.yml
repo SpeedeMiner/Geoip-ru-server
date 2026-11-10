@@ -140,7 +140,7 @@ jobs:
               raise SystemExit(f"Unexpected reviewed ASN set: {sorted(reviewed)}")
           if inactive != {"AS49053", "AS213952", "AS215109"}:
               raise SystemExit(f"Unexpected no-observation set: {sorted(inactive)}")
-          print(f"Validated {len(rows)} legal records; {len(reviewed)} reviewed, {len(rows)-len(reviewed)} pending, {len(inactive)} absent from the v37 manifest")
+          print(f"Validated {len(rows)} legal records; {len(reviewed)} reviewed and {len(rows)-len(reviewed)} pending; {len(inactive)} absent from the v37 manifest")
           PY
 
       - name: Parse workflow YAML
