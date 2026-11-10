@@ -98,7 +98,7 @@ def build_reconciliation(evidence_dir: Path, seed_path: Path, output_path: Path,
         spot = spots.get(prefix)
         spot_status = spot.get("STATUS", "").strip() if spot else ""
         worklist_status = wl.get("EXTERNAL_SPOT_CHECK_STATUS", "").strip()
-        match = re.fullmatch(r"CHECKED_(\\d{4}-\\d{2}-\\d{2})", spot_status)
+        match = re.fullmatch(r"CHECKED_(\d{4}-\d{2}-\d{2})", spot_status)
         if not match or worklist_status != spot_status:
             raise ValueError(f"external spot-check row is missing or date-mismatched for {prefix}")
         try:
