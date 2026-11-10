@@ -3110,6 +3110,23 @@ jobs:
           company_prefix_entries = company_prefix_rows[1:]
           if not company_prefix_entries:
               raise SystemExit("Company prefix review manifest is empty")
+          with open(company_manifest, encoding="utf-8") as source:
+              company_manifest_rows = [line.rstrip("\\n").split("\\t") for line in source if line.strip()]
+          company_manifest_header = [
+              "ASN", "COMPANY_GROUP", "LEGAL_ENTITY_OR_NOTE", "EVIDENCE",
+              "ACTIVE_IN_IPVERSE", "IPVERSE_COUNTRY_CODE", "IPV4_PREFIXES",
+              "IPV6_PREFIXES", "ALSO_RIR_RU", "ALSO_RIR_BY_KZ",
+          ]
+          if not company_manifest_rows or company_manifest_rows[0] != company_manifest_header:
+              raise SystemExit("Company ASN manifest schema is invalid during prefix-evidence reconciliation")
+          company_meta_by_asn = {}
+          for manifest_row in company_manifest_rows[1:]:
+              if len(manifest_row) != len(company_manifest_header):
+                  raise SystemExit(f"Malformed company ASN manifest row: {manifest_row}")
+              if manifest_row[0] in company_meta_by_asn:
+                  raise SystemExit(f"Duplicate ASN in company ASN manifest: {manifest_row[0]}")
+              company_meta_by_asn[manifest_row[0]] = manifest_row
+
           company_prefix_seen = set()
           for row in company_prefix_entries:
               if len(row) != len(company_prefix_header):
@@ -3146,8 +3163,23 @@ jobs:
                   details = json.loads(row[7])
               except json.JSONDecodeError as exc:
                   raise SystemExit(f"Invalid company ASN detail JSON for {prefix}: {exc}")
-              if {entry.get("asn") for entry in details} != company_asn_set:
+              if len(details) != len(company_asn_set) or {entry.get("asn") for entry in details} != company_asn_set:
                   raise SystemExit(f"Company ASN detail JSON does not reconcile with COMPANY_ASNS for {prefix}")
+              for detail in details:
+                  manifest_row = company_meta_by_asn.get(detail["asn"])
+                  if manifest_row is None:
+                      raise SystemExit(f"Company ASN detail is absent from ASN manifest: {detail['asn']}")
+                  expected_company_fields = {
+                      "group": manifest_row[1],
+                      "legal_entity": manifest_row[2],
+                      "evidence_url": manifest_row[3],
+                      "ipverse_country_code": manifest_row[5].upper() or "UNKNOWN",
+                      "also_rir_ru": manifest_row[8].lower(),
+                      "also_rir_by_kz": manifest_row[9].lower(),
+                  }
+                  for field, expected in expected_company_fields.items():
+                      if detail.get(field) != expected:
+                          raise SystemExit(f"Company ASN detail {field} mismatch for {detail['asn']} in {prefix}: got {detail.get(field)!r}, expected {expected!r}")
               country_pairs = row[14].split(",") if row[14] else []
               if {pair.split("=", 1)[0] for pair in country_pairs if "=" in pair} != global_origin_set:
                   raise SystemExit(f"Global BGP origin country map does not reconcile with origin ASNs for {prefix}")
