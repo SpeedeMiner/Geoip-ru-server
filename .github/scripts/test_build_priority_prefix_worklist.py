@@ -32,10 +32,10 @@ class WorklistTests(unittest.TestCase):
         evidence = root / "evidence"
         evidence.mkdir()
         with (evidence / "priority_prefix_triage.tsv").open("w", encoding="utf-8", newline="") as f:
-            w = csv.DictWriter(f, fieldnames=FIELDS, delimiter="\\t", lineterminator="\\n")
+            w = csv.DictWriter(f, fieldnames=FIELDS, delimiter="\t", lineterminator="\n")
             w.writeheader(); w.writerows(rows)
         with (evidence / "priority_prefix_external_spot_checks_v37.tsv").open("w", encoding="utf-8", newline="") as f:
-            w = csv.DictWriter(f, fieldnames=["PREFIX","STATUS","OBSERVED_PREFIXES","SUMMARY","SOURCE_URLS"], delimiter="\\t", lineterminator="\\n")
+            w = csv.DictWriter(f, fieldnames=["PREFIX","STATUS","OBSERVED_PREFIXES","SUMMARY","SOURCE_URLS"], delimiter="\t", lineterminator="\n")
             w.writeheader(); w.writerows(spots)
         return evidence
 
@@ -53,7 +53,7 @@ class WorklistTests(unittest.TestCase):
             out, stats = root/"worklist.tsv", root/"stats.txt"
             result = build_worklist(evidence, out, stats, expected_scope=None)
             with out.open(encoding="utf-8", newline="") as f:
-                got = list(csv.DictReader((line for line in f if not line.startswith("#")), delimiter="\\t"))
+                got = list(csv.DictReader((line for line in f if not line.startswith("#")), delimiter="\t"))
             self.assertEqual(result["rows"], 4)
             self.assertEqual([r["PREFIX"] for r in got], ["198.51.100.0/24","192.0.2.0/24","203.0.113.0/24","2001:db8::/48"])
             self.assertEqual(got[0]["PRIMARY_REVIEW_TRACK"], "RPKI_INVALID_ORIGIN_REVALIDATION")
