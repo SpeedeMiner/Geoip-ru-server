@@ -35,7 +35,7 @@ func cidrPrefix(c *router.CIDR) (netip.Prefix, error) {
 	default:
 		return netip.Prefix{}, fmt.Errorf("unsupported address length %d", len(c.Ip))
 	}
-	if !addr.IsValid() || int(c.Prefix) > addr.BitLen() {
+	if !addr.IsValid() || c.Prefix == 0 || int(c.Prefix) > addr.BitLen() {
 		return netip.Prefix{}, fmt.Errorf("invalid prefix length %d for %s", c.Prefix, addr)
 	}
 	p := netip.PrefixFrom(addr, int(c.Prefix))
