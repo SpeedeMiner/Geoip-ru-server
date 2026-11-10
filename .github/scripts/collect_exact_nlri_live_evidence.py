@@ -155,6 +155,10 @@ def summarize(record: dict[str, Any]) -> dict[str, Any]:
         "response_received_utc": record["response_received_utc"],
         "error": record.get("error"),
     }
+    # Never render empty route counts for transport/HTTP/JSON errors: no usable
+    # routing response is not evidence that the prefix is absent from BGP.
+    if record.get("transport_status") != "HTTP_OK" or payload is None:
+        return result
     if record["source"] == "routeviews_exact_rib":
         entries = payload if isinstance(payload, list) else []
         exact = [x for x in entries if isinstance(x, dict) and x.get("prefix") == record["prefix"]]
