@@ -9,9 +9,8 @@ Durable resume point for PR #5. After any conversation/network interruption, rea
 - State: OPEN / DRAFT; no automatic merge.
 - Branch: feature/reachability-full-ru-kz-by
 - Current main: a68e5d6589361814cb1cfedd2af7857e4af806fa; PR branch merge-base remains c71b5eff48f34b363ef2430ba6b5c41603f36126 (29 commits behind current main). The 11 changed files in PR #5 are confined to .github/reachability/** and the two separate diagnostic workflows; no main GeoIP builder, release or client data file is changed.
-- Latest validation: run 42873343359 succeeded on commit 6e2ba2b15e49f4af9a6f00615f75a88d75d14f81. Python 27/27 tests, Go formatting, Go tests and Go build passed. The collector summary now computes per-country IPv6 probe gaps and source-country/target sampling metrics.
-- Latest full measurement ran on temporary-trigger commit 7acb180836ae1de16687333f5c8a55b2a8b3a0dc; the temporary path-scoped push trigger was removed in commit 533281109e101b81f7b0ff623c011f698e56bc6a. Always query the live PR head on resume; documentation/checkpoint commits advance it.
-- The previous validation commit 1b2152760b120218763956a8f7005f3bafa044e8 validated the Belarus reference-source corrections.
+- Latest validation: run 42877605801 succeeded on commit c6b86d8b92bac5777c73634d921835fee687573b. Python 28/28 tests, Go formatting, Go tests and Go build passed. This validates the NO_PROBE classification and country counters. The preceding runner-only commit validation (42877511514) failed solely because the earlier test file still contained old expected values; the subsequent paired commit passed.
+- Latest full measurement: run 42877815872 succeeded on trigger commit 401830a0bdcef35f20fe67e90fbaef7e72129ca6. The one-time push trigger was removed immediately after launch in commit b1c603a7c36cc714f14ff6634160a78ffc7e2b99. Current workflow has no push trigger; always query live PR head on resume.
 - The full-measurement workflow has manual dispatch on this feature branch. Its daily cron becomes active only after the workflow is merged into the repository default branch. The temporary push trigger has been removed.
 - Main GeoIP builder, release branch, and published geoip_RU.dat were not modified. The client remains one file with exactly RU and PRIVATE categories.
 
@@ -29,59 +28,60 @@ Durable resume point for PR #5. After any conversation/network interruption, rea
 
 ## Latest validation
 
-- CI run: [42875324510](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/42875324510)
-- Commit tested: `8dd5fd2cb22df18b04944c19782f3aed12566022`
-- Result: SUCCESS. Python 27/27 tests passed; Go formatting, Go tests and Go build passed.
-- The latest code includes structured summary fields for per-country IPv6 gaps, unique hostnames, observed/possible country-target pairs, per-country pair counts, provider-target bundles, and DNS no-answer count. The DNS no-answer counter was added after the most recent full run; CI validates it, and the next full run will include it in JSON.
+- CI run: [42877605801](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/42877605801)
+- Commit tested: `c6b86d8b92bac5777c73634d921835fee687573b`
+- Result: SUCCESS. Python 28/28 tests passed; Go formatting, Go tests and Go build passed.
+- Tests cover missing IPv6 probes, missing IPv4/DNS probes, DNS no-answer summary, unique source-country/target pairs and no double-counting of provider-target bundles.
 
 ## Latest complete measurement run — current published v37 + 30 targets
 
-- Run: [Full reachability RU KZ BY #6](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/42874077069)
-- Run ID: `42874077069`; trigger commit: `e6612071a4839e8151c9823bf43d6af84fe643c7`.
-- Result: SUCCESS. Inventory checksum, full RU/PRIVATE inventory export, Globalping/OONI collectors and artifact upload all succeeded.
-- Artifact: `geoip-ru-reachability-42874077069`, artifact ID `13790094804`, size 1,076,911 bytes, SHA-256 `df2aac10fb88eb6beac6bf728c206b8f2f52f916da20b72e6221e1a57cb384e5`; expires 2026-12-10 18:22:45 UTC.
-- Local archive: `/mnt/data/reachability-structured-summary-42874077069.zip`; local SHA-256 independently verified against the GitHub artifact digest.
+- Run: [Full reachability RU KZ BY #8](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/42877815872)
+- Run ID: `42877815872`; execution commit: `401830a0bdcef35f20fe67e90fbaef7e72129ca6`.
+- Result: SUCCESS. Release protobuf checksum, RU/PRIVATE inventory export, Globalping/OONI collection and artifact upload all passed.
+- Artifact: `geoip-ru-reachability-42877815872`, artifact ID `13791344001`, size 1,075,992 bytes, SHA-256 `d4858a2ed63f208fd5146ae06b4fb586410e37db6b90e7232aacdab5ab01a137`; expires 2026-12-10 18:44:29 UTC.
+- Local archive: `/mnt/data/reachability-no-probe-fixed-42877815872.zip`; local SHA-256 independently verified against GitHub's artifact digest.
 
 ### Current GeoIP inventory
 
-- Exact published `release/geoip_RU.dat` v37 sidecar checksum passed.
-- Complete inventory: 76,231 RU prefixes + 151 PRIVATE prefixes = 76,382 rows.
-- The prefix report includes all 76,231 RU prefixes; it is not a scan of every address in those ranges.
+- Exact published `release/geoip_RU.dat` v37 checksum passed in workflow.
+- Inventory: 76,231 RU prefixes + 151 PRIVATE prefixes = 76,382 rows.
+- `reachability_by_prefix.tsv` contains all 76,231 RU prefixes. It is endpoint evidence, not a scan of every IP in each CIDR.
 
 ### Expanded target and sampling coverage
 
-- 30 hostnames: two controls and 28 service targets.
-- All 30 hostnames appeared in this run, but only 30 of 90 possible source-country/target pairs were selected: RU 21, KZ 6, BY 3. The daily UTC rotation must accumulate coverage over later runs; one artifact is not a full three-country test of every hostname.
-- 45 complete four-measurement provider/target bundles were observed. No partial bundles.
+- 30 hostnames: two controls + 28 RU/KZ/BY services.
+- All 30 hostnames appeared in this run. Unique source-country/target pairs: 32 of 90 possible; RU 23, KZ 6, BY 3. This remains a rotating daily sample, not a full three-country run for each hostname.
+- 45 complete four-measurement provider/target bundles; zero partial bundles.
+- 38 provider pairs discovered and covered (RU 29, KZ 6, BY 3). 37 pairs returned actual probe result metadata; one pair contributed tasks classified as NO_PROBE because no matching IPv4 probe existed.
 
 ### Globalping measurement
 
-- Online probes: 5,537.
-- Distinct source country/ASN provider pairs observed: 36, all 36 covered; by source country: RU 27, KZ 6, BY 3.
-- Returned probe-country-tagged results: RU 114, KZ 18, BY 11.
-- 180 tasks; counts from raw measurements: ACCESSIBLE=37, DNS_ANSWER=55, DNS_NO_ANSWER=35, INCONCLUSIVE=16, NO_IPV6_PROBE=37, API_ERROR=0. These sum to all 180 tasks.
-- Missing IPv6 probes: 37 total, RU 30, KZ 6, BY 1. These are measurement-coverage gaps, not block evidence.
-- Automatically written JSON summary agrees with the raw JSONL for all newly added fields: 30 distinct targets, 30/90 target-country pairs (RU 21, KZ 6, BY 3), 45 provider-target bundles, and IPv6 gaps (RU 30, KZ 6, BY 1).
-- The structured JSON from this run predates the additional `globalping_dns_no_answers` field; its value was independently derived as 35 from raw JSONL. The field is now implemented and CI-tested; the next full run will write it directly.
+- Online probes: 5,536.
+- Results across all 180 tasks: ACCESSIBLE=38, DNS_ANSWER=55, DNS_NO_ANSWER=33, INCONCLUSIVE=16, NO_IPV6_PROBE=35, NO_PROBE=3, API_ERROR=0. Counts sum to 180.
+- Three HTTP 422 `no_probes_found` responses for IPv4/DNS are now classified as `NO_PROBE`, all from RU; they are measurement-coverage gaps, not API errors or evidence of filtering.
+- Missing IPv6 probes: 35 total; RU 28, KZ 6, BY 1. These are coverage gaps, not IPv6-blocking evidence.
+- Summary JSON automatically reports `globalping_dns_no_answers=33`, `globalping_no_probe_count=3`, `globalping_no_probe_by_country={"RU":3}`, and `globalping_ipv6_probe_unavailable_by_country={"RU":28,"KZ":6,"BY":1}`.
+- Structured coverage summary: 30 distinct targets; 32/90 source-country/target pairs (RU 23, KZ 6, BY 3); 45 provider-target bundles. All corresponding values match raw JSONL exactly.
+- Genuine API errors: zero. `globalping_api_error_reasons` is empty.
 
 ### Prefix and exact-IP report validation
 
-- All 76,231 RU prefixes are present in `reachability_by_prefix.tsv`.
-- Prefix status: 23 `ENDPOINT_ACCESSIBLE_OBSERVED`; 17 `DNS_RESOLVED_HTTP_NOT_CONFIRMED`; 4 `DNS_RESOLVED_HTTP_INCONCLUSIVE`; 76,187 `NO_MATCHED_ENDPOINT`.
-- Provider reports: 61 provider/prefix rows and 73 provider/exact-IP rows.
-- The exact IP sets reconcile by country/ASN/prefix; zero mismatches. All 73 IP addresses belong to their stated CIDRs; zero out-of-prefix addresses.
+- All 76,231 RU prefixes are present in the prefix report.
+- Prefix status: 24 `ENDPOINT_ACCESSIBLE_OBSERVED`; 15 `DNS_RESOLVED_HTTP_NOT_CONFIRMED`; 5 `DNS_RESOLVED_HTTP_INCONCLUSIVE`; 76,187 `NO_MATCHED_ENDPOINT`.
+- Provider reports: 60 provider/prefix rows and 70 exact provider/IP rows.
+- Provider/prefix IP sets reconcile exactly to provider/IP rows by country/ASN/prefix; zero mismatches. All 70 exact IPs belong to their stated CIDRs; zero out-of-prefix addresses.
 
 ### OONI and RIPE Atlas
 
-- OONI observations: 987; anomaly-review signals: 19. All 19 have `confirmed=false` and `failure=false`; they remain review-only metadata, not block evidence.
-- RIPE Atlas output contains one explicit record: `SKIPPED_API_KEY_NOT_CONFIGURED`.
+- OONI observations: 987; anomaly-review signals: 19. All 19 have `confirmed=false` and `failure=false`; none is block evidence.
+- RIPE Atlas output records an explicit skip because `RIPE_ATLAS_API_KEY` is not configured.
 
-### Independent structured-summary validation
+### Independent artifact QA
 
-- Downloaded and inspected the complete ZIP; SHA-256 matched GitHub's digest.
-- Parsed `reachability_summary.json` and independently recalculated every new coverage metric from `globalping_measurements.jsonl`; values matched exactly.
-- Checked all inventory counts, every RU prefix row, provider-prefix/IP group-key equality, and all 73 exact IPs. No inconsistencies found.
-- Temporary full-run push trigger was removed in commit `1cb59cbd216d8fc4b1c217532a62f0c3e54b2f88`. Current workflow has no `push` trigger; manual `workflow_dispatch` and daily schedule remain. The daily schedule becomes active only after merge to the default branch.
+- Downloaded the complete artifact ZIP and verified SHA-256 against GitHub's artifact digest.
+- Recalculated every Globalping result count and new summary metric from `globalping_measurements.jsonl`; all matched exactly.
+- Verified inventory counts, all 76,231 RU prefix rows, all 70 IP-to-CIDR constraints, and exact provider-prefix/provider-IP reconciliation. No inconsistencies.
+- Current full workflow has no push trigger; manual `workflow_dispatch` and daily schedule remain. The daily schedule activates only after merge into the repository default branch.
 
 ## Interpretation limits
 
@@ -114,20 +114,10 @@ Durable resume point for PR #5. After any conversation/network interruption, rea
 
 ## Structured coverage summary metrics
 
-- The collector adds `globalping_ipv6_probe_unavailable_by_country`, `globalping_distinct_targets_observed`, `globalping_observed_target_country_pairs`, `globalping_possible_target_country_pairs`, `globalping_observed_target_country_pairs_by_country`, `globalping_provider_target_bundles_observed`, and `globalping_dns_no_answers` to `reachability_summary.json`.
-- Implementation commit: `e63974c8e48282fdb7402ffa18ea23c4bce36f54`; unit-test commit: `6e2ba2b15e49f4af9a6f00615f75a88d75d14f81`.
-- Validation run `42873343359` passed: 27 Python tests, Go formatting, Go tests and Go build. The added unit test checks that repeated tasks do not inflate unique country/target pairs and that missing-IPv6 probe counts use the requested source country.
-- Full run `42874077069` verified the first six coverage fields against raw JSONL. The additional `globalping_dns_no_answers` field was committed and CI-tested after that run; its raw-derived value in run `42874077069` was 35, and the next full measurement will emit it directly.
-
-## NO_PROBE classification full run in progress
-
-- Run: https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/42877815872
-- Trigger commit: `401830a0bdcef35f20fe67e90fbaef7e72129ca6` (`[reachability-once] Verify NO_PROBE classification in full measurement`). This run includes the new classification for IPv4/DNS probe absence and the structured summary fields `globalping_no_probe_count` / `globalping_no_probe_by_country`.
-- The one-time push trigger was removed in commit `b1c603a7c36cc714f14ff6634160a78ffc7e2b99`; the workflow has no persistent `push` trigger. The `[reachability-once]` guard remains.
-- Last checked: release protobuf checksum and complete RU/PRIVATE inventory export succeeded; Globalping/OONI collector remained `in_progress`; artifact not yet uploaded. Do not start a duplicate run.
-- Validation: latest code/test commit `c6b86d8b92bac5777c73634d921835fee687573b`; CI run `42877605801` succeeded with 28 Python tests, Go formatting, Go tests and Go build. The immediately preceding validation on runner-only commit `3be79acb31981cde50374162e301d3fda56e0e87` failed because its paired test-file update had not yet landed; the subsequent full commit CI passed.
-- Resume by checking run `42877815872`, its job and artifacts. After success, download and verify artifact digest; confirm three prior IPv4 no-probe API 422 outcomes are now `NO_PROBE`, `API_ERROR` is not inflated, and new summary fields match raw JSONL.
-- Previous successful full artifact: run `42876578975` / artifact `13791582840`; it predates the NO_PROBE classification fix.
+- `reachability_summary.json` now includes `globalping_dns_no_answers`, `globalping_no_probe_count`, `globalping_no_probe_by_country`, `globalping_ipv6_probe_unavailable_by_country`, distinct target count, observed/possible target-country pair counts, per-country pair counts, and distinct provider-target bundles.
+- The latest full run 42877815872 independently confirmed all these fields against raw JSONL.
+- HTTP 422 `no_probes_found` is `NO_IPV6_PROBE` only for HTTPS IPv6; other IPv4/DNS cases are `NO_PROBE`. This prevents absent probes from being reported as API errors.
+- Latest validation run 42877605801 passed 28 Python tests plus Go formatting/tests/build.
 
 ## Phase status
 
@@ -137,15 +127,15 @@ Durable resume point for PR #5. After any conversation/network interruption, rea
 | Protobuf inventory exporter | DONE | full run #42861904056 |
 | Globalping/OONI/Atlas collector | DONE | artifact #13786625472 |
 | Fair provider scheduler | DONE | 38/38 provider pairs covered |
-| Provider-prefix and exact-IP reports | DONE | latest v37 artifact: 61 provider/prefix rows, 73 IP rows; exact reconciliation |
+| Provider-prefix and exact-IP reports | DONE | latest v37 artifact: 60 provider/prefix rows, 70 IP rows; exact reconciliation |
 | NO_IPV6_PROBE handling | DONE | latest run: 37 classified (RU 30, KZ 6, BY 1); API_ERROR 0 |
 | CI validation | DONE | run #42875324510; 27 Python tests + Go checks |
 | Full measurement and artifact review against current v37 release | DONE | run #42874077069; artifact #13790094804; SHA verified locally |
 | Belarus target-source correction | DONE | three reference URLs corrected; CI #42871418240 passed |
-| Daily target-country sampling coverage review | DONE | 30/90 source-country/target pairs in run #42874077069; rotation is multi-day |
-| Structured coverage summary metrics | DONE | run #42874077069: first six coverage metrics match raw JSONL; DNS_NO_ANSWER count added in commit b0e5220 and CI-tested |
-| OONI review / final policy interpretation | DONE with caveats above | 19 anomalies; all confirmed=false and failure=false |
-| Expanded 30-host target catalogue | DONE | 19 new sourced service endpoints; CI #42871418240 and full run #42874077069 passed |
+| Daily target-country sampling coverage review | DONE | 32/90 source-country/target pairs in run #42877815872; rotation is multi-day |
+| Structured coverage summary metrics | DONE | run #42877815872: DNS_NO_ANSWER, NO_PROBE, IPv6 and country/target fields all match raw JSONL |
+| OONI review / final policy interpretation | DONE with caveats above | latest 19 anomalies; all confirmed=false and failure=false |
+| Expanded 30-host target catalogue | DONE | 19 new sourced service endpoints; latest full run #42877815872 passed |
 | Final PR review / owner decision | PENDING | PR #5 remains Draft; owner must review target coverage and base-branch lag |
 
 ## Invariants
