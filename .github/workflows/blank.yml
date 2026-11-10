@@ -3025,7 +3025,7 @@ jobs:
           test -s "$INPUT_PROVENANCE_SHA" || { echo "::error::Missing input provenance checksum"; exit 1; }
           sha256sum -c "$INPUT_PROVENANCE_SHA"
           python3 - "$OUTPUT_FILE" "$ASN_MANIFEST" "$COMPANY_ASN_MANIFEST" "$ASN_STATS" "$RIR_STATS" "$SOURCE_COUNTS" "$QUALITY_REPORT" "$PROVENANCE_FILE" "$CATEGORY_AUDIT" "$BY_KZ_ASN_REGISTRY" "$BLOCKED_IP_INPUT" "$BLOCKED_REVIEW_INPUT" "$BLOCKED_STATS_INPUT" "$BLOCKED_CHECKSUMS_INPUT" "$INPUT_PROVENANCE" "$COMPANY_PREFIX_REVIEW" "$COMPANY_PREFIX_REVIEW_STATS" <<'PY'
-          import os, sys
+          import os, sys, ipaddress
           from collections import defaultdict
           output, manifest, company_manifest, bgp_stats, rir_stats, counts, quality, provenance, category_audit, by_kz_asns, blocked_ips, blocked_review, blocked_stats, blocked_checksums, input_provenance, company_prefix_review, company_prefix_review_stats = sys.argv[1:]
           minimums = ((output, 4), (manifest, 100), (company_manifest, 300), (bgp_stats, 100), (rir_stats, 100),
@@ -3044,7 +3044,7 @@ jobs:
               "REVIEW_REASON", "GENERATED_UTC", "BGP_SNAPSHOT_SHA256", "BGP_SNAPSHOT_URL",
           ]
           with open(company_prefix_review, encoding="utf-8") as source:
-              company_prefix_rows = [line.rstrip("\\n").split("\\t") for line in source if line.strip() and not line.startswith("#")]
+              company_prefix_rows = [line.rstrip("\n").split("\t") for line in source if line.strip() and not line.startswith("#")]
           if not company_prefix_rows or company_prefix_rows[0] != company_prefix_header:
               raise SystemExit("Company prefix review manifest has an unexpected schema")
           company_prefix_entries = company_prefix_rows[1:]
