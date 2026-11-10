@@ -109,6 +109,7 @@ The full workflow uploads:
 - \`reachability_by_prefix.tsv\` — endpoint matches against RU prefixes;
 - \`reachability_candidates.tsv\` — failures and observations requiring review;
 - \`reachability_summary.json\` — counts, configuration and coverage metadata.
+  The summary includes per-country missing-IPv6-probe counts, unique target-country pairs observed versus possible, the country breakdown, and the number of distinct hostnames sampled. These metrics describe the selected daily sample; they do not imply full provider-by-target coverage in one run.
 
 ## Editing the target catalogue
 
