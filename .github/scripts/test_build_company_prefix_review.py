@@ -23,7 +23,7 @@ class CompanyPrefixReviewTests(unittest.TestCase):
         manifest.write_text(
             "\t".join(COMPANY_HEADER) + "\n"
             "AS64500\tYandex\tYandex LLC\thttps://example.test/yandex\tyes\tTR\t1\t1\tno\tno\n"
-            "AS64501\tVK\tVK LLC\thttps://example.test/vk\tyes\tRU\t1\t0\tno\tno\n",
+            "AS64501\tVK\tVK LLC\thttps://example.test/vk\tyes\tKZ\t0\t1\tno\tyes\n",
             encoding="utf-8",
         )
         prefixes = root / "selected_prefixes.txt"
@@ -31,7 +31,7 @@ class CompanyPrefixReviewTests(unittest.TestCase):
             "# BGP selected prefixes\n"
             "198.51.100.0/24 # AS64500[Yandex],AS64496[RIR-RU]\n"
             "198.51.101.0/24 # AS64500[Yandex]\n"
-            "2001:db8:100::/48 # AS64501[VK]\n"
+            "2001:db8:100::/48 # AS64501[VK+RIR-BY/KZ]\n"
             "203.0.113.0/24 # AS64502[RIR-RU]\n",
             encoding="utf-8",
         )
@@ -91,6 +91,8 @@ class CompanyPrefixReviewTests(unittest.TestCase):
             details = json.loads(moas["COMPANY_ASN_DETAILS_JSON"])
             self.assertEqual(details[0]["asn"], "AS64500")
             self.assertEqual(details[0]["ipverse_country_code"], "TR")
+            self.assertEqual(details[0]["also_rir_ru"], "no")
+            self.assertEqual(details[0]["also_rir_by_kz"], "no")
             self.assertEqual(moas["SELECTED_ORIGIN_ASNS"], "AS64496,AS64500")
             company_only_v4 = data["198.51.101.0/24"]
             self.assertEqual(company_only_v4["INCLUSION_BASIS"], "COMPANY_ASN_ONLY")
@@ -99,6 +101,11 @@ class CompanyPrefixReviewTests(unittest.TestCase):
             company_only_v6 = data["2001:db8:100::/48"]
             self.assertEqual(company_only_v6["FAMILY"], "IPv6")
             self.assertEqual(company_only_v6["GLOBAL_BGP_ORIGIN_ASNS"], "AS64501")
+            self.assertEqual(company_only_v6["REGIONAL_RIR_ASN_ORIGIN"], "yes")
+            details_v6 = json.loads(company_only_v6["COMPANY_ASN_DETAILS_JSON"])
+            self.assertEqual(details_v6[0]["ipverse_country_code"], "KZ")
+            self.assertEqual(details_v6[0]["also_rir_ru"], "no")
+            self.assertEqual(details_v6[0]["also_rir_by_kz"], "yes")
             stats_text = stats.read_text(encoding="utf-8")
             self.assertIn("Prefixes with multiple global BGP origin ASNs (MOAS): 1", stats_text)
             self.assertIn("Company-only IPv4 address-space union (independent; may overlap other classes): 256", stats_text)
