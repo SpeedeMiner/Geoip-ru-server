@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "updated_at_utc": "2026-11-10T17:18:39.101Z",
+  "updated_at_utc": "2026-11-10T17:46:00Z",
   "repository": "SpeedeMiner/Geoip-ru-server",
   "pull_request": 5,
   "pull_request_url": "https://github.com/SpeedeMiner/Geoip-ru-server/pull/5",
   "branch": "feature/reachability-full-ru-kz-by",
-  "recorded_pr_head_before_checkpoint_commit": "7646f9c1582cdd086f47333270fa0c9f36abd8b6",
-  "base_sha": "c71b5eff48f34b363ef2430ba6b5c41603f36126",
+  "recorded_pr_head_before_checkpoint_commit": "533281109e101b81f7b0ff623c011f698e56bc6a",
+  "base_sha": "a68e5d6589361814cb1cfedd2af7857e4af806fa",
   "state": "READY_FOR_OWNER_REVIEW",
   "current_phase": "FINAL_PR_OWNER_REVIEW",
   "completed": [
@@ -33,10 +33,18 @@
     "ooni_anomaly_review",
     "short_session_worklog_and_checkpoint",
     "ci_path_filter_for_short_documentation_sessions",
-    "final_pr_validation"
+    "final_pr_validation",
+    "expanded_30_hostname_ru_kz_by_service_catalogue",
+    "target_reference_provenance",
+    "current_v37_inventory_refresh",
+    "expanded_catalogue_validation_ci",
+    "expanded_catalogue_full_measurement_run",
+    "expanded_catalogue_artifact_download_and_validation",
+    "post_measurement_policy_review",
+    "temporary_push_trigger_cleanup"
   ],
-  "latest_successful_validation_run": 42863496776,
-  "latest_successful_validation_commit": "854381b06c08267416dc8bf20311e56a549c72bd",
+  "latest_successful_validation_run": 42867134580,
+  "latest_successful_validation_commit": "42d6297dd1918c0b5380228036e3489e5df05266",
   "test_counts": {
     "python_unit_tests": 26,
     "python_unit_tests_status": "PASS",
@@ -44,72 +52,72 @@
     "go_build_status": "PASS",
     "gofmt_status": "PASS"
   },
-  "latest_successful_full_run": 42861904056,
-  "latest_full_run_commit": "0ee7a3434537fbf19bba5c74508ca98c0f4a7d21",
+  "latest_successful_full_run": 42867329770,
+  "latest_full_run_commit": "7acb180836ae1de16687333f5c8a55b2a8b3a0dc",
   "latest_artifact": {
-    "name": "geoip-ru-reachability-42861904056",
-    "artifact_id": 13786625472,
-    "sha256": "827d9e7db3af7ed6ec44044189e7a6a0fe6fe1b52f3e4ca5fbaf71efad99950c",
-    "bytes": 1036807,
-    "expires_at_utc": "2026-12-10T17:10:36Z",
-    "local_inspection_archive": "/mnt/data/reachability-final-42861904056.zip"
+    "name": "geoip-ru-reachability-42867329770",
+    "artifact_id": 13787468458,
+    "sha256": "30d64922b2779139256d355b644b6dba41e1a7152877c19222b1b14cb4fc9512",
+    "bytes": 1077344,
+    "expires_at_utc": "2026-12-10T17:42:29Z",
+    "local_inspection_archive": "/mnt/data/reachability-expanded-targets-current-v37-run-42867329770-20261110.zip"
   },
   "final_measurement_metrics": {
-    "inventory_ru_prefixes": 76268,
+    "inventory_ru_prefixes": 76231,
     "inventory_private_prefixes": 151,
-    "globalping_online_probes": 5539,
-    "provider_pairs_found": 38,
-    "provider_pairs_covered": 38,
+    "target_count": 30,
+    "target_controls": 2,
+    "target_services": 28,
+    "globalping_online_probes": 5536,
+    "provider_pairs_found": 39,
+    "provider_pairs_covered": 39,
     "provider_pairs_uncovered": 0,
     "provider_pairs_by_country": {
-      "RU": 29,
+      "RU": 30,
       "KZ": 6,
       "BY": 3
     },
     "observed_probe_results_by_country": {
-      "RU": 112,
+      "RU": 113,
       "KZ": 18,
-      "BY": 15
+      "BY": 11
     },
     "globalping_tasks": 180,
     "complete_target_bundles": 45,
     "partial_target_bundles": 0,
     "result_counts": {
-      "ACCESSIBLE": 44,
-      "DNS_ANSWER": 57,
-      "DNS_NO_ANSWER": 32,
+      "ACCESSIBLE": 40,
+      "DNS_ANSWER": 56,
+      "DNS_NO_ANSWER": 34,
       "INCONCLUSIVE": 12,
-      "NO_IPV6_PROBE": 35,
+      "NO_IPV6_PROBE": 38,
       "API_ERROR": 0
     },
-    "no_ipv6_probe_by_country": {
-      "RU": 28,
-      "KZ": 6,
-      "BY": 1
-    },
-    "provider_pairs_with_accessible_https": 34,
-    "provider_pairs_with_dns_answer": 38,
-    "provider_prefix_rows": 64,
-    "provider_ip_rows": 77,
+    "no_ipv6_probe_by_country": {},
+    "provider_pairs_with_accessible_https": 35,
+    "provider_pairs_with_dns_answer": 39,
+    "provider_prefix_rows": 62,
+    "provider_ip_rows": 71,
     "provider_prefix_ip_set_mismatches": 0,
     "provider_ip_outside_prefix": 0,
-    "ru_prefixes_with_accessible_endpoint": 11,
-    "ru_prefixes_dns_only": 4,
-    "ru_prefixes_dns_and_inconclusive_http": 1,
-    "ru_prefixes_without_target_match": 76252,
-    "ooni_observations": 478,
-    "ooni_anomaly_review": 3,
+    "ru_prefixes_with_accessible_endpoint": 28,
+    "ru_prefixes_dns_only": 14,
+    "ru_prefixes_dns_and_inconclusive_http": 2,
+    "ru_prefixes_without_target_match": 76187,
+    "ooni_observations": 987,
+    "ooni_anomaly_review": 19,
     "ooni_anomaly_confirmed": 0,
-    "ripe_atlas": "SKIPPED_API_KEY_NOT_CONFIGURED",
-    "target_count": 11
+    "ooni_anomaly_failure": 0,
+    "ripe_atlas": "SKIPPED_API_KEY_NOT_CONFIGURED"
   },
   "interpretation_limits": [
-    "Globalping eyeball-network is not proof that the probe is on a residential/home connection.",
-    "The 11 hostname catalogue is a seed set, not comprehensive service coverage.",
+    "The 30 hostname catalogue (2 controls + 28 services) is an expanded pilot, not a comprehensive inventory of brand domains, APIs or mobile-app endpoints.",
     "NO_MATCHED_ENDPOINT means not tested by the configured target set, not inaccessible.",
     "DNS AAAA is a DNS query, not an IPv6 transport/TLS test.",
     "NO_IPV6_PROBE is probe coverage absence, not evidence of blocking.",
-    "OONI anomalies are unconfirmed and do not justify blocked-prefix carve-outs."
+    "Globalping eyeball-network is not proof that the probe is on a residential/home connection.",
+    "OONI anomaly observations in the latest run are all confirmed=false and failure=false; they remain review-only signals.",
+    "The latest full run uses the current published v37 inventory: 76,231 RU CIDRs plus 151 PRIVATE CIDRs."
   ],
   "policy_invariants": {
     "geoip_RU_dat_mutated": false,
@@ -123,10 +131,11 @@
     "eyeball_network_is_proof_of_residential": false
   },
   "next_steps": [
-    "Owner review PR #5; branch is ready for review but remains Draft",
-    "Extend the 11-hostname seed catalogue before making broad service-prefix coverage claims",
-    "Optionally configure RIPE_ATLAS_API_KEY if Atlas measurements are desired",
-    "After explicit owner approval, merge PR #5"
+    "Owner review PR #5; it remains Draft and must not be merged without explicit owner approval.",
+    "Review the expanded 30-target catalogue and add any missing first-party services/API hostnames from the project's agreed inventory.",
+    "The PR branch is 29 commits behind current main (merge-base c71b5eff48f34b363ef2430ba6b5c41603f36126 vs main a68e5d6589361814cb1cfedd2af7857e4af806fa); plan a clean branch update/rebase before any eventual merge and rerun validation.",
+    "Optionally configure RIPE_ATLAS_API_KEY if Atlas measurements are desired.",
+    "Keep all observations review-only; do not modify geoip_RU.dat or classify untested prefixes as blocked."
   ],
   "ci_policy": {
     "push_validation_paths": [
