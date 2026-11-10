@@ -1,0 +1,76 @@
+{
+  "schema_version": 1,
+  "updated_at_utc": "2026-11-10T16:52:00Z",
+  "repository": "SpeedeMiner/Geoip-ru-server",
+  "pull_request": 5,
+  "branch": "feature/reachability-full-ru-kz-by",
+  "observed_pr_head_sha": "1aa449c570b34fb506c9926a25e104fea093f272",
+  "observed_pr_base_sha": "c71b5eff48f34b363ef2430ba6b5c41603f36126",
+  "state": "IN_PROGRESS",
+  "current_phase": "FIX_PROVIDER_SCHEDULER_BIAS",
+  "completed": [
+    "repository_reconnaissance",
+    "protobuf_inventory_exporter",
+    "globalping_dns_https_collector",
+    "ooni_metadata_collector",
+    "optional_ripe_atlas_collector",
+    "python_go_unit_tests",
+    "reachability_validation_ci",
+    "first_full_measurement_run"
+  ],
+  "latest_successful_validation_run": 42856736740,
+  "latest_successful_full_run": 42856671346,
+  "latest_full_run_commit": "58feded4d0b0b87a9b1671bf5c7b64ffa9e2c133",
+  "latest_artifact": {
+    "name": "geoip-ru-reachability-42856671346",
+    "artifact_id": 13782748149,
+    "sha256": "4eb6253566ff5d577ab84311122e4e002ab665494943dcc1535f4ca77e16899c",
+    "expires_at_utc": "2026-12-10T16:41:29Z"
+  },
+  "first_run_metrics": {
+    "inventory_ru_prefixes": 76268,
+    "inventory_private_prefixes": 151,
+    "globalping_online_probes": 5499,
+    "globalping_provider_pairs_discovered": 37,
+    "globalping_selected_tasks": 180,
+    "globalping_total_tasks": 1628,
+    "globalping_results": {
+      "ACCESSIBLE": 38,
+      "DNS_ANSWER": 62,
+      "DNS_NO_ANSWER": 28,
+      "INCONCLUSIVE": 25,
+      "API_ERROR": 27
+    },
+    "ooni_observations": 476,
+    "ooni_anomaly_review": 2,
+    "ripe_atlas": "SKIPPED_API_KEY_NOT_CONFIGURED"
+  },
+  "known_issue": {
+    "id": "SCHEDULER_COUNTRY_PROVIDER_STARVATION",
+    "severity": "HIGH_FOR_COVERAGE_INTERPRETATION",
+    "description": "A continuous slice of a country/ASN-sorted task list caused successful measurements to cluster in three RU ASNs; KZ/BY probes were not adequately represented. The first-run reachability totals are exploratory only.",
+    "required_fix": "Stratified/round-robin selection across (country, ASN) providers; first give each provider a complete DNS A/AAAA + HTTPS IPv4/IPv6 target bundle, then allocate additional target bundles; deterministically rotate providers and targets by UTC date."
+  },
+  "next_steps": [
+    "Implement fair provider-bundle scheduling in runner.py",
+    "Add unit tests for RU/KZ/BY coverage and no provider starvation",
+    "Run reachability validation CI and require success",
+    "Run full reachability workflow with the corrected scheduler",
+    "Inspect artifacts and verify measurements from all three countries",
+    "Review two OONI anomaly records in raw evidence",
+    "Optionally configure RIPE_ATLAS_API_KEY and repeat Atlas checks",
+    "Update WORKLOG.md and CHECKPOINT.json after each completed phase",
+    "Review PR #5; keep Draft until coverage and quality are acceptable"
+  ],
+  "policy_invariants": {
+    "geoip_RU_dat_mutated": false,
+    "client_categories": [
+      "RU",
+      "PRIVATE"
+    ],
+    "private_priority": true,
+    "automatic_blocked_verdict": false,
+    "timeout_is_block_evidence": false,
+    "eyeball_network_is_proof_of_residential": false
+  }
+}
