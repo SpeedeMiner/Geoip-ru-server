@@ -299,6 +299,15 @@ def rdap_relation(prefix: str, parsed: dict[str, str]) -> str:
 
 def fetch_rdap_sample(prefix: str, address: str,
                       entries: list[tuple[ipaddress._BaseNetwork, list[str]]]) -> dict[str, str]:
+    if not entries:
+        return {
+            "PREFIX": prefix, "SAMPLE_ADDRESS": address, "RDAP_URL": "",
+            "HTTP_STATUS": "0", "QUERY_STATUS": "BOOTSTRAP_UNAVAILABLE",
+            "OBJECT_CLASS": "", "HANDLE": "", "NAME": "", "TYPE": "", "COUNTRY": "",
+            "START_ADDRESS": "", "END_ADDRESS": "", "REGISTERED_CIDRS": "",
+            "REGISTRANT_ENTITIES": "", "ALL_ENTITIES": "", "ENTITY_HANDLES": "",
+            "STATUS": "", "RDAP_PREFIX_RELATION": "NOT_AVAILABLE",
+        }
     base = rdap_base_for_address(address, entries)
     encoded_address = urllib.parse.quote(address, safe=":")
     url = f"{base}ip/{encoded_address}"
@@ -368,16 +377,25 @@ def build_evidence(company_queue: Path, output_dir: Path, max_workers: int = 5) 
 
     bootstraps: dict[int, list[tuple[ipaddress._BaseNetwork, list[str]]]] = {}
     bootstrap_hashes: dict[int, str] = {}
+    bootstrap_errors: dict[int, str] = {}
     for family, url in BOOTSTRAP_URLS.items():
         status, payload, error = request_json(url)
         if status != 200 or payload is None:
-            raise FetchError(f"IANA IPv{family} RDAP bootstrap unavailable: {error or status}")
-        # Preserve the exact registry bytes separately from parsed JSON for digesting.
-        request = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
-        with urllib.request.urlopen(request, timeout=30) as response:
-            raw = response.read()
-        bootstraps[family] = parse_bootstrap(family, payload)
-        bootstrap_hashes[family] = sha256_bytes(raw)
+            bootstraps[family] = []
+            bootstrap_hashes[family] = "UNAVAILABLE"
+            bootstrap_errors[family] = error or f"HTTP_{status}"
+            continue
+        try:
+            # Preserve exact registry bytes separately from parsed JSON for digesting.
+            request = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
+            with urllib.request.urlopen(request, timeout=30) as response:
+                raw = response.read()
+            bootstraps[family] = parse_bootstrap(family, payload)
+            bootstrap_hashes[family] = sha256_bytes(raw)
+        except Exception as exc:
+            bootstraps[family] = []
+            bootstrap_hashes[family] = "UNAVAILABLE"
+            bootstrap_errors[family] = f"{type(exc).__name__}:{exc}"
 
     output_dir.mkdir(parents=True, exist_ok=True)
     priority_columns = [
@@ -479,8 +497,10 @@ def build_evidence(company_queue: Path, output_dir: Path, max_workers: int = 5) 
         f"Source company review queue SHA256: {source_sha}",
         f"IANA IPv4 RDAP bootstrap URL: {BOOTSTRAP_URLS[4]}",
         f"IANA IPv4 RDAP bootstrap SHA256: {bootstrap_hashes[4]}",
+        f"IANA IPv4 RDAP bootstrap status: {bootstrap_errors.get(4, 'OK')}",
         f"IANA IPv6 RDAP bootstrap URL: {BOOTSTRAP_URLS[6]}",
         f"IANA IPv6 RDAP bootstrap SHA256: {bootstrap_hashes[6]}",
+        f"IANA IPv6 RDAP bootstrap status: {bootstrap_errors.get(6, 'OK')}",
         f"Priority prefixes: {len(priority)}",
         f"Exact MOAS prefixes: {moas_count}",
         f"Company-only prefixes: {company_only_count}",
