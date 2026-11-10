@@ -376,7 +376,7 @@ class FirewallGuard:
 
     def __exit__(self, exc_type, exc_value, traceback):
         restore_errors = self._restore()
-        if restore_errors and exc_type is None:
+        if restore_errors:
             raise ProbeError("failed to restore host firewall: " + "; ".join(restore_errors))
 
 
