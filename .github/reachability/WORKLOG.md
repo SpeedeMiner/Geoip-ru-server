@@ -146,3 +146,10 @@ Durable resume point for PR #5. After any conversation/network interruption, rea
 - Timeout, reset, TLS failure, DNS error or OONI anomaly alone is never a block verdict.
 - eyeball-network does not prove a residential/home connection.
 - No policy inference is made for unused IPs in a CIDR.
+
+### 2026-11-10 — Reconcile final DNS_NO_ANSWER checkpoint counter — DONE
+
+- Re-downloaded the exact full-run artifact `geoip-ru-reachability-42877815872` (artifact ID `13791344001`) and independently verified its ZIP SHA-256: `d4858a2ed63f208fd5146ae06b4fb586410e37db6b90e7232aacdab5ab01a137`.
+- Recounted all 180 rows in `globalping_measurements.jsonl`: `DNS_NO_ANSWER=33`, `DNS_ANSWER=55`, `ACCESSIBLE=38`, `INCONCLUSIVE=16`, `NO_IPV6_PROBE=35`, `NO_PROBE=3`; no `API_ERROR` rows.
+- `reachability_summary.json` independently reports `globalping_dns_no_answers=33`; this agrees with the raw JSONL. The checkpoint's `dns_no_answer_count_raw_derived=35` was stale documentation (not the artifact value) and is corrected to 33 in the following checkpoint commit.
+- No runner, tests, workflow, target catalogue, GeoIP input/output or production files changed. This documentation-only correction does not require another full measurement run or code-validation CI.
