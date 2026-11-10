@@ -1,14 +1,14 @@
 {
   "schema_version": 1,
-  "updated_at_utc": "2026-11-10T19:18:20.371Z",
+  "updated_at_utc": "2026-11-11T00:00:00Z",
   "repository": "SpeedeMiner/Geoip-ru-server",
   "pull_request": 5,
   "pull_request_url": "https://github.com/SpeedeMiner/Geoip-ru-server/pull/5",
   "branch": "feature/reachability-full-ru-kz-by",
-  "recorded_pr_head_before_checkpoint_commit": "07f6d90867ef27af4970be74087acb68eb91ee5c",
+  "recorded_pr_head_before_checkpoint_commit": "f8d6770ad3ce8ad1bda34a1fac9211060d5eba60",
   "base_sha": "a68e5d6589361814cb1cfedd2af7857e4af806fa",
   "state": "VALIDATION_PENDING",
-  "current_phase": "PROVIDER_PREFIX_TSV_SCHEMA_REGRESSION_VALIDATION",
+  "current_phase": "VPN_GATE_VALIDATION_CI_AND_MANUAL_PILOT",
   "completed": [
     "repository_reconnaissance",
     "protobuf_inventory_exporter",
@@ -73,7 +73,16 @@
     "provider_prefix_tsv_header_regression_test_added",
     "readme_sample_coverage_metric_updated_to_32_of_90",
     "all_28_service_targets_have_reference_url",
-    "service_target_provenance_sources_reviewed"
+    "service_target_provenance_sources_reviewed",
+    "vpn_gate_official_csv_source_research",
+    "vpn_gate_ru_server_discovery_parser",
+    "safe_openvpn_profile_reconstruction",
+    "ipv4_output_killswitch_and_ipv6_egress_block",
+    "vpn_gate_exit_ip_country_and_geoip_prefix_reconciliation",
+    "manual_vpn_gate_workflow",
+    "vpn_gate_csv_and_profile_safety_tests_added",
+    "vpn_gate_firewall_restore_regression_test_added",
+    "vpn_gate_readme_and_worklog"
   ],
   "latest_successful_validation_run": 42877605801,
   "latest_successful_validation_commit": "c6b86d8b92bac5777c73634d921835fee687573b",
@@ -194,7 +203,10 @@
     "Globalping eyeball-network is not proof that the probe is on a residential/home connection.",
     "OONI anomaly observations in the latest run are all confirmed=false and failure=false; they remain review-only signals.",
     "Latest full run uses current published v37 inventory: 76,231 RU CIDRs plus 151 PRIVATE CIDRs.",
-    "The PR branch is behind current main by 29 commits but has 11 isolated reachability files and GitHub currently reports mergeable=true; do not force-rewrite history without a clear reason."
+    "The PR branch is behind current main by 29 commits but has 11 isolated reachability files and GitHub currently reports mergeable=true; do not force-rewrite history without a clear reason.",
+    "VPN Gate manual workflow measures through volunteer-operated Russian exits; RU egress and ISP/ASN metadata do not attest that a node is a household connection.",
+    "VPN Gate tests are manual-only, default 3 servers and hard-capped at 6; no live VPN connection or measurement has yet been run.",
+    "VPN Gate tunnel pilot blocks host IPv6 egress and records AAAA DNS answers only; it does not claim IPv6 HTTPS reachability through the tunnel."
   ],
   "policy_invariants": {
     "geoip_RU_dat_mutated": false,
@@ -205,20 +217,24 @@
     "private_priority": true,
     "automatic_blocked_verdict": false,
     "timeout_is_block_evidence": false,
-    "eyeball_network_is_proof_of_residential": false
+    "eyeball_network_is_proof_of_residential": false,
+    "vpn_gate_volunteer_nodes_attest_residential": false,
+    "vpn_gate_manual_only": true,
+    "automatic_geoip_mutation": false
   },
   "next_steps": [
-    "Confirm Reachability validation success on current feature branch head 07f6d90867ef27af4970be74087acb68eb91ee5c; expect 29 Python tests plus Go formatting, tests and build. Do not reuse run 42877605801 as evidence for this newer code.",
-    "After green validation, keep PR #5 Draft and perform final owner review of the 30-target seed catalogue and 29-commit main-branch lag.",
-    "Do not force-rewrite or merge the feature branch automatically; GitHub currently reports the PR mergeable and the diagnostic files remain isolated.",
-    "Assess accumulated multi-day country/target sampling only after approved recurring runs; the latest single artifact is a 32/90 sample.",
-    "Optionally configure RIPE_ATLAS_API_KEY if Atlas measurements are desired.",
-    "Keep observations review-only; do not modify geoip_RU.dat, DIRECT policy, company ASN allowlists or production release assets."
+    "Confirm Reachability validation on current VPN Gate code/test commit f8d6770ad3ce8ad1bda34a1fac9211060d5eba60; expect 36 Python tests plus Go formatting, tests and build. Do not reuse prior green CI for this code.",
+    "After CI is green, manually dispatch Russian ISP VPN Gate reachability from PR #5 branch with 1–3 servers; inspect actual exit IP, country, ASN, prefix, PTR, ISP metadata, firewall behavior and generated artifacts.",
+    "Classify each successful volunteer exit as residential/enterprise/other/unverified only after independent review; do not treat VPN Gate country or ISP label as household attestation.",
+    "Use the exact exit-IP GeoIP candidates as leads for BGP/RPKI/ASN review, not automatic CIDR additions.",
+    "Keep PR #5 Draft; do not merge, rebase, or modify production builder, geoip_RU.dat, release assets, DIRECT policy, ASN allowlists or PR #6."
   ],
   "ci_policy": {
     "push_validation_paths": [
       ".github/reachability/runner.py",
       ".github/reachability/test_runner.py",
+      ".github/reachability/vpn_gate.py",
+      ".github/reachability/test_vpn_gate.py",
       ".github/reachability/targets.json",
       ".github/reachability/inventory/**",
       ".github/workflows/reachability-validation.yml"
@@ -236,18 +252,39 @@
     ],
     "manual_dispatch_available_on_feature_branch": true,
     "daily_schedule_effective_only_after_default_branch_merge": true,
-    "temporary_full_workflow_push_trigger_removed": true
+    "temporary_full_workflow_push_trigger_removed": true,
+    "vpn_gate_workflow_triggers": [
+      "workflow_dispatch"
+    ],
+    "vpn_gate_daily_schedule_enabled": false
   },
   "pending_validation": {
-    "commit": "07f6d90867ef27af4970be74087acb68eb91ee5c",
+    "commit": "f8d6770ad3ce8ad1bda34a1fac9211060d5eba60",
     "workflow": "Reachability validation",
-    "expected_python_unit_tests": 29,
+    "expected_python_unit_tests": 36,
     "expected_go_checks": [
       "gofmt",
       "go test ./...",
       "go build"
     ],
     "status": "NOT_CONFIRMED",
-    "note": "The GitHub connector used in this session did not expose push-triggered workflow-run records or commit status checks. Previous green validation predates the provider-prefix TSV schema change."
+    "note": "New VPN Gate backend, safety tests and firewall restoration test were added after all previously successful validation runs. The GitHub connector combined-status response did not contain status checks. No VPN Gate workflow run or live VPN measurement has been launched."
+  },
+  "vpn_gate_measurement": {
+    "source": "VPN Gate official CSV API",
+    "directory_reference": "https://vpnobratno.info/",
+    "workflow": ".github/workflows/reachability-vpn-gate.yml",
+    "mode": "manual_only",
+    "default_max_servers": 3,
+    "hard_max_servers": 6,
+    "actual_run_performed": false,
+    "validation_status": "PENDING",
+    "output_files": [
+      "vpn_gate_providers.tsv",
+      "vpn_gate_measurements.jsonl",
+      "vpn_gate_geoip_candidates.tsv",
+      "vpn_gate_raw.jsonl",
+      "vpn_gate_summary.json"
+    ]
   }
 }
