@@ -1,4 +1,4 @@
-name: Build Unified GeoIP DIRECT RU+BY+KZ CLIENT v35
+name: Build Unified GeoIP DIRECT RU+BY+KZ CLIENT v36
 
 on:
   workflow_dispatch:
@@ -10,7 +10,7 @@ on:
       - main
 
 concurrency:
-  group: geoip-direct-ru-by-kz-v35-build
+  group: geoip-direct-ru-by-kz-v36-build
   cancel-in-progress: false
 
 jobs:
@@ -98,7 +98,7 @@ jobs:
           if [[ ! -s "$COMPANY_ASN_REGISTRY" ]]; then
             echo "::notice::Company ASN registry not found; creating the embedded default allowlist."
             cat > "$COMPANY_ASN_REGISTRY" <<'COMPANY_ASN_REGISTRY_DEFAULT'
-          # Curated Russian-company and confirmed affiliate ASN allowlist for unified DIRECT RU+BY+KZ v35.
+          # Curated Russian-company and confirmed affiliate ASN allowlist for unified DIRECT RU+BY+KZ v36.
           # Format: ASN<TAB>COMPANY_GROUP<TAB>REGISTERED_ENTITY_OR_NOTE<TAB>EVIDENCE_URL
           # All BGP prefixes originated by these ASNs are added even when ipverse countryCode is not RU.
           # Only listed origin ASNs are included; upstreams/peers are NOT recursively imported. AS208398 is a transit/upstream and is intentionally not imported wholesale.
@@ -110,6 +110,11 @@ jobs:
           AS208795	Yandex	Yandex Cloud Kazakhstan LLP (affiliate ASN)	https://asn.ipinfo.app/AS208795
           AS207304	Yandex	Y. Izdeu men Jarnama LLP (Yandex Kazakhstan)	https://www.iplocate.io/AS207304
           AS212066	Yandex	Buyuk Reklam Cozumleri LLC (Yandex Turkey; origin ASN, not upstream)	https://www.iplocate.io/AS212066
+          AS44534	Yandex	YANDEX LLC (Yandex office ASN)	https://bgp.he.net/AS44534
+          AS210656	Yandex	Yandex.Cloud LLC	https://whois.ipip.net/AS210656
+          AS207207	Yandex	Yandex.OFD LLC	https://whois.ipip.net/AS207207
+          AS213952	Yandex	Yandex.Telecom LLC	https://ipgeolocation.io/browse/asn/AS213952
+          AS215109	Yandex	YANDEX LLC (not visible in global BGP since 2025-11-13)	https://bgp.he.net/AS215109
           AS47541	VK/Mail.ru	LLC VK	https://prefixkit.com/ru/service-ip-ranges/vk-mailru/
           AS47542	VK/Mail.ru	VKontakte Ltd / LLC VK	https://prefixkit.com/ru/service-ip-ranges/vk-mailru/
           AS28709	VK/Mail.ru	LLC VK	https://wbdt.ru/AS28709
@@ -147,15 +152,20 @@ jobs:
             exit 1
           fi
 
-          # Preserve repository customizations, but ensure the separately-originated
-          # Yandex Kazakhstan and Yandex Turkey ASNs are not lost when an older
-          # pre-existing allowlist is present. AS208398 remains upstream-only.
+          # Preserve repository customizations, but ensure all known Yandex-origin ASNs,
+          # including RU, Kazakhstan and Turkey operators, are retained in older custom lists.
+          # AS208398 remains an upstream/transit provider and is intentionally not imported.
           python3 - "$COMPANY_ASN_REGISTRY" <<'PY'
           import pathlib, sys
           path = pathlib.Path(sys.argv[1])
           required = {
               "AS207304": "AS207304\tYandex\tY. Izdeu men Jarnama LLP (Yandex Kazakhstan)\thttps://www.iplocate.io/AS207304",
               "AS212066": "AS212066\tYandex\tBuyuk Reklam Cozumleri LLC (Yandex Turkey origin ASN)\thttps://www.iplocate.io/AS212066",
+              "AS44534": "AS44534\tYandex\tYANDEX LLC (Yandex office ASN)\thttps://bgp.he.net/AS44534",
+              "AS210656": "AS210656\tYandex\tYandex.Cloud LLC\thttps://whois.ipip.net/AS210656",
+              "AS207207": "AS207207\tYandex\tYandex.OFD LLC\thttps://whois.ipip.net/AS207207",
+              "AS213952": "AS213952\tYandex\tYandex.Telecom LLC\thttps://ipgeolocation.io/browse/asn/AS213952",
+              "AS215109": "AS215109\tYandex\tYANDEX LLC (not visible in global BGP since 2025-11-13)\thttps://bgp.he.net/AS215109",
           }
           existing = {}
           for number, raw in enumerate(path.read_text(encoding="utf-8").splitlines(), 1):
@@ -897,6 +907,20 @@ jobs:
               return parsed, invalid
           
           
+          def add_static_prefix_overrides(prefix_origins, overrides):
+              """Add explicit project-approved prefixes without claiming a fresh BGP observation."""
+              added = set()
+              for raw_prefix, raw_asn in overrides.items():
+                  network = ipaddress.ip_network(raw_prefix, strict=True)
+                  asn = int(raw_asn)
+                  if not 0 < asn <= 4294967295:
+                      raise SystemExit(f"Invalid ASN for static prefix override {raw_prefix}: {raw_asn}")
+                  normalized = str(network)
+                  prefix_origins.setdefault(normalized, set()).add(asn)
+                  added.add(normalized)
+              return added
+          
+          
           def self_test_selection():
               rir_ru = {12389}
               rir_by_kz = {25106, 207304}
@@ -918,6 +942,11 @@ jobs:
               assert is_selected_asn(12389, rir_ru, rir_by_kz, companies)
               # A foreign, unlisted ASN is not selected just because it appears in a non-RU country.
               assert not is_selected_asn(64500, rir_ru, rir_by_kz, companies)
+              pinned = {}
+              pinned_prefixes = add_static_prefix_overrides(pinned, {"45.148.65.0/24": 212066, "2a14:48c6::/48": 212066})
+              assert pinned_prefixes == {"45.148.65.0/24", "2a14:48c6::/48"}
+              assert pinned["45.148.65.0/24"] == {212066}
+              assert pinned["2a14:48c6::/48"] == {212066}
           
           
           if len(sys.argv) == 4 and sys.argv[1] == "--self-test":
@@ -1054,13 +1083,22 @@ jobs:
               asn: row for asn, row in active_selected_asns.items() if row["ipv4"] + row["ipv6"] > 0
           }
           yandex_turkey_known_prefixes = {"45.148.65.0/24", "2a14:48c6::/48"}
+          yandex_turkey_observed_prefixes = {
+              prefix for prefix, origins in selected_prefix_origins.items() if 212066 in origins
+          }
+          # Project-approved Yandex Turkey DIRECT overrides. These survive even if
+          # the rolling ipverse observation window temporarily omits the routes.
+          yandex_static_prefixes = add_static_prefix_overrides(
+              selected_prefix_origins,
+              {"45.148.65.0/24": 212066, "2a14:48c6::/48": 212066},
+          )
           yandex_turkey_selected_prefixes = {
               prefix for prefix, origins in selected_prefix_origins.items() if 212066 in origins
           }
           missing_yandex_turkey_prefixes = sorted(yandex_turkey_known_prefixes - yandex_turkey_selected_prefixes)
           if missing_yandex_turkey_prefixes:
               raise SystemExit(
-                  "Yandex Turkey AS212066 origin-prefix regression: expected prefixes are missing from the selected BGP layer: "
+                  "Yandex Turkey static DIRECT override regression: required prefixes were not inserted: "
                   + ", ".join(missing_yandex_turkey_prefixes)
               )
           if archive_json_files < 10000:
@@ -1087,10 +1125,10 @@ jobs:
           
           with open(ru_prefixes_path, "w", encoding="utf-8") as output:
               output.write(
-                  "# BGP prefixes originated by RIR-RU or RIR-BY/KZ ASNs OR explicitly allowlisted company-affiliate ASNs.\n"
+                  "# DIRECT prefixes selected from RIR-RU/BY/KZ or curated company BGP origins, plus explicit static Yandex DIRECT overrides.\n"
               )
               output.write(
-                  "# ASN metadata countryCode is audit-only; selected regional/company origin announcements are included regardless of countryCode.\n"
+                  "# ipverse countryCode is audit-only. [STATIC-DIRECT] marks a project-approved prefix pinned independently of the rolling BGP observation window.\n"
               )
               for prefix in sorted(selected_prefix_origins, key=sort_key):
                   origins = []
@@ -1102,7 +1140,10 @@ jobs:
                           labels.append("RIR-BY/KZ")
                       if asn in company_asns:
                           labels.append(company_asns[asn]["group"].replace(" ", "_"))
-                      origins.append(f"AS{asn}[{'+'.join(labels)}]")
+                      origin_label = f"AS{asn}[{'+'.join(labels)}]"
+                      if prefix in yandex_static_prefixes and asn == 212066:
+                          origin_label += "[STATIC-DIRECT]"
+                      origins.append(origin_label)
                   output.write(f"{prefix} # {','.join(origins)}\n")
           
           with open(global_prefixes_path, "w", encoding="utf-8") as output:
@@ -1149,9 +1190,10 @@ jobs:
               f"Unique prefixes originated by RIR-RU ASNs: {len(rir_prefix_origins)}",
               f"Unique prefixes originated by RIR-BY/KZ ASNs: {len(regional_prefix_origins)}",
               f"Unique prefixes originated by curated Russian-company/affiliate ASNs: {len(company_prefix_origins)}",
-              "Yandex Turkey AS212066 verified origin prefixes: 45.148.65.0/24, 2a14:48c6::/48",
-              f"Yandex Turkey AS212066 observed selected prefixes: {len(yandex_turkey_known_prefixes & yandex_turkey_selected_prefixes)} of {len(yandex_turkey_known_prefixes)}",
-              f"Unique prefixes in DIRECT BGP layer (RIR-RU/BY/KZ OR company allowlist): {len(selected_prefix_origins)}",
+              f"Yandex Turkey AS212066 static DIRECT overrides: {', '.join(sorted(yandex_static_prefixes, key=sort_key))}",
+              f"Yandex Turkey AS212066 ipverse-observed prefixes at build time: {len(yandex_turkey_known_prefixes & yandex_turkey_observed_prefixes)} of {len(yandex_turkey_known_prefixes)}",
+              f"Yandex Turkey AS212066 required DIRECT prefixes covered: {len(yandex_turkey_known_prefixes & yandex_turkey_selected_prefixes)} of {len(yandex_turkey_known_prefixes)}",
+              f"Unique prefixes in DIRECT ASN-origin/pinned layer (RIR-RU/BY/KZ OR company allowlist): {len(selected_prefix_origins)}",
               f"Raw selected IPv4 prefix records (RIR-RU OR company allowlist): {raw_selected_v4}",
               f"Raw selected IPv6 prefix records (RIR-RU OR company allowlist): {raw_selected_v6}",
               f"Raw company-allowlisted IPv4 prefix records: {raw_company_v4}",
@@ -1184,7 +1226,7 @@ jobs:
             test -s "$file" || { echo "::error::Missing BGP artifact: $file"; exit 1; }
           done
 
-      - name: Build unified DIRECT GeoIP RU+BY+KZ v35 with curated blocked-destination exclusions
+      - name: Build unified DIRECT GeoIP RU+BY+KZ v36 with curated blocked-destination exclusions
         shell: bash
         run: |
           set -euo pipefail
@@ -2142,7 +2184,7 @@ jobs:
           }
 
           func writeQualityReport(path string, lines []string) error {
-          	content := "GeoIP DIRECT RU+BY+KZ CLIENT v35 Quality Report\nGenerated by the Go builder; all coverage counts are exact address-space sums of disjoint trie prefixes.\n\n" + strings.Join(lines, "\n") + "\n"
+          	content := "GeoIP DIRECT RU+BY+KZ CLIENT v36 Quality Report\nGenerated by the Go builder; all coverage counts are exact address-space sums of disjoint trie prefixes.\n\n" + strings.Join(lines, "\n") + "\n"
           	return os.WriteFile(path, []byte(content), 0644)
           }
           
@@ -2543,7 +2585,7 @@ jobs:
           	}
           
           	manifest := []string{
-          		"GeoIP DIRECT RU+BY+KZ CLIENT v35 — unified regional direct coverage, company-affiliate ASN policy and curated blocked-destination carve-outs",
+          		"GeoIP DIRECT RU+BY+KZ CLIENT v36 — unified regional direct coverage, company-affiliate ASN policy and curated blocked-destination carve-outs",
           		"The single emitted RU category is the unified DIRECT region: geographic RU + BY + KZ, plus confirmed company-affiliate origin ASNs, minus approved blocked destinations and higher-priority PRIVATE space.",
           		"Geographic sources: Loyalsoldier geoip:ru and geoip:by; v2fly geoip.dat categories ru, by and kz. The client still receives one geoip_RU.dat with only RU and PRIVATE categories.",
           		"v24 is not fetched, protected, or used as a regression baseline.",
@@ -2688,7 +2730,7 @@ jobs:
           	}
           
           	fmt.Println("============================================================")
-          	fmt.Println("GEOIP DIRECT RU+BY+KZ CLIENT v35 — QUALITY EDITION")
+          	fmt.Println("GEOIP DIRECT RU+BY+KZ CLIENT v36 — QUALITY EDITION")
           	fmt.Println("============================================================")
           	fmt.Println(statsLine("Final RU", finalRU))
           	fmt.Println(statsLine("Final PRIVATE", privateTrie))
@@ -2934,10 +2976,10 @@ jobs:
           GOTOOLCHAIN=local go mod tidy
           python3 -m unittest discover -s ../.github/scripts -p 'test_*.py' -v
           GOTOOLCHAIN=local go test ./...
-          GOTOOLCHAIN=local go build -o /tmp/geoip-direct-ru-by-kz-v35-builder .
+          GOTOOLCHAIN=local go build -o /tmp/geoip-direct-ru-by-kz-v36-builder .
           cd ..
 
-          /tmp/geoip-direct-ru-by-kz-v35-builder \
+          /tmp/geoip-direct-ru-by-kz-v36-builder \
             "$HYDRA_INPUT" \
             "$GRIMBIRD_INPUT" \
             "$DIGNE_INPUT" \
@@ -2998,7 +3040,7 @@ jobs:
             test -s "$file" || { echo "::error::Missing or empty build artifact: $file"; exit 1; }
           done
 
-      - name: Validate v35 protobuf, RU+BY+KZ coverage and blocked-IP exclusions
+      - name: Validate v36 protobuf, RU+BY+KZ coverage and blocked-IP exclusions
         shell: bash
         run: |
           set -euo pipefail
@@ -3017,7 +3059,7 @@ jobs:
                       (blocked_review, 20), (blocked_stats, 100), (blocked_checksums, 200), (input_provenance, 100))
           for path, minimum in minimums:
               if not os.path.isfile(path) or os.path.getsize(path) < minimum:
-                  raise SystemExit(f"Missing or unexpectedly small v35 artifact: {path}")
+                  raise SystemExit(f"Missing or unexpectedly small v36 artifact: {path}")
 
           with open(input_provenance, encoding="utf-8") as source:
               provenance_rows = [line.rstrip("\n").split("\t") for line in source if line.strip()]
@@ -3121,7 +3163,7 @@ jobs:
           missing_ru = [name for name in required_ru if source_total(name) <= 0]
           missing_other = [name for name in required_other if source_total(name) <= 0]
           if missing_ru or missing_other:
-              raise SystemExit("Required v35 inputs missing/empty: RU feeds=" + ", ".join(missing_ru) +
+              raise SystemExit("Required v36 inputs missing/empty: RU feeds=" + ", ".join(missing_ru) +
                                "; other inputs=" + ", ".join(missing_other))
 
           total_row = count_map.get("TOTAL")
@@ -3284,8 +3326,8 @@ jobs:
         # v3.0.3; pin the action implementation to an immutable commit.
         uses: softprops/action-gh-release@efb35369e0ad2afab669f228072c1b0d510eae64
         with:
-          tag_name: latest-geoip-client-v35
-          name: "GeoIP DIRECT RU+BY+KZ CLIENT v35"
+          tag_name: latest-geoip-client-v36
+          name: "GeoIP DIRECT RU+BY+KZ CLIENT v36"
           make_latest: false
           files: |
             geoip_RU.dat
@@ -3319,7 +3361,7 @@ jobs:
             geoip_RU_rir_stats.txt
             geoip_RU_global_bgp_prefixes.txt
           body: |
-            # GeoIP DIRECT RU+BY+KZ CLIENT v35 — Quality Edition
+            # GeoIP DIRECT RU+BY+KZ CLIENT v36 — Quality Edition
 
             ## One-file routing output
             - Exactly one client GeoIP file: `geoip_RU.dat`.
@@ -3344,7 +3386,9 @@ jobs:
             ## ASN, RIR and routing audit
             - The company ASN allowlist has an embedded default. If geoip_RU_company_asns.txt is absent at repository root, the workflow creates it automatically; a committed root-level file overrides the default.
             - All observed prefixes originated by RU-registered ASNs, BY/KZ-registered ASNs, and curated Russian-company/affiliate ASNs are added regardless of ipverse countryCode.
-            - The curated company list includes Yandex Kazakhstan AS207304 and Yandex Turkey origin AS212066. Yandex Turkey prefixes are selected by their origin ASN; AS208398 is an upstream/transit ASN and is not imported wholesale.
+            - The curated company manifest explicitly tracks Yandex ASNs AS13238, AS200350, AS202611, AS215013, AS207304, AS208795, AS212066, AS44534, AS210656, AS207207, AS213952 and AS215109. RU/BY/KZ-registered Yandex ASNs are included by regional-zone membership; the company manifest also preserves their Yandex attribution.
+            - Yandex Turkey AS212066 DIRECT overrides pin `45.148.65.0/24` and `2a14:48c6::/48` independently of the rolling 90-day ipverse window. The prefix list marks these entries `[STATIC-DIRECT]`; the build report separately records whether each was also seen in the current feed.
+            - AS208398 is an upstream/transit ASN and is not imported wholesale.
             - RIR-registered RU IPv4/IPv6 resources are used as corroboration, not as proof of physical hosting location. Company ownership is tracked separately in geoip_RU_company_asn_manifest.tsv.
             - Only prefixes originated by allowlisted ASNs are included; their peers and upstream providers are not recursively included. Global route observation is derived from the ipverse aggregated dataset. Its AS dataset covers announcements observed within the preceding 90 days, not a real-time global RIB.
             - Prefixes absent from that aggregate are labelled not observed, not globally unroutable.
@@ -3404,7 +3448,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add .
-          git commit -m "Publish GeoIP DIRECT RU+BY+KZ CLIENT v35"
+          git commit -m "Publish GeoIP DIRECT RU+BY+KZ CLIENT v36"
           git remote add origin "https://github.com/${{ github.repository }}.git"
           AUTH_B64="$(printf 'x-access-token:%s' "$GITHUB_TOKEN" | base64 -w0)"
           GIT_CONFIG_COUNT=1 \
@@ -3432,7 +3476,7 @@ jobs:
       - name: Print download and audit URLs
         shell: bash
         run: |
-          echo "GitHub Release: https://${{ github.server_url }}/${{ github.repository }}/releases/download/latest-geoip-client-v35/geoip_RU.dat"
+          echo "GitHub Release: https://${{ github.server_url }}/${{ github.repository }}/releases/download/latest-geoip-client-v36/geoip_RU.dat"
           echo "Raw release branch: https://raw.githubusercontent.com/${{ github.repository }}/release/geoip_RU.dat"
           echo "jsDelivr: https://cdn.jsdelivr.net/gh/${{ github.repository }}@release/geoip_RU.dat"
           echo "Quality report: https://raw.githubusercontent.com/${{ github.repository }}/release/geoip_RU_quality_report.txt"
