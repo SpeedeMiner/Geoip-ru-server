@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "updated_at_utc": "2026-11-10T17:46:00Z",
+  "updated_at_utc": "2026-11-10T18:10:53.793Z",
   "repository": "SpeedeMiner/Geoip-ru-server",
   "pull_request": 5,
   "pull_request_url": "https://github.com/SpeedeMiner/Geoip-ru-server/pull/5",
   "branch": "feature/reachability-full-ru-kz-by",
-  "recorded_pr_head_before_checkpoint_commit": "533281109e101b81f7b0ff623c011f698e56bc6a",
+  "recorded_pr_head_before_checkpoint_commit": "87b1cf2215811dd39608d5895f7c8c51a7fdf5e6",
   "base_sha": "a68e5d6589361814cb1cfedd2af7857e4af806fa",
   "state": "READY_FOR_OWNER_REVIEW",
   "current_phase": "FINAL_PR_OWNER_REVIEW",
@@ -41,10 +41,14 @@
     "expanded_catalogue_full_measurement_run",
     "expanded_catalogue_artifact_download_and_validation",
     "post_measurement_policy_review",
-    "temporary_push_trigger_cleanup"
+    "temporary_push_trigger_cleanup",
+    "independent_artifact_local_qa",
+    "provider_prefix_ip_reconciliation_rechecked",
+    "belarus_target_provenance_correction",
+    "daily_target_country_sampling_coverage_review"
   ],
-  "latest_successful_validation_run": 42867134580,
-  "latest_successful_validation_commit": "42d6297dd1918c0b5380228036e3489e5df05266",
+  "latest_successful_validation_run": 42871418240,
+  "latest_successful_validation_commit": "1b2152760b120218763956a8f7005f3bafa044e8",
   "test_counts": {
     "python_unit_tests": 26,
     "python_unit_tests_status": "PASS",
@@ -60,7 +64,8 @@
     "sha256": "30d64922b2779139256d355b644b6dba41e1a7152877c19222b1b14cb4fc9512",
     "bytes": 1077344,
     "expires_at_utc": "2026-12-10T17:42:29Z",
-    "local_inspection_archive": "/mnt/data/reachability-expanded-targets-current-v37-run-42867329770-20261110.zip"
+    "local_inspection_archive": "/mnt/data/reachability-expanded-30-targets.zip",
+    "local_sha256_verified": true
   },
   "final_measurement_metrics": {
     "inventory_ru_prefixes": 76231,
@@ -93,7 +98,11 @@
       "NO_IPV6_PROBE": 38,
       "API_ERROR": 0
     },
-    "no_ipv6_probe_by_country": {},
+    "no_ipv6_probe_by_country": {
+      "RU": 31,
+      "KZ": 6,
+      "BY": 1
+    },
     "provider_pairs_with_accessible_https": 35,
     "provider_pairs_with_dns_answer": 39,
     "provider_prefix_rows": 62,
@@ -108,16 +117,28 @@
     "ooni_anomaly_review": 19,
     "ooni_anomaly_confirmed": 0,
     "ooni_anomaly_failure": 0,
-    "ripe_atlas": "SKIPPED_API_KEY_NOT_CONFIGURED"
+    "ripe_atlas": "SKIPPED_API_KEY_NOT_CONFIGURED",
+    "distinct_targets_observed": 30,
+    "target_country_pairs_observed": 30,
+    "target_country_pairs_possible": 90,
+    "target_country_pairs_by_country": {
+      "RU": 21,
+      "KZ": 6,
+      "BY": 3
+    },
+    "target_country_pair_coverage_is_complete": false,
+    "artifact_sha256_verified_locally": true
   },
   "interpretation_limits": [
     "The 30 hostname catalogue (2 controls + 28 services) is an expanded pilot, not a comprehensive inventory of brand domains, APIs or mobile-app endpoints.",
+    "The latest single run covered all 30 hostnames but only 30 of 90 possible source-country/target pairs (RU 21, KZ 6, BY 3); daily UTC rotation must accumulate across future runs.",
     "NO_MATCHED_ENDPOINT means not tested by the configured target set, not inaccessible.",
     "DNS AAAA is a DNS query, not an IPv6 transport/TLS test.",
-    "NO_IPV6_PROBE is probe coverage absence, not evidence of blocking.",
+    "NO_IPV6_PROBE is probe coverage absence, not evidence of blocking; latest split RU 31, KZ 6, BY 1.",
     "Globalping eyeball-network is not proof that the probe is on a residential/home connection.",
-    "OONI anomaly observations in the latest run are all confirmed=false and failure=false; they remain review-only signals.",
-    "The latest full run uses the current published v37 inventory: 76,231 RU CIDRs plus 151 PRIVATE CIDRs."
+    "OONI anomalies in the latest run are all confirmed=false and failure=false; they remain review-only signals.",
+    "Latest full run uses the current published v37 inventory: 76,231 RU CIDRs plus 151 PRIVATE CIDRs.",
+    "PR branch is 29 commits behind current main; update/rebase and revalidate before any future merge."
   ],
   "policy_invariants": {
     "geoip_RU_dat_mutated": false,
@@ -132,8 +153,9 @@
   },
   "next_steps": [
     "Owner review PR #5; it remains Draft and must not be merged without explicit owner approval.",
-    "Review the expanded 30-target catalogue and add any missing first-party services/API hostnames from the project's agreed inventory.",
-    "The PR branch is 29 commits behind current main (merge-base c71b5eff48f34b363ef2430ba6b5c41603f36126 vs main a68e5d6589361814cb1cfedd2af7857e4af806fa); plan a clean branch update/rebase before any eventual merge and rerun validation.",
+    "Update/rebase the PR branch onto current main (currently 29 commits behind) in a controlled operation, then rerun CI and assess conflicts.",
+    "Review the expanded 30-target catalogue against the project-approved first-party service and API inventory; daily sample coverage is only 30/90 source-country/target pairs per run.",
+    "Daily schedule becomes active only after merge into the repository default branch; assess multi-day provider/target coverage then.",
     "Optionally configure RIPE_ATLAS_API_KEY if Atlas measurements are desired.",
     "Keep all observations review-only; do not modify geoip_RU.dat or classify untested prefixes as blocked."
   ],
