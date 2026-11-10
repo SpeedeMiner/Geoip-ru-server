@@ -98,10 +98,14 @@ def read_company_manifest(path: Path, companies: dict[int, dict[str, str]]) -> d
         asn = int(match.group(1))
         if asn in countries:
             raise ValueError(f"{path}:{line_no}: duplicate company ASN AS{asn}")
+        rir_ru = row[8].strip().lower()
+        rir_by_kz = row[9].strip().lower()
+        if rir_ru not in {"yes", "no"} or rir_by_kz not in {"yes", "no"}:
+            raise ValueError(f"{path}:{line_no}: invalid RIR registration flags for AS{asn}")
         countries[asn] = {
             "ipverse_country_code": row[5].strip().upper() or "UNKNOWN",
-            "also_rir_ru": row[8].strip().lower(),
-            "also_rir_by_kz": row[9].strip().lower(),
+            "also_rir_ru": rir_ru,
+            "also_rir_by_kz": rir_by_kz,
         }
     missing = sorted(set(companies) - set(countries))
     if missing:
