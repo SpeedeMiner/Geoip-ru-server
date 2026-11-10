@@ -29,49 +29,59 @@ Durable resume point for PR #5. After any conversation/network interruption, rea
 
 ## Latest validation
 
-- CI run: [42873343359](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/42873343359)
-- Commit tested: `6e2ba2b15e49f4af9a6f00615f75a88d75d14f81`
-- Result: SUCCESS. Python 27/27 tests passed; Go formatting, Go tests and Go build passed. The additional test covers unique target-country pairs, provider-target bundle de-duplication and per-country NO_IPV6_PROBE counts.
+- CI run: [42875324510](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/42875324510)
+- Commit tested: `8dd5fd2cb22df18b04944c19782f3aed12566022`
+- Result: SUCCESS. Python 27/27 tests passed; Go formatting, Go tests and Go build passed.
+- The latest code includes structured summary fields for per-country IPv6 gaps, unique hostnames, observed/possible country-target pairs, per-country pair counts, provider-target bundles, and DNS no-answer count. The DNS no-answer counter was added after the most recent full run; CI validates it, and the next full run will include it in JSON.
 
 ## Latest complete measurement run — current published v37 + 30 targets
 
-- Run: [Full reachability RU KZ BY #5](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/42867329770)
-- Run ID: `42867329770`; executed on commit `7acb180836ae1de16687333f5c8a55b2a8b3a0dc`.
-- Measurement code and target catalogue: 30 hostnames; temporary branch-only push trigger was path-scoped to `targets.json` and `reachability-full.yml`, then removed. Current branch head after removing it: `533281109e101b81f7b0ff623c011f698e56bc6a`.
-- Artifact: `geoip-ru-reachability-42867329770`, artifact ID `13787468458`, size 1,077,344 bytes, SHA-256 `30d64922b2779139256d355b644b6dba41e1a7152877c19222b1b14cb4fc9512`; expires 2026-12-10 17:42:29 UTC.
+- Run: [Full reachability RU KZ BY #6](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/42874077069)
+- Run ID: `42874077069`; trigger commit: `e6612071a4839e8151c9823bf43d6af84fe643c7`.
+- Result: SUCCESS. Inventory checksum, full RU/PRIVATE inventory export, Globalping/OONI collectors and artifact upload all succeeded.
+- Artifact: `geoip-ru-reachability-42874077069`, artifact ID `13790094804`, size 1,076,911 bytes, SHA-256 `df2aac10fb88eb6beac6bf728c206b8f2f52f916da20b72e6221e1a57cb384e5`; expires 2026-12-10 18:22:45 UTC.
+- Local archive: `/mnt/data/reachability-structured-summary-42874077069.zip`; local SHA-256 independently verified against the GitHub artifact digest.
 
 ### Current GeoIP inventory
 
-- Downloaded the exact current published `release/geoip_RU.dat` and verified the sidecar checksum.
-- Complete inventory: 76,231 RU prefixes + 151 PRIVATE prefixes = 76,382 rows. All CIDRs are canonical and unique; RU/PRIVATE do not overlap.
-- Current v37 release protobuf: 950,909 bytes; SHA-256 `cbe460b3c352dcf33f055e488f15e15caccfb6487e71e0e3ea81d508cda9bad1`.
+- Exact published `release/geoip_RU.dat` v37 sidecar checksum passed.
+- Complete inventory: 76,231 RU prefixes + 151 PRIVATE prefixes = 76,382 rows.
+- The prefix report includes all 76,231 RU prefixes; it is not a scan of every address in those ranges.
 
-### Expanded target catalogue
+### Expanded target and sampling coverage
 
-- 30 hostnames: two control targets and 28 service targets.
-- Added 19 service targets: RU (`gosuslugi.ru`, `government.ru`, `cbr.ru`, `mail.ru`, `wildberries.ru`, `avito.ru`, `dzen.ru`, `rutube.ru`); KZ (`gov.kz`, `halykbank.kz`, `qazpost.kz`, `kcell.kz`, `tele2.kz`); BY (`government.by`, `president.gov.by`, `pravo.by`, `belarusbank.by`, `kufar.by`, `nbrb.by`).
-- Each added hostname has a `reference_url` pointing to an official operator, government or regulator source. The list remains a seed catalogue, not a complete brand/API/mobile-app hostname inventory.
+- 30 hostnames: two controls and 28 service targets.
+- All 30 hostnames appeared in this run, but only 30 of 90 possible source-country/target pairs were selected: RU 21, KZ 6, BY 3. The daily UTC rotation must accumulate coverage over later runs; one artifact is not a full three-country test of every hostname.
+- 45 complete four-measurement provider/target bundles were observed. No partial bundles.
 
 ### Globalping measurement
 
-- Online probes: 5,536; distinct country/ASN provider pairs found: 39; covered 39/39; uncovered 0. Pair distribution: RU 30, KZ 6, BY 3.
-- 180 tasks = 45 complete four-measurement bundles, zero partial bundles, five max concurrent measurements.
-- Results: ACCESSIBLE=40, DNS_ANSWER=56, DNS_NO_ANSWER=34, INCONCLUSIVE=12, NO_IPV6_PROBE=38, API_ERROR=0.
-- Returned probe-country-tagged results: RU 113, KZ 18, BY 11. The 38 NO_IPV6_PROBE tasks split RU 31, KZ 6, BY 1; each means no suitable IPv6 probe was found, not an IPv6 blocking result.
+- Online probes: 5,537.
+- Distinct source country/ASN provider pairs observed: 36, all 36 covered; by source country: RU 27, KZ 6, BY 3.
+- Returned probe-country-tagged results: RU 114, KZ 18, BY 11.
+- 180 tasks; counts from raw measurements: ACCESSIBLE=37, DNS_ANSWER=55, DNS_NO_ANSWER=35, INCONCLUSIVE=16, NO_IPV6_PROBE=37, API_ERROR=0. These sum to all 180 tasks.
+- Missing IPv6 probes: 37 total, RU 30, KZ 6, BY 1. These are measurement-coverage gaps, not block evidence.
+- Automatically written JSON summary agrees with the raw JSONL for all newly added fields: 30 distinct targets, 30/90 target-country pairs (RU 21, KZ 6, BY 3), 45 provider-target bundles, and IPv6 gaps (RU 30, KZ 6, BY 1).
+- The structured JSON from this run predates the additional `globalping_dns_no_answers` field; its value was independently derived as 35 from raw JSONL. The field is now implemented and CI-tested; the next full run will write it directly.
 
 ### Prefix and exact-IP report validation
 
 - All 76,231 RU prefixes are present in `reachability_by_prefix.tsv`.
-- Prefix status: 28 `ENDPOINT_ACCESSIBLE_OBSERVED`; 14 `DNS_RESOLVED_HTTP_NOT_CONFIRMED`; 2 `DNS_RESOLVED_HTTP_INCONCLUSIVE`; 76,187 `NO_MATCHED_ENDPOINT`.
-- Provider reports: 62 provider/prefix rows and 71 provider/exact-IP rows. The aggregated provider/prefix IP sets reconcile exactly to the provider/IP table when grouped by country/ASN/prefix; zero mismatches.
-- All 71 provider/IP addresses are inside their stated canonical prefix.
-- Observations matched 44 RU prefixes (some prefixes have multiple target IDs). The remaining 76,187 are not matched by this 30-host pilot; do not label them accessible or blocked.
+- Prefix status: 23 `ENDPOINT_ACCESSIBLE_OBSERVED`; 17 `DNS_RESOLVED_HTTP_NOT_CONFIRMED`; 4 `DNS_RESOLVED_HTTP_INCONCLUSIVE`; 76,187 `NO_MATCHED_ENDPOINT`.
+- Provider reports: 61 provider/prefix rows and 73 provider/exact-IP rows.
+- The exact IP sets reconcile by country/ASN/prefix; zero mismatches. All 73 IP addresses belong to their stated CIDRs; zero out-of-prefix addresses.
 
 ### OONI and RIPE Atlas
 
-- OONI observations: 987; anomaly-review signals: 19; confirmed=true: 0; failure=true: 0.
-- Anomaly distribution: 12 repeated `kufar.by` records from RU AS39028; 1 `kufar.by` from BY AS61272; 2 `vk.com` from BY AS42772; 1 `ya.ru` from BY AS42772; 1 `dzen.ru` from RU AS35807; 2 `rutube.ru` from BY AS42772/AS12406. All 19 have `confirmed=false` and `failure=false`; they remain metadata-only review signals.
-- RIPE Atlas was explicitly skipped because `RIPE_ATLAS_API_KEY` is not configured.
+- OONI observations: 987; anomaly-review signals: 19. All 19 have `confirmed=false` and `failure=false`; they remain review-only metadata, not block evidence.
+- RIPE Atlas output contains one explicit record: `SKIPPED_API_KEY_NOT_CONFIGURED`.
+
+### Independent structured-summary validation
+
+- Downloaded and inspected the complete ZIP; SHA-256 matched GitHub's digest.
+- Parsed `reachability_summary.json` and independently recalculated every new coverage metric from `globalping_measurements.jsonl`; values matched exactly.
+- Checked all inventory counts, every RU prefix row, provider-prefix/IP group-key equality, and all 73 exact IPs. No inconsistencies found.
+- Temporary full-run push trigger was removed in commit `1cb59cbd216d8fc4b1c217532a62f0c3e54b2f88`. Current workflow has no `push` trigger; manual `workflow_dispatch` and daily schedule remain. The daily schedule becomes active only after merge to the default branch.
 
 ## Interpretation limits
 
@@ -104,10 +114,10 @@ Durable resume point for PR #5. After any conversation/network interruption, rea
 
 ## Structured coverage summary metrics
 
-- The collector now adds `globalping_ipv6_probe_unavailable_by_country`, `globalping_distinct_targets_observed`, `globalping_observed_target_country_pairs`, `globalping_possible_target_country_pairs`, `globalping_observed_target_country_pairs_by_country`, and `globalping_provider_target_bundles_observed` to `reachability_summary.json`.
+- The collector adds `globalping_ipv6_probe_unavailable_by_country`, `globalping_distinct_targets_observed`, `globalping_observed_target_country_pairs`, `globalping_possible_target_country_pairs`, `globalping_observed_target_country_pairs_by_country`, `globalping_provider_target_bundles_observed`, and `globalping_dns_no_answers` to `reachability_summary.json`.
 - Implementation commit: `e63974c8e48282fdb7402ffa18ea23c4bce36f54`; unit-test commit: `6e2ba2b15e49f4af9a6f00615f75a88d75d14f81`.
 - Validation run `42873343359` passed: 27 Python tests, Go formatting, Go tests and Go build. The added unit test checks that repeated tasks do not inflate unique country/target pairs and that missing-IPv6 probe counts use the requested source country.
-- The existing artifact `42867329770` predates these summary fields. Its country and sampling counts were independently derived from raw JSONL and recorded above; the next full measurement will include the structured fields automatically.
+- Full run `42874077069` verified the first six coverage fields against raw JSONL. The additional `globalping_dns_no_answers` field was committed and CI-tested after that run; its raw-derived value in run `42874077069` was 35, and the next full measurement will emit it directly.
 
 ## Structured-summary full run in progress
 
@@ -126,15 +136,15 @@ Durable resume point for PR #5. After any conversation/network interruption, rea
 | Protobuf inventory exporter | DONE | full run #42861904056 |
 | Globalping/OONI/Atlas collector | DONE | artifact #13786625472 |
 | Fair provider scheduler | DONE | 38/38 provider pairs covered |
-| Provider-prefix and exact-IP reports | DONE | latest v37 artifact: 62 provider/prefix rows, 71 IP rows; exact reconciliation |
-| NO_IPV6_PROBE handling | DONE | latest run: 38 classified (RU 31, KZ 6, BY 1); API_ERROR 0 |
-| CI validation | DONE | run #42873343359; 27 Python tests + Go checks |
-| Full measurement and artifact review against current v37 release | DONE | run #42867329770; artifact #13787468458; SHA verified locally |
+| Provider-prefix and exact-IP reports | DONE | latest v37 artifact: 61 provider/prefix rows, 73 IP rows; exact reconciliation |
+| NO_IPV6_PROBE handling | DONE | latest run: 37 classified (RU 30, KZ 6, BY 1); API_ERROR 0 |
+| CI validation | DONE | run #42875324510; 27 Python tests + Go checks |
+| Full measurement and artifact review against current v37 release | DONE | run #42874077069; artifact #13790094804; SHA verified locally |
 | Belarus target-source correction | DONE | three reference URLs corrected; CI #42871418240 passed |
-| Daily target-country sampling coverage review | DONE | 30/90 source-country/target pairs in run #42867329770; rotation is multi-day |
-| Structured coverage summary metrics | DONE | code commit e63974c8e48282fdb7402ffa18ea23c4bce36f54; tests 27/27 in run #42873343359 |
+| Daily target-country sampling coverage review | DONE | 30/90 source-country/target pairs in run #42874077069; rotation is multi-day |
+| Structured coverage summary metrics | DONE | run #42874077069: first six coverage metrics match raw JSONL; DNS_NO_ANSWER count added in commit b0e5220 and CI-tested |
 | OONI review / final policy interpretation | DONE with caveats above | 19 anomalies; all confirmed=false and failure=false |
-| Expanded 30-host target catalogue | DONE | 19 new sourced service endpoints; CI #71 and full run #5 passed |
+| Expanded 30-host target catalogue | DONE | 19 new sourced service endpoints; CI #42871418240 and full run #42874077069 passed |
 | Final PR review / owner decision | PENDING | PR #5 remains Draft; owner must review target coverage and base-branch lag |
 
 ## Invariants
