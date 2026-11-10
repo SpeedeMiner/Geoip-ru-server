@@ -278,7 +278,7 @@ def build_review(
     ]
     stats.write_text("\n".join(stats_lines) + "\n", encoding="utf-8")
     print("\n".join(stats_lines))
-    return len(all_prefixes), len(company_only), len(company_only)
+    return len(all_prefixes), len(company_only), len(regional_and_company)
 
 
 def main() -> int:
