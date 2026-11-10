@@ -411,6 +411,18 @@ def poll_globalping(measurement_id: str, max_wait: int = 40) -> dict[str, Any]:
     raise APIError(f"Globalping measurement {measurement_id} did not finish within {max_wait}s")
 
 
+
+def classify_globalping_api_error(exc: APIError, kind: str, ip_family: int) -> str:
+    """Separate missing IPv6-capable probes from actual measurement outcomes."""
+    message = str(exc).lower()
+    if exc.status == 429:
+        return "RATE_LIMITED"
+    if (exc.status == 422 and kind == "HTTPS" and ip_family == 6
+            and "no_probes_found" in message):
+        return "NO_IPV6_PROBE"
+    return "API_ERROR"
+
+
 def run_globalping_task(task: dict[str, Any]) -> tuple[list[dict[str, Any]], dict[str, Any]]:
     target = task["target"]
     country = task["country"]
@@ -464,7 +476,7 @@ def run_globalping_task(task: dict[str, Any]) -> tuple[list[dict[str, Any]], dic
             f"{GLOBALPING_API}/measurements", method="POST", body=body, timeout=25
         )
     except APIError as exc:
-        status = "RATE_LIMITED" if exc.status == 429 else "API_ERROR"
+        status = classify_globalping_api_error(exc, task["kind"], family)
         return [{**base, "result": status, "error": str(exc)}], {
             "stage": "create", "request": body, "error": str(exc),
             "http_status": exc.status,
@@ -826,6 +838,7 @@ def build_provider_report(providers: dict[tuple[str, int], dict[str, Any]], meas
             "DNS_ANSWERS": counts["DNS_ANSWER"], "DNS_NXDOMAIN": counts["DNS_NXDOMAIN"],
             "DNS_NO_ANSWER": counts["DNS_NO_ANSWER"],
             "INCONCLUSIVE": counts["INCONCLUSIVE"], "NO_PROBE": counts["NO_PROBE"],
+            "NO_IPV6_PROBE": counts["NO_IPV6_PROBE"],
             "API_ERROR": counts["API_ERROR"], "RATE_LIMITED": counts["RATE_LIMITED"],
         })
     return report
@@ -1108,12 +1121,13 @@ def run(args: argparse.Namespace) -> int:
     candidates = [
         row for row in globalping_rows
         if row.get("result") in {"INCONCLUSIVE", "DNS_NXDOMAIN", "DNS_NO_ANSWER",
-                                  "WRONG_PROBE_SELECTION", "RATE_LIMITED", "API_ERROR"}
+                                  "WRONG_PROBE_SELECTION", "NO_IPV6_PROBE",
+                                  "RATE_LIMITED", "API_ERROR"}
     ]
     write_tsv(output_dir / "reachability_by_provider.tsv", provider_report, [
         "COUNTRY", "ASN", "NETWORK", "CITY_SAMPLE", "PROBE_TAGS", "PROBE_CLASS",
         "MEASUREMENTS", "ACCESSIBLE", "DNS_ANSWERS", "DNS_NXDOMAIN", "DNS_NO_ANSWER",
-        "INCONCLUSIVE", "NO_PROBE", "API_ERROR", "RATE_LIMITED",
+        "INCONCLUSIVE", "NO_PROBE", "NO_IPV6_PROBE", "API_ERROR", "RATE_LIMITED",
     ])
     write_tsv(output_dir / "reachability_by_prefix.tsv", prefix_report, [
         "PREFIX", "FAMILY", "ADDRESS_COUNT", "STATUS", "MATCHED_ENDPOINTS",
@@ -1173,6 +1187,8 @@ def run(args: argparse.Namespace) -> int:
         "globalping_accessible": sum(row.get("result") == "ACCESSIBLE" for row in globalping_rows),
         "globalping_dns_answers": sum(row.get("result") == "DNS_ANSWER" for row in globalping_rows),
         "globalping_inconclusive": sum(row.get("result") == "INCONCLUSIVE" for row in globalping_rows),
+        "globalping_ipv6_probe_unavailable": sum(row.get("result") == "NO_IPV6_PROBE" for row in globalping_rows),
+        "globalping_api_errors": sum(row.get("result") == "API_ERROR" for row in globalping_rows),
         "ooni_observations": len(ooni_rows),
         "ooni_anomaly_review": sum("ANOMALY_REVIEW" in str(row.get("result", "")) for row in ooni_rows),
         "ripe_atlas_records": len(atlas_rows),
