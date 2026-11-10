@@ -10,6 +10,8 @@ on:
       - ".github/scripts/test_build_selected_origin_prefix_review.py"
       - ".github/scripts/build_priority_prefix_evidence.py"
       - ".github/scripts/test_build_priority_prefix_evidence.py"
+      - ".github/scripts/build_priority_prefix_triage.py"
+      - ".github/scripts/test_build_priority_prefix_triage.py"
       - ".github/audits/company_asn_legal_evidence_v37_additions.tsv"
       - ".github/audits/company_asn_legal_evidence_v37.tsv"
       - ".github/workflows/prefix-audit-validation.yml"
@@ -38,6 +40,8 @@ jobs:
           .github/scripts/test_build_selected_origin_prefix_review.py
           .github/scripts/build_priority_prefix_evidence.py
           .github/scripts/test_build_priority_prefix_evidence.py
+          .github/scripts/build_priority_prefix_triage.py
+          .github/scripts/test_build_priority_prefix_triage.py
 
       - name: Run audit unit tests
         run: python3 -m unittest discover -s .github/scripts -p 'test_build_*prefix*.py' -v
@@ -582,6 +586,51 @@ jobs:
           ]
           Path("prefix-audit/priority-prefix-evidence/README_validation.txt").write_text("\n".join(manifest), encoding="utf-8")
           print("\n".join(manifest))
+          PY
+
+      - name: Build and validate the review-only priority-prefix triage table
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 .github/scripts/build_priority_prefix_triage.py \
+            --evidence-dir prefix-audit/priority-prefix-evidence \
+            --output prefix-audit/priority-prefix-evidence/priority_prefix_triage.tsv \
+            --stats prefix-audit/priority-prefix-evidence/priority_prefix_triage_stats.txt
+
+          python3 - <<'PY'
+          import csv
+          from pathlib import Path
+
+          base = Path("prefix-audit/priority-prefix-evidence")
+          def read_tsv(path):
+              with path.open(encoding="utf-8", newline="") as stream:
+                  return list(csv.DictReader(
+                      (line for line in stream if not line.startswith("#")), delimiter="\\t"
+                  ))
+
+          priority = read_tsv(base / "priority_prefixes.tsv")
+          triage = read_tsv(base / "priority_prefix_triage.tsv")
+          if len(priority) != 56 or len(triage) != 56:
+              raise SystemExit(f"Expected 56 priority/triage rows, got {len(priority)}/{len(triage)}")
+          if {row["PREFIX"] for row in priority} != {row["PREFIX"] for row in triage}:
+              raise SystemExit("Triage prefix inventory differs from the priority queue")
+          if any(row["STATUS"] != "REVIEW" for row in triage):
+              raise SystemExit("Triage table contains a non-REVIEW row")
+          stats_path = base / "priority_prefix_triage_stats.txt"
+          stats = stats_path.read_text(encoding="utf-8")
+          for required in (
+              "Priority prefixes: 56",
+              "All rows: STATUS=REVIEW",
+              "no row is automatically approved",
+              "both set differences are retained in the TSV",
+          ):
+              if required not in stats:
+                  raise SystemExit(f"Triage statistics missing safety statement: {required}")
+          validation = base / "README_validation.txt"
+          with validation.open("a", encoding="utf-8") as stream:
+              stream.write("\\nPriority-prefix triage\\n")
+              stream.write(stats)
+          print(stats)
           PY
 
       - name: Upload prefix review queues as a CI artifact
