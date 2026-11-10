@@ -359,23 +359,35 @@ def fetch_rpki_origin(prefix: str, asn: str) -> dict[str, str]:
 
 IRR_METADATA_URL = "https://rest.db.ripe.net/metadata/sources.json"
 IRR_SEARCH_URL = "https://rest.db.ripe.net/search"
-DOCUMENTED_GRS_SOURCES = ("AFRINIC-GRS", "APNIC-GRS", "ARIN-GRS", "JPIRR-GRS", "LACNIC-GRS", "RADB-GRS")
+DOCUMENTED_GRS_SOURCES = ("AFRINIC-GRS", "APNIC-GRS", "ARIN-GRS", "JPIRR-GRS", "LACNIC-GRS", "RADB-GRS", "RIPE-GRS")
 
 
 def _source_list_from_metadata(payload: dict[str, Any]) -> list[str]:
-    values = ["RIPE"]
-    container = payload.get("grs-sources") or payload.get("grsSources") or {}
-    sources = container.get("source", []) if isinstance(container, dict) else []
-    if isinstance(sources, dict):
-        sources = [sources]
-    for item in sources if isinstance(sources, list) else []:
-        if not isinstance(item, dict):
-            continue
-        name = str(item.get("name") or item.get("id") or "").strip()
-        if name:
-            values.append(name.upper())
-    return sorted(set(values))
+    """Read the live RIPE metadata WhoisResources JSON schema.
 
+    The production endpoint places supported sources in sources.source.
+    Some older examples expose GRS-only entries in a separate grs-sources key,
+    so both shapes are accepted. Returned names come from the server metadata.
+    """
+    values: set[str] = set()
+
+    def collect(container: Any) -> None:
+        if not isinstance(container, dict):
+            return
+        sources = container.get("source", [])
+        if isinstance(sources, dict):
+            sources = [sources]
+        for item in sources if isinstance(sources, list) else []:
+            if not isinstance(item, dict):
+                continue
+            name = str(item.get("name") or item.get("id") or "").strip()
+            if name:
+                values.add(name.upper())
+
+    collect(payload.get("sources"))
+    collect(payload.get("grs-sources") or payload.get("grsSources"))
+    values.add("RIPE")
+    return sorted(values)
 
 def _object_attributes(obj: dict[str, Any]) -> dict[str, list[str]]:
     result: dict[str, list[str]] = collections.defaultdict(list)
