@@ -1,0 +1,735 @@
+name: Prefix audit validation (v37)
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - ".github/scripts/build_company_prefix_review.py"
+      - ".github/scripts/build_selected_origin_prefix_review.py"
+      - ".github/scripts/test_build_company_prefix_review.py"
+      - ".github/scripts/test_build_selected_origin_prefix_review.py"
+      - ".github/scripts/build_priority_prefix_evidence.py"
+      - ".github/scripts/test_build_priority_prefix_evidence.py"
+      - ".github/scripts/build_priority_prefix_triage.py"
+      - ".github/scripts/test_build_priority_prefix_triage.py"
+      - ".github/scripts/build_priority_prefix_worklist.py"
+      - ".github/scripts/test_build_priority_prefix_worklist.py"
+      - ".github/audits/priority_prefix_external_spot_checks_v37.tsv"
+      - ".github/audits/company_asn_legal_evidence_v37_additions.tsv"
+      - ".github/audits/company_asn_legal_evidence_v37.tsv"
+      - ".github/workflows/prefix-audit-validation.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: prefix-audit-validation-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  python-audit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+
+      - name: Compile audit scripts
+        run: python3 -m py_compile
+          .github/scripts/build_company_prefix_review.py
+          .github/scripts/build_selected_origin_prefix_review.py
+          .github/scripts/test_build_company_prefix_review.py
+          .github/scripts/test_build_selected_origin_prefix_review.py
+          .github/scripts/build_priority_prefix_evidence.py
+          .github/scripts/test_build_priority_prefix_evidence.py
+          .github/scripts/build_priority_prefix_triage.py
+          .github/scripts/test_build_priority_prefix_triage.py
+          .github/scripts/build_priority_prefix_worklist.py
+          .github/scripts/test_build_priority_prefix_worklist.py
+
+      - name: Run audit unit tests
+        run: python3 -m unittest discover -s .github/scripts -p 'test_build_*prefix*.py' -v
+
+      - name: Validate v37 legal-evidence additions TSV
+        run: |
+          python3 - <<'PY'
+          import csv
+          import re
+          from pathlib import Path
+
+          path = Path(".github/audits/company_asn_legal_evidence_v37_additions.tsv")
+          with path.open(encoding="utf-8", newline="") as stream:
+              rows = list(csv.DictReader((line for line in stream if not line.startswith("#")), delimiter="\t"))
+
+          expected = {"AS44534", "AS207207", "AS210656", "AS213952", "AS215109"}
+          required = {
+              "ASN", "COMPANY_GROUP", "RIPE_ORGANISATION_NAME", "RIPE_COUNTRY",
+              "V37_IPVERSE_ACTIVE", "V37_IPV4_PREFIXES", "V37_IPV6_PREFIXES",
+              "ASN_ENTITY_ASSESSMENT", "REVIEW_FLAG", "ASSESSMENT_NOTE", "EVIDENCE_URLS",
+          }
+          if not rows or not required.issubset(rows[0]):
+              raise SystemExit("Missing required TSV columns or rows")
+          asns = [row["ASN"] for row in rows]
+          if len(asns) != len(set(asns)) or set(asns) != expected:
+              raise SystemExit(f"Unexpected or duplicate ASN set: {asns}")
+          for row in rows:
+              if not re.fullmatch(r"AS[0-9]+", row["ASN"]):
+                  raise SystemExit(f"Invalid ASN: {row['ASN']}")
+              if row["RIPE_COUNTRY"] != "RU":
+                  raise SystemExit(f"Unexpected registered country for {row['ASN']}")
+              if row["V37_IPVERSE_ACTIVE"] not in {"yes", "no"}:
+                  raise SystemExit(f"Invalid activity flag for {row['ASN']}")
+              int(row["V37_IPV4_PREFIXES"])
+              int(row["V37_IPV6_PREFIXES"])
+              if "https://" not in row["EVIDENCE_URLS"] or not row["ASSESSMENT_NOTE"].strip():
+                  raise SystemExit(f"Incomplete evidence for {row['ASN']}")
+          print(f"Validated {len(rows)} v37 legal-evidence additions")
+          PY
+
+      - name: Validate consolidated v37 legal-evidence TSV
+        run: |
+          python3 - <<'PY'
+          import csv
+          from pathlib import Path
+
+          path = Path(".github/audits/company_asn_legal_evidence_v37.tsv")
+          with path.open(encoding="utf-8", newline="") as stream:
+              rows = list(csv.DictReader((line for line in stream if not line.startswith("#")), delimiter="\t"))
+
+          expected = {
+              "AS13238", "AS200350", "AS202611", "AS215013", "AS208795", "AS207304",
+              "AS212066", "AS44534", "AS210656", "AS207207", "AS213952", "AS215109",
+              "AS47541", "AS47542", "AS28709", "AS47764", "AS49053", "AS57073",
+              "AS201512", "AS211517", "AS44386", "AS35237", "AS49505", "AS50340",
+              "AS208677", "AS210756", "AS57724", "AS9123", "AS34879", "AS12389",
+              "AS42610", "AS8359", "AS12714", "AS31133", "AS3216", "AS8402",
+              "AS20485", "AS15774", "AS9049", "AS48858", "AS25513",
+          }
+          reviewed_expected = {
+              "AS15774", "AS42610", "AS44534", "AS207207", "AS210656",
+              "AS211517", "AS212066", "AS213952", "AS215109", "AS34879",
+              "AS49053", "AS8402", "AS31133", "AS207304", "AS208795",
+              "AS202611", "AS9123", "AS57724", "AS208677", "AS210756",
+              "AS49505", "AS50340", "AS28709", "AS47541", "AS47542",
+              "AS47764", "AS3216", "AS8359", "AS9049", "AS12389", "AS12714",
+              "AS13238", "AS20485", "AS25513", "AS35237", "AS44386",
+              "AS48858", "AS57073", "AS200350", "AS201512", "AS215013",
+          }
+          required = {
+              "ASN", "COMPANY_GROUP", "ALLOWLIST_ENTITY_OR_NOTE", "RIPE_AS_NAME",
+              "RIPE_ORGANISATION_NAME", "RIPE_COUNTRY", "RIPE_REGISTRATION_NUMBER",
+              "ASN_ENTITY_ASSESSMENT", "V37_IPVERSE_ACTIVE", "V37_IPVERSE_COUNTRY_CODE",
+              "V37_IPV4_PREFIXES", "V37_IPV6_PREFIXES", "REVIEW_FLAG",
+              "ASSESSMENT_NOTE", "EVIDENCE_URLS", "AUDIT_STATUS",
+          }
+          if not rows or not required.issubset(rows[0]):
+              raise SystemExit("Missing required v37 legal-evidence TSV columns or rows")
+          asns = [row["ASN"] for row in rows]
+          if len(asns) != len(set(asns)) or set(asns) != expected or len(rows) != 41:
+              raise SystemExit(f"Unexpected/duplicate ASN inventory: {asns}")
+          reviewed = set()
+          inactive = set()
+          for row in rows:
+              if row["RIPE_COUNTRY"] not in {"RU", "BY", "KZ", "TR"}:
+                  raise SystemExit(f"Unexpected RIPE country for {row['ASN']}: {row['RIPE_COUNTRY']}")
+              if row["V37_IPVERSE_ACTIVE"] not in {"yes", "no"}:
+                  raise SystemExit(f"Invalid v37 observation flag for {row['ASN']}")
+              v4, v6 = int(row["V37_IPV4_PREFIXES"]), int(row["V37_IPV6_PREFIXES"])
+              if v4 < 0 or v6 < 0:
+                  raise SystemExit(f"Negative prefix count for {row['ASN']}")
+              if row["V37_IPVERSE_ACTIVE"] == "no":
+                  inactive.add(row["ASN"])
+                  if v4 != 0 or v6 != 0 or row["V37_IPVERSE_COUNTRY_CODE"] != "-":
+                      raise SystemExit(f"Inconsistent unobserved manifest row for {row['ASN']}")
+              elif v4 + v6 == 0:
+                  raise SystemExit(f"Observed row has no prefixes: {row['ASN']}")
+              if not row["RIPE_AS_NAME"].strip() or not row["RIPE_ORGANISATION_NAME"].strip():
+                  raise SystemExit(f"Missing RIPE identity for {row['ASN']}")
+              if not row["ASSESSMENT_NOTE"].strip() or "https://" not in row["EVIDENCE_URLS"]:
+                  raise SystemExit(f"Missing note/evidence URL for {row['ASN']}")
+              status = row["AUDIT_STATUS"]
+              if status == "REVIEWED_2026-11-10":
+                  reviewed.add(row["ASN"])
+              elif status != "CARRY_FORWARD_NOT_REVERIFIED":
+                  raise SystemExit(f"Unknown audit status for {row['ASN']}: {status}")
+          if reviewed != reviewed_expected:
+              raise SystemExit(f"Unexpected reviewed ASN set: {sorted(reviewed)}")
+          if inactive != {"AS49053", "AS213952", "AS215109"}:
+              raise SystemExit(f"Unexpected no-observation set: {sorted(inactive)}")
+          print(f"Validated {len(rows)} legal records; {len(reviewed)} reviewed and {len(rows)-len(reviewed)} pending; {len(inactive)} absent from the v37 manifest")
+          PY
+
+      - name: Fetch immutable v37 production inputs
+        id: v37-inputs
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          release_sha="$(git ls-remote "https://github.com/${{ github.repository }}.git" refs/heads/release | awk 'NR == 1 {print $1}')"
+          if [[ ! "$release_sha" =~ ^[0-9a-f]{40}$ ]]; then
+            echo "::error::Unable to resolve one immutable release-branch commit"
+            exit 1
+          fi
+
+          base_url="https://raw.githubusercontent.com/${{ github.repository }}/$release_sha"
+          for file in \
+            geoip_RU_company_asns.txt \
+            geoip_RU_company_asn_manifest.tsv \
+            geoip_RU_BY_KZ_asn_bgp_prefixes.txt \
+            geoip_RU_input_provenance.tsv \
+            geoip_RU_quality_report.txt; do
+            curl --fail --location --silent --show-error \
+              --retry 3 --retry-all-errors --connect-timeout 15 --max-time 180 \
+              "$base_url/$file" -o "$file"
+            test -s "$file" || { echo "::error::Empty release input: $file"; exit 1; }
+          done
+
+          read -r snapshot_url snapshot_sha snapshot_bytes < <(python3 - <<'PY'
+          import csv
+          import re
+
+          with open("geoip_RU_input_provenance.tsv", encoding="utf-8", newline="") as stream:
+              rows = list(csv.DictReader(stream, delimiter="\t"))
+          matches = [row for row in rows if row["LOCAL_FILE"] == "as-ip-blocks.tar.gz"]
+          if len(matches) != 1:
+              raise SystemExit("Expected exactly one ipverse archive row in release provenance")
+          row = matches[0]
+          if row["STATUS"] != "downloaded":
+              raise SystemExit(f"ipverse archive status is not downloaded: {row['STATUS']}")
+          if not re.fullmatch(r"[0-9a-f]{64}", row["SHA256"]):
+              raise SystemExit("Invalid ipverse archive SHA-256 in release provenance")
+          if not row["BYTES"].isdigit() or int(row["BYTES"]) < 5_000_000:
+              raise SystemExit("Invalid or implausible ipverse archive size in release provenance")
+          if not row["FETCH_URL"].startswith("https://"):
+              raise SystemExit("ipverse archive provenance URL must use HTTPS")
+          print(row["FETCH_URL"], row["SHA256"], row["BYTES"])
+          PY
+          )
+
+          curl --fail --location --silent --show-error \
+            --retry 3 --retry-all-errors --connect-timeout 15 --max-time 600 \
+            "$snapshot_url" -o as-ip-blocks.tar.gz
+
+          python3 - <<'PY'
+          import csv
+          import gzip
+          import hashlib
+          from pathlib import Path
+
+          with open("geoip_RU_input_provenance.tsv", encoding="utf-8", newline="") as stream:
+              rows = list(csv.DictReader(stream, delimiter="\t"))
+          row = next(item for item in rows if item["LOCAL_FILE"] == "as-ip-blocks.tar.gz")
+          archive = Path("as-ip-blocks.tar.gz").read_bytes()
+          if len(archive) != int(row["BYTES"]):
+              raise SystemExit(f"ipverse archive size mismatch: {len(archive)} != {row['BYTES']}")
+          digest = hashlib.sha256(archive).hexdigest()
+          if digest != row["SHA256"]:
+              raise SystemExit(f"ipverse archive SHA-256 mismatch: {digest} != {row['SHA256']}")
+          try:
+              with gzip.open("as-ip-blocks.tar.gz", "rb") as stream:
+                  stream.read(1)
+          except OSError as exc:
+              raise SystemExit(f"ipverse archive is not valid gzip: {exc}")
+          print(f"Verified ipverse archive: {len(archive)} bytes, SHA256={digest}")
+          PY
+
+          sha256sum \
+            geoip_RU_company_asns.txt \
+            geoip_RU_company_asn_manifest.tsv \
+            geoip_RU_BY_KZ_asn_bgp_prefixes.txt \
+            geoip_RU_input_provenance.tsv \
+            geoip_RU_quality_report.txt \
+            > v37-release-inputs.sha256
+          printf '%s\n' "$release_sha" > v37-release-commit.txt
+          echo "release_sha=$release_sha" >> "$GITHUB_OUTPUT"
+
+      - name: Generate company-origin and full selected-origin prefix review queues
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p prefix-audit
+
+          python3 .github/scripts/build_company_prefix_review.py \
+            --company-asns geoip_RU_company_asns.txt \
+            --company-manifest geoip_RU_company_asn_manifest.tsv \
+            --regional-prefixes geoip_RU_BY_KZ_asn_bgp_prefixes.txt \
+            --input-provenance geoip_RU_input_provenance.tsv \
+            --bgp-archive as-ip-blocks.tar.gz \
+            --output prefix-audit/company_origin_prefix_review.tsv \
+            --stats prefix-audit/company_origin_prefix_review_stats.txt
+
+          python3 .github/scripts/build_selected_origin_prefix_review.py \
+            --selected-prefixes geoip_RU_BY_KZ_asn_bgp_prefixes.txt \
+            --company-asns geoip_RU_company_asns.txt \
+            --company-manifest geoip_RU_company_asn_manifest.tsv \
+            --input-provenance geoip_RU_input_provenance.tsv \
+            --bgp-archive as-ip-blocks.tar.gz \
+            --output prefix-audit/selected_origin_prefix_review.tsv \
+            --stats prefix-audit/selected_origin_prefix_review_stats.txt
+
+          cp v37-release-inputs.sha256 prefix-audit/
+          cp v37-release-commit.txt prefix-audit/
+
+      - name: Validate generated prefix review queues against v37 production quality report
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import csv
+          import hashlib
+          import ipaddress
+          import re
+          from pathlib import Path
+
+          report = Path("geoip_RU_quality_report.txt").read_text(encoding="utf-8")
+          expected_company = re.search(
+              r"^Unique prefixes originated by curated Russian-company/affiliate ASNs: ([0-9]+)$",
+              report, re.MULTILINE,
+          )
+          expected_selected = re.search(
+              r"^Unique prefixes in DIRECT ASN-origin/pinned layer .+: ([0-9]+)$",
+              report, re.MULTILINE,
+          )
+          if not expected_company or not expected_selected:
+              raise SystemExit("Could not find selected-prefix baselines in v37 production quality report")
+          expected_company_count = int(expected_company.group(1))
+          expected_selected_count = int(expected_selected.group(1))
+
+          def read_queue(path):
+              with path.open(encoding="utf-8", newline="") as stream:
+                  data_lines = (line for line in stream if not line.startswith("#"))
+                  rows = list(csv.DictReader(data_lines, delimiter="\t"))
+              if not rows:
+                  raise SystemExit(f"Empty review queue: {path}")
+              prefixes = [row["PREFIX"] for row in rows]
+              if len(prefixes) != len(set(prefixes)):
+                  raise SystemExit(f"Duplicate exact prefixes in {path}")
+              for row in rows:
+                  net = ipaddress.ip_network(row["PREFIX"], strict=True)
+                  if row["FAMILY"] != f"IPv{net.version}" or int(row["ADDRESS_COUNT"]) != net.num_addresses:
+                      raise SystemExit(f"Invalid family/address count for {row['PREFIX']} in {path}")
+                  if row["STATUS"] != "REVIEW":
+                      raise SystemExit(f"Non-REVIEW row found in {path}: {row['PREFIX']}")
+                  if row["RPKI_STATUS"] != "NOT_QUERIED" or row["IRR_STATUS"] != "NOT_QUERIED":
+                      raise SystemExit(f"Unexpected RPKI/IRR claim in {path}: {row['PREFIX']}")
+                  if row["GLOBAL_BGP_OBSERVATION"] not in {"OBSERVED", "NOT_OBSERVED_STATIC_DIRECT_PIN"}:
+                      raise SystemExit(f"Unexpected global-observation status in {path}: {row['PREFIX']}")
+                  if not row["BGP_SNAPSHOT_SHA256"] or not row["BGP_SNAPSHOT_URL"]:
+                      raise SystemExit(f"Missing BGP snapshot provenance for {row['PREFIX']}")
+              return rows, set(prefixes)
+
+          company_rows, company_prefixes = read_queue(Path("prefix-audit/company_origin_prefix_review.tsv"))
+          selected_rows, selected_prefixes = read_queue(Path("prefix-audit/selected_origin_prefix_review.tsv"))
+
+          if len(company_rows) != expected_company_count:
+              raise SystemExit(
+                  f"Company queue count {len(company_rows)} does not match v37 production baseline {expected_company_count}"
+              )
+          if len(selected_rows) != expected_selected_count:
+              raise SystemExit(
+                  f"Selected queue count {len(selected_rows)} does not match v37 production baseline {expected_selected_count}"
+              )
+          if not company_prefixes.issubset(selected_prefixes):
+              missing = sorted(company_prefixes - selected_prefixes)[:10]
+              raise SystemExit(f"Company-origin prefixes are absent from the full selected-origin queue: {missing}")
+
+          input_provenance = Path("geoip_RU_input_provenance.tsv").read_bytes()
+          provenance_sha = hashlib.sha256(input_provenance).hexdigest()
+          for stats_path in (
+              Path("prefix-audit/company_origin_prefix_review_stats.txt"),
+              Path("prefix-audit/selected_origin_prefix_review_stats.txt"),
+          ):
+              stats = stats_path.read_text(encoding="utf-8")
+              for label in (
+                  "Company ASN registry SHA256:",
+                  "Company ASN manifest SHA256:",
+                  "Selected prefix input SHA256:",
+                  "Input provenance SHA256:",
+                  "BGP snapshot SHA256:",
+              ):
+                  if label not in stats:
+                      raise SystemExit(f"Missing source digest in {stats_path}: {label}")
+              if f"Input provenance SHA256: {provenance_sha}" not in stats:
+                  raise SystemExit(f"Input provenance digest mismatch in {stats_path}")
+
+          bundle_manifest = [
+              "Prefix audit bundle: v37 production input snapshot",
+              f"Release commit: {Path('v37-release-commit.txt').read_text(encoding='utf-8').strip()}",
+              f"Company-origin review prefixes: {len(company_rows)}",
+              f"Full selected-origin review prefixes: {len(selected_rows)}",
+              f"Company-origin prefixes in selected queue: {len(company_prefixes)}",
+              "All rows remain STATUS=REVIEW.",
+              "RPKI_STATUS=NOT_QUERIED and IRR_STATUS=NOT_QUERIED; these are not negative results.",
+              "Global origin and MOAS evidence comes from the same SHA-256-verified ipverse archive named in production input provenance.",
+              "The queues do not change DIRECT policy, production main/release, or geoip_RU.dat.",
+              "",
+          ]
+          Path("prefix-audit/README.txt").write_text("\n".join(bundle_manifest), encoding="utf-8")
+          print("\n".join(bundle_manifest))
+          PY
+
+      - name: Collect RDAP resource-holder samples and per-origin RPKI status for priority prefixes
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 .github/scripts/build_priority_prefix_evidence.py \
+            --company-review prefix-audit/company_origin_prefix_review.tsv \
+            --output-dir prefix-audit/priority-prefix-evidence \
+            --workers 5
+
+      - name: Validate priority RDAP and RPKI evidence against company review queue
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import csv
+          import ipaddress
+          import json
+          from collections import Counter
+          from pathlib import Path
+
+          def read_tsv(path):
+              with path.open(encoding="utf-8", newline="") as stream:
+                  return list(csv.DictReader((line for line in stream if not line.startswith("#")), delimiter="\t"))
+
+          company = read_tsv(Path("prefix-audit/company_origin_prefix_review.tsv"))
+          expected_priority = {
+              row["PREFIX"] for row in company
+              if row["GLOBAL_BGP_MOAS"] == "yes" or row["INCLUSION_BASIS"] == "COMPANY_ASN_ONLY"
+          }
+          priority = read_tsv(Path("prefix-audit/priority-prefix-evidence/priority_prefixes.tsv"))
+          priority_prefixes = {row["PREFIX"] for row in priority}
+          if len(priority) != 56 or len(priority_prefixes) != 56:
+              raise SystemExit(f"Expected 56 unique priority prefixes, got {len(priority)} rows/{len(priority_prefixes)} unique")
+          if priority_prefixes != expected_priority:
+              raise SystemExit("Priority prefix set differs from exact company MOAS + company-only selection")
+          if sum(row["GLOBAL_BGP_MOAS"] == "yes" for row in priority) != 52:
+              raise SystemExit("Expected exactly 52 company MOAS prefixes")
+          if sum(row["INCLUSION_BASIS"] == "COMPANY_ASN_ONLY" for row in priority) != 4:
+              raise SystemExit("Expected exactly four company-only prefixes")
+          if any(row["STATUS"] != "REVIEW" for row in priority):
+              raise SystemExit("Priority prefix table contains a non-REVIEW status")
+
+          expected_samples = set()
+          expected_pairs = set()
+          for row in priority:
+              network = ipaddress.ip_network(row["PREFIX"], strict=True)
+              first = int(network.network_address)
+              last = int(network.broadcast_address)
+              middle = first + ((last - first) // 2)
+              for address in dict.fromkeys((first, middle, last)):
+                  expected_samples.add((row["PREFIX"], str(ipaddress.ip_address(address))))
+              for origin in set(part.strip() for part in row["GLOBAL_BGP_ORIGIN_ASNS"].split(",") if part.strip()):
+                  expected_pairs.add((row["PREFIX"], origin))
+
+          rdap = read_tsv(Path("prefix-audit/priority-prefix-evidence/rdap_samples.tsv"))
+          actual_samples = [(row["PREFIX"], row["SAMPLE_ADDRESS"]) for row in rdap]
+          if len(actual_samples) != len(set(actual_samples)) or set(actual_samples) != expected_samples:
+              raise SystemExit(
+                  f"RDAP sample inventory mismatch: expected {len(expected_samples)}, got {len(actual_samples)}"
+              )
+          if any(not row["QUERY_STATUS"] for row in rdap):
+              raise SystemExit("RDAP contains a blank query status; failures must remain explicit")
+          rdap_success = sum(row["QUERY_STATUS"] == "OK" for row in rdap)
+          rdap_errors = Counter(row["QUERY_STATUS"] for row in rdap if row["QUERY_STATUS"] != "OK")
+
+          rpki = read_tsv(Path("prefix-audit/priority-prefix-evidence/rpki_by_origin.tsv"))
+          actual_pairs = [(row["PREFIX"], row["ORIGIN_ASN"]) for row in rpki]
+          if len(actual_pairs) != len(set(actual_pairs)) or set(actual_pairs) != expected_pairs:
+              raise SystemExit(
+                  f"RPKI pair inventory mismatch: expected {len(expected_pairs)}, got {len(actual_pairs)}"
+              )
+          allowed_rpki = {"valid", "invalid_asn", "invalid_length", "unknown"}
+          for row in rpki:
+              if not row["QUERY_STATUS"]:
+                  raise SystemExit(f"Blank RPKI query status for {row['PREFIX']} {row['ORIGIN_ASN']}")
+              if row["QUERY_STATUS"] == "OK" and row["RPKI_STATUS"] not in allowed_rpki:
+                  raise SystemExit(f"Unexpected RIPEstat RPKI status: {row['RPKI_STATUS']}")
+              if row["QUERY_STATUS"] != "OK" and row["RPKI_STATUS"]:
+                  raise SystemExit("API error was incorrectly converted into an RPKI state")
+          rpki_statuses = Counter(
+              row["RPKI_STATUS"] if row["QUERY_STATUS"] == "OK" else row["QUERY_STATUS"]
+              for row in rpki
+          )
+
+          holder_summary = read_tsv(Path("prefix-audit/priority-prefix-evidence/prefix_holder_review_summary.tsv"))
+          if len(holder_summary) != 56 or {row["PREFIX"] for row in holder_summary} != priority_prefixes:
+              raise SystemExit("RDAP per-prefix holder summary is incomplete")
+          if any(row["STATUS"] != "REVIEW" for row in holder_summary):
+              raise SystemExit("RDAP holder summary contains a non-REVIEW status")
+
+          irr_metadata = json.loads(
+              Path("prefix-audit/priority-prefix-evidence/irr_sources_metadata.json").read_text(encoding="utf-8")
+          )
+          source_containers = [irr_metadata.get("sources", {}), irr_metadata.get("grs-sources", {})]
+          metadata_sources = set()
+          for container in source_containers:
+              sources = container.get("source", []) if isinstance(container, dict) else []
+              if isinstance(sources, dict):
+                  sources = [sources]
+              for item in sources if isinstance(sources, list) else []:
+                  if isinstance(item, dict):
+                      name = str(item.get("name") or item.get("id") or "").strip().upper()
+                      if name:
+                          metadata_sources.add(name)
+          required_ripe_sources = {
+              "RIPE", "AFRINIC-GRS", "APNIC-GRS", "ARIN-GRS",
+              "JPIRR-GRS", "LACNIC-GRS", "RADB-GRS", "RIPE-GRS",
+          }
+          if not required_ripe_sources.issubset(metadata_sources):
+              raise SystemExit(
+                  f"RIPE metadata omitted documented GRS source names: {sorted(required_ripe_sources - metadata_sources)}"
+              )
+          irr_summary = read_tsv(Path("prefix-audit/priority-prefix-evidence/irr_prefix_summary.tsv"))
+          irr_objects = read_tsv(Path("prefix-audit/priority-prefix-evidence/irr_route_objects.tsv"))
+          irr_unique_objects = read_tsv(Path("prefix-audit/priority-prefix-evidence/irr_route_objects_deduplicated.tsv"))
+          if len(irr_summary) != 56 or {row["PREFIX"] for row in irr_summary} != priority_prefixes:
+              raise SystemExit("IRR query summary is incomplete for the 56 priority prefixes")
+          if any(not row["QUERY_STATUS"] for row in irr_summary):
+              raise SystemExit("IRR query summary contains blank query statuses")
+          for row in irr_summary:
+              if row["STATUS"] != "REVIEW":
+                  raise SystemExit(f"IRR summary has non-REVIEW status for {row['PREFIX']}")
+              if not required_ripe_sources.issubset(set(row["QUERY_SCOPE_SOURCES"].split(","))):
+                  missing_sources = sorted(required_ripe_sources - set(row["QUERY_SCOPE_SOURCES"].split(",")))
+                  raise SystemExit(f"Documented RIPE/GRS sources missing for {row['PREFIX']}: {missing_sources}")
+              prefix_objects = [obj for obj in irr_unique_objects if obj["QUERY_PREFIX"] == row["PREFIX"]]
+              exact_objects = [obj for obj in prefix_objects if obj["EXACT_PREFIX_MATCH"] == "yes"]
+              matched_objects = [obj for obj in exact_objects if obj["GLOBAL_BGP_ORIGIN_MATCH"] == "yes"]
+              if int(row["IRR_UNIQUE_ROUTE_OBJECTS"]) != len(prefix_objects):
+                  raise SystemExit(f"IRR unique object count differs from deduplicated table for {row['PREFIX']}")
+              if int(row["IRR_EXACT_OBJECTS"]) != len(exact_objects):
+                  raise SystemExit(f"IRR exact object count differs from deduplicated table for {row['PREFIX']}")
+              if int(row["IRR_EXACT_BGP_ORIGIN_MATCH_OBJECTS"]) != len(matched_objects):
+                  raise SystemExit(f"IRR exact BGP-origin match count differs from deduplicated table for {row['PREFIX']}")
+              if row["QUERY_STATUS"] == "OK" and not exact_objects:
+                  raise SystemExit(f"IRR query marked OK without an exact route object for {row['PREFIX']}")
+          for obj in irr_objects:
+              try:
+                  canonical = ipaddress.ip_network(obj["ROUTE_PREFIX"], strict=True).with_prefixlen
+              except ValueError:
+                  raise SystemExit(f"Invalid route object prefix in IRR output: {obj['ROUTE_PREFIX']}")
+              if obj["EXACT_PREFIX_MATCH"] not in {"yes", "no"}:
+                  raise SystemExit(f"Invalid exact-prefix flag for IRR object {obj['OBJECT_KEY']}")
+              if obj["GLOBAL_BGP_ORIGIN_MATCH"] not in {"yes", "no"}:
+                  raise SystemExit(f"Invalid origin-match flag for IRR object {obj['OBJECT_KEY']}")
+              if obj["EXACT_PREFIX_MATCH"] == "yes" and canonical != obj["QUERY_PREFIX"]:
+                  raise SystemExit(f"Exact IRR object prefix mismatch: {obj['QUERY_PREFIX']} vs {canonical}")
+
+          # Logical RPSL route identity is exact route/route6 prefix + origin ASN
+          # within the queried prefix. Source-specific attributes may differ across
+          # registry mirrors and are unioned in the deduplicated report.
+          object_identity_fields = ("QUERY_PREFIX", "OBJECT_TYPE", "ROUTE_PREFIX", "ORIGIN_ASN")
+          raw_source_map = {}
+          raw_grouped_rows = {}
+          for obj in irr_objects:
+              signature = tuple(obj[field] for field in object_identity_fields)
+              raw_source_map.setdefault(signature, set()).add(obj["REGISTRY_SOURCE"])
+              raw_grouped_rows.setdefault(signature, []).append(obj)
+          unique_map = {}
+          for obj in irr_unique_objects:
+              signature = tuple(obj[field] for field in object_identity_fields)
+              if signature in unique_map:
+                  raise SystemExit(f"Duplicate logical route object in deduplicated table: {signature}")
+              unique_map[signature] = obj
+          if set(raw_source_map) != set(unique_map):
+              raise SystemExit("Deduplicated IRR logical route identities do not match source-specific objects")
+          for signature, source_names in raw_source_map.items():
+              unique_obj = unique_map[signature]
+              expected_sources = {source for source in source_names if source}
+              actual_sources = set(filter(None, unique_obj["REGISTRY_SOURCES"].split(",")))
+              if actual_sources != expected_sources:
+                  raise SystemExit(f"Deduplicated IRR registry source inventory mismatch for {signature}")
+              if not actual_sources or not actual_sources.issubset(required_ripe_sources):
+                  raise SystemExit(f"Deduplicated IRR object has missing/unexpected registry source: {signature}")
+              grouped = raw_grouped_rows[signature]
+              for flag in ("EXACT_PREFIX_MATCH", "GLOBAL_BGP_ORIGIN_MATCH"):
+                  if len({row[flag] for row in grouped}) != 1 or unique_obj[flag] != grouped[0][flag]:
+                      raise SystemExit(f"RIPE/GRS sources disagree on {flag} for {signature}")
+              for field in ("MNT_BY", "ORG", "DESCR", "REMARKS", "MEMBER_OF", "CREATED", "LAST_MODIFIED"):
+                  expected_values = " | ".join(sorted({row[field] for row in grouped if row.get(field)}))
+                  if unique_obj[field] != expected_values:
+                      raise SystemExit(f"Deduplicated IRR attribute union mismatch for {field} / {signature}")
+
+          stats = Path("prefix-audit/priority-prefix-evidence/priority_prefix_evidence_stats.txt").read_text(encoding="utf-8")
+          for label in (
+              "Source company review queue SHA256:",
+              "IANA IPv4 RDAP bootstrap URL:",
+              "IANA IPv4 RDAP bootstrap SHA256:",
+              "IANA IPv6 RDAP bootstrap URL:",
+              "IANA IPv6 RDAP bootstrap SHA256:",
+              "Priority prefixes: 56",
+              "Exact MOAS prefixes: 52",
+              "Company-only prefixes: 4",
+              "RPKI origin-prefix checks attempted:",
+              "IRR sources queried:",
+              "IRR exact-prefix search query statuses:",
+              "IRR source-specific route object records returned:",
+              "IRR unique route object contents after cross-source deduplication:",
+              "IRR unique exact route objects:",
+              "IRR unique exact prefix+observed-origin matches:",
+          ):
+              if label not in stats:
+                  raise SystemExit(f"Priority evidence statistics missing: {label}")
+
+          manifest = [
+              "Priority prefix evidence stage",
+              "Scope: 52 exact company MOAS prefixes plus four company-only prefixes.",
+              f"RDAP sample queries: {len(rdap)} attempted; {rdap_success} successful; errors={dict(sorted(rdap_errors.items()))}",
+              f"RPKI prefix/origin pairs: {len(rpki)}; states/errors={dict(sorted(rpki_statuses.items()))}",
+              f"IRR exact-prefix queries: {len(irr_summary)}; query statuses={dict(sorted(Counter(row['QUERY_STATUS'] for row in irr_summary).items()))}",
+              f"IRR source-specific object records: {len(irr_objects)}; by source={dict(sorted(Counter(obj['REGISTRY_SOURCE'] for obj in irr_objects).items()))}",
+              f"IRR deduplicated logical route objects: {len(irr_unique_objects)}; exact objects={sum(obj['EXACT_PREFIX_MATCH'] == 'yes' for obj in irr_unique_objects)}; exact observed-origin matches={sum(obj['EXACT_PREFIX_MATCH'] == 'yes' and obj['GLOBAL_BGP_ORIGIN_MATCH'] == 'yes' for obj in irr_unique_objects)}",
+              "RDAP first/mid/last sample results are not exhaustive proof of every sub-allocation inside a prefix.",
+              "RPKI status validates the prefix/origin pair against a ROA; it does not prove legal ownership of the address space.",
+              "IRR queries cover RIPE plus the GRS sources reported by the RIPE Database metadata endpoint, not every independent IRR registry.",
+              "No route object returned from the queried RIPE/GRS sources is not proof that no IRR object exists elsewhere.",
+              "HTTP/network errors remain explicit and are never interpreted as no ROA, no registry record, or no resource holder.",
+              "Every row remains REVIEW; no DIRECT policy or GeoIP output is modified.",
+              "",
+          ]
+          Path("prefix-audit/priority-prefix-evidence/README_validation.txt").write_text("\n".join(manifest), encoding="utf-8")
+          print("\n".join(manifest))
+          PY
+
+      - name: Build and validate the review-only priority-prefix triage table
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 .github/scripts/build_priority_prefix_triage.py \
+            --evidence-dir prefix-audit/priority-prefix-evidence \
+            --output prefix-audit/priority-prefix-evidence/priority_prefix_triage.tsv \
+            --stats prefix-audit/priority-prefix-evidence/priority_prefix_triage_stats.txt
+
+          python3 - <<'PY'
+          import csv
+          from pathlib import Path
+
+          base = Path("prefix-audit/priority-prefix-evidence")
+          def read_tsv(path):
+              with path.open(encoding="utf-8", newline="") as stream:
+                  return list(csv.DictReader(
+                      (line for line in stream if not line.startswith("#")), delimiter="\t"
+                  ))
+
+          priority = read_tsv(base / "priority_prefixes.tsv")
+          triage = read_tsv(base / "priority_prefix_triage.tsv")
+          if len(priority) != 56 or len(triage) != 56:
+              raise SystemExit(f"Expected 56 priority/triage rows, got {len(priority)}/{len(triage)}")
+          if {row["PREFIX"] for row in priority} != {row["PREFIX"] for row in triage}:
+              raise SystemExit("Triage prefix inventory differs from the priority queue")
+          if any(row["STATUS"] != "REVIEW" for row in triage):
+              raise SystemExit("Triage table contains a non-REVIEW row")
+          stats_path = base / "priority_prefix_triage_stats.txt"
+          stats = stats_path.read_text(encoding="utf-8")
+          for required in (
+              "Priority prefixes: 56",
+              "All rows: STATUS=REVIEW",
+              "no row is automatically approved",
+              "both set differences are retained in the TSV",
+          ):
+              if required not in stats:
+                  raise SystemExit(f"Triage statistics missing safety statement: {required}")
+          validation = base / "README_validation.txt"
+          with validation.open("a", encoding="utf-8") as stream:
+              stream.write("\nPriority-prefix triage\n")
+              stream.write(stats)
+          print(stats)
+          PY
+
+      - name: Build and validate review-only priority-prefix analyst worklist
+        shell: bash
+        run: |
+          set -euo pipefail
+          evidence="prefix-audit/priority-prefix-evidence"
+          cp .github/audits/priority_prefix_external_spot_checks_v37.tsv "$evidence/"
+
+          python3 .github/scripts/build_priority_prefix_worklist.py \
+            --evidence-dir "$evidence" \
+            --output "$evidence/priority_prefix_review_worklist.tsv" \
+            --stats "$evidence/priority_prefix_review_worklist_stats.txt"
+
+          python3 - <<'PY'
+          import csv
+          from pathlib import Path
+
+          base = Path("prefix-audit/priority-prefix-evidence")
+          def read_tsv(path):
+              with path.open(encoding="utf-8", newline="") as stream:
+                  return list(csv.DictReader(
+                      (line for line in stream if not line.startswith("#")), delimiter="\t"
+                  ))
+
+          triage = read_tsv(base / "priority_prefix_triage.tsv")
+          priority = read_tsv(base / "priority_prefixes.tsv")
+          worklist = read_tsv(base / "priority_prefix_review_worklist.tsv")
+          expected_spots = {
+              "5.45.192.0/18", "5.45.215.0/24", "45.148.65.0/24",
+              "94.131.190.0/23", "109.61.128.0/17", "37.19.32.0/20",
+              "77.45.128.0/17", "94.75.128.0/18", "95.158.192.0/18",
+              "178.75.64.0/18", "95.32.0.0/16", "95.179.0.0/17",
+              "177.1.199.0/24",
+          }
+          if len(worklist) != 56 or len({r["PREFIX"] for r in worklist}) != 56:
+              raise SystemExit("Worklist must contain 56 unique exact prefixes")
+          if {r["PREFIX"] for r in worklist} != {r["PREFIX"] for r in triage}:
+              raise SystemExit("Worklist prefix inventory differs from triage")
+          if {r["PREFIX"] for r in worklist} != {r["PREFIX"] for r in priority}:
+              raise SystemExit("Worklist prefix inventory differs from priority scope")
+          if any(r["STATUS"] != "REVIEW" for r in worklist):
+              raise SystemExit("Worklist contains a non-REVIEW row")
+          if any(not r["REQUIRED_NEXT_ACTION"] for r in worklist):
+              raise SystemExit("Worklist contains a row without a next action")
+          if [int(r["REVIEW_ORDER"]) for r in worklist] != sorted(int(r["REVIEW_ORDER"]) for r in worklist):
+              raise SystemExit("Worklist is not sorted by review order")
+          spot_rows = [r for r in worklist if r["EXTERNAL_SPOT_CHECK_STATUS"] != "NOT_SPOT_CHECKED"]
+          if {r["PREFIX"] for r in spot_rows} != expected_spots or len(spot_rows) != 13:
+              raise SystemExit("External spot-check scope does not match the thirteen reviewed prefixes")
+          if any(r["EXTERNAL_SPOT_CHECK_STATUS"] != "CHECKED_2026-11-10" for r in spot_rows):
+              raise SystemExit("Unexpected spot-check timestamp")
+          expected_scope_relations = {
+              "5.45.192.0/18": "EXACT_ONLY",
+              "5.45.215.0/24": "EXACT_ONLY",
+              "45.148.65.0/24": "EXACT_ONLY",
+              "94.131.190.0/23": "MORE_SPECIFIC_ONLY",
+              "109.61.128.0/17": "EXACT_AND_MORE_SPECIFIC",
+              "37.19.32.0/20": "MORE_SPECIFIC_ONLY",
+              "77.45.128.0/17": "MORE_SPECIFIC_ONLY",
+              "94.75.128.0/18": "EXACT_AND_MORE_SPECIFIC",
+              "95.158.192.0/18": "MORE_SPECIFIC_ONLY",
+              "178.75.64.0/18": "MORE_SPECIFIC_ONLY",
+              "95.32.0.0/16": "MORE_SPECIFIC_ONLY",
+              "95.179.0.0/17": "MORE_SPECIFIC_ONLY",
+              "177.1.199.0/24": "EXACT_ONLY",
+          }
+          actual_scope_relations = {
+              r["PREFIX"]: r["EXTERNAL_SPOT_CHECK_SCOPE_RELATION"] for r in spot_rows
+          }
+          if actual_scope_relations != expected_scope_relations:
+              raise SystemExit(f"External NLRI scope relations differ: {actual_scope_relations}")
+          stats = (base / "priority_prefix_review_worklist_stats.txt").read_text(encoding="utf-8")
+          for required in (
+              "Priority prefixes: 56", "External spot-check rows: 13", "All rows: STATUS=REVIEW",
+              "External spot-check scope EXACT_ONLY: 4",
+              "External spot-check scope EXACT_AND_MORE_SPECIFIC: 2",
+              "External spot-check scope MORE_SPECIFIC_ONLY: 7",
+          ):
+              if required not in stats:
+                  raise SystemExit(f"Worklist statistics missing: {required}")
+          with (base / "README_validation.txt").open("a", encoding="utf-8") as stream:
+              stream.write("\nPriority-prefix analyst worklist\n")
+              stream.write(stats)
+          print(stats)
+          PY
+
+      - name: Upload prefix review queues as a CI artifact
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+        with:
+          name: v37-prefix-audit-${{ github.event.pull_request.number }}
+          path: prefix-audit/
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Parse workflow YAML
+        run: ruby -e 'require "yaml"; YAML.load_file(ARGV.fetch(0)); puts "Workflow YAML parsed"' .github/workflows/prefix-audit-validation.yml
