@@ -413,13 +413,14 @@ def poll_globalping(measurement_id: str, max_wait: int = 40) -> dict[str, Any]:
 
 
 def classify_globalping_api_error(exc: APIError, kind: str, ip_family: int) -> str:
-    """Separate missing IPv6-capable probes from actual measurement outcomes."""
+    """Separate probe-coverage gaps from genuine API failures."""
     message = str(exc).lower()
     if exc.status == 429:
         return "RATE_LIMITED"
-    if (exc.status == 422 and kind == "HTTPS" and ip_family == 6
-            and "no_probes_found" in message):
-        return "NO_IPV6_PROBE"
+    if exc.status == 422 and "no_probes_found" in message:
+        if kind == "HTTPS" and ip_family == 6:
+            return "NO_IPV6_PROBE"
+        return "NO_PROBE"
     return "API_ERROR"
 
 
@@ -1134,7 +1135,7 @@ def run(args: argparse.Namespace) -> int:
     candidates = [
         row for row in globalping_rows
         if row.get("result") in {"INCONCLUSIVE", "DNS_NXDOMAIN", "DNS_NO_ANSWER",
-                                  "WRONG_PROBE_SELECTION", "NO_IPV6_PROBE",
+                                  "WRONG_PROBE_SELECTION", "NO_PROBE", "NO_IPV6_PROBE",
                                   "RATE_LIMITED", "API_ERROR"}
     ]
     write_tsv(output_dir / "reachability_by_provider.tsv", provider_report, [
@@ -1203,6 +1204,7 @@ def run(args: argparse.Namespace) -> int:
         "globalping_accessible": sum(row.get("result") == "ACCESSIBLE" for row in globalping_rows),
         "globalping_dns_answers": sum(row.get("result") == "DNS_ANSWER" for row in globalping_rows),
         "globalping_inconclusive": sum(row.get("result") == "INCONCLUSIVE" for row in globalping_rows),
+        "globalping_no_probe": sum(row.get("result") == "NO_PROBE" for row in globalping_rows),
         "globalping_ipv6_probe_unavailable": sum(row.get("result") == "NO_IPV6_PROBE" for row in globalping_rows),
         "globalping_api_errors": sum(row.get("result") == "API_ERROR" for row in globalping_rows),
         "ooni_observations": len(ooni_rows),
@@ -1240,6 +1242,7 @@ def build_globalping_coverage_summary(
         if target.get("id") and str(country).upper() in COUNTRIES
     }
     no_ipv6_by_country: collections.Counter[str] = collections.Counter()
+    no_probe_by_country: collections.Counter[str] = collections.Counter()
 
     for row in measurements:
         target_id = str(row.get("target_id") or "")
@@ -1256,10 +1259,14 @@ def build_globalping_coverage_summary(
                 provider_target_bundles.add((country, asn, target_id))
         if row.get("result") == "NO_IPV6_PROBE" and country in COUNTRIES:
             no_ipv6_by_country[country] += 1
+        elif row.get("result") == "NO_PROBE" and country in COUNTRIES:
+            no_probe_by_country[country] += 1
 
     pairs_by_country = collections.Counter(country for country, _ in observed_pairs)
     return {
         "globalping_dns_no_answers": sum(row.get("result") == "DNS_NO_ANSWER" for row in measurements),
+        "globalping_no_probe_count": sum(row.get("result") == "NO_PROBE" for row in measurements),
+        "globalping_no_probe_by_country": dict(sorted(no_probe_by_country.items())),
         "globalping_ipv6_probe_unavailable_by_country": dict(sorted(no_ipv6_by_country.items())),
         "globalping_distinct_targets_observed": len(observed_targets),
         "globalping_observed_target_country_pairs": len(observed_pairs),
