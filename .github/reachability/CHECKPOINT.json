@@ -1,14 +1,14 @@
 {
   "schema_version": 1,
-  "updated_at_utc": "2026-11-10T17:13:14.873Z",
+  "updated_at_utc": "2026-11-10T17:14:41.831Z",
   "repository": "SpeedeMiner/Geoip-ru-server",
   "pull_request": 5,
   "pull_request_url": "https://github.com/SpeedeMiner/Geoip-ru-server/pull/5",
   "branch": "feature/reachability-full-ru-kz-by",
-  "recorded_pr_head_before_checkpoint_commit": "09984160add7df45f3c4ab4519a99caf6c8f8ec9",
+  "recorded_pr_head_before_checkpoint_commit": "ec1aaa59d2c750696396df8e86981ee604785fb7",
   "base_sha": "c71b5eff48f34b363ef2430ba6b5c41603f36126",
   "state": "READY_FOR_OWNER_REVIEW",
-  "current_phase": "FINAL_PR_REVIEW_OWNER_DECISION",
+  "current_phase": "FINAL_PR_OWNER_REVIEW",
   "completed": [
     "repository_reconnaissance",
     "protobuf_inventory_exporter",
@@ -30,10 +30,13 @@
     "final_full_measurement_run",
     "final_artifact_download_and_validation",
     "provider_ip_prefix_exact_reconciliation",
-    "ooni_anomaly_review"
+    "ooni_anomaly_review",
+    "short_session_worklog_and_checkpoint",
+    "ci_path_filter_for_short_documentation_sessions",
+    "final_pr_validation"
   ],
-  "latest_successful_validation_run": 42861969600,
-  "latest_successful_validation_commit": "09984160add7df45f3c4ab4519a99caf6c8f8ec9",
+  "latest_successful_validation_run": 42862828911,
+  "latest_successful_validation_commit": "ec1aaa59d2c750696396df8e86981ee604785fb7",
   "test_counts": {
     "python_unit_tests": 26,
     "python_unit_tests_status": "PASS",
@@ -120,9 +123,24 @@
     "eyeball_network_is_proof_of_residential": false
   },
   "next_steps": [
-    "Perform owner-facing review of PR #5 and its final workflow artifact",
-    "Expand the agreed service hostname target catalogue before making broad prefix-level coverage claims",
+    "Owner review PR #5; branch is ready for review but remains Draft",
+    "Extend the 11-hostname seed catalogue before making broad service-prefix coverage claims",
     "Optionally configure RIPE_ATLAS_API_KEY if Atlas measurements are desired",
-    "Keep PR Draft until owner explicitly accepts review and merge"
-  ]
+    "After explicit owner approval, merge PR #5"
+  ],
+  "ci_policy": {
+    "push_and_pr_validation_paths": [
+      ".github/reachability/runner.py",
+      ".github/reachability/test_runner.py",
+      ".github/reachability/targets.json",
+      ".github/reachability/inventory/**",
+      ".github/workflows/reachability-validation.yml"
+    ],
+    "documentation_and_checkpoint_only_changes_trigger_ci": false,
+    "full_measurement_workflow_triggers": [
+      "workflow_dispatch",
+      "daily_schedule"
+    ],
+    "temporary_push_trigger_removed": true
+  }
 }
