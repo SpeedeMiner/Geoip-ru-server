@@ -250,6 +250,106 @@ def rotate_tasks(tasks: list[dict[str, Any]], budget: int, day: dt.date | None =
     return selected, {"total_tasks": len(tasks), "selected_tasks": len(selected), "offset": offset}
 
 
+
+def select_fair_provider_tasks(
+    tasks: list[dict[str, Any]],
+    budget: int,
+    day: dt.date | None = None,
+) -> tuple[list[dict[str, Any]], dict[str, Any]]:
+    """Select complete measurement bundles across providers before second bundles.
+
+    A bundle is one target tested with DNS A, DNS AAAA, HTTPS IPv4 and HTTPS IPv6.
+    This avoids taking a contiguous slice of a country/ASN-sorted list, which can
+    starve all later countries/providers for an entire day.
+    """
+    if budget < 1:
+        raise ValueError("budget must be at least 1")
+    today = day or dt.datetime.now(dt.timezone.utc).date()
+    by_provider: dict[tuple[str, int], dict[str, list[dict[str, Any]]]] = collections.defaultdict(
+        lambda: collections.defaultdict(list)
+    )
+    for task in tasks:
+        key = (str(task["country"]).upper(), int(task["asn"]))
+        by_provider[key][str(task["target"]["id"])].append(task)
+
+    provider_keys = sorted(by_provider)
+    if not provider_keys:
+        return [], {
+            "total_tasks": len(tasks), "selected_tasks": 0, "offset": 0,
+            "provider_count": 0, "providers_covered": 0, "providers_uncovered": 0,
+            "countries_available": [], "countries_selected": [],
+            "complete_target_bundles": 0, "partial_target_bundles": 0,
+        }
+
+    provider_offset = today.toordinal() % len(provider_keys)
+    provider_order = provider_keys[provider_offset:] + provider_keys[:provider_offset]
+    bundle_order = (("DNS", 4), ("DNS", 6), ("HTTPS", 4), ("HTTPS", 6))
+    provider_bundles: dict[tuple[str, int], list[list[dict[str, Any]]]] = {}
+    for provider_index, key in enumerate(provider_order):
+        target_map = by_provider[key]
+        target_ids = sorted(target_map)
+        target_offset = (today.toordinal() + provider_index) % len(target_ids) if target_ids else 0
+        rotated_target_ids = target_ids[target_offset:] + target_ids[:target_offset]
+        bundles: list[list[dict[str, Any]]] = []
+        for target_id in rotated_target_ids:
+            rows = target_map[target_id]
+            lookup: dict[tuple[str, int], dict[str, Any]] = {}
+            for row in rows:
+                signature = (str(row.get("kind")), int(row.get("ip_family", 0)))
+                if signature in lookup:
+                    raise ValueError(f"duplicate task in provider bundle {key}/{target_id}: {signature}")
+                lookup[signature] = row
+            missing = set(bundle_order) - set(lookup)
+            extra = set(lookup) - set(bundle_order)
+            if missing or extra:
+                raise ValueError(
+                    f"incomplete task bundle for {key}/{target_id}: missing={sorted(missing)} extra={sorted(extra)}"
+                )
+            bundles.append([lookup[signature] for signature in bundle_order])
+        provider_bundles[key] = bundles
+
+    selected: list[dict[str, Any]] = []
+    complete_bundles = 0
+    partial_bundles = 0
+    max_rounds = max((len(value) for value in provider_bundles.values()), default=0)
+    for round_index in range(max_rounds):
+        for key in provider_order:
+            bundles = provider_bundles[key]
+            if round_index >= len(bundles) or len(selected) >= budget:
+                continue
+            bundle = bundles[round_index]
+            remaining = budget - len(selected)
+            if remaining >= len(bundle):
+                selected.extend(bundle)
+                complete_bundles += 1
+            elif remaining:
+                selected.extend(bundle[:remaining])
+                partial_bundles += 1
+            if len(selected) >= budget:
+                break
+        if len(selected) >= budget:
+            break
+
+    covered_keys = {
+        (str(row["country"]).upper(), int(row["asn"])) for row in selected
+    }
+    countries_selected = sorted({key[0] for key in covered_keys})
+    meta = {
+        "total_tasks": len(tasks),
+        "selected_tasks": len(selected),
+        "offset": provider_offset,
+        "provider_count": len(provider_keys),
+        "providers_covered": len(covered_keys),
+        "providers_uncovered": len(provider_keys) - len(covered_keys),
+        "countries_available": sorted({key[0] for key in provider_keys}),
+        "countries_selected": countries_selected,
+        "complete_target_bundles": complete_bundles,
+        "partial_target_bundles": partial_bundles,
+        "min_tasks_for_all_providers": len(provider_keys) * len(bundle_order),
+    }
+    return selected, meta
+
+
 def globalping_probe_metadata(probe: dict[str, Any]) -> dict[str, Any]:
     """Normalize Globalping probe descriptors from both /probes and measurement results."""
     location = probe.get("location")
@@ -809,7 +909,7 @@ def run(args: argparse.Namespace) -> int:
     try:
         providers, provider_meta = discover_globalping_providers()
         all_tasks = build_tasks(targets, providers)
-        selected_tasks, rotation = rotate_tasks(all_tasks, args.max_globalping_tests)
+        selected_tasks, rotation = select_fair_provider_tasks(all_tasks, args.max_globalping_tests)
         status["globalping"] = {
             **provider_meta, **rotation,
             "planned_measurements": len(selected_tasks),
