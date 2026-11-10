@@ -701,9 +701,9 @@ jobs:
               "77.45.128.0/17": "MORE_SPECIFIC_ONLY",
               "94.75.128.0/18": "EXACT_AND_MORE_SPECIFIC",
               "95.158.192.0/18": "MORE_SPECIFIC_ONLY",
-              "178.75.64.0/18": "MORE_SPECIFIC_ONLY",
-              "95.32.0.0/16": "MORE_SPECIFIC_ONLY",
-              "95.179.0.0/17": "MORE_SPECIFIC_ONLY",
+              "178.75.64.0/18": "EXACT_AND_MORE_SPECIFIC",
+              "95.32.0.0/16": "EXACT_AND_MORE_SPECIFIC",
+              "95.179.0.0/17": "EXACT_AND_MORE_SPECIFIC",
               "177.1.199.0/24": "EXACT_ONLY",
               "185.3.32.0/22": "EXACT_AND_MORE_SPECIFIC",
               "195.225.160.0/22": "EXACT_AND_MORE_SPECIFIC",
@@ -724,8 +724,8 @@ jobs:
           for required in (
               "Priority prefixes: 56", "External spot-check rows: 22", "All rows: STATUS=REVIEW",
               "External spot-check scope EXACT_ONLY: 6",
-              "External spot-check scope EXACT_AND_MORE_SPECIFIC: 8",
-              "External spot-check scope MORE_SPECIFIC_ONLY: 8",
+              "External spot-check scope EXACT_AND_MORE_SPECIFIC: 11",
+              "External spot-check scope MORE_SPECIFIC_ONLY: 5",
           ):
               if required not in stats:
                   raise SystemExit(f"Worklist statistics missing: {required}")
