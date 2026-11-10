@@ -18,6 +18,7 @@ on:
       - ".github/scripts/test_build_priority_prefix_rpki_reconciliation.py"
       - ".github/audits/priority_prefix_rpki_invalid_assessment_v37.tsv"
       - ".github/audits/priority_prefix_external_spot_checks_v37.tsv"
+      - ".github/PROJECT_CHECKPOINTS.md"
       - ".github/audits/company_asn_legal_evidence_v37_additions.tsv"
       - ".github/audits/company_asn_legal_evidence_v37.tsv"
       - ".github/workflows/prefix-audit-validation.yml"
@@ -822,6 +823,27 @@ jobs:
           path: prefix-audit/
           if-no-files-found: error
           retention-days: 30
+
+      - name: Validate project checkpoint journal
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          path = Path(".github/PROJECT_CHECKPOINTS.md")
+          if not path.is_file():
+              raise SystemExit("Project checkpoint journal is missing")
+          text = path.read_text(encoding="utf-8")
+          for required in (
+              "# Project checkpoint log",
+              "## Current state / resume from",
+              "## Completed stage records",
+              "Append-only checkpoint template",
+              "Resume from:",
+          ):
+              if required not in text:
+                  raise SystemExit(f"Project checkpoint journal is missing: {required}")
+          print(f"Project checkpoint journal validated ({len(text.splitlines())} lines)")
+          PY
 
       - name: Parse workflow YAML
         run: ruby -e 'require "yaml"; YAML.load_file(ARGV.fetch(0)); puts "Workflow YAML parsed"' .github/workflows/prefix-audit-validation.yml
