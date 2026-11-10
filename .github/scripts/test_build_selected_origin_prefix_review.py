@@ -132,5 +132,25 @@ class SelectedOriginPrefixReviewTests(unittest.TestCase):
                              root / "review.tsv", root / "stats.txt")
 
 
+
+    def test_static_direct_pin_missing_from_snapshot_is_retained_as_not_observed(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            company, manifest, selected, provenance, archive = self.make_inputs(root)
+            with selected.open("a", encoding="utf-8") as handle:
+                handle.write("192.0.2.0/24 # AS64500[Yandex+STATIC-DIRECT]\\n")
+            output = root / "selected-review.tsv"
+            stats = root / "selected-review-stats.txt"
+            build_review(selected, company, manifest, provenance, archive, output, stats)
+            rows = [row for row in output.read_text(encoding="utf-8").splitlines()
+                    if row.startswith("192.0.2.0/24\\t")]
+            self.assertEqual(len(rows), 1)
+            data = dict(zip(HEADER, rows[0].split("\\t")))
+            self.assertEqual(data["GLOBAL_BGP_ORIGIN_ASNS"], "")
+            self.assertEqual(data["GLOBAL_BGP_OBSERVATION"], "NOT_OBSERVED_STATIC_DIRECT_PIN")
+            self.assertEqual(data["STATUS"], "REVIEW")
+
+
+
 if __name__ == "__main__":
     unittest.main()
