@@ -449,6 +449,35 @@ jobs:
           if any(row["STATUS"] != "REVIEW" for row in holder_summary):
               raise SystemExit("RDAP holder summary contains a non-REVIEW status")
 
+          irr_summary = read_tsv(Path("prefix-audit/priority-prefix-evidence/irr_prefix_summary.tsv"))
+          irr_objects = read_tsv(Path("prefix-audit/priority-prefix-evidence/irr_route_objects.tsv"))
+          if len(irr_summary) != 56 or {row["PREFIX"] for row in irr_summary} != priority_prefixes:
+              raise SystemExit("IRR query summary is incomplete for the 56 priority prefixes")
+          if any(not row["QUERY_STATUS"] for row in irr_summary):
+              raise SystemExit("IRR query summary contains blank query statuses")
+          for row in irr_summary:
+              if row["STATUS"] != "REVIEW":
+                  raise SystemExit(f"IRR summary has non-REVIEW status for {row['PREFIX']}")
+              if "RIPE" not in row["QUERY_SCOPE_SOURCES"].split(","):
+                  raise SystemExit(f"RIPE source missing from IRR query scope for {row['PREFIX']}")
+              exact_count = int(row["IRR_EXACT_OBJECTS"])
+              matched_count = int(row["IRR_EXACT_BGP_ORIGIN_MATCH_OBJECTS"])
+              if matched_count > exact_count:
+                  raise SystemExit(f"IRR origin-match count exceeds exact object count for {row['PREFIX']}")
+              if row["QUERY_STATUS"] == "OK" and exact_count == 0:
+                  raise SystemExit(f"IRR query marked OK without an exact route object for {row['PREFIX']}")
+          for obj in irr_objects:
+              try:
+                  canonical = ipaddress.ip_network(obj["ROUTE_PREFIX"], strict=True).with_prefixlen
+              except ValueError:
+                  raise SystemExit(f"Invalid route object prefix in IRR output: {obj['ROUTE_PREFIX']}")
+              if obj["EXACT_PREFIX_MATCH"] not in {"yes", "no"}:
+                  raise SystemExit(f"Invalid exact-prefix flag for IRR object {obj['OBJECT_KEY']}")
+              if obj["GLOBAL_BGP_ORIGIN_MATCH"] not in {"yes", "no"}:
+                  raise SystemExit(f"Invalid origin-match flag for IRR object {obj['OBJECT_KEY']}")
+              if obj["EXACT_PREFIX_MATCH"] == "yes" and canonical != obj["QUERY_PREFIX"]:
+                  raise SystemExit(f"Exact IRR object prefix mismatch: {obj['QUERY_PREFIX']} vs {canonical}")
+
           stats = Path("prefix-audit/priority-prefix-evidence/priority_prefix_evidence_stats.txt").read_text(encoding="utf-8")
           for label in (
               "Source company review queue SHA256:",
@@ -460,6 +489,9 @@ jobs:
               "Exact MOAS prefixes: 52",
               "Company-only prefixes: 4",
               "RPKI origin-prefix checks attempted:",
+              "IRR sources queried:",
+              "IRR exact-prefix search query statuses:",
+              "IRR exact route objects returned:",
           ):
               if label not in stats:
                   raise SystemExit(f"Priority evidence statistics missing: {label}")
@@ -469,10 +501,13 @@ jobs:
               "Scope: 52 exact company MOAS prefixes plus four company-only prefixes.",
               f"RDAP sample queries: {len(rdap)} attempted; {rdap_success} successful; errors={dict(sorted(rdap_errors.items()))}",
               f"RPKI prefix/origin pairs: {len(rpki)}; states/errors={dict(sorted(rpki_statuses.items()))}",
+              f"IRR exact-prefix queries: {len(irr_summary)}; query statuses={dict(sorted(Counter(row['QUERY_STATUS'] for row in irr_summary).items()))}",
+              f"IRR route objects returned: {len(irr_objects)}; exact BGP-origin matches={sum(row['EXACT_PREFIX_MATCH'] == 'yes' and row['GLOBAL_BGP_ORIGIN_MATCH'] == 'yes' for row in irr_objects)}",
               "RDAP first/mid/last sample results are not exhaustive proof of every sub-allocation inside a prefix.",
               "RPKI status validates the prefix/origin pair against a ROA; it does not prove legal ownership of the address space.",
+              "IRR queries cover RIPE plus the GRS sources reported by the RIPE Database metadata endpoint, not every independent IRR registry.",
+              "No route object returned from the queried RIPE/GRS sources is not proof that no IRR object exists elsewhere.",
               "HTTP/network errors remain explicit and are never interpreted as no ROA, no registry record, or no resource holder.",
-              "IRR has not yet been queried by this evidence stage.",
               "Every row remains REVIEW; no DIRECT policy or GeoIP output is modified.",
               "",
           ]
