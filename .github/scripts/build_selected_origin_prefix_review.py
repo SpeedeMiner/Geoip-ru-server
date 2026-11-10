@@ -124,6 +124,15 @@ def build_review(
     if not records:
         raise ValueError("selected BGP prefix input contains no origin prefixes")
 
+    # Validate the policy role before consulting the global BGP snapshot.
+    # An unclassified selected-origin row is invalid input regardless of whether
+    # that prefix happens to be present in the observational archive.
+    for prefix, item in records.items():
+        if not item["company_asns"] and not item["regional_origins"]:
+            raise ValueError(
+                f"selected prefix {prefix} has no company or regional RIR origin label"
+            )
+
     target_prefixes = set(records)
     global_origins, global_countries = read_global_bgp_origins(
         bgp_archive, target_prefixes
