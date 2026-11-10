@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "updated_at_utc": "2026-11-10T17:16:50.078Z",
+  "updated_at_utc": "2026-11-10T17:18:39.101Z",
   "repository": "SpeedeMiner/Geoip-ru-server",
   "pull_request": 5,
   "pull_request_url": "https://github.com/SpeedeMiner/Geoip-ru-server/pull/5",
   "branch": "feature/reachability-full-ru-kz-by",
-  "recorded_pr_head_before_checkpoint_commit": "3fd8ee07a4c3a90a8b5e0454af336673587b7353",
+  "recorded_pr_head_before_checkpoint_commit": "7646f9c1582cdd086f47333270fa0c9f36abd8b6",
   "base_sha": "c71b5eff48f34b363ef2430ba6b5c41603f36126",
   "state": "READY_FOR_OWNER_REVIEW",
   "current_phase": "FINAL_PR_OWNER_REVIEW",
@@ -35,8 +35,8 @@
     "ci_path_filter_for_short_documentation_sessions",
     "final_pr_validation"
   ],
-  "latest_successful_validation_run": 42862828911,
-  "latest_successful_validation_commit": "ec1aaa59d2c750696396df8e86981ee604785fb7",
+  "latest_successful_validation_run": 42863496776,
+  "latest_successful_validation_commit": "854381b06c08267416dc8bf20311e56a549c72bd",
   "test_counts": {
     "python_unit_tests": 26,
     "python_unit_tests_status": "PASS",
@@ -129,20 +129,26 @@
     "After explicit owner approval, merge PR #5"
   ],
   "ci_policy": {
-    "push_and_pr_validation_paths": [
+    "push_validation_paths": [
       ".github/reachability/runner.py",
       ".github/reachability/test_runner.py",
       ".github/reachability/targets.json",
       ".github/reachability/inventory/**",
       ".github/workflows/reachability-validation.yml"
     ],
-    "documentation_and_checkpoint_only_changes_trigger_ci": false,
+    "pull_request_validation_types": [
+      "opened",
+      "reopened",
+      "ready_for_review"
+    ],
+    "subsequent_code_updates_validated_by_push_ci": true,
+    "documentation_and_checkpoint_only_commits_trigger_ci": false,
     "full_measurement_workflow_triggers": [
       "workflow_dispatch",
       "daily_schedule"
     ],
-    "temporary_push_trigger_removed": true,
+    "manual_dispatch_available_on_feature_branch": true,
     "daily_schedule_effective_only_after_default_branch_merge": true,
-    "manual_dispatch_available_on_feature_branch": true
+    "temporary_full_workflow_push_trigger_removed": true
   }
 }
