@@ -32,6 +32,24 @@ jobs:
       - name: Run Python unit tests
         run: python3 -m unittest discover -s .github/scripts -p 'test_*.py' -v
 
+      - name: Compile inline Python heredocs in the main workflow
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import pathlib
+          import re
+          import textwrap
+
+          source = pathlib.Path('.github/workflows/blank.yml').read_text(encoding='utf-8')
+          pattern = re.compile(r"(?ms)^[ \\t]*python3[^\\n]*<<'PY'[ \\t]*\\n(.*?)(?=^[ \\t]*PY[ \\t]*$)")
+          blocks = pattern.findall(source)
+          if not blocks:
+              raise SystemExit('No inline Python heredocs found in blank.yml')
+          for index, block in enumerate(blocks, 1):
+              compile(textwrap.dedent(block), f'blank.yml:inline-python-{index}', 'exec')
+          print(f'Compiled {len(blocks)} inline Python heredocs from blank.yml')
+          PY
+
       - name: Parse workflow YAML
         run: ruby -e 'require "yaml"; YAML.load_file(ARGV.fetch(0)); puts "Workflow YAML parsed successfully"' .github/workflows/blank.yml
 
