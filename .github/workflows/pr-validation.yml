@@ -123,7 +123,6 @@ jobs:
             geoip_RU_registered_asns.txt \
             geoip_BY_KZ_registered_asns.txt \
             geoip_RU.dat \
-            geoip_RU_BY_KZ_asn_manifest.txt \
             geoip_RU_rir_stats.txt \
             geoip_RU_source_counts.txt \
             geoip_RU_quality_report.txt \
@@ -138,6 +137,14 @@ jobs:
               "$base/$file" -o "$workdir/$file"
             test -s "$workdir/$file"
           done
+
+          # The historical release branch contains the ASN manifest; older v35
+          # GitHub Releases omitted it due a filename mismatch fixed in blank.yml.
+          rawbase="https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/release"
+          curl --fail --location --silent --show-error --retry 3 --retry-all-errors \
+            "$rawbase/geoip_RU_BY_KZ_asn_manifest.txt" \
+            -o "$workdir/geoip_RU_BY_KZ_asn_manifest.txt"
+          test -s "$workdir/geoip_RU_BY_KZ_asn_manifest.txt"
 
           bgp_url="$(awk -F '\t' '$2 == "as-ip-blocks.tar.gz" && $6 == "downloaded" {print $3}' \
             "$workdir/geoip_RU_input_provenance.tsv")"
