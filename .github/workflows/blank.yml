@@ -3054,6 +3054,7 @@ jobs:
            adjacent := newIPTrie()
            adjacent.insert(mustPrefix(t, "198.51.100.0/25"))
            adjacent.insert(mustPrefix(t, "198.51.100.128/25"))
+           adjacent.compress()
            normalized := adjacent.toPrefixes()
            if len(normalized) != 1 || normalized[0].String() != "198.51.100.0/24" {
             t.Fatalf("adjacent prefixes must collapse without changing address space: %#v", normalized)
