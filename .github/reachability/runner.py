@@ -913,7 +913,7 @@ def build_provider_prefix_report(measurements: list[dict[str, Any]]) -> list[dic
                 "PREFIX": prefix, "FAMILY": f"IPv{ipaddress.ip_network(prefix).version}",
                 "ADDRESS_COUNT": str(ipaddress.ip_network(prefix).num_addresses),
                 "ACCESSIBLE_HTTPS": 0, "DNS_ANSWERS": 0, "DNS_NO_ANSWER": 0,
-                "INCONCLUSIVE": 0, "API_ERROR": 0,
+                "INCONCLUSIVE": 0, "NO_IPV6_PROBE": 0, "API_ERROR": 0,
                 "TARGET_IDS": set(), "TARGET_DOMAINS": set(),
                 "OBSERVED_IPS": set(), "HTTP_STATUSES": set(),
             })
@@ -926,6 +926,8 @@ def build_provider_prefix_report(measurements: list[dict[str, Any]]) -> list[dic
                 item["DNS_NO_ANSWER"] += 1
             elif result == "INCONCLUSIVE":
                 item["INCONCLUSIVE"] += 1
+            elif result == "NO_IPV6_PROBE":
+                item["NO_IPV6_PROBE"] += 1
             elif result == "API_ERROR":
                 item["API_ERROR"] += 1
             if row.get("target_id"):
@@ -1137,7 +1139,8 @@ def run(args: argparse.Namespace) -> int:
     write_tsv(output_dir / "reachability_by_provider_prefix.tsv", provider_prefix_report, [
         "COUNTRY", "ASN", "NETWORK", "PREFIX", "FAMILY", "ADDRESS_COUNT",
         "ACCESSIBLE_HTTPS", "DNS_ANSWERS", "DNS_NO_ANSWER", "INCONCLUSIVE",
-        "API_ERROR", "TARGET_IDS", "TARGET_DOMAINS", "OBSERVED_IPS", "HTTP_STATUSES",
+        "INCONCLUSIVE", "NO_IPV6_PROBE", "API_ERROR",
+        "TARGET_IDS", "TARGET_DOMAINS", "OBSERVED_IPS", "HTTP_STATUSES",
     ])
     write_tsv(output_dir / "reachability_by_provider_ip.tsv", provider_ip_report, [
         "COUNTRY", "ASN", "NETWORK", "IP_ADDRESS", "PREFIX", "FAMILY", "STATUS",
