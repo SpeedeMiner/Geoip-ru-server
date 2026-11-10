@@ -14,6 +14,9 @@ on:
       - ".github/scripts/test_build_priority_prefix_triage.py"
       - ".github/scripts/build_priority_prefix_worklist.py"
       - ".github/scripts/test_build_priority_prefix_worklist.py"
+      - ".github/scripts/build_priority_rpki_reconciliation.py"
+      - ".github/scripts/test_build_priority_prefix_rpki_reconciliation.py"
+      - ".github/audits/priority_prefix_rpki_invalid_assessment_v37.tsv"
       - ".github/audits/priority_prefix_external_spot_checks_v37.tsv"
       - ".github/audits/company_asn_legal_evidence_v37_additions.tsv"
       - ".github/audits/company_asn_legal_evidence_v37.tsv"
@@ -47,6 +50,8 @@ jobs:
           .github/scripts/test_build_priority_prefix_triage.py
           .github/scripts/build_priority_prefix_worklist.py
           .github/scripts/test_build_priority_prefix_worklist.py
+          .github/scripts/build_priority_rpki_reconciliation.py
+          .github/scripts/test_build_priority_prefix_rpki_reconciliation.py
 
       - name: Run audit unit tests
         run: python3 -m unittest discover -s .github/scripts -p 'test_build_*prefix*.py' -v
@@ -731,6 +736,77 @@ jobs:
                   raise SystemExit(f"Worklist statistics missing: {required}")
           with (base / "README_validation.txt").open("a", encoding="utf-8") as stream:
               stream.write("\nPriority-prefix analyst worklist\n")
+              stream.write(stats)
+          print(stats)
+          PY
+
+      - name: Build and validate archived-invalid RPKI exact-NLRI reconciliation
+        shell: bash
+        run: |
+          set -euo pipefail
+          evidence="prefix-audit/priority-prefix-evidence"
+          python3 .github/scripts/build_priority_rpki_reconciliation.py \
+            --evidence-dir "$evidence" \
+            --seed .github/audits/priority_prefix_rpki_invalid_assessment_v37.tsv \
+            --output "$evidence/priority_prefix_rpki_invalid_reconciliation.tsv" \
+            --stats "$evidence/priority_prefix_rpki_invalid_reconciliation_stats.txt"
+
+          python3 - <<'PY'
+          import csv
+          from collections import Counter
+          from pathlib import Path
+
+          base = Path("prefix-audit/priority-prefix-evidence")
+          def read_tsv(path):
+              with path.open(encoding="utf-8", newline="") as stream:
+                  return list(csv.DictReader(
+                      (line for line in stream if not line.startswith("#")), delimiter="\t"
+                  ))
+
+          triage = read_tsv(base / "priority_prefix_triage.tsv")
+          worklist = read_tsv(base / "priority_prefix_review_worklist.tsv")
+          result = read_tsv(base / "priority_prefix_rpki_invalid_reconciliation.tsv")
+          expected = {
+              row["PREFIX"] for row in triage
+              if "RPKI_INVALID_ASN" in {x.strip() for x in row["TRIAGE_FLAGS"].split("|")}
+          }
+          actual = {row["PREFIX"] for row in result}
+          if len(result) != 19 or len(actual) != 19 or actual != expected:
+              raise SystemExit("RPKI reconciliation must contain exactly the 19 archived invalid prefixes")
+          if any(row["STATUS"] != "REVIEW" for row in result):
+              raise SystemExit("RPKI reconciliation contains a non-REVIEW row")
+          triage_by = {row["PREFIX"]: row for row in triage}
+          worklist_by = {row["PREFIX"]: row for row in worklist}
+          for row in result:
+              prefix = row["PREFIX"]
+              if row["ARCHIVED_INVALID_RPKI_ORIGINS"] != triage_by[prefix]["RPKI_INVALID_ORIGINS"]:
+                  raise SystemExit(f"Archived invalid-origin set drift for {prefix}")
+              if row["EXTERNAL_NLRI_SCOPE_RELATION"] != worklist_by[prefix]["EXTERNAL_SPOT_CHECK_SCOPE_RELATION"]:
+                  raise SystemExit(f"External NLRI scope mismatch for {prefix}")
+              if not row["REQUIRED_NEXT_ACTION"] or not row["ASSESSMENT"] or not row["SOURCE_URLS"]:
+                  raise SystemExit(f"Incomplete RPKI reconciliation row: {prefix}")
+              if row["EXTERNAL_NLRI_SCOPE_RELATION"] == "MORE_SPECIFIC_ONLY" and row["EXTERNAL_EXACT_ORIGIN_ASNS"]:
+                  raise SystemExit(f"Child-route evidence was projected onto exact prefix {prefix}")
+          counts = Counter(row["RECONCILIATION_CLASS"] for row in result)
+          expected_counts = {
+              "EXACT_ORIGIN_SET_CHANGED": 12,
+              "EXACT_MOAS_RPKI_STATUS_CHANGED": 1,
+              "EXACT_MOAS_INVALID_ORIGIN_REMAINS_UNCONFIRMED": 1,
+              "MORE_SPECIFIC_ONLY_NO_EXACT_VERDICT": 5,
+          }
+          if dict(counts) != expected_counts:
+              raise SystemExit(f"Unexpected reconciliation classes: {dict(counts)}")
+          stats = (base / "priority_prefix_rpki_invalid_reconciliation_stats.txt").read_text(encoding="utf-8")
+          for required in (
+              "Archived invalid prefixes: 19",
+              "Rows with exact-scope external observations: 14",
+              "Rows with more-specific-only observations: 5",
+              "All rows: STATUS=REVIEW",
+          ):
+              if required not in stats:
+                  raise SystemExit(f"RPKI reconciliation stats missing: {required}")
+          with (base / "README_validation.txt").open("a", encoding="utf-8") as stream:
+              stream.write("\nArchived-invalid RPKI exact-NLRI reconciliation\n")
               stream.write(stats)
           print(stats)
           PY
