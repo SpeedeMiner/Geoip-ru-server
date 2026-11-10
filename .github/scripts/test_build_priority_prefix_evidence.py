@@ -13,6 +13,7 @@ from build_priority_prefix_evidence import (
     parse_rdap_object,
     rdap_base_for_address,
     rdap_relation,
+    _source_list_from_metadata,
     sample_addresses,
     select_priority_rows,
 )
@@ -72,6 +73,29 @@ class PriorityPrefixEvidenceTests(unittest.TestCase):
         self.assertEqual(sample_addresses("192.0.2.1/32"), ["192.0.2.1"])
         self.assertEqual(sample_addresses("2001:db8::/126"),
                          ["2001:db8::", "2001:db8::1", "2001:db8::3"])
+
+    def test_ripe_metadata_sources_source_contains_grs_inventory(self):
+        payload = {
+            "sources": {
+                "source": [
+                    {"name": "RIPE", "id": "ripe"},
+                    {"name": "AFRINIC-GRS", "id": "afrinic-grs", "grs-id": "afrinic-grs"},
+                    {"name": "APNIC-GRS", "id": "apnic-grs", "grs-id": "apnic-grs"},
+                    {"name": "ARIN-GRS", "id": "arin-grs", "grs-id": "arin-grs"},
+                    {"name": "JPIRR-GRS", "id": "jpirr-grs", "grs-id": "jpirr-grs"},
+                    {"name": "LACNIC-GRS", "id": "lacnic-grs", "grs-id": "lacnic-grs"},
+                    {"name": "RADB-GRS", "id": "radb-grs", "grs-id": "radb-grs"},
+                    {"name": "RIPE-GRS", "id": "ripe-grs", "grs-id": "ripe-grs"},
+                ]
+            }
+        }
+        self.assertEqual(
+            _source_list_from_metadata(payload),
+            [
+                "AFRINIC-GRS", "APNIC-GRS", "ARIN-GRS", "JPIRR-GRS",
+                "LACNIC-GRS", "RADB-GRS", "RIPE", "RIPE-GRS",
+            ],
+        )
 
     def test_iana_bootstrap_longest_prefix_match(self):
         payload = {
@@ -161,9 +185,11 @@ class PriorityPrefixEvidenceTests(unittest.TestCase):
                 return 200, {"data": {"status": "valid", "description": "ROA authorises this origin"}}, ""
             if url == "https://rest.db.ripe.net/metadata/sources.json":
                 return 200, {
-                    "grs-sources": {"source": [
-                        {"id": "radb-grs", "name": "RADB-GRS"},
-                        {"id": "apnic-grs", "name": "APNIC-GRS"},
+                    "sources": {"source": [
+                        {"name": "RIPE", "id": "ripe"},
+                        {"name": "RADB-GRS", "id": "radb-grs", "grs-id": "radb-grs"},
+                        {"name": "APNIC-GRS", "id": "apnic-grs", "grs-id": "apnic-grs"},
+                        {"name": "RIPE-GRS", "id": "ripe-grs", "grs-id": "ripe-grs"},
                     ]}
                 }, ""
             if "/search?" in url:
@@ -254,6 +280,8 @@ class PriorityPrefixEvidenceTests(unittest.TestCase):
             self.assertTrue(all(row["QUERY_STATUS"] == "OK" for row in rdap))
             self.assertTrue(all(row["RPKI_STATUS"] == "valid" for row in rpki))
             self.assertTrue((output / "priority_prefix_evidence_README.txt").is_file())
+            metadata_payload = json.loads((output / "irr_sources_metadata.json").read_text(encoding="utf-8"))
+            self.assertIn("sources", metadata_payload)
 
 
 if __name__ == "__main__":
