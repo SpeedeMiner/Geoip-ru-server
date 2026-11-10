@@ -664,13 +664,28 @@ def build_evidence(company_queue: Path, output_dir: Path, max_workers: int = 5) 
                 query_status, query_url, objects = f"CLIENT_ERROR:{type(exc).__name__}:{exc}", "", []
             irr_query_statuses[query_status] += 1
             irr_object_rows.extend(objects)
-            exact_objects = [obj for obj in objects if obj["EXACT_PREFIX_MATCH"] == "yes"]
+            # RIPE and RIPE-GRS can return the same logical route object.
+            # Count distinct RPSL object content once, but retain the registry
+            # sources that independently returned that content.
+            object_identity_fields = (
+                "QUERY_PREFIX", "OBJECT_TYPE", "ROUTE_PREFIX", "OBJECT_KEY", "ORIGIN_ASN",
+                "EXACT_PREFIX_MATCH", "GLOBAL_BGP_ORIGIN_MATCH", "MNT_BY", "ORG", "DESCR",
+                "REMARKS", "MEMBER_OF", "CREATED", "LAST_MODIFIED",
+            )
+            unique_by_signature: dict[tuple[str, ...], dict[str, str]] = {}
+            for obj in objects:
+                signature = tuple(obj.get(field, "") for field in object_identity_fields)
+                unique_by_signature.setdefault(signature, obj)
+            unique_objects = list(unique_by_signature.values())
+            exact_objects = [obj for obj in unique_objects if obj["EXACT_PREFIX_MATCH"] == "yes"]
             matching_objects = [obj for obj in exact_objects if obj["GLOBAL_BGP_ORIGIN_MATCH"] == "yes"]
             irr_prefix_rows.append({
                 "PREFIX": prefix,
                 "QUERY_STATUS": query_status,
                 "QUERY_URL": query_url,
                 "QUERY_SCOPE_SOURCES": ",".join(irr_sources),
+                "IRR_SOURCE_OBJECT_RECORDS": str(len(objects)),
+                "IRR_UNIQUE_ROUTE_OBJECTS": str(len(unique_objects)),
                 "IRR_EXACT_OBJECTS": str(len(exact_objects)),
                 "IRR_EXACT_BGP_ORIGIN_MATCH_OBJECTS": str(len(matching_objects)),
                 "IRR_EXACT_OBJECT_SOURCES": " | ".join(sorted({obj["REGISTRY_SOURCE"] for obj in exact_objects if obj["REGISTRY_SOURCE"]})),
@@ -689,6 +704,7 @@ def build_evidence(company_queue: Path, output_dir: Path, max_workers: int = 5) 
     ))
     write_tsv(output_dir / "irr_prefix_summary.tsv", irr_prefix_rows, [
         "PREFIX", "QUERY_STATUS", "QUERY_URL", "QUERY_SCOPE_SOURCES",
+        "IRR_SOURCE_OBJECT_RECORDS", "IRR_UNIQUE_ROUTE_OBJECTS",
         "IRR_EXACT_OBJECTS", "IRR_EXACT_BGP_ORIGIN_MATCH_OBJECTS",
         "IRR_EXACT_OBJECT_SOURCES", "IRR_EXACT_ORIGINS", "IRR_MATCHED_BGP_ORIGINS",
         "IRR_MNT_BY", "IRR_ORG", "IRR_DESCR", "STATUS", "INTERPRETATION",
@@ -698,6 +714,39 @@ def build_evidence(company_queue: Path, output_dir: Path, max_workers: int = 5) 
         "REGISTRY_SOURCE", "EXACT_PREFIX_MATCH", "GLOBAL_BGP_ORIGIN_MATCH",
         "MNT_BY", "ORG", "DESCR", "REMARKS", "MEMBER_OF", "CREATED", "LAST_MODIFIED",
     ])
+
+    # Preserve source-specific rows above, and also emit a deduplicated logical
+    # object table. Multiple GRS/RIPE sources may mirror identical RPSL content.
+    object_identity_fields = (
+        "QUERY_PREFIX", "OBJECT_TYPE", "ROUTE_PREFIX", "OBJECT_KEY", "ORIGIN_ASN",
+        "EXACT_PREFIX_MATCH", "GLOBAL_BGP_ORIGIN_MATCH", "MNT_BY", "ORG", "DESCR",
+        "REMARKS", "MEMBER_OF", "CREATED", "LAST_MODIFIED",
+    )
+    deduplicated_groups: dict[tuple[str, ...], list[dict[str, str]]] = collections.defaultdict(list)
+    for row in irr_object_rows:
+        signature = tuple(row.get(field, "") for field in object_identity_fields)
+        deduplicated_groups[signature].append(row)
+    irr_unique_objects: list[dict[str, str]] = []
+    for signature, matching_rows in deduplicated_groups.items():
+        unique_row = {key: value for key, value in matching_rows[0].items() if key != "REGISTRY_SOURCE"}
+        unique_row["REGISTRY_SOURCES"] = ",".join(sorted({
+            row["REGISTRY_SOURCE"] for row in matching_rows if row["REGISTRY_SOURCE"]
+        }))
+        irr_unique_objects.append(unique_row)
+    irr_unique_objects.sort(key=lambda row: (
+        row["QUERY_PREFIX"], row["ORIGIN_ASN"], row["ROUTE_PREFIX"], row["REGISTRY_SOURCES"]
+    ))
+    write_tsv(output_dir / "irr_route_objects_deduplicated.tsv", irr_unique_objects, [
+        "QUERY_PREFIX", "OBJECT_TYPE", "ROUTE_PREFIX", "OBJECT_KEY", "ORIGIN_ASN",
+        "REGISTRY_SOURCES", "EXACT_PREFIX_MATCH", "GLOBAL_BGP_ORIGIN_MATCH",
+        "MNT_BY", "ORG", "DESCR", "REMARKS", "MEMBER_OF", "CREATED", "LAST_MODIFIED",
+    ])
+
+    irr_source_record_counts = collections.Counter(row["REGISTRY_SOURCE"] for row in irr_object_rows)
+    irr_unique_exact_objects = [row for row in irr_unique_objects if row["EXACT_PREFIX_MATCH"] == "yes"]
+    irr_unique_exact_origin_matches = [
+        row for row in irr_unique_exact_objects if row["GLOBAL_BGP_ORIGIN_MATCH"] == "yes"
+    ]
 
     status_counts = collections.Counter(row["RPKI_STATUS"] or row["QUERY_STATUS"] for row in rpki_rows)
     rdap_status_counts = collections.Counter(row["QUERY_STATUS"] for row in rdap_rows)
@@ -788,8 +837,11 @@ def build_evidence(company_queue: Path, output_dir: Path, max_workers: int = 5) 
         f"IRR sources queried: {','.join(irr_sources)}",
         f"Documented GRS sources included: {','.join(DOCUMENTED_GRS_SOURCES)}",
         f"IRR exact-prefix search query statuses: {dict(sorted(irr_query_statuses.items()))}",
-        f"IRR exact route objects returned: {sum(1 for row in irr_object_rows if row['EXACT_PREFIX_MATCH'] == 'yes')}",
-        f"IRR exact prefix+observed-origin matches: {sum(1 for row in irr_object_rows if row['EXACT_PREFIX_MATCH'] == 'yes' and row['GLOBAL_BGP_ORIGIN_MATCH'] == 'yes')}",
+        f"IRR source-specific route object records returned: {len(irr_object_rows)}",
+        f"IRR source-specific route object records by source: {dict(sorted(irr_source_record_counts.items()))}",
+        f"IRR unique route object contents after cross-source deduplication: {len(irr_unique_objects)}",
+        f"IRR unique exact route objects: {len(irr_unique_exact_objects)}",
+        f"IRR unique exact prefix+observed-origin matches: {len(irr_unique_exact_origin_matches)}",
         f"RDAP per-prefix sample consistency: {dict(sorted(rdap_consistency.items()))}",
         "RDAP requests use IANA bootstrap longest-prefix selection and sample first/mid/last addresses.",
         "RDAP observations describe the registry's most-specific network containing each sample address; they do not prove every address in a prefix has the same holder.",
@@ -813,8 +865,11 @@ def build_evidence(company_queue: Path, output_dir: Path, max_workers: int = 5) 
         "rpki_origin_checks": len(rpki_rows),
         "rpki_statuses": dict(sorted(status_counts.items())),
         "irr_query_statuses": dict(sorted(irr_query_statuses.items())),
-        "irr_exact_route_objects": sum(1 for row in irr_object_rows if row["EXACT_PREFIX_MATCH"] == "yes"),
-        "irr_exact_origin_matches": sum(1 for row in irr_object_rows if row["EXACT_PREFIX_MATCH"] == "yes" and row["GLOBAL_BGP_ORIGIN_MATCH"] == "yes"),
+        "irr_source_record_counts": dict(sorted(irr_source_record_counts.items())),
+        "irr_source_records": len(irr_object_rows),
+        "irr_unique_route_objects": len(irr_unique_objects),
+        "irr_exact_route_objects": len(irr_unique_exact_objects),
+        "irr_exact_origin_matches": len(irr_unique_exact_origin_matches),
         "irr_sources": irr_sources,
         "bootstrap_sha256": bootstrap_hashes,
     }
