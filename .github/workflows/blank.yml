@@ -3077,6 +3077,13 @@ jobs:
           expected_prefix_count = f"Unique prefixes with at least one company origin ASN: {len(company_prefix_entries)}"
           if expected_prefix_count not in company_review_stats:
               raise SystemExit("Company prefix review statistics do not reconcile with prefix manifest rows")
+          with open(bgp_stats, encoding="utf-8") as source:
+              bgp_stats_text = source.read()
+          expected_asn_prefix_count = (
+              f"Unique prefixes originated by curated Russian-company/affiliate ASNs: {len(company_prefix_entries)}"
+          )
+          if expected_asn_prefix_count not in bgp_stats_text:
+              raise SystemExit("Company prefix review rows do not reconcile with ASN extractor's unique company-origin prefix count")
           if "Prefix review status: REVIEW for every row" not in company_review_stats:
               raise SystemExit("Company prefix review stats do not state the review-only policy")
 
