@@ -1,14 +1,14 @@
 {
   "schema_version": 1,
-  "updated_at_utc": "2026-11-10T18:35:48.093Z",
+  "updated_at_utc": "2026-11-10T18:43:06.230Z",
   "repository": "SpeedeMiner/Geoip-ru-server",
   "pull_request": 5,
   "pull_request_url": "https://github.com/SpeedeMiner/Geoip-ru-server/pull/5",
   "branch": "feature/reachability-full-ru-kz-by",
-  "recorded_pr_head_before_checkpoint_commit": "9ecdc7c3463d93a9c36ba66a4eb4476e994ff948",
+  "recorded_pr_head_before_checkpoint_commit": "75cf61bcddcf8854030fcee056561b702e484b64",
   "base_sha": "a68e5d6589361814cb1cfedd2af7857e4af806fa",
-  "state": "VERIFYING_DNS_NO_ANSWER_SUMMARY",
-  "current_phase": "DNS_NO_ANSWER_FULL_RUN_IN_PROGRESS",
+  "state": "VERIFYING_NO_PROBE_CLASSIFICATION",
+  "current_phase": "NO_PROBE_CLASSIFICATION_FULL_RUN_IN_PROGRESS",
   "completed": [
     "repository_reconnaissance",
     "protobuf_inventory_exporter",
@@ -179,13 +179,13 @@
     "eyeball_network_is_proof_of_residential": false
   },
   "next_steps": [
-    "Check full run 42876578975; do not start another run while it is in progress. If successful, download artifact, verify digest, and compare globalping_dns_no_answers to raw JSONL DNS_NO_ANSWER count.",
-    "Owner review PR #5; it remains Draft and must not be merged without explicit owner approval.",
-    "Update/rebase the PR branch onto current main (29 commits behind at last comparison) in a controlled operation, then rerun CI and assess conflicts.",
-    "Review the 30-target catalogue against the project-approved first-party service/API inventory; one daily sample is only 30/90 source-country/target pairs.",
-    "Daily schedule becomes active only after merge into repository default branch; assess multi-day provider/target coverage then.",
+    "Check full run 42877815872; do not start another run while it is in progress. On success download artifact, verify digest, reconcile NO_PROBE by country and API_ERROR count with raw JSONL.",
+    "Owner review PR #5; it remains Draft and must not be merged without explicit approval.",
+    "Update/rebase PR branch onto current main in a controlled operation only after current full run verification, then rerun CI and assess conflicts.",
+    "Review the 30-target catalogue against project-approved first-party service/API inventory; one daily sample is only 30/90 source-country/target pairs.",
+    "Daily schedule activates only after merge into repository default branch; assess multi-day coverage then.",
     "Optionally configure RIPE_ATLAS_API_KEY if Atlas measurements are desired.",
-    "Keep all observations review-only; do not modify geoip_RU.dat or classify untested prefixes as blocked."
+    "Keep observations review-only; do not modify geoip_RU.dat or classify untested prefixes as blocked."
   ],
   "ci_policy": {
     "push_validation_paths": [
@@ -211,12 +211,16 @@
     "temporary_full_workflow_push_trigger_removed": true
   },
   "in_progress_full_run": {
-    "run_id": 42876578975,
-    "trigger_commit": "aed7583c69fb5a996ea119ba07f13470d85c6a1c",
-    "cleanup_commit": "00c591e8fd0bbda1ddf9e01574dcc739e302288a",
+    "run_id": 42877815872,
+    "trigger_commit": "401830a0bdcef35f20fe67e90fbaef7e72129ca6",
+    "cleanup_commit": "b1c603a7c36cc714f14ff6634160a78ffc7e2b99",
     "status": "IN_PROGRESS_AT_LAST_CHECK",
     "artifact_uploaded": false,
-    "expected_new_field": "globalping_dns_no_answers",
-    "next_action": "Check run 42876578975; do not start a duplicate run."
+    "expected_new_fields": [
+      "globalping_no_probe_count",
+      "globalping_no_probe_by_country"
+    ],
+    "expected_classification": "HTTP 422 no_probes_found is NO_PROBE for IPv4 HTTPS and DNS; HTTPS IPv6 remains NO_IPV6_PROBE.",
+    "next_action": "Check run 42877815872 and verify artifact; do not start duplicate."
   }
 }
