@@ -1,14 +1,14 @@
 {
   "schema_version": 1,
-  "updated_at_utc": "2026-11-10T18:18:24.348Z",
+  "updated_at_utc": "2026-11-10T18:23:35.743Z",
   "repository": "SpeedeMiner/Geoip-ru-server",
   "pull_request": 5,
   "pull_request_url": "https://github.com/SpeedeMiner/Geoip-ru-server/pull/5",
   "branch": "feature/reachability-full-ru-kz-by",
-  "recorded_pr_head_before_checkpoint_commit": "0fbd2c1b5e4663ba77dadf4cb6fbfe03d0681f77",
+  "recorded_pr_head_before_checkpoint_commit": "75084c3cd8f88b518fa6faa255fcea5ff6600acd",
   "base_sha": "a68e5d6589361814cb1cfedd2af7857e4af806fa",
-  "state": "READY_FOR_OWNER_REVIEW",
-  "current_phase": "FINAL_PR_OWNER_REVIEW",
+  "state": "VERIFYING_STRUCTURED_SUMMARY",
+  "current_phase": "STRUCTURED_SUMMARY_FULL_RUN_IN_PROGRESS",
   "completed": [
     "repository_reconnaissance",
     "protobuf_inventory_exporter",
@@ -166,10 +166,10 @@
     "eyeball_network_is_proof_of_residential": false
   },
   "next_steps": [
+    "Check full run 42874077069; do not launch a duplicate while it is in progress. If successful, download artifact and verify structured coverage summary fields and SHA-256.",
     "Owner review PR #5; it remains Draft and must not be merged without explicit owner approval.",
     "Update/rebase the PR branch onto current main (currently 29 commits behind) in a controlled operation, then rerun CI and assess conflicts.",
     "Review the expanded 30-target catalogue against the project-approved first-party service and API inventory; one daily sample is only 30/90 source-country/target pairs.",
-    "Run the full workflow again after the new structured coverage summary code is in the run; the existing full artifact predates those fields.",
     "Daily schedule becomes active only after merge into the repository default branch; assess multi-day provider/target coverage then.",
     "Optionally configure RIPE_ATLAS_API_KEY if Atlas measurements are desired.",
     "Keep all observations review-only; do not modify geoip_RU.dat or classify untested prefixes as blocked."
@@ -196,5 +196,21 @@
     "manual_dispatch_available_on_feature_branch": true,
     "daily_schedule_effective_only_after_default_branch_merge": true,
     "temporary_full_workflow_push_trigger_removed": true
+  },
+  "in_progress_full_run": {
+    "run_id": 42874077069,
+    "trigger_commit": "e6612071a4839e8151c9823bf43d6af84fe643c7",
+    "cleanup_commit": "1cb59cbd216d8fc4b1c217532a62f0c3e54b2f88",
+    "status": "IN_PROGRESS_AT_LAST_CHECK",
+    "artifact_uploaded": false,
+    "expected_metrics": [
+      "globalping_ipv6_probe_unavailable_by_country",
+      "globalping_distinct_targets_observed",
+      "globalping_observed_target_country_pairs",
+      "globalping_possible_target_country_pairs",
+      "globalping_observed_target_country_pairs_by_country",
+      "globalping_provider_target_bundles_observed"
+    ],
+    "next_action": "Check run 42874077069; do not start a duplicate run."
   }
 }
