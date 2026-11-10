@@ -685,8 +685,25 @@ jobs:
               raise SystemExit("External spot-check scope does not match the five reviewed prefixes")
           if any(r["EXTERNAL_SPOT_CHECK_STATUS"] != "CHECKED_2026-11-10" for r in spot_rows):
               raise SystemExit("Unexpected spot-check timestamp")
+          expected_scope_relations = {
+              "5.45.192.0/18": "EXACT_ONLY",
+              "5.45.215.0/24": "EXACT_ONLY",
+              "45.148.65.0/24": "EXACT_ONLY",
+              "94.131.190.0/23": "MORE_SPECIFIC_ONLY",
+              "109.61.128.0/17": "EXACT_AND_MORE_SPECIFIC",
+          }
+          actual_scope_relations = {
+              r["PREFIX"]: r["EXTERNAL_SPOT_CHECK_SCOPE_RELATION"] for r in spot_rows
+          }
+          if actual_scope_relations != expected_scope_relations:
+              raise SystemExit(f"External NLRI scope relations differ: {actual_scope_relations}")
           stats = (base / "priority_prefix_review_worklist_stats.txt").read_text(encoding="utf-8")
-          for required in ("Priority prefixes: 56", "External spot-check rows: 5", "All rows: STATUS=REVIEW"):
+          for required in (
+              "Priority prefixes: 56", "External spot-check rows: 5", "All rows: STATUS=REVIEW",
+              "External spot-check scope EXACT_ONLY: 3",
+              "External spot-check scope EXACT_AND_MORE_SPECIFIC: 1",
+              "External spot-check scope MORE_SPECIFIC_ONLY: 1",
+          ):
               if required not in stats:
                   raise SystemExit(f"Worklist statistics missing: {required}")
           with (base / "README_validation.txt").open("a", encoding="utf-8") as stream:
