@@ -98,7 +98,11 @@ def read_company_manifest(path: Path, companies: dict[int, dict[str, str]]) -> d
         asn = int(match.group(1))
         if asn in countries:
             raise ValueError(f"{path}:{line_no}: duplicate company ASN AS{asn}")
-        countries[asn] = row[5].strip().upper() or "UNKNOWN"
+        countries[asn] = {
+            "ipverse_country_code": row[5].strip().upper() or "UNKNOWN",
+            "also_rir_ru": row[8].strip().lower(),
+            "also_rir_by_kz": row[9].strip().lower(),
+        }
     missing = sorted(set(companies) - set(countries))
     if missing:
         raise ValueError("company ASN manifest is missing registry entries: " +
@@ -317,7 +321,9 @@ def build_review(
                     "asn": f"AS{asn}",
                     "group": companies[asn]["group"],
                     "legal_entity": companies[asn]["entity"],
-                    "ipverse_country_code": countries[asn],
+                    "ipverse_country_code": countries[asn]["ipverse_country_code"],
+                    "also_rir_ru": countries[asn]["also_rir_ru"],
+                    "also_rir_by_kz": countries[asn]["also_rir_by_kz"],
                     "evidence_url": companies[asn]["evidence"],
                 }
                 for asn in sorted(item["company_asns"])
