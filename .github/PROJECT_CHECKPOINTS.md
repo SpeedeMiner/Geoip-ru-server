@@ -15,7 +15,7 @@ Append-only recovery log for the Geoip-ru-server audit work. Keep each completed
 
 - **Project:** Geoip-ru-server; production baseline is v37.
 - **PR #3:** merged; merge/base commit on `main`: `c71b5eff48f34b363ef2430ba6b5c41603f36126`.
-- **PR #4:** [Add current exact-origin checks for archived RPKI-invalid prefixes](https://github.com/SpeedeMiner/Geoip-ru-server/pull/4); branch `audit/prefix-review-current-p1-2026-11`; open, Draft, unmerged. Before this journal-only commit, branch head was `aa2858573e7e3adc9be3a5e194f825f56569312c`, 17 commits ahead of `main`, zero behind. The journal is being added on this same branch; verify the new head before resuming.
+- **PR #4:** [Add current exact-origin checks for archived RPKI-invalid prefixes](https://github.com/SpeedeMiner/Geoip-ru-server/pull/4); branch `audit/prefix-review-current-p1-2026-11`; open, Draft, unmerged. Journal introduction commit: `c315b9d8b51224dd4935eba23fd60df4e36ed7d6`. The branch now contains the log and is 18 commits ahead of `main`, zero behind; verify the live branch ref before resuming.
 - **Latest code validation:** [GitHub Actions run #81](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/42855998169), run ID `42855998169`, completed successfully on code head `aa2858573e7e3adc9be3a5e194f825f56569312c`; all 16 major workflow steps passed.
 - **Latest artifact:** [v37-prefix-audit-4](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/42855998169/artifacts/13782199711), artifact ID `13782199711`, SHA-256 `03c44f71366c10a2f44bb03de837d64599ea231d5f6f09b764544a74fa07ce53`. The ZIP has 25 files. Reconciliation TSV SHA-256: `7b543988bf7999167dc033d870160b460efd3dfa6f5bd585ed7359c39c13b8ed`. Worklist TSV SHA-256: `dbacae414baac4649232902180854b622c9dc496f0b471f3fe0c9083bc2858ca`.
 - **Verified output:** 56 worklist rows (52 MOAS, four company-only), 22 external spot-check records; NLRI scope: EXACT_ONLY=5, EXACT_AND_MORE_SPECIFIC=12, MORE_SPECIFIC_ONLY=5. Archived-invalid reconciliation: 19 unique prefixes / 20 exact prefix-origin pairs; all 19 rows remain `STATUS=REVIEW`. Classes: exact-origin set changed=12; exact MOAS with changed per-origin RPKI status=1; exact MOAS with one origin still unconfirmed=1; more-specific-only/no exact verdict=5.
@@ -40,6 +40,12 @@ Append-only recovery log for the Geoip-ru-server audit work. Keep each completed
 - Final scope distribution at the current code head: EXACT_ONLY=5, EXACT_AND_MORE_SPECIFIC=12, MORE_SPECIFIC_ONLY=5.
 - Earlier CI [run 42851754704](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/42851754704) passed on `1fee07de5fa6b6a52b7b3454c93ed4034e59a40b`; it predates the reconciliation builder and later `93.181.240.0/20` scope refinement, so it is not the final validation.
 - Intermediate validation failures were corrected: run `42854477416` exposed a test-fixture RPKI mismatch (corrected in commit `4493c40`); run `42854592923` exposed comma-versus-pipe ASN normalization (corrected in commit `249ea5a`).
+
+### 2026-11-10 — Persistent checkpoint log installed — DONE
+
+- Added `.github/PROJECT_CHECKPOINTS.md` on the PR #4 branch in commit `c315b9d8b51224dd4935eba23fd60df4e36ed7d6`.
+- Verified the file from GitHub and updated the PR description with the latest green CI run, artifact digests and a link to this log. The log-only change does not alter the code validated by run #81.
+- Resume from the unresolved exact-NLRI refresh listed in the current-state block; append the next short record only after that stage is complete.
 
 ### 2026-11-10 — Archived-invalid exact-NLRI reconciliation — DONE
 
