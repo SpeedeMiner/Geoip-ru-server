@@ -78,6 +78,23 @@ class CompanyPrefixReviewTests(unittest.TestCase):
                 rows = [row for row in csv.reader(handle, delimiter="\t") if row]
             header = next(row for row in rows if row[0] == "PREFIX")
             self.assertEqual(header, list(BGP_HEADER))
+            output_text = output.read_text(encoding="utf-8")
+            for label in (
+                "Company ASN registry SHA256:",
+                "Company ASN manifest SHA256:",
+                "Selected prefix input SHA256:",
+                "Input provenance SHA256:",
+                "BGP source SHA256:",
+            ):
+                self.assertIn(label, output_text)
+            stats_text = stats.read_text(encoding="utf-8")
+            for label in (
+                "Company ASN registry SHA256:",
+                "Company ASN manifest SHA256:",
+                "Selected prefix input SHA256:",
+                "Input provenance SHA256:",
+            ):
+                self.assertIn(label, stats_text)
             data = {row[0]: dict(zip(header, row)) for row in rows if row[0] != "PREFIX" and not row[0].startswith("#")}
             moas = data["198.51.100.0/24"]
             self.assertEqual(moas["STATUS"], "REVIEW")
