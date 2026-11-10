@@ -907,6 +907,17 @@ def build_provider_prefix_report(measurements: list[dict[str, Any]]) -> list[dic
         if row.get("target_ip"):
             addresses.add(row["target_ip"])
         for prefix in prefixes:
+            prefix_network = ipaddress.ip_network(prefix, strict=True)
+            prefix_addresses: set[str] = set()
+            for address in addresses:
+                try:
+                    parsed_address = ipaddress.ip_address(address)
+                except ValueError:
+                    continue
+                if parsed_address.version == prefix_network.version and parsed_address in prefix_network:
+                    prefix_addresses.add(address)
+            if not prefix_addresses:
+                continue
             key = (country, asn, prefix)
             item = grouped.setdefault(key, {
                 "COUNTRY": country, "ASN": asn, "NETWORK": network_name,
@@ -934,7 +945,7 @@ def build_provider_prefix_report(measurements: list[dict[str, Any]]) -> list[dic
                 item["TARGET_IDS"].add(row["target_id"])
             if row.get("target_domain"):
                 item["TARGET_DOMAINS"].add(row["target_domain"])
-            item["OBSERVED_IPS"].update(addresses)
+            item["OBSERVED_IPS"].update(prefix_addresses)
             if row.get("http_status") not in (None, ""):
                 item["HTTP_STATUSES"].add(str(row["http_status"]))
 
