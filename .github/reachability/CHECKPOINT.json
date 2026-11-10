@@ -1,13 +1,13 @@
 {
   "schema_version": 1,
-  "updated_at_utc": "2026-11-10T16:56:04.265Z",
+  "updated_at_utc": "2026-11-10T16:57:27.866Z",
   "repository": "SpeedeMiner/Geoip-ru-server",
   "pull_request": 5,
   "branch": "feature/reachability-full-ru-kz-by",
   "observed_pr_head_sha": "1aa449c570b34fb506c9926a25e104fea093f272",
   "observed_pr_base_sha": "c71b5eff48f34b363ef2430ba6b5c41603f36126",
   "state": "IN_PROGRESS",
-  "current_phase": "VALIDATE_FAIR_PROVIDER_SCHEDULER",
+  "current_phase": "RUN_FULL_MEASUREMENT_WITH_FAIR_SCHEDULER",
   "completed": [
     "repository_reconnaissance",
     "protobuf_inventory_exporter",
@@ -16,9 +16,12 @@
     "optional_ripe_atlas_collector",
     "python_go_unit_tests",
     "reachability_validation_ci",
-    "first_full_measurement_run"
+    "first_full_measurement_run",
+    "balanced_provider_scheduler",
+    "balanced_scheduler_unit_tests",
+    "balanced_scheduler_validation_ci"
   ],
-  "latest_successful_validation_run": 42856736740,
+  "latest_successful_validation_run": 42859512809,
   "latest_successful_full_run": 42856671346,
   "latest_full_run_commit": "58feded4d0b0b87a9b1671bf5c7b64ffa9e2c133",
   "latest_artifact": {
@@ -50,19 +53,19 @@
     "severity": "HIGH_FOR_COVERAGE_INTERPRETATION",
     "description": "A continuous slice of a country/ASN-sorted task list caused successful measurements to cluster in three RU ASNs; KZ/BY probes were not adequately represented. The first-run reachability totals are exploratory only.",
     "required_fix": "Implemented: round-robin per-provider complete four-task bundles; rotate provider/target choice by UTC date; do not split bundles when budget is short. CI run 42859374441 failed only because the earlier test asserted partial bundle output; expectation and scheduler were corrected.",
-    "status": "FIX_IMPLEMENTED_CI_PENDING",
+    "status": "FIXED_CI_GREEN_AWAITING_NEW_DATA",
     "fix_commit": "887e92c42b977b796650890d66448832ce7b91fa",
-    "test_commit": "66eef61fc433b7eb1f44d71fe88f24cd8e20ea70"
+    "test_commit": "66eef61fc433b7eb1f44d71fe88f24cd8e20ea70",
+    "validation_run": 42859512809
   },
   "next_steps": [
-    "Confirm Reachability validation CI after atomic-bundle test correction",
-    "Run full reachability workflow with fair provider scheduler",
-    "Verify provider coverage and successful probe results separately for RU, KZ, BY",
-    "Review API_ERROR rows including IPv6 probe availability and keep them out of block conclusions",
-    "Review two OONI anomaly records from raw measurements",
-    "Keep RIPE Atlas skipped unless RIPE_ATLAS_API_KEY is configured",
-    "Update WORKLOG.md and CHECKPOINT.json after each completed phase",
-    "Review PR #5 and keep Draft until the measurement results are representative"
+    "Start full reachability workflow with fair scheduler from branch",
+    "Inspect the new artifact and verify all discovered RU/KZ/BY provider pairs received a complete target bundle when budget >= 4 per provider",
+    "Verify provider summary results and note IPv6 probe/API errors separately",
+    "Review the two historical OONI anomalies only against original raw measurement records; do not use old results as block verdicts",
+    "Decide whether to configure RIPE_ATLAS_API_KEY; absent secret is an explicit skip",
+    "Commit updated metrics and checkpoint in WORKLOG.md and CHECKPOINT.json",
+    "Review PR #5; do not merge until corrected measurement coverage is inspected"
   ],
   "policy_invariants": {
     "geoip_RU_dat_mutated": false,
@@ -74,5 +77,13 @@
     "automatic_blocked_verdict": false,
     "timeout_is_block_evidence": false,
     "eyeball_network_is_proof_of_residential": false
+  },
+  "latest_successful_validation_commit": "66eef61fc433b7eb1f44d71fe88f24cd8e20ea70",
+  "test_counts": {
+    "python_unit_tests": 21,
+    "python_unit_tests_status": "PASS",
+    "go_tests_status": "PASS",
+    "go_build_status": "PASS",
+    "gofmt_status": "PASS"
   }
 }
