@@ -56,6 +56,8 @@ jobs:
       COMPANY_ASN_MANIFEST: geoip_RU_company_asn_manifest.tsv
       COMPANY_PREFIX_REVIEW: geoip_RU_company_prefix_review.tsv
       COMPANY_PREFIX_REVIEW_STATS: geoip_RU_company_prefix_review_stats.txt
+      SELECTED_PREFIX_REVIEW: geoip_RU_selected_origin_prefix_review.tsv
+      SELECTED_PREFIX_REVIEW_STATS: geoip_RU_selected_origin_prefix_review_stats.txt
       ASN_STATS: geoip_RU_BY_KZ_asn_stats.txt
       SOURCE_COUNTS: geoip_RU_source_counts.txt
       CATEGORY_AUDIT: geoip_RU_category_audit.tsv
@@ -1213,7 +1215,18 @@ jobs:
             --output "$COMPANY_PREFIX_REVIEW" \
             --stats "$COMPANY_PREFIX_REVIEW_STATS"
 
-          for file in "$RU_PREFIX_INPUT" "$GLOBAL_BGP_PREFIX_INPUT" "$ASN_MANIFEST" "$COMPANY_ASN_MANIFEST" "$ASN_STATS" "$BY_KZ_ASN_REGISTRY" "$COMPANY_PREFIX_REVIEW" "$COMPANY_PREFIX_REVIEW_STATS"; do
+          # Audit the entire regional + company selected-origin set, not only the
+          # corporate subset. This is still review-only and does not gate GeoIP output.
+          python3 .github/scripts/build_selected_origin_prefix_review.py \
+            --selected-prefixes "$RU_PREFIX_INPUT" \
+            --company-asns "$COMPANY_ASN_REGISTRY" \
+            --company-manifest "$COMPANY_ASN_MANIFEST" \
+            --input-provenance "$INPUT_PROVENANCE" \
+            --bgp-archive "$IPVERSE_BGP_ARCHIVE" \
+            --output "$SELECTED_PREFIX_REVIEW" \
+            --stats "$SELECTED_PREFIX_REVIEW_STATS"
+
+          for file in "$RU_PREFIX_INPUT" "$GLOBAL_BGP_PREFIX_INPUT" "$ASN_MANIFEST" "$COMPANY_ASN_MANIFEST" "$ASN_STATS" "$BY_KZ_ASN_REGISTRY" "$COMPANY_PREFIX_REVIEW" "$COMPANY_PREFIX_REVIEW_STATS" "$SELECTED_PREFIX_REVIEW" "$SELECTED_PREFIX_REVIEW_STATS"; do
             test -s "$file" || { echo "::error::Missing BGP artifact: $file"; exit 1; }
           done
 
@@ -3162,6 +3175,10 @@ jobs:
             printf 'Per-prefix review report: %s\n' "$COMPANY_PREFIX_REVIEW"
             cat "$COMPANY_PREFIX_REVIEW_STATS"
             printf 'All company-origin prefixes remain REVIEW until prefix-level evidence is assessed; this report does not change the GeoIP output.\n'
+            printf '\n=== COMPLETE SELECTED REGIONAL + COMPANY ORIGIN PREFIX REVIEW QUEUE ===\n'
+            printf 'Per-prefix report: %s\n' "$SELECTED_PREFIX_REVIEW"
+            cat "$SELECTED_PREFIX_REVIEW_STATS"
+            printf 'All selected regional/company origin prefixes remain REVIEW; this is audit-only and does not change DIRECT membership.\n'
             printf '\n=== BLOCKED SOURCE INGESTION AUDIT ===\n'
             printf 'Approved exclusions: %s\n' "$BLOCKED_IP_INPUT"
             printf 'Review-only candidates (never carved): %s\n' "$BLOCKED_REVIEW_INPUT"
@@ -3182,7 +3199,7 @@ jobs:
           test -s "$OUTPUT_SHA_FILE" || { echo "::error::Failed to create protobuf SHA256 file: $OUTPUT_SHA_FILE"; exit 1; }
           sha256sum -c "$OUTPUT_SHA_FILE"
 
-          for file in "$OUTPUT_FILE" "$OUTPUT_SHA_FILE" "$BLOCKED_IP_SHA_FILE" "$CATEGORY_FILE" "$SOURCE_FILE" "$SOURCE_COUNTS" "$CATEGORY_AUDIT" "$QUALITY_REPORT" "$PROVENANCE_FILE" "$ASN_MANIFEST" "$COMPANY_ASN_MANIFEST" "$ASN_STATS" "$BY_KZ_ASN_REGISTRY" "$COMPANY_PREFIX_REVIEW" "$COMPANY_PREFIX_REVIEW_STATS" "$BLOCKED_IP_INPUT" "$BLOCKED_REVIEW_INPUT" "$BLOCKED_STATS_INPUT" "$BLOCKED_CHECKSUMS_INPUT" "$BLOCKED_IP_RAW_INPUT" "$BLOCKED_IPRESOLVE_INPUT" "$BLOCKED_SUBNET_INPUT" "$INPUT_PROVENANCE" "$INPUT_PROVENANCE_SHA"; do
+          for file in "$OUTPUT_FILE" "$OUTPUT_SHA_FILE" "$BLOCKED_IP_SHA_FILE" "$CATEGORY_FILE" "$SOURCE_FILE" "$SOURCE_COUNTS" "$CATEGORY_AUDIT" "$QUALITY_REPORT" "$PROVENANCE_FILE" "$ASN_MANIFEST" "$COMPANY_ASN_MANIFEST" "$ASN_STATS" "$BY_KZ_ASN_REGISTRY" "$COMPANY_PREFIX_REVIEW" "$COMPANY_PREFIX_REVIEW_STATS" "$SELECTED_PREFIX_REVIEW" "$SELECTED_PREFIX_REVIEW_STATS" "$BLOCKED_IP_INPUT" "$BLOCKED_REVIEW_INPUT" "$BLOCKED_STATS_INPUT" "$BLOCKED_CHECKSUMS_INPUT" "$BLOCKED_IP_RAW_INPUT" "$BLOCKED_IPRESOLVE_INPUT" "$BLOCKED_SUBNET_INPUT" "$INPUT_PROVENANCE" "$INPUT_PROVENANCE_SHA"; do
             test -s "$file" || { echo "::error::Missing or empty build artifact: $file"; exit 1; }
           done
 
@@ -3196,14 +3213,14 @@ jobs:
           sha256sum -c "$OUTPUT_SHA_FILE"
           test -s "$INPUT_PROVENANCE_SHA" || { echo "::error::Missing input provenance checksum"; exit 1; }
           sha256sum -c "$INPUT_PROVENANCE_SHA"
-          python3 - "$OUTPUT_FILE" "$ASN_MANIFEST" "$COMPANY_ASN_MANIFEST" "$ASN_STATS" "$RIR_STATS" "$SOURCE_COUNTS" "$QUALITY_REPORT" "$PROVENANCE_FILE" "$CATEGORY_AUDIT" "$BY_KZ_ASN_REGISTRY" "$BLOCKED_IP_INPUT" "$BLOCKED_REVIEW_INPUT" "$BLOCKED_STATS_INPUT" "$BLOCKED_CHECKSUMS_INPUT" "$INPUT_PROVENANCE" "$COMPANY_PREFIX_REVIEW" "$COMPANY_PREFIX_REVIEW_STATS" <<'PY'
+          python3 - "$OUTPUT_FILE" "$ASN_MANIFEST" "$COMPANY_ASN_MANIFEST" "$ASN_STATS" "$RIR_STATS" "$SOURCE_COUNTS" "$QUALITY_REPORT" "$PROVENANCE_FILE" "$CATEGORY_AUDIT" "$BY_KZ_ASN_REGISTRY" "$BLOCKED_IP_INPUT" "$BLOCKED_REVIEW_INPUT" "$BLOCKED_STATS_INPUT" "$BLOCKED_CHECKSUMS_INPUT" "$INPUT_PROVENANCE" "$COMPANY_PREFIX_REVIEW" "$COMPANY_PREFIX_REVIEW_STATS" "$SELECTED_PREFIX_REVIEW" "$SELECTED_PREFIX_REVIEW_STATS" "$RU_PREFIX_INPUT" <<'PY'
           import os, sys, ipaddress, json
           from collections import defaultdict
-          output, manifest, company_manifest, bgp_stats, rir_stats, counts, quality, provenance, category_audit, by_kz_asns, blocked_ips, blocked_review, blocked_stats, blocked_checksums, input_provenance, company_prefix_review, company_prefix_review_stats = sys.argv[1:]
+          output, manifest, company_manifest, bgp_stats, rir_stats, counts, quality, provenance, category_audit, by_kz_asns, blocked_ips, blocked_review, blocked_stats, blocked_checksums, input_provenance, company_prefix_review, company_prefix_review_stats, selected_prefix_review, selected_prefix_review_stats, selected_prefix_input = sys.argv[1:]
           minimums = ((output, 4), (manifest, 100), (company_manifest, 300), (bgp_stats, 100), (rir_stats, 100),
                       (counts, 100), (quality, 1600), (provenance, 50), (category_audit, 50), (by_kz_asns, 100), (blocked_ips, 10000),
                       (blocked_review, 20), (blocked_stats, 100), (blocked_checksums, 200), (input_provenance, 100),
-                      (company_prefix_review, 100), (company_prefix_review_stats, 100))
+                      (company_prefix_review, 100), (company_prefix_review_stats, 100), (selected_prefix_review, 100), (selected_prefix_review_stats, 100))
           for path, minimum in minimums:
               if not os.path.isfile(path) or os.path.getsize(path) < minimum:
                   raise SystemExit(f"Missing or unexpectedly small v35 artifact: {path}")
@@ -3326,6 +3343,91 @@ jobs:
               raise SystemExit("Company prefix review stats do not state the review-only policy")
           if "Global origin ASNs are derived from every aggregated.json record" not in company_review_stats:
               raise SystemExit("Company prefix review stats do not describe full-snapshot global origin lookup")
+
+          selected_header = [
+              "PREFIX", "FAMILY", "ADDRESS_COUNT", "SELECTED_ORIGIN_ASNS", "SELECTED_ORIGIN_LABELS",
+              "COMPANY_ASNS", "COMPANY_GROUPS", "LEGAL_ENTITIES", "COMPANY_ASN_DETAILS_JSON",
+              "REGIONAL_RIR_ORIGIN_ASNS", "INCLUSION_BASIS", "GLOBAL_BGP_ORIGIN_ASNS",
+              "GLOBAL_BGP_ORIGIN_COUNTRY_CODES", "GLOBAL_BGP_MOAS", "RPKI_STATUS", "IRR_STATUS",
+              "STATUS", "CURRENT_PIPELINE_EVIDENCE", "REVIEW_REASON", "GENERATED_UTC",
+              "BGP_SNAPSHOT_SHA256", "BGP_SNAPSHOT_URL",
+          ]
+          with open(selected_prefix_review, encoding="utf-8") as source:
+              selected_rows = [line.rstrip("\\n").split("\\t") for line in source if line.strip() and not line.startswith("#")]
+          if not selected_rows or selected_rows[0] != selected_header:
+              raise SystemExit("Selected regional/company prefix review manifest has an unexpected schema")
+          selected_entries = selected_rows[1:]
+          if not selected_entries:
+              raise SystemExit("Selected regional/company prefix review manifest is empty")
+          expected_selected = set()
+          for line_no, raw in enumerate(open(selected_prefix_input, encoding="utf-8"), 1):
+              line = raw.strip()
+              if not line or line.startswith("#"):
+                  continue
+              token = line.split("#", 1)[0].strip()
+              try:
+                  canonical = str(ipaddress.ip_network(token, strict=True))
+              except ValueError as exc:
+                  raise SystemExit(f"Invalid selected ASN-origin prefix input at line {line_no}: {token}: {exc}")
+              expected_selected.add(canonical)
+          seen_selected = set()
+          for row in selected_entries:
+              if len(row) != len(selected_header):
+                  raise SystemExit(f"Malformed selected-origin review row: {row}")
+              prefix, family, addresses = row[0], row[1], row[2]
+              try:
+                  network = ipaddress.ip_network(prefix, strict=True)
+              except ValueError as exc:
+                  raise SystemExit(f"Invalid prefix in selected-origin review: {prefix}: {exc}")
+              if prefix in seen_selected:
+                  raise SystemExit(f"Duplicate selected-origin prefix review row: {prefix}")
+              seen_selected.add(prefix)
+              if family != ("IPv4" if network.version == 4 else "IPv6") or addresses != str(network.num_addresses):
+                  raise SystemExit(f"Selected-origin family/address count mismatch: {row}")
+              selected_origins = set(row[3].split(",")) if row[3] else set()
+              company_asns = set(row[5].split(",")) if row[5] else set()
+              regional_asns = set(row[9].split(",")) if row[9] else set()
+              global_origins = set(row[11].split(",")) if row[11] else set()
+              if not selected_origins or not selected_origins.issubset(global_origins):
+                  raise SystemExit(f"Selected origin ASN set is empty or absent from global snapshot for {prefix}")
+              if company_asns and not company_asns.issubset(selected_origins):
+                  raise SystemExit(f"Company ASN attribution is not a subset of selected origin ASNs for {prefix}")
+              if regional_asns and not regional_asns.issubset(selected_origins):
+                  raise SystemExit(f"Regional RIR ASN attribution is not a subset of selected origin ASNs for {prefix}")
+              expected_basis = (
+                  "REGIONAL_RIR_ASN+COMPANY_ASN" if company_asns and regional_asns else
+                  "COMPANY_ASN_ONLY" if company_asns else
+                  "REGIONAL_RIR_ASN_ONLY" if regional_asns else "INVALID"
+              )
+              if row[10] != expected_basis:
+                  raise SystemExit(f"Selected-origin inclusion basis mismatch for {prefix}: {row[10]} != {expected_basis}")
+              if row[13] != ("yes" if len(global_origins) > 1 else "no"):
+                  raise SystemExit(f"Selected-origin MOAS flag mismatch for {prefix}")
+              if row[14] != "NOT_QUERIED" or row[15] != "NOT_QUERIED" or row[16] != "REVIEW":
+                  raise SystemExit(f"Selected-origin review status/RPKI/IRR is not conservative for {prefix}")
+              if row[17] != "PRESENT_IN_SELECTED_BGP_INPUT":
+                  raise SystemExit(f"Unexpected selected-origin pipeline evidence for {prefix}")
+              country_pairs = row[12].split(",") if row[12] else []
+              if {pair.split("=", 1)[0] for pair in country_pairs if "=" in pair} != global_origins:
+                  raise SystemExit(f"Selected-origin country map does not reconcile for {prefix}")
+              try:
+                  company_details = json.loads(row[8])
+              except json.JSONDecodeError as exc:
+                  raise SystemExit(f"Invalid selected-origin company details JSON for {prefix}: {exc}")
+              if {detail.get("asn") for detail in company_details} != company_asns:
+                  raise SystemExit(f"Selected-origin company detail JSON does not reconcile for {prefix}")
+          if seen_selected != expected_selected:
+              missing_selected = sorted(expected_selected - seen_selected)
+              extra_selected = sorted(seen_selected - expected_selected)
+              raise SystemExit(f"Selected-origin queue does not match selected BGP prefix input: missing={missing_selected[:5]} extra={extra_selected[:5]}")
+          selected_stats_text = open(selected_prefix_review_stats, encoding="utf-8").read()
+          expected_selected_count = f"Unique selected regional/company origin prefixes: {len(selected_entries)}"
+          if expected_selected_count not in selected_stats_text:
+              raise SystemExit("Selected-origin review stats do not reconcile with manifest row count")
+          if "Review status: REVIEW for every row" not in selected_stats_text:
+              raise SystemExit("Selected-origin review stats do not state the review-only policy")
+          if "RPKI/ROA status: NOT_QUERIED" not in selected_stats_text or "IRR status: NOT_QUERIED" not in selected_stats_text:
+              raise SystemExit("Selected-origin review stats do not conservatively report unqueried RPKI/IRR")
 
           with open(input_provenance, encoding="utf-8") as source:
               provenance_rows = [line.rstrip("\n").split("\t") for line in source if line.strip()]
@@ -3668,6 +3770,8 @@ jobs:
             geoip_RU_input_provenance.tsv.sha256sum
             geoip_RU_company_prefix_review.tsv
             geoip_RU_company_prefix_review_stats.txt
+            geoip_RU_selected_origin_prefix_review.tsv
+            geoip_RU_selected_origin_prefix_review_stats.txt
             antifilter-ip.lst
             antifilter-ipresolve.lst
             antifilter-subnet.lst
@@ -3739,8 +3843,9 @@ jobs:
 
             ## Company prefix-level review
             - geoip_RU_company_prefix_review.tsv lists every prefix in the selected BGP input that has at least one company-allowlisted origin ASN.
-            - Every row is marked REVIEW; RPKI and IRR are NOT_QUERIED. ASN membership is not treated as proof of ownership, control, or DIRECT suitability.
-            - This is an audit queue only. It does not change the current RU/BY/KZ routing output; any migration to per-prefix approval requires evidence and an address-space impact review.
+            - geoip_RU_selected_origin_prefix_review.tsv extends this review to every unique regional/company selected BGP origin prefix, not only company-origin routes.
+            - Every row in both queues is marked REVIEW; RPKI and IRR are NOT_QUERIED. ASN membership and RIR ASN registration are not treated as proof of ownership, control, or DIRECT suitability.
+            - These are audit queues only. They do not change the current RU/BY/KZ routing output; any migration to per-prefix approval requires evidence and an address-space impact review.
 
             ## Input-source provenance
             - geoip_RU_input_provenance.tsv records the exact URL selected for each downloaded input, SHA-256, byte size, and download status; its sidecar checksum is published alongside it.
@@ -3758,7 +3863,7 @@ jobs:
             "$OUTPUT_FILE" "$OUTPUT_SHA_FILE" "$CATEGORY_FILE" "$SOURCE_FILE" \
             "$SOURCE_COUNTS" "$CATEGORY_AUDIT" "$QUALITY_REPORT" "$PROVENANCE_FILE" "$ASN_MANIFEST" "$COMPANY_ASN_MANIFEST" "$COMPANY_ASN_REGISTRY" "$ASN_STATS" \
             "$RU_PREFIX_INPUT" "$RU_ASN_REGISTRY" "$BY_KZ_ASN_REGISTRY" "$RIR_PREFIX_INPUT" "$RIR_STATS" "$GLOBAL_BGP_PREFIX_INPUT" \
-            "$BLOCKED_IP_INPUT" "$BLOCKED_IP_SHA_FILE" "$BLOCKED_REVIEW_INPUT" "$BLOCKED_STATS_INPUT" "$BLOCKED_CHECKSUMS_INPUT" "$INPUT_PROVENANCE" "$INPUT_PROVENANCE_SHA" "$COMPANY_PREFIX_REVIEW" "$COMPANY_PREFIX_REVIEW_STATS"; do
+            "$BLOCKED_IP_INPUT" "$BLOCKED_IP_SHA_FILE" "$BLOCKED_REVIEW_INPUT" "$BLOCKED_STATS_INPUT" "$BLOCKED_CHECKSUMS_INPUT" "$INPUT_PROVENANCE" "$INPUT_PROVENANCE_SHA" "$COMPANY_PREFIX_REVIEW" "$COMPANY_PREFIX_REVIEW_STATS" "$SELECTED_PREFIX_REVIEW" "$SELECTED_PREFIX_REVIEW_STATS"; do
             cp "$file" /tmp/geoip-client-release/"$(basename "$file")"
           done
           cd /tmp/geoip-client-release
@@ -3792,6 +3897,8 @@ jobs:
           purge_jsdelivr "geoip_RU_input_provenance.tsv.sha256sum"
           purge_jsdelivr "geoip_RU_company_prefix_review.tsv"
           purge_jsdelivr "geoip_RU_company_prefix_review_stats.txt"
+          purge_jsdelivr "geoip_RU_selected_origin_prefix_review.tsv"
+          purge_jsdelivr "geoip_RU_selected_origin_prefix_review_stats.txt"
           purge_jsdelivr "geoip_RU_blocked_ip_exclusions.txt"
 
       - name: Print download and audit URLs
@@ -3804,6 +3911,7 @@ jobs:
           echo "Additional prefix provenance: https://raw.githubusercontent.com/${{ github.repository }}/release/geoip_RU_additional_provenance.tsv"
           echo "Input source hashes: https://raw.githubusercontent.com/${{ github.repository }}/release/geoip_RU_input_provenance.tsv"
           echo "Company prefix review: https://raw.githubusercontent.com/${{ github.repository }}/release/geoip_RU_company_prefix_review.tsv"
+          echo "Selected regional/company origin-prefix review: https://raw.githubusercontent.com/${{ github.repository }}/release/geoip_RU_selected_origin_prefix_review.tsv"
           echo "Source contribution report: https://raw.githubusercontent.com/${{ github.repository }}/release/geoip_RU_source_counts.txt"
           echo "ASN manifest: https://raw.githubusercontent.com/${{ github.repository }}/release/geoip_RU_asn_manifest.txt"
           echo "Company ASN manifest: https://raw.githubusercontent.com/${{ github.repository }}/release/geoip_RU_company_asn_manifest.tsv"
