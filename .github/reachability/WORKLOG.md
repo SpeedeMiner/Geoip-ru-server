@@ -8,8 +8,8 @@ Durable resume point for PR #5. After any conversation/network interruption, rea
 - PR: https://github.com/SpeedeMiner/Geoip-ru-server/pull/5
 - State: OPEN / DRAFT; no automatic merge.
 - Branch: feature/reachability-full-ru-kz-by
-- Current main: a68e5d6589361814cb1cfedd2af7857e4af806fa; PR branch merge-base remains c71b5eff48f34b363ef2430ba6b5c41603f36126 (29 commits behind, 72 commits ahead; current diff is isolated to the 11 reachability files)
-- Latest validation commit: 42d6297dd1918c0b5380228036e3489e5df05266. Latest full-measurement run executed on temporary-trigger commit 7acb180836ae1de16687333f5c8a55b2a8b3a0dc; the temporary path-scoped push trigger was removed in commit 533281109e101b81f7b0ff623c011f698e56bc6a. Current branch head after cleanup: 533281109e101b81f7b0ff623c011f698e56bc6a.
+- Current main: a68e5d6589361814cb1cfedd2af7857e4af806fa; PR branch merge-base remains c71b5eff48f34b363ef2430ba6b5c41603f36126 (29 commits behind current main). The 11 changed files in PR #5 are confined to .github/reachability/** and the two separate diagnostic workflows; no main GeoIP builder, release or client data file is changed.
+- Latest validation: run 42871418240 succeeded on commit 1b2152760b120218763956a8f7005f3bafa044e8 after correcting three Belarus reference URLs. Latest full measurement ran on temporary-trigger commit 7acb180836ae1de16687333f5c8a55b2a8b3a0dc; the temporary path-scoped push trigger was removed in commit 533281109e101b81f7b0ff623c011f698e56bc6a. Always query the live PR head on resume; documentation/checkpoint commits advance it.
 - Latest successful validation commit: 854381b06c08267416dc8bf20311e56a549c72bd. Documentation/checkpoint commits may advance branch HEAD; always query the live PR head on resume.
 - The full-measurement workflow has manual dispatch on this feature branch. Its daily cron becomes active only after the workflow is merged into the repository default branch. The temporary push trigger has been removed.
 - Main GeoIP builder, release branch, and published geoip_RU.dat were not modified. The client remains one file with exactly RU and PRIVATE categories.
@@ -18,7 +18,7 @@ Durable resume point for PR #5. After any conversation/network interruption, rea
 
 - Go exporter reads the exact published release/geoip_RU.dat and exports every RU and PRIVATE prefix. It rejects unexpected/duplicate categories, duplicate/non-canonical/default-route CIDRs, malformed entries and RU/PRIVATE overlap.
 - Latest inventory from the current published v37 release: 76,231 RU CIDRs + 151 PRIVATE CIDRs = 76,382 rows. The older full run inventory (76,268 RU CIDRs) is superseded.
-- Thirty seed hostnames are configured: two control targets plus 28 RU/KZ/BY service endpoints. Each is probed from all configured RU/KZ/BY source networks. Every newly added target includes an optional reference_url to an official, regulator or government source. This is an expanded pilot, not a comprehensive domain/API inventory.
+- Thirty seed hostnames are configured: two control targets plus 28 RU/KZ/BY service endpoints. Every hostname appeared in the expanded full run, but only 30 of 90 possible source-country/target pairs were measured in that daily sample (RU 21, KZ 6, BY 3). The scheduler rotates provider and target selection by UTC date; one artifact is not a complete provider-by-target census. Every newly added target includes a reference_url; the three Belarus government references were corrected to the Embassy of India in Minsk's official useful-links page. This is an expanded pilot, not a comprehensive domain/API inventory.
 - Globalping providers are discovered at run time by country + ASN + eyeball-network. Returned probe country, ASN and tags are verified.
 - The fair scheduler emits complete four-test bundles (DNS A, DNS AAAA, HTTPS IPv4, HTTPS IPv6), visiting every provider before assigning another target to any provider. Country/provider and target selection rotate by UTC date. Budgets never split bundles.
 - OONI web_connectivity observations are collected separately. OONI anomalies remain unconfirmed review signals, not automatic block verdicts.
@@ -28,9 +28,9 @@ Durable resume point for PR #5. After any conversation/network interruption, rea
 
 ## Latest validation
 
-- CI run: [run #71](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/42867134580)
-- Commit tested: `42d6297dd1918c0b5380228036e3489e5df05266`
-- Result: SUCCESS. Python 26/26 tests passed; Go formatting, Go tests and Go build passed. This validates the expanded 30-target JSON catalogue and the current collector/exporter code.
+- CI run: [42871418240](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/42871418240)
+- Commit tested: `1b2152760b120218763956a8f7005f3bafa044e8`
+- Result: SUCCESS. Python 26/26 tests passed; Go formatting, Go tests and Go build passed. This includes validation after correcting the Belarus target provenance URLs.
 
 ## Latest complete measurement run — current published v37 + 30 targets
 
@@ -56,7 +56,7 @@ Durable resume point for PR #5. After any conversation/network interruption, rea
 - Online probes: 5,536; distinct country/ASN provider pairs found: 39; covered 39/39; uncovered 0. Pair distribution: RU 30, KZ 6, BY 3.
 - 180 tasks = 45 complete four-measurement bundles, zero partial bundles, five max concurrent measurements.
 - Results: ACCESSIBLE=40, DNS_ANSWER=56, DNS_NO_ANSWER=34, INCONCLUSIVE=12, NO_IPV6_PROBE=38, API_ERROR=0.
-- Returned probe-country-tagged results: RU 113, KZ 18, BY 11. NO_IPV6_PROBE means no suitable IPv6 probe was found; it is not an IPv6 blocking result.
+- Returned probe-country-tagged results: RU 113, KZ 18, BY 11. The 38 NO_IPV6_PROBE tasks split RU 31, KZ 6, BY 1; each means no suitable IPv6 probe was found, not an IPv6 blocking result.
 
 ### Prefix and exact-IP report validation
 
@@ -75,11 +75,21 @@ Durable resume point for PR #5. After any conversation/network interruption, rea
 ## Interpretation limits
 
 - Globalping eyeball-network differentiates end-user-tagged probes from data-centre probes, but does not prove that each probe is a residential/home line. Some returned network names can be hosting/enterprise operators. Treat the country/ASN observations as vantage-point evidence, not a verified list of household subscribers.
-- The 30 hostnames are still a pilot. In the latest run, 76,187 RU prefixes had no endpoint match; these remain untested by the current catalogue, not inaccessible or blocked.
+- The 30 hostnames are still a pilot. All 30 hostnames appeared in the run, but only 30/90 source-country/target pairs were selected (RU 21, KZ 6, BY 3); the daily rotation must accumulate across later runs. In the latest run, 76,187 RU prefixes had no endpoint match; these remain untested by the current catalogue, not inaccessible or blocked.
 - This is endpoint-based evidence for selected services, not a scan of every address in each CIDR.
-- 35 missing IPv6 probes are a measurement coverage limitation, not evidence of IPv6 blocking.
+- 38 missing IPv6 probes are a measurement coverage limitation (RU 31, KZ 6, BY 1), not evidence of IPv6 blocking.
 - OONI anomalies are all unconfirmed; do not subtract their IPs from DIRECT.
 - The workflow has not changed geoip_RU.dat or the two-category policy.
+
+
+## Independent artifact QA and follow-up corrections
+
+- Downloaded artifact ZIP reachability-expanded-30-targets.zip (1,077,344 bytes) and verified SHA-256 30d64922b2779139256d355b644b6dba41e1a7152877c19222b1b14cb4fc9512 against GitHub's artifact digest.
+- Rechecked all 76,231 RU inventory rows in the prefix report. The 62 provider/prefix rows reconcile exactly with the 71 provider/exact-IP rows by country/ASN/prefix; zero mismatches and zero IPs outside their stated prefix.
+- Independent result counts match the summary: ACCESSIBLE 40, DNS_ANSWER 56, DNS_NO_ANSWER 34, INCONCLUSIVE 12, NO_IPV6_PROBE 38, API_ERROR 0. Derived missing-IPv6 split from raw measurements: RU 31, KZ 6, BY 1; this replaces the earlier empty checkpoint subfield.
+- The one-day schedule selected 45 complete bundles across 39 provider pairs and covered all 30 hostnames, but selected only 30 of the 90 possible source-country/target pairs (RU 21, KZ 6, BY 3). The remaining combinations require successive UTC-rotated daily runs; the daily schedule activates only after default-branch merge.
+- Corrected by-government, by-president, and by-nbrb reference URLs to the Embassy of India in Minsk useful-links page, which explicitly lists those official Belarus government domains. Change committed in 1b2152760b120218763956a8f7005f3bafa044e8; validation run 42871418240 passed.
+- Current main is a68e5d6589361814cb1cfedd2af7857e4af806fa; PR #5 remains 29 commits behind it. Do not rewrite history or merge PR automatically. Plan a controlled branch update and rerun validation before owner approval.
 
 ## Resume protocol
 
@@ -101,8 +111,10 @@ Durable resume point for PR #5. After any conversation/network interruption, rea
 | Fair provider scheduler | DONE | 38/38 provider pairs covered |
 | Provider-prefix and exact-IP reports | DONE | 64 prefix rows, 77 IP rows, exact reconciliation |
 | NO_IPV6_PROBE handling | DONE | 35 classified; API_ERROR 0 |
-| CI validation | DONE | run #42863496776; 26 Python tests + Go checks |
-| Full measurement and artifact review against current v37 release | DONE | run #42867329770; artifact #13787468458 |
+| CI validation | DONE | run #42871418240; 26 Python tests + Go checks |
+| Full measurement and artifact review against current v37 release | DONE | run #42867329770; artifact #13787468458; SHA verified locally |
+| Belarus target-source correction | DONE | three reference URLs corrected; CI #42871418240 passed |
+| Daily target-country sampling coverage review | DONE | 30/90 source-country/target pairs in run #42867329770; rotation is multi-day |
 | OONI review / final policy interpretation | DONE with caveats above | 19 anomalies; all confirmed=false and failure=false |
 | Expanded 30-host target catalogue | DONE | 19 new sourced service endpoints; CI #71 and full run #5 passed |
 | Final PR review / owner decision | PENDING | PR #5 remains Draft; owner must review target coverage and base-branch lag |
