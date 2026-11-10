@@ -689,7 +689,10 @@ def build_evidence(company_queue: Path, output_dir: Path, max_workers: int = 5) 
                 "IRR_UNIQUE_ROUTE_OBJECTS": str(len(unique_objects)),
                 "IRR_EXACT_OBJECTS": str(len(exact_objects)),
                 "IRR_EXACT_BGP_ORIGIN_MATCH_OBJECTS": str(len(matching_objects)),
-                "IRR_EXACT_OBJECT_SOURCES": " | ".join(sorted({obj["REGISTRY_SOURCE"] for obj in exact_objects if obj["REGISTRY_SOURCE"]})),
+                "IRR_EXACT_OBJECT_SOURCES": " | ".join(sorted({
+                    obj["REGISTRY_SOURCE"] for obj in objects
+                    if obj["EXACT_PREFIX_MATCH"] == "yes" and obj["REGISTRY_SOURCE"]
+                })),
                 "IRR_EXACT_ORIGINS": " | ".join(sorted({obj["ORIGIN_ASN"] for obj in exact_objects if obj["ORIGIN_ASN"]})),
                 "IRR_MATCHED_BGP_ORIGINS": " | ".join(sorted({obj["ORIGIN_ASN"] for obj in matching_objects if obj["ORIGIN_ASN"]})),
                 "IRR_MNT_BY": " | ".join(sorted({obj["MNT_BY"] for obj in exact_objects if obj["MNT_BY"]})),
