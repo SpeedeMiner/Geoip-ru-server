@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "countries": ["RU", "KZ", "BY"],
+  "method": "HTTPS HEAD on port 443; a completed HTTP response proves transport reachability, not service health or absence of censorship",
+  "targets": [
+    {"id":"control-example","domain":"example.com","role":"control","country_scope":["RU","KZ","BY"],"port":443,"path":"/"},
+    {"id":"control-cloudflare","domain":"www.cloudflare.com","role":"control","country_scope":["RU","KZ","BY"],"port":443,"path":"/"},
+    {"id":"ru-yandex","domain":"ya.ru","role":"service","country_scope":["RU"],"port":443,"path":"/"},
+    {"id":"ru-vk","domain":"vk.com","role":"service","country_scope":["RU"],"port":443,"path":"/"},
+    {"id":"ru-ozon","domain":"www.ozon.ru","role":"service","country_scope":["RU"],"port":443,"path":"/"},
+    {"id":"kz-kaspi","domain":"kaspi.kz","role":"service","country_scope":["KZ"],"port":443,"path":"/"},
+    {"id":"kz-egov","domain":"egov.kz","role":"service","country_scope":["KZ"],"port":443,"path":"/"},
+    {"id":"kz-beeline","domain":"beeline.kz","role":"service","country_scope":["KZ"],"port":443,"path":"/"},
+    {"id":"by-beltelecom","domain":"beltelecom.by","role":"service","country_scope":["BY"],"port":443,"path":"/"},
+    {"id":"by-a1","domain":"a1.by","role":"service","country_scope":["BY"],"port":443,"path":"/"},
+    {"id":"by-mts","domain":"mts.by","role":"service","country_scope":["BY"],"port":443,"path":"/"}
+  ]
+}
