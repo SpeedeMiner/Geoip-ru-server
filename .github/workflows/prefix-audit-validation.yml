@@ -605,7 +605,7 @@ jobs:
           def read_tsv(path):
               with path.open(encoding="utf-8", newline="") as stream:
                   return list(csv.DictReader(
-                      (line for line in stream if not line.startswith("#")), delimiter="\\t"
+                      (line for line in stream if not line.startswith("#")), delimiter="\t"
                   ))
 
           priority = read_tsv(base / "priority_prefixes.tsv")
@@ -628,7 +628,7 @@ jobs:
                   raise SystemExit(f"Triage statistics missing safety statement: {required}")
           validation = base / "README_validation.txt"
           with validation.open("a", encoding="utf-8") as stream:
-              stream.write("\\nPriority-prefix triage\\n")
+              stream.write("\nPriority-prefix triage\n")
               stream.write(stats)
           print(stats)
           PY
