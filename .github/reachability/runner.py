@@ -701,6 +701,8 @@ def build_provider_report(providers: dict[tuple[str, int], dict[str, Any]], meas
             "CITY_SAMPLE": provider["city"], "PROBE_TAGS": "|".join(provider["tags"]),
             "PROBE_CLASS": provider["probe_class"],
             "MEASUREMENTS": len(rows), "ACCESSIBLE": counts["ACCESSIBLE"],
+            "DNS_ANSWERS": counts["DNS_ANSWER"], "DNS_NXDOMAIN": counts["DNS_NXDOMAIN"],
+            "DNS_NO_ANSWER": counts["DNS_NO_ANSWER"],
             "INCONCLUSIVE": counts["INCONCLUSIVE"], "NO_PROBE": counts["NO_PROBE"],
             "API_ERROR": counts["API_ERROR"], "RATE_LIMITED": counts["RATE_LIMITED"],
         })
@@ -856,7 +858,8 @@ def run(args: argparse.Namespace) -> int:
     ]
     write_tsv(output_dir / "reachability_by_provider.tsv", provider_report, [
         "COUNTRY", "ASN", "NETWORK", "CITY_SAMPLE", "PROBE_TAGS", "PROBE_CLASS",
-        "MEASUREMENTS", "ACCESSIBLE", "INCONCLUSIVE", "NO_PROBE", "API_ERROR", "RATE_LIMITED",
+        "MEASUREMENTS", "ACCESSIBLE", "DNS_ANSWERS", "DNS_NXDOMAIN", "DNS_NO_ANSWER",
+        "INCONCLUSIVE", "NO_PROBE", "API_ERROR", "RATE_LIMITED",
     ])
     write_tsv(output_dir / "reachability_by_prefix.tsv", prefix_report, [
         "PREFIX", "FAMILY", "ADDRESS_COUNT", "STATUS", "MATCHED_ENDPOINTS",
@@ -866,7 +869,8 @@ def run(args: argparse.Namespace) -> int:
     write_tsv(output_dir / "reachability_candidates.tsv", candidates, [
         "source", "observed_at", "country_requested", "probe_country", "asn_requested",
         "probe_asn", "probe_network", "target_id", "target_domain", "target_ip",
-        "ip_family", "port", "result", "error", "measurement_id", "matched_ru_prefix",
+        "ip_family", "port", "result", "error", "measurement_id", "resolved_addresses",
+        "matched_ru_prefix", "matched_ru_prefixes",
     ])
     status["results"] = {
         "globalping_measurements": len(globalping_rows),
