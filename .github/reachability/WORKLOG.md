@@ -1,117 +1,100 @@
 # Reachability implementation work log
 
-This file is the durable resume point for work on PR #5. Update it after each
-completed phase. Read this file and \`CHECKPOINT.json\` before continuing after
-a conversation or network interruption.
+This file is the durable resume point for work on PR #5. Before continuing after any conversation or network interruption, read this file and CHECKPOINT.json, then query the current PR head and Actions runs. Do not restart completed phases.
 
-## Current state — fair scheduler CI passed; corrected full measurement next
+## Current state
 
-- Repository: \`SpeedeMiner/Geoip-ru-server\`
-- PR: https://github.com/SpeedeMiner/Geoip-ru-server/pull/5
-- State: **OPEN / DRAFT**; do not merge automatically.
-- Working branch: \`feature/reachability-full-ru-kz-by\`
-- PR head observed: \`1aa449c570b34fb506c9926a25e104fea093f272\`
-- PR base observed: \`c71b5eff48f34b363ef2430ba6b5c41603f36126\`
-- Main GeoIP builder and published client file are not changed by this branch.
+- Repository: SpeedeMiner/Geoip-ru-server
+- Pull request: https://github.com/SpeedeMiner/Geoip-ru-server/pull/5
+- State: OPEN / DRAFT. Do not merge automatically.
+- Working branch: feature/reachability-full-ru-kz-by
+- Current branch head at last checkpoint: 62676fb76404b6784b00f89b70c9c53ef289477e
+- Base/main: c71b5eff48f34b363ef2430ba6b5c41603f36126
+- Main GeoIP workflow, release branch and client geoip_RU.dat were not modified.
+- Client contract remains one file and exactly two categories: RU and PRIVATE.
 
-## Completed phases
+## Completed implementation
 
-### Phase 1 — repository reconnaissance
-- Confirmed current project architecture: Go builder in \`.github/workflows/blank.yml\`; client output is published on \`release\`.
-- Confirmed release branch has the actual \`geoip_RU.dat\`, not only source-prefix subsets.
-- Confirmed the client schema remains exactly \`RU\` and \`PRIVATE\`.
+1. Repository reconnaissance: examined main build workflow, release branch and published GeoIP protobuf.
+2. Added Go inventory exporter under .github/reachability/inventory/. It reads the exact published geoip_RU.dat, requires RU + PRIVATE only, rejects duplicates, invalid/non-canonical/default-route CIDRs and RU/PRIVATE overlap, then writes every prefix to TSV.
+3. Added the 11-hostname seed catalogue in targets.json. All targets are measured from RU, KZ and BY source-country scopes. This is a seed, not a comprehensive endpoint inventory.
+4. Added Globalping discovery and tests. Probes are selected by country + ASN + eyeball-network; actual country, ASN and tags are verified in the returned result.
+5. Added separate DNS A/AAAA and HTTPS IPv4/IPv6 tests.
+6. Added a deterministic fair scheduler: one complete four-test bundle per provider+target (DNS A, DNS AAAA, HTTPS IPv4, HTTPS IPv6); every discovered provider is visited before any provider gets a second target bundle; provider and target selection rotate by UTC date; short budgets never split a bundle.
+7. Added OONI web_connectivity metadata collection. OONI anomalies are review-only and are not automatically block verdicts.
+8. Added optional RIPE Atlas one-off TLS measurements. They are explicitly skipped when RIPE_ATLAS_API_KEY is not configured.
+9. Added conservative status classification. An HTTP response is a successful transport observation; DNS answer is distinct from HTTPS; timeout/TLS/reset is inconclusive; no BLOCKED_CONFIRMED classifier exists.
+10. Added provider, prefix, exact IP, candidate and raw JSONL evidence outputs. The latest implementation also separates NO_IPV6_PROBE from API_ERROR and ensures an exact-IP list in a prefix row contains only IPs belonging to that prefix.
+11. Added independent validation CI and a scheduled/manual full-measurement workflow. The full-measurement workflow is no longer push-triggered; documentation/checkpoint commits do not start costly runs.
 
-### Phase 2 — implementation
-- Added strict protobuf inventory exporter under \`.github/reachability/inventory/\`.
-- Exporter reads the published protobuf and requires exactly RU + PRIVATE; rejects duplicate categories/prefixes, non-canonical/default-route prefixes, malformed CIDRs and RU/PRIVATE overlap.
-- Added target catalogue \`targets.json\` (11 seed hostnames; all tested from all RU/KZ/BY source countries).
-- Added Globalping runner: DNS A/AAAA and HTTPS IPv4/IPv6; dynamic country + ASN + eyeball-network probe selection; returned probe country/ASN/tags checked.
-- Added OONI recent \`web_connectivity\` metadata collection. OONI anomalies remain review-only.
-- Added optional RIPE Atlas one-off TLS measurements. Atlas is skipped without \`RIPE_ATLAS_API_KEY\`.
-- Added conservative classifications: HTTP response is transport-reachable; DNS answer is not HTTPS success; timeout/TLS/reset is inconclusive; no automatic blocked verdict.
-- Added output reports and raw JSONL artifacts.
-- Added deterministic tests for address-to-prefix mapping, PRIVATE priority, probe verification, DNS/HTTP classifications, schedule rotation and inventory checks.
-- Added separate validation and full-measurement workflows. The latter is scheduled daily and can be started manually.
+## Successful validation
 
-### Phase 3 — CI
-- Reachability validation passed on the PR head:
-  https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/42856736740
-- After the scheduler correction, the latest successful validation is:
-  https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/42859512809
-- That run passed all 21 Python unit tests, Go formatting, Go tests and Go build.
-- Earlier failures were corrected before the successful run:
-  - Go formatting in test source;
-  - dependency checksum generation by \`go mod tidy\`;
-  - RIPE Atlas status parsing and probe filters;
-  - CIDR lookup scalability.
+- Latest validation run: https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/42861447947
+- Commit: 62676fb76404b6784b00f89b70c9c53ef289477e
+- Result: SUCCESS.
+- Python: 26 unit tests passed.
+- Go: gofmt, go test and go build passed.
+- Latest commits also include: no-IPv6-probe classification; per-provider prefix/IP output; prefix-scoped observed IPs; tests for adjacent-prefix isolation.
 
-### Phase 4 — first full measurement run
-- Run: https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/42856671346
-- Commit tested: \`58feded4d0b0b87a9b1671bf5c7b64ffa9e2c133\`
-- Job: \`129971465746\`; all steps succeeded.
-- Artifact: \`geoip-ru-reachability-42856671346\`
-- Artifact ID: \`13782748149\`; expires 2026-12-10 16:41 UTC.
-- Artifact SHA256: \`4eb6253566ff5d577ab84311122e4e002ab665494943dcc1535f4ca77e16899c\`
-- Exported full inventory from actual \`geoip_RU.dat\`: 76,268 RU CIDRs + 151 PRIVATE CIDRs = 76,419 rows; protobuf SHA256 was verified before export.
-- Globalping saw 5,499 online probes and found 37 country/ASN provider pairs tagged \`eyeball-network\`.
-- 180 of 1,628 planned tasks completed (daily budget 180; max parallelism 5).
-- Initial measurement result totals in the artifact:
-  - 38 \`ACCESSIBLE\` HTTPS results;
-  - 62 \`DNS_ANSWER\`;
-  - 28 \`DNS_NO_ANSWER\`;
-  - 25 \`INCONCLUSIVE\`;
-  - 27 \`API_ERROR\` (primarily no matching IPv6 probes).
-- OONI returned 476 observations: 2 \`ANOMALY_REVIEW\`, 474 \`NO_ANOMALY_RECORDED\`.
-- RIPE Atlas was skipped: repository secret \`RIPE_ATLAS_API_KEY\` was not configured.
-- Initial prefix association showed 12 prefixes with an accessible endpoint and 4 with DNS-only observation, but these counts are not suitable for policy conclusions yet.
+## First complete fair-scheduler measurement
 
-## Important finding / current blocker
+- Workflow: https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/42859913399
+- Commit used by that measurement: 13eac680a0180a0b38409c5be28cfddc313964a4
+- Job: 129982946164; all steps succeeded.
+- Artifact: geoip-ru-reachability-42859913399
+- Artifact ID: 13784433398
+- Artifact SHA256: 2fdb12559cdada14a84665b006cec90742dde674823acfd23035a2262d1240df
+- Artifact expiry: 2026-12-10 16:59:09 UTC.
+- Inventory extracted from actual release/geoip_RU.dat: 76,268 RU CIDRs + 151 PRIVATE CIDRs = 76,419 rows. GeoIP protobuf checksum passed.
+- Globalping online probes: 5,531. Discovered source pairs: 36 (RU 27, KZ 6, BY 3).
+- Fair scheduler: all 36 of 36 providers covered; 0 uncovered; 180/180 tests; 45 complete target bundles; 0 partial bundles; all RU/KZ/BY present.
+- Observations in this run: 43 ACCESSIBLE HTTP responses, 60 DNS_ANSWER, 30 DNS_NO_ANSWER, 10 INCONCLUSIVE, 37 API_ERROR.
+- Manual inspection of all 37 API_ERROR rows showed the same Globalping response: HTTP 422 no_probes_found / no matching IPv6 probes available, specifically HTTPS IPv6. These are not connection failures or evidence of blocking. The current code converts this outcome into NO_IPV6_PROBE; a new full run is still needed to verify the classification in the exported artifact.
+- Providers with at least one accessible HTTPS result: RU 25/27; KZ 6/6; BY 2/3. These are Globalping eyeball-network probes, not proof that every probe is a real residential subscriber.
+- Endpoint-to-RU-prefix association in this run: 12 RU prefixes had an accessible endpoint; four showed DNS-only association in the earlier report. The current code now separately reports DNS + inconclusive HTTPS.
+- The 11 target hostnames are only a pilot catalogue. 76,252 of 76,268 RU prefixes had no match to the current endpoint set; NO_MATCHED_ENDPOINT means not tested by current targets, not unreachable.
+- OONI: 478 observations; 3 ANOMALY_REVIEW, all from BY AS42772 / A1 and all confirmed=false, failure=false. Measurement UIDs: 20261109125218.141420_BY_webconnectivity_459b4c7864ddea94 (ya.ru, 2026-11-09 12:52:01Z); 20261109014703.627296_BY_webconnectivity_938d2b65cc8555f5 (vk.com, 2026-11-09 01:46:56Z); 20261110165014.129448_BY_webconnectivity_68a8329bc60688c7 (vk.com, 2026-11-10 16:50:03Z). These remain review signals, not block verdicts.
+- RIPE Atlas skipped because RIPE_ATLAS_API_KEY was not configured.
 
-The first Globalping scheduler sorted all tasks by country and ASN, then selected one
-continuous slice of the sorted list. In this initial run it resulted in successful
-measurements being concentrated in only three RU ASNs (AS25513, AS29226 and AS31357);
-the KZ/BY source-country probes were not adequately represented. This is a scheduler
-bias, not evidence that KZ/BY providers cannot reach the targets.
+## Current next phase
 
-**Next work must fix task selection to be stratified across all discovered
-(country, ASN) providers in every daily run.** Prefer a balanced scheme that gives
-every provider at least one complete target bundle (DNS A/AAAA + HTTPS IPv4/IPv6)
-before allocating second bundles to any provider. Rotate target choice and provider
-priority deterministically by UTC date. Keep the run budget and concurrency caps.
+Run the full workflow once more after the newest output/report changes. Verify:
+- all discovered provider pairs receive complete bundles, with all three countries selected;
+- the 37 former IPv6 API errors now appear as NO_IPV6_PROBE and API_ERROR contains only other API faults;
+- reachability_by_provider_prefix.tsv and reachability_by_provider_ip.tsv are present and their observed IPs are correctly scoped to each prefix;
+- report counts reconcile to raw Globalping JSONL;
+- OONI anomalies stay separate and Atlas skip is explicit.
 
-After the fair scheduler lands:
-1. Add unit tests proving all represented countries are selected and no provider
-   is starved when budget is at least four tasks per provider.
-2. Re-run CI.
-3. Re-run full measurement and inspect provider coverage from RU, KZ and BY.
-4. Review OONI anomalies using the exact raw measurement links; do not treat the
-   two anomalies as confirmed blocks.
-5. Configure \`RIPE_ATLAS_API_KEY\` only if the repository owner wants Atlas
-   measurements; until then, keep Atlas explicitly skipped.
-6. Update this log and checkpoint after each phase.
+After successful verification, update CHECKPOINT.json and this file with the new run id, artifact id/hash, metrics, current PR head SHA, and test count. Then do a final PR review. Keep PR #5 Draft until the owner explicitly approves final review/merge.
 
-## Resume protocol after a connection interruption
+## Resume protocol after interruption
 
-1. Read \`.github/reachability/WORKLOG.md\` and \`.github/reachability/CHECKPOINT.json\`.
-2. Query PR #5 and record its current head SHA; never assume the old SHA is current.
-3. Query recent Actions runs for branch \`feature/reachability-full-ru-kz-by\`.
-4. If the most recent relevant run is completed successfully and its artifact exists,
-   download/inspect that artifact instead of repeating the run.
-5. Continue from the first unchecked item in \`CHECKPOINT.json\`; do not rebuild
-   the original implementation from scratch.
-6. After a phase is completed, commit an update to this work log and checkpoint.
-7. Keep work in short phases: one focused code change, its CI result, then a
-   checkpoint commit. Do not combine a long sequence of unrelated changes.
+1. Read .github/reachability/WORKLOG.md and .github/reachability/CHECKPOINT.json.
+2. Query PR #5; use its current head SHA, not a remembered SHA.
+3. Query recent Actions runs for feature/reachability-full-ru-kz-by.
+4. If a successful full run for the current relevant code exists and its artifact is present, inspect that artifact instead of rerunning the measurement.
+5. Continue from current_phase in CHECKPOINT.json; do not repeat repository reconnaissance, implementation or already-green CI.
+6. Work in short units: one code/report change, CI, then checkpoint. Run full measurements only when runner/targets/measurement behavior changed, not on work-log-only edits.
+7. After a completed phase, commit the new state to WORKLOG.md and CHECKPOINT.json.
 
-## Phase history
+## Phase table
 
-| Phase | Status | Evidence |
+| Phase | State | Evidence |
 |---|---|---|
-| Repository inspection | DONE | main tree + release tree inspected |
-| Inventory exporter | DONE | full workflow run #42856671346 |
-| Globalping/OONI/Atlas collectors | DONE, first-run observations obtained | artifact #13782748149 |
-| CI validation | DONE | run #42856736740 passed |
-| Balanced provider scheduling | DONE; CI green | commit 66eef61; run #42859512809 |
-| Repeat full measurement after scheduler fix | IN PROGRESS | workflow run to be started from the corrected scheduler |
-| Interpret coverage and OONI anomalies | TODO | — |
-| PR final review | TODO | PR #5 remains Draft |
+| Repository reconnaissance | DONE | main and release trees inspected |
+| Full protobuf inventory exporter | DONE | run #42859913399 |
+| Globalping, OONI, optional Atlas collectors | DONE | artifact #13784433398 |
+| Fair provider scheduler | DONE | 36/36 provider pairs covered, 45 complete bundles |
+| CI for latest output/classification changes | DONE | run #42861447947, 26 Python tests + Go checks |
+| New full run after output changes | TODO / NEXT | manual/scheduled workflow |
+| Reconcile provider-IP/prefix report | TODO | awaiting new artifact |
+| Final PR review | TODO | PR #5 remains Draft |
+
+## Invariants
+
+- Never modify geoip_RU.dat from this diagnostic workflow.
+- Exactly RU and PRIVATE categories remain in the client file.
+- PRIVATE has absolute priority.
+- No timeout, reset, TLS failure, DNS NXDOMAIN or OONI anomaly becomes a block verdict by itself.
+- eyeball-network does not prove a residential/home connection.
+- No scan or policy claim is inferred for unused IPs in a CIDR.
