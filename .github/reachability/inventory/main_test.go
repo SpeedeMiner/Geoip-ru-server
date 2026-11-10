@@ -30,7 +30,7 @@ func TestAddressCountSupportsIPv4AndIPv6(t *testing.T) {
 
 func TestCIDRPrefixRejectsNonCanonicalProtobuf(t *testing.T) {
 	_, err := cidrPrefix(&router.CIDR{
-		Ip: []byte{192, 0, 2, 1},
+		Ip:     []byte{192, 0, 2, 1},
 		Prefix: 24,
 	})
 	if err == nil {
@@ -40,7 +40,7 @@ func TestCIDRPrefixRejectsNonCanonicalProtobuf(t *testing.T) {
 
 func TestCIDRPrefixAcceptsCanonicalProtobuf(t *testing.T) {
 	prefix, err := cidrPrefix(&router.CIDR{
-		Ip: []byte{192, 0, 2, 0},
+		Ip:     []byte{192, 0, 2, 0},
 		Prefix: 24,
 	})
 	if err != nil {
