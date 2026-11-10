@@ -34,9 +34,10 @@ class WorklistTests(unittest.TestCase):
         with (evidence / "priority_prefix_triage.tsv").open("w", encoding="utf-8", newline="") as f:
             w = csv.DictWriter(f, fieldnames=FIELDS, delimiter="\t", lineterminator="\n")
             w.writeheader(); w.writerows(rows)
-        with (evidence / "priority_prefix_external_spot_checks_v37.tsv").open("w", encoding="utf-8", newline="") as f:
-            w = csv.DictWriter(f, fieldnames=["PREFIX","STATUS","OBSERVED_PREFIXES","SUMMARY","SOURCE_URLS"], delimiter="\t", lineterminator="\n")
-            w.writeheader(); w.writerows(spots)
+        if spots:
+            with (evidence / "priority_prefix_external_spot_checks_v37.tsv").open("w", encoding="utf-8", newline="") as f:
+                w = csv.DictWriter(f, fieldnames=["PREFIX","STATUS","OBSERVED_PREFIXES","SUMMARY","SOURCE_URLS"], delimiter="\t", lineterminator="\n")
+                w.writeheader(); w.writerows(spots)
         return evidence
 
     def test_review_order_tracks_and_external_join(self):
