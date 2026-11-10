@@ -8,6 +8,35 @@ import unittest
 import runner
 
 
+class GlobalpingProbeSchemaTests(unittest.TestCase):
+    def test_measurement_probe_flattened_location_is_parsed(self):
+        probe = {
+            "asn": 25513,
+            "city": "Moscow",
+            "country": "RU",
+            "network": "Moscow city telephone network",
+            "tags": ["eyeball-network"],
+        }
+        metadata = runner.globalping_probe_metadata(probe)
+        self.assertEqual(metadata["country"], "RU")
+        self.assertEqual(int(metadata["asn"]), 25513)
+        self.assertEqual(metadata["city"], "Moscow")
+        self.assertIn("eyeball-network", metadata["tags"])
+
+    def test_probe_list_nested_location_is_also_parsed(self):
+        probe = {
+            "location": {
+                "asn": 12389, "country": "RU",
+                "city": "Kostroma", "network": "Rostelecom",
+            },
+            "tags": ["eyeball-network"],
+        }
+        metadata = runner.globalping_probe_metadata(probe)
+        self.assertEqual(metadata["country"], "RU")
+        self.assertEqual(int(metadata["asn"]), 12389)
+        self.assertEqual(metadata["network"], "Rostelecom")
+
+
 class ReachabilityInventoryTests(unittest.TestCase):
     def test_ru_endpoint_is_mapped_to_exact_prefix(self):
         networks = {
