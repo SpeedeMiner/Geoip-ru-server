@@ -87,6 +87,24 @@ class ReachabilityInventoryTests(unittest.TestCase):
 
 
 class ReachabilityClassificationTests(unittest.TestCase):
+    def test_globalping_no_ipv6_probe_is_not_a_block_verdict(self):
+        error = runner.APIError(
+            "HTTP 422: {'type': 'no_probes_found', 'message': 'No matching IPv6 probes available.'}",
+            422,
+        )
+        self.assertEqual(
+            runner.classify_globalping_api_error(error, "HTTPS", 6),
+            "NO_IPV6_PROBE",
+        )
+        self.assertEqual(
+            runner.classify_globalping_api_error(error, "HTTPS", 4),
+            "API_ERROR",
+        )
+        self.assertEqual(
+            runner.classify_globalping_api_error(error, "DNS", 6),
+            "API_ERROR",
+        )
+
     def test_http_403_is_transport_accessible_not_blocked(self):
         result = runner.classify_globalping_result(
             "RU", 12345, "RU", 12345, {"eyeball-network"},
