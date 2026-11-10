@@ -8,6 +8,7 @@ on:
       - ".github/scripts/build_selected_origin_prefix_review.py"
       - ".github/scripts/test_build_company_prefix_review.py"
       - ".github/scripts/test_build_selected_origin_prefix_review.py"
+      - ".github/audits/company_asn_legal_evidence_v37_additions.tsv"
       - ".github/workflows/prefix-audit-validation.yml"
 
 permissions:
@@ -35,6 +36,42 @@ jobs:
 
       - name: Run audit unit tests
         run: python3 -m unittest discover -s .github/scripts -p 'test_build_*prefix_review.py' -v
+
+      - name: Validate v37 legal-evidence additions TSV
+        run: |
+          python3 - <<'PY'
+          import csv
+          import re
+          from pathlib import Path
+
+          path = Path(".github/audits/company_asn_legal_evidence_v37_additions.tsv")
+          with path.open(encoding="utf-8", newline="") as stream:
+              rows = list(csv.DictReader((line for line in stream if not line.startswith("#")), delimiter="\\t"))
+
+          expected = {"AS44534", "AS207207", "AS210656", "AS213952", "AS215109"}
+          required = {
+              "ASN", "COMPANY_GROUP", "RIPE_ORGANISATION_NAME", "RIPE_COUNTRY",
+              "V37_IPVERSE_ACTIVE", "V37_IPV4_PREFIXES", "V37_IPV6_PREFIXES",
+              "ASN_ENTITY_ASSESSMENT", "REVIEW_FLAG", "ASSESSMENT_NOTE", "EVIDENCE_URLS",
+          }
+          if not rows or not required.issubset(rows[0]):
+              raise SystemExit("Missing required TSV columns or rows")
+          asns = [row["ASN"] for row in rows]
+          if len(asns) != len(set(asns)) or set(asns) != expected:
+              raise SystemExit(f"Unexpected or duplicate ASN set: {asns}")
+          for row in rows:
+              if not re.fullmatch(r"AS[0-9]+", row["ASN"]):
+                  raise SystemExit(f"Invalid ASN: {row['ASN']}")
+              if row["RIPE_COUNTRY"] != "RU":
+                  raise SystemExit(f"Unexpected registered country for {row['ASN']}")
+              if row["V37_IPVERSE_ACTIVE"] not in {"yes", "no"}:
+                  raise SystemExit(f"Invalid activity flag for {row['ASN']}")
+              int(row["V37_IPV4_PREFIXES"])
+              int(row["V37_IPV6_PREFIXES"])
+              if "https://" not in row["EVIDENCE_URLS"] or not row["ASSESSMENT_NOTE"].strip():
+                  raise SystemExit(f"Incomplete evidence for {row['ASN']}")
+          print(f"Validated {len(rows)} v37 legal-evidence additions")
+          PY
 
       - name: Parse workflow YAML
         run: ruby -e 'require "yaml"; YAML.load_file(ARGV.fetch(0)); puts "Workflow YAML parsed"' .github/workflows/prefix-audit-validation.yml
