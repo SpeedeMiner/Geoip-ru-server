@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "updated_at_utc": "2026-11-10T18:10:53.793Z",
+  "updated_at_utc": "2026-11-10T18:13:18.875Z",
   "repository": "SpeedeMiner/Geoip-ru-server",
   "pull_request": 5,
   "pull_request_url": "https://github.com/SpeedeMiner/Geoip-ru-server/pull/5",
   "branch": "feature/reachability-full-ru-kz-by",
-  "recorded_pr_head_before_checkpoint_commit": "87b1cf2215811dd39608d5895f7c8c51a7fdf5e6",
+  "recorded_pr_head_before_checkpoint_commit": "adfe74cac256985a335b3465766f05e1229826bf",
   "base_sha": "a68e5d6589361814cb1cfedd2af7857e4af806fa",
   "state": "READY_FOR_OWNER_REVIEW",
   "current_phase": "FINAL_PR_OWNER_REVIEW",
@@ -45,7 +45,8 @@
     "independent_artifact_local_qa",
     "provider_prefix_ip_reconciliation_rechecked",
     "belarus_target_provenance_correction",
-    "daily_target_country_sampling_coverage_review"
+    "daily_target_country_sampling_coverage_review",
+    "worklog_phase_metrics_synchronized_with_current_artifact"
   ],
   "latest_successful_validation_run": 42871418240,
   "latest_successful_validation_commit": "1b2152760b120218763956a8f7005f3bafa044e8",
