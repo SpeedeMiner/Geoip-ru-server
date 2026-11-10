@@ -5,6 +5,7 @@ import argparse
 import csv
 import ipaddress
 import re
+from datetime import date
 from collections import Counter
 from pathlib import Path
 
@@ -95,8 +96,17 @@ def build_reconciliation(evidence_dir: Path, seed_path: Path, output_path: Path,
                 raise ValueError(f"archived invalid RPKI pair missing or changed for {prefix} {asn}")
 
         spot = spots.get(prefix)
-        if spot is None or wl.get("EXTERNAL_SPOT_CHECK_STATUS") != "CHECKED_2026-11-10":
-            raise ValueError(f"external spot-check row is missing for {prefix}")
+        spot_status = spot.get("STATUS", "").strip() if spot else ""
+        worklist_status = wl.get("EXTERNAL_SPOT_CHECK_STATUS", "").strip()
+        match = re.fullmatch(r"CHECKED_(\\d{4}-\\d{2}-\\d{2})", spot_status)
+        if not match or worklist_status != spot_status:
+            raise ValueError(f"external spot-check row is missing or date-mismatched for {prefix}")
+        try:
+            checked_date = date.fromisoformat(match.group(1))
+        except ValueError as exc:
+            raise ValueError(f"invalid spot-check calendar date for {prefix}") from exc
+        if checked_date.isoformat() != match.group(1):
+            raise ValueError(f"invalid spot-check calendar date for {prefix}")
         relation = wl.get("EXTERNAL_SPOT_CHECK_SCOPE_RELATION", "")
         if not relation or relation != spot_relation(prefix, spot):
             raise ValueError(f"NLRI scope relation mismatch between worklist and source spot-check for {prefix}")
