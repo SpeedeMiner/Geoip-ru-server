@@ -17,12 +17,13 @@ Append-only recovery log for the Geoip-ru-server audit work. Keep each completed
 - **PR #3:** merged at `c71b5eff48f34b363ef2430ba6b5c41603f36126`.
 - **PR #4:** closed and merged at `226214fde6100818bfe8c4d214c330027a593ea3`; final audit CI [run #91](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/42862618510) passed 17/17. Its 19 reconciliation rows and 56 worklist rows remained REVIEW.
 - **Production baseline:** main `a68e5d6589361814cb1cfedd2af7857e4af806fa`; release branch `6620d5b935d7d57744f937a5a2159e3676ca4e31`; current `geoip_RU.dat` SHA-256 `cbe460b3c352dcf33f055e488f15e15caccfb6487e71e0e3ea81d508cda9bad1`, 950,909 bytes. PR #4 did not alter builder or DIRECT policy.
-- **Current follow-up branch:** `audit/exact-origin-followup-2026-11`, based on main `a68e5d6589361814cb1cfedd2af7857e4af806fa`. It contains review-only updates to `.github/audits/priority_prefix_external_spot_checks_v37.tsv` and `.github/audits/priority_prefix_rpki_invalid_assessment_v37.tsv`, plus this checkpoint entry. The branch update is intended for a new Draft audit PR; do not merge without explicit approval.
+- **Current follow-up PR:** [PR #6](https://github.com/SpeedeMiner/Geoip-ru-server/pull/6), Draft, open, unmerged. Branch `audit/exact-origin-followup-2026-11`, based on main `a68e5d6589361814cb1cfedd2af7857e4af806fa`. It changes only two audit ledgers and this checkpoint journal. Do not mark ready or merge without explicit owner approval.
 - **Latest completed evidence refresh:** external spot-check commit `af2f56737337c2d2be9949b2c13b6241ee6d0542`; assessment commit `da31493731f195c7231696a65f75393bd334c24c`.
+- **Latest audit CI before this journal update:** [run #92](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/42871961308), success on `3d7a0238d2dc2a5d42a24d71d8394ee148f9cc84`, all 17 steps passed. Artifact [`v37-prefix-audit-6`](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/42871961308/artifacts/13790666311), SHA-256 `47059459d0a251c4c2122ddf50c860cd61b1c0de706c0904acf62b0b0adc2eb8`, 25 files. Reconciliation: 19 rows all REVIEW; classes 16/1/1/1. Worklist 56 rows all REVIEW; external scope 5/16/1. This run predates the current journal-entry commit; validate the latest head before finalizing.
 - **Unresolved prefix A — `93.181.240.0/20`:** BGP.HE's AS13118 view (crawled 2026-11-06) shows exact /20 with signed valid ROA. An IPIP route view reports AS12389 on child `93.181.248.0/21` and AS13118 on /20; older IPinfo snapshot (2026-06-11) listed both origins against exact /20. Sources are not a single synchronized full-feed capture. Keep class `EXACT_MOAS_INVALID_ORIGIN_REMAINS_UNCONFIRMED` and status REVIEW until same-time RIB/VRP evidence resolves the archived AS12389 exact-origin discrepancy.
 - **Unresolved prefix B — `94.131.190.0/23`:** ASNBase's current AS215013 routing inventory (RIPEstat source collected 2026-11-10) lists `.190/24` and `.191/24`, not exact /23. IPXO's 2026-11-04 lookup reports no exact /23 match and two /24 children. Piko's 2026-11-08 checks show both child /24s as MOAS AS215013/AS219109 with valid ROAs. These sources do not prove global withdrawal. Keep `MORE_SPECIFIC_ONLY_NO_EXACT_VERDICT` and status REVIEW; do not project child origins or ROAs onto /23.
-- **Latest audit scope:** 19 unique archived-invalid prefixes / 20 exact prefix-origin pairs; all rows remain REVIEW. Historical exact-NLRI scope counts and reconciliation classes are unchanged by this evidence-only refresh.
-- **Next step:** create/validate the Draft follow-up PR using the current branch head; require prefix-audit-validation CI to pass. Do not mark ready or merge until independently reviewed and explicitly approved. Remaining research action is synchronized full-feed RIB plus one current VRP set for both unresolved prefixes.
+- **Latest audit scope:** 19 unique archived-invalid prefixes / 20 exact prefix-origin pairs; all rows remain REVIEW. Scope EXACT_ONLY=5, EXACT_AND_MORE_SPECIFIC=16, MORE_SPECIFIC_ONLY=1; classes 16/1/1/1.
+- **Next step:** validate the latest journal-updated PR #6 branch head. If CI passes, update the PR description with the latest artifact and keep it Draft. Continue seeking synchronized full-feed RIB plus one current VRP set for both unresolved prefixes. Do not mark ready or merge without explicit approval.
 - **Safety boundary:** never change `geoip_RU.dat`, DIRECT allowlist, company ASN ownership conclusions or production `main`/`release` from these audit observations. PR #5 is owned by another agent and must not be inspected, edited, or otherwise touched.
 
 
@@ -124,3 +125,14 @@ Use one concise record per completed stage:
 - `93.181.240.0/20`: BGP.HE AS13118 view shows exact /20 with valid ROA; AS12389 is separately shown on child /21 by corroborating route data; older IPinfo snapshot showed exact MOAS. Not synchronized, so archived exact AS12389 discrepancy remains unresolved.
 - Both entries remain REVIEW; reconciliation class counts and production/direct policy are unchanged.
 - Resume from: open a Draft follow-up PR and run prefix audit CI; then continue seeking synchronized full-feed RIB + VRPs for the two exact prefixes. Do not merge without explicit approval.
+
+
+### 2026-11-10 — Follow-up exact-NLRI audit CI passed — DONE
+
+- [PR #6 audit validation run #92](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/42871961308) passed all 17 steps on branch commit `3d7a0238d2dc2a5d42a24d71d8394ee148f9cc84`.
+- Artifact `v37-prefix-audit-6`, ID `13790666311`, SHA-256 `47059459d0a251c4c2122ddf50c860cd61b1c0de706c0904acf62b0b0adc2eb8`; 25 files.
+- Verified reconciliation: 19 rows, all REVIEW; class counts 16 `EXACT_ORIGIN_SET_CHANGED`, 1 `EXACT_MOAS_RPKI_STATUS_CHANGED`, 1 `EXACT_MOAS_INVALID_ORIGIN_REMAINS_UNCONFIRMED`, 1 `MORE_SPECIFIC_ONLY_NO_EXACT_VERDICT`.
+- Verified analyst worklist: 56 rows, all REVIEW; 22 external spot-check records; NLRI scope EXACT_ONLY=5, EXACT_AND_MORE_SPECIFIC=16, MORE_SPECIFIC_ONLY=1.
+- No production, DIRECT, company-allowlist or release files were changed.
+- Resume from: run validation on the updated checkpoint head; update PR #6 metadata with the latest green run and keep Draft. Then continue exact-prefix synchronized RIB/VRP research for `93.181.240.0/20` and `94.131.190.0/23`.
+
