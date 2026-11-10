@@ -258,10 +258,6 @@ class PriorityPrefixEvidenceTests(unittest.TestCase):
                 "JPIRR-GRS", "LACNIC-GRS", "RADB-GRS",
             }
             self.assertEqual(set(result["irr_sources"]), expected_sources)
-            self.assertTrue(all(
-                expected_sources.issubset(set(row["QUERY_SCOPE_SOURCES"].split(",")))
-                for row in irr_summary
-            ))
 
             with (output / "priority_prefixes.tsv").open(encoding="utf-8", newline="") as handle:
                 priority = list(csv.DictReader(handle, delimiter="\t"))
@@ -281,6 +277,10 @@ class PriorityPrefixEvidenceTests(unittest.TestCase):
             self.assertEqual(len(holder_summary), 56)
             self.assertEqual(len(irr_summary), 56)
             self.assertEqual(len(irr_objects), 56)
+            self.assertTrue(all(
+                expected_sources.issubset(set(row["QUERY_SCOPE_SOURCES"].split(",")))
+                for row in irr_summary
+            ))
             self.assertTrue(all(row["QUERY_STATUS"] == "OK" for row in irr_summary))
             self.assertTrue(all(row["EXACT_PREFIX_MATCH"] == "yes" for row in irr_objects))
             self.assertTrue(all(row["GLOBAL_BGP_ORIGIN_MATCH"] == "yes" for row in irr_objects))
