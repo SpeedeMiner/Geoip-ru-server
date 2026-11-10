@@ -2731,6 +2731,8 @@ jobs:
            "path/filepath"
            "strings"
            "testing"
+
+           router "github.com/v2fly/v2ray-core/v5/app/router/routercommon"
           )
 
           func mustPrefix(t *testing.T, value string) netip.Prefix {
