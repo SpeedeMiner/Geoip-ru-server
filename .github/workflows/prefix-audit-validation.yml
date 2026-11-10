@@ -16,6 +16,8 @@ on:
       - ".github/scripts/test_build_priority_prefix_worklist.py"
       - ".github/scripts/build_priority_rpki_reconciliation.py"
       - ".github/scripts/test_build_priority_prefix_rpki_reconciliation.py"
+      - ".github/scripts/collect_exact_nlri_live_evidence.py"
+      - ".github/scripts/test_build_exact_nlri_prefix_evidence.py"
       - ".github/audits/priority_prefix_rpki_invalid_assessment_v37.tsv"
       - ".github/audits/priority_prefix_external_spot_checks_v37.tsv"
       - ".github/PROJECT_CHECKPOINTS.md"
@@ -53,6 +55,8 @@ jobs:
           .github/scripts/test_build_priority_prefix_worklist.py
           .github/scripts/build_priority_rpki_reconciliation.py
           .github/scripts/test_build_priority_prefix_rpki_reconciliation.py
+          .github/scripts/collect_exact_nlri_live_evidence.py
+          .github/scripts/test_build_exact_nlri_prefix_evidence.py
 
       - name: Run audit unit tests
         run: python3 -m unittest discover -s .github/scripts -p 'test_build_*prefix*.py' -v
@@ -825,6 +829,28 @@ jobs:
               stream.write("\nArchived-invalid RPKI exact-NLRI reconciliation\n")
               stream.write(stats)
           print(stats)
+          PY
+
+      - name: Capture live exact-NLRI routes and RPKI from RouteViews and RIPE RIS
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 .github/scripts/collect_exact_nlri_live_evidence.py \
+            --output prefix-audit/exact-nlri-live-capture.json \
+            --timeout 12 \
+            --routeviews-interval 1.1
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+
+          path = Path("prefix-audit/exact-nlri-live-capture.json")
+          capture = json.loads(path.read_text(encoding="utf-8"))
+          if capture.get("request_count") != 20 or len(capture.get("results", [])) != 20:
+              raise SystemExit("Live exact-NLRI capture is incomplete")
+          print(f"Live exact-NLRI requests: {capture['request_count']}")
+          print(f"Transport status counts: {capture['transport_status_counts']}")
+          print("API errors are recorded as errors, never interpreted as global route absence.")
+          print("Live capture does not change reconciliation classes or REVIEW statuses.")
           PY
 
       - name: Upload prefix review queues as a CI artifact
