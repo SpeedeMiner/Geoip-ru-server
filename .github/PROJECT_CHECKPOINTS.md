@@ -192,3 +192,14 @@ Use one concise record per completed stage:
 - Both disputed prefixes remain REVIEW. No production, DIRECT, company allowlist or release file changes.
 - Resume from: validate this journal-updated head, update PR #6 with the latest green run and keep Draft. Continue the synchronized RouteViews/RIPE RIS exact NLRI plus timestamped VRP research; the API response remains a known limitation.
 
+
+
+### 2026-11-10 — Exact-prefix source semantics rechecked — DONE
+
+- Refreshed the `94.131.190.0/23` external-ledger note in commit `c10530658872d60d3126a102bc6d17734a596b00`.
+- New clarification: ASNLookup's AS215013 overview displays `94.131.190.0/23` under a generic “Network Ranges” section, but this is registry/resource-range context, not an exact BGP RIB observation. It does not contradict the route-specific inventories showing `.190/24` and `.191/24` only.
+- Current indexed AS215013 evidence (PikoNetwork, Nov 8; ASNBase refreshed recently) continues to show the two /24 children. Piko lists child MOAS AS215013/AS219109 and valid child ROAs; ASNBase lists AS215013. No source retrieved in this pass establishes exact /23 origin or RPKI state.
+- `93.181.240.0/20`: current BGP.HE exact-prefix result and corroborating BGP.tools listing support AS13118 with valid ROA; AS12389 remains separately visible on child `93.181.248.0/21`. Historical IPinfo evidence from 2026-06-11 showed both ASNs on exact /20. These are not synchronized full-feed RIB/VRP snapshots.
+- RouteViews documentation confirms `/prefix/{prefix}?strict-match=yes` for exact NLRI and `/rpki?prefix={prefix}` for timestamped global validation (two-hourly collection). Direct responses from both RouteViews and RIPEstat JSON endpoints were inaccessible in this research session; no synchronized result is claimed.
+- Both unresolved rows remain `REVIEW`; no assessment classification, allowlist, DIRECT, production, release or `geoip_RU.dat` change. PR #6 remains Draft and must not be merged without explicit approval.
+- Resume from: validate the ledger+journal checkpoint head with prefix-audit CI; if green, refresh PR #6 body with the new checkpoint and artifact while keeping Draft. Continue obtaining exact RouteViews/RIPE RIS RIB and same-window VRP responses for both prefixes.
