@@ -14,7 +14,6 @@ import datetime as dt
 import ipaddress
 import re
 import sys
-from collections import defaultdict
 from pathlib import Path
 from typing import Iterable
 
@@ -98,6 +97,10 @@ def read_company_manifest(path: Path, companies: dict[int, dict[str, str]]) -> d
     if missing:
         raise ValueError("company ASN manifest is missing registry entries: " +
                          ", ".join(f"AS{asn}" for asn in missing))
+    extra = sorted(set(countries) - set(companies))
+    if extra:
+        raise ValueError("company ASN manifest contains ASN entries absent from registry: " +
+                         ", ".join(f"AS{asn}" for asn in extra))
     return countries
 
 
