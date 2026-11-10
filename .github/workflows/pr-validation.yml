@@ -82,6 +82,7 @@ jobs:
           go get google.golang.org/protobuf@v1.36.12
           go mod tidy
           go test ./...
+          go test -run=^$ -fuzz=FuzzCIDRPrefixCanonicalAndBounded -fuzztime=2s
 
       - name: Compile inline Python heredocs in the main workflow
         shell: bash
