@@ -109,7 +109,7 @@ The full workflow uploads:
 - \`reachability_by_prefix.tsv\` — endpoint matches against RU prefixes;
 - \`reachability_candidates.tsv\` — failures and observations requiring review;
 - \`reachability_summary.json\` — counts, configuration and coverage metadata.
-  The summary includes DNS no-answer totals, per-country missing-IPv6-probe counts, unique target-country pairs observed versus possible, the country breakdown, and the number of distinct hostnames sampled. These metrics describe the selected daily sample; they do not imply full provider-by-target coverage in one run.
+  The summary includes DNS no-answer totals, IPv4/DNS no-probe counts and their country breakdown, per-country missing-IPv6-probe counts, unique target-country pairs observed versus possible, the country breakdown, and the number of distinct hostnames sampled. Globalping HTTP 422 `no_probes_found` responses are reported as `NO_PROBE` (or `NO_IPV6_PROBE` for HTTPS IPv6), not as an API failure or a reachability verdict. These metrics describe the selected daily sample; they do not imply full provider-by-target coverage in one run.
 
 ## Editing the target catalogue
 
