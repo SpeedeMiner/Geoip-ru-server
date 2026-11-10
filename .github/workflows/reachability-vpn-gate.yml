@@ -1,0 +1,96 @@
+name: Russian ISP VPN Gate reachability
+
+on:
+  workflow_dispatch:
+    inputs:
+      max_vpn_gate_servers:
+        description: Maximum Russian VPN Gate volunteer exits to test (hard cap 6)
+        required: true
+        default: "3"
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: geoip-ru-vpn-gate-reachability
+  cancel-in-progress: false
+
+jobs:
+  measure:
+    name: Test public services through Russian volunteer ISP exits
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+
+      - name: Install isolated VPN measurement tools
+        shell: bash
+        run: |
+          set -euo pipefail
+          sudo apt-get update
+          sudo apt-get install --yes --no-install-recommends openvpn iptables
+          openvpn --version | head -n 1
+          iptables --version
+
+      - name: Set up Go
+        uses: actions/setup-go@0778a10ce47b5d450cf60fb94fafad4330008a35b1
+        with:
+          go-version: "1.26.10"
+          cache: true
+          cache-dependency-path: .github/reachability/inventory/go.mod
+
+      - name: Download the exact published GeoIP protobuf
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl --fail --location --silent --show-error \
+            --retry 4 --retry-all-errors --retry-delay 3 \
+            --connect-timeout 20 --max-time 240 \
+            "https://raw.githubusercontent.com/\${GITHUB_REPOSITORY}/release/geoip_RU.dat" \
+            --output geoip_RU.dat
+          curl --fail --location --silent --show-error \
+            --retry 4 --retry-all-errors --retry-delay 3 \
+            --connect-timeout 20 --max-time 120 \
+            "https://raw.githubusercontent.com/\${GITHUB_REPOSITORY}/release/geoip_RU.dat.sha256sum" \
+            --output geoip_RU.dat.sha256sum
+          test -s geoip_RU.dat
+          sha256sum -c geoip_RU.dat.sha256sum
+
+      - name: Export every RU and PRIVATE prefix
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd .github/reachability/inventory
+          GOTOOLCHAIN=local go mod tidy
+          GOTOOLCHAIN=local go test ./...
+          GOTOOLCHAIN=local go build -o ../../../geoip-reachability-inventory .
+          cd ../../..
+          ./geoip-reachability-inventory geoip_RU.dat reachability_inventory.tsv
+          test -s reachability_inventory.tsv
+
+      - name: Run capped VPN Gate Russian-exit measurements
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m py_compile .github/reachability/runner.py .github/reachability/vpn_gate.py
+          sudo python3 .github/reachability/vpn_gate.py \
+            --inventory reachability_inventory.tsv \
+            --targets .github/reachability/targets.json \
+            --output-dir reachability-output \
+            --max-servers "\${{ inputs.max_vpn_gate_servers }}" \
+            --connect-timeout 60 \
+            --request-timeout 12
+
+      - name: Upload VPN Gate reports
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+        with:
+          name: geoip-ru-vpn-gate-\${{ github.run_id }}
+          path: |
+            reachability_inventory.tsv
+            reachability-output/vpn_gate_*
+          if-no-files-found: error
+          retention-days: 30
