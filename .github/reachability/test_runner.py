@@ -180,6 +180,103 @@ class TaskAndReportTests(unittest.TestCase):
         self.assertEqual(len(second), 4)
         self.assertTrue({row["n"] for row in first}.isdisjoint({row["n"] for row in second}))
 
+    def test_fair_schedule_covers_all_three_countries_before_second_bundles(self):
+        targets = [
+            {
+                "id": target_id, "domain": f"{target_id}.example", "role": "service",
+                "country_scope": ["RU", "KZ", "BY"], "port": 443, "path": "/",
+            }
+            for target_id in ("target-a", "target-b", "target-c")
+        ]
+        providers = {}
+        for country, asns in {
+            "RU": [12389, 25513, 29226, 31357],
+            "KZ": [9198, 21299],
+            "BY": [6697, 25106],
+        }.items():
+            for asn in asns:
+                providers[(country, asn)] = {
+                    "country": country, "asn": asn, "network": f"ISP AS{asn}",
+                    "city": "test", "tags": ["eyeball-network"],
+                    "probe_class": "eyeball_network_unverified",
+                }
+        tasks = runner.build_tasks(targets, providers)
+        selected, meta = runner.select_fair_provider_tasks(
+            tasks, 4 * len(providers), dt.date(2026, 11, 10)
+        )
+        self.assertEqual(meta["providers_covered"], len(providers))
+        self.assertEqual(meta["providers_uncovered"], 0)
+        self.assertEqual(set(meta["countries_selected"]), {"RU", "KZ", "BY"})
+        self.assertEqual(len(selected), 4 * len(providers))
+        counts = {}
+        for row in selected:
+            key = (row["country"], row["asn"])
+            counts[key] = counts.get(key, 0) + 1
+        self.assertEqual(set(counts), set(providers))
+        self.assertTrue(all(value == 4 for value in counts.values()))
+        signatures = {}
+        for row in selected:
+            signatures.setdefault((row["country"], row["asn"]), set()).add(
+                (row["kind"], row["ip_family"])
+            )
+        expected = {("DNS", 4), ("DNS", 6), ("HTTPS", 4), ("HTTPS", 6)}
+        self.assertTrue(all(value == expected for value in signatures.values()))
+
+    def test_fair_schedule_default_budget_does_not_starve_providers(self):
+        targets = [
+            {
+                "id": target_id, "domain": f"{target_id}.example", "role": "service",
+                "country_scope": ["RU", "KZ", "BY"], "port": 443, "path": "/",
+            }
+            for target_id in ("target-a", "target-b")
+        ]
+        providers = {}
+        for country, first_asn, count in (("RU", 10000, 27), ("KZ", 20000, 7), ("BY", 30000, 3)):
+            for offset in range(count):
+                asn = first_asn + offset
+                providers[(country, asn)] = {
+                    "country": country, "asn": asn, "network": f"ISP AS{asn}",
+                    "city": "test", "tags": ["eyeball-network"],
+                    "probe_class": "eyeball_network_unverified",
+                }
+        tasks = runner.build_tasks(targets, providers)
+        selected, meta = runner.select_fair_provider_tasks(
+            tasks, 180, dt.date(2026, 11, 10)
+        )
+        self.assertEqual(len(providers), 37)
+        self.assertEqual(len(selected), 180)
+        self.assertEqual(meta["providers_covered"], 37)
+        self.assertEqual(meta["providers_uncovered"], 0)
+        self.assertEqual(set(meta["countries_selected"]), {"RU", "KZ", "BY"})
+        per_provider = {}
+        for row in selected:
+            key = (row["country"], row["asn"])
+            per_provider[key] = per_provider.get(key, 0) + 1
+        self.assertTrue(all(count >= 4 for count in per_provider.values()))
+        self.assertEqual(sum(count // 4 for count in per_provider.values()), 45)
+
+    def test_fair_schedule_reports_uncovered_providers_when_budget_is_too_small(self):
+        targets = [{
+            "id": "only", "domain": "only.example", "role": "service",
+            "country_scope": ["RU", "KZ", "BY"], "port": 443, "path": "/",
+        }]
+        providers = {
+            (country, asn): {
+                "country": country, "asn": asn, "network": f"ISP AS{asn}",
+                "city": "test", "tags": ["eyeball-network"],
+                "probe_class": "eyeball_network_unverified",
+            }
+            for country, asn in (("RU", 12389), ("KZ", 9198), ("BY", 6697))
+        }
+        tasks = runner.build_tasks(targets, providers)
+        selected, meta = runner.select_fair_provider_tasks(
+            tasks, 7, dt.date(2026, 11, 10)
+        )
+        self.assertEqual(len(selected), 7)
+        self.assertEqual(meta["providers_covered"], 1)
+        self.assertEqual(meta["providers_uncovered"], 2)
+        self.assertEqual(meta["partial_target_bundles"], 1)
+
     def test_prefix_report_contains_ru_only_and_explicit_no_endpoint_state(self):
         inventory = [
             {"CATEGORY": "RU", "PREFIX": "198.51.100.0/24", "FAMILY": "IPv4", "ADDRESS_COUNT": "256"},
