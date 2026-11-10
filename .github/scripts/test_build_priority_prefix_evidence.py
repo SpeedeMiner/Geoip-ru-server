@@ -198,19 +198,29 @@ class PriorityPrefixEvidenceTests(unittest.TestCase):
                 prefix = query["query-string"][0]
                 origins = next(row["GLOBAL_BGP_ORIGIN_ASNS"] for row in rows if row["PREFIX"] == prefix)
                 origin = origins.split(",")[0]
+                route_type = "route" if ":" not in prefix else "route6"
+                route_object = {
+                    "type": route_type,
+                    "primary-key": {"attribute": [{"name": route_type, "value": prefix}]},
+                    "attributes": {"attribute": [
+                        {"name": "origin", "value": origin},
+                        {"name": "mnt-by", "value": "EXAMPLE-MNT"},
+                        {"name": "descr", "value": "Synthetic IRR fixture"},
+                    ]},
+                }
+                mirrored_object = {
+                    "type": route_type,
+                    "primary-key": {"attribute": [{"name": route_type, "value": prefix}]},
+                    "attributes": {"attribute": [
+                        {"name": "origin", "value": origin},
+                        {"name": "mnt-by", "value": "EXAMPLE-GRS-MNT"},
+                        {"name": "descr", "value": "Synthetic GRS mirror"},
+                    ]},
+                }
+                route_object["source"] = {"id": "RIPE"}
+                mirrored_object["source"] = {"id": "RIPE-GRS"}
                 return 200, {
-                    "objects": {
-                        "object": [{
-                            "type": "route" if ":" not in prefix else "route6",
-                            "source": {"id": "RIPE"},
-                            "primary-key": {"attribute": [{"name": "route" if ":" not in prefix else "route6", "value": prefix}]},
-                            "attributes": {"attribute": [
-                                {"name": "origin", "value": origin},
-                                {"name": "mnt-by", "value": "EXAMPLE-MNT"},
-                                {"name": "descr", "value": "Synthetic IRR fixture"},
-                            ]},
-                        }]
-                    }
+                    "objects": {"object": [route_object, mirrored_object]}
                 }, ""
             if "/ip/" in url:
                 address = url.rsplit("/ip/", 1)[1]
@@ -278,13 +288,19 @@ class PriorityPrefixEvidenceTests(unittest.TestCase):
             self.assertEqual(len(rpki), 108)
             self.assertEqual(len(holder_summary), 56)
             self.assertEqual(len(irr_summary), 56)
-            self.assertEqual(len(irr_objects), 56)
+            self.assertEqual(len(irr_objects), 112)
             self.assertEqual(len(irr_unique_objects), 56)
-            self.assertTrue(all(row["IRR_SOURCE_OBJECT_RECORDS"] == "1" for row in irr_summary))
+            self.assertTrue(all(row["IRR_SOURCE_OBJECT_RECORDS"] == "2" for row in irr_summary))
             self.assertTrue(all(row["IRR_UNIQUE_ROUTE_OBJECTS"] == "1" for row in irr_summary))
-            self.assertEqual(result["irr_source_record_counts"], {"RIPE": 56})
-            self.assertEqual(result["irr_source_records"], 56)
+            self.assertTrue(all(row["IRR_EXACT_OBJECTS"] == "1" for row in irr_summary))
+            self.assertTrue(all(row["IRR_EXACT_BGP_ORIGIN_MATCH_OBJECTS"] == "1" for row in irr_summary))
+            self.assertTrue(all(row["IRR_EXACT_OBJECT_SOURCES"] == "RIPE | RIPE-GRS" for row in irr_summary))
+            self.assertEqual(result["irr_source_record_counts"], {"RIPE": 56, "RIPE-GRS": 56})
+            self.assertEqual(result["irr_source_records"], 112)
             self.assertEqual(result["irr_unique_route_objects"], 56)
+            self.assertEqual(irr_unique_objects[0]["REGISTRY_SOURCES"], "RIPE,RIPE-GRS")
+            self.assertEqual(irr_unique_objects[0]["MNT_BY"], "EXAMPLE-GRS-MNT | EXAMPLE-MNT")
+            self.assertEqual(irr_unique_objects[0]["DESCR"], "Synthetic GRS mirror | Synthetic IRR fixture")
             self.assertTrue(all(
                 expected_sources.issubset(set(row["QUERY_SCOPE_SOURCES"].split(",")))
                 for row in irr_summary
