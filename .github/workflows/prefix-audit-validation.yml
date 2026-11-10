@@ -474,6 +474,7 @@ jobs:
               )
           irr_summary = read_tsv(Path("prefix-audit/priority-prefix-evidence/irr_prefix_summary.tsv"))
           irr_objects = read_tsv(Path("prefix-audit/priority-prefix-evidence/irr_route_objects.tsv"))
+          irr_unique_objects = read_tsv(Path("prefix-audit/priority-prefix-evidence/irr_route_objects_deduplicated.tsv"))
           if len(irr_summary) != 56 or {row["PREFIX"] for row in irr_summary} != priority_prefixes:
               raise SystemExit("IRR query summary is incomplete for the 56 priority prefixes")
           if any(not row["QUERY_STATUS"] for row in irr_summary):
@@ -484,11 +485,16 @@ jobs:
               if not required_ripe_sources.issubset(set(row["QUERY_SCOPE_SOURCES"].split(","))):
                   missing_sources = sorted(required_ripe_sources - set(row["QUERY_SCOPE_SOURCES"].split(",")))
                   raise SystemExit(f"Documented RIPE/GRS sources missing for {row['PREFIX']}: {missing_sources}")
-              exact_count = int(row["IRR_EXACT_OBJECTS"])
-              matched_count = int(row["IRR_EXACT_BGP_ORIGIN_MATCH_OBJECTS"])
-              if matched_count > exact_count:
-                  raise SystemExit(f"IRR origin-match count exceeds exact object count for {row['PREFIX']}")
-              if row["QUERY_STATUS"] == "OK" and exact_count == 0:
+              prefix_objects = [obj for obj in irr_unique_objects if obj["QUERY_PREFIX"] == row["PREFIX"]]
+              exact_objects = [obj for obj in prefix_objects if obj["EXACT_PREFIX_MATCH"] == "yes"]
+              matched_objects = [obj for obj in exact_objects if obj["GLOBAL_BGP_ORIGIN_MATCH"] == "yes"]
+              if int(row["IRR_UNIQUE_ROUTE_OBJECTS"]) != len(prefix_objects):
+                  raise SystemExit(f"IRR unique object count differs from deduplicated table for {row['PREFIX']}")
+              if int(row["IRR_EXACT_OBJECTS"]) != len(exact_objects):
+                  raise SystemExit(f"IRR exact object count differs from deduplicated table for {row['PREFIX']}")
+              if int(row["IRR_EXACT_BGP_ORIGIN_MATCH_OBJECTS"]) != len(matched_objects):
+                  raise SystemExit(f"IRR exact BGP-origin match count differs from deduplicated table for {row['PREFIX']}")
+              if row["QUERY_STATUS"] == "OK" and not exact_objects:
                   raise SystemExit(f"IRR query marked OK without an exact route object for {row['PREFIX']}")
           for obj in irr_objects:
               try:
@@ -501,6 +507,26 @@ jobs:
                   raise SystemExit(f"Invalid origin-match flag for IRR object {obj['OBJECT_KEY']}")
               if obj["EXACT_PREFIX_MATCH"] == "yes" and canonical != obj["QUERY_PREFIX"]:
                   raise SystemExit(f"Exact IRR object prefix mismatch: {obj['QUERY_PREFIX']} vs {canonical}")
+
+          object_identity_fields = (
+              "QUERY_PREFIX", "OBJECT_TYPE", "ROUTE_PREFIX", "OBJECT_KEY", "ORIGIN_ASN",
+              "EXACT_PREFIX_MATCH", "GLOBAL_BGP_ORIGIN_MATCH", "MNT_BY", "ORG", "DESCR",
+              "REMARKS", "MEMBER_OF", "CREATED", "LAST_MODIFIED",
+          )
+          raw_signatures = {
+              tuple(obj[field] for field in object_identity_fields)
+              for obj in irr_objects
+          }
+          unique_signatures = {
+              tuple(obj[field] for field in object_identity_fields)
+              for obj in irr_unique_objects
+          }
+          if raw_signatures != unique_signatures or len(unique_signatures) != len(irr_unique_objects):
+              raise SystemExit("Deduplicated IRR route-object table does not match source-specific objects")
+          if any(not set(row["REGISTRY_SOURCES"].split(",")).issubset(required_ripe_sources) for row in irr_unique_objects):
+              raise SystemExit("Deduplicated IRR object contains an unexpected source")
+          if any(not row["REGISTRY_SOURCES"] for row in irr_unique_objects):
+              raise SystemExit("Deduplicated IRR object has no registry source")
 
           stats = Path("prefix-audit/priority-prefix-evidence/priority_prefix_evidence_stats.txt").read_text(encoding="utf-8")
           for label in (
@@ -515,7 +541,10 @@ jobs:
               "RPKI origin-prefix checks attempted:",
               "IRR sources queried:",
               "IRR exact-prefix search query statuses:",
-              "IRR exact route objects returned:",
+              "IRR source-specific route object records returned:",
+              "IRR unique route object contents after cross-source deduplication:",
+              "IRR unique exact route objects:",
+              "IRR unique exact prefix+observed-origin matches:",
           ):
               if label not in stats:
                   raise SystemExit(f"Priority evidence statistics missing: {label}")
@@ -526,7 +555,8 @@ jobs:
               f"RDAP sample queries: {len(rdap)} attempted; {rdap_success} successful; errors={dict(sorted(rdap_errors.items()))}",
               f"RPKI prefix/origin pairs: {len(rpki)}; states/errors={dict(sorted(rpki_statuses.items()))}",
               f"IRR exact-prefix queries: {len(irr_summary)}; query statuses={dict(sorted(Counter(row['QUERY_STATUS'] for row in irr_summary).items()))}",
-              f"IRR route objects returned: {len(irr_objects)}; exact BGP-origin matches={sum(row['EXACT_PREFIX_MATCH'] == 'yes' and row['GLOBAL_BGP_ORIGIN_MATCH'] == 'yes' for row in irr_objects)}",
+              f"IRR source-specific object records: {len(irr_objects)}; by source={dict(sorted(Counter(obj['REGISTRY_SOURCE'] for obj in irr_objects).items()))}",
+              f"IRR deduplicated logical route objects: {len(irr_unique_objects)}; exact objects={sum(obj['EXACT_PREFIX_MATCH'] == 'yes' for obj in irr_unique_objects)}; exact observed-origin matches={sum(obj['EXACT_PREFIX_MATCH'] == 'yes' and obj['GLOBAL_BGP_ORIGIN_MATCH'] == 'yes' for obj in irr_unique_objects)}",
               "RDAP first/mid/last sample results are not exhaustive proof of every sub-allocation inside a prefix.",
               "RPKI status validates the prefix/origin pair against a ROA; it does not prove legal ownership of the address space.",
               "IRR queries cover RIPE plus the GRS sources reported by the RIPE Database metadata endpoint, not every independent IRR registry.",
