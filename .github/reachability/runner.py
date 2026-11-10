@@ -50,6 +50,9 @@ def request_json(
         request_headers["Content-Type"] = "application/json"
     if headers:
         request_headers.update(headers)
+    globalping_token = os.environ.get("GLOBALPING_TOKEN", "").strip()
+    if globalping_token and urllib.parse.urlparse(url).netloc == "api.globalping.io":
+        request_headers["Authorization"] = f"Bearer {globalping_token}"
     data = json.dumps(body).encode("utf-8") if body is not None else None
     req = urllib.request.Request(url, data=data, headers=request_headers, method=method)
     try:
@@ -234,6 +237,32 @@ def rotate_tasks(tasks: list[dict[str, Any]], budget: int, day: dt.date | None =
     return selected, {"total_tasks": len(tasks), "selected_tasks": len(selected), "offset": offset}
 
 
+def classify_globalping_result(
+    expected_country: str,
+    expected_asn: int,
+    actual_country: str,
+    actual_asn: int,
+    tags: set[str],
+    kind: str,
+    result_status: str,
+    http_status: Any = None,
+    answers: list[dict[str, Any]] | None = None,
+    dns_status_code: Any = None,
+) -> str:
+    if (actual_country != expected_country or actual_asn != expected_asn
+            or "eyeball-network" not in tags):
+        return "WRONG_PROBE_SELECTION"
+    if kind == "HTTPS" and result_status == "finished" and isinstance(http_status, int):
+        return "ACCESSIBLE"
+    if kind == "DNS" and result_status == "finished":
+        if answers:
+            return "DNS_ANSWER"
+        if dns_status_code == 3:
+            return "DNS_NXDOMAIN"
+        return "DNS_NO_ANSWER"
+    return "INCONCLUSIVE"
+
+
 def poll_globalping(measurement_id: str, max_wait: int = 40) -> dict[str, Any]:
     url = f"{GLOBALPING_API}/measurements/{urllib.parse.quote(measurement_id)}"
     deadline = time.monotonic() + max_wait
@@ -359,20 +388,10 @@ def run_globalping_task(task: dict[str, Any]) -> tuple[list[dict[str, Any]], dic
             resolved = result.get("resolvedAddress") or ""
             if resolved:
                 resolved_values = [resolved]
-        if actual_country != country or actual_asn != asn or "eyeball-network" not in tags:
-            classification = "WRONG_PROBE_SELECTION"
-        elif task["kind"] == "HTTPS" and result_status == "finished" and isinstance(http_status, int):
-            # Any HTTP response, including 4xx/5xx, demonstrates end-to-end HTTP reachability.
-            classification = "ACCESSIBLE"
-        elif task["kind"] == "DNS" and result_status == "finished" and resolved_values:
-            classification = "DNS_ANSWER"
-        elif task["kind"] == "DNS" and result_status == "finished" and result.get("statusCode") == 3:
-            classification = "DNS_NXDOMAIN"
-        elif task["kind"] == "DNS" and result_status == "finished":
-            classification = "DNS_NO_ANSWER"
-        else:
-            # Timeouts, resets, TLS errors and probe-side failures are not proof of blocking.
-            classification = "INCONCLUSIVE"
+        classification = classify_globalping_result(
+            country, asn, actual_country, actual_asn, tags, task["kind"],
+            result_status, http_status, answers, result.get("statusCode")
+        )
         address_mappings = [map_address(value, _ACTIVE_NETWORKS) for value in resolved_values]
         ru_prefixes = sorted({prefix for category, prefix in address_mappings if category == "RU"})
         categories = sorted({category for category, _ in address_mappings})
