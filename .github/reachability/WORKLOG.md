@@ -119,14 +119,15 @@ Durable resume point for PR #5. After any conversation/network interruption, rea
 - Validation run `42873343359` passed: 27 Python tests, Go formatting, Go tests and Go build. The added unit test checks that repeated tasks do not inflate unique country/target pairs and that missing-IPv6 probe counts use the requested source country.
 - Full run `42874077069` verified the first six coverage fields against raw JSONL. The additional `globalping_dns_no_answers` field was committed and CI-tested after that run; its raw-derived value in run `42874077069` was 35, and the next full measurement will emit it directly.
 
-## DNS counter full run in progress
+## NO_PROBE classification full run in progress
 
-- Run: https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/42876578975
-- Trigger commit: `aed7583c69fb5a996ea119ba07f13470d85c6a1c` (`[reachability-once] Verify DNS no-answer summary metric`). This uses the current collector with the `globalping_dns_no_answers` structured summary field and the 30-target catalogue.
-- The one-time push trigger has already been removed in commit `00c591e8fd0bbda1ddf9e01574dcc739e302288a`; current workflow has no `push` trigger. The guard for `[reachability-once]` messages is retained.
-- Last checked: exact current release download/checksum and RU/PRIVATE inventory export succeeded; combined Globalping/OONI collector step remained `in_progress`; artifact not yet uploaded. Do not launch a duplicate run.
-- Resume by checking run `42876578975`, its job and artifacts. After success, download artifact, verify digest, and independently compare `globalping_dns_no_answers` with raw JSONL DNS_NO_ANSWER records.
-- Latest completed full run before this is `42874077069` / artifact `13790094804`; it does not yet contain the DNS no-answer summary key.
+- Run: https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/42877815872
+- Trigger commit: `401830a0bdcef35f20fe67e90fbaef7e72129ca6` (`[reachability-once] Verify NO_PROBE classification in full measurement`). This run includes the new classification for IPv4/DNS probe absence and the structured summary fields `globalping_no_probe_count` / `globalping_no_probe_by_country`.
+- The one-time push trigger was removed in commit `b1c603a7c36cc714f14ff6634160a78ffc7e2b99`; the workflow has no persistent `push` trigger. The `[reachability-once]` guard remains.
+- Last checked: release protobuf checksum and complete RU/PRIVATE inventory export succeeded; Globalping/OONI collector remained `in_progress`; artifact not yet uploaded. Do not start a duplicate run.
+- Validation: latest code/test commit `c6b86d8b92bac5777c73634d921835fee687573b`; CI run `42877605801` succeeded with 28 Python tests, Go formatting, Go tests and Go build. The immediately preceding validation on runner-only commit `3be79acb31981cde50374162e301d3fda56e0e87` failed because its paired test-file update had not yet landed; the subsequent full commit CI passed.
+- Resume by checking run `42877815872`, its job and artifacts. After success, download and verify artifact digest; confirm three prior IPv4 no-probe API 422 outcomes are now `NO_PROBE`, `API_ERROR` is not inflated, and new summary fields match raw JSONL.
+- Previous successful full artifact: run `42876578975` / artifact `13791582840`; it predates the NO_PROBE classification fix.
 
 ## Phase status
 
