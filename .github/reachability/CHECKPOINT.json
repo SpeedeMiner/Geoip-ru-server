@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "updated_at_utc": "2026-11-10T18:48:07.450Z",
+  "updated_at_utc": "2026-11-10T19:01:19Z",
   "repository": "SpeedeMiner/Geoip-ru-server",
   "pull_request": 5,
   "pull_request_url": "https://github.com/SpeedeMiner/Geoip-ru-server/pull/5",
   "branch": "feature/reachability-full-ru-kz-by",
-  "recorded_pr_head_before_checkpoint_commit": "9ea9471e5c2cdecfdddc56ea0038c7d06b01fa26",
+  "recorded_pr_head_before_checkpoint_commit": "2fe65dc17fb242e5b8b45c247e2917569a12e881",
   "base_sha": "a68e5d6589361814cb1cfedd2af7857e4af806fa",
   "state": "READY_FOR_OWNER_REVIEW",
   "current_phase": "FINAL_PR_OWNER_REVIEW",
@@ -166,7 +166,7 @@
     ],
     "provider_target_bundles_observed": 45,
     "dns_no_answer_count_in_latest_artifact": true,
-    "dns_no_answer_count_raw_derived": 35,
+    "dns_no_answer_count_raw_derived": 33,
     "dns_no_answer_metric_available_from_next_full_run": true,
     "no_probe_count": 3,
     "no_probe_by_country": {
