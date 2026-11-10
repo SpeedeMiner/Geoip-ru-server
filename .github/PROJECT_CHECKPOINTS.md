@@ -13,17 +13,17 @@ Append-only recovery log for the Geoip-ru-server audit work. Keep each completed
 
 ## Current state / resume from — 2026-11-10
 
-- **Project:** Geoip-ru-server; current production tag is `latest-geoip-client-v37`.
-- **PR #3:** merged; baseline merge SHA `c71b5eff48f34b363ef2430ba6b5c41603f36126`.
-- **PR #4:** [Add current exact-origin checks for archived RPKI-invalid prefixes](https://github.com/SpeedeMiner/Geoip-ru-server/pull/4) is CLOSED and MERGED. Merge commit: `226214fde6100818bfe8c4d214c330027a593ea3`. PR was audit-only: no production builder, company ASN allowlist or DIRECT selection changed.
-- **Latest completed PR validation:** [run #91](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/42862618510), ID `42862618510`, success on head `b0fae825dd43c6c1f0757d327eea5c87bbf5f6ce`; all 17 steps passed.
-- **Post-merge production build:** [v37 run #29](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/42863173174), ID `42863173174`, success on merge commit `226214fde6100818bfe8c4d214c330027a593ea3`; build, protobuf/coverage/blocked-exclusion validation, GitHub Release publish and release-branch publish all passed.
-- **Published release:** [`latest-geoip-client-v37`](https://github.com/SpeedeMiner/Geoip-ru-server/releases/tag/latest-geoip-client-v37); release branch SHA `d4a5de9de898ca5c2f10f0308e04c3c0c3484c25`. `geoip_RU.dat` is 950,909 bytes; checksum sidecar SHA-256 `cbe460b3c352dcf33f055e488f15e15caccfb6487e71e0e3ea81d508cda9bad1`. New quality report: RU=76,231 CIDRs / 52,613,105 IPv4 addresses; IPv6 count unchanged; Yandex Turkey AS212066 checks remain 2/2.
-- **CDN purge:** all seven requested paths reported `finished`, not throttled, with Cloudflare and Fastly both true (`CF=true`, `FY=true`).
-- **Production-input drift:** compared against the prior v37 release SHA `fc9900456cb8e69059257e7193f23e6ce5eec2aaf99de6e70ff9ec8547e3fea2` (951,279 bytes), current output is 370 bytes smaller and has 7 fewer IPv4 addresses / 37 fewer RU CIDRs; IPv6 and PRIVATE counts are unchanged. Recorded production input provenance shows the Antifilter `antifilter-ip.lst` changed (old SHA `16677d55acf724c2a2c86aa34a87051d941a5cd11ac41f223a8b9b9d1a7a1878`, 51,273 rows; new SHA `d68a9d5bd5f617bb4bac0b7c0421423c80badacc162244a72ced52c5eaf39d32`, 50,763 rows). Other recorded GeoIP, RIR, IANA, ipverse and blocked-feed source hashes remained the same. Approved blocked-prefix records decreased from 193,639 to 193,242. This explains the observed output drift as refreshed live inputs rather than a change to the PR's builder logic; no rollback was performed.
-- **Audit result carried into main:** worklist 56 rows, reconciliation 19 rows / 20 archived invalid pairs, all `REVIEW`; scope EXACT_ONLY=5, EXACT_AND_MORE_SPECIFIC=16, MORE_SPECIFIC_ONLY=1; reconciliation classes 16/1/1/1. Remaining caveats stay REVIEW: `94.131.190.0/23` has only observed /24 child evidence, and `93.181.240.0/20` has non-synchronized exact /20 vs child /21 observations.
-- **Resume from:** there is no unfinished PR #4 or release step. For a future continuation, first verify live `main`, `release`, tag and latest workflow run, then resume the requested next audit stage. Continue appending one short record after each completed stage.
-- **Safety boundary:** no audit row authorizes DIRECT changes or an ownership conclusion. The merged journal/workflow preserve review-only status and exact-NLRI scope separation.
+- **Project:** Geoip-ru-server disputed-ASN / exact-NLRI audit; production tag remains `latest-geoip-client-v37`.
+- **PR #3:** merged at `c71b5eff48f34b363ef2430ba6b5c41603f36126`.
+- **PR #4:** closed and merged at `226214fde6100818bfe8c4d214c330027a593ea3`; final audit CI [run #91](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/42862618510) passed 17/17. Its 19 reconciliation rows and 56 worklist rows remained REVIEW.
+- **Production baseline:** main `a68e5d6589361814cb1cfedd2af7857e4af806fa`; release branch `6620d5b935d7d57744f937a5a2159e3676ca4e31`; current `geoip_RU.dat` SHA-256 `cbe460b3c352dcf33f055e488f15e15caccfb6487e71e0e3ea81d508cda9bad1`, 950,909 bytes. PR #4 did not alter builder or DIRECT policy.
+- **Current follow-up branch:** `audit/exact-origin-followup-2026-11`, based on main `a68e5d6589361814cb1cfedd2af7857e4af806fa`. It contains review-only updates to `.github/audits/priority_prefix_external_spot_checks_v37.tsv` and `.github/audits/priority_prefix_rpki_invalid_assessment_v37.tsv`, plus this checkpoint entry. The branch update is intended for a new Draft audit PR; do not merge without explicit approval.
+- **Latest completed evidence refresh:** external spot-check commit `af2f56737337c2d2be9949b2c13b6241ee6d0542`; assessment commit `da31493731f195c7231696a65f75393bd334c24c`.
+- **Unresolved prefix A — `93.181.240.0/20`:** BGP.HE's AS13118 view (crawled 2026-11-06) shows exact /20 with signed valid ROA. An IPIP route view reports AS12389 on child `93.181.248.0/21` and AS13118 on /20; older IPinfo snapshot (2026-06-11) listed both origins against exact /20. Sources are not a single synchronized full-feed capture. Keep class `EXACT_MOAS_INVALID_ORIGIN_REMAINS_UNCONFIRMED` and status REVIEW until same-time RIB/VRP evidence resolves the archived AS12389 exact-origin discrepancy.
+- **Unresolved prefix B — `94.131.190.0/23`:** ASNBase's current AS215013 routing inventory (RIPEstat source collected 2026-11-10) lists `.190/24` and `.191/24`, not exact /23. IPXO's 2026-11-04 lookup reports no exact /23 match and two /24 children. Piko's 2026-11-08 checks show both child /24s as MOAS AS215013/AS219109 with valid ROAs. These sources do not prove global withdrawal. Keep `MORE_SPECIFIC_ONLY_NO_EXACT_VERDICT` and status REVIEW; do not project child origins or ROAs onto /23.
+- **Latest audit scope:** 19 unique archived-invalid prefixes / 20 exact prefix-origin pairs; all rows remain REVIEW. Historical exact-NLRI scope counts and reconciliation classes are unchanged by this evidence-only refresh.
+- **Next step:** create/validate the Draft follow-up PR using the current branch head; require prefix-audit-validation CI to pass. Do not mark ready or merge until independently reviewed and explicitly approved. Remaining research action is synchronized full-feed RIB plus one current VRP set for both unresolved prefixes.
+- **Safety boundary:** never change `geoip_RU.dat`, DIRECT allowlist, company ASN ownership conclusions or production `main`/`release` from these audit observations. PR #5 is owned by another agent and must not be inspected, edited, or otherwise touched.
 
 
 ## Completed stage records
@@ -114,3 +114,13 @@ Use one concise record per completed stage:
 - New `geoip_RU.dat`: 950,909 bytes, SHA-256 `cbe460b3c352dcf33f055e488f15e15caccfb6487e71e0e3ea81d508cda9bad1`; all seven jsDelivr purge requests succeeded for CF and FY.
 - The new build differs from prior v37 by -7 IPv4 addresses / -37 RU CIDRs; provenance identifies the changed Antifilter `ip.lst` snapshot as the changed recorded input. No production builder or company allowlist changed in PR #4.
 - Resume from: future requested audit work; PR #4 and its post-merge v37 publication are complete.
+
+
+### 2026-11-10 — Rechecked unresolved exact-NLRI evidence — DONE
+
+- Started isolated follow-up branch `audit/exact-origin-followup-2026-11` from current main `a68e5d6589361814cb1cfedd2af7857e4af806fa`.
+- External spot-check refresh committed as `af2f56737337c2d2be9949b2c13b6241ee6d0542`; assessment refresh committed as `da31493731f195c7231696a65f75393bd334c24c`.
+- `94.131.190.0/23`: ASNBase and IPXO exact-prefix views do not show a /23 announcement; two /24 child routes are observed, with Piko reporting AS215013/AS219109 MOAS and valid ROAs on each child. Exact /23 remains unverified.
+- `93.181.240.0/20`: BGP.HE AS13118 view shows exact /20 with valid ROA; AS12389 is separately shown on child /21 by corroborating route data; older IPinfo snapshot showed exact MOAS. Not synchronized, so archived exact AS12389 discrepancy remains unresolved.
+- Both entries remain REVIEW; reconciliation class counts and production/direct policy are unchanged.
+- Resume from: open a Draft follow-up PR and run prefix audit CI; then continue seeking synchronized full-feed RIB + VRPs for the two exact prefixes. Do not merge without explicit approval.
