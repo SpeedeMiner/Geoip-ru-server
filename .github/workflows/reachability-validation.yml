@@ -11,6 +11,7 @@ on:
       - ".github/reachability/inventory/**"
       - ".github/workflows/reachability-validation.yml"
   pull_request:
+    types: [opened, reopened, ready_for_review]
     branches:
       - main
     paths:
