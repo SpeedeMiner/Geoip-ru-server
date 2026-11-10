@@ -232,6 +232,12 @@ jobs:
           # .dat and its matching source/count artifacts.
           cp "$workdir/geoip_RU_quality_report.txt" "$generated/geoip_RU_quality_report.validation.txt"
           {
+            printf '\n=== CURATED RUSSIAN-COMPANY ASN ALLOWLIST ===\n'
+            printf 'Selection source: curated Russian-company ASN allowlist from %s.\n' "$workdir/geoip_RU_company_asns.txt"
+            printf 'Inclusion policy: prefixes originated by allowlisted company ASNs are included regardless of ipverse countryCode.\n'
+            printf 'Country metadata policy: ipverse countryCode is audit-only and is never an inclusion filter for allowlisted company-ASN origins.\n'
+            printf 'Per-ASN evidence and prefix counts: geoip_RU_company_asn_manifest.tsv\n\n'
+            cat "$generated/geoip_RU_BY_KZ_asn_stats.txt"
             printf '\n=== COMPANY PREFIX-LEVEL REVIEW QUEUE ===\n'
             printf 'Per-prefix report: geoip_RU_company_prefix_review.tsv\n'
             cat "$generated/geoip_RU_company_prefix_review_stats.txt"
