@@ -209,14 +209,16 @@ def build_tasks(targets: list[dict[str, Any]], providers: dict[tuple[str, int], 
                     continue
                 for family in (4, 6):
                     tasks.append({
-                        "target": target,
-                        "country": country,
-                        "provider": provider,
-                        "asn": asn,
-                        "ip_family": family,
+                        "target": target, "country": country, "provider": provider,
+                        "asn": asn, "ip_family": family, "kind": "HTTPS",
+                    })
+                    tasks.append({
+                        "target": target, "country": country, "provider": provider,
+                        "asn": asn, "ip_family": family, "kind": "DNS",
+                        "query_type": "A" if family == 4 else "AAAA",
                     })
     tasks.sort(key=lambda item: (
-        item["country"], item["asn"], item["target"]["id"], item["ip_family"]
+        item["country"], item["asn"], item["target"]["id"], item["ip_family"], item["kind"]
     ))
     return tasks
 
@@ -282,10 +284,23 @@ def run_globalping_task(task: dict[str, Any]) -> tuple[list[dict[str, Any]], dic
         "target_role": target["role"],
         "port": target["port"],
         "ip_family": family,
-        "protocol": "HTTPS",
+        "measurement_kind": task["kind"],
+        "query_type": task.get("query_type", ""),
+        "protocol": "HTTPS" if task["kind"] == "HTTPS" else "DNS",
         "probe_class": "eyeball_network_unverified",
         "observed_at": utc_now(),
     }
+    if task["kind"] == "DNS":
+        body = {
+            "type": "dns",
+            "target": target["domain"],
+            "timeout": 15,
+            "locations": [{
+                "country": country, "asn": asn,
+                "tags": ["eyeball-network"], "limit": 1,
+            }],
+            "measurementOptions": {"query": {"type": task["query_type"]}},
+        }
     try:
         _, created, create_headers = request_json(
             f"{GLOBALPING_API}/measurements", method="POST", body=body, timeout=25
@@ -336,18 +351,31 @@ def run_globalping_task(task: dict[str, Any]) -> tuple[list[dict[str, Any]], dic
             actual_asn = 0
         result = item.get("result") or {}
         result_status = result.get("status", "")
-        resolved = result.get("resolvedAddress") or ""
-        http_status = result.get("statusCode")
+        http_status = result.get("statusCode") if task["kind"] == "HTTPS" else ""
+        answers = result.get("answers") or []
+        resolved_values = [answer.get("value", "") for answer in answers
+                           if answer.get("type") in {"A", "AAAA"} and answer.get("value")]
+        if task["kind"] == "HTTPS":
+            resolved = result.get("resolvedAddress") or ""
+            if resolved:
+                resolved_values = [resolved]
         if actual_country != country or actual_asn != asn or "eyeball-network" not in tags:
             classification = "WRONG_PROBE_SELECTION"
-        elif result_status == "finished" and isinstance(http_status, int):
-            # Any actual HTTP response (including 4xx/5xx) demonstrates that
-            # DNS/TCP/TLS/HTTP reached the target. It is not a service-health verdict.
+        elif task["kind"] == "HTTPS" and result_status == "finished" and isinstance(http_status, int):
+            # Any HTTP response, including 4xx/5xx, demonstrates end-to-end HTTP reachability.
             classification = "ACCESSIBLE"
+        elif task["kind"] == "DNS" and result_status == "finished" and resolved_values:
+            classification = "DNS_ANSWER"
+        elif task["kind"] == "DNS" and result_status == "finished" and result.get("statusCode") == 3:
+            classification = "DNS_NXDOMAIN"
+        elif task["kind"] == "DNS" and result_status == "finished":
+            classification = "DNS_NO_ANSWER"
         else:
             # Timeouts, resets, TLS errors and probe-side failures are not proof of blocking.
             classification = "INCONCLUSIVE"
-        ip_category, matched_prefix = map_address(resolved, _ACTIVE_NETWORKS)
+        address_mappings = [map_address(value, _ACTIVE_NETWORKS) for value in resolved_values]
+        ru_prefixes = sorted({prefix for category, prefix in address_mappings if category == "RU"})
+        categories = sorted({category for category, _ in address_mappings})
         result_rows.append({
             **base,
             "measurement_id": measurement_id,
@@ -356,11 +384,14 @@ def run_globalping_task(task: dict[str, Any]) -> tuple[list[dict[str, Any]], dic
             "probe_network": location.get("network") or "",
             "probe_city": location.get("city") or "",
             "probe_tags": "|".join(sorted(tags)),
-            "target_ip": resolved,
-            "target_ip_category": ip_category,
-            "matched_ru_prefix": matched_prefix,
+            "target_ip": resolved_values[0] if resolved_values else "",
+            "resolved_addresses": "|".join(sorted(set(resolved_values))),
+            "target_ip_category": "|".join(categories),
+            "matched_ru_prefix": ru_prefixes[0] if len(ru_prefixes) == 1 else "",
+            "matched_ru_prefixes": "|".join(ru_prefixes),
             "result": classification,
             "globalping_result_status": result_status,
+            "dns_status_code": result.get("statusCode", "") if task["kind"] == "DNS" else "",
             "http_status": http_status if http_status is not None else "",
             "error": result.get("error") or result.get("rawOutput", "")[:500],
         })
@@ -547,8 +578,10 @@ def build_prefix_report(
 ) -> list[dict[str, Any]]:
     matched: dict[str, list[dict[str, Any]]] = collections.defaultdict(list)
     for row in measurements:
-        prefix = row.get("matched_ru_prefix")
-        if prefix:
+        prefixes = set(filter(None, (row.get("matched_ru_prefixes") or "").split("|")))
+        if row.get("matched_ru_prefix"):
+            prefixes.add(row["matched_ru_prefix"])
+        for prefix in prefixes:
             matched[prefix].append(row)
     report: list[dict[str, Any]] = []
     for inv in inventory_rows:
@@ -556,10 +589,13 @@ def build_prefix_report(
             continue
         rows = matched.get(inv["PREFIX"], [])
         accessible = sum(row.get("result") == "ACCESSIBLE" for row in rows)
+        dns_answers = sum(row.get("result") == "DNS_ANSWER" for row in rows)
         inconclusive = sum(row.get("result") == "INCONCLUSIVE" for row in rows)
         unique_targets = sorted({row.get("target_id", "") for row in rows if row.get("target_id")})
         if accessible:
             status = "ENDPOINT_ACCESSIBLE_OBSERVED"
+        elif dns_answers:
+            status = "DNS_RESOLVED_HTTP_NOT_CONFIRMED"
         elif inconclusive:
             status = "ENDPOINT_PRESENT_INCONCLUSIVE"
         else:
@@ -570,6 +606,7 @@ def build_prefix_report(
             "ADDRESS_COUNT": inv["ADDRESS_COUNT"],
             "STATUS": status,
             "MATCHED_ENDPOINTS": len(unique_targets),
+            "DNS_ANSWER_MEASUREMENTS": dns_answers,
             "ACCESSIBLE_MEASUREMENTS": accessible,
             "INCONCLUSIVE_MEASUREMENTS": inconclusive,
             "TARGET_IDS": "|".join(unique_targets),
@@ -647,7 +684,8 @@ def run(args: argparse.Namespace) -> int:
     prefix_report = build_prefix_report(inventory_rows, globalping_rows)
     candidates = [
         row for row in globalping_rows
-        if row.get("result") in {"INCONCLUSIVE", "WRONG_PROBE_SELECTION", "RATE_LIMITED", "API_ERROR"}
+        if row.get("result") in {"INCONCLUSIVE", "DNS_NXDOMAIN", "DNS_NO_ANSWER",
+                                  "WRONG_PROBE_SELECTION", "RATE_LIMITED", "API_ERROR"}
     ]
     write_tsv(output_dir / "reachability_by_provider.tsv", provider_report, [
         "COUNTRY", "ASN", "NETWORK", "CITY_SAMPLE", "PROBE_TAGS", "PROBE_CLASS",
@@ -655,7 +693,8 @@ def run(args: argparse.Namespace) -> int:
     ])
     write_tsv(output_dir / "reachability_by_prefix.tsv", prefix_report, [
         "PREFIX", "FAMILY", "ADDRESS_COUNT", "STATUS", "MATCHED_ENDPOINTS",
-        "ACCESSIBLE_MEASUREMENTS", "INCONCLUSIVE_MEASUREMENTS", "TARGET_IDS", "POLICY",
+        "DNS_ANSWER_MEASUREMENTS", "ACCESSIBLE_MEASUREMENTS",
+        "INCONCLUSIVE_MEASUREMENTS", "TARGET_IDS", "POLICY",
     ])
     write_tsv(output_dir / "reachability_candidates.tsv", candidates, [
         "source", "observed_at", "country_requested", "probe_country", "asn_requested",
@@ -665,11 +704,13 @@ def run(args: argparse.Namespace) -> int:
     status["results"] = {
         "globalping_measurements": len(globalping_rows),
         "globalping_accessible": sum(row.get("result") == "ACCESSIBLE" for row in globalping_rows),
+        "globalping_dns_answers": sum(row.get("result") == "DNS_ANSWER" for row in globalping_rows),
         "globalping_inconclusive": sum(row.get("result") == "INCONCLUSIVE" for row in globalping_rows),
         "ooni_observations": len(ooni_rows),
         "ooni_anomaly_review": sum("ANOMALY_REVIEW" in str(row.get("result", "")) for row in ooni_rows),
         "ripe_atlas_records": len(atlas_rows),
         "ru_prefixes_with_accessible_endpoint": sum(row["STATUS"] == "ENDPOINT_ACCESSIBLE_OBSERVED" for row in prefix_report),
+        "ru_prefixes_with_dns_only_observation": sum(row["STATUS"] == "DNS_RESOLVED_HTTP_NOT_CONFIRMED" for row in prefix_report),
         "ru_prefixes_with_inconclusive_endpoint": sum(row["STATUS"] == "ENDPOINT_PRESENT_INCONCLUSIVE" for row in prefix_report),
         "ru_prefixes_without_matched_endpoint": sum(row["STATUS"] == "NO_MATCHED_ENDPOINT" for row in prefix_report),
     }
