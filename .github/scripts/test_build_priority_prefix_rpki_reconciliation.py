@@ -36,7 +36,7 @@ class ReconciliationTests(unittest.TestCase):
         ]
         rpki=[
             {"PREFIX":"192.0.2.0/24","ORIGIN_ASN":"AS12345","QUERY_STATUS":"OK","RPKI_STATUS":"invalid_asn"},
-            {"PREFIX":"198.51.100.0/24","ORIGIN_ASN":"AS34567","QUERY_STATUS":"OK","RPKI_STATUS":"valid"},
+            {"PREFIX":"198.51.100.0/24","ORIGIN_ASN":"AS34567","QUERY_STATUS":"OK","RPKI_STATUS":"invalid_asn"},
         ]
         seed=[
             {"PREFIX":"192.0.2.0/24","EXTERNAL_EXACT_ORIGIN_ASNS":"AS23456",
