@@ -12,6 +12,9 @@ on:
       - ".github/scripts/test_build_priority_prefix_evidence.py"
       - ".github/scripts/build_priority_prefix_triage.py"
       - ".github/scripts/test_build_priority_prefix_triage.py"
+      - ".github/scripts/build_priority_prefix_worklist.py"
+      - ".github/scripts/test_build_priority_prefix_worklist.py"
+      - ".github/audits/priority_prefix_external_spot_checks_v37.tsv"
       - ".github/audits/company_asn_legal_evidence_v37_additions.tsv"
       - ".github/audits/company_asn_legal_evidence_v37.tsv"
       - ".github/workflows/prefix-audit-validation.yml"
@@ -42,6 +45,8 @@ jobs:
           .github/scripts/test_build_priority_prefix_evidence.py
           .github/scripts/build_priority_prefix_triage.py
           .github/scripts/test_build_priority_prefix_triage.py
+          .github/scripts/build_priority_prefix_worklist.py
+          .github/scripts/test_build_priority_prefix_worklist.py
 
       - name: Run audit unit tests
         run: python3 -m unittest discover -s .github/scripts -p 'test_build_*prefix*.py' -v
@@ -629,6 +634,63 @@ jobs:
           validation = base / "README_validation.txt"
           with validation.open("a", encoding="utf-8") as stream:
               stream.write("\nPriority-prefix triage\n")
+              stream.write(stats)
+          print(stats)
+          PY
+
+      - name: Build and validate review-only priority-prefix analyst worklist
+        shell: bash
+        run: |
+          set -euo pipefail
+          evidence="prefix-audit/priority-prefix-evidence"
+          cp .github/audits/priority_prefix_external_spot_checks_v37.tsv "$evidence/"
+
+          python3 .github/scripts/build_priority_prefix_worklist.py \
+            --evidence-dir "$evidence" \
+            --output "$evidence/priority_prefix_review_worklist.tsv" \
+            --stats "$evidence/priority_prefix_review_worklist_stats.txt"
+
+          python3 - <<'PY'
+          import csv
+          from pathlib import Path
+
+          base = Path("prefix-audit/priority-prefix-evidence")
+          def read_tsv(path):
+              with path.open(encoding="utf-8", newline="") as stream:
+                  return list(csv.DictReader(
+                      (line for line in stream if not line.startswith("#")), delimiter="\\t"
+                  ))
+
+          triage = read_tsv(base / "priority_prefix_triage.tsv")
+          priority = read_tsv(base / "priority_prefixes.tsv")
+          worklist = read_tsv(base / "priority_prefix_review_worklist.tsv")
+          expected_spots = {
+              "5.45.192.0/18", "5.45.215.0/24", "45.148.65.0/24",
+              "94.131.190.0/23", "109.61.128.0/17",
+          }
+          if len(worklist) != 56 or len({r["PREFIX"] for r in worklist}) != 56:
+              raise SystemExit("Worklist must contain 56 unique exact prefixes")
+          if {r["PREFIX"] for r in worklist} != {r["PREFIX"] for r in triage}:
+              raise SystemExit("Worklist prefix inventory differs from triage")
+          if {r["PREFIX"] for r in worklist} != {r["PREFIX"] for r in priority}:
+              raise SystemExit("Worklist prefix inventory differs from priority scope")
+          if any(r["STATUS"] != "REVIEW" for r in worklist):
+              raise SystemExit("Worklist contains a non-REVIEW row")
+          if any(not r["REQUIRED_NEXT_ACTION"] for r in worklist):
+              raise SystemExit("Worklist contains a row without a next action")
+          if [int(r["REVIEW_ORDER"]) for r in worklist] != sorted(int(r["REVIEW_ORDER"]) for r in worklist):
+              raise SystemExit("Worklist is not sorted by review order")
+          spot_rows = [r for r in worklist if r["EXTERNAL_SPOT_CHECK_STATUS"] != "NOT_SPOT_CHECKED"]
+          if {r["PREFIX"] for r in spot_rows} != expected_spots or len(spot_rows) != 5:
+              raise SystemExit("External spot-check scope does not match the five reviewed prefixes")
+          if any(r["EXTERNAL_SPOT_CHECK_STATUS"] != "CHECKED_2026-11-10" for r in spot_rows):
+              raise SystemExit("Unexpected spot-check timestamp")
+          stats = (base / "priority_prefix_review_worklist_stats.txt").read_text(encoding="utf-8")
+          for required in ("Priority prefixes: 56", "External spot-check rows: 5", "All rows: STATUS=REVIEW"):
+              if required not in stats:
+                  raise SystemExit(f"Worklist statistics missing: {required}")
+          with (base / "README_validation.txt").open("a", encoding="utf-8") as stream:
+              stream.write("\\nPriority-prefix analyst worklist\\n")
               stream.write(stats)
           print(stats)
           PY
