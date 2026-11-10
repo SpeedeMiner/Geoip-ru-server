@@ -1178,7 +1178,11 @@ def run(args: argparse.Namespace) -> int:
         "ripe_atlas_records": len(atlas_rows),
         "ru_prefixes_with_accessible_endpoint": sum(row["STATUS"] == "ENDPOINT_ACCESSIBLE_OBSERVED" for row in prefix_report),
         "ru_prefixes_with_dns_only_observation": sum(row["STATUS"] == "DNS_RESOLVED_HTTP_NOT_CONFIRMED" for row in prefix_report),
-        "ru_prefixes_with_inconclusive_endpoint": sum(row["STATUS"] == "ENDPOINT_PRESENT_INCONCLUSIVE" for row in prefix_report),
+        "ru_prefixes_with_dns_and_inconclusive_http": sum(row["STATUS"] == "DNS_RESOLVED_HTTP_INCONCLUSIVE" for row in prefix_report),
+        "ru_prefixes_with_inconclusive_endpoint": sum(
+            row["STATUS"] in {"ENDPOINT_PRESENT_INCONCLUSIVE", "DNS_RESOLVED_HTTP_INCONCLUSIVE"}
+            for row in prefix_report
+        ),
         "ru_prefixes_without_matched_endpoint": sum(row["STATUS"] == "NO_MATCHED_ENDPOINT" for row in prefix_report),
     }
     (output_dir / "reachability_summary.json").write_text(
