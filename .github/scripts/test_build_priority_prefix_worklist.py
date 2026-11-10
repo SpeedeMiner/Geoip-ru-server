@@ -48,17 +48,23 @@ class WorklistTests(unittest.TestCase):
                 row("192.0.2.0/24", "IRR_NO_EXACT_OBJECT"),
                 row("203.0.113.0/24", "RDAP_COUNTRY_MIXED | RDAP_MULTIPLE_SAMPLE_OBJECTS"),
                 row("2001:db8::/48", "COMPANY_ONLY", basis="COMPANY_ASN_ONLY"),
+                row("198.18.0.0/23", "MOAS"),
             ]
-            spots = [{"PREFIX":"198.51.100.0/24","STATUS":"CHECKED_2026-11-10","OBSERVED_PREFIXES":"198.51.100.0/24","SUMMARY":"scope-preserving note","SOURCE_URLS":"https://example.test/source"}]
+            spots = [
+                {"PREFIX":"198.51.100.0/24","STATUS":"CHECKED_2026-11-10","OBSERVED_PREFIXES":"198.51.100.0/24","SUMMARY":"exact scope","SOURCE_URLS":"https://example.test/source"},
+                {"PREFIX":"198.18.0.0/23","STATUS":"CHECKED_2026-11-10","OBSERVED_PREFIXES":"198.18.1.0/24","SUMMARY":"more-specific only; not the covering prefix","SOURCE_URLS":"https://example.test/more-specific"},
+            ]
             evidence = self.build_inputs(root, rows, spots)
             out, stats = root/"worklist.tsv", root/"stats.txt"
             result = build_worklist(evidence, out, stats, expected_scope=None)
             with out.open(encoding="utf-8", newline="") as f:
                 got = list(csv.DictReader((line for line in f if not line.startswith("#")), delimiter="\t"))
-            self.assertEqual(result["rows"], 4)
-            self.assertEqual([r["PREFIX"] for r in got], ["198.51.100.0/24","192.0.2.0/24","203.0.113.0/24","2001:db8::/48"])
+            self.assertEqual(result["rows"], 5)
+            self.assertEqual([r["PREFIX"] for r in got], ["198.51.100.0/24","192.0.2.0/24","203.0.113.0/24","2001:db8::/48","198.18.0.0/23"])
             self.assertEqual(got[0]["PRIMARY_REVIEW_TRACK"], "RPKI_INVALID_ORIGIN_REVALIDATION")
             self.assertEqual(got[0]["EXTERNAL_SPOT_CHECK_STATUS"], "CHECKED_2026-11-10")
+            self.assertEqual(got[0]["EXTERNAL_SPOT_CHECK_SCOPE_RELATION"], "EXACT_ONLY")
+            self.assertEqual(got[4]["EXTERNAL_SPOT_CHECK_SCOPE_RELATION"], "MORE_SPECIFIC_ONLY")
             self.assertTrue(all(r["STATUS"] == "REVIEW" for r in got))
             self.assertIn("no row is approved", stats.read_text(encoding="utf-8"))
 
