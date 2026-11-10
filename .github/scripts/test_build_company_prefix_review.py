@@ -1,3 +1,8 @@
+import csv
+import hashlib
+import io
+import json
+import tarfile
 import tempfile
 import unittest
 from pathlib import Path
@@ -30,76 +35,128 @@ class CompanyPrefixReviewTests(unittest.TestCase):
             "203.0.113.0/24 # AS64502[RIR-RU]\n",
             encoding="utf-8",
         )
+        archive = root / "as-ip-blocks.tar.gz"
+        entries = (
+            (64500, "TR", ["198.51.100.0/24", "198.51.101.0/24"], []),
+            (64501, "RU", [], ["2001:db8:100::/48"]),
+            (64496, "RU", ["198.51.100.0/24"], []),
+            (64497, "US", ["198.51.100.0/24"], []),
+        )
+        with tarfile.open(archive, "w:gz") as handle:
+            for asn, country, v4, v6 in entries:
+                payload = json.dumps({
+                    "asn": asn,
+                    "metadata": {"countryCode": country},
+                    "prefixes": {"ipv4": v4, "ipv6": v6},
+                }).encode("utf-8")
+                member = tarfile.TarInfo(f"AS{asn}/aggregated.json")
+                member.size = len(payload)
+                handle.addfile(member, io.BytesIO(payload))
+        digest = hashlib.sha256(archive.read_bytes()).hexdigest()
         provenance = root / "input_provenance.tsv"
         provenance.write_text(
             "SOURCE\tLOCAL_FILE\tFETCH_URL\tSHA256\tBYTES\tSTATUS\n"
             "IPVERSE\tas-ip-blocks.tar.gz\thttps://codeload.github.com/example/archive/master\t"
-            + "a" * 64 + "\t1024\tdownloaded\n",
+            + digest + f"\t{archive.stat().st_size}\tdownloaded\n",
             encoding="utf-8",
         )
-        return company, manifest, prefixes, provenance
+        return company, manifest, prefixes, provenance, archive
 
-    def test_company_prefixes_are_review_only_and_exactly_classified(self):
+    def test_company_prefixes_include_global_moas_and_exact_address_accounting(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
-            company, manifest, prefixes, provenance = self.make_inputs(root)
+            company, manifest, prefixes, provenance, archive = self.make_inputs(root)
             output = root / "review.tsv"
             stats = root / "stats.txt"
-            total, company_only, _ = build_review(company, manifest, prefixes, provenance, output, stats)
-
+            total, company_only, regional_company = build_review(
+                company, manifest, prefixes, provenance, archive, output, stats
+            )
             self.assertEqual(total, 3)
             self.assertEqual(company_only, 2)
-            rows = output.read_text(encoding="utf-8").splitlines()
-            header = next(row for row in rows if row.startswith("PREFIX\t"))
-            self.assertEqual(header.split("\t"), list(BGP_HEADER))
-            data = [row.split("\t") for row in rows if row and not row.startswith("#") and not row.startswith("PREFIX\t")]
-            self.assertEqual(len(data), 3)
-            by_prefix = {row[0]: row for row in data}
-
-            self.assertEqual(by_prefix["198.51.100.0/24"][13], "REVIEW")
-            self.assertEqual(by_prefix["198.51.100.0/24"][9], "yes")
-            self.assertEqual(by_prefix["198.51.100.0/24"][10], "REGIONAL_RIR_ASN_ORIGIN+COMPANY_ASN")
-            self.assertEqual(by_prefix["198.51.101.0/24"][10], "COMPANY_ASN_ONLY")
-            self.assertEqual(by_prefix["2001:db8:100::/48"][1], "IPv6")
-            self.assertEqual(by_prefix["2001:db8:100::/48"][11], "NOT_QUERIED")
-            self.assertEqual(by_prefix["2001:db8:100::/48"][12], "NOT_QUERIED")
-            self.assertEqual(by_prefix["198.51.101.0/24"][14], "PRESENT_IN_SELECTED_BGP_INPUT")
-            self.assertIn("Company-only IPv4 address-space union (independent; may overlap other classes): 256",
-                          stats.read_text(encoding="utf-8"))
-            self.assertIn("Company-origin IPv6 address-space union: 1208925819614629174706176",
-                          stats.read_text(encoding="utf-8"))
+            self.assertEqual(regional_company, 1)
+            with output.open(encoding="utf-8", newline="") as handle:
+                rows = [row for row in csv.reader(handle, delimiter="\t") if row]
+            header = next(row for row in rows if row[0] == "PREFIX")
+            self.assertEqual(header, list(BGP_HEADER))
+            data = {row[0]: dict(zip(header, row)) for row in rows if row[0] != "PREFIX" and not row[0].startswith("#")}
+            moas = data["198.51.100.0/24"]
+            self.assertEqual(moas["STATUS"], "REVIEW")
+            self.assertEqual(moas["REGIONAL_RIR_ASN_ORIGIN"], "yes")
+            self.assertEqual(moas["INCLUSION_BASIS"], "REGIONAL_RIR_ASN_ORIGIN+COMPANY_ASN")
+            self.assertEqual(moas["GLOBAL_BGP_MOAS"], "yes")
+            self.assertEqual(moas["GLOBAL_BGP_ORIGIN_ASNS"], "AS64496,AS64497,AS64500")
+            self.assertEqual(moas["GLOBAL_BGP_ORIGIN_COUNTRY_CODES"], "AS64496=RU,AS64497=US,AS64500=TR")
+            self.assertEqual(moas["RPKI_STATUS"], "NOT_QUERIED")
+            self.assertEqual(moas["IRR_STATUS"], "NOT_QUERIED")
+            details = json.loads(moas["COMPANY_ASN_DETAILS_JSON"])
+            self.assertEqual(details[0]["asn"], "AS64500")
+            self.assertEqual(details[0]["ipverse_country_code"], "TR")
+            self.assertEqual(moas["SELECTED_ORIGIN_ASNS"], "AS64496,AS64500")
+            company_only_v4 = data["198.51.101.0/24"]
+            self.assertEqual(company_only_v4["INCLUSION_BASIS"], "COMPANY_ASN_ONLY")
+            self.assertEqual(company_only_v4["GLOBAL_BGP_MOAS"], "no")
+            self.assertEqual(company_only_v4["GLOBAL_BGP_ORIGIN_ASNS"], "AS64500")
+            company_only_v6 = data["2001:db8:100::/48"]
+            self.assertEqual(company_only_v6["FAMILY"], "IPv6")
+            self.assertEqual(company_only_v6["GLOBAL_BGP_ORIGIN_ASNS"], "AS64501")
+            stats_text = stats.read_text(encoding="utf-8")
+            self.assertIn("Prefixes with multiple global BGP origin ASNs (MOAS): 1", stats_text)
+            self.assertIn("Company-only IPv4 address-space union (independent; may overlap other classes): 256", stats_text)
+            self.assertIn("Company-origin IPv6 address-space union: 1208925819614629174706176", stats_text)
 
     def test_missing_company_registry_entry_in_manifest_fails(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
-            company, manifest, prefixes, provenance = self.make_inputs(root)
+            company, manifest, prefixes, provenance, archive = self.make_inputs(root)
             manifest.write_text(
                 "\t".join(COMPANY_HEADER) + "\n"
                 "AS64500\tYandex\tYandex LLC\thttps://example.test/yandex\tyes\tTR\t1\t1\tno\tno\n",
                 encoding="utf-8",
             )
             with self.assertRaisesRegex(ValueError, "missing registry entries"):
-                build_review(company, manifest, prefixes, provenance, root / "review.tsv", root / "stats.txt")
+                build_review(company, manifest, prefixes, provenance, archive, root / "review.tsv", root / "stats.txt")
 
     def test_invalid_bgp_prefix_fails_closed(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
-            company, manifest, prefixes, provenance = self.make_inputs(root)
+            company, manifest, prefixes, provenance, archive = self.make_inputs(root)
             prefixes.write_text("198.51.100.1/24 # AS64500[Yandex]\n", encoding="utf-8")
             with self.assertRaisesRegex(ValueError, "invalid prefix"):
-                build_review(company, manifest, prefixes, provenance, root / "review.tsv", root / "stats.txt")
+                build_review(company, manifest, prefixes, provenance, archive, root / "review.tsv", root / "stats.txt")
 
     def test_snapshot_checksum_is_required(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
-            company, manifest, prefixes, provenance = self.make_inputs(root)
+            company, manifest, prefixes, provenance, archive = self.make_inputs(root)
             provenance.write_text(
                 "SOURCE\tLOCAL_FILE\tFETCH_URL\tSHA256\tBYTES\tSTATUS\n"
                 "IPVERSE\tas-ip-blocks.tar.gz\thttps://example.test/archive\tnot-a-hash\t1024\tdownloaded\n",
                 encoding="utf-8",
             )
             with self.assertRaisesRegex(ValueError, "valid SHA-256"):
-                build_review(company, manifest, prefixes, provenance, root / "review.tsv", root / "stats.txt")
+                build_review(company, manifest, prefixes, provenance, archive, root / "review.tsv", root / "stats.txt")
+
+    def test_global_bgp_archive_must_cover_every_company_prefix(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            company, manifest, prefixes, provenance, archive = self.make_inputs(root)
+            with tarfile.open(archive, "w:gz") as handle:
+                payload = json.dumps({
+                    "asn": 64500, "metadata": {"countryCode": "TR"},
+                    "prefixes": {"ipv4": ["198.51.100.0/24"], "ipv6": []},
+                }).encode("utf-8")
+                member = tarfile.TarInfo("AS64500/aggregated.json")
+                member.size = len(payload)
+                handle.addfile(member, io.BytesIO(payload))
+            provenance.write_text(
+                "SOURCE\tLOCAL_FILE\tFETCH_URL\tSHA256\tBYTES\tSTATUS\n"
+                "IPVERSE\tas-ip-blocks.tar.gz\thttps://example.test/archive\t"
+                + hashlib.sha256(archive.read_bytes()).hexdigest()
+                + f"\t{archive.stat().st_size}\tdownloaded\n",
+                encoding="utf-8",
+            )
+            with self.assertRaisesRegex(ValueError, "absent from the global BGP snapshot"):
+                build_review(company, manifest, prefixes, provenance, archive, root / "review.tsv", root / "stats.txt")
 
 
 if __name__ == "__main__":
