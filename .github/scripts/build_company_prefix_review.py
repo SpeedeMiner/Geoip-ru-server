@@ -81,12 +81,12 @@ def read_company_registry(path: Path) -> dict[int, dict[str, str]]:
     return companies
 
 
-def read_company_manifest(path: Path, companies: dict[int, dict[str, str]]) -> dict[int, str]:
+def read_company_manifest(path: Path, companies: dict[int, dict[str, str]]) -> dict[int, dict[str, str]]:
     rows = _read_tsv(path)
     expected = list(COMPANY_HEADER)
     if not rows or tuple(rows[0]) != tuple(expected):
         raise ValueError(f"{path}: unexpected company ASN manifest schema")
-    countries: dict[int, str] = {}
+    countries: dict[int, dict[str, str]] = {}
     for line_no, row in enumerate(rows[1:], 2):
         if not row:
             continue
@@ -131,10 +131,18 @@ def read_bgp_snapshot(path: Path, archive_path: Path) -> tuple[str, str]:
         raise ValueError("BGP snapshot is not marked downloaded with a valid SHA-256")
     if not row[2].startswith("https://"):
         raise ValueError("BGP snapshot URL must use HTTPS")
+    if not row[4].isdigit():
+        raise ValueError("BGP snapshot provenance BYTES field must be a positive integer")
     try:
-        actual_sha = hashlib.sha256(archive_path.read_bytes()).hexdigest()
+        archive_bytes = archive_path.read_bytes()
     except OSError as exc:
         raise ValueError(f"cannot read BGP snapshot {archive_path}: {exc}") from exc
+    actual_size = len(archive_bytes)
+    if actual_size != int(row[4]):
+        raise ValueError(
+            f"BGP snapshot size mismatch: manifest={row[4]} actual={actual_size}"
+        )
+    actual_sha = hashlib.sha256(archive_bytes).hexdigest()
     if actual_sha != row[3]:
         raise ValueError(
             f"BGP snapshot SHA-256 mismatch: manifest={row[3]} actual={actual_sha}"
