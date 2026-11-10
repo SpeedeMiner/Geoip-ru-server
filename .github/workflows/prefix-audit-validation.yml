@@ -779,7 +779,11 @@ jobs:
           worklist_by = {row["PREFIX"]: row for row in worklist}
           for row in result:
               prefix = row["PREFIX"]
-              if row["ARCHIVED_INVALID_RPKI_ORIGINS"] != triage_by[prefix]["RPKI_INVALID_ORIGINS"]:
+              archived_invalid = {x.strip() for x in row["ARCHIVED_INVALID_RPKI_ORIGINS"].split("|") if x.strip()}
+              triage_invalid = {
+                  x.strip() for x in triage_by[prefix]["RPKI_INVALID_ORIGINS"].replace(",", "|").split("|") if x.strip()
+              }
+              if archived_invalid != triage_invalid:
                   raise SystemExit(f"Archived invalid-origin set drift for {prefix}")
               if row["EXTERNAL_NLRI_SCOPE_RELATION"] != worklist_by[prefix]["EXTERNAL_SPOT_CHECK_SCOPE_RELATION"]:
                   raise SystemExit(f"External NLRI scope mismatch for {prefix}")
