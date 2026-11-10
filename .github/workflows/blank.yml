@@ -2937,6 +2937,61 @@ jobs:
             }
            }
           }
+
+          func TestIPv4MappedIPv6IsKeptInIPv6Family(t *testing.T) {
+           mappedAddress := netip.MustParseAddr("::ffff:192.0.2.1")
+           if !mappedAddress.Is4In6() || mappedAddress.Is4() {
+            t.Fatalf("unexpected netip classification for IPv4-mapped IPv6: %v", mappedAddress)
+           }
+           mapped, ok := cidrPrefix(&router.CIDR{Ip: mappedAddress.AsSlice(), Prefix: 128})
+           if !ok || !mapped.Addr().Is4In6() || mapped.Addr().Is4() {
+            t.Fatalf("IPv4-mapped IPv6 protobuf CIDR was rejected or silently unmapped: prefix=%v ok=%v", mapped, ok)
+           }
+           v6 := newIPTrie()
+           v6.insert(mapped)
+           if got := countAddressSpace(v6.toPrefixes(), 128); got.Cmp(big.NewInt(1)) != 0 {
+            t.Fatalf("mapped IPv6 host must remain one IPv6 address, got %s", got)
+           }
+           if got := countAddressSpace(v6.toPrefixes(), 32); got.Sign() != 0 {
+            t.Fatalf("mapped IPv6 host must not leak into IPv4 address space, got %s", got)
+           }
+           v4 := newIPTrie()
+           v4.insert(mustPrefix(t, "192.0.2.0/24"))
+           overlap := cloneTrie(v6)
+           overlap.intersect(v4)
+           if got := len(overlap.toPrefixes()); got != 0 {
+            t.Fatalf("IPv4 and IPv4-mapped IPv6 are separate trie families; unexpected overlap: %d", got)
+           }
+          }
+
+          func TestTriePrefixAddressCountBoundaryMasks(t *testing.T) {
+           cases := []struct {
+            name string
+            prefix string
+            familyBits int
+            want *big.Int
+           }{
+            {"ipv4-zero", "0.0.0.0/0", 32, new(big.Int).Lsh(big.NewInt(1), 32)},
+            {"ipv4-host", "255.255.255.255/32", 32, big.NewInt(1)},
+            {"ipv4-half", "128.0.0.0/1", 32, new(big.Int).Lsh(big.NewInt(1), 31)},
+            {"ipv6-zero", "::/0", 128, new(big.Int).Lsh(big.NewInt(1), 128)},
+            {"ipv6-host", "ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff/128", 128, big.NewInt(1)},
+            {"ipv6-/48", "2001:db8::/48", 128, new(big.Int).Lsh(big.NewInt(1), 80)},
+            {"ipv6-/64", "2001:db8::/64", 128, new(big.Int).Lsh(big.NewInt(1), 64)},
+            {"ipv6-/112", "2001:db8::/112", 128, new(big.Int).Lsh(big.NewInt(1), 16)},
+           }
+           for _, tc := range cases {
+            t.Run(tc.name, func(t *testing.T) {
+             trie := newIPTrie()
+             trie.insert(mustPrefix(t, tc.prefix))
+             prefixes := trie.toPrefixes()
+             got := countAddressSpace(prefixes, tc.familyBits)
+             if got.Cmp(tc.want) != 0 {
+              t.Fatalf("%s: got %s addresses, want %s", tc.prefix, got, tc.want)
+             }
+            })
+           }
+          }
           GO
 
           gofmt -w geoip-builder/main.go geoip-builder/main_test.go
