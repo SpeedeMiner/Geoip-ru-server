@@ -10,8 +10,8 @@ Durable resume point for PR #5. After any conversation/network interruption, rea
 - Branch: feature/reachability-full-ru-kz-by
 - Base/main: c71b5eff48f34b363ef2430ba6b5c41603f36126
 - Last code commit used by final measurement: 0ee7a3434537fbf19bba5c74508ca98c0f4a7d21
-- Branch/PR head at this checkpoint: ec1aaa59d2c750696396df8e86981ee604785fb7
-- The full-measurement workflow is restored to manual + daily schedule only; the temporary push trigger has been removed.
+- Latest successful validation head recorded in this log: ec1aaa59d2c750696396df8e86981ee604785fb7. Documentation/checkpoint commits may advance branch HEAD; always query the live PR head on resume.
+- The full-measurement workflow has manual dispatch on this feature branch. Its daily cron becomes active only after the workflow is merged into the repository default branch. The temporary push trigger has been removed.
 - Main GeoIP builder, release branch, and published geoip_RU.dat were not modified. The client remains one file with exactly RU and PRIVATE categories.
 
 ## Implemented
