@@ -97,7 +97,7 @@ jobs:
               "AS15774", "AS42610", "AS44534", "AS207207", "AS210656",
               "AS211517", "AS212066", "AS213952", "AS215109", "AS34879",
               "AS49053", "AS8402", "AS31133", "AS207304", "AS208795",
-              "AS202611",
+              "AS202611", "AS9123", "AS57724", "AS208677", "AS210756",
           }
           required = {
               "ASN", "COMPANY_GROUP", "ALLOWLIST_ENTITY_OR_NOTE", "RIPE_AS_NAME",
