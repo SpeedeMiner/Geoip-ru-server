@@ -272,10 +272,11 @@ class TaskAndReportTests(unittest.TestCase):
         selected, meta = runner.select_fair_provider_tasks(
             tasks, 7, dt.date(2026, 11, 10)
         )
-        self.assertEqual(len(selected), 7)
+        self.assertEqual(len(selected), 4)
         self.assertEqual(meta["providers_covered"], 1)
         self.assertEqual(meta["providers_uncovered"], 2)
-        self.assertEqual(meta["partial_target_bundles"], 1)
+        self.assertEqual(meta["partial_target_bundles"], 0)
+        self.assertEqual(meta["budget_unused_for_bundle_alignment"], 3)
 
     def test_prefix_report_contains_ru_only_and_explicit_no_endpoint_state(self):
         inventory = [
