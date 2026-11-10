@@ -340,6 +340,20 @@ class TaskAndReportTests(unittest.TestCase):
         self.assertEqual(report[0]["DNS_ANSWERS"], 1)
         self.assertEqual(report[0]["OBSERVED_IPS"], "198.51.100.10")
 
+    def test_provider_prefix_report_does_not_mix_ips_from_adjacent_prefixes(self):
+        measurements = [{
+            "probe_country": "RU", "probe_asn": 12389, "probe_network": "Rostelecom",
+            "matched_ru_prefixes": "198.51.100.0/24|203.0.113.0/24",
+            "target_id": "multi", "target_domain": "multi.example",
+            "resolved_addresses": "198.51.100.7|203.0.113.8",
+            "target_ip": "198.51.100.7", "result": "DNS_ANSWER",
+        }]
+        report = runner.build_provider_prefix_report(measurements)
+        self.assertEqual(len(report), 2)
+        ips_by_prefix = {row["PREFIX"]: row["OBSERVED_IPS"] for row in report}
+        self.assertEqual(ips_by_prefix["198.51.100.0/24"], "198.51.100.7")
+        self.assertEqual(ips_by_prefix["203.0.113.0/24"], "203.0.113.8")
+
     def test_provider_ip_report_maps_exact_ru_ip_to_provider(self):
         networks = {
             "RU": [ipaddress.ip_network("198.51.100.0/24")],
