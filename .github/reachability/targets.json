@@ -319,7 +319,7 @@
       ],
       "port": 443,
       "path": "/",
-      "reference_url": "https://www.gov.pl/web/bialorus/informator-ekonomiczny"
+      "reference_url": "https://www.eoiminsk.gov.in/page/useful-links-from-belarus/"
     },
     {
       "id": "by-president",
@@ -332,7 +332,7 @@
       ],
       "port": 443,
       "path": "/",
-      "reference_url": "https://www.gov.pl/web/bialorus/informator-ekonomiczny"
+      "reference_url": "https://www.eoiminsk.gov.in/page/useful-links-from-belarus/"
     },
     {
       "id": "by-pravo",
@@ -384,7 +384,7 @@
       ],
       "port": 443,
       "path": "/",
-      "reference_url": "https://www.gov.pl/web/bialorus/informator-ekonomiczny"
+      "reference_url": "https://www.eoiminsk.gov.in/page/useful-links-from-belarus/"
     }
   ]
 }
