@@ -1259,6 +1259,7 @@ def build_globalping_coverage_summary(
 
     pairs_by_country = collections.Counter(country for country, _ in observed_pairs)
     return {
+        "globalping_dns_no_answers": sum(row.get("result") == "DNS_NO_ANSWER" for row in measurements),
         "globalping_ipv6_probe_unavailable_by_country": dict(sorted(no_ipv6_by_country.items())),
         "globalping_distinct_targets_observed": len(observed_targets),
         "globalping_observed_target_country_pairs": len(observed_pairs),
