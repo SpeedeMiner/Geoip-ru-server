@@ -28,6 +28,12 @@ GLOBALPING_API = "https://api.globalping.io/v1"
 OONI_API = "https://api.ooni.io/api/v1"
 RIPE_ATLAS_API = "https://atlas.ripe.net/api/v2"
 COUNTRIES = {"RU", "KZ", "BY"}
+PROVIDER_PREFIX_REPORT_FIELDS = [
+    "COUNTRY", "ASN", "NETWORK", "PREFIX", "FAMILY", "ADDRESS_COUNT",
+    "ACCESSIBLE_HTTPS", "DNS_ANSWERS", "DNS_NO_ANSWER", "INCONCLUSIVE",
+    "NO_IPV6_PROBE", "API_ERROR", "TARGET_IDS", "TARGET_DOMAINS",
+    "OBSERVED_IPS", "HTTP_STATUSES",
+]
 USER_AGENT = "Geoip-ru-server-reachability/1.0"
 DEFAULT_GLOBALPING_BUDGET = 180
 DEFAULT_RIPE_BUDGET = 18
@@ -1148,12 +1154,11 @@ def run(args: argparse.Namespace) -> int:
         "DNS_ANSWER_MEASUREMENTS", "ACCESSIBLE_MEASUREMENTS",
         "INCONCLUSIVE_MEASUREMENTS", "TARGET_IDS", "POLICY",
     ])
-    write_tsv(output_dir / "reachability_by_provider_prefix.tsv", provider_prefix_report, [
-        "COUNTRY", "ASN", "NETWORK", "PREFIX", "FAMILY", "ADDRESS_COUNT",
-        "ACCESSIBLE_HTTPS", "DNS_ANSWERS", "DNS_NO_ANSWER", "INCONCLUSIVE",
-        "INCONCLUSIVE", "NO_IPV6_PROBE", "API_ERROR",
-        "TARGET_IDS", "TARGET_DOMAINS", "OBSERVED_IPS", "HTTP_STATUSES",
-    ])
+    write_tsv(
+        output_dir / "reachability_by_provider_prefix.tsv",
+        provider_prefix_report,
+        PROVIDER_PREFIX_REPORT_FIELDS,
+    )
     write_tsv(output_dir / "reachability_by_provider_ip.tsv", provider_ip_report, [
         "COUNTRY", "ASN", "NETWORK", "IP_ADDRESS", "PREFIX", "FAMILY", "STATUS",
         "DNS_ANSWER_COUNT", "HTTPS_ACCESSIBLE_COUNT", "INCONCLUSIVE_COUNT",
