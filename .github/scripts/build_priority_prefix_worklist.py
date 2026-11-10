@@ -91,7 +91,7 @@ def build_worklist(evidence: Path, output: Path, stats_path: Path,
     spot_scope_relations: dict[str, str] = {}
     for prefix, row in spots.items():
         status = row.get("STATUS", "").strip()
-        match = re.fullmatch(r"CHECKED_(\\d{4}-\\d{2}-\\d{2})", status)
+        match = re.fullmatch(r"CHECKED_(\d{4}-\d{2}-\d{2})", status)
         if not match or not row.get("SUMMARY", "").strip():
             raise ValueError(f"invalid or undated spot-check row: {prefix}")
         try:
