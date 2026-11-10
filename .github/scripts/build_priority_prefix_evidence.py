@@ -478,19 +478,65 @@ def build_evidence(company_queue: Path, output_dir: Path, max_workers: int = 5) 
         if row["PREFIX"]:
             prefix_rdap_groups[row["PREFIX"]].append(row)
     rdap_consistency = collections.Counter()
-    for prefix, samples in prefix_rdap_groups.items():
+    summary_rows: list[dict[str, str]] = []
+    for priority_row in priority:
+        prefix = priority_row["PREFIX"]
+        samples = prefix_rdap_groups.get(prefix, [])
         success = [row for row in samples if row["QUERY_STATUS"] == "OK"]
-        handles = {row["HANDLE"] or row["NAME"] or row["REGISTERED_CIDRS"] for row in success}
+        resources = {
+            (
+                row["HANDLE"],
+                row["NAME"],
+                row["REGISTERED_CIDRS"],
+                row["REGISTRANT_ENTITIES"],
+            )
+            for row in success
+        }
         if len(success) != len(samples):
-            rdap_consistency["INCOMPLETE_SAMPLES"] += 1
-        elif len(handles) > 1:
-            rdap_consistency["MULTIPLE_RESOURCE_OBJECTS_AT_SAMPLES"] += 1
+            consistency = "INCOMPLETE_SAMPLES"
+        elif len(resources) > 1:
+            consistency = "MULTIPLE_RESOURCE_OBJECTS_AT_SAMPLES"
         elif any(row["RDAP_PREFIX_RELATION"] == "EXACT_PREFIX_MATCH" for row in success):
-            rdap_consistency["SAMPLED_RESOURCE_EXACT_PREFIX"] += 1
+            consistency = "SAMPLED_RESOURCE_EXACT_PREFIX"
         elif any(row["RDAP_PREFIX_RELATION"] == "MORE_SPECIFIC_RESOURCE_AT_SAMPLE" for row in success):
-            rdap_consistency["MORE_SPECIFIC_RESOURCE_AT_SAMPLE"] += 1
+            consistency = "MORE_SPECIFIC_RESOURCE_AT_SAMPLE"
         else:
-            rdap_consistency["ONE_COVERING_OR_UNCLASSIFIED_RESOURCE_AT_SAMPLES"] += 1
+            consistency = "ONE_COVERING_OR_UNCLASSIFIED_RESOURCE_AT_SAMPLES"
+        rdap_consistency[consistency] += 1
+        summary_rows.append({
+            "PREFIX": prefix,
+            "PRIORITY_REASON": priority_row["PRIORITY_REASON"],
+            "COMPANY_ASNS": priority_row["COMPANY_ASNS"],
+            "GLOBAL_BGP_ORIGIN_ASNS": priority_row["GLOBAL_BGP_ORIGIN_ASNS"],
+            "GLOBAL_BGP_ORIGIN_COUNTRY_CODES": priority_row["GLOBAL_BGP_ORIGIN_COUNTRY_CODES"],
+            "GLOBAL_BGP_MOAS": priority_row["GLOBAL_BGP_MOAS"],
+            "RDAP_SAMPLE_COUNT": str(len(samples)),
+            "RDAP_SUCCESS_COUNT": str(len(success)),
+            "RDAP_SAMPLE_CONSISTENCY": consistency,
+            "RDAP_RESOURCE_HANDLES": " | ".join(sorted({row["HANDLE"] for row in success if row["HANDLE"]})),
+            "RDAP_RESOURCE_NAMES": " | ".join(sorted({row["NAME"] for row in success if row["NAME"]})),
+            "RDAP_REGISTRANT_ENTITIES": " | ".join(sorted({
+                row["REGISTRANT_ENTITIES"] for row in success if row["REGISTRANT_ENTITIES"]
+            })),
+            "RDAP_COUNTRIES": ",".join(sorted({row["COUNTRY"] for row in success if row["COUNTRY"]})),
+            "RDAP_REGISTERED_CIDRS": " | ".join(sorted({
+                row["REGISTERED_CIDRS"] for row in success if row["REGISTERED_CIDRS"]
+            })),
+            "RDAP_QUERY_ERRORS": " | ".join(sorted({
+                row["QUERY_STATUS"] for row in samples if row["QUERY_STATUS"] != "OK"
+            })),
+            "STATUS": "REVIEW",
+            "INTERPRETATION": "Three address samples only; not exhaustive proof of every resource holder within the prefix.",
+        })
+
+    summary_columns = [
+        "PREFIX", "PRIORITY_REASON", "COMPANY_ASNS", "GLOBAL_BGP_ORIGIN_ASNS",
+        "GLOBAL_BGP_ORIGIN_COUNTRY_CODES", "GLOBAL_BGP_MOAS", "RDAP_SAMPLE_COUNT",
+        "RDAP_SUCCESS_COUNT", "RDAP_SAMPLE_CONSISTENCY", "RDAP_RESOURCE_HANDLES",
+        "RDAP_RESOURCE_NAMES", "RDAP_REGISTRANT_ENTITIES", "RDAP_COUNTRIES",
+        "RDAP_REGISTERED_CIDRS", "RDAP_QUERY_ERRORS", "STATUS", "INTERPRETATION",
+    ]
+    write_tsv(output_dir / "prefix_holder_review_summary.tsv", summary_rows, summary_columns)
 
     stats = [
         "Priority prefix evidence report (review only)",
