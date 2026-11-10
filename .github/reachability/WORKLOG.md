@@ -109,6 +109,15 @@ Durable resume point for PR #5. After any conversation/network interruption, rea
 - Validation run `42873343359` passed: 27 Python tests, Go formatting, Go tests and Go build. The added unit test checks that repeated tasks do not inflate unique country/target pairs and that missing-IPv6 probe counts use the requested source country.
 - The existing artifact `42867329770` predates these summary fields. Its country and sampling counts were independently derived from raw JSONL and recorded above; the next full measurement will include the structured fields automatically.
 
+## Structured-summary full run in progress
+
+- Run: https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/42874077069
+- Trigger commit: `e6612071a4839e8151c9823bf43d6af84fe643c7` (`[reachability-once] Verify structured summary in full measurement`). It uses the latest collector with structured country/target summary metrics and the 30-target catalogue.
+- The one-time push trigger has already been removed in commit `1cb59cbd216d8fc4b1c217532a62f0c3e54b2f88`; workflow `push` trigger is absent. The job guard for `[reachability-once]` is retained to skip other push messages.
+- Last checked: the inventory download/checksum and inventory-export steps succeeded; the combined Globalping/OONI collector step remained `in_progress`; no artifact was uploaded yet. Do not start a duplicate run.
+- Resume by querying run `42874077069`, its job and artifacts. On success, download the artifact, verify digest and confirm new summary fields/values. If it fails, inspect logs before deciding whether a rerun is needed.
+- Last successful full artifact remains run `42867329770` / artifact `13787468458` until the in-progress run completes.
+
 ## Phase status
 
 | Phase | State | Evidence |
