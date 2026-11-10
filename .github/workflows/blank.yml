@@ -3242,7 +3242,7 @@ jobs:
           if not company_prefix_entries:
               raise SystemExit("Company prefix review manifest is empty")
           with open(company_manifest, encoding="utf-8") as source:
-              company_manifest_rows = [line.rstrip("\\n").split("\\t") for line in source if line.strip()]
+              company_manifest_rows = [line.rstrip("\n").split("\t") for line in source if line.strip()]
           company_manifest_header = [
               "ASN", "COMPANY_GROUP", "LEGAL_ENTITY_OR_NOTE", "EVIDENCE",
               "ACTIVE_IN_IPVERSE", "IPVERSE_COUNTRY_CODE", "IPV4_PREFIXES",
@@ -3353,7 +3353,7 @@ jobs:
               "BGP_SNAPSHOT_SHA256", "BGP_SNAPSHOT_URL",
           ]
           with open(selected_prefix_review, encoding="utf-8") as source:
-              selected_rows = [line.rstrip("\\n").split("\\t") for line in source if line.strip() and not line.startswith("#")]
+              selected_rows = [line.rstrip("\n").split("\t") for line in source if line.strip() and not line.startswith("#")]
           if not selected_rows or selected_rows[0] != selected_header:
               raise SystemExit("Selected regional/company prefix review manifest has an unexpected schema")
           selected_entries = selected_rows[1:]
