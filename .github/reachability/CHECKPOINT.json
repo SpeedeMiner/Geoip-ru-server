@@ -1,13 +1,14 @@
 {
   "schema_version": 1,
-  "updated_at_utc": "2026-11-10T16:57:27.866Z",
+  "updated_at_utc": "2026-11-10T17:08:34.126Z",
   "repository": "SpeedeMiner/Geoip-ru-server",
   "pull_request": 5,
+  "pull_request_url": "https://github.com/SpeedeMiner/Geoip-ru-server/pull/5",
   "branch": "feature/reachability-full-ru-kz-by",
-  "observed_pr_head_sha": "1aa449c570b34fb506c9926a25e104fea093f272",
+  "observed_pr_head_sha": "62676fb76404b6784b00f89b70c9c53ef289477e",
   "observed_pr_base_sha": "c71b5eff48f34b363ef2430ba6b5c41603f36126",
   "state": "IN_PROGRESS",
-  "current_phase": "RUN_FULL_MEASUREMENT_WITH_FAIR_SCHEDULER",
+  "current_phase": "RUN_FULL_MEASUREMENT_AFTER_PROVIDER_REPORT_AND_NO_IPV6_CHANGES",
   "completed": [
     "repository_reconnaissance",
     "protobuf_inventory_exporter",
@@ -19,53 +20,90 @@
     "first_full_measurement_run",
     "balanced_provider_scheduler",
     "balanced_scheduler_unit_tests",
-    "balanced_scheduler_validation_ci"
+    "balanced_scheduler_validation_ci",
+    "fair_scheduler_full_measurement_run",
+    "provider_prefix_report_implementation",
+    "provider_exact_ip_report_implementation",
+    "no_ipv6_probe_classification",
+    "prefix_scoped_observed_ip_correction",
+    "latest_validation_ci"
   ],
-  "latest_successful_validation_run": 42859512809,
-  "latest_successful_full_run": 42856671346,
-  "latest_full_run_commit": "58feded4d0b0b87a9b1671bf5c7b64ffa9e2c133",
-  "latest_artifact": {
-    "name": "geoip-ru-reachability-42856671346",
-    "artifact_id": 13782748149,
-    "sha256": "4eb6253566ff5d577ab84311122e4e002ab665494943dcc1535f4ca77e16899c",
-    "expires_at_utc": "2026-12-10T16:41:29Z"
+  "latest_successful_validation_run": 42861447947,
+  "latest_successful_validation_commit": "62676fb76404b6784b00f89b70c9c53ef289477e",
+  "test_counts": {
+    "python_unit_tests": 26,
+    "python_unit_tests_status": "PASS",
+    "go_tests_status": "PASS",
+    "go_build_status": "PASS",
+    "gofmt_status": "PASS"
   },
-  "first_run_metrics": {
+  "latest_successful_full_run": 42859913399,
+  "latest_full_run_commit": "13eac680a0180a0b38409c5be28cfddc313964a4",
+  "latest_artifact": {
+    "name": "geoip-ru-reachability-42859913399",
+    "artifact_id": 13784433398,
+    "sha256": "2fdb12559cdada14a84665b006cec90742dde674823acfd23035a2262d1240df",
+    "expires_at_utc": "2026-12-10T16:59:09Z"
+  },
+  "latest_full_run_metrics": {
     "inventory_ru_prefixes": 76268,
     "inventory_private_prefixes": 151,
-    "globalping_online_probes": 5499,
-    "globalping_provider_pairs_discovered": 37,
-    "globalping_selected_tasks": 180,
-    "globalping_total_tasks": 1628,
-    "globalping_results": {
-      "ACCESSIBLE": 38,
-      "DNS_ANSWER": 62,
-      "DNS_NO_ANSWER": 28,
-      "INCONCLUSIVE": 25,
-      "API_ERROR": 27
+    "globalping_online_probes": 5531,
+    "provider_pairs_discovered": 36,
+    "provider_pairs_covered": 36,
+    "provider_pairs_uncovered": 0,
+    "countries_available": [
+      "BY",
+      "KZ",
+      "RU"
+    ],
+    "countries_selected": [
+      "BY",
+      "KZ",
+      "RU"
+    ],
+    "globalping_tests": 180,
+    "complete_target_bundles": 45,
+    "partial_target_bundles": 0,
+    "by_country_provider_pairs": {
+      "RU": 27,
+      "KZ": 6,
+      "BY": 3
     },
-    "ooni_observations": 476,
-    "ooni_anomaly_review": 2,
-    "ripe_atlas": "SKIPPED_API_KEY_NOT_CONFIGURED"
+    "result_counts": {
+      "ACCESSIBLE": 43,
+      "DNS_ANSWER": 60,
+      "DNS_NO_ANSWER": 30,
+      "INCONCLUSIVE": 10,
+      "API_ERROR": 37
+    },
+    "api_error_interpretation": "All 37 rows were HTTP 422 no_probes_found: no matching IPv6 probe for HTTPS IPv6. The current runner converts this to NO_IPV6_PROBE; new full run must verify.",
+    "accessible_https_provider_pairs": {
+      "RU": "25/27",
+      "KZ": "6/6",
+      "BY": "2/3"
+    },
+    "ooni_observations": 478,
+    "ooni_anomaly_review": 3,
+    "ooni_anomaly_confirmed": 0,
+    "ripe_atlas": "SKIPPED_API_KEY_NOT_CONFIGURED",
+    "current_target_count": 11,
+    "ru_prefixes_without_endpoint_match": 76252
   },
-  "known_issue": {
-    "id": "SCHEDULER_COUNTRY_PROVIDER_STARVATION",
-    "severity": "HIGH_FOR_COVERAGE_INTERPRETATION",
-    "description": "A continuous slice of a country/ASN-sorted task list caused successful measurements to cluster in three RU ASNs; KZ/BY probes were not adequately represented. The first-run reachability totals are exploratory only.",
-    "required_fix": "Implemented: round-robin per-provider complete four-task bundles; rotate provider/target choice by UTC date; do not split bundles when budget is short. CI run 42859374441 failed only because the earlier test asserted partial bundle output; expectation and scheduler were corrected.",
-    "status": "FIXED_CI_GREEN_AWAITING_NEW_DATA",
-    "fix_commit": "887e92c42b977b796650890d66448832ce7b91fa",
-    "test_commit": "66eef61fc433b7eb1f44d71fe88f24cd8e20ea70",
-    "validation_run": 42859512809
-  },
+  "known_limitations": [
+    "Globalping eyeball-network is not proof that probes are residential home connections.",
+    "11 hostnames are a pilot target set, not a comprehensive service inventory.",
+    "No endpoint match means untested by current targets, not inaccessible.",
+    "NO_IPV6_PROBE is a probe-coverage issue, not a reachability verdict."
+  ],
   "next_steps": [
-    "Start full reachability workflow with fair scheduler from branch",
-    "Inspect the new artifact and verify all discovered RU/KZ/BY provider pairs received a complete target bundle when budget >= 4 per provider",
-    "Verify provider summary results and note IPv6 probe/API errors separately",
-    "Review the two historical OONI anomalies only against original raw measurement records; do not use old results as block verdicts",
-    "Decide whether to configure RIPE_ATLAS_API_KEY; absent secret is an explicit skip",
-    "Commit updated metrics and checkpoint in WORKLOG.md and CHECKPOINT.json",
-    "Review PR #5; do not merge until corrected measurement coverage is inspected"
+    "Run full reachability workflow with the latest provider-IP/prefix reports and NO_IPV6_PROBE classification",
+    "Verify all 36 provider pairs and three countries remain covered by complete bundles",
+    "Verify 37 prior API errors now classify as NO_IPV6_PROBE, with other API errors separate",
+    "Verify provider prefix/IP TSV files exist and reconcile their exact IPs to their prefix",
+    "Inspect raw OONI anomaly records; preserve them as unconfirmed review signals",
+    "Update WORKLOG.md and CHECKPOINT.json with latest run/artifact metrics",
+    "Review PR #5; keep Draft until explicitly approved"
   ],
   "policy_invariants": {
     "geoip_RU_dat_mutated": false,
@@ -77,13 +115,5 @@
     "automatic_blocked_verdict": false,
     "timeout_is_block_evidence": false,
     "eyeball_network_is_proof_of_residential": false
-  },
-  "latest_successful_validation_commit": "66eef61fc433b7eb1f44d71fe88f24cd8e20ea70",
-  "test_counts": {
-    "python_unit_tests": 21,
-    "python_unit_tests_status": "PASS",
-    "go_tests_status": "PASS",
-    "go_build_status": "PASS",
-    "gofmt_status": "PASS"
   }
 }
