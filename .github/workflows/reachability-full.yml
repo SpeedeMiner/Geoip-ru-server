@@ -1,6 +1,11 @@
 name: Full reachability RU KZ BY
 
 on:
+  push:
+    branches:
+      - feature/reachability-full-ru-kz-by
+    paths:
+      - ".github/workflows/reachability-full.yml"
   workflow_dispatch:
     inputs:
       max_globalping_tests:
@@ -20,6 +25,7 @@ concurrency:
 
 jobs:
   measure:
+    if: github.event_name != 'push' || startsWith(github.event.head_commit.message, '[reachability-once]')
     name: Measure RU KZ BY service reachability
     runs-on: ubuntu-latest
     timeout-minutes: 60
