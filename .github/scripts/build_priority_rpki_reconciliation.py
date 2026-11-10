@@ -110,8 +110,6 @@ def build_reconciliation(evidence_dir: Path, seed_path: Path, output_path: Path,
             raise ValueError(f"more-specific-only evidence cannot assert exact origins for {prefix}")
         if relation != "MORE_SPECIFIC_ONLY" and not exact_origins:
             raise ValueError(f"exact-scope evidence requires an explicit exact-origin set for {prefix}")
-        if not exact_origins.issubset(set().union(*(split_set(x) for x in exact_origins)) if exact_origins else set()):
-            raise ValueError(f"invalid exact origin set for {prefix}")
         for asn in exact_origins:
             if not ASN_RE.fullmatch(asn):
                 raise ValueError(f"invalid external exact-origin ASN for {prefix}: {asn}")
