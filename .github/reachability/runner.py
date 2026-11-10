@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import argparse
 import collections
+import concurrent.futures
 import csv
 import datetime as dt
 import ipaddress
@@ -768,14 +769,47 @@ def run(args: argparse.Namespace) -> int:
             "planned_measurements": len(selected_tasks),
             "api_budget": args.max_globalping_tests,
         }
-        for index, task in enumerate(selected_tasks, 1):
-            rows, raw = run_globalping_task(task)
-            globalping_rows.extend(rows)
-            globalping_raw.append(raw)
-            if any(row.get("result") == "RATE_LIMITED" for row in rows):
-                status["globalping"]["stopped_early"] = "RATE_LIMITED"
-                status["globalping"]["completed_tasks"] = index
-                break
+        max_workers = min(5, max(1, len(selected_tasks)))
+        status["globalping"]["max_parallel_measurements"] = max_workers
+        task_iter = iter(enumerate(selected_tasks, 1))
+        active: dict[concurrent.futures.Future, int] = {}
+        stop_submissions = False
+        completed_count = 0
+        with concurrent.futures.ThreadPoolExecutor(max_workers=max_workers) as executor:
+            def submit_next() -> bool:
+                try:
+                    index, task = next(task_iter)
+                except StopIteration:
+                    return False
+                active[executor.submit(run_globalping_task, task)] = index
+                return True
+
+            while len(active) < max_workers and submit_next():
+                pass
+            while active:
+                done, _ = concurrent.futures.wait(
+                    active, return_when=concurrent.futures.FIRST_COMPLETED
+                )
+                for future in done:
+                    index = active.pop(future)
+                    completed_count += 1
+                    try:
+                        rows, raw = future.result()
+                    except Exception as exc:  # keep one collector failure from discarding other results
+                        rows, raw = ([{
+                            "source": "globalping", "result": "COLLECTOR_ERROR",
+                            "task_number": index, "error": str(exc),
+                        }], {"task_number": index, "error": str(exc)})
+                    globalping_rows.extend(rows)
+                    globalping_raw.append(raw)
+                    if any(row.get("result") == "RATE_LIMITED" for row in rows):
+                        stop_submissions = True
+                        status["globalping"]["stopped_early"] = "RATE_LIMITED"
+                if not stop_submissions:
+                    while len(active) < max_workers and submit_next():
+                        pass
+        status["globalping"]["completed_tasks"] = completed_count
+        status["globalping"]["unsubmitted_tasks"] = max(0, len(selected_tasks) - completed_count)
     except APIError as exc:
         status["globalping"] = {"status": "API_UNAVAILABLE", "error": str(exc), "http_status": exc.status}
 
