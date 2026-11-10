@@ -12,6 +12,7 @@ on:
       - ".github/reachability/targets.json"
       - ".github/reachability/inventory/**"
       - ".github/workflows/reachability-validation.yml"
+      - ".github/workflows/reachability-vpn-gate.yml"
   pull_request:
     types: [opened, reopened, ready_for_review]
     branches:
@@ -24,6 +25,7 @@ on:
       - ".github/reachability/targets.json"
       - ".github/reachability/inventory/**"
       - ".github/workflows/reachability-validation.yml"
+      - ".github/workflows/reachability-vpn-gate.yml"
 
 permissions:
   contents: read
