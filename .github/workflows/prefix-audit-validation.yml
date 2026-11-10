@@ -669,7 +669,10 @@ jobs:
               "94.131.190.0/23", "109.61.128.0/17", "37.19.32.0/20",
               "77.45.128.0/17", "94.75.128.0/18", "95.158.192.0/18",
               "178.75.64.0/18", "95.32.0.0/16", "95.179.0.0/17",
-              "177.1.199.0/24",
+              "177.1.199.0/24", "185.3.32.0/22", "195.225.160.0/22",
+              "212.106.32.0/19", "213.154.160.0/19", "31.172.192.0/19",
+              "62.64.0.0/19", "77.234.0.0/19", "92.37.128.0/17",
+              "93.181.240.0/20",
           }
           if len(worklist) != 56 or len({r["PREFIX"] for r in worklist}) != 56:
               raise SystemExit("Worklist must contain 56 unique exact prefixes")
@@ -684,8 +687,8 @@ jobs:
           if [int(r["REVIEW_ORDER"]) for r in worklist] != sorted(int(r["REVIEW_ORDER"]) for r in worklist):
               raise SystemExit("Worklist is not sorted by review order")
           spot_rows = [r for r in worklist if r["EXTERNAL_SPOT_CHECK_STATUS"] != "NOT_SPOT_CHECKED"]
-          if {r["PREFIX"] for r in spot_rows} != expected_spots or len(spot_rows) != 13:
-              raise SystemExit("External spot-check scope does not match the thirteen reviewed prefixes")
+          if {r["PREFIX"] for r in spot_rows} != expected_spots or len(spot_rows) != 22:
+              raise SystemExit("External spot-check scope does not match the twenty-two reviewed prefixes")
           if any(r["EXTERNAL_SPOT_CHECK_STATUS"] != "CHECKED_2026-11-10" for r in spot_rows):
               raise SystemExit("Unexpected spot-check timestamp")
           expected_scope_relations = {
@@ -702,6 +705,15 @@ jobs:
               "95.32.0.0/16": "MORE_SPECIFIC_ONLY",
               "95.179.0.0/17": "MORE_SPECIFIC_ONLY",
               "177.1.199.0/24": "EXACT_ONLY",
+              "185.3.32.0/22": "EXACT_AND_MORE_SPECIFIC",
+              "195.225.160.0/22": "EXACT_AND_MORE_SPECIFIC",
+              "212.106.32.0/19": "EXACT_AND_MORE_SPECIFIC",
+              "213.154.160.0/19": "MORE_SPECIFIC_ONLY",
+              "31.172.192.0/19": "EXACT_AND_MORE_SPECIFIC",
+              "62.64.0.0/19": "EXACT_AND_MORE_SPECIFIC",
+              "77.234.0.0/19": "EXACT_ONLY",
+              "92.37.128.0/17": "EXACT_AND_MORE_SPECIFIC",
+              "93.181.240.0/20": "EXACT_ONLY",
           }
           actual_scope_relations = {
               r["PREFIX"]: r["EXTERNAL_SPOT_CHECK_SCOPE_RELATION"] for r in spot_rows
@@ -710,10 +722,10 @@ jobs:
               raise SystemExit(f"External NLRI scope relations differ: {actual_scope_relations}")
           stats = (base / "priority_prefix_review_worklist_stats.txt").read_text(encoding="utf-8")
           for required in (
-              "Priority prefixes: 56", "External spot-check rows: 13", "All rows: STATUS=REVIEW",
-              "External spot-check scope EXACT_ONLY: 4",
-              "External spot-check scope EXACT_AND_MORE_SPECIFIC: 2",
-              "External spot-check scope MORE_SPECIFIC_ONLY: 7",
+              "Priority prefixes: 56", "External spot-check rows: 22", "All rows: STATUS=REVIEW",
+              "External spot-check scope EXACT_ONLY: 6",
+              "External spot-check scope EXACT_AND_MORE_SPECIFIC: 8",
+              "External spot-check scope MORE_SPECIFIC_ONLY: 8",
           ):
               if required not in stats:
                   raise SystemExit(f"Worklist statistics missing: {required}")
