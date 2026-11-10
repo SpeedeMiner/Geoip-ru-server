@@ -795,8 +795,8 @@ def build_evidence(company_queue: Path, output_dir: Path, max_workers: int = 5) 
         "RDAP observations describe the registry's most-specific network containing each sample address; they do not prove every address in a prefix has the same holder.",
         "RPKI status is queried per exact prefix/origin ASN pair using RIPE NCC Routinator; valid means ROA authorises the pair, not that the ASN legally owns the resource.",
         "HTTP/network errors remain explicit query errors and are not converted to UNKNOWN, absent, or no-owner results.",
-        "IRR evidence is queried through the RIPE Database REST search using RIPE plus six GRS sources documented by the RIPE Database API; independent IRR services outside that scope are not covered.",
-        "The metadata source list is archived separately; each GRS query status remains explicit because a documented source may be unavailable in a particular service deployment.",
+        "IRR evidence is queried through the RIPE Database REST search using RIPE plus seven GRS sources documented by the RIPE Database API; independent IRR services outside that scope are not covered.",
+        "The complete metadata source inventory is archived separately; per-source results are returned by RIPE Database search, and a documented GRS source may contain no object for a queried prefix.",
         "A missing route object in the queried RIPE/GRS sources is not proof that no IRR route object exists anywhere.",
         "Every prefix remains STATUS=REVIEW; this artifact does not change DIRECT policy, main, release, or geoip_RU.dat.",
     ]
