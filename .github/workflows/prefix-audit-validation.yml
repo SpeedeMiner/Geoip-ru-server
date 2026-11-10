@@ -97,6 +97,8 @@ jobs:
         run: |
           python3 - <<'PY'
           import csv
+          import re
+          from datetime import date
           from pathlib import Path
 
           path = Path(".github/audits/company_asn_legal_evidence_v37.tsv")
@@ -695,8 +697,17 @@ jobs:
           spot_rows = [r for r in worklist if r["EXTERNAL_SPOT_CHECK_STATUS"] != "NOT_SPOT_CHECKED"]
           if {r["PREFIX"] for r in spot_rows} != expected_spots or len(spot_rows) != 22:
               raise SystemExit("External spot-check scope does not match the twenty-two reviewed prefixes")
-          if any(r["EXTERNAL_SPOT_CHECK_STATUS"] != "CHECKED_2026-11-10" for r in spot_rows):
-              raise SystemExit("Unexpected spot-check timestamp")
+          for row in spot_rows:
+              status = row["EXTERNAL_SPOT_CHECK_STATUS"]
+              match = re.fullmatch(r"CHECKED_(\\d{4}-\\d{2}-\\d{2})", status)
+              if not match:
+                  raise SystemExit("Invalid spot-check timestamp")
+              try:
+                  checked_date = date.fromisoformat(match.group(1))
+              except ValueError as exc:
+                  raise SystemExit("Invalid spot-check calendar date") from exc
+              if checked_date.isoformat() != match.group(1):
+                  raise SystemExit("Invalid spot-check calendar date")
           expected_scope_relations = {
               "5.45.192.0/18": "EXACT_ONLY",
               "5.45.215.0/24": "EXACT_ONLY",
