@@ -147,5 +147,222 @@ jobs:
           print(f"Validated {len(rows)} legal records; {len(reviewed)} reviewed and {len(rows)-len(reviewed)} pending; {len(inactive)} absent from the v37 manifest")
           PY
 
+      - name: Fetch immutable v37 production inputs
+        id: v37-inputs
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          release_sha="$(git ls-remote "https://github.com/${{ github.repository }}.git" refs/heads/release | awk 'NR == 1 {print $1}')"
+          if [[ ! "$release_sha" =~ ^[0-9a-f]{40}$ ]]; then
+            echo "::error::Unable to resolve one immutable release-branch commit"
+            exit 1
+          fi
+
+          base_url="https://raw.githubusercontent.com/${{ github.repository }}/$release_sha"
+          for file in \
+            geoip_RU_company_asns.txt \
+            geoip_RU_company_asn_manifest.tsv \
+            geoip_RU_BY_KZ_asn_bgp_prefixes.txt \
+            geoip_RU_input_provenance.tsv \
+            geoip_RU_quality_report.txt; do
+            curl --fail --location --silent --show-error \
+              --retry 3 --retry-all-errors --connect-timeout 15 --max-time 180 \
+              "$base_url/$file" -o "$file"
+            test -s "$file" || { echo "::error::Empty release input: $file"; exit 1; }
+          done
+
+          read -r snapshot_url snapshot_sha snapshot_bytes < <(python3 - <<'PY'
+          import csv
+          import re
+
+          with open("geoip_RU_input_provenance.tsv", encoding="utf-8", newline="") as stream:
+              rows = list(csv.DictReader(stream, delimiter="\\t"))
+          matches = [row for row in rows if row["LOCAL_FILE"] == "as-ip-blocks.tar.gz"]
+          if len(matches) != 1:
+              raise SystemExit("Expected exactly one ipverse archive row in release provenance")
+          row = matches[0]
+          if row["STATUS"] != "downloaded":
+              raise SystemExit(f"ipverse archive status is not downloaded: {row['STATUS']}")
+          if not re.fullmatch(r"[0-9a-f]{64}", row["SHA256"]):
+              raise SystemExit("Invalid ipverse archive SHA-256 in release provenance")
+          if not row["BYTES"].isdigit() or int(row["BYTES"]) < 5_000_000:
+              raise SystemExit("Invalid or implausible ipverse archive size in release provenance")
+          if not row["FETCH_URL"].startswith("https://"):
+              raise SystemExit("ipverse archive provenance URL must use HTTPS")
+          print(row["FETCH_URL"], row["SHA256"], row["BYTES"])
+          PY
+          )
+
+          curl --fail --location --silent --show-error \
+            --retry 3 --retry-all-errors --connect-timeout 15 --max-time 600 \
+            "$snapshot_url" -o as-ip-blocks.tar.gz
+
+          python3 - <<'PY'
+          import csv
+          import gzip
+          import hashlib
+          from pathlib import Path
+
+          with open("geoip_RU_input_provenance.tsv", encoding="utf-8", newline="") as stream:
+              rows = list(csv.DictReader(stream, delimiter="\\t"))
+          row = next(item for item in rows if item["LOCAL_FILE"] == "as-ip-blocks.tar.gz")
+          archive = Path("as-ip-blocks.tar.gz").read_bytes()
+          if len(archive) != int(row["BYTES"]):
+              raise SystemExit(f"ipverse archive size mismatch: {len(archive)} != {row['BYTES']}")
+          digest = hashlib.sha256(archive).hexdigest()
+          if digest != row["SHA256"]:
+              raise SystemExit(f"ipverse archive SHA-256 mismatch: {digest} != {row['SHA256']}")
+          try:
+              with gzip.open("as-ip-blocks.tar.gz", "rb") as stream:
+                  stream.read(1)
+          except OSError as exc:
+              raise SystemExit(f"ipverse archive is not valid gzip: {exc}")
+          print(f"Verified ipverse archive: {len(archive)} bytes, SHA256={digest}")
+          PY
+
+          sha256sum \
+            geoip_RU_company_asns.txt \
+            geoip_RU_company_asn_manifest.tsv \
+            geoip_RU_BY_KZ_asn_bgp_prefixes.txt \
+            geoip_RU_input_provenance.tsv \
+            geoip_RU_quality_report.txt \
+            > v37-release-inputs.sha256
+          printf '%s\\n' "$release_sha" > v37-release-commit.txt
+          echo "release_sha=$release_sha" >> "$GITHUB_OUTPUT"
+
+      - name: Generate company-origin and full selected-origin prefix review queues
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p prefix-audit
+
+          python3 .github/scripts/build_company_prefix_review.py \
+            --company-asns geoip_RU_company_asns.txt \
+            --company-manifest geoip_RU_company_asn_manifest.tsv \
+            --regional-prefixes geoip_RU_BY_KZ_asn_bgp_prefixes.txt \
+            --input-provenance geoip_RU_input_provenance.tsv \
+            --bgp-archive as-ip-blocks.tar.gz \
+            --output prefix-audit/company_origin_prefix_review.tsv \
+            --stats prefix-audit/company_origin_prefix_review_stats.txt
+
+          python3 .github/scripts/build_selected_origin_prefix_review.py \
+            --selected-prefixes geoip_RU_BY_KZ_asn_bgp_prefixes.txt \
+            --company-asns geoip_RU_company_asns.txt \
+            --company-manifest geoip_RU_company_asn_manifest.tsv \
+            --input-provenance geoip_RU_input_provenance.tsv \
+            --bgp-archive as-ip-blocks.tar.gz \
+            --output prefix-audit/selected_origin_prefix_review.tsv \
+            --stats prefix-audit/selected_origin_prefix_review_stats.txt
+
+          cp v37-release-inputs.sha256 prefix-audit/
+          cp v37-release-commit.txt prefix-audit/
+
+      - name: Validate generated prefix review queues against v37 production quality report
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import csv
+          import hashlib
+          import ipaddress
+          import re
+          from pathlib import Path
+
+          report = Path("geoip_RU_quality_report.txt").read_text(encoding="utf-8")
+          expected_company = re.search(
+              r"^Unique prefixes originated by curated Russian-company/affiliate ASNs: ([0-9]+)$",
+              report, re.MULTILINE,
+          )
+          expected_selected = re.search(
+              r"^Unique prefixes in DIRECT ASN-origin/pinned layer \\(RIR-RU/BY/KZ OR company allowlist\\): ([0-9]+)$",
+              report, re.MULTILINE,
+          )
+          if not expected_company or not expected_selected:
+              raise SystemExit("Could not find selected-prefix baselines in v37 production quality report")
+          expected_company_count = int(expected_company.group(1))
+          expected_selected_count = int(expected_selected.group(1))
+
+          def read_queue(path):
+              with path.open(encoding="utf-8", newline="") as stream:
+                  data_lines = (line for line in stream if not line.startswith("#"))
+                  rows = list(csv.DictReader(data_lines, delimiter="\\t"))
+              if not rows:
+                  raise SystemExit(f"Empty review queue: {path}")
+              prefixes = [row["PREFIX"] for row in rows]
+              if len(prefixes) != len(set(prefixes)):
+                  raise SystemExit(f"Duplicate exact prefixes in {path}")
+              for row in rows:
+                  net = ipaddress.ip_network(row["PREFIX"], strict=True)
+                  if row["FAMILY"] != f"IPv{net.version}" or int(row["ADDRESS_COUNT"]) != net.num_addresses:
+                      raise SystemExit(f"Invalid family/address count for {row['PREFIX']} in {path}")
+                  if row["STATUS"] != "REVIEW":
+                      raise SystemExit(f"Non-REVIEW row found in {path}: {row['PREFIX']}")
+                  if row["RPKI_STATUS"] != "NOT_QUERIED" or row["IRR_STATUS"] != "NOT_QUERIED":
+                      raise SystemExit(f"Unexpected RPKI/IRR claim in {path}: {row['PREFIX']}")
+                  if row["GLOBAL_BGP_OBSERVATION"] not in {"OBSERVED", "NOT_OBSERVED_STATIC_DIRECT_PIN"}:
+                      raise SystemExit(f"Unexpected global-observation status in {path}: {row['PREFIX']}")
+                  if not row["BGP_SNAPSHOT_SHA256"] or not row["BGP_SNAPSHOT_URL"]:
+                      raise SystemExit(f"Missing BGP snapshot provenance for {row['PREFIX']}")
+              return rows, set(prefixes)
+
+          company_rows, company_prefixes = read_queue(Path("prefix-audit/company_origin_prefix_review.tsv"))
+          selected_rows, selected_prefixes = read_queue(Path("prefix-audit/selected_origin_prefix_review.tsv"))
+
+          if len(company_rows) != expected_company_count:
+              raise SystemExit(
+                  f"Company queue count {len(company_rows)} does not match v37 production baseline {expected_company_count}"
+              )
+          if len(selected_rows) != expected_selected_count:
+              raise SystemExit(
+                  f"Selected queue count {len(selected_rows)} does not match v37 production baseline {expected_selected_count}"
+              )
+          if not company_prefixes.issubset(selected_prefixes):
+              missing = sorted(company_prefixes - selected_prefixes)[:10]
+              raise SystemExit(f"Company-origin prefixes are absent from the full selected-origin queue: {missing}")
+
+          input_provenance = Path("geoip_RU_input_provenance.tsv").read_bytes()
+          provenance_sha = hashlib.sha256(input_provenance).hexdigest()
+          for stats_path in (
+              Path("prefix-audit/company_origin_prefix_review_stats.txt"),
+              Path("prefix-audit/selected_origin_prefix_review_stats.txt"),
+          ):
+              stats = stats_path.read_text(encoding="utf-8")
+              for label in (
+                  "Company ASN registry SHA256:",
+                  "Company ASN manifest SHA256:",
+                  "Selected prefix input SHA256:",
+                  "Input provenance SHA256:",
+                  "BGP snapshot SHA256:",
+              ):
+                  if label not in stats:
+                      raise SystemExit(f"Missing source digest in {stats_path}: {label}")
+              if f"Input provenance SHA256: {provenance_sha}" not in stats:
+                  raise SystemExit(f"Input provenance digest mismatch in {stats_path}")
+
+          bundle_manifest = [
+              "Prefix audit bundle: v37 production input snapshot",
+              f"Release commit: {Path('v37-release-commit.txt').read_text(encoding='utf-8').strip()}",
+              f"Company-origin review prefixes: {len(company_rows)}",
+              f"Full selected-origin review prefixes: {len(selected_rows)}",
+              f"Company-origin prefixes in selected queue: {len(company_prefixes)}",
+              "All rows remain STATUS=REVIEW.",
+              "RPKI_STATUS=NOT_QUERIED and IRR_STATUS=NOT_QUERIED; these are not negative results.",
+              "Global origin and MOAS evidence comes from the same SHA-256-verified ipverse archive named in production input provenance.",
+              "The queues do not change DIRECT policy, production main/release, or geoip_RU.dat.",
+              "",
+          ]
+          Path("prefix-audit/README.txt").write_text("\\n".join(bundle_manifest), encoding="utf-8")
+          print("\\n".join(bundle_manifest))
+          PY
+
+      - name: Upload prefix review queues as a CI artifact
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+        with:
+          name: v37-prefix-audit-${{ github.event.pull_request.number }}
+          path: prefix-audit/
+          if-no-files-found: error
+          retention-days: 30
+
       - name: Parse workflow YAML
         run: ruby -e 'require "yaml"; YAML.load_file(ARGV.fetch(0)); puts "Workflow YAML parsed"' .github/workflows/prefix-audit-validation.yml
