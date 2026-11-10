@@ -204,10 +204,14 @@ class PriorityPrefixEvidenceTests(unittest.TestCase):
                 rdap = list(csv.DictReader(handle, delimiter="\t"))
             with (output / "rpki_by_origin.tsv").open(encoding="utf-8", newline="") as handle:
                 rpki = list(csv.DictReader(handle, delimiter="\t"))
+            with (output / "prefix_holder_review_summary.tsv").open(encoding="utf-8", newline="") as handle:
+                holder_summary = list(csv.DictReader(handle, delimiter="\t"))
             self.assertEqual(len(priority), 56)
             self.assertEqual(len(rdap), 168)
             self.assertEqual(len(rpki), 108)
+            self.assertEqual(len(holder_summary), 56)
             self.assertTrue(all(row["STATUS"] == "REVIEW" for row in priority))
+            self.assertTrue(all(row["STATUS"] == "REVIEW" for row in holder_summary))
             self.assertTrue(all(row["QUERY_STATUS"] == "OK" for row in rdap))
             self.assertTrue(all(row["RPKI_STATUS"] == "valid" for row in rpki))
             self.assertTrue((output / "priority_prefix_evidence_README.txt").is_file())
