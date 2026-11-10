@@ -3572,8 +3572,8 @@ jobs:
               "curated Russian-company ASN allowlist", "regardless of ipverse countryCode",
               "COMPANY PREFIX-LEVEL REVIEW QUEUE", "All company-origin prefixes remain REVIEW",
               "AS212066 legacy continuity-check prefixes (not ownership verification): 45.148.65.0/24, 2a14:48c6::/48",
-              "Yandex Turkey AS212066 observed selected prefixes: 2 of 2",
-              "Yandex Turkey AS212066 final DIRECT prefix checks (after PRIVATE/blocked carve): 2 of 2",
+              "AS212066 legacy continuity-check prefixes observed in selected BGP snapshot: 2 of 2",
+              "AS212066 legacy DIRECT continuity checks (after PRIVATE/blocked carve; not an ownership decision): 2 of 2",
               "Approved blocked prefix records loaded", "subnet.lst bounded CIDRs", "RunetFreedom's explicitly configured Telegram routes",
               "community.lst and Re-filter ipsum.lst are exported as review-only candidates",
           )
