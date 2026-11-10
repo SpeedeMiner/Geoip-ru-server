@@ -341,30 +341,41 @@ class FirewallGuard:
         self.ipv4_rules = ""
         self.ipv6_rules = ""
 
-    def __enter__(self):
-        self.ipv4_rules = run_command(["iptables-save"]).stdout
-        self.ipv6_rules = run_command(["ip6tables-save"]).stdout
-        run_command(["iptables", "-F", "OUTPUT"])
-        run_command(["iptables", "-P", "OUTPUT", "DROP"])
-        run_command(["iptables", "-A", "OUTPUT", "-o", "lo", "-j", "ACCEPT"])
-        run_command(["iptables", "-A", "OUTPUT", "-o", "tun+", "-j", "ACCEPT"])
-        proto = "tcp" if self.proto == "tcp-client" else "udp"
-        run_command([
-            "iptables", "-A", "OUTPUT", "-d", self.server_ip,
-            "-p", proto, "--dport", str(self.port), "-j", "ACCEPT",
-        ])
-        run_command(["ip6tables", "-F", "OUTPUT"])
-        run_command(["ip6tables", "-P", "OUTPUT", "DROP"])
-        run_command(["ip6tables", "-A", "OUTPUT", "-o", "lo", "-j", "ACCEPT"])
-        return self
-
-    def __exit__(self, exc_type, exc_value, traceback):
+    def _restore(self) -> list[str]:
         restore_errors = []
         for command, rules in (("iptables-restore", self.ipv4_rules), ("ip6tables-restore", self.ipv6_rules)):
             try:
                 run_command([command], input_text=rules)
             except (OSError, subprocess.SubprocessError) as exc:
                 restore_errors.append(f"{command}: {exc}")
+        return restore_errors
+
+    def __enter__(self):
+        self.ipv4_rules = run_command(["iptables-save"]).stdout
+        self.ipv6_rules = run_command(["ip6tables-save"]).stdout
+        try:
+            run_command(["iptables", "-F", "OUTPUT"])
+            run_command(["iptables", "-P", "OUTPUT", "DROP"])
+            run_command(["iptables", "-A", "OUTPUT", "-o", "lo", "-j", "ACCEPT"])
+            run_command(["iptables", "-A", "OUTPUT", "-o", "tun+", "-j", "ACCEPT"])
+            proto = "tcp" if self.proto == "tcp-client" else "udp"
+            run_command([
+                "iptables", "-A", "OUTPUT", "-d", self.server_ip,
+                "-p", proto, "--dport", str(self.port), "-j", "ACCEPT",
+            ])
+            run_command(["ip6tables", "-F", "OUTPUT"])
+            run_command(["ip6tables", "-P", "OUTPUT", "DROP"])
+            run_command(["ip6tables", "-A", "OUTPUT", "-o", "lo", "-j", "ACCEPT"])
+        except BaseException:
+            # __exit__ is not called when __enter__ fails; restore snapshots here.
+            errors = self._restore()
+            if errors:
+                raise ProbeError("firewall setup failed and restore was incomplete: " + "; ".join(errors))
+            raise
+        return self
+
+    def __exit__(self, exc_type, exc_value, traceback):
+        restore_errors = self._restore()
         if restore_errors and exc_type is None:
             raise ProbeError("failed to restore host firewall: " + "; ".join(restore_errors))
 
