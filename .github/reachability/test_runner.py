@@ -1,3 +1,4 @@
+import csv
 import datetime as dt
 import ipaddress
 import json
@@ -353,6 +354,19 @@ class TaskAndReportTests(unittest.TestCase):
         self.assertEqual(report[0]["ACCESSIBLE_HTTPS"], 1)
         self.assertEqual(report[0]["DNS_ANSWERS"], 1)
         self.assertEqual(report[0]["OBSERVED_IPS"], "198.51.100.10")
+
+    def test_provider_prefix_tsv_schema_has_unique_column_names(self):
+        fields = runner.PROVIDER_PREFIX_REPORT_FIELDS
+        self.assertEqual(len(fields), len(set(fields)))
+
+        with tempfile.TemporaryDirectory() as directory:
+            path = pathlib.Path(directory) / "provider_prefix.tsv"
+            runner.write_tsv(path, [], fields)
+            with path.open("r", encoding="utf-8", newline="") as stream:
+                header = next(csv.reader(stream, delimiter="\\t"))
+
+        self.assertEqual(header, fields)
+        self.assertEqual(len(header), len(set(header)))
 
     def test_provider_prefix_report_does_not_mix_ips_from_adjacent_prefixes(self):
         measurements = [{
