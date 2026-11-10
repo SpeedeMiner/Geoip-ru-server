@@ -394,5 +394,46 @@ class TaskAndReportTests(unittest.TestCase):
         self.assertEqual(report[0]["POLICY"], "REVIEW_ONLY_NO_GEOIP_MUTATION")
 
 
+class CoverageSummaryTests(unittest.TestCase):
+    def test_coverage_summary_counts_requested_country_pairs_and_ipv6_gaps(self):
+        targets = [
+            {"id": "service-a", "country_scope": ["RU", "KZ"]},
+            {"id": "service-b", "country_scope": ["BY"]},
+        ]
+        measurements = [
+            {
+                "country_requested": "RU", "asn_requested": 12389,
+                "target_id": "service-a", "result": "NO_IPV6_PROBE",
+            },
+            {
+                "country_requested": "RU", "asn_requested": 12389,
+                "target_id": "service-a", "result": "ACCESSIBLE",
+            },
+            {
+                "country_requested": "KZ", "asn_requested": 9198,
+                "target_id": "service-a", "result": "DNS_ANSWER",
+            },
+            {
+                "country_requested": "BY", "asn_requested": 6697,
+                "target_id": "service-b", "result": "NO_IPV6_PROBE",
+            },
+        ]
+
+        summary = runner.build_globalping_coverage_summary(measurements, targets)
+
+        self.assertEqual(
+            summary["globalping_ipv6_probe_unavailable_by_country"],
+            {"BY": 1, "RU": 1},
+        )
+        self.assertEqual(summary["globalping_distinct_targets_observed"], 2)
+        self.assertEqual(summary["globalping_observed_target_country_pairs"], 3)
+        self.assertEqual(summary["globalping_possible_target_country_pairs"], 3)
+        self.assertEqual(
+            summary["globalping_observed_target_country_pairs_by_country"],
+            {"BY": 1, "KZ": 1, "RU": 1},
+        )
+        self.assertEqual(summary["globalping_provider_target_bundles_observed"], 3)
+
+
 if __name__ == "__main__":
     unittest.main()
