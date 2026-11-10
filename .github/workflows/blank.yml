@@ -1052,6 +1052,22 @@ jobs:
                           else:
                               raw_company_v6 += 1
           
+          company_asn_metadata_rows = {
+              asn: row for asn, row in active_selected_asns.items() if asn in company_asns
+          }
+          company_asn_zero_prefix_rows = {
+              asn: row for asn, row in company_asn_metadata_rows.items()
+              if row["ipv4"] + row["ipv6"] == 0
+          }
+          company_manifest_country_counts = collections.Counter(
+              row["ipverse_country"]
+              for row in company_asn_metadata_rows.values()
+              if row["ipv4"] + row["ipv6"] > 0
+          )
+          company_metadata_only_asns = ", ".join(
+              f"AS{asn}={row['ipverse_country']}"
+              for asn, row in sorted(company_asn_zero_prefix_rows.items())
+          ) or "none"
           active_selected_asns = {
               asn: row for asn, row in active_selected_asns.items() if row["ipv4"] + row["ipv6"] > 0
           }
@@ -1164,7 +1180,9 @@ jobs:
               f"Raw global IPv4 prefix records: {raw_global_v4}",
               f"Raw global IPv6 prefix records: {raw_global_v6}",
               f"Prefixes originated by multiple selected ASNs: {sum(1 for values in selected_prefix_origins.values() if len(values) > 1)}",
-              f"Company ASN ipverse countryCode distribution (audit only): " + (", ".join(f"{key}={value}" for key, value in sorted(company_ipverse_countries.items())) or "none"),
+              f"Company ASN countryCode distribution (all ipverse metadata observations, including zero-prefix rows): " + (", ".join(f"{key}={value}" for key, value in sorted(company_ipverse_countries.items())) or "none"),
+              f"Company ASN countryCode distribution (active rows retained in company manifest): " + (", ".join(f"{key}={value}" for key, value in sorted(company_manifest_country_counts.items())) or "none"),
+              f"Company ASN metadata rows with zero accepted prefixes, omitted from active ASN manifest: {company_metadata_only_asns}",
               f"RIR-RU ASN ipverse countryCode mismatches (audit only): " + (", ".join(f"{key}={value}" for key, value in sorted(rir_country_mismatch.items())) or "none"),
               f"RIR-BY/KZ ASN ipverse countryCode mismatches (audit only): " + (", ".join(f"{key}={value}" for key, value in sorted(regional_country_mismatch.items())) or "none"),
               f"Invalid/default prefixes skipped: {invalid_prefixes}",
