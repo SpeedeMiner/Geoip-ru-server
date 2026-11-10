@@ -398,16 +398,17 @@ def build_evidence(company_queue: Path, output_dir: Path, max_workers: int = 5) 
 
     rdap_rows: list[dict[str, str]] = []
     with concurrent.futures.ThreadPoolExecutor(max_workers=max_workers) as pool:
-        futures = [
-            pool.submit(fetch_rdap_sample, prefix, address, entries)
+        futures = {
+            pool.submit(fetch_rdap_sample, prefix, address, entries): (prefix, address)
             for prefix, address, entries in rdap_tasks
-        ]
+        }
         for future in concurrent.futures.as_completed(futures):
+            prefix, address = futures[future]
             try:
                 rdap_rows.append(future.result())
-            except Exception as exc:  # preserve per-query error; never turn it into "not registered"
+            except Exception as exc:  # preserve sample context; never turn it into "not registered"
                 rdap_rows.append({
-                    "PREFIX": "", "SAMPLE_ADDRESS": "", "RDAP_URL": "",
+                    "PREFIX": prefix, "SAMPLE_ADDRESS": address, "RDAP_URL": "",
                     "HTTP_STATUS": "0", "QUERY_STATUS": f"CLIENT_ERROR:{type(exc).__name__}:{exc}",
                     "OBJECT_CLASS": "", "HANDLE": "", "NAME": "", "TYPE": "", "COUNTRY": "",
                     "START_ADDRESS": "", "END_ADDRESS": "", "REGISTERED_CIDRS": "",
@@ -431,13 +432,17 @@ def build_evidence(company_queue: Path, output_dir: Path, max_workers: int = 5) 
 
     rpki_rows: list[dict[str, str]] = []
     with concurrent.futures.ThreadPoolExecutor(max_workers=max_workers) as pool:
-        futures = [pool.submit(fetch_rpki_origin, prefix, asn) for prefix, asn in rpki_tasks]
+        futures = {
+            pool.submit(fetch_rpki_origin, prefix, asn): (prefix, asn)
+            for prefix, asn in rpki_tasks
+        }
         for future in concurrent.futures.as_completed(futures):
+            prefix, asn = futures[future]
             try:
                 rpki_rows.append(future.result())
             except Exception as exc:
                 rpki_rows.append({
-                    "PREFIX": "", "ORIGIN_ASN": "", "RPKI_URL": "", "HTTP_STATUS": "0",
+                    "PREFIX": prefix, "ORIGIN_ASN": asn, "RPKI_URL": "", "HTTP_STATUS": "0",
                     "QUERY_STATUS": f"CLIENT_ERROR:{type(exc).__name__}:{exc}",
                     "RPKI_STATUS": "", "RPKI_DESCRIPTION": "",
                 })
@@ -472,7 +477,9 @@ def build_evidence(company_queue: Path, output_dir: Path, max_workers: int = 5) 
     stats = [
         "Priority prefix evidence report (review only)",
         f"Source company review queue SHA256: {source_sha}",
+        f"IANA IPv4 RDAP bootstrap URL: {BOOTSTRAP_URLS[4]}",
         f"IANA IPv4 RDAP bootstrap SHA256: {bootstrap_hashes[4]}",
+        f"IANA IPv6 RDAP bootstrap URL: {BOOTSTRAP_URLS[6]}",
         f"IANA IPv6 RDAP bootstrap SHA256: {bootstrap_hashes[6]}",
         f"Priority prefixes: {len(priority)}",
         f"Exact MOAS prefixes: {moas_count}",
