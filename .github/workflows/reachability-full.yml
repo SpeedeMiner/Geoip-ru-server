@@ -1,0 +1,94 @@
+name: Full reachability RU KZ BY
+
+on:
+  workflow_dispatch:
+    inputs:
+      max_globalping_tests:
+        description: Maximum Globalping tests in this run (hard cap 220)
+        required: false
+        default: "180"
+        type: string
+  schedule:
+    - cron: "17 4 * * *"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: geoip-ru-reachability-full
+  cancel-in-progress: false
+
+jobs:
+  measure:
+    name: Measure RU KZ BY service reachability
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+
+      - name: Set up Go
+        uses: actions/setup-go@0778a10ce47b5d450cf60fb94fafad4330008a35
+        with:
+          go-version: "1.26.10"
+          cache: true
+          cache-dependency-path: .github/reachability/inventory/go.mod
+
+      - name: Download the exact currently published GeoIP protobuf
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl --fail --location --silent --show-error \
+            --retry 4 --retry-all-errors --retry-delay 3 \
+            --connect-timeout 20 --max-time 240 \
+            "https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/release/geoip_RU.dat" \
+            --output geoip_RU.dat
+          curl --fail --location --silent --show-error \
+            --retry 4 --retry-all-errors --retry-delay 3 \
+            --connect-timeout 20 --max-time 120 \
+            "https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/release/geoip_RU.dat.sha256sum" \
+            --output geoip_RU.dat.sha256sum
+          test -s geoip_RU.dat
+          test -s geoip_RU.dat.sha256sum
+          sha256sum -c geoip_RU.dat.sha256sum
+
+      - name: Build complete RU PRIVATE CIDR inventory from protobuf
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd .github/reachability/inventory
+          GOTOOLCHAIN=local go mod download
+          GOTOOLCHAIN=local go test ./...
+          GOTOOLCHAIN=local go build -o ../../../geoip-reachability-inventory .
+          cd ../../..
+          ./geoip-reachability-inventory geoip_RU.dat reachability_inventory.tsv
+          test -s reachability_inventory.tsv
+
+      - name: Run combined Globalping OONI and RIPE Atlas collectors
+        shell: bash
+        env:
+          GLOBALPING_TOKEN: ${{ secrets.GLOBALPING_TOKEN }}
+          RIPE_ATLAS_API_KEY: ${{ secrets.RIPE_ATLAS_API_KEY }}
+        run: |
+          set -euo pipefail
+          python3 -m py_compile .github/reachability/runner.py
+          python3 .github/reachability/runner.py \
+            --inventory reachability_inventory.tsv \
+            --targets .github/reachability/targets.json \
+            --output-dir reachability-output \
+            --max-globalping-tests "${{ inputs.max_globalping_tests || '180' }}" \
+            --max-ripe-measurements 18 \
+            --ooni \
+            --ripe-atlas
+
+      - name: Upload reachability evidence and reports
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+        with:
+          name: geoip-ru-reachability-${{ github.run_id }}
+          path: |
+            reachability_inventory.tsv
+            reachability-output/
+          if-no-files-found: error
+          retention-days: 30
