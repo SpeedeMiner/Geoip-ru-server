@@ -288,7 +288,7 @@ def build_review(
             item["company_groups"].add(company["group"])
             item["entities"].add(company["entity"])
             item["evidence"].add(company["evidence"])
-            item["countries"].add(countries[asn])
+            item["countries"].add(countries[asn]["ipverse_country_code"])
         for asn, labels in origins:
             if "RIR-RU" in labels or "RIR-BY/KZ" in labels:
                 item["regional_origins"].add(asn)
