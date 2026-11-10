@@ -46,7 +46,7 @@ jobs:
 
           path = Path(".github/audits/company_asn_legal_evidence_v37_additions.tsv")
           with path.open(encoding="utf-8", newline="") as stream:
-              rows = list(csv.DictReader((line for line in stream if not line.startswith("#")), delimiter="\\t"))
+              rows = list(csv.DictReader((line for line in stream if not line.startswith("#")), delimiter="\t"))
 
           expected = {"AS44534", "AS207207", "AS210656", "AS213952", "AS215109"}
           required = {
