@@ -51,9 +51,12 @@ The summary records discovered provider pairs, covered/uncovered pairs and
 country coverage. Rate limiting stops new submissions and is recorded.
 
 A daily run is a **rotating sample**, not a complete provider-by-target census.
-For example, the expanded 30-target run selected 45 bundles across 39 provider
-pairs: every hostname appeared at least once, but only 30 of the 90 possible
-source-country/target combinations were observed that day (RU 21, KZ 6, BY 3).
+In the latest full run (2026-11-10), the 30-target catalogue produced 45
+complete bundles across 38 discovered country/ASN provider pairs (RU 29, KZ 6,
+BY 3). All 30 hostnames appeared, but only 32 of the 90 possible
+source-country/target combinations were observed that day (RU 23, KZ 6, BY 3).
+Thirty-seven provider pairs returned probe result metadata; the remaining pair
+had three `NO_PROBE` tasks because no matching IPv4 probe was available.
 The UTC rotation changes both provider and target selection over successive
 days. Full provider-by-target coverage must therefore be assessed over a
 multi-day series of successful runs; do not infer that every provider can reach
