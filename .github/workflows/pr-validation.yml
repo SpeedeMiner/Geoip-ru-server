@@ -105,19 +105,34 @@ jobs:
       - name: Parse workflow YAML
         run: ruby -e 'require "yaml"; YAML.load_file(ARGV.fetch(0)); puts "Workflow YAML parsed successfully"' .github/workflows/blank.yml
 
-      - name: Smoke test prefix review against current published v35 snapshots
+      - name: Run full review smoke tests and the embedded production quality validator
         shell: bash
         run: |
           set -euo pipefail
-          base="https://github.com/${GITHUB_REPOSITORY}/releases/download/latest-geoip-client-v35"
+          base="https://github.com/\${GITHUB_REPOSITORY}/releases/download/latest-geoip-client-v35"
           workdir="$(mktemp -d)"
+          generated="$workdir/generated"
+          mkdir -p "$generated"
           trap 'rm -rf "$workdir"' EXIT
 
           for file in \
             geoip_RU_company_asns.txt \
             geoip_RU_company_asn_manifest.tsv \
             geoip_RU_BY_KZ_asn_bgp_prefixes.txt \
-            geoip_RU_input_provenance.tsv; do
+            geoip_RU_input_provenance.tsv \
+            geoip_RU_registered_asns.txt \
+            geoip_BY_KZ_registered_asns.txt \
+            geoip_RU.dat \
+            geoip_RU_BY_KZ_asn_manifest.txt \
+            geoip_RU_rir_stats.txt \
+            geoip_RU_source_counts.txt \
+            geoip_RU_quality_report.txt \
+            geoip_RU_additional_provenance.tsv \
+            geoip_RU_category_audit.tsv \
+            geoip_RU_blocked_ip_exclusions.txt \
+            geoip_RU_blocked_review_candidates.tsv \
+            geoip_RU_blocked_source_stats.txt \
+            geoip_RU_blocked_sources.sha256; do
             curl --fail --location --silent --show-error \
               --retry 3 --retry-all-errors --retry-delay 2 \
               "$base/$file" -o "$workdir/$file"
@@ -132,33 +147,139 @@ jobs:
             "$bgp_url" -o "$workdir/as-ip-blocks.tar.gz"
           test -s "$workdir/as-ip-blocks.tar.gz"
 
+          # Re-run the exact ASN/BGP extractor embedded in blank.yml using the
+          # release's exact RIR registries, allowlist, and ipverse archive.
+          python3 - "$workdir/extract_ru_asn_prefixes.py" <<'PY'
+          import pathlib
+          import sys
+          import textwrap
+
+          source = pathlib.Path(".github/workflows/blank.yml").read_text(encoding="utf-8").splitlines()
+          needle = "cat > extract_ru_asn_prefixes.py <<'PY'"
+          matches = [i for i, line in enumerate(source) if line.strip() == needle]
+          if len(matches) != 1:
+              raise SystemExit(f"Expected exactly one embedded ASN extractor, found {len(matches)}")
+          body = []
+          for line in source[matches[0] + 1:]:
+              if line.strip() == "PY":
+                  break
+              body.append(line)
+          else:
+              raise SystemExit("Embedded ASN extractor heredoc is unterminated")
+          pathlib.Path(sys.argv[1]).write_text(textwrap.dedent("\n".join(body)) + "\n", encoding="utf-8")
+          print("Extracted production ASN/BGP extractor from blank.yml")
+          PY
+
+          python3 "$workdir/extract_ru_asn_prefixes.py" --self-test \
+            "$workdir/geoip_RU_company_asns.txt" \
+            "$workdir/geoip_BY_KZ_registered_asns.txt"
+
+          cp "$workdir/geoip_RU_company_asn_manifest.tsv" "$workdir/company_manifest.published.tsv"
+          cp "$workdir/geoip_RU_BY_KZ_asn_bgp_prefixes.txt" "$workdir/selected_prefixes.published.txt"
+          cp "$workdir/geoip_RU_BY_KZ_asn_manifest.txt" "$workdir/asn_manifest.published.txt"
+
+          python3 "$workdir/extract_ru_asn_prefixes.py" \
+            "$workdir/as-ip-blocks.tar.gz" \
+            "$workdir/geoip_RU_registered_asns.txt" \
+            "$workdir/geoip_BY_KZ_registered_asns.txt" \
+            "$workdir/geoip_RU_company_asns.txt" \
+            "$generated/geoip_RU_BY_KZ_asn_bgp_prefixes.txt" \
+            "$generated/geoip_RU_global_bgp_prefixes.txt" \
+            "$generated/geoip_RU_BY_KZ_asn_manifest.txt" \
+            "$generated/geoip_RU_company_asn_manifest.tsv" \
+            "$generated/geoip_RU_BY_KZ_asn_stats.txt"
+
+          cmp "$generated/geoip_RU_BY_KZ_asn_bgp_prefixes.txt" "$workdir/selected_prefixes.published.txt"
+          cmp "$generated/geoip_RU_BY_KZ_asn_manifest.txt" "$workdir/asn_manifest.published.txt"
+          cmp "$generated/geoip_RU_company_asn_manifest.tsv" "$workdir/company_manifest.published.tsv"
+
           python3 .github/scripts/build_company_prefix_review.py \
             --company-asns "$workdir/geoip_RU_company_asns.txt" \
-            --company-manifest "$workdir/geoip_RU_company_asn_manifest.tsv" \
-            --regional-prefixes "$workdir/geoip_RU_BY_KZ_asn_bgp_prefixes.txt" \
+            --company-manifest "$generated/geoip_RU_company_asn_manifest.tsv" \
+            --regional-prefixes "$generated/geoip_RU_BY_KZ_asn_bgp_prefixes.txt" \
             --input-provenance "$workdir/geoip_RU_input_provenance.tsv" \
             --bgp-archive "$workdir/as-ip-blocks.tar.gz" \
-            --output "$workdir/geoip_RU_company_prefix_review.tsv" \
-            --stats "$workdir/geoip_RU_company_prefix_review_stats.txt"
-
-          test -s "$workdir/geoip_RU_company_prefix_review.tsv"
-          test -s "$workdir/geoip_RU_company_prefix_review_stats.txt"
-          echo "Current release prefix-review smoke test:"
-          cat "$workdir/geoip_RU_company_prefix_review_stats.txt"
-          echo "Company-origin prefixes without a selected regional RIR-RU/BY/KZ origin:"
-          awk -F '\t' '$1 !~ /^#/ && $1 != "PREFIX" && $13 == "COMPANY_ASN_ONLY" { print $1 "\tcompany_asn=" $4 "\tselected_asn=" $9 "\tglobal_origins=" $14 "\tglobal_country=" $15 "\tMOAS=" $16 }' \
-            "$workdir/geoip_RU_company_prefix_review.tsv"
+            --output "$generated/geoip_RU_company_prefix_review.tsv" \
+            --stats "$generated/geoip_RU_company_prefix_review_stats.txt"
 
           python3 .github/scripts/build_selected_origin_prefix_review.py \
-            --selected-prefixes "$workdir/geoip_RU_BY_KZ_asn_bgp_prefixes.txt" \
+            --selected-prefixes "$generated/geoip_RU_BY_KZ_asn_bgp_prefixes.txt" \
             --company-asns "$workdir/geoip_RU_company_asns.txt" \
-            --company-manifest "$workdir/geoip_RU_company_asn_manifest.tsv" \
+            --company-manifest "$generated/geoip_RU_company_asn_manifest.tsv" \
             --input-provenance "$workdir/geoip_RU_input_provenance.tsv" \
             --bgp-archive "$workdir/as-ip-blocks.tar.gz" \
-            --output "$workdir/geoip_RU_selected_origin_prefix_review.tsv" \
-            --stats "$workdir/geoip_RU_selected_origin_prefix_review_stats.txt"
+            --output "$generated/geoip_RU_selected_origin_prefix_review.tsv" \
+            --stats "$generated/geoip_RU_selected_origin_prefix_review_stats.txt"
 
-          test -s "$workdir/geoip_RU_selected_origin_prefix_review.tsv"
-          test -s "$workdir/geoip_RU_selected_origin_prefix_review_stats.txt"
-          echo "Complete regional + company selected-origin prefix-review smoke test:"
-          cat "$workdir/geoip_RU_selected_origin_prefix_review_stats.txt"
+          echo "Company-origin review:"
+          cat "$generated/geoip_RU_company_prefix_review_stats.txt"
+          echo "Complete selected-origin review:"
+          cat "$generated/geoip_RU_selected_origin_prefix_review_stats.txt"
+          echo "Company-only prefixes in this snapshot:"
+          awk -F '\t' '$1 !~ /^#/ && $1 != "PREFIX" && $13 == "COMPANY_ASN_ONLY" { print $1 "\tcompany_asn=" $4 "\tselected_asn=" $9 "\tglobal_origins=" $14 "\tglobal_country=" $15 "\tMOAS=" $16 }' \
+            "$generated/geoip_RU_company_prefix_review.tsv"
+
+          # The published v35 quality report predates this PR's two new audit
+          # sections. Append the review-only sections emitted by blank.yml so
+          # the unchanged production validator can run against the published
+          # .dat and its matching source/count artifacts.
+          cp "$workdir/geoip_RU_quality_report.txt" "$generated/geoip_RU_quality_report.validation.txt"
+          {
+            printf '\n=== COMPANY PREFIX-LEVEL REVIEW QUEUE ===\n'
+            printf 'Per-prefix report: geoip_RU_company_prefix_review.tsv\n'
+            cat "$generated/geoip_RU_company_prefix_review_stats.txt"
+            printf 'All company-origin prefixes remain REVIEW until prefix-level evidence is assessed; this report does not change the GeoIP output.\n'
+            printf '\n=== SELECTED REGIONAL/COMPANY PREFIX-LEVEL REVIEW QUEUE ===\n'
+            printf 'Per-prefix report: geoip_RU_selected_origin_prefix_review.tsv\n'
+            cat "$generated/geoip_RU_selected_origin_prefix_review_stats.txt"
+            printf 'All selected-origin prefixes remain REVIEW until prefix-level evidence is assessed; this report does not change the GeoIP output.\n'
+          } >> "$generated/geoip_RU_quality_report.validation.txt"
+
+          # Extract the exact independent inline validator from blank.yml.
+          python3 - "$workdir/full_build_validator.py" <<'PY'
+          import pathlib
+          import sys
+          import textwrap
+
+          source = pathlib.Path(".github/workflows/blank.yml").read_text(encoding="utf-8").splitlines()
+          matches = [
+              i for i, line in enumerate(source)
+              if line.strip().startswith('python3 - "$OUTPUT_FILE"') and "<<'PY'" in line
+          ]
+          if len(matches) != 1:
+              raise SystemExit(f"Expected exactly one embedded build validator, found {len(matches)}")
+          body = []
+          for line in source[matches[0] + 1:]:
+              if line.strip() == "PY":
+                  break
+              body.append(line)
+          else:
+              raise SystemExit("Embedded build validator heredoc is unterminated")
+          pathlib.Path(sys.argv[1]).write_text(textwrap.dedent("\n".join(body)) + "\n", encoding="utf-8")
+          print("Extracted independent production validator from blank.yml")
+          PY
+
+          # Execute the same production validator on the published GeoIP payload,
+          # freshly re-extracted ASN/BGP manifests, freshly built review TSVs, and
+          # published source/blocklist audit artifacts.
+          python3 "$workdir/full_build_validator.py" \
+            "$workdir/geoip_RU.dat" \
+            "$generated/geoip_RU_BY_KZ_asn_manifest.txt" \
+            "$generated/geoip_RU_company_asn_manifest.tsv" \
+            "$generated/geoip_RU_BY_KZ_asn_stats.txt" \
+            "$workdir/geoip_RU_rir_stats.txt" \
+            "$workdir/geoip_RU_source_counts.txt" \
+            "$generated/geoip_RU_quality_report.validation.txt" \
+            "$workdir/geoip_RU_additional_provenance.tsv" \
+            "$workdir/geoip_RU_category_audit.tsv" \
+            "$workdir/geoip_BY_KZ_registered_asns.txt" \
+            "$workdir/geoip_RU_blocked_ip_exclusions.txt" \
+            "$workdir/geoip_RU_blocked_review_candidates.tsv" \
+            "$workdir/geoip_RU_blocked_source_stats.txt" \
+            "$workdir/geoip_RU_blocked_sources.sha256" \
+            "$workdir/geoip_RU_input_provenance.tsv" \
+            "$generated/geoip_RU_company_prefix_review.tsv" \
+            "$generated/geoip_RU_company_prefix_review_stats.txt" \
+            "$generated/geoip_RU_selected_origin_prefix_review.tsv" \
+            "$generated/geoip_RU_selected_origin_prefix_review_stats.txt" \
+            "$generated/geoip_RU_BY_KZ_asn_bgp_prefixes.txt"
