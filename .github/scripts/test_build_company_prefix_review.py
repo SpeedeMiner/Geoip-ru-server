@@ -151,10 +151,10 @@ class CompanyPrefixReviewTests(unittest.TestCase):
             root = Path(tmp)
             company, manifest, prefixes, provenance, archive = self.make_inputs(root)
             rows = provenance.read_text(encoding="utf-8").splitlines()
-            fields = rows[1].split("\\t")
+            fields = rows[1].split("\t")
             fields[4] = str(archive.stat().st_size + 1)
-            rows[1] = "\\t".join(fields)
-            provenance.write_text("\\n".join(rows) + "\\n", encoding="utf-8")
+            rows[1] = "\t".join(fields)
+            provenance.write_text("\n".join(rows) + "\n", encoding="utf-8")
             with self.assertRaisesRegex(ValueError, "BGP snapshot size mismatch"):
                 build_review(company, manifest, prefixes, provenance, archive, root / "review.tsv", root / "stats.txt")
 
