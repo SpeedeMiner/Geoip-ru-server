@@ -109,8 +109,8 @@ Durable resume point for PR #5. After any conversation/network interruption, rea
 | Protobuf inventory exporter | DONE | full run #42861904056 |
 | Globalping/OONI/Atlas collector | DONE | artifact #13786625472 |
 | Fair provider scheduler | DONE | 38/38 provider pairs covered |
-| Provider-prefix and exact-IP reports | DONE | 64 prefix rows, 77 IP rows, exact reconciliation |
-| NO_IPV6_PROBE handling | DONE | 35 classified; API_ERROR 0 |
+| Provider-prefix and exact-IP reports | DONE | latest v37 artifact: 62 provider/prefix rows, 71 IP rows; exact reconciliation |
+| NO_IPV6_PROBE handling | DONE | latest run: 38 classified (RU 31, KZ 6, BY 1); API_ERROR 0 |
 | CI validation | DONE | run #42871418240; 26 Python tests + Go checks |
 | Full measurement and artifact review against current v37 release | DONE | run #42867329770; artifact #13787468458; SHA verified locally |
 | Belarus target-source correction | DONE | three reference URLs corrected; CI #42871418240 passed |
