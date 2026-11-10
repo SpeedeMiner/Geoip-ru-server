@@ -1,0 +1,40 @@
+name: Prefix audit validation (v37)
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - ".github/scripts/build_company_prefix_review.py"
+      - ".github/scripts/build_selected_origin_prefix_review.py"
+      - ".github/scripts/test_build_company_prefix_review.py"
+      - ".github/scripts/test_build_selected_origin_prefix_review.py"
+      - ".github/workflows/prefix-audit-validation.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: prefix-audit-validation-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  python-audit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+
+      - name: Compile audit scripts
+        run: python3 -m py_compile
+          .github/scripts/build_company_prefix_review.py
+          .github/scripts/build_selected_origin_prefix_review.py
+          .github/scripts/test_build_company_prefix_review.py
+          .github/scripts/test_build_selected_origin_prefix_review.py
+
+      - name: Run audit unit tests
+        run: python3 -m unittest discover -s .github/scripts -p 'test_build_*prefix_review.py' -v
+
+      - name: Parse workflow YAML
+        run: ruby -e 'require "yaml"; YAML.load_file(ARGV.fetch(0)); puts "Workflow YAML parsed"' .github/workflows/prefix-audit-validation.yml
