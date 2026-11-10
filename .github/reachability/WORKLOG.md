@@ -10,7 +10,7 @@ Durable resume point for PR #5. After any conversation/network interruption, rea
 - Branch: feature/reachability-full-ru-kz-by
 - Base/main: c71b5eff48f34b363ef2430ba6b5c41603f36126
 - Last code commit used by final measurement: 0ee7a3434537fbf19bba5c74508ca98c0f4a7d21
-- Latest successful validation head recorded in this log: ec1aaa59d2c750696396df8e86981ee604785fb7. Documentation/checkpoint commits may advance branch HEAD; always query the live PR head on resume.
+- Latest successful validation commit: 854381b06c08267416dc8bf20311e56a549c72bd. Documentation/checkpoint commits may advance branch HEAD; always query the live PR head on resume.
 - The full-measurement workflow has manual dispatch on this feature branch. Its daily cron becomes active only after the workflow is merged into the repository default branch. The temporary push trigger has been removed.
 - Main GeoIP builder, release branch, and published geoip_RU.dat were not modified. The client remains one file with exactly RU and PRIVATE categories.
 
@@ -28,8 +28,8 @@ Durable resume point for PR #5. After any conversation/network interruption, rea
 
 ## Latest validation
 
-- CI run: https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/42861969600
-- Commit tested: 09984160add7df45f3c4ab4519a99caf6c8f8ec9
+- CI run: https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/42863496776
+- Commit tested: 854381b06c08267416dc8bf20311e56a549c72bd
 - Result: SUCCESS. Python 26/26 tests passed; Go formatting, Go tests and Go build passed.
 
 ## Latest complete measurement run
@@ -104,7 +104,7 @@ Durable resume point for PR #5. After any conversation/network interruption, rea
 4. Prefer the artifact from the latest successful full run; do not repeat a run whose artifact is still available and relevant.
 5. Continue from CHECKPOINT.json current_phase / next_steps. Do not redo reconnaissance, exporter implementation, scheduler or green CI.
 6. Work in short units: one focused change, CI, then checkpoint. Do not run full measurement after work-log-only changes.
-7. After each meaningful phase, update both files and commit them. Documentation/checkpoint-only commits are intentionally excluded from CI and full measurement triggers. Keep PR #5 Draft unless the owner explicitly approves final review and merge.
+7. After each meaningful phase, update both files and commit them. Documentation/checkpoint-only commits are excluded from push CI; PR validation runs only on opened/reopened/ready_for_review; the full-measurement workflow remains manual on this branch and daily after merge to default. Keep PR #5 Draft unless the owner explicitly approves final review and merge.
 
 ## Phase status
 
@@ -116,7 +116,7 @@ Durable resume point for PR #5. After any conversation/network interruption, rea
 | Fair provider scheduler | DONE | 38/38 provider pairs covered |
 | Provider-prefix and exact-IP reports | DONE | 64 prefix rows, 77 IP rows, exact reconciliation |
 | NO_IPV6_PROBE handling | DONE | 35 classified; API_ERROR 0 |
-| CI validation | DONE | run #42861969600; 26 Python tests + Go checks |
+| CI validation | DONE | run #42863496776; 26 Python tests + Go checks |
 | Full measurement and artifact review | DONE | run #42861904056 |
 | OONI review / final policy interpretation | DONE with caveats above | 3 anomalies all confirmed=false |
 | Final PR review / owner decision | PENDING | PR #5 remains Draft |
