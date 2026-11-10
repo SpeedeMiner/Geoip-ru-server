@@ -271,12 +271,20 @@ class PriorityPrefixEvidenceTests(unittest.TestCase):
                 irr_summary = list(csv.DictReader(handle, delimiter="\t"))
             with (output / "irr_route_objects.tsv").open(encoding="utf-8", newline="") as handle:
                 irr_objects = list(csv.DictReader(handle, delimiter="\t"))
+            with (output / "irr_route_objects_deduplicated.tsv").open(encoding="utf-8", newline="") as handle:
+                irr_unique_objects = list(csv.DictReader(handle, delimiter="\t"))
             self.assertEqual(len(priority), 56)
             self.assertEqual(len(rdap), 168)
             self.assertEqual(len(rpki), 108)
             self.assertEqual(len(holder_summary), 56)
             self.assertEqual(len(irr_summary), 56)
             self.assertEqual(len(irr_objects), 56)
+            self.assertEqual(len(irr_unique_objects), 56)
+            self.assertTrue(all(row["IRR_SOURCE_OBJECT_RECORDS"] == "1" for row in irr_summary))
+            self.assertTrue(all(row["IRR_UNIQUE_ROUTE_OBJECTS"] == "1" for row in irr_summary))
+            self.assertEqual(result["irr_source_record_counts"], {"RIPE": 56})
+            self.assertEqual(result["irr_source_records"], 56)
+            self.assertEqual(result["irr_unique_route_objects"], 56)
             self.assertTrue(all(
                 expected_sources.issubset(set(row["QUERY_SCOPE_SOURCES"].split(",")))
                 for row in irr_summary
