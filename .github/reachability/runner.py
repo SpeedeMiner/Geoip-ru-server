@@ -73,7 +73,7 @@ def request_json(
         raise APIError(f"request failed: {exc}") from exc
 
 
-def read_inventory(path: pathlib.Path) -> tuple[list[dict[str, str]], dict[str, list[ipaddress._BaseNetwork]]]:
+def read_inventory(path: pathlib.Path) -> tuple[list[dict[str, str]], dict[str, Any]]:
     rows: list[dict[str, str]] = []
     nets: dict[str, Any] = {
         "RU": [], "PRIVATE": [],
@@ -112,7 +112,7 @@ def read_inventory(path: pathlib.Path) -> tuple[list[dict[str, str]], dict[str, 
 
 def map_address(
     address: str | None,
-    networks: dict[str, list[ipaddress._BaseNetwork]],
+    networks: dict[str, Any],
 ) -> tuple[str, str]:
     """Map a service's observed IP to the most-specific GeoIP inventory entry."""
     if not address:
