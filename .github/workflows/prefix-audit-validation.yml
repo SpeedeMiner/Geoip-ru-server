@@ -9,6 +9,7 @@ on:
       - ".github/scripts/test_build_company_prefix_review.py"
       - ".github/scripts/test_build_selected_origin_prefix_review.py"
       - ".github/audits/company_asn_legal_evidence_v37_additions.tsv"
+      - ".github/audits/company_asn_legal_evidence_v37.tsv"
       - ".github/workflows/prefix-audit-validation.yml"
 
 permissions:
@@ -71,6 +72,73 @@ jobs:
               if "https://" not in row["EVIDENCE_URLS"] or not row["ASSESSMENT_NOTE"].strip():
                   raise SystemExit(f"Incomplete evidence for {row['ASN']}")
           print(f"Validated {len(rows)} v37 legal-evidence additions")
+          PY
+
+      - name: Validate consolidated v37 legal-evidence TSV
+        run: |
+          python3 - <<'PY'
+          import csv
+          from pathlib import Path
+
+          path = Path(".github/audits/company_asn_legal_evidence_v37.tsv")
+          with path.open(encoding="utf-8", newline="") as stream:
+              rows = list(csv.DictReader((line for line in stream if not line.startswith("#")), delimiter="\\t"))
+
+          expected = {
+              "AS13238", "AS200350", "AS202611", "AS215013", "AS208795", "AS207304",
+              "AS212066", "AS44534", "AS210656", "AS207207", "AS213952", "AS215109",
+              "AS47541", "AS47542", "AS28709", "AS47764", "AS49053", "AS57073",
+              "AS201512", "AS211517", "AS44386", "AS35237", "AS49505", "AS50340",
+              "AS208677", "AS210756", "AS57724", "AS9123", "AS34879", "AS12389",
+              "AS42610", "AS8359", "AS12714", "AS31133", "AS3216", "AS8402",
+              "AS20485", "AS15774", "AS9049", "AS48858", "AS25513",
+          }
+          reviewed_expected = {
+              "AS15774", "AS42610", "AS44534", "AS207207", "AS210656",
+              "AS211517", "AS212066", "AS213952", "AS215109",
+          }
+          required = {
+              "ASN", "COMPANY_GROUP", "ALLOWLIST_ENTITY_OR_NOTE", "RIPE_AS_NAME",
+              "RIPE_ORGANISATION_NAME", "RIPE_COUNTRY", "RIPE_REGISTRATION_NUMBER",
+              "ASN_ENTITY_ASSESSMENT", "V37_IPVERSE_ACTIVE", "V37_IPVERSE_COUNTRY_CODE",
+              "V37_IPV4_PREFIXES", "V37_IPV6_PREFIXES", "REVIEW_FLAG",
+              "ASSESSMENT_NOTE", "EVIDENCE_URLS", "AUDIT_STATUS",
+          }
+          if not rows or not required.issubset(rows[0]):
+              raise SystemExit("Missing required v37 legal-evidence TSV columns or rows")
+          asns = [row["ASN"] for row in rows]
+          if len(asns) != len(set(asns)) or set(asns) != expected or len(rows) != 41:
+              raise SystemExit(f"Unexpected/duplicate ASN inventory: {asns}")
+          reviewed = set()
+          inactive = set()
+          for row in rows:
+              if row["RIPE_COUNTRY"] not in {"RU", "BY", "KZ", "TR"}:
+                  raise SystemExit(f"Unexpected RIPE country for {row['ASN']}: {row['RIPE_COUNTRY']}")
+              if row["V37_IPVERSE_ACTIVE"] not in {"yes", "no"}:
+                  raise SystemExit(f"Invalid v37 observation flag for {row['ASN']}")
+              v4, v6 = int(row["V37_IPV4_PREFIXES"]), int(row["V37_IPV6_PREFIXES"])
+              if v4 < 0 or v6 < 0:
+                  raise SystemExit(f"Negative prefix count for {row['ASN']}")
+              if row["V37_IPVERSE_ACTIVE"] == "no":
+                  inactive.add(row["ASN"])
+                  if v4 != 0 or v6 != 0 or row["V37_IPVERSE_COUNTRY_CODE"] != "-":
+                      raise SystemExit(f"Inconsistent unobserved manifest row for {row['ASN']}")
+              elif v4 + v6 == 0:
+                  raise SystemExit(f"Observed row has no prefixes: {row['ASN']}")
+              if not row["RIPE_AS_NAME"].strip() or not row["RIPE_ORGANISATION_NAME"].strip():
+                  raise SystemExit(f"Missing RIPE identity for {row['ASN']}")
+              if not row["ASSESSMENT_NOTE"].strip() or "https://" not in row["EVIDENCE_URLS"]:
+                  raise SystemExit(f"Missing note/evidence URL for {row['ASN']}")
+              status = row["AUDIT_STATUS"]
+              if status == "REVIEWED_2026-11-10":
+                  reviewed.add(row["ASN"])
+              elif status != "CARRY_FORWARD_NOT_REVERIFIED":
+                  raise SystemExit(f"Unknown audit status for {row['ASN']}: {status}")
+          if reviewed != reviewed_expected:
+              raise SystemExit(f"Unexpected reviewed ASN set: {sorted(reviewed)}")
+          if inactive != {"AS49053", "AS213952", "AS215109"}:
+              raise SystemExit(f"Unexpected no-observation set: {sorted(inactive)}")
+          print(f"Validated {len(rows)} legal records; {len(reviewed)} reviewed, {len(rows)-len(reviewed)} pending, {len(inactive)} absent from the v37 manifest")
           PY
 
       - name: Parse workflow YAML
