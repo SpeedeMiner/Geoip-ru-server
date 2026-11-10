@@ -357,6 +357,140 @@ def fetch_rpki_origin(prefix: str, asn: str) -> dict[str, str]:
     return row
 
 
+IRR_METADATA_URL = "https://rest.db.ripe.net/metadata/sources.json"
+IRR_SEARCH_URL = "https://rest.db.ripe.net/search"
+
+
+def _source_list_from_metadata(payload: dict[str, Any]) -> list[str]:
+    values = ["RIPE"]
+    container = payload.get("grs-sources") or payload.get("grsSources") or {}
+    sources = container.get("source", []) if isinstance(container, dict) else []
+    if isinstance(sources, dict):
+        sources = [sources]
+    for item in sources if isinstance(sources, list) else []:
+        if not isinstance(item, dict):
+            continue
+        name = str(item.get("name") or item.get("id") or "").strip()
+        if name:
+            values.append(name.upper())
+    return sorted(set(values))
+
+
+def _object_attributes(obj: dict[str, Any]) -> dict[str, list[str]]:
+    result: dict[str, list[str]] = collections.defaultdict(list)
+    for section in ("primary-key", "attributes"):
+        container = obj.get(section) or {}
+        attributes = container.get("attribute", []) if isinstance(container, dict) else []
+        if isinstance(attributes, dict):
+            attributes = [attributes]
+        for item in attributes if isinstance(attributes, list) else []:
+            if not isinstance(item, dict):
+                continue
+            name = str(item.get("name") or "").lower()
+            value = item.get("value")
+            if name and value is not None:
+                result[name].append(str(value).strip())
+    return dict(result)
+
+
+def parse_irr_search_payload(prefix: str, payload: dict[str, Any],
+                             global_origins: set[str]) -> tuple[str, list[dict[str, str]]]:
+    """Extract route/route6 objects; no object result is scoped to queried sources only."""
+    errors = payload.get("errormessages") or {}
+    messages = errors.get("errormessage", []) if isinstance(errors, dict) else []
+    if isinstance(messages, dict):
+        messages = [messages]
+    error_text = []
+    for item in messages if isinstance(messages, list) else []:
+        if isinstance(item, dict) and str(item.get("severity", "")).lower() == "error":
+            error_text.append(str(item.get("text") or "RIPE Database API error"))
+    if error_text:
+        return "API_ERROR_IN_BODY", []
+
+    container = payload.get("objects") or {}
+    objects = container.get("object", []) if isinstance(container, dict) else []
+    if isinstance(objects, dict):
+        objects = [objects]
+    if not isinstance(objects, list):
+        return "INVALID_OBJECTS_PAYLOAD", []
+
+    expected = ipaddress.ip_network(prefix, strict=True)
+    output: list[dict[str, str]] = []
+    exact_count = 0
+    for obj in objects:
+        if not isinstance(obj, dict):
+            continue
+        attrs = _object_attributes(obj)
+        route_values = attrs.get("route", []) + attrs.get("route6", [])
+        origin_values = attrs.get("origin", [])
+        route_prefix = route_values[0] if route_values else ""
+        try:
+            route_network = ipaddress.ip_network(route_prefix, strict=True) if route_prefix else None
+        except ValueError:
+            route_network = None
+        exact = bool(route_network and route_network == expected)
+        if exact:
+            exact_count += 1
+        origin = origin_values[0].upper() if origin_values else ""
+        if origin and origin.isdigit():
+            origin = f"AS{origin}"
+        if origin and not origin.startswith("AS"):
+            origin = f"AS{origin}"
+
+        source_data = obj.get("source") or {}
+        source_name = str(source_data.get("id") or source_data.get("name") or "").upper() if isinstance(source_data, dict) else ""
+        primary_data = obj.get("primary-key") or {}
+        object_key = ""
+        if isinstance(primary_data, dict):
+            for item in primary_data.get("attribute", []) if isinstance(primary_data.get("attribute"), list) else []:
+                if isinstance(item, dict) and str(item.get("name", "")).lower() in {"route", "route6"}:
+                    object_key = str(item.get("value") or "")
+                    break
+        object_type = str(obj.get("type") or "")
+        output.append({
+            "QUERY_PREFIX": prefix,
+            "OBJECT_TYPE": object_type,
+            "ROUTE_PREFIX": route_prefix,
+            "OBJECT_KEY": object_key,
+            "ORIGIN_ASN": origin,
+            "REGISTRY_SOURCE": source_name,
+            "EXACT_PREFIX_MATCH": "yes" if exact else "no",
+            "GLOBAL_BGP_ORIGIN_MATCH": "yes" if origin in global_origins else "no",
+            "MNT_BY": " | ".join(attrs.get("mnt-by", [])),
+            "ORG": " | ".join(attrs.get("org", [])),
+            "DESCR": " | ".join(attrs.get("descr", [])),
+            "REMARKS": " | ".join(attrs.get("remarks", [])),
+            "MEMBER_OF": " | ".join(attrs.get("member-of", [])),
+            "CREATED": " | ".join(attrs.get("created", [])),
+            "LAST_MODIFIED": " | ".join(attrs.get("last-modified", [])),
+        })
+    if not output:
+        return "NO_OBJECTS_IN_QUERIED_SOURCES", []
+    if exact_count == 0:
+        return "NO_EXACT_ROUTE_OBJECT_IN_QUERY_RESULTS", output
+    return "OK", output
+
+
+def fetch_irr_prefix(prefix: str, sources: list[str],
+                     global_origins: set[str]) -> tuple[str, str, list[dict[str, str]]]:
+    network = ipaddress.ip_network(prefix, strict=True)
+    params: list[tuple[str, str]] = []
+    for source in sources:
+        params.append(("source", source))
+    params.append(("query-string", prefix))
+    params.append(("type-filter", "route" if network.version == 4 else "route6"))
+    params.append(("flags", "no-referenced"))
+    params.append(("limit", "1000"))
+    url = f"{IRR_SEARCH_URL}?{urllib.parse.urlencode(params)}"
+    status, payload, error = request_json(url)
+    if status == 404:
+        return "NO_OBJECTS_IN_QUERIED_SOURCES", url, []
+    if status != 200 or payload is None:
+        return error or f"HTTP_{status}", url, []
+    query_status, rows = parse_irr_search_payload(prefix, payload, global_origins)
+    return query_status, url, rows
+
+
 def write_tsv(path: Path, rows: list[dict[str, str]], columns: list[str]) -> None:
     with path.open("w", encoding="utf-8", newline="") as stream:
         writer = csv.DictWriter(stream, fieldnames=columns, delimiter="\t", extrasaction="ignore",
@@ -471,6 +605,76 @@ def build_evidence(company_queue: Path, output_dir: Path, max_workers: int = 5) 
     ]
     write_tsv(output_dir / "rpki_by_origin.tsv", rpki_rows, rpki_columns)
 
+    # RIPE Database GRS snapshots expose multiple regional IRR data sources.
+    # Their scope is explicit in the output and is not claimed to be the entire IRR ecosystem.
+    metadata_status, metadata_payload, metadata_error = request_json(IRR_METADATA_URL)
+    if metadata_status == 200 and metadata_payload is not None:
+        irr_sources = _source_list_from_metadata(metadata_payload)
+        irr_metadata_sha = sha256_bytes(
+            json.dumps(metadata_payload, ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode("utf-8")
+        )
+        irr_metadata_status = "OK"
+    else:
+        irr_sources = ["RIPE"]
+        irr_metadata_sha = "UNAVAILABLE"
+        irr_metadata_status = metadata_error or f"HTTP_{metadata_status}"
+
+    irr_prefix_rows: list[dict[str, str]] = []
+    irr_object_rows: list[dict[str, str]] = []
+    irr_query_statuses: collections.Counter[str] = collections.Counter()
+    with concurrent.futures.ThreadPoolExecutor(max_workers=max_workers) as pool:
+        futures = {
+            pool.submit(
+                fetch_irr_prefix,
+                row["PREFIX"],
+                irr_sources,
+                {part.strip() for part in row["GLOBAL_BGP_ORIGIN_ASNS"].split(",") if part.strip()},
+            ): row["PREFIX"]
+            for row in priority
+        }
+        for future in concurrent.futures.as_completed(futures):
+            prefix = futures[future]
+            try:
+                query_status, query_url, objects = future.result()
+            except Exception as exc:
+                query_status, query_url, objects = f"CLIENT_ERROR:{type(exc).__name__}:{exc}", "", []
+            irr_query_statuses[query_status] += 1
+            irr_object_rows.extend(objects)
+            exact_objects = [obj for obj in objects if obj["EXACT_PREFIX_MATCH"] == "yes"]
+            matching_objects = [obj for obj in exact_objects if obj["GLOBAL_BGP_ORIGIN_MATCH"] == "yes"]
+            irr_prefix_rows.append({
+                "PREFIX": prefix,
+                "QUERY_STATUS": query_status,
+                "QUERY_URL": query_url,
+                "QUERY_SCOPE_SOURCES": ",".join(irr_sources),
+                "IRR_EXACT_OBJECTS": str(len(exact_objects)),
+                "IRR_EXACT_BGP_ORIGIN_MATCH_OBJECTS": str(len(matching_objects)),
+                "IRR_EXACT_OBJECT_SOURCES": " | ".join(sorted({obj["REGISTRY_SOURCE"] for obj in exact_objects if obj["REGISTRY_SOURCE"]})),
+                "IRR_EXACT_ORIGINS": " | ".join(sorted({obj["ORIGIN_ASN"] for obj in exact_objects if obj["ORIGIN_ASN"]})),
+                "IRR_MATCHED_BGP_ORIGINS": " | ".join(sorted({obj["ORIGIN_ASN"] for obj in matching_objects if obj["ORIGIN_ASN"]})),
+                "IRR_MNT_BY": " | ".join(sorted({obj["MNT_BY"] for obj in exact_objects if obj["MNT_BY"]})),
+                "IRR_ORG": " | ".join(sorted({obj["ORG"] for obj in exact_objects if obj["ORG"]})),
+                "IRR_DESCR": " | ".join(sorted({obj["DESCR"] for obj in exact_objects if obj["DESCR"]})),
+                "STATUS": "REVIEW",
+                "INTERPRETATION": "Search limited to RIPE Database plus its reported GRS sources; not a global search of every independent IRR.",
+            })
+
+    irr_prefix_rows.sort(key=lambda row: row["PREFIX"])
+    irr_object_rows.sort(key=lambda row: (
+        row["QUERY_PREFIX"], row["REGISTRY_SOURCE"], row["ORIGIN_ASN"], row["ROUTE_PREFIX"]
+    ))
+    write_tsv(output_dir / "irr_prefix_summary.tsv", irr_prefix_rows, [
+        "PREFIX", "QUERY_STATUS", "QUERY_URL", "QUERY_SCOPE_SOURCES",
+        "IRR_EXACT_OBJECTS", "IRR_EXACT_BGP_ORIGIN_MATCH_OBJECTS",
+        "IRR_EXACT_OBJECT_SOURCES", "IRR_EXACT_ORIGINS", "IRR_MATCHED_BGP_ORIGINS",
+        "IRR_MNT_BY", "IRR_ORG", "IRR_DESCR", "STATUS", "INTERPRETATION",
+    ])
+    write_tsv(output_dir / "irr_route_objects.tsv", irr_object_rows, [
+        "QUERY_PREFIX", "OBJECT_TYPE", "ROUTE_PREFIX", "OBJECT_KEY", "ORIGIN_ASN",
+        "REGISTRY_SOURCE", "EXACT_PREFIX_MATCH", "GLOBAL_BGP_ORIGIN_MATCH",
+        "MNT_BY", "ORG", "DESCR", "REMARKS", "MEMBER_OF", "CREATED", "LAST_MODIFIED",
+    ])
+
     status_counts = collections.Counter(row["RPKI_STATUS"] or row["QUERY_STATUS"] for row in rpki_rows)
     rdap_status_counts = collections.Counter(row["QUERY_STATUS"] for row in rdap_rows)
     prefix_rdap_groups: dict[str, list[dict[str, str]]] = collections.defaultdict(list)
@@ -554,12 +758,19 @@ def build_evidence(company_queue: Path, output_dir: Path, max_workers: int = 5) 
         f"RDAP sample query statuses: {dict(sorted(rdap_status_counts.items()))}",
         f"RPKI origin-prefix checks attempted: {len(rpki_tasks)}",
         f"RPKI query/status counts: {dict(sorted(status_counts.items()))}",
+        f"IRR metadata source list status: {irr_metadata_status}",
+        f"IRR metadata canonical SHA256: {irr_metadata_sha}",
+        f"IRR sources queried: {','.join(irr_sources)}",
+        f"IRR exact-prefix search query statuses: {dict(sorted(irr_query_statuses.items()))}",
+        f"IRR exact route objects returned: {sum(1 for row in irr_object_rows if row['EXACT_PREFIX_MATCH'] == 'yes')}",
+        f"IRR exact prefix+observed-origin matches: {sum(1 for row in irr_object_rows if row['EXACT_PREFIX_MATCH'] == 'yes' and row['GLOBAL_BGP_ORIGIN_MATCH'] == 'yes')}",
         f"RDAP per-prefix sample consistency: {dict(sorted(rdap_consistency.items()))}",
         "RDAP requests use IANA bootstrap longest-prefix selection and sample first/mid/last addresses.",
         "RDAP observations describe the registry's most-specific network containing each sample address; they do not prove every address in a prefix has the same holder.",
         "RPKI status is queried per exact prefix/origin ASN pair using RIPE NCC Routinator; valid means ROA authorises the pair, not that the ASN legally owns the resource.",
         "HTTP/network errors remain explicit query errors and are not converted to UNKNOWN, absent, or no-owner results.",
-        "IRR has not yet been queried by this stage; no route-object absence or presence is inferred.",
+        "IRR evidence is queried through the RIPE Database REST search using RIPE plus the GRS sources reported by its metadata endpoint; independent IRR registries outside that scope are not covered.",
+        "A missing route object in the queried RIPE/GRS sources is not proof that no IRR route object exists anywhere.",
         "Every prefix remains STATUS=REVIEW; this artifact does not change DIRECT policy, main, release, or geoip_RU.dat.",
     ]
     (output_dir / "priority_prefix_evidence_stats.txt").write_text("\n".join(stats) + "\n", encoding="utf-8")
@@ -574,6 +785,10 @@ def build_evidence(company_queue: Path, output_dir: Path, max_workers: int = 5) 
         "rdap_query_statuses": dict(sorted(rdap_status_counts.items())),
         "rpki_origin_checks": len(rpki_rows),
         "rpki_statuses": dict(sorted(status_counts.items())),
+        "irr_query_statuses": dict(sorted(irr_query_statuses.items())),
+        "irr_exact_route_objects": sum(1 for row in irr_object_rows if row["EXACT_PREFIX_MATCH"] == "yes"),
+        "irr_exact_origin_matches": sum(1 for row in irr_object_rows if row["EXACT_PREFIX_MATCH"] == "yes" and row["GLOBAL_BGP_ORIGIN_MATCH"] == "yes"),
+        "irr_sources": irr_sources,
         "bootstrap_sha256": bootstrap_hashes,
     }
 
