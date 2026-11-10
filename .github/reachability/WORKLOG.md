@@ -192,3 +192,11 @@ Durable resume point for PR #5. After any conversation/network interruption, rea
 - Latest VPN Gate code/test commit for validation: `f8d6770ad3ce8ad1bda34a1fac9211060d5eba60`. Checkpoint commit follows separately; no code was changed after the validation target.
 - Live combined commit status currently exposes no checks, and the GitHub connector returns no PR-triggered workflow records for this push commit. Do not mark CI successful without a visible run/result.
 - No live VPN connection or target probes were executed. PR #5 remains Draft; PR #6 and all production GeoIP files remain untouched.
+
+
+### 2026-11-11 — Final VPN Gate safety follow-up — DONE / VALIDATION PENDING
+
+- Firewall restoration failures are now surfaced even when a VPN connection or target test was already failing; a suppressed restore failure could otherwise leave the host's temporary kill-switch active without an explicit report.
+- Added the manual VPN Gate workflow file to the validation workflow's path filters, so edits to that workflow also trigger the reachability checks.
+- Latest code commit requiring validation: `37ab30a8d8c588c02318071130a162dda8e1ae61`. The workflow path-filter commit is `a2f85a43cf9e295035724190ad5f6b20a73a0926`; the final CI target must include both.
+- Expected Python discovery count remains 36; Go formatting/tests/build are also required. No visible green status has been confirmed.
