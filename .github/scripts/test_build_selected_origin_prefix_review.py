@@ -75,6 +75,23 @@ class SelectedOriginPrefixReviewTests(unittest.TestCase):
             rows = [line.split("\t") for line in output.read_text(encoding="utf-8").splitlines()
                     if line and not line.startswith("#")]
             self.assertEqual(rows[0], list(HEADER))
+            output_text = output.read_text(encoding="utf-8")
+            for label in (
+                "Company ASN registry SHA256:",
+                "Company ASN manifest SHA256:",
+                "Selected prefix input SHA256:",
+                "Input provenance SHA256:",
+                "BGP source SHA256:",
+            ):
+                self.assertIn(label, output_text)
+            stats_text = stats.read_text(encoding="utf-8")
+            for label in (
+                "Company ASN registry SHA256:",
+                "Company ASN manifest SHA256:",
+                "Selected prefix input SHA256:",
+                "Input provenance SHA256:",
+            ):
+                self.assertIn(label, stats_text)
             data = {row[0]: dict(zip(HEADER, row)) for row in rows[1:]}
             dual = data["198.51.100.0/24"]
             self.assertEqual(dual["COMPANY_ASNS"], "AS64500")
