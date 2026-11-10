@@ -159,6 +159,33 @@ class PriorityPrefixEvidenceTests(unittest.TestCase):
                 return 200, bootstrap6, ""
             if "/data/rpki-validation/data.json?" in url:
                 return 200, {"data": {"status": "valid", "description": "ROA authorises this origin"}}, ""
+            if url == "https://rest.db.ripe.net/metadata/sources.json":
+                return 200, {
+                    "grs-sources": {"source": [
+                        {"id": "radb-grs", "name": "RADB-GRS"},
+                        {"id": "apnic-grs", "name": "APNIC-GRS"},
+                    ]}
+                }, ""
+            if "/search?" in url:
+                import urllib.parse
+                query = urllib.parse.parse_qs(urllib.parse.urlsplit(url).query)
+                prefix = query["query-string"][0]
+                origins = next(row["GLOBAL_BGP_ORIGIN_ASNS"] for row in rows if row["PREFIX"] == prefix)
+                origin = origins.split(",")[0]
+                return 200, {
+                    "objects": {
+                        "object": [{
+                            "type": "route" if ":" not in prefix else "route6",
+                            "source": {"id": "RIPE"},
+                            "primary-key": {"attribute": [{"name": "route" if ":" not in prefix else "route6", "value": prefix}]},
+                            "attributes": {"attribute": [
+                                {"name": "origin", "value": origin},
+                                {"name": "mnt-by", "value": "EXAMPLE-MNT"},
+                                {"name": "descr", "value": "Synthetic IRR fixture"},
+                            ]},
+                        }]
+                    }
+                }, ""
             if "/ip/" in url:
                 address = url.rsplit("/ip/", 1)[1]
                 ip = __import__("ipaddress").ip_address(address)
@@ -197,6 +224,9 @@ class PriorityPrefixEvidenceTests(unittest.TestCase):
             self.assertEqual(result["rdap_samples"], 168)
             self.assertEqual(result["rpki_origin_checks"], 108)
             self.assertEqual(result["rpki_statuses"], {"valid": 108})
+            self.assertEqual(result["irr_query_statuses"], {"OK": 56})
+            self.assertEqual(result["irr_exact_route_objects"], 56)
+            self.assertEqual(result["irr_exact_origin_matches"], 56)
 
             with (output / "priority_prefixes.tsv").open(encoding="utf-8", newline="") as handle:
                 priority = list(csv.DictReader(handle, delimiter="\t"))
@@ -206,10 +236,19 @@ class PriorityPrefixEvidenceTests(unittest.TestCase):
                 rpki = list(csv.DictReader(handle, delimiter="\t"))
             with (output / "prefix_holder_review_summary.tsv").open(encoding="utf-8", newline="") as handle:
                 holder_summary = list(csv.DictReader(handle, delimiter="\t"))
+            with (output / "irr_prefix_summary.tsv").open(encoding="utf-8", newline="") as handle:
+                irr_summary = list(csv.DictReader(handle, delimiter="\t"))
+            with (output / "irr_route_objects.tsv").open(encoding="utf-8", newline="") as handle:
+                irr_objects = list(csv.DictReader(handle, delimiter="\t"))
             self.assertEqual(len(priority), 56)
             self.assertEqual(len(rdap), 168)
             self.assertEqual(len(rpki), 108)
             self.assertEqual(len(holder_summary), 56)
+            self.assertEqual(len(irr_summary), 56)
+            self.assertEqual(len(irr_objects), 56)
+            self.assertTrue(all(row["QUERY_STATUS"] == "OK" for row in irr_summary))
+            self.assertTrue(all(row["EXACT_PREFIX_MATCH"] == "yes" for row in irr_objects))
+            self.assertTrue(all(row["GLOBAL_BGP_ORIGIN_MATCH"] == "yes" for row in irr_objects))
             self.assertTrue(all(row["STATUS"] == "REVIEW" for row in priority))
             self.assertTrue(all(row["STATUS"] == "REVIEW" for row in holder_summary))
             self.assertTrue(all(row["QUERY_STATUS"] == "OK" for row in rdap))
