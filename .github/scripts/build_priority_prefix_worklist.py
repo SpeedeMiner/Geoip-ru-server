@@ -68,7 +68,8 @@ def build_worklist(evidence: Path, output: Path, stats_path: Path,
                    expected_scope: tuple[int, int, int] | None = EXPECTED) -> dict[str, object]:
     triage_rows = read_tsv(evidence / "priority_prefix_triage.tsv")
     triage = unique(triage_rows, "PREFIX", "triage prefix")
-    spot_rows = read_tsv(evidence / "priority_prefix_external_spot_checks_v37.tsv")
+    spot_path = evidence / "priority_prefix_external_spot_checks_v37.tsv"
+    spot_rows = read_tsv(spot_path) if spot_path.exists() else []
     spots = unique(spot_rows, "PREFIX", "external spot-check prefix")
     scope = (
         len(triage_rows),
