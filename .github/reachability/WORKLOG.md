@@ -9,8 +9,9 @@ Durable resume point for PR #5. After any conversation/network interruption, rea
 - State: OPEN / DRAFT; no automatic merge.
 - Branch: feature/reachability-full-ru-kz-by
 - Current main: a68e5d6589361814cb1cfedd2af7857e4af806fa; PR branch merge-base remains c71b5eff48f34b363ef2430ba6b5c41603f36126 (29 commits behind current main). The 11 changed files in PR #5 are confined to .github/reachability/** and the two separate diagnostic workflows; no main GeoIP builder, release or client data file is changed.
-- Latest validation: run 42871418240 succeeded on commit 1b2152760b120218763956a8f7005f3bafa044e8 after correcting three Belarus reference URLs. Latest full measurement ran on temporary-trigger commit 7acb180836ae1de16687333f5c8a55b2a8b3a0dc; the temporary path-scoped push trigger was removed in commit 533281109e101b81f7b0ff623c011f698e56bc6a. Always query the live PR head on resume; documentation/checkpoint commits advance it.
-- Latest successful validation commit: 854381b06c08267416dc8bf20311e56a549c72bd. Documentation/checkpoint commits may advance branch HEAD; always query the live PR head on resume.
+- Latest validation: run 42873343359 succeeded on commit 6e2ba2b15e49f4af9a6f00615f75a88d75d14f81. Python 27/27 tests, Go formatting, Go tests and Go build passed. The collector summary now computes per-country IPv6 probe gaps and source-country/target sampling metrics.
+- Latest full measurement ran on temporary-trigger commit 7acb180836ae1de16687333f5c8a55b2a8b3a0dc; the temporary path-scoped push trigger was removed in commit 533281109e101b81f7b0ff623c011f698e56bc6a. Always query the live PR head on resume; documentation/checkpoint commits advance it.
+- The previous validation commit 1b2152760b120218763956a8f7005f3bafa044e8 validated the Belarus reference-source corrections.
 - The full-measurement workflow has manual dispatch on this feature branch. Its daily cron becomes active only after the workflow is merged into the repository default branch. The temporary push trigger has been removed.
 - Main GeoIP builder, release branch, and published geoip_RU.dat were not modified. The client remains one file with exactly RU and PRIVATE categories.
 
@@ -28,9 +29,9 @@ Durable resume point for PR #5. After any conversation/network interruption, rea
 
 ## Latest validation
 
-- CI run: [42871418240](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/42871418240)
-- Commit tested: `1b2152760b120218763956a8f7005f3bafa044e8`
-- Result: SUCCESS. Python 26/26 tests passed; Go formatting, Go tests and Go build passed. This includes validation after correcting the Belarus target provenance URLs.
+- CI run: [42873343359](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/42873343359)
+- Commit tested: `6e2ba2b15e49f4af9a6f00615f75a88d75d14f81`
+- Result: SUCCESS. Python 27/27 tests passed; Go formatting, Go tests and Go build passed. The additional test covers unique target-country pairs, provider-target bundle de-duplication and per-country NO_IPV6_PROBE counts.
 
 ## Latest complete measurement run — current published v37 + 30 targets
 
@@ -101,6 +102,13 @@ Durable resume point for PR #5. After any conversation/network interruption, rea
 6. Work in short units: one focused change, CI, then checkpoint. Do not run full measurement after work-log-only changes.
 7. After each meaningful phase, update both files and commit them. Documentation/checkpoint-only commits are excluded from push CI; PR validation runs only on opened/reopened/ready_for_review; the full-measurement workflow remains manual on this branch and daily after merge to default. Keep PR #5 Draft unless the owner explicitly approves final review and merge.
 
+## Structured coverage summary metrics
+
+- The collector now adds `globalping_ipv6_probe_unavailable_by_country`, `globalping_distinct_targets_observed`, `globalping_observed_target_country_pairs`, `globalping_possible_target_country_pairs`, `globalping_observed_target_country_pairs_by_country`, and `globalping_provider_target_bundles_observed` to `reachability_summary.json`.
+- Implementation commit: `e63974c8e48282fdb7402ffa18ea23c4bce36f54`; unit-test commit: `6e2ba2b15e49f4af9a6f00615f75a88d75d14f81`.
+- Validation run `42873343359` passed: 27 Python tests, Go formatting, Go tests and Go build. The added unit test checks that repeated tasks do not inflate unique country/target pairs and that missing-IPv6 probe counts use the requested source country.
+- The existing artifact `42867329770` predates these summary fields. Its country and sampling counts were independently derived from raw JSONL and recorded above; the next full measurement will include the structured fields automatically.
+
 ## Phase status
 
 | Phase | State | Evidence |
@@ -111,10 +119,11 @@ Durable resume point for PR #5. After any conversation/network interruption, rea
 | Fair provider scheduler | DONE | 38/38 provider pairs covered |
 | Provider-prefix and exact-IP reports | DONE | latest v37 artifact: 62 provider/prefix rows, 71 IP rows; exact reconciliation |
 | NO_IPV6_PROBE handling | DONE | latest run: 38 classified (RU 31, KZ 6, BY 1); API_ERROR 0 |
-| CI validation | DONE | run #42871418240; 26 Python tests + Go checks |
+| CI validation | DONE | run #42873343359; 27 Python tests + Go checks |
 | Full measurement and artifact review against current v37 release | DONE | run #42867329770; artifact #13787468458; SHA verified locally |
 | Belarus target-source correction | DONE | three reference URLs corrected; CI #42871418240 passed |
 | Daily target-country sampling coverage review | DONE | 30/90 source-country/target pairs in run #42867329770; rotation is multi-day |
+| Structured coverage summary metrics | DONE | code commit e63974c8e48282fdb7402ffa18ea23c4bce36f54; tests 27/27 in run #42873343359 |
 | OONI review / final policy interpretation | DONE with caveats above | 19 anomalies; all confirmed=false and failure=false |
 | Expanded 30-host target catalogue | DONE | 19 new sourced service endpoints; CI #71 and full run #5 passed |
 | Final PR review / owner decision | PENDING | PR #5 remains Draft; owner must review target coverage and base-branch lag |
