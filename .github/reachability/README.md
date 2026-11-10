@@ -111,18 +111,31 @@ Add one entry per actual, publicly reachable service endpoint:
   "role": "service",
   "country_scope": ["RU", "KZ", "BY"],
   "port": 443,
-  "path": "/"
+  "path": "/",
+  "reference_url": "https://official-or-authoritative-source.example/"
 }
 \`\`\`
 
 \`country_scope\` means where to test from; it is not an assertion about the
-service's physical location or ownership. Keep control targets separate from
-services whose reachability is being studied. Do not use arbitrary addresses
-or enumerate IPs from the GeoIP ranges.
+service's physical location or ownership. \`reference_url\` is optional
+catalogue provenance: prefer an official operator, regulator or government
+reference. Keep control targets separate from services whose reachability is
+being studied. Do not use arbitrary addresses or enumerate IPs from the
+GeoIP ranges.
 
-The current catalogue is a seed set of controls and RU/KZ/BY service
-endpoints. It must be extended with the project's agreed real-world target
-inventory before anyone interprets the results as complete service coverage.
+The catalogue currently contains 30 hostnames: two controls and 28 service
+targets across RU, KZ and BY. The expanded seed covers public administration,
+banking/payments, postal services, telecom operators, marketplaces and major
+public digital platforms. It is intentionally a pilot, not a comprehensive
+inventory of every service or every domain behind those brands. A brand may
+use additional hostnames, APIs, CDNs or mobile-app endpoints that are not
+represented here.
+
+Before adding a target, verify the exact hostname and its continued relevance.
+For production-quality coverage claims, the project owner must approve a
+maintained service inventory and include all agreed first-party hostnames and
+critical API endpoints. Until then, \`NO_MATCHED_ENDPOINT\` means only
+"not observed by this seed catalogue", not inaccessible or blocked.
 
 ## CI separation
 
