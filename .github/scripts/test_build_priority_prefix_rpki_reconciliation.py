@@ -78,8 +78,13 @@ class ReconciliationTests(unittest.TestCase):
             root=Path(tmp); evidence,seed=self.setup_inputs(root)
             spot_path=evidence/"priority_prefix_external_spot_checks_v37.tsv"
             spots=self.read_rows(spot_path)
-            spots[0]["STATUS"]="CHECKED_2026-02-30"
+            invalid_status="CHECKED_2026-02-30"
+            spots[0]["STATUS"]=invalid_status
             self.write(spot_path,spots)
+            worklist_path=evidence/"priority_prefix_review_worklist.tsv"
+            worklist=self.read_rows(worklist_path)
+            worklist[0]["EXTERNAL_SPOT_CHECK_STATUS"]=invalid_status
+            self.write(worklist_path,worklist)
             with self.assertRaisesRegex(ValueError,"invalid spot-check calendar date"):
                 build_reconciliation(evidence,seed,root/"out.tsv",root/"stats.txt",expected_count=2)
 
