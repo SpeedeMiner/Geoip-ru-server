@@ -159,7 +159,7 @@
       ],
       "port": 443,
       "path": "/",
-      "reference_url": "https://t.me/s/mintsifry/2608"
+      "reference_url": "https://roskazna.gov.ru/"
     },
     {
       "id": "ru-government",
@@ -198,7 +198,7 @@
       ],
       "port": 443,
       "path": "/",
-      "reference_url": "https://t.me/s/mintsifry/2608"
+      "reference_url": "https://help.mail.ru/legal/terms/mail/ua/"
     },
     {
       "id": "ru-wildberries",
@@ -367,7 +367,7 @@
       ],
       "port": 443,
       "path": "/",
-      "reference_url": "https://t.me/s/belarusbank_channel?before=2446"
+      "reference_url": "https://t.me/s/belarusbank_channel"
     },
     {
       "id": "by-kufar",
