@@ -15,7 +15,7 @@ HEADER = (
     "BGP_ORIGIN_ASNS_WITHOUT_EXACT_IRR", "RDAP_SAMPLE_CONSISTENCY",
     "RDAP_COUNTRIES", "TRIAGE_FLAGS", "REQUIRED_NEXT_ACTION",
     "EVIDENCE_FRESHNESS_WARNING", "EXTERNAL_SPOT_CHECK_STATUS",
-    "EXTERNAL_SPOT_CHECK_PREFIXES", "EXTERNAL_SPOT_CHECK_SUMMARY",
+    "EXTERNAL_SPOT_CHECK_PREFIXES", "EXTERNAL_SPOT_CHECK_SCOPE_RELATION", "EXTERNAL_SPOT_CHECK_SUMMARY",
     "EXTERNAL_SPOT_CHECK_SOURCE_URLS", "STATUS",
 )
 
@@ -86,16 +86,39 @@ def build_worklist(evidence: Path, output: Path, stats_path: Path,
         net = ipaddress.ip_network(prefix, strict=True)
         if row.get("STATUS") != "REVIEW" or row.get("FAMILY") != f"IPv{net.version}":
             raise ValueError(f"invalid family or non-REVIEW triage row: {prefix}")
+    spot_scope_relations: dict[str, str] = {}
     for prefix, row in spots.items():
         if row.get("STATUS") != "CHECKED_2026-11-10" or not row.get("SUMMARY", "").strip():
             raise ValueError(f"invalid or undated spot-check row: {prefix}")
         target = ipaddress.ip_network(prefix, strict=True)
-        observed = [x.strip() for x in row.get("OBSERVED_PREFIXES", "").split("|") if x.strip()]
+        observed = [ipaddress.ip_network(x.strip(), strict=True)
+                    for x in row.get("OBSERVED_PREFIXES", "").split("|") if x.strip()]
         urls = [x.strip() for x in row.get("SOURCE_URLS", "").split("|") if x.strip()]
         if not observed or not urls or any(not u.startswith("https://") for u in urls):
             raise ValueError(f"spot-check missing exact scope or HTTPS source: {prefix}")
-        if any(not target.overlaps(ipaddress.ip_network(x, strict=True)) for x in observed):
-            raise ValueError(f"spot-check NLRI is unrelated to target prefix: {prefix}")
+        relations = set()
+        for network in observed:
+            if network == target:
+                relations.add("EXACT")
+            elif network.subnet_of(target):
+                relations.add("MORE_SPECIFIC")
+            elif target.subnet_of(network):
+                relations.add("COVERED_BY")
+            else:
+                raise ValueError(f"spot-check NLRI is unrelated to target prefix: {prefix}")
+        if relations == {"EXACT"}:
+            relation = "EXACT_ONLY"
+        elif relations == {"MORE_SPECIFIC"}:
+            relation = "MORE_SPECIFIC_ONLY"
+        elif relations == {"COVERED_BY"}:
+            relation = "COVERED_BY_ONLY"
+        elif relations == {"EXACT", "MORE_SPECIFIC"}:
+            relation = "EXACT_AND_MORE_SPECIFIC"
+        elif relations == {"EXACT", "COVERED_BY"}:
+            relation = "EXACT_AND_COVERED_BY"
+        else:
+            relation = "MIXED_OVERLAPPING_SCOPE"
+        spot_scope_relations[prefix] = relation
 
     def track(row):
         flags = {x.strip() for x in row.get("TRIAGE_FLAGS", "").split("|") if x.strip()}
@@ -131,6 +154,7 @@ def build_worklist(evidence: Path, output: Path, stats_path: Path,
             "EVIDENCE_FRESHNESS_WARNING": "BGP origins come from the pinned 90-day archive; refresh exact NLRI and VRPs before any policy decision.",
             "EXTERNAL_SPOT_CHECK_STATUS": spot.get("STATUS", "NOT_SPOT_CHECKED"),
             "EXTERNAL_SPOT_CHECK_PREFIXES": spot.get("OBSERVED_PREFIXES", ""),
+            "EXTERNAL_SPOT_CHECK_SCOPE_RELATION": spot_scope_relations.get(prefix, "NOT_SPOT_CHECKED"),
             "EXTERNAL_SPOT_CHECK_SUMMARY": spot.get("SUMMARY", ""),
             "EXTERNAL_SPOT_CHECK_SOURCE_URLS": spot.get("SOURCE_URLS", ""),
             "STATUS": "REVIEW",
