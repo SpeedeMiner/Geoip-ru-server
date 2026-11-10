@@ -10,14 +10,6 @@ on:
         type: string
   schedule:
     - cron: "17 4 * * *"
-  # Temporary, path-scoped trigger for one post-v37 baseline measurement.
-  # Remove this block after the current catalogue refresh has completed.
-  push:
-    branches:
-      - feature/reachability-full-ru-kz-by
-    paths:
-      - ".github/reachability/targets.json"
-      - ".github/workflows/reachability-full.yml"
 
 permissions:
   contents: read
