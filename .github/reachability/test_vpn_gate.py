@@ -2,8 +2,10 @@ import base64
 import csv
 import io
 import pathlib
+import subprocess
 import tempfile
 import unittest
+from unittest.mock import patch
 
 import vpn_gate
 
@@ -124,6 +126,28 @@ class OpenVPNProfileSafetyTests(unittest.TestCase):
         )
         with self.assertRaisesRegex(ValueError, "CA"):
             vpn_gate.inspect_openvpn_profile(config)
+
+
+    def test_firewall_snapshots_are_restored_when_killswitch_setup_fails(self):
+        calls = []
+
+        def fake_run(args, *, input_text=None, check=True):
+            calls.append((args, input_text))
+            if args == ["iptables-save"]:
+                return subprocess.CompletedProcess(args, 0, stdout="*filter\\nCOMMIT\\n", stderr="")
+            if args == ["ip6tables-save"]:
+                return subprocess.CompletedProcess(args, 0, stdout="*filter\\nCOMMIT\\n", stderr="")
+            if args == ["ip6tables", "-F", "OUTPUT"]:
+                raise subprocess.CalledProcessError(1, args, stderr="simulated setup failure")
+            return subprocess.CompletedProcess(args, 0, stdout="", stderr="")
+
+        guard = vpn_gate.FirewallGuard("8.8.8.8", "tcp-client", 443)
+        with patch.object(vpn_gate, "run_command", side_effect=fake_run):
+            with self.assertRaises(subprocess.CalledProcessError):
+                guard.__enter__()
+
+        restore_commands = [call[0][0] for call in calls if call[0][0].endswith("-restore")]
+        self.assertEqual(restore_commands, ["iptables-restore", "ip6tables-restore"])
 
 
 if __name__ == "__main__":
