@@ -109,7 +109,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          base="https://github.com/\${GITHUB_REPOSITORY}/releases/download/latest-geoip-client-v35"
+          base="https://github.com/${GITHUB_REPOSITORY}/releases/download/latest-geoip-client-v35"
           workdir="$(mktemp -d)"
           generated="$workdir/generated"
           mkdir -p "$generated"
