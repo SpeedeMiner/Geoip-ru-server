@@ -414,6 +414,10 @@ class CoverageSummaryTests(unittest.TestCase):
                 "target_id": "service-a", "result": "DNS_ANSWER",
             },
             {
+                "country_requested": "KZ", "asn_requested": 9198,
+                "target_id": "service-a", "result": "DNS_NO_ANSWER",
+            },
+            {
                 "country_requested": "BY", "asn_requested": 6697,
                 "target_id": "service-b", "result": "NO_IPV6_PROBE",
             },
@@ -433,6 +437,7 @@ class CoverageSummaryTests(unittest.TestCase):
             {"BY": 1, "KZ": 1, "RU": 1},
         )
         self.assertEqual(summary["globalping_provider_target_bundles_observed"], 3)
+        self.assertEqual(summary["globalping_dns_no_answers"], 1)
 
 
 if __name__ == "__main__":
