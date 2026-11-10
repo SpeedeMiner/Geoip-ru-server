@@ -47,7 +47,7 @@ PROVIDER_FIELDS = [
     "SERVER_ASN", "SERVER_PREFIX", "SERVER_ORG", "SERVER_PTR",
     "SERVER_GEOIP_CATEGORY", "SERVER_GEOIP_RU_PREFIX",
     "VPN_SCORE", "VPN_PING_MS", "VPN_SPEED_BPS", "VPN_SESSIONS",
-    "VPN_UPTIME", "EXIT_IP", "EXIT_COUNTRY", "EXIT_ASN",
+    "VPN_UPTIME", "ERROR", "EXIT_IP", "EXIT_COUNTRY", "EXIT_ASN",
     "EXIT_PREFIX", "EXIT_ORG", "EXIT_GEOIP_CATEGORY",
     "EXIT_GEOIP_RU_PREFIX", "CONNECTION_RESULT", "TARGETS_TESTED",
 ]
@@ -496,7 +496,10 @@ def run(args: argparse.Namespace) -> int:
     for server in selected:
         server_ip = server["server_ip"]
         server_category, server_prefix = runner.map_address(server_ip, networks)
-        server_meta = ip_metadata(f"https://ipwho.is/{server_ip}")
+        try:
+            server_meta = ip_metadata(f"https://ipwho.is/{server_ip}")
+        except ProbeError:
+            server_meta = {"asn": 0, "org": ""}
         server_origin = network_info(server_ip)
         server_asn = server_meta["asn"] or server_origin["asn"]
         server_meta["asn"] = server_asn
