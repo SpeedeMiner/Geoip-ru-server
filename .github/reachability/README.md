@@ -18,6 +18,45 @@ It does not edit or publish \`geoip_RU.dat\`.
   a bounded number of measurements, and saves returned results or explicit
   pending measurement IDs.
 
+## Russian ISP access-network measurements through VPN Gate
+
+The original Globalping collector remains a separate, supplementary vantage-point source.
+Its `eyeball-network` tag is not proof of a residential line.
+
+A second, **manual-only** workflow, `Russian ISP VPN Gate reachability`, tests from
+Russian VPN Gate volunteer exits. `vpnobratno.info` describes its Russian servers
+as VPN Gate volunteer servers using Russian ISP connections; the implementation
+uses the official VPN Gate CSV API rather than scraping the directory page.
+
+The workflow defaults to three exits and has a hard cap of six per run. It:
+
+- selects only VPN Gate records with country code RU, a public IPv4 address and a usable OpenVPN profile;
+- validates the profile structure, then builds a minimal client configuration from an allowlist; untrusted script, plugin, route and external-file directives are never executed or copied;
+- forces the tunnel remote to the API-advertised IP and port;
+- applies an IPv4 OUTPUT kill-switch (only the VPN remote and tunnel interface are allowed) and blocks host IPv6 egress while connected;
+- verifies that the actual public exit IP is in Russia before testing any service;
+- records the actual exit IP, country, ASN/prefix/organization metadata, and whether the source exit IP maps to a RU or PRIVATE prefix in the published GeoIP inventory;
+- tests only the catalogue's RU-scope hostnames using low-volume DNS A/AAAA lookups and HTTPS HEAD requests.
+
+Run it manually from the Actions tab, choosing the PR #5 feature branch and a limit of 1–3 servers for the first pilot. It is intentionally not part of the daily schedule. Each server is tested sequentially; a non-RU exit is rejected and no service requests are sent through it.
+
+Artifacts include `vpn_gate_providers.tsv`, `vpn_gate_measurements.jsonl`,
+`vpn_gate_geoip_candidates.tsv` and `vpn_gate_summary.json`. A candidate means
+only that IP metadata reports a Russian exit while the current GeoIP inventory
+does not map it to RU. It is a review lead, not an automatic CIDR addition.
+
+**Important limits:** VPN Gate nodes are volunteer-operated. A Russian egress
+address or ISP/ASN label does not attest that the host is a household subscriber;
+it may be a different access or enterprise network. Validate the operator,
+origin ASN, route visibility and access-network type before changing the RU list.
+The IPv6 host path is blocked during these IPv4 tunnel tests; AAAA DNS answers are
+recorded, but IPv6 HTTPS reachability is not claimed. Public VPN relays may retain
+connection logs, so the runner sends only minimal public requests and never sends
+credentials or user data to the measured services.
+
+This workflow is a measurement backend only. It does not alter `geoip_RU.dat`,
+the main builder, release artifacts, DIRECT policy, or ASN allowlists.
+
 ## What “full” means
 
 The inventory exporter reads the actual published \`release/geoip_RU.dat\`
