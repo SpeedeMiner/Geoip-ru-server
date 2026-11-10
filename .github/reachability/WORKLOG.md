@@ -153,3 +153,15 @@ Durable resume point for PR #5. After any conversation/network interruption, rea
 - Recounted all 180 rows in `globalping_measurements.jsonl`: `DNS_NO_ANSWER=33`, `DNS_ANSWER=55`, `ACCESSIBLE=38`, `INCONCLUSIVE=16`, `NO_IPV6_PROBE=35`, `NO_PROBE=3`; no `API_ERROR` rows.
 - `reachability_summary.json` independently reports `globalping_dns_no_answers=33`; this agrees with the raw JSONL. The checkpoint's `dns_no_answer_count_raw_derived=35` was stale documentation (not the artifact value) and is corrected to 33 in the following checkpoint commit.
 - No runner, tests, workflow, target catalogue, GeoIP input/output or production files changed. This documentation-only correction does not require another full measurement run or code-validation CI.
+
+### 2026-11-10 — Provider-prefix TSV schema correction and catalogue provenance — IMPLEMENTED / VALIDATION PENDING
+
+- Re-downloaded and independently re-hashed full-run artifact `geoip-ru-reachability-42877815872`; SHA-256 remains `d4858a2ed63f208fd5146ae06b4fb586410e37db6b90e7232aacdab5ab01a137`.
+- Artifact inspection found duplicate `INCONCLUSIVE` header columns in `reachability_by_provider_prefix.tsv`. Corrected the field list to one unique schema constant, `PROVIDER_PREFIX_REPORT_FIELDS`, and added a regression test that writes the header and asserts it is unique.
+- Updated README's full-run sampling example to the latest artifact: 45 complete bundles, 38 discovered provider pairs (RU 29, KZ 6, BY 3), 32/90 observed source-country/target pairs (RU 23, KZ 6, BY 3), 37 provider pairs with result metadata; three `NO_PROBE` tasks are coverage gaps.
+- Completed provenance for all service targets: catalogue remains 30 unique hostnames (2 controls + 28 services), with a non-empty `reference_url` on all 28 service entries and no duplicate domains. Added references for the nine original service targets and strengthened the Gosuslugi, Mail and Belarusbank references.
+- Verified from the actual branch files: JSON parses, all 28 service entries have `reference_url`, and all 30 domains are unique.
+- Commits: runner schema fix `8776071fffeea3e465e7f2fd95f77dec10a12acf`; TSV regression test `9b03f4c7cc35ff8009b37b1c31d56c95ae6a8499`; README coverage correction `de71375794ccdfe2c114ac1199b417d057f63992`; target provenance commits `4e8071816faf554fe2acd76e153afa1eee74a1c1` and `07f6d90867ef27af4970be74087acb68eb91ee5c`.
+- No measurement workflow re-run; no GeoIP protobuf, production builder, allowlist, DIRECT policy, main or release changes.
+- Validation note: the push path filter includes `runner.py`, `test_runner.py` and `targets.json`, but the available GitHub connector did not expose push-triggered run records or commit statuses in this session. Do not treat the previous green run #42877605801 as validation of these later code changes.
+- Resume from: confirm `Reachability validation` success for current branch head `07f6d90867ef27af4970be74087acb68eb91ee5c` (expected 29 Python tests plus Go formatting/tests/build). Keep PR #5 Draft; no merge or branch rewrite.
