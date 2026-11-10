@@ -37,11 +37,18 @@ with endpoint-based observations, not a claim that every IP address was tested.
 
 ## Probe selection and limits
 
-Globalping's public probe list is sampled at run time. One task is planned for
-each configured target, country/ASN pair and measurement type/address family.
-Tasks rotate by UTC date; at most 180 Globalping tests are scheduled per daily
-run by default (hard safety maximum 220), with at most five concurrent
-measurements. Rate limiting stops new submissions and is recorded.
+Globalping's public probe list is sampled at run time. Tasks are selected as
+complete per-provider bundles: DNS A + DNS AAAA + HTTPS IPv4 + HTTPS IPv6 for
+one target. The scheduler round-robins across every discovered country/ASN
+provider before assigning a second target bundle to any provider. Both provider
+order and target choice rotate deterministically by UTC date. This avoids a
+continuous slice of a sorted task list starving KZ/BY or later ASNs.
+
+At most 180 Globalping tasks are scheduled per daily run by default (hard
+safety maximum 220), with at most five concurrent measurements. The budget is
+rounded down to a multiple of four so a provider/target bundle is never split.
+The summary records discovered provider pairs, covered/uncovered pairs and
+country coverage. Rate limiting stops new submissions and is recorded.
 
 The Globalping \`eyeball-network\` tag is not a residential-connection
 attestation. The country, ASN and tags returned by the actual test result are
