@@ -3516,6 +3516,49 @@ jobs:
               if required_group not in company_groups:
                   raise SystemExit(f"Company ASN allowlist is missing required group: {required_group}")
 
+          from collections import Counter
+          active_company_country_counts = Counter(
+              row[5].upper() or "UNKNOWN"
+              for row in company_rows[1:]
+              if len(row) == len(expected_company_header) and row[4] == "yes"
+          )
+          expected_active_company_distribution = ", ".join(
+              f"{country}={count}" for country, count in sorted(active_company_country_counts.items())
+          ) or "none"
+          inactive_company_asns = {
+              row[0] for row in company_rows[1:]
+              if len(row) == len(expected_company_header) and row[4] == "no"
+          }
+          bgp_stats_text = open(bgp_stats, encoding="utf-8").read()
+          active_distribution_prefix = (
+              "Company ASN countryCode distribution (active rows retained in company manifest): "
+          )
+          active_distribution_lines = [
+              line for line in bgp_stats_text.splitlines()
+              if line.startswith(active_distribution_prefix)
+          ]
+          if len(active_distribution_lines) != 1 or active_distribution_lines[0][len(active_distribution_prefix):] != expected_active_company_distribution:
+              raise SystemExit(
+                  "Company ASN active countryCode distribution does not reconcile with the active company manifest: "
+                  f"expected={expected_active_company_distribution}"
+              )
+          metadata_only_prefix = (
+              "Company ASN metadata rows with zero accepted prefixes, omitted from active ASN manifest: "
+          )
+          metadata_only_lines = [
+              line for line in bgp_stats_text.splitlines()
+              if line.startswith(metadata_only_prefix)
+          ]
+          if len(metadata_only_lines) != 1:
+              raise SystemExit("Company ASN metadata-only summary is missing or duplicated")
+          import re
+          reported_inactive_asns = set(re.findall(r"AS[0-9]+", metadata_only_lines[0]))
+          if reported_inactive_asns != inactive_company_asns:
+              raise SystemExit(
+                  "Company ASN metadata-only list does not reconcile with inactive manifest rows: "
+                  f"reported={sorted(reported_inactive_asns)} manifest={sorted(inactive_company_asns)}"
+              )
+
           quality_text = open(quality, encoding="utf-8").read()
           required_quality_markers = (
               "UNIFIED DIRECT REGION RU+BY+KZ", "BLOCKED DESTINATION EXCLUSIONS",
@@ -3545,7 +3588,9 @@ jobs:
               raise SystemExit("Quality report is missing or disagrees with the curated company-ASN registry count")
           for marker in (
               "Unique prefixes originated by curated Russian-company/affiliate ASNs:",
-              "Company ASN ipverse countryCode distribution (audit only):",
+              "Company ASN countryCode distribution (all ipverse metadata observations, including zero-prefix rows):",
+              "Company ASN countryCode distribution (active rows retained in company manifest):",
+              "Company ASN metadata rows with zero accepted prefixes, omitted from active ASN manifest:",
               "Country handling: ipverse countryCode is not used as an inclusion filter",
               "Per-ASN evidence and prefix counts:",
           ):
