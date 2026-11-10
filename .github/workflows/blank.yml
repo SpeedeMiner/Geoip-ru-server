@@ -3765,7 +3765,7 @@ jobs:
             geoip_RU_category_audit.tsv
             geoip_RU_quality_report.txt
             geoip_RU_additional_provenance.tsv
-            geoip_RU_asn_manifest.txt
+            geoip_RU_BY_KZ_asn_manifest.txt
             geoip_RU_company_asn_manifest.tsv
             geoip_RU_company_asns.txt
             geoip_RU_BY_KZ_asn_stats.txt
@@ -3924,7 +3924,7 @@ jobs:
           echo "Company prefix review: https://raw.githubusercontent.com/${{ github.repository }}/release/geoip_RU_company_prefix_review.tsv"
           echo "Selected regional/company origin-prefix review: https://raw.githubusercontent.com/${{ github.repository }}/release/geoip_RU_selected_origin_prefix_review.tsv"
           echo "Source contribution report: https://raw.githubusercontent.com/${{ github.repository }}/release/geoip_RU_source_counts.txt"
-          echo "ASN manifest: https://raw.githubusercontent.com/${{ github.repository }}/release/geoip_RU_asn_manifest.txt"
+          echo "ASN manifest: https://raw.githubusercontent.com/${{ github.repository }}/release/geoip_RU_BY_KZ_asn_manifest.txt"
           echo "Company ASN manifest: https://raw.githubusercontent.com/${{ github.repository }}/release/geoip_RU_company_asn_manifest.tsv"
           echo "RIR RU resources: https://raw.githubusercontent.com/${{ github.repository }}/release/geoip_RU_rir_registered_prefixes.txt"
           echo "Global BGP observation set: https://raw.githubusercontent.com/${{ github.repository }}/release/geoip_RU_global_bgp_prefixes.txt"
