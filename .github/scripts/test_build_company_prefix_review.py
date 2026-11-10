@@ -146,6 +146,18 @@ class CompanyPrefixReviewTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "valid SHA-256"):
                 build_review(company, manifest, prefixes, provenance, archive, root / "review.tsv", root / "stats.txt")
 
+    def test_snapshot_size_must_match_provenance(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            company, manifest, prefixes, provenance, archive = self.make_inputs(root)
+            rows = provenance.read_text(encoding="utf-8").splitlines()
+            fields = rows[1].split("\\t")
+            fields[4] = str(archive.stat().st_size + 1)
+            rows[1] = "\\t".join(fields)
+            provenance.write_text("\\n".join(rows) + "\\n", encoding="utf-8")
+            with self.assertRaisesRegex(ValueError, "BGP snapshot size mismatch"):
+                build_review(company, manifest, prefixes, provenance, archive, root / "review.tsv", root / "stats.txt")
+
     def test_global_bgp_archive_must_cover_every_company_prefix(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
