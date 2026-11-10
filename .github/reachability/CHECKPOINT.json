@@ -1,13 +1,13 @@
 {
   "schema_version": 1,
-  "updated_at_utc": "2026-11-10T16:52:00Z",
+  "updated_at_utc": "2026-11-10T16:56:04.265Z",
   "repository": "SpeedeMiner/Geoip-ru-server",
   "pull_request": 5,
   "branch": "feature/reachability-full-ru-kz-by",
   "observed_pr_head_sha": "1aa449c570b34fb506c9926a25e104fea093f272",
   "observed_pr_base_sha": "c71b5eff48f34b363ef2430ba6b5c41603f36126",
   "state": "IN_PROGRESS",
-  "current_phase": "FIX_PROVIDER_SCHEDULER_BIAS",
+  "current_phase": "VALIDATE_FAIR_PROVIDER_SCHEDULER",
   "completed": [
     "repository_reconnaissance",
     "protobuf_inventory_exporter",
@@ -49,18 +49,20 @@
     "id": "SCHEDULER_COUNTRY_PROVIDER_STARVATION",
     "severity": "HIGH_FOR_COVERAGE_INTERPRETATION",
     "description": "A continuous slice of a country/ASN-sorted task list caused successful measurements to cluster in three RU ASNs; KZ/BY probes were not adequately represented. The first-run reachability totals are exploratory only.",
-    "required_fix": "Stratified/round-robin selection across (country, ASN) providers; first give each provider a complete DNS A/AAAA + HTTPS IPv4/IPv6 target bundle, then allocate additional target bundles; deterministically rotate providers and targets by UTC date."
+    "required_fix": "Implemented: round-robin per-provider complete four-task bundles; rotate provider/target choice by UTC date; do not split bundles when budget is short. CI run 42859374441 failed only because the earlier test asserted partial bundle output; expectation and scheduler were corrected.",
+    "status": "FIX_IMPLEMENTED_CI_PENDING",
+    "fix_commit": "887e92c42b977b796650890d66448832ce7b91fa",
+    "test_commit": "66eef61fc433b7eb1f44d71fe88f24cd8e20ea70"
   },
   "next_steps": [
-    "Implement fair provider-bundle scheduling in runner.py",
-    "Add unit tests for RU/KZ/BY coverage and no provider starvation",
-    "Run reachability validation CI and require success",
-    "Run full reachability workflow with the corrected scheduler",
-    "Inspect artifacts and verify measurements from all three countries",
-    "Review two OONI anomaly records in raw evidence",
-    "Optionally configure RIPE_ATLAS_API_KEY and repeat Atlas checks",
+    "Confirm Reachability validation CI after atomic-bundle test correction",
+    "Run full reachability workflow with fair provider scheduler",
+    "Verify provider coverage and successful probe results separately for RU, KZ, BY",
+    "Review API_ERROR rows including IPv6 probe availability and keep them out of block conclusions",
+    "Review two OONI anomaly records from raw measurements",
+    "Keep RIPE Atlas skipped unless RIPE_ATLAS_API_KEY is configured",
     "Update WORKLOG.md and CHECKPOINT.json after each completed phase",
-    "Review PR #5; keep Draft until coverage and quality are acceptable"
+    "Review PR #5 and keep Draft until the measurement results are representative"
   ],
   "policy_invariants": {
     "geoip_RU_dat_mutated": false,
