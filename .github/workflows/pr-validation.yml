@@ -54,7 +54,7 @@ jobs:
             test -s "$workdir/$file"
           done
 
-          bgp_url="$(awk -F '\\t' '$2 == "as-ip-blocks.tar.gz" && $6 == "downloaded" {print $3}' \
+          bgp_url="$(awk -F '\t' '$2 == "as-ip-blocks.tar.gz" && $6 == "downloaded" {print $3}' \
             "$workdir/geoip_RU_input_provenance.tsv")"
           [[ "$bgp_url" == https://* ]] || { echo "::error::Invalid BGP archive URL in provenance manifest"; exit 1; }
           curl --fail --location --silent --show-error \
@@ -76,5 +76,5 @@ jobs:
           echo "Current release prefix-review smoke test:"
           cat "$workdir/geoip_RU_company_prefix_review_stats.txt"
           echo "Company-origin prefixes without a selected regional RIR-RU/BY/KZ origin:"
-          awk -F '\t' '$1 !~ /^#/ && $1 != "PREFIX" && $11 == "COMPANY_ASN_ONLY" { print $1 "\tcompany_asn=" $4 "\tipverse_country=" $8 }' \
+          awk -F '\t' '$1 !~ /^#/ && $1 != "PREFIX" && $13 == "COMPANY_ASN_ONLY" { print $1 "\tcompany_asn=" $4 "\tselected_asn=" $9 "\tglobal_origins=" $14 "\tglobal_country=" $15 "\tMOAS=" $16 }' \
             "$workdir/geoip_RU_company_prefix_review.tsv"
