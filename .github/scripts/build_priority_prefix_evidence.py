@@ -628,7 +628,7 @@ def build_evidence(company_queue: Path, output_dir: Path, max_workers: int = 5) 
         )
         irr_metadata_status = "OK"
         (output_dir / "irr_sources_metadata.json").write_text(
-            json.dumps(metadata_payload, ensure_ascii=False, sort_keys=True, indent=2) + "\\n",
+            json.dumps(metadata_payload, ensure_ascii=False, sort_keys=True, indent=2) + "\n",
             encoding="utf-8",
         )
     else:
@@ -636,7 +636,7 @@ def build_evidence(company_queue: Path, output_dir: Path, max_workers: int = 5) 
         irr_metadata_sha = "UNAVAILABLE"
         irr_metadata_status = metadata_error or f"HTTP_{metadata_status}"
         (output_dir / "irr_sources_metadata.json").write_text(
-            json.dumps({"query_status": irr_metadata_status}, ensure_ascii=False, sort_keys=True, indent=2) + "\\n",
+            json.dumps({"query_status": irr_metadata_status}, ensure_ascii=False, sort_keys=True, indent=2) + "\n",
             encoding="utf-8",
         )
     # Metadata deployments may omit the GRS list even though the RIPE Database
