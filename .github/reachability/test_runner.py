@@ -101,6 +101,29 @@ class ReachabilityClassificationTests(unittest.TestCase):
         self.assertEqual(result, "DNS_NXDOMAIN")
 
 
+    def test_atlas_probe_verifies_nested_status_country_and_asn(self):
+        probe = {
+            "id": 123,
+            "country_code": "KZ",
+            "asn_v4": 9198,
+            "asn_v6": 9198,
+            "status": {"id": 1, "name": "Connected"},
+        }
+        self.assertTrue(runner.atlas_probe_matches(probe, "KZ", 9198, 4))
+        self.assertTrue(runner.atlas_probe_matches(probe, "KZ", 9198, 6))
+        self.assertFalse(runner.atlas_probe_matches(probe, "RU", 9198, 4))
+        self.assertFalse(runner.atlas_probe_matches(probe, "KZ", 12389, 4))
+
+    def test_atlas_probe_rejects_disconnected_or_missing_status(self):
+        disconnected = {
+            "country_code": "RU", "asn_v4": 12345,
+            "status": {"id": 2, "name": "Disconnected"},
+        }
+        missing = {"country_code": "RU", "asn_v4": 12345}
+        self.assertFalse(runner.atlas_probe_matches(disconnected, "RU", 12345, 4))
+        self.assertFalse(runner.atlas_probe_matches(missing, "RU", 12345, 4))
+
+
 class TaskAndReportTests(unittest.TestCase):
     def test_tasks_include_dns_and_https_for_each_address_family(self):
         targets = [{
