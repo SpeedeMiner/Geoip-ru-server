@@ -85,7 +85,7 @@ class ReconciliationTests(unittest.TestCase):
 
     def read_rows(self,path):
         with path.open(encoding="utf-8",newline="") as f:
-            return list(csv.DictReader(f,delimiter="\\t"))
+            return list(csv.DictReader(f,delimiter="\t"))
 
     def test_rejects_missing_archived_invalid_pair(self):
         with tempfile.TemporaryDirectory() as tmp:
