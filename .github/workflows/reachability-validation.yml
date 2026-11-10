@@ -5,13 +5,19 @@ on:
     branches:
       - feature/reachability-full-ru-kz-by
     paths:
-      - ".github/reachability/**"
+      - ".github/reachability/runner.py"
+      - ".github/reachability/test_runner.py"
+      - ".github/reachability/targets.json"
+      - ".github/reachability/inventory/**"
       - ".github/workflows/reachability-validation.yml"
   pull_request:
     branches:
       - main
     paths:
-      - ".github/reachability/**"
+      - ".github/reachability/runner.py"
+      - ".github/reachability/test_runner.py"
+      - ".github/reachability/targets.json"
+      - ".github/reachability/inventory/**"
       - ".github/workflows/reachability-validation.yml"
 
 permissions:
