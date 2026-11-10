@@ -75,7 +75,10 @@ def request_json(
 
 def read_inventory(path: pathlib.Path) -> tuple[list[dict[str, str]], dict[str, list[ipaddress._BaseNetwork]]]:
     rows: list[dict[str, str]] = []
-    nets: dict[str, list[ipaddress._BaseNetwork]] = {"RU": [], "PRIVATE": []}
+    nets: dict[str, Any] = {
+        "RU": [], "PRIVATE": [],
+        "_RU_LOOKUP": set(), "_PRIVATE_LOOKUP": set(),
+    }
     with path.open(encoding="utf-8", newline="") as stream:
         reader = csv.DictReader(stream, delimiter="\t")
         expected = ["CATEGORY", "PREFIX", "FAMILY", "ADDRESS_COUNT"]
@@ -97,6 +100,7 @@ def read_inventory(path: pathlib.Path) -> tuple[list[dict[str, str]], dict[str, 
             normalized["CATEGORY"] = category
             rows.append(normalized)
             nets[category].append(network)
+            nets[f"_{category}_LOOKUP"].add(network.with_prefixlen)
     if not nets["RU"] or not nets["PRIVATE"]:
         raise ValueError("Inventory must contain non-empty RU and PRIVATE categories")
     for direct in nets["RU"]:
@@ -117,13 +121,21 @@ def map_address(
         ip = ipaddress.ip_address(address)
     except ValueError:
         return "INVALID_ADDRESS", ""
-    # Exact-prefix lookup from most-specific to least-specific.
+    # Longest-prefix lookup against O(1) string sets. The inventory may contain
+    # tens of thousands of prefixes; scanning the full list for each address
+    # would make endpoint-to-CIDR mapping unnecessarily expensive.
+    private_lookup = networks.get("_PRIVATE_LOOKUP")
+    ru_lookup = networks.get("_RU_LOOKUP")
+    if private_lookup is None:
+        private_lookup = {item.with_prefixlen for item in networks["PRIVATE"]}
+    if ru_lookup is None:
+        ru_lookup = {item.with_prefixlen for item in networks["RU"]}
     for prefix_len in range(ip.max_prefixlen, -1, -1):
-        candidate = ipaddress.ip_network((ip, prefix_len), strict=False)
-        if candidate in networks["PRIVATE"]:
-            return "PRIVATE", candidate.with_prefixlen
-        if candidate in networks["RU"]:
-            return "RU", candidate.with_prefixlen
+        candidate = ipaddress.ip_network((ip, prefix_len), strict=False).with_prefixlen
+        if candidate in private_lookup:
+            return "PRIVATE", candidate
+        if candidate in ru_lookup:
+            return "RU", candidate
     return "OUTSIDE_GEOIP_RU", ""
 
 
