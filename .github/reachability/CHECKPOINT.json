@@ -1,14 +1,14 @@
 {
   "schema_version": 1,
-  "updated_at_utc": "2026-11-10T18:30:42.715Z",
+  "updated_at_utc": "2026-11-10T18:35:48.093Z",
   "repository": "SpeedeMiner/Geoip-ru-server",
   "pull_request": 5,
   "pull_request_url": "https://github.com/SpeedeMiner/Geoip-ru-server/pull/5",
   "branch": "feature/reachability-full-ru-kz-by",
-  "recorded_pr_head_before_checkpoint_commit": "428c15e656d76f78b2c6edc1ff36b4c122be54da",
+  "recorded_pr_head_before_checkpoint_commit": "9ecdc7c3463d93a9c36ba66a4eb4476e994ff948",
   "base_sha": "a68e5d6589361814cb1cfedd2af7857e4af806fa",
-  "state": "READY_FOR_OWNER_REVIEW",
-  "current_phase": "FINAL_PR_OWNER_REVIEW",
+  "state": "VERIFYING_DNS_NO_ANSWER_SUMMARY",
+  "current_phase": "DNS_NO_ANSWER_FULL_RUN_IN_PROGRESS",
   "completed": [
     "repository_reconnaissance",
     "protobuf_inventory_exporter",
@@ -179,11 +179,11 @@
     "eyeball_network_is_proof_of_residential": false
   },
   "next_steps": [
+    "Check full run 42876578975; do not start another run while it is in progress. If successful, download artifact, verify digest, and compare globalping_dns_no_answers to raw JSONL DNS_NO_ANSWER count.",
     "Owner review PR #5; it remains Draft and must not be merged without explicit owner approval.",
-    "Update/rebase the PR branch onto current main (currently 29 commits behind) in a controlled operation, then rerun CI and assess conflicts.",
-    "Review the expanded 30-target catalogue against the project-approved first-party service and API inventory; one daily sample is only 30/90 source-country/target pairs.",
-    "The latest full artifact 42874077069 verifies the structured coverage summary; the DNS_NO_ANSWER summary field was added afterward and will appear in the next full run.",
-    "Daily schedule becomes active only after merge into the repository default branch; assess multi-day provider/target coverage then.",
+    "Update/rebase the PR branch onto current main (29 commits behind at last comparison) in a controlled operation, then rerun CI and assess conflicts.",
+    "Review the 30-target catalogue against the project-approved first-party service/API inventory; one daily sample is only 30/90 source-country/target pairs.",
+    "Daily schedule becomes active only after merge into repository default branch; assess multi-day provider/target coverage then.",
     "Optionally configure RIPE_ATLAS_API_KEY if Atlas measurements are desired.",
     "Keep all observations review-only; do not modify geoip_RU.dat or classify untested prefixes as blocked."
   ],
@@ -209,5 +209,14 @@
     "manual_dispatch_available_on_feature_branch": true,
     "daily_schedule_effective_only_after_default_branch_merge": true,
     "temporary_full_workflow_push_trigger_removed": true
+  },
+  "in_progress_full_run": {
+    "run_id": 42876578975,
+    "trigger_commit": "aed7583c69fb5a996ea119ba07f13470d85c6a1c",
+    "cleanup_commit": "00c591e8fd0bbda1ddf9e01574dcc739e302288a",
+    "status": "IN_PROGRESS_AT_LAST_CHECK",
+    "artifact_uploaded": false,
+    "expected_new_field": "globalping_dns_no_answers",
+    "next_action": "Check run 42876578975; do not start a duplicate run."
   }
 }
