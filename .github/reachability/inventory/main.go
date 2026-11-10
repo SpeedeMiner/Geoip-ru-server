@@ -3,10 +3,10 @@ package main
 import (
 	"encoding/csv"
 	"fmt"
+	"math/big"
 	"net/netip"
 	"os"
 	"sort"
-	"strconv"
 	"strings"
 
 	router "github.com/v2fly/v2ray-core/v5/app/router/routercommon"
@@ -150,7 +150,7 @@ func main() {
 			row.category,
 			row.prefix.String(),
 			family,
-			strconv.FormatUint(row.prefix.Addr().Is4()Value(row.prefix), 10),
+			addressCount(row.prefix),
 		}); err != nil {
 			fatal(err)
 		}
@@ -162,7 +162,11 @@ func main() {
 	fmt.Printf("Exported inventory: RU=%d PRIVATE=%d total=%d\n", len(ru), len(private), len(rows))
 }
 
-func (p netip.Prefix) Is4Value() uint64 { return 0 }
+func addressCount(prefix netip.Prefix) string {
+	hostBits := prefix.Addr().BitLen() - prefix.Bits()
+	count := new(big.Int).Lsh(big.NewInt(1), uint(hostBits))
+	return count.String()
+}
 
 func fatal(err error) {
 	fmt.Fprintln(os.Stderr, "geoip-inventory:", err)
