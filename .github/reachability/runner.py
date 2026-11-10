@@ -250,6 +250,21 @@ def rotate_tasks(tasks: list[dict[str, Any]], budget: int, day: dt.date | None =
     return selected, {"total_tasks": len(tasks), "selected_tasks": len(selected), "offset": offset}
 
 
+def globalping_probe_metadata(probe: dict[str, Any]) -> dict[str, Any]:
+    """Normalize Globalping probe descriptors from both /probes and measurement results."""
+    location = probe.get("location")
+    if not isinstance(location, dict):
+        # MeasurementResultItem.probe is a flattened ProbeLocation object.
+        location = probe
+    return {
+        "country": str(location.get("country") or "").upper(),
+        "asn": location.get("asn"),
+        "network": location.get("network") or "",
+        "city": location.get("city") or "",
+        "tags": set(probe.get("tags") or location.get("tags") or []),
+    }
+
+
 def classify_globalping_result(
     expected_country: str,
     expected_asn: int,
@@ -384,13 +399,14 @@ def run_globalping_task(task: dict[str, Any]) -> tuple[list[dict[str, Any]], dic
 
     for item in results:
         probe = item.get("probe") or {}
-        location = probe.get("location") or {}
-        tags = set(probe.get("tags") or [])
-        actual_country = str(location.get("country") or "").upper()
+        probe_meta = globalping_probe_metadata(probe)
+        tags = probe_meta["tags"]
+        actual_country = probe_meta["country"]
         try:
-            actual_asn = int(location.get("asn"))
+            actual_asn = int(probe_meta["asn"])
         except (TypeError, ValueError):
             actual_asn = 0
+        location = probe_meta
         result = item.get("result") or {}
         result_status = result.get("status", "")
         http_status = result.get("statusCode") if task["kind"] == "HTTPS" else ""
@@ -425,7 +441,12 @@ def run_globalping_task(task: dict[str, Any]) -> tuple[list[dict[str, Any]], dic
             "globalping_result_status": result_status,
             "dns_status_code": result.get("statusCode", "") if task["kind"] == "DNS" else "",
             "http_status": http_status if http_status is not None else "",
-            "error": result.get("error") or result.get("rawOutput", "")[:500],
+            "error": (
+                result.get("error")
+                or (result.get("rawOutput", "")[:500]
+                    if classification in {"INCONCLUSIVE", "DNS_NXDOMAIN", "DNS_NO_ANSWER"}
+                    else "")
+            ),
         })
     return result_rows, raw_records
 
