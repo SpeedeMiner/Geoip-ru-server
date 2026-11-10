@@ -359,6 +359,7 @@ def fetch_rpki_origin(prefix: str, asn: str) -> dict[str, str]:
 
 IRR_METADATA_URL = "https://rest.db.ripe.net/metadata/sources.json"
 IRR_SEARCH_URL = "https://rest.db.ripe.net/search"
+DOCUMENTED_GRS_SOURCES = ("AFRINIC-GRS", "APNIC-GRS", "ARIN-GRS", "JPIRR-GRS", "LACNIC-GRS", "RADB-GRS")
 
 
 def _source_list_from_metadata(payload: dict[str, Any]) -> list[str]:
@@ -609,15 +610,26 @@ def build_evidence(company_queue: Path, output_dir: Path, max_workers: int = 5) 
     # Their scope is explicit in the output and is not claimed to be the entire IRR ecosystem.
     metadata_status, metadata_payload, metadata_error = request_json(IRR_METADATA_URL)
     if metadata_status == 200 and metadata_payload is not None:
-        irr_sources = _source_list_from_metadata(metadata_payload)
+        metadata_sources = _source_list_from_metadata(metadata_payload)
         irr_metadata_sha = sha256_bytes(
             json.dumps(metadata_payload, ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode("utf-8")
         )
         irr_metadata_status = "OK"
+        (output_dir / "irr_sources_metadata.json").write_text(
+            json.dumps(metadata_payload, ensure_ascii=False, sort_keys=True, indent=2) + "\\n",
+            encoding="utf-8",
+        )
     else:
-        irr_sources = ["RIPE"]
+        metadata_sources = ["RIPE"]
         irr_metadata_sha = "UNAVAILABLE"
         irr_metadata_status = metadata_error or f"HTTP_{metadata_status}"
+        (output_dir / "irr_sources_metadata.json").write_text(
+            json.dumps({"query_status": irr_metadata_status}, ensure_ascii=False, sort_keys=True, indent=2) + "\\n",
+            encoding="utf-8",
+        )
+    # Metadata deployments may omit the GRS list even though the RIPE Database
+    # REST API documents these GRS sources for search queries; query them explicitly.
+    irr_sources = sorted(set(metadata_sources + list(DOCUMENTED_GRS_SOURCES)))
 
     irr_prefix_rows: list[dict[str, str]] = []
     irr_object_rows: list[dict[str, str]] = []
@@ -760,7 +772,9 @@ def build_evidence(company_queue: Path, output_dir: Path, max_workers: int = 5) 
         f"RPKI query/status counts: {dict(sorted(status_counts.items()))}",
         f"IRR metadata source list status: {irr_metadata_status}",
         f"IRR metadata canonical SHA256: {irr_metadata_sha}",
+        f"IRR metadata sources reported: {','.join(metadata_sources)}",
         f"IRR sources queried: {','.join(irr_sources)}",
+        f"Documented GRS sources included: {','.join(DOCUMENTED_GRS_SOURCES)}",
         f"IRR exact-prefix search query statuses: {dict(sorted(irr_query_statuses.items()))}",
         f"IRR exact route objects returned: {sum(1 for row in irr_object_rows if row['EXACT_PREFIX_MATCH'] == 'yes')}",
         f"IRR exact prefix+observed-origin matches: {sum(1 for row in irr_object_rows if row['EXACT_PREFIX_MATCH'] == 'yes' and row['GLOBAL_BGP_ORIGIN_MATCH'] == 'yes')}",
@@ -769,7 +783,8 @@ def build_evidence(company_queue: Path, output_dir: Path, max_workers: int = 5) 
         "RDAP observations describe the registry's most-specific network containing each sample address; they do not prove every address in a prefix has the same holder.",
         "RPKI status is queried per exact prefix/origin ASN pair using RIPE NCC Routinator; valid means ROA authorises the pair, not that the ASN legally owns the resource.",
         "HTTP/network errors remain explicit query errors and are not converted to UNKNOWN, absent, or no-owner results.",
-        "IRR evidence is queried through the RIPE Database REST search using RIPE plus the GRS sources reported by its metadata endpoint; independent IRR registries outside that scope are not covered.",
+        "IRR evidence is queried through the RIPE Database REST search using RIPE plus six GRS sources documented by the RIPE Database API; independent IRR services outside that scope are not covered.",
+        "The metadata source list is archived separately; each GRS query status remains explicit because a documented source may be unavailable in a particular service deployment.",
         "A missing route object in the queried RIPE/GRS sources is not proof that no IRR route object exists anywhere.",
         "Every prefix remains STATUS=REVIEW; this artifact does not change DIRECT policy, main, release, or geoip_RU.dat.",
     ]
