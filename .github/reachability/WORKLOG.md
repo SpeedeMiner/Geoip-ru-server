@@ -119,14 +119,14 @@ Durable resume point for PR #5. After any conversation/network interruption, rea
 - Validation run `42873343359` passed: 27 Python tests, Go formatting, Go tests and Go build. The added unit test checks that repeated tasks do not inflate unique country/target pairs and that missing-IPv6 probe counts use the requested source country.
 - Full run `42874077069` verified the first six coverage fields against raw JSONL. The additional `globalping_dns_no_answers` field was committed and CI-tested after that run; its raw-derived value in run `42874077069` was 35, and the next full measurement will emit it directly.
 
-## Structured-summary full run in progress
+## DNS counter full run in progress
 
-- Run: https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/42874077069
-- Trigger commit: `e6612071a4839e8151c9823bf43d6af84fe643c7` (`[reachability-once] Verify structured summary in full measurement`). It uses the latest collector with structured country/target summary metrics and the 30-target catalogue.
-- The one-time push trigger has already been removed in commit `1cb59cbd216d8fc4b1c217532a62f0c3e54b2f88`; workflow `push` trigger is absent. The job guard for `[reachability-once]` is retained to skip other push messages.
-- Last checked: the inventory download/checksum and inventory-export steps succeeded; the combined Globalping/OONI collector step remained `in_progress`; no artifact was uploaded yet. Do not start a duplicate run.
-- Resume by querying run `42874077069`, its job and artifacts. On success, download the artifact, verify digest and confirm new summary fields/values. If it fails, inspect logs before deciding whether a rerun is needed.
-- Last successful full artifact remains run `42867329770` / artifact `13787468458` until the in-progress run completes.
+- Run: https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/42876578975
+- Trigger commit: `aed7583c69fb5a996ea119ba07f13470d85c6a1c` (`[reachability-once] Verify DNS no-answer summary metric`). This uses the current collector with the `globalping_dns_no_answers` structured summary field and the 30-target catalogue.
+- The one-time push trigger has already been removed in commit `00c591e8fd0bbda1ddf9e01574dcc739e302288a`; current workflow has no `push` trigger. The guard for `[reachability-once]` messages is retained.
+- Last checked: exact current release download/checksum and RU/PRIVATE inventory export succeeded; combined Globalping/OONI collector step remained `in_progress`; artifact not yet uploaded. Do not launch a duplicate run.
+- Resume by checking run `42876578975`, its job and artifacts. After success, download artifact, verify digest, and independently compare `globalping_dns_no_answers` with raw JSONL DNS_NO_ANSWER records.
+- Latest completed full run before this is `42874077069` / artifact `13790094804`; it does not yet contain the DNS no-answer summary key.
 
 ## Phase status
 
