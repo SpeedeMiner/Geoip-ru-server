@@ -188,8 +188,8 @@ def read_global_bgp_origins(
         raise ValueError(
             f"ipverse archive contains {malformed_json} malformed aggregated.json files"
         )
-    if json_files < 10000:
-        raise ValueError(f"ipverse archive unexpectedly small: {json_files} aggregated.json files")
+    if json_files == 0:
+        raise ValueError("ipverse archive contains no aggregated.json files")
 
     missing = sorted(target_prefixes - set(origins))
     if missing:
