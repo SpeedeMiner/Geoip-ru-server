@@ -98,11 +98,25 @@ class ReachabilityClassificationTests(unittest.TestCase):
         )
         self.assertEqual(
             runner.classify_globalping_api_error(error, "HTTPS", 4),
-            "API_ERROR",
+            "NO_PROBE",
         )
         self.assertEqual(
             runner.classify_globalping_api_error(error, "DNS", 6),
-            "API_ERROR",
+            "NO_PROBE",
+        )
+
+    def test_globalping_ipv4_probe_absence_is_coverage_gap_not_api_error(self):
+        error = runner.APIError(
+            "HTTP 422: {'type': 'no_probes_found', 'message': 'No matching IPv4 probes available.'}",
+            422,
+        )
+        self.assertEqual(
+            runner.classify_globalping_api_error(error, "HTTPS", 4),
+            "NO_PROBE",
+        )
+        self.assertEqual(
+            runner.classify_globalping_api_error(error, "DNS", 4),
+            "NO_PROBE",
         )
 
     def test_http_403_is_transport_accessible_not_blocked(self):
@@ -421,6 +435,10 @@ class CoverageSummaryTests(unittest.TestCase):
                 "country_requested": "BY", "asn_requested": 6697,
                 "target_id": "service-b", "result": "NO_IPV6_PROBE",
             },
+            {
+                "country_requested": "BY", "asn_requested": 6697,
+                "target_id": "service-b", "result": "NO_PROBE",
+            },
         ]
 
         summary = runner.build_globalping_coverage_summary(measurements, targets)
@@ -438,6 +456,8 @@ class CoverageSummaryTests(unittest.TestCase):
         )
         self.assertEqual(summary["globalping_provider_target_bundles_observed"], 3)
         self.assertEqual(summary["globalping_dns_no_answers"], 1)
+        self.assertEqual(summary["globalping_no_probe_count"], 1)
+        self.assertEqual(summary["globalping_no_probe_by_country"], {"BY": 1})
 
 
 if __name__ == "__main__":
