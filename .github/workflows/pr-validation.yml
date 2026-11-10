@@ -54,11 +54,20 @@ jobs:
             test -s "$workdir/$file"
           done
 
+          bgp_url="$(awk -F '\\t' '$2 == "as-ip-blocks.tar.gz" && $6 == "downloaded" {print $3}' \
+            "$workdir/geoip_RU_input_provenance.tsv")"
+          [[ "$bgp_url" == https://* ]] || { echo "::error::Invalid BGP archive URL in provenance manifest"; exit 1; }
+          curl --fail --location --silent --show-error \
+            --retry 3 --retry-all-errors --retry-delay 2 \
+            "$bgp_url" -o "$workdir/as-ip-blocks.tar.gz"
+          test -s "$workdir/as-ip-blocks.tar.gz"
+
           python3 .github/scripts/build_company_prefix_review.py \
             --company-asns "$workdir/geoip_RU_company_asns.txt" \
             --company-manifest "$workdir/geoip_RU_company_asn_manifest.tsv" \
             --regional-prefixes "$workdir/geoip_RU_BY_KZ_asn_bgp_prefixes.txt" \
             --input-provenance "$workdir/geoip_RU_input_provenance.tsv" \
+            --bgp-archive "$workdir/as-ip-blocks.tar.gz" \
             --output "$workdir/geoip_RU_company_prefix_review.tsv" \
             --stats "$workdir/geoip_RU_company_prefix_review_stats.txt"
 
