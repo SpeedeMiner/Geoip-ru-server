@@ -8,6 +8,8 @@ on:
       - ".github/scripts/build_selected_origin_prefix_review.py"
       - ".github/scripts/test_build_company_prefix_review.py"
       - ".github/scripts/test_build_selected_origin_prefix_review.py"
+      - ".github/scripts/build_priority_prefix_evidence.py"
+      - ".github/scripts/test_build_priority_prefix_evidence.py"
       - ".github/audits/company_asn_legal_evidence_v37_additions.tsv"
       - ".github/audits/company_asn_legal_evidence_v37.tsv"
       - ".github/workflows/prefix-audit-validation.yml"
@@ -34,9 +36,11 @@ jobs:
           .github/scripts/build_selected_origin_prefix_review.py
           .github/scripts/test_build_company_prefix_review.py
           .github/scripts/test_build_selected_origin_prefix_review.py
+          .github/scripts/build_priority_prefix_evidence.py
+          .github/scripts/test_build_priority_prefix_evidence.py
 
       - name: Run audit unit tests
-        run: python3 -m unittest discover -s .github/scripts -p 'test_build_*prefix_review.py' -v
+        run: python3 -m unittest discover -s .github/scripts -p 'test_build_*prefix*.py' -v
 
       - name: Validate v37 legal-evidence additions TSV
         run: |
@@ -354,6 +358,126 @@ jobs:
           ]
           Path("prefix-audit/README.txt").write_text("\n".join(bundle_manifest), encoding="utf-8")
           print("\n".join(bundle_manifest))
+          PY
+
+      - name: Collect RDAP resource-holder samples and per-origin RPKI status for priority prefixes
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 .github/scripts/build_priority_prefix_evidence.py \
+            --company-review prefix-audit/company_origin_prefix_review.tsv \
+            --output-dir prefix-audit/priority-prefix-evidence \
+            --workers 5
+
+      - name: Validate priority RDAP and RPKI evidence against company review queue
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import csv
+          import ipaddress
+          from collections import Counter
+          from pathlib import Path
+
+          def read_tsv(path):
+              with path.open(encoding="utf-8", newline="") as stream:
+                  return list(csv.DictReader((line for line in stream if not line.startswith("#")), delimiter="\t"))
+
+          company = read_tsv(Path("prefix-audit/company_origin_prefix_review.tsv"))
+          expected_priority = {
+              row["PREFIX"] for row in company
+              if row["GLOBAL_BGP_MOAS"] == "yes" or row["INCLUSION_BASIS"] == "COMPANY_ASN_ONLY"
+          }
+          priority = read_tsv(Path("prefix-audit/priority-prefix-evidence/priority_prefixes.tsv"))
+          priority_prefixes = {row["PREFIX"] for row in priority}
+          if len(priority) != 56 or len(priority_prefixes) != 56:
+              raise SystemExit(f"Expected 56 unique priority prefixes, got {len(priority)} rows/{len(priority_prefixes)} unique")
+          if priority_prefixes != expected_priority:
+              raise SystemExit("Priority prefix set differs from exact company MOAS + company-only selection")
+          if sum(row["GLOBAL_BGP_MOAS"] == "yes" for row in priority) != 52:
+              raise SystemExit("Expected exactly 52 company MOAS prefixes")
+          if sum(row["INCLUSION_BASIS"] == "COMPANY_ASN_ONLY" for row in priority) != 4:
+              raise SystemExit("Expected exactly four company-only prefixes")
+          if any(row["STATUS"] != "REVIEW" for row in priority):
+              raise SystemExit("Priority prefix table contains a non-REVIEW status")
+
+          expected_samples = set()
+          expected_pairs = set()
+          for row in priority:
+              network = ipaddress.ip_network(row["PREFIX"], strict=True)
+              first = int(network.network_address)
+              last = int(network.broadcast_address)
+              middle = first + ((last - first) // 2)
+              for address in dict.fromkeys((first, middle, last)):
+                  expected_samples.add((row["PREFIX"], str(ipaddress.ip_address(address))))
+              for origin in set(part.strip() for part in row["GLOBAL_BGP_ORIGIN_ASNS"].split(",") if part.strip()):
+                  expected_pairs.add((row["PREFIX"], origin))
+
+          rdap = read_tsv(Path("prefix-audit/priority-prefix-evidence/rdap_samples.tsv"))
+          actual_samples = [(row["PREFIX"], row["SAMPLE_ADDRESS"]) for row in rdap]
+          if len(actual_samples) != len(set(actual_samples)) or set(actual_samples) != expected_samples:
+              raise SystemExit(
+                  f"RDAP sample inventory mismatch: expected {len(expected_samples)}, got {len(actual_samples)}"
+              )
+          if any(not row["QUERY_STATUS"] for row in rdap):
+              raise SystemExit("RDAP contains a blank query status; failures must remain explicit")
+          rdap_success = sum(row["QUERY_STATUS"] == "OK" for row in rdap)
+          rdap_errors = Counter(row["QUERY_STATUS"] for row in rdap if row["QUERY_STATUS"] != "OK")
+
+          rpki = read_tsv(Path("prefix-audit/priority-prefix-evidence/rpki_by_origin.tsv"))
+          actual_pairs = [(row["PREFIX"], row["ORIGIN_ASN"]) for row in rpki]
+          if len(actual_pairs) != len(set(actual_pairs)) or set(actual_pairs) != expected_pairs:
+              raise SystemExit(
+                  f"RPKI pair inventory mismatch: expected {len(expected_pairs)}, got {len(actual_pairs)}"
+              )
+          allowed_rpki = {"valid", "invalid_asn", "invalid_length", "unknown"}
+          for row in rpki:
+              if not row["QUERY_STATUS"]:
+                  raise SystemExit(f"Blank RPKI query status for {row['PREFIX']} {row['ORIGIN_ASN']}")
+              if row["QUERY_STATUS"] == "OK" and row["RPKI_STATUS"] not in allowed_rpki:
+                  raise SystemExit(f"Unexpected RIPEstat RPKI status: {row['RPKI_STATUS']}")
+              if row["QUERY_STATUS"] != "OK" and row["RPKI_STATUS"]:
+                  raise SystemExit("API error was incorrectly converted into an RPKI state")
+          rpki_statuses = Counter(
+              row["RPKI_STATUS"] if row["QUERY_STATUS"] == "OK" else row["QUERY_STATUS"]
+              for row in rpki
+          )
+
+          holder_summary = read_tsv(Path("prefix-audit/priority-prefix-evidence/prefix_holder_review_summary.tsv"))
+          if len(holder_summary) != 56 or {row["PREFIX"] for row in holder_summary} != priority_prefixes:
+              raise SystemExit("RDAP per-prefix holder summary is incomplete")
+          if any(row["STATUS"] != "REVIEW" for row in holder_summary):
+              raise SystemExit("RDAP holder summary contains a non-REVIEW status")
+
+          stats = Path("prefix-audit/priority-prefix-evidence/priority_prefix_evidence_stats.txt").read_text(encoding="utf-8")
+          for label in (
+              "Source company review queue SHA256:",
+              "IANA IPv4 RDAP bootstrap URL:",
+              "IANA IPv4 RDAP bootstrap SHA256:",
+              "IANA IPv6 RDAP bootstrap URL:",
+              "IANA IPv6 RDAP bootstrap SHA256:",
+              "Priority prefixes: 56",
+              "Exact MOAS prefixes: 52",
+              "Company-only prefixes: 4",
+              "RPKI origin-prefix checks attempted:",
+          ):
+              if label not in stats:
+                  raise SystemExit(f"Priority evidence statistics missing: {label}")
+
+          manifest = [
+              "Priority prefix evidence stage",
+              "Scope: 52 exact company MOAS prefixes plus four company-only prefixes.",
+              f"RDAP sample queries: {len(rdap)} attempted; {rdap_success} successful; errors={dict(sorted(rdap_errors.items()))}",
+              f"RPKI prefix/origin pairs: {len(rpki)}; states/errors={dict(sorted(rpki_statuses.items()))}",
+              "RDAP first/mid/last sample results are not exhaustive proof of every sub-allocation inside a prefix.",
+              "RPKI status validates the prefix/origin pair against a ROA; it does not prove legal ownership of the address space.",
+              "HTTP/network errors remain explicit and are never interpreted as no ROA, no registry record, or no resource holder.",
+              "IRR has not yet been queried by this evidence stage.",
+              "Every row remains REVIEW; no DIRECT policy or GeoIP output is modified.",
+              "",
+          ]
+          Path("prefix-audit/priority-prefix-evidence/README_validation.txt").write_text("\n".join(manifest), encoding="utf-8")
+          print("\n".join(manifest))
           PY
 
       - name: Upload prefix review queues as a CI artifact
