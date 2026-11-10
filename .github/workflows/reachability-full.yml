@@ -1,14 +1,6 @@
 name: Full reachability RU KZ BY
 
 on:
-  push:
-    branches:
-      - feature/reachability-full-ru-kz-by
-    paths:
-      - ".github/reachability/runner.py"
-      - ".github/reachability/targets.json"
-      - ".github/reachability/inventory/**"
-      - ".github/workflows/reachability-full.yml"
   workflow_dispatch:
     inputs:
       max_globalping_tests:
