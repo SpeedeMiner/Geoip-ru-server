@@ -10,7 +10,7 @@ Durable resume point for PR #5. After any conversation/network interruption, rea
 - Branch: feature/reachability-full-ru-kz-by
 - Base/main: c71b5eff48f34b363ef2430ba6b5c41603f36126
 - Last code commit used by final measurement: 0ee7a3434537fbf19bba5c74508ca98c0f4a7d21
-- PR head immediately before this log/checkpoint update: 09984160add7df45f3c4ab4519a99caf6c8f8ec9
+- Branch/PR head at this checkpoint: ec1aaa59d2c750696396df8e86981ee604785fb7
 - The full-measurement workflow is restored to manual + daily schedule only; the temporary push trigger has been removed.
 - Main GeoIP builder, release branch, and published geoip_RU.dat were not modified. The client remains one file with exactly RU and PRIVATE categories.
 
@@ -104,7 +104,7 @@ Durable resume point for PR #5. After any conversation/network interruption, rea
 4. Prefer the artifact from the latest successful full run; do not repeat a run whose artifact is still available and relevant.
 5. Continue from CHECKPOINT.json current_phase / next_steps. Do not redo reconnaissance, exporter implementation, scheduler or green CI.
 6. Work in short units: one focused change, CI, then checkpoint. Do not run full measurement after work-log-only changes.
-7. After each meaningful phase, update both files and commit them. Keep PR #5 Draft unless the owner explicitly approves final review and merge.
+7. After each meaningful phase, update both files and commit them. Documentation/checkpoint-only commits are intentionally excluded from CI and full measurement triggers. Keep PR #5 Draft unless the owner explicitly approves final review and merge.
 
 ## Phase status
 
