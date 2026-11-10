@@ -363,7 +363,7 @@ class TaskAndReportTests(unittest.TestCase):
             path = pathlib.Path(directory) / "provider_prefix.tsv"
             runner.write_tsv(path, [], fields)
             with path.open("r", encoding="utf-8", newline="") as stream:
-                header = next(csv.reader(stream, delimiter="\\t"))
+                header = next(csv.reader(stream, delimiter="\t"))
 
         self.assertEqual(header, fields)
         self.assertEqual(len(header), len(set(header)))
