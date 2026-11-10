@@ -2,7 +2,7 @@
 # 41 unique ASNs: 36 legacy rows from PR #2 plus 5 v37 additions.
 # v37 counts/country are joined from the release-branch geoip_RU_BY_KZ_asn_manifest.txt.
 # No manifest row means no prefix observed in that specific ipverse snapshot (counts 0); it does not mean the ASN registration is deleted.
-# 22 rows reviewed or newly verified in this stage; 19 legacy rows explicitly remain pending revalidation.
+# 26 rows reviewed or newly verified in this stage; 15 legacy rows explicitly remain pending revalidation.
 # ASN-level registration and BGP origin do not establish ownership/control of every originated prefix.
 ASN	COMPANY_GROUP	ALLOWLIST_ENTITY_OR_NOTE	RIPE_AS_NAME	RIPE_ORGANISATION_NAME	RIPE_COUNTRY	RIPE_REGISTRATION_NUMBER	ASN_ENTITY_ASSESSMENT	V37_IPVERSE_ACTIVE	V37_IPVERSE_COUNTRY_CODE	V37_IPV4_PREFIXES	V37_IPV6_PREFIXES	REVIEW_FLAG	ASSESSMENT_NOTE	EVIDENCE_URLS	AUDIT_STATUS
 AS3216	Beeline/VimpelCom	PJSC VimpelCom	SOVAM	PJSC Vimpelcom	RU	1027700166636	DIRECT_ASN_ORG_MATCH	yes	RU	149	6	PREFIX_REVIEW_REQUIRED	RIPE ASN registration identifies VimpelCom; this does not establish resource-holder status for every originated prefix.	https://apps.db.ripe.net/db-web-ui/query?searchtext=AS3216&source=RIPE	CARRY_FORWARD_NOT_REVERIFIED
