@@ -278,6 +278,79 @@ class TaskAndReportTests(unittest.TestCase):
         self.assertEqual(meta["partial_target_bundles"], 0)
         self.assertEqual(meta["budget_unused_for_bundle_alignment"], 3)
 
+    def test_prefix_report_distinguishes_dns_from_inconclusive_https(self):
+        inventory = [
+            {"CATEGORY": "RU", "PREFIX": "198.51.100.0/24", "FAMILY": "IPv4", "ADDRESS_COUNT": "256"},
+            {"CATEGORY": "PRIVATE", "PREFIX": "192.0.2.0/24", "FAMILY": "IPv4", "ADDRESS_COUNT": "256"},
+        ]
+        measurements = [
+            {
+                "result": "DNS_ANSWER", "matched_ru_prefix": "198.51.100.0/24",
+                "target_id": "service", "target_ip": "198.51.100.10",
+            },
+            {
+                "result": "INCONCLUSIVE", "matched_ru_prefix": "198.51.100.0/24",
+                "target_id": "service", "target_ip": "198.51.100.10",
+            },
+        ]
+        report = runner.build_prefix_report(inventory, measurements)
+        self.assertEqual(report[0]["STATUS"], "DNS_RESOLVED_HTTP_INCONCLUSIVE")
+
+    def test_provider_prefix_report_preserves_country_asn_and_observed_ips(self):
+        measurements = [
+            {
+                "probe_country": "KZ", "probe_asn": 9198, "probe_network": "Kazakhtelecom",
+                "matched_ru_prefix": "198.51.100.0/24", "matched_ru_prefixes": "198.51.100.0/24",
+                "target_id": "demo", "target_domain": "demo.example",
+                "resolved_addresses": "198.51.100.10", "target_ip": "198.51.100.10",
+                "result": "ACCESSIBLE", "http_status": 200,
+            },
+            {
+                "probe_country": "KZ", "probe_asn": 9198, "probe_network": "Kazakhtelecom",
+                "matched_ru_prefix": "198.51.100.0/24", "matched_ru_prefixes": "198.51.100.0/24",
+                "target_id": "demo", "target_domain": "demo.example",
+                "resolved_addresses": "198.51.100.10", "target_ip": "198.51.100.10",
+                "result": "DNS_ANSWER", "measurement_kind": "DNS",
+            },
+        ]
+        report = runner.build_provider_prefix_report(measurements)
+        self.assertEqual(len(report), 1)
+        self.assertEqual(report[0]["COUNTRY"], "KZ")
+        self.assertEqual(report[0]["ASN"], 9198)
+        self.assertEqual(report[0]["PREFIX"], "198.51.100.0/24")
+        self.assertEqual(report[0]["ACCESSIBLE_HTTPS"], 1)
+        self.assertEqual(report[0]["DNS_ANSWERS"], 1)
+        self.assertEqual(report[0]["OBSERVED_IPS"], "198.51.100.10")
+
+    def test_provider_ip_report_maps_exact_ru_ip_to_provider(self):
+        networks = {
+            "RU": [ipaddress.ip_network("198.51.100.0/24")],
+            "PRIVATE": [ipaddress.ip_network("192.0.2.0/24")],
+        }
+        measurements = [
+            {
+                "probe_country": "BY", "probe_asn": 42772, "probe_network": "A1",
+                "resolved_addresses": "198.51.100.12", "target_ip": "198.51.100.12",
+                "target_id": "demo", "target_domain": "demo.example",
+                "measurement_kind": "HTTPS", "http_status": 302, "result": "ACCESSIBLE",
+            },
+            {
+                "probe_country": "BY", "probe_asn": 42772, "probe_network": "A1",
+                "resolved_addresses": "198.51.100.12", "target_ip": "198.51.100.12",
+                "target_id": "demo", "target_domain": "demo.example",
+                "measurement_kind": "DNS", "result": "DNS_ANSWER",
+            },
+        ]
+        report = runner.build_provider_ip_report(measurements, networks)
+        self.assertEqual(len(report), 1)
+        self.assertEqual(report[0]["COUNTRY"], "BY")
+        self.assertEqual(report[0]["ASN"], 42772)
+        self.assertEqual(report[0]["IP_ADDRESS"], "198.51.100.12")
+        self.assertEqual(report[0]["PREFIX"], "198.51.100.0/24")
+        self.assertEqual(report[0]["STATUS"], "HTTPS_ACCESSIBLE_OBSERVED")
+        self.assertEqual(report[0]["HTTPS_ACCESSIBLE_COUNT"], 1)
+        self.assertEqual(report[0]["DNS_ANSWER_COUNT"], 1)
+
     def test_prefix_report_contains_ru_only_and_explicit_no_endpoint_state(self):
         inventory = [
             {"CATEGORY": "RU", "PREFIX": "198.51.100.0/24", "FAMILY": "IPv4", "ADDRESS_COUNT": "256"},
