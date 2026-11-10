@@ -25,6 +25,7 @@ from build_company_prefix_review import (
     read_company_manifest,
     read_company_registry,
     read_global_bgp_origins,
+    _sha256_file,
 )
 
 HEADER = (
@@ -66,6 +67,12 @@ def build_review(
     company_metadata = read_company_manifest(company_manifest, companies)
     snapshot_sha, snapshot_url = read_bgp_snapshot(input_provenance, bgp_archive)
     generated = dt.datetime.now(dt.timezone.utc).isoformat()
+    input_hashes = {
+        "company_registry": _sha256_file(company_registry),
+        "company_manifest": _sha256_file(company_manifest),
+        "selected_prefixes": _sha256_file(selected_prefixes),
+        "input_provenance": _sha256_file(input_provenance),
+    }
 
     records: dict[str, dict[str, object]] = {}
     try:
@@ -145,6 +152,10 @@ def build_review(
         handle.write(f"# Generated UTC: {generated}\n")
         handle.write(f"# BGP source URL: {snapshot_url}\n")
         handle.write(f"# BGP source SHA256: {snapshot_sha}\n")
+        handle.write(f"# Company ASN registry SHA256: {input_hashes['company_registry']}\n")
+        handle.write(f"# Company ASN manifest SHA256: {input_hashes['company_manifest']}\n")
+        handle.write(f"# Selected prefix input SHA256: {input_hashes['selected_prefixes']}\n")
+        handle.write(f"# Input provenance SHA256: {input_hashes['input_provenance']}\n")
         handle.write("# RPKI and IRR were not queried; NOT_QUERIED is not a negative result.\n")
         handle.write("# Every selected prefix is REVIEW; this report does not alter GeoIP output.\n")
         writer = csv.writer(handle, delimiter="\t", lineterminator="\n")
@@ -247,6 +258,10 @@ def build_review(
         f"Generated UTC: {generated}",
         f"BGP snapshot URL: {snapshot_url}",
         f"BGP snapshot SHA256: {snapshot_sha}",
+        f"Company ASN registry SHA256: {input_hashes['company_registry']}",
+        f"Company ASN manifest SHA256: {input_hashes['company_manifest']}",
+        f"Selected prefix input SHA256: {input_hashes['selected_prefixes']}",
+        f"Input provenance SHA256: {input_hashes['input_provenance']}",
         f"Unique selected regional/company origin prefixes: {len(all_prefixes)}",
         f"Unique IPv4 selected prefixes: {sum(1 for p in all_prefixes if ipaddress.ip_network(p).version == 4)}",
         f"Unique IPv6 selected prefixes: {sum(1 for p in all_prefixes if ipaddress.ip_network(p).version == 6)}",
