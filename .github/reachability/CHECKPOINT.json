@@ -1,14 +1,14 @@
 {
   "schema_version": 1,
-  "updated_at_utc": "2026-11-10T19:01:19Z",
+  "updated_at_utc": "2026-11-10T19:18:20.371Z",
   "repository": "SpeedeMiner/Geoip-ru-server",
   "pull_request": 5,
   "pull_request_url": "https://github.com/SpeedeMiner/Geoip-ru-server/pull/5",
   "branch": "feature/reachability-full-ru-kz-by",
-  "recorded_pr_head_before_checkpoint_commit": "2fe65dc17fb242e5b8b45c247e2917569a12e881",
+  "recorded_pr_head_before_checkpoint_commit": "07f6d90867ef27af4970be74087acb68eb91ee5c",
   "base_sha": "a68e5d6589361814cb1cfedd2af7857e4af806fa",
-  "state": "READY_FOR_OWNER_REVIEW",
-  "current_phase": "FINAL_PR_OWNER_REVIEW",
+  "state": "VALIDATION_PENDING",
+  "current_phase": "PROVIDER_PREFIX_TSV_SCHEMA_REGRESSION_VALIDATION",
   "completed": [
     "repository_reconnaissance",
     "protobuf_inventory_exporter",
@@ -67,7 +67,13 @@
     "no_probe_and_api_error_counts_reconciled_with_raw_jsonl",
     "final_run_inventory_prefix_and_exact_ip_quality_checks",
     "final_run_ooni_anomaly_review_19_unconfirmed",
-    "final_worklog_synchronized_with_latest_run"
+    "final_worklog_synchronized_with_latest_run",
+    "provider_prefix_tsv_duplicate_header_identified_in_artifact_42877815872",
+    "provider_prefix_tsv_unique_schema_fix",
+    "provider_prefix_tsv_header_regression_test_added",
+    "readme_sample_coverage_metric_updated_to_32_of_90",
+    "all_28_service_targets_have_reference_url",
+    "service_target_provenance_sources_reviewed"
   ],
   "latest_successful_validation_run": 42877605801,
   "latest_successful_validation_commit": "c6b86d8b92bac5777c73634d921835fee687573b",
@@ -202,12 +208,12 @@
     "eyeball_network_is_proof_of_residential": false
   },
   "next_steps": [
-    "Owner review of PR #5; it remains Draft and must not be merged without explicit owner approval.",
-    "Review the 30-target catalogue against the project-approved first-party service/API inventory; one daily sample is only 32/90 source-country/target pairs.",
-    "Decide whether to update the PR branch history onto current main. It is 29 commits behind but GitHub currently reports mergeable=true and the PR changes only the 11 reachability diagnostic files; no force rewrite is necessary for the current PR to remain mergeable.",
-    "Daily schedule becomes active only after merge into the repository default branch; assess multi-day provider/target coverage after owner approval.",
+    "Confirm Reachability validation success on current feature branch head 07f6d90867ef27af4970be74087acb68eb91ee5c; expect 29 Python tests plus Go formatting, tests and build. Do not reuse run 42877605801 as evidence for this newer code.",
+    "After green validation, keep PR #5 Draft and perform final owner review of the 30-target seed catalogue and 29-commit main-branch lag.",
+    "Do not force-rewrite or merge the feature branch automatically; GitHub currently reports the PR mergeable and the diagnostic files remain isolated.",
+    "Assess accumulated multi-day country/target sampling only after approved recurring runs; the latest single artifact is a 32/90 sample.",
     "Optionally configure RIPE_ATLAS_API_KEY if Atlas measurements are desired.",
-    "Keep all observations review-only; do not modify geoip_RU.dat or classify untested prefixes as blocked."
+    "Keep observations review-only; do not modify geoip_RU.dat, DIRECT policy, company ASN allowlists or production release assets."
   ],
   "ci_policy": {
     "push_validation_paths": [
@@ -231,5 +237,17 @@
     "manual_dispatch_available_on_feature_branch": true,
     "daily_schedule_effective_only_after_default_branch_merge": true,
     "temporary_full_workflow_push_trigger_removed": true
+  },
+  "pending_validation": {
+    "commit": "07f6d90867ef27af4970be74087acb68eb91ee5c",
+    "workflow": "Reachability validation",
+    "expected_python_unit_tests": 29,
+    "expected_go_checks": [
+      "gofmt",
+      "go test ./...",
+      "go build"
+    ],
+    "status": "NOT_CONFIRMED",
+    "note": "The GitHub connector used in this session did not expose push-triggered workflow-run records or commit status checks. Previous green validation predates the provider-prefix TSV schema change."
   }
 }
