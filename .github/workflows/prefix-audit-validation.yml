@@ -14,7 +14,11 @@ on:
       - ".github/scripts/test_build_priority_prefix_triage.py"
       - ".github/scripts/build_priority_prefix_worklist.py"
       - ".github/scripts/test_build_priority_prefix_worklist.py"
+      - ".github/scripts/build_priority_rpki_reconciliation.py"
+      - ".github/scripts/test_build_priority_prefix_rpki_reconciliation.py"
+      - ".github/audits/priority_prefix_rpki_invalid_assessment_v37.tsv"
       - ".github/audits/priority_prefix_external_spot_checks_v37.tsv"
+      - ".github/PROJECT_CHECKPOINTS.md"
       - ".github/audits/company_asn_legal_evidence_v37_additions.tsv"
       - ".github/audits/company_asn_legal_evidence_v37.tsv"
       - ".github/workflows/prefix-audit-validation.yml"
@@ -47,6 +51,8 @@ jobs:
           .github/scripts/test_build_priority_prefix_triage.py
           .github/scripts/build_priority_prefix_worklist.py
           .github/scripts/test_build_priority_prefix_worklist.py
+          .github/scripts/build_priority_rpki_reconciliation.py
+          .github/scripts/test_build_priority_prefix_rpki_reconciliation.py
 
       - name: Run audit unit tests
         run: python3 -m unittest discover -s .github/scripts -p 'test_build_*prefix*.py' -v
@@ -669,7 +675,10 @@ jobs:
               "94.131.190.0/23", "109.61.128.0/17", "37.19.32.0/20",
               "77.45.128.0/17", "94.75.128.0/18", "95.158.192.0/18",
               "178.75.64.0/18", "95.32.0.0/16", "95.179.0.0/17",
-              "177.1.199.0/24",
+              "177.1.199.0/24", "185.3.32.0/22", "195.225.160.0/22",
+              "212.106.32.0/19", "213.154.160.0/19", "31.172.192.0/19",
+              "62.64.0.0/19", "77.234.0.0/19", "92.37.128.0/17",
+              "93.181.240.0/20",
           }
           if len(worklist) != 56 or len({r["PREFIX"] for r in worklist}) != 56:
               raise SystemExit("Worklist must contain 56 unique exact prefixes")
@@ -684,8 +693,8 @@ jobs:
           if [int(r["REVIEW_ORDER"]) for r in worklist] != sorted(int(r["REVIEW_ORDER"]) for r in worklist):
               raise SystemExit("Worklist is not sorted by review order")
           spot_rows = [r for r in worklist if r["EXTERNAL_SPOT_CHECK_STATUS"] != "NOT_SPOT_CHECKED"]
-          if {r["PREFIX"] for r in spot_rows} != expected_spots or len(spot_rows) != 13:
-              raise SystemExit("External spot-check scope does not match the thirteen reviewed prefixes")
+          if {r["PREFIX"] for r in spot_rows} != expected_spots or len(spot_rows) != 22:
+              raise SystemExit("External spot-check scope does not match the twenty-two reviewed prefixes")
           if any(r["EXTERNAL_SPOT_CHECK_STATUS"] != "CHECKED_2026-11-10" for r in spot_rows):
               raise SystemExit("Unexpected spot-check timestamp")
           expected_scope_relations = {
@@ -694,14 +703,23 @@ jobs:
               "45.148.65.0/24": "EXACT_ONLY",
               "94.131.190.0/23": "MORE_SPECIFIC_ONLY",
               "109.61.128.0/17": "EXACT_AND_MORE_SPECIFIC",
-              "37.19.32.0/20": "MORE_SPECIFIC_ONLY",
-              "77.45.128.0/17": "MORE_SPECIFIC_ONLY",
+              "37.19.32.0/20": "EXACT_AND_MORE_SPECIFIC",
+              "77.45.128.0/17": "EXACT_AND_MORE_SPECIFIC",
               "94.75.128.0/18": "EXACT_AND_MORE_SPECIFIC",
-              "95.158.192.0/18": "MORE_SPECIFIC_ONLY",
-              "178.75.64.0/18": "MORE_SPECIFIC_ONLY",
-              "95.32.0.0/16": "MORE_SPECIFIC_ONLY",
-              "95.179.0.0/17": "MORE_SPECIFIC_ONLY",
+              "95.158.192.0/18": "EXACT_AND_MORE_SPECIFIC",
+              "178.75.64.0/18": "EXACT_AND_MORE_SPECIFIC",
+              "95.32.0.0/16": "EXACT_AND_MORE_SPECIFIC",
+              "95.179.0.0/17": "EXACT_AND_MORE_SPECIFIC",
               "177.1.199.0/24": "EXACT_ONLY",
+              "185.3.32.0/22": "EXACT_AND_MORE_SPECIFIC",
+              "195.225.160.0/22": "EXACT_AND_MORE_SPECIFIC",
+              "212.106.32.0/19": "EXACT_AND_MORE_SPECIFIC",
+              "213.154.160.0/19": "EXACT_AND_MORE_SPECIFIC",
+              "31.172.192.0/19": "EXACT_AND_MORE_SPECIFIC",
+              "62.64.0.0/19": "EXACT_AND_MORE_SPECIFIC",
+              "77.234.0.0/19": "EXACT_ONLY",
+              "92.37.128.0/17": "EXACT_AND_MORE_SPECIFIC",
+              "93.181.240.0/20": "EXACT_AND_MORE_SPECIFIC",
           }
           actual_scope_relations = {
               r["PREFIX"]: r["EXTERNAL_SPOT_CHECK_SCOPE_RELATION"] for r in spot_rows
@@ -710,15 +728,90 @@ jobs:
               raise SystemExit(f"External NLRI scope relations differ: {actual_scope_relations}")
           stats = (base / "priority_prefix_review_worklist_stats.txt").read_text(encoding="utf-8")
           for required in (
-              "Priority prefixes: 56", "External spot-check rows: 13", "All rows: STATUS=REVIEW",
-              "External spot-check scope EXACT_ONLY: 4",
-              "External spot-check scope EXACT_AND_MORE_SPECIFIC: 2",
-              "External spot-check scope MORE_SPECIFIC_ONLY: 7",
+              "Priority prefixes: 56", "External spot-check rows: 22", "All rows: STATUS=REVIEW",
+              "External spot-check scope EXACT_ONLY: 5",
+              "External spot-check scope EXACT_AND_MORE_SPECIFIC: 16",
+              "External spot-check scope MORE_SPECIFIC_ONLY: 1",
           ):
               if required not in stats:
                   raise SystemExit(f"Worklist statistics missing: {required}")
           with (base / "README_validation.txt").open("a", encoding="utf-8") as stream:
               stream.write("\nPriority-prefix analyst worklist\n")
+              stream.write(stats)
+          print(stats)
+          PY
+
+      - name: Build and validate archived-invalid RPKI exact-NLRI reconciliation
+        shell: bash
+        run: |
+          set -euo pipefail
+          evidence="prefix-audit/priority-prefix-evidence"
+          python3 .github/scripts/build_priority_rpki_reconciliation.py \
+            --evidence-dir "$evidence" \
+            --seed .github/audits/priority_prefix_rpki_invalid_assessment_v37.tsv \
+            --output "$evidence/priority_prefix_rpki_invalid_reconciliation.tsv" \
+            --stats "$evidence/priority_prefix_rpki_invalid_reconciliation_stats.txt"
+
+          python3 - <<'PY'
+          import csv
+          from collections import Counter
+          from pathlib import Path
+
+          base = Path("prefix-audit/priority-prefix-evidence")
+          def read_tsv(path):
+              with path.open(encoding="utf-8", newline="") as stream:
+                  return list(csv.DictReader(
+                      (line for line in stream if not line.startswith("#")), delimiter="\t"
+                  ))
+
+          triage = read_tsv(base / "priority_prefix_triage.tsv")
+          worklist = read_tsv(base / "priority_prefix_review_worklist.tsv")
+          result = read_tsv(base / "priority_prefix_rpki_invalid_reconciliation.tsv")
+          expected = {
+              row["PREFIX"] for row in triage
+              if "RPKI_INVALID_ASN" in {x.strip() for x in row["TRIAGE_FLAGS"].split("|")}
+          }
+          actual = {row["PREFIX"] for row in result}
+          if len(result) != 19 or len(actual) != 19 or actual != expected:
+              raise SystemExit("RPKI reconciliation must contain exactly the 19 archived invalid prefixes")
+          if any(row["STATUS"] != "REVIEW" for row in result):
+              raise SystemExit("RPKI reconciliation contains a non-REVIEW row")
+          triage_by = {row["PREFIX"]: row for row in triage}
+          worklist_by = {row["PREFIX"]: row for row in worklist}
+          for row in result:
+              prefix = row["PREFIX"]
+              archived_invalid = {x.strip() for x in row["ARCHIVED_INVALID_RPKI_ORIGINS"].split("|") if x.strip()}
+              triage_invalid = {
+                  x.strip() for x in triage_by[prefix]["RPKI_INVALID_ORIGINS"].replace(",", "|").split("|") if x.strip()
+              }
+              if archived_invalid != triage_invalid:
+                  raise SystemExit(f"Archived invalid-origin set drift for {prefix}")
+              if row["EXTERNAL_NLRI_SCOPE_RELATION"] != worklist_by[prefix]["EXTERNAL_SPOT_CHECK_SCOPE_RELATION"]:
+                  raise SystemExit(f"External NLRI scope mismatch for {prefix}")
+              if not row["REQUIRED_NEXT_ACTION"] or not row["ASSESSMENT"] or not row["SOURCE_URLS"]:
+                  raise SystemExit(f"Incomplete RPKI reconciliation row: {prefix}")
+              if row["EXTERNAL_NLRI_SCOPE_RELATION"] == "MORE_SPECIFIC_ONLY" and row["EXTERNAL_EXACT_ORIGIN_ASNS"]:
+                  raise SystemExit(f"Child-route evidence was projected onto exact prefix {prefix}")
+          counts = Counter(row["RECONCILIATION_CLASS"] for row in result)
+          expected_counts = {
+              "EXACT_ORIGIN_SET_CHANGED": 16,
+              "EXACT_MOAS_RPKI_STATUS_CHANGED": 1,
+              "EXACT_MOAS_INVALID_ORIGIN_REMAINS_UNCONFIRMED": 1,
+              "MORE_SPECIFIC_ONLY_NO_EXACT_VERDICT": 1,
+          }
+          if dict(counts) != expected_counts:
+              raise SystemExit(f"Unexpected reconciliation classes: {dict(counts)}")
+          stats = (base / "priority_prefix_rpki_invalid_reconciliation_stats.txt").read_text(encoding="utf-8")
+          for required in (
+              "Archived invalid prefixes: 19",
+              "Rows with exact-scope external observations: 18",
+              "Rows with more-specific-only observations: 1",
+              "All rows: STATUS=REVIEW",
+          ):
+              if required not in stats:
+                  raise SystemExit(f"RPKI reconciliation stats missing: {required}")
+          with (base / "README_validation.txt").open("a", encoding="utf-8") as stream:
+              stream.write("\nArchived-invalid RPKI exact-NLRI reconciliation\n")
               stream.write(stats)
           print(stats)
           PY
@@ -730,6 +823,27 @@ jobs:
           path: prefix-audit/
           if-no-files-found: error
           retention-days: 30
+
+      - name: Validate project checkpoint journal
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          path = Path(".github/PROJECT_CHECKPOINTS.md")
+          if not path.is_file():
+              raise SystemExit("Project checkpoint journal is missing")
+          text = path.read_text(encoding="utf-8")
+          for required in (
+              "# Project checkpoint log",
+              "## Current state / resume from",
+              "## Completed stage records",
+              "Append-only checkpoint template",
+              "Resume from:",
+          ):
+              if required not in text:
+                  raise SystemExit(f"Project checkpoint journal is missing: {required}")
+          print(f"Project checkpoint journal validated ({len(text.splitlines())} lines)")
+          PY
 
       - name: Parse workflow YAML
         run: ruby -e 'require "yaml"; YAML.load_file(ARGV.fetch(0)); puts "Workflow YAML parsed"' .github/workflows/prefix-audit-validation.yml
