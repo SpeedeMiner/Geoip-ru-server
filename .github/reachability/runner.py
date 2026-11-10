@@ -852,6 +852,8 @@ def build_prefix_report(
         unique_targets = sorted({row.get("target_id", "") for row in rows if row.get("target_id")})
         if accessible:
             status = "ENDPOINT_ACCESSIBLE_OBSERVED"
+        elif dns_answers and inconclusive:
+            status = "DNS_RESOLVED_HTTP_INCONCLUSIVE"
         elif dns_answers:
             status = "DNS_RESOLVED_HTTP_NOT_CONFIRMED"
         elif inconclusive:
@@ -871,6 +873,134 @@ def build_prefix_report(
             "POLICY": "REVIEW_ONLY_NO_GEOIP_MUTATION",
         })
     return report
+
+
+def build_provider_prefix_report(measurements: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """Aggregate endpoint observations by source provider and RU GeoIP prefix."""
+    grouped: dict[tuple[str, int, str], dict[str, Any]] = {}
+    for row in measurements:
+        prefixes = set(filter(None, (row.get("matched_ru_prefixes") or "").split("|")))
+        if row.get("matched_ru_prefix"):
+            prefixes.add(row["matched_ru_prefix"])
+        if not prefixes:
+            continue
+        country = str(row.get("probe_country") or row.get("country_requested") or "").upper()
+        try:
+            asn = int(row.get("probe_asn") or row.get("asn_requested") or 0)
+        except (TypeError, ValueError):
+            continue
+        network_name = row.get("probe_network") or ""
+        addresses = set(filter(None, (row.get("resolved_addresses") or "").split("|")))
+        if row.get("target_ip"):
+            addresses.add(row["target_ip"])
+        for prefix in prefixes:
+            key = (country, asn, prefix)
+            item = grouped.setdefault(key, {
+                "COUNTRY": country, "ASN": asn, "NETWORK": network_name,
+                "PREFIX": prefix, "FAMILY": f"IPv{ipaddress.ip_network(prefix).version}",
+                "ADDRESS_COUNT": str(ipaddress.ip_network(prefix).num_addresses),
+                "ACCESSIBLE_HTTPS": 0, "DNS_ANSWERS": 0, "DNS_NO_ANSWER": 0,
+                "INCONCLUSIVE": 0, "API_ERROR": 0,
+                "TARGET_IDS": set(), "TARGET_DOMAINS": set(),
+                "OBSERVED_IPS": set(), "HTTP_STATUSES": set(),
+            })
+            result = row.get("result")
+            if result == "ACCESSIBLE":
+                item["ACCESSIBLE_HTTPS"] += 1
+            elif result == "DNS_ANSWER":
+                item["DNS_ANSWERS"] += 1
+            elif result == "DNS_NO_ANSWER":
+                item["DNS_NO_ANSWER"] += 1
+            elif result == "INCONCLUSIVE":
+                item["INCONCLUSIVE"] += 1
+            elif result == "API_ERROR":
+                item["API_ERROR"] += 1
+            if row.get("target_id"):
+                item["TARGET_IDS"].add(row["target_id"])
+            if row.get("target_domain"):
+                item["TARGET_DOMAINS"].add(row["target_domain"])
+            item["OBSERVED_IPS"].update(addresses)
+            if row.get("http_status") not in (None, ""):
+                item["HTTP_STATUSES"].add(str(row["http_status"]))
+
+    result_rows: list[dict[str, Any]] = []
+    for key, item in sorted(grouped.items()):
+        item["TARGET_IDS"] = "|".join(sorted(item["TARGET_IDS"]))
+        item["TARGET_DOMAINS"] = "|".join(sorted(item["TARGET_DOMAINS"]))
+        item["OBSERVED_IPS"] = "|".join(sorted(item["OBSERVED_IPS"]))
+        item["HTTP_STATUSES"] = "|".join(sorted(item["HTTP_STATUSES"]))
+        result_rows.append(item)
+    return result_rows
+
+
+def build_provider_ip_report(
+    measurements: list[dict[str, Any]],
+    networks: dict[str, Any],
+) -> list[dict[str, Any]]:
+    """Produce a per-provider exact-IP evidence table, not a reachability verdict for the CIDR."""
+    grouped: dict[tuple[str, int, str, str], dict[str, Any]] = {}
+    for row in measurements:
+        addresses = set(filter(None, (row.get("resolved_addresses") or "").split("|")))
+        if row.get("target_ip"):
+            addresses.add(row["target_ip"])
+        if not addresses:
+            continue
+        country = str(row.get("probe_country") or row.get("country_requested") or "").upper()
+        try:
+            asn = int(row.get("probe_asn") or row.get("asn_requested") or 0)
+        except (TypeError, ValueError):
+            continue
+        network_name = row.get("probe_network") or ""
+        for address in addresses:
+            category, prefix = map_address(address, networks)
+            if category != "RU" or not prefix:
+                continue
+            key = (country, asn, address, prefix)
+            item = grouped.setdefault(key, {
+                "COUNTRY": country, "ASN": asn, "NETWORK": network_name,
+                "IP_ADDRESS": address, "PREFIX": prefix,
+                "FAMILY": f"IPv{ipaddress.ip_address(address).version}",
+                "DNS_ANSWER_COUNT": 0, "HTTPS_ACCESSIBLE_COUNT": 0,
+                "INCONCLUSIVE_COUNT": 0, "API_ERROR_COUNT": 0,
+                "TARGET_IDS": set(), "TARGET_DOMAINS": set(),
+                "HTTP_STATUSES": set(), "MEASUREMENT_KINDS": set(),
+            })
+            result = row.get("result")
+            if result == "DNS_ANSWER":
+                item["DNS_ANSWER_COUNT"] += 1
+            elif result == "ACCESSIBLE":
+                item["HTTPS_ACCESSIBLE_COUNT"] += 1
+            elif result == "INCONCLUSIVE":
+                item["INCONCLUSIVE_COUNT"] += 1
+            elif result == "API_ERROR":
+                item["API_ERROR_COUNT"] += 1
+            if row.get("target_id"):
+                item["TARGET_IDS"].add(row["target_id"])
+            if row.get("target_domain"):
+                item["TARGET_DOMAINS"].add(row["target_domain"])
+            if row.get("measurement_kind"):
+                item["MEASUREMENT_KINDS"].add(row["measurement_kind"])
+            if row.get("http_status") not in (None, ""):
+                item["HTTP_STATUSES"].add(str(row["http_status"]))
+
+    result_rows: list[dict[str, Any]] = []
+    for key, item in sorted(grouped.items()):
+        if item["HTTPS_ACCESSIBLE_COUNT"]:
+            item["STATUS"] = "HTTPS_ACCESSIBLE_OBSERVED"
+        elif item["DNS_ANSWER_COUNT"] and item["INCONCLUSIVE_COUNT"]:
+            item["STATUS"] = "DNS_RESOLVED_HTTPS_INCONCLUSIVE"
+        elif item["DNS_ANSWER_COUNT"]:
+            item["STATUS"] = "DNS_RESOLVED_HTTPS_NOT_CONFIRMED"
+        elif item["INCONCLUSIVE_COUNT"]:
+            item["STATUS"] = "ENDPOINT_INCONCLUSIVE"
+        else:
+            item["STATUS"] = "OBSERVATION_REVIEW"
+        item["TARGET_IDS"] = "|".join(sorted(item["TARGET_IDS"]))
+        item["TARGET_DOMAINS"] = "|".join(sorted(item["TARGET_DOMAINS"]))
+        item["HTTP_STATUSES"] = "|".join(sorted(item["HTTP_STATUSES"]))
+        item["MEASUREMENT_KINDS"] = "|".join(sorted(item["MEASUREMENT_KINDS"]))
+        result_rows.append(item)
+    return result_rows
 
 
 def run(args: argparse.Namespace) -> int:
@@ -973,6 +1103,8 @@ def run(args: argparse.Namespace) -> int:
 
     provider_report = build_provider_report(providers, globalping_rows)
     prefix_report = build_prefix_report(inventory_rows, globalping_rows)
+    provider_prefix_report = build_provider_prefix_report(globalping_rows)
+    provider_ip_report = build_provider_ip_report(globalping_rows, networks)
     candidates = [
         row for row in globalping_rows
         if row.get("result") in {"INCONCLUSIVE", "DNS_NXDOMAIN", "DNS_NO_ANSWER",
@@ -988,14 +1120,56 @@ def run(args: argparse.Namespace) -> int:
         "DNS_ANSWER_MEASUREMENTS", "ACCESSIBLE_MEASUREMENTS",
         "INCONCLUSIVE_MEASUREMENTS", "TARGET_IDS", "POLICY",
     ])
+    write_tsv(output_dir / "reachability_by_provider_prefix.tsv", provider_prefix_report, [
+        "COUNTRY", "ASN", "NETWORK", "PREFIX", "FAMILY", "ADDRESS_COUNT",
+        "ACCESSIBLE_HTTPS", "DNS_ANSWERS", "DNS_NO_ANSWER", "INCONCLUSIVE",
+        "API_ERROR", "TARGET_IDS", "TARGET_DOMAINS", "OBSERVED_IPS", "HTTP_STATUSES",
+    ])
+    write_tsv(output_dir / "reachability_by_provider_ip.tsv", provider_ip_report, [
+        "COUNTRY", "ASN", "NETWORK", "IP_ADDRESS", "PREFIX", "FAMILY", "STATUS",
+        "DNS_ANSWER_COUNT", "HTTPS_ACCESSIBLE_COUNT", "INCONCLUSIVE_COUNT",
+        "API_ERROR_COUNT", "TARGET_IDS", "TARGET_DOMAINS", "HTTP_STATUSES",
+        "MEASUREMENT_KINDS",
+    ])
     write_tsv(output_dir / "reachability_candidates.tsv", candidates, [
         "source", "observed_at", "country_requested", "probe_country", "asn_requested",
         "probe_asn", "probe_network", "target_id", "target_domain", "target_ip",
         "ip_family", "port", "result", "error", "measurement_id", "resolved_addresses",
         "matched_ru_prefix", "matched_ru_prefixes",
     ])
+    def count_provider_pairs(selected_rows: list[dict[str, Any]]) -> int:
+        return len({
+            (str(row.get("probe_country") or "").upper(), int(row.get("probe_asn") or 0))
+            for row in selected_rows
+            if row.get("probe_country") and row.get("probe_asn")
+        })
+    accessible_provider_pairs = {
+        (str(row.get("probe_country") or "").upper(), int(row.get("probe_asn") or 0))
+        for row in globalping_rows if row.get("result") == "ACCESSIBLE"
+        and row.get("probe_country") and row.get("probe_asn")
+    }
+    dns_provider_pairs = {
+        (str(row.get("probe_country") or "").upper(), int(row.get("probe_asn") or 0))
+        for row in globalping_rows if row.get("result") == "DNS_ANSWER"
+        and row.get("probe_country") and row.get("probe_asn")
+    }
+    observed_countries = collections.Counter(
+        str(row.get("probe_country") or "").upper()
+        for row in globalping_rows if row.get("probe_country")
+    )
+    api_error_reasons = collections.Counter(
+        (row.get("error") or "unspecified API error").splitlines()[0][:180]
+        for row in globalping_rows if row.get("result") == "API_ERROR"
+    )
     status["results"] = {
         "globalping_measurements": len(globalping_rows),
+        "globalping_observed_provider_pairs": count_provider_pairs(globalping_rows),
+        "globalping_providers_with_accessible_https": len(accessible_provider_pairs),
+        "globalping_providers_with_dns_answers": len(dns_provider_pairs),
+        "globalping_observed_probe_countries": dict(observed_countries),
+        "globalping_api_error_reasons": dict(api_error_reasons),
+        "provider_prefix_rows": len(provider_prefix_report),
+        "provider_ip_rows": len(provider_ip_report),
         "globalping_accessible": sum(row.get("result") == "ACCESSIBLE" for row in globalping_rows),
         "globalping_dns_answers": sum(row.get("result") == "DNS_ANSWER" for row in globalping_rows),
         "globalping_inconclusive": sum(row.get("result") == "INCONCLUSIVE" for row in globalping_rows),
