@@ -11,9 +11,12 @@ from __future__ import annotations
 import argparse
 import csv
 import datetime as dt
+import hashlib
 import ipaddress
+import json
 import re
 import sys
+import tarfile
 from pathlib import Path
 from typing import Iterable
 
@@ -25,10 +28,12 @@ COMPANY_HEADER = (
 )
 BGP_HEADER = (
     "PREFIX", "FAMILY", "ADDRESS_COUNT", "COMPANY_ASNS", "COMPANY_GROUPS",
-    "LEGAL_ENTITIES", "ASN_EVIDENCE_URLS", "IPVERSE_ASN_COUNTRY_CODES",
-    "ALL_ORIGIN_ASNS", "REGIONAL_RIR_ASN_ORIGIN", "INCLUSION_BASIS",
-    "RPKI_STATUS", "IRR_STATUS", "STATUS", "CURRENT_PIPELINE_EVIDENCE",
-    "REVIEW_REASON", "GENERATED_UTC", "BGP_SNAPSHOT_SHA256", "BGP_SNAPSHOT_URL",
+    "LEGAL_ENTITIES", "ASN_EVIDENCE_URLS", "COMPANY_ASN_DETAILS_JSON",
+    "SELECTED_ORIGIN_ASNS", "SELECTED_ORIGIN_LABELS", "REGIONAL_RIR_ASNS",
+    "REGIONAL_RIR_ASN_ORIGIN", "INCLUSION_BASIS", "GLOBAL_BGP_ORIGIN_ASNS",
+    "GLOBAL_BGP_ORIGIN_COUNTRY_CODES", "GLOBAL_BGP_MOAS", "RPKI_STATUS",
+    "IRR_STATUS", "STATUS", "CURRENT_PIPELINE_EVIDENCE", "REVIEW_REASON",
+    "GENERATED_UTC", "BGP_SNAPSHOT_SHA256", "BGP_SNAPSHOT_URL",
 )
 REVIEW_REASON = (
     "ASN-level affiliation is only a candidate selector; it does not prove that "
@@ -104,7 +109,7 @@ def read_company_manifest(path: Path, companies: dict[int, dict[str, str]]) -> d
     return countries
 
 
-def read_bgp_snapshot(path: Path) -> tuple[str, str]:
+def read_bgp_snapshot(path: Path, archive_path: Path) -> tuple[str, str]:
     rows = _read_tsv(path)
     expected = ["SOURCE", "LOCAL_FILE", "FETCH_URL", "SHA256", "BYTES", "STATUS"]
     if not rows or rows[0] != expected:
@@ -117,7 +122,82 @@ def read_bgp_snapshot(path: Path) -> tuple[str, str]:
         raise ValueError("BGP snapshot is not marked downloaded with a valid SHA-256")
     if not row[2].startswith("https://"):
         raise ValueError("BGP snapshot URL must use HTTPS")
+    try:
+        actual_sha = hashlib.sha256(archive_path.read_bytes()).hexdigest()
+    except OSError as exc:
+        raise ValueError(f"cannot read BGP snapshot {archive_path}: {exc}") from exc
+    if actual_sha != row[3]:
+        raise ValueError(
+            f"BGP snapshot SHA-256 mismatch: manifest={row[3]} actual={actual_sha}"
+        )
     return row[3], row[2]
+
+
+def read_global_bgp_origins(
+    archive_path: Path,
+    target_prefixes: set[str],
+) -> tuple[dict[str, set[int]], dict[str, dict[int, str]]]:
+    """Return every origin ASN observed for target prefixes in the same ipverse snapshot."""
+    origins: dict[str, set[int]] = defaultdict(set)
+    countries: dict[str, dict[int, str]] = defaultdict(dict)
+    json_files = 0
+    malformed_json = 0
+
+    try:
+        archive = tarfile.open(archive_path, mode="r:gz")
+    except (tarfile.TarError, OSError) as exc:
+        raise ValueError(f"invalid ipverse BGP archive {archive_path}: {exc}") from exc
+
+    with archive:
+        for member in archive:
+            if not member.isfile() or not member.name.endswith("aggregated.json"):
+                continue
+            stream = archive.extractfile(member)
+            if stream is None:
+                malformed_json += 1
+                continue
+            try:
+                item = json.load(stream)
+            except (json.JSONDecodeError, UnicodeDecodeError):
+                malformed_json += 1
+                continue
+            json_files += 1
+
+            try:
+                asn = int(item.get("asn"))
+            except (AttributeError, TypeError, ValueError):
+                continue
+            metadata = item.get("metadata") or {}
+            country_code = str(metadata.get("countryCode") or "UNKNOWN").upper()
+            prefixes = item.get("prefixes") or {}
+            for family, version in (("ipv4", 4), ("ipv6", 6)):
+                for raw_prefix in prefixes.get(family, []) or []:
+                    try:
+                        network = ipaddress.ip_network(str(raw_prefix), strict=False)
+                    except ValueError:
+                        continue
+                    if network.version != version or network.prefixlen == 0:
+                        continue
+                    normalized = network.with_prefixlen
+                    if normalized in target_prefixes:
+                        origins[normalized].add(asn)
+                        countries[normalized][asn] = country_code
+
+    if malformed_json:
+        raise ValueError(
+            f"ipverse archive contains {malformed_json} malformed aggregated.json files"
+        )
+    if json_files < 10000:
+        raise ValueError(f"ipverse archive unexpectedly small: {json_files} aggregated.json files")
+
+    missing = sorted(target_prefixes - set(origins))
+    if missing:
+        examples = ", ".join(missing[:10])
+        raise ValueError(
+            f"{len(missing)} company-origin prefixes from selected input are absent "
+            f"from the global BGP snapshot; examples: {examples}"
+        )
+    return dict(origins), dict(countries)
 
 
 def _prefix_sort_key(prefix: str) -> tuple[int, int, int]:
@@ -139,12 +219,13 @@ def build_review(
     company_manifest: Path,
     regional_prefixes: Path,
     input_provenance: Path,
+    bgp_archive: Path,
     output: Path,
     stats: Path,
 ) -> tuple[int, int, int]:
     companies = read_company_registry(company_registry)
     countries = read_company_manifest(company_manifest, companies)
-    snapshot_sha, snapshot_url = read_bgp_snapshot(input_provenance)
+    snapshot_sha, snapshot_url = read_bgp_snapshot(input_provenance, bgp_archive)
     generated = dt.datetime.now(dt.timezone.utc).isoformat()
 
     records: dict[str, dict[str, object]] = {}
@@ -185,10 +266,13 @@ def build_review(
             "entities": set(),
             "evidence": set(),
             "countries": set(),
-            "all_origins": set(),
+            "selected_origins": set(),
+            "selected_origin_labels": defaultdict(set),
             "regional_origins": set(),
         })
-        item["all_origins"].update(asn for asn, _ in origins)
+        item["selected_origins"].update(asn for asn, _ in origins)
+        for asn, labels in origins:
+            item["selected_origin_labels"][asn].update(labels)
         item["company_asns"].update(asn for asn, _ in company_origins)
         for asn, labels in company_origins:
             company = companies[asn]
@@ -202,6 +286,10 @@ def build_review(
 
     if not records:
         raise ValueError("no company-origin prefixes were found in the selected BGP manifest")
+
+    global_origins, global_countries = read_global_bgp_origins(
+        bgp_archive, set(records)
+    )
 
     def join_values(values: Iterable[object]) -> str:
         return ",".join(str(value) for value in sorted(values, key=lambda value: str(value)))
@@ -218,22 +306,44 @@ def build_review(
         for prefix in sorted(records, key=_prefix_sort_key):
             item = records[prefix]
             net = item["network"]
-            regional = bool(item["regional_origins"])
+            regional_asns = item["regional_origins"]
+            regional = bool(regional_asns)
             basis = "COMPANY_ASN_ONLY"
             if regional:
                 basis = "REGIONAL_RIR_ASN_ORIGIN+COMPANY_ASN"
+            company_details = [
+                {
+                    "asn": f"AS{asn}",
+                    "group": companies[asn]["group"],
+                    "legal_entity": companies[asn]["entity"],
+                    "ipverse_country_code": countries[asn],
+                    "evidence_url": companies[asn]["evidence"],
+                }
+                for asn in sorted(item["company_asns"])
+            ]
+            global_origin_asns = global_origins[prefix]
+            global_origin_countries = global_countries[prefix]
+            selected_labels = [
+                f"AS{asn}[{'+'.join(sorted(item['selected_origin_labels'][asn]))}]"
+                for asn in sorted(item["selected_origins"])
+            ]
             writer.writerow([
                 prefix,
                 f"IPv{net.version}",
                 net.num_addresses,
-                join_values(item["company_asns"]),
+                join_values(item["company_asns"].__iter__() if False else (f"AS{asn}" for asn in item["company_asns"])),
                 join_values(item["company_groups"]),
                 join_values(item["entities"]),
                 join_values(item["evidence"]),
-                join_values(item["countries"]),
-                join_values(item["all_origins"]),
+                json.dumps(company_details, ensure_ascii=False, sort_keys=True, separators=(",", ":")),
+                join_values(f"AS{asn}" for asn in item["selected_origins"]),
+                ",".join(selected_labels),
+                join_values(f"AS{asn}" for asn in regional_asns),
                 "yes" if regional else "no",
                 basis,
+                join_values(f"AS{asn}" for asn in global_origin_asns),
+                join_values(f"AS{asn}={global_origin_countries[asn]}" for asn in global_origin_asns),
+                "yes" if len(global_origin_asns) > 1 else "no",
                 "NOT_QUERIED",
                 "NOT_QUERIED",
                 "REVIEW",
@@ -257,12 +367,14 @@ def build_review(
     v4_regional = _union_addresses(regional_and_company, 4)
     v6_regional = _union_addresses(regional_and_company, 6)
 
+    moas_count = sum(1 for prefix in all_prefixes if len(global_origins[prefix]) > 1)
     stats_lines = [
         f"Generated UTC: {generated}",
         f"BGP snapshot URL: {snapshot_url}",
         f"BGP snapshot SHA256: {snapshot_sha}",
         f"Company ASN registry entries: {len(companies)}",
         f"Unique prefixes with at least one company origin ASN: {len(all_prefixes)}",
+        f"Prefixes with multiple global BGP origin ASNs (MOAS): {moas_count}",
         f"Unique IPv4 company-origin prefixes: {sum(1 for p in all_prefixes if ipaddress.ip_network(p).version == 4)}",
         f"Unique IPv6 company-origin prefixes: {sum(1 for p in all_prefixes if ipaddress.ip_network(p).version == 6)}",
         f"Company-origin IPv4 address-space union: {v4_all}",
@@ -274,6 +386,8 @@ def build_review(
         f"Company+regional-origin IPv4 address-space union (independent): {v4_regional}",
         f"Company+regional-origin IPv6 address-space union (independent): {v6_regional}",
         "Prefix review status: REVIEW for every row; no per-prefix ownership/control decision is inferred from ASN membership.",
+        "Global origin ASNs are derived from every aggregated.json record in the same ipverse snapshot, not only ASNs selected for DIRECT.",
+        "The ipverse observation window is up to 90 days; observed origin ASNs do not prove ownership or a complete live BGP RIB.",
         "RPKI/ROA status: NOT_QUERIED; this is not a statement that a route is invalid or lacks a ROA.",
         "IRR status: NOT_QUERIED; this is not a statement that a route object is absent.",
         "Current build behavior: prefixes remain present in the selected BGP input under the legacy ASN-selection rule; this report does not change routing or the protobuf.",
@@ -290,6 +404,7 @@ def main() -> int:
     parser.add_argument("--company-manifest", type=Path, required=True)
     parser.add_argument("--regional-prefixes", type=Path, required=True)
     parser.add_argument("--input-provenance", type=Path, required=True)
+    parser.add_argument("--bgp-archive", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--stats", type=Path, required=True)
     args = parser.parse_args()
@@ -299,6 +414,7 @@ def main() -> int:
             args.company_manifest,
             args.regional_prefixes,
             args.input_provenance,
+            args.bgp_archive,
             args.output,
             args.stats,
         )
