@@ -508,25 +508,40 @@ jobs:
               if obj["EXACT_PREFIX_MATCH"] == "yes" and canonical != obj["QUERY_PREFIX"]:
                   raise SystemExit(f"Exact IRR object prefix mismatch: {obj['QUERY_PREFIX']} vs {canonical}")
 
-          object_identity_fields = (
-              "QUERY_PREFIX", "OBJECT_TYPE", "ROUTE_PREFIX", "OBJECT_KEY", "ORIGIN_ASN",
-              "EXACT_PREFIX_MATCH", "GLOBAL_BGP_ORIGIN_MATCH", "MNT_BY", "ORG", "DESCR",
-              "REMARKS", "MEMBER_OF", "CREATED", "LAST_MODIFIED",
-          )
-          raw_signatures = {
-              tuple(obj[field] for field in object_identity_fields)
-              for obj in irr_objects
-          }
-          unique_signatures = {
-              tuple(obj[field] for field in object_identity_fields)
-              for obj in irr_unique_objects
-          }
-          if raw_signatures != unique_signatures or len(unique_signatures) != len(irr_unique_objects):
-              raise SystemExit("Deduplicated IRR route-object table does not match source-specific objects")
-          if any(not set(row["REGISTRY_SOURCES"].split(",")).issubset(required_ripe_sources) for row in irr_unique_objects):
-              raise SystemExit("Deduplicated IRR object contains an unexpected source")
-          if any(not row["REGISTRY_SOURCES"] for row in irr_unique_objects):
-              raise SystemExit("Deduplicated IRR object has no registry source")
+          # Logical RPSL route identity is exact route/route6 prefix + origin ASN
+          # within the queried prefix. Source-specific attributes may differ across
+          # registry mirrors and are unioned in the deduplicated report.
+          object_identity_fields = ("QUERY_PREFIX", "OBJECT_TYPE", "ROUTE_PREFIX", "ORIGIN_ASN")
+          raw_source_map = {}
+          raw_grouped_rows = {}
+          for obj in irr_objects:
+              signature = tuple(obj[field] for field in object_identity_fields)
+              raw_source_map.setdefault(signature, set()).add(obj["REGISTRY_SOURCE"])
+              raw_grouped_rows.setdefault(signature, []).append(obj)
+          unique_map = {}
+          for obj in irr_unique_objects:
+              signature = tuple(obj[field] for field in object_identity_fields)
+              if signature in unique_map:
+                  raise SystemExit(f"Duplicate logical route object in deduplicated table: {signature}")
+              unique_map[signature] = obj
+          if set(raw_source_map) != set(unique_map):
+              raise SystemExit("Deduplicated IRR logical route identities do not match source-specific objects")
+          for signature, source_names in raw_source_map.items():
+              unique_obj = unique_map[signature]
+              expected_sources = {source for source in source_names if source}
+              actual_sources = set(filter(None, unique_obj["REGISTRY_SOURCES"].split(",")))
+              if actual_sources != expected_sources:
+                  raise SystemExit(f"Deduplicated IRR registry source inventory mismatch for {signature}")
+              if not actual_sources or not actual_sources.issubset(required_ripe_sources):
+                  raise SystemExit(f"Deduplicated IRR object has missing/unexpected registry source: {signature}")
+              grouped = raw_grouped_rows[signature]
+              for flag in ("EXACT_PREFIX_MATCH", "GLOBAL_BGP_ORIGIN_MATCH"):
+                  if len({row[flag] for row in grouped}) != 1 or unique_obj[flag] != grouped[0][flag]:
+                      raise SystemExit(f"RIPE/GRS sources disagree on {flag} for {signature}")
+              for field in ("MNT_BY", "ORG", "DESCR", "REMARKS", "MEMBER_OF", "CREATED", "LAST_MODIFIED"):
+                  expected_values = " | ".join(sorted({row[field] for row in grouped if row.get(field)}))
+                  if unique_obj[field] != expected_values:
+                      raise SystemExit(f"Deduplicated IRR attribute union mismatch for {field} / {signature}")
 
           stats = Path("prefix-audit/priority-prefix-evidence/priority_prefix_evidence_stats.txt").read_text(encoding="utf-8")
           for label in (
