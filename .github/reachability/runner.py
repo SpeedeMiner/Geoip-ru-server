@@ -1189,7 +1189,9 @@ def run(args: argparse.Namespace) -> int:
         (row.get("error") or "unspecified API error").splitlines()[0][:180]
         for row in globalping_rows if row.get("result") == "API_ERROR"
     )
+    coverage_metrics = build_globalping_coverage_summary(globalping_rows, targets)
     status["results"] = {
+        **coverage_metrics,
         "globalping_measurements": len(globalping_rows),
         "globalping_observed_provider_pairs": count_provider_pairs(globalping_rows),
         "globalping_providers_with_accessible_https": len(accessible_provider_pairs),
@@ -1221,6 +1223,49 @@ def run(args: argparse.Namespace) -> int:
     )
     print(json.dumps(status, ensure_ascii=False, indent=2, sort_keys=True))
     return 0
+
+
+def build_globalping_coverage_summary(
+    measurements: list[dict[str, Any]],
+    targets: list[dict[str, Any]],
+) -> dict[str, Any]:
+    """Summarize requested source-country/target coverage, including missing IPv6 probes."""
+    observed_pairs: set[tuple[str, str]] = set()
+    provider_target_bundles: set[tuple[str, int, str]] = set()
+    observed_targets: set[str] = set()
+    possible_pairs = {
+        (str(country).upper(), str(target.get("id") or ""))
+        for target in targets
+        for country in target.get("country_scope", [])
+        if target.get("id") and str(country).upper() in COUNTRIES
+    }
+    no_ipv6_by_country: collections.Counter[str] = collections.Counter()
+
+    for row in measurements:
+        target_id = str(row.get("target_id") or "")
+        country = str(row.get("country_requested") or row.get("probe_country") or "").upper()
+        if target_id:
+            observed_targets.add(target_id)
+        if target_id and country in COUNTRIES:
+            observed_pairs.add((country, target_id))
+            try:
+                asn = int(row.get("asn_requested") or row.get("probe_asn"))
+            except (TypeError, ValueError):
+                asn = 0
+            if asn > 0:
+                provider_target_bundles.add((country, asn, target_id))
+        if row.get("result") == "NO_IPV6_PROBE" and country in COUNTRIES:
+            no_ipv6_by_country[country] += 1
+
+    pairs_by_country = collections.Counter(country for country, _ in observed_pairs)
+    return {
+        "globalping_ipv6_probe_unavailable_by_country": dict(sorted(no_ipv6_by_country.items())),
+        "globalping_distinct_targets_observed": len(observed_targets),
+        "globalping_observed_target_country_pairs": len(observed_pairs),
+        "globalping_possible_target_country_pairs": len(possible_pairs),
+        "globalping_observed_target_country_pairs_by_country": dict(sorted(pairs_by_country.items())),
+        "globalping_provider_target_bundles_observed": len(provider_target_bundles),
+    }
 
 
 def main() -> int:
