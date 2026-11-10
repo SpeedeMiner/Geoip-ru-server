@@ -182,3 +182,13 @@ Durable resume point for PR #5. After any conversation/network interruption, rea
 - No changes to `geoip_RU.dat`, production builder, release assets, DIRECT policy, ASN allowlists, `main`, or PR #6. PR #5 remains Draft.
 - Code commit before the documentation checkpoint: `2d67db9d360c835dea93752f60bd5a097cab154f`. Expected validation: existing Python 29 + 6 new VPN Gate tests = 35 total, plus existing Go formatting/tests/build.
 - Resume from: verify validation on `2d67db9d360c835dea93752f60bd5a097cab154f`; after it passes, launch the manual workflow with 1–3 servers, inspect the artifacts and actual RU exit IP/ASN/ISP attribution, then decide whether to widen coverage.
+
+
+### 2026-11-11 — VPN Gate kill-switch failure recovery and final test count — DONE / CI PENDING
+
+- Hardened `FirewallGuard`: if setting the fail-closed iptables rules fails partway through `__enter__`, the context manager now restores both saved IPv4 and IPv6 firewall snapshots immediately. This matters because Python does not call `__exit__` when `__enter__` raises.
+- Added a regression test that simulates failure while applying the IPv6 rules and verifies that both `iptables-restore` and `ip6tables-restore` are called.
+- The VPN Gate test module now contains seven deterministic tests; expected full Python discovery count is 36 (29 existing reachability tests + 7 VPN Gate tests).
+- Latest VPN Gate code/test commit for validation: `f8d6770ad3ce8ad1bda34a1fac9211060d5eba60`. Checkpoint commit follows separately; no code was changed after the validation target.
+- Live combined commit status currently exposes no checks, and the GitHub connector returns no PR-triggered workflow records for this push commit. Do not mark CI successful without a visible run/result.
+- No live VPN connection or target probes were executed. PR #5 remains Draft; PR #6 and all production GeoIP files remain untouched.
