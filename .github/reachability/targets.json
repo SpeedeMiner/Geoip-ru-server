@@ -41,7 +41,8 @@
         "BY"
       ],
       "port": 443,
-      "path": "/"
+      "path": "/",
+      "reference_url": "https://ya.ru/"
     },
     {
       "id": "ru-vk",
@@ -53,7 +54,8 @@
         "BY"
       ],
       "port": 443,
-      "path": "/"
+      "path": "/",
+      "reference_url": "https://vk.com/"
     },
     {
       "id": "ru-ozon",
@@ -65,7 +67,8 @@
         "BY"
       ],
       "port": 443,
-      "path": "/"
+      "path": "/",
+      "reference_url": "https://www.ozon.ru/"
     },
     {
       "id": "kz-kaspi",
@@ -77,7 +80,8 @@
         "BY"
       ],
       "port": 443,
-      "path": "/"
+      "path": "/",
+      "reference_url": "https://nationalbank.kz/ru/news/sistemy-elektronnyh-deneg-kazahstana"
     },
     {
       "id": "kz-egov",
@@ -89,7 +93,8 @@
         "BY"
       ],
       "port": 443,
-      "path": "/"
+      "path": "/",
+      "reference_url": "https://egov.kz/"
     },
     {
       "id": "kz-beeline",
@@ -101,7 +106,8 @@
         "BY"
       ],
       "port": 443,
-      "path": "/"
+      "path": "/",
+      "reference_url": "https://beeline.kz/"
     },
     {
       "id": "by-beltelecom",
@@ -113,7 +119,8 @@
         "BY"
       ],
       "port": 443,
-      "path": "/"
+      "path": "/",
+      "reference_url": "https://beltelecom.by/"
     },
     {
       "id": "by-a1",
@@ -125,7 +132,8 @@
         "BY"
       ],
       "port": 443,
-      "path": "/"
+      "path": "/",
+      "reference_url": "https://a1.by/"
     },
     {
       "id": "by-mts",
@@ -137,7 +145,8 @@
         "BY"
       ],
       "port": 443,
-      "path": "/"
+      "path": "/",
+      "reference_url": "https://www.mts.by/"
     },
     {
       "id": "ru-gosuslugi",
