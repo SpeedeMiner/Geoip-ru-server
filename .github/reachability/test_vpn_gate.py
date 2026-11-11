@@ -271,8 +271,8 @@ class UbuntuAptDNSBootstrapTests(unittest.TestCase):
             "sudo timeout --signal=TERM --kill-after=2s 45s python3 -B - <<'PY'",
             workflow,
         )
-        self.assertIn("    timeout-minutes: 12\\n", workflow)
-        self.assertIn("        timeout-minutes: 9\\n", workflow)
+        self.assertIn("    timeout-minutes: 12\n", workflow)
+        self.assertIn("        timeout-minutes: 9\n", workflow)
         self.assertIn(
             "sudo timeout --verbose --signal=TERM --kill-after=5s 7m "
             "python3 .github/reachability/vpn_gate.py",
@@ -1008,13 +1008,13 @@ class VPNObrattoFetchSafetyTests(unittest.TestCase):
         class FakeResponse(io.BytesIO):
             def __init__(self, payload):
                 super().__init__(payload)
-                self.read_limit = None
+                self.read_limits = []
 
             def geturl(self):
                 return "https://vpnobratno.info/test"
 
             def read(self, size=-1):
-                self.read_limit = size
+                self.read_limits.append(size)
                 return super().read(size)
 
         class FakeOpener:
@@ -1044,7 +1044,7 @@ class VPNObrattoFetchSafetyTests(unittest.TestCase):
         ):
             with self.assertRaisesRegex(vpn_gate.ProbeError, "exceeds configured 4-byte limit"):
                 vpn_gate.fetch_vpnobratno_bytes(url, max_bytes=4)
-        self.assertEqual(oversized_response.read_limit, 5)
+        self.assertEqual(oversized_response.read_limits[0], 5)
 
         with patch.object(vpn_gate.urllib.request, "build_opener") as build_opener:
             with self.assertRaisesRegex(ValueError, "max_bytes"):
@@ -1844,7 +1844,7 @@ class VPNObrattoFetchSafetyTests(unittest.TestCase):
         ):
             self.assertEqual(vpn_gate.fetch_vpnobratno_bytes(url, timeout=12, max_bytes=4), b"1234")
         doh.assert_called_once_with("vpnobratno.info", "A", timeout=4)
-        self.assertEqual(exact_response.read_limit, 5)
+        self.assertEqual(exact_response.read_limits[0], 5)
         self.assertEqual(len(exact_connections), 1)
         connection = exact_connections[0]
         self.assertEqual(
