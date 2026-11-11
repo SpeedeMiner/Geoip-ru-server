@@ -52,6 +52,7 @@ VPNOBRATNO_PROFILE_DOWNLOAD_LIMIT = 24
 VPNOBRATNO_LISTING_MAX_BYTES = 2_000_000
 VPNOBRATNO_PROFILE_MAX_BYTES = 64_000
 VPNOBRATNO_FETCH_HARD_MAX_BYTES = 8_000_000
+PTR_LOOKUP_TIMEOUT_SECONDS = 3
 IP_INFO_URLS = (
     "https://ipwho.is/",
     "https://ipapi.co/json/",
@@ -928,10 +929,30 @@ def ip_metadata(url: str | None = None) -> dict[str, Any]:
 
 
 def resolve_ptr(address: str) -> str:
-    try:
-        return socket.gethostbyaddr(address)[0]
-    except (OSError, socket.herror, socket.gaierror):
+    """Resolve a server PTR without allowing reverse DNS to stall the VPN pilot."""
+    if not shutil.which("getent"):
         return ""
+    try:
+        result = subprocess.run(
+            ["getent", "hosts", address],
+            text=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            check=False,
+            timeout=PTR_LOOKUP_TIMEOUT_SECONDS,
+        )
+    except (OSError, subprocess.SubprocessError):
+        return ""
+    if result.returncode != 0:
+        return ""
+    fields = result.stdout.strip().split()
+    if len(fields) < 2:
+        return ""
+    try:
+        returned_ip = str(ipaddress.ip_address(fields[0]))
+    except ValueError:
+        return ""
+    return fields[1] if returned_ip == address else ""
 
 
 def run_command(args: list[str], *, input_text: str | None = None, check: bool = True) -> subprocess.CompletedProcess:
@@ -1235,10 +1256,24 @@ def run(args: argparse.Namespace) -> int:
             flush=True,
         )
         server_category, server_prefix = runner.map_address(server_ip, networks)
+        print(
+            f"[vpn-gate] server_ip_metadata=started host={server['hostname']} ip={server_ip}",
+            flush=True,
+        )
         try:
             server_meta = ip_metadata(f"https://ipwho.is/{server_ip}")
-        except ProbeError:
+        except ProbeError as exc:
             server_meta = {"asn": 0, "org": ""}
+            print(
+                f"[vpn-gate] server_ip_metadata=result_unavailable host={server['hostname']} "
+                f"reason={str(exc)[:160]}",
+                flush=True,
+            )
+        else:
+            print(
+                f"[vpn-gate] server_ip_metadata=completed host={server['hostname']}",
+                flush=True,
+            )
         server_origin = server.pop("_network_info", None) or network_info(server_ip)
         server_asn_ip_meta = parse_int(server_meta.get("asn"))
         server_asn_ripestat = parse_int(server_origin.get("asn"))
@@ -1250,7 +1285,13 @@ def run(args: argparse.Namespace) -> int:
         server_meta["asn"] = server_asn
 
         server_meta["network_prefix"] = server_origin["prefix"]
+        print(f"[vpn-gate] server_ptr_lookup=started host={server['hostname']}", flush=True)
         ptr = resolve_ptr(server_ip)
+        print(
+            f"[vpn-gate] server_ptr_lookup=completed host={server['hostname']} "
+            f"result={'found' if ptr else 'not_found_or_timeout'}",
+            flush=True,
+        )
         provider = {
             "SOURCE": server.get("source", "VPN_GATE"),
             "PROFILE_VARIANT": server.get("profile_variant", "VPN_GATE_API"),
@@ -1320,11 +1361,26 @@ def run(args: argparse.Namespace) -> int:
                 with FirewallGuard(server_ip, server["profile"]["proto"], server["profile"]["port"]):
                     with ResolverGuard():
                         with log_path.open("w", encoding="utf-8") as log_stream:
+                            print(
+                                f"[vpn-gate] openvpn_process_starting attempt={attempt_index}/{len(selected)} "
+                                f"host={server['hostname']}",
+                                flush=True,
+                            )
                             process = subprocess.Popen(
                                 ["openvpn", "--config", str(config_path), "--verb", "3"],
                                 stdout=log_stream, stderr=subprocess.STDOUT,
                             )
+                            print(
+                                f"[vpn-gate] openvpn_process_started attempt={attempt_index}/{len(selected)} "
+                                f"host={server['hostname']}",
+                                flush=True,
+                            )
                             try:
+                                print(
+                                    f"[vpn-gate] tunnel_route_wait_started attempt={attempt_index}/{len(selected)} "
+                                    f"timeout={args.connect_timeout}s",
+                                    flush=True,
+                                )
                                 wait_for_tunnel(process, args.connect_timeout, log_path)
                                 print(
                                     f"[vpn-gate] tunnel_result=route_installed host={server['hostname']}",
@@ -1422,6 +1478,11 @@ def run(args: argparse.Namespace) -> int:
                                 provider["CONNECTION_RESULT"] = "CONNECT_OR_VERIFY_FAILED"
                                 provider["ERROR"] = str(exc)[:400]
                                 connection_counts["connect_or_verify_failed"] += 1
+                                print(
+                                    f"[vpn-gate] openvpn_attempt_result={attempt_index}/{len(selected)} "
+                                    f"result=failed reason={str(exc)[:180]}",
+                                    flush=True,
+                                )
                             finally:
                                 if process and process.poll() is None:
                                     process.terminate()
@@ -1434,6 +1495,11 @@ def run(args: argparse.Namespace) -> int:
                 provider["CONNECTION_RESULT"] = "FIREWALL_OR_TUNNEL_SETUP_FAILED"
                 provider["ERROR"] = str(exc)[:400]
                 connection_counts["setup_failed"] += 1
+                print(
+                    f"[vpn-gate] openvpn_attempt_result={attempt_index}/{len(selected)} "
+                    f"result=setup_failed reason={str(exc)[:180]}",
+                    flush=True,
+                )
             if provider["CONNECTION_RESULT"] not in {"CONNECTED_RU_EGRESS", "REJECTED_EXIT_NOT_RU"}:
                 try:
                     tail = log_path.read_text(encoding="utf-8", errors="replace").splitlines()[-60:]
@@ -1445,6 +1511,11 @@ def run(args: argparse.Namespace) -> int:
                         })
                 except OSError:
                     pass
+            print(
+                f"[vpn-gate] openvpn_attempt_completed={attempt_index}/{len(selected)} "
+                f"result={provider['CONNECTION_RESULT']}",
+                flush=True,
+            )
         provider_rows.append(provider)
 
     for row in measurement_rows:
