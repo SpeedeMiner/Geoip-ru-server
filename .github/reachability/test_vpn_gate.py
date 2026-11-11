@@ -608,9 +608,23 @@ class VPNGateDefaultArgumentsTests(unittest.TestCase):
         self.assertEqual(args.source, "vpnobratno")
         self.assertEqual(args.max_servers, 1)
         self.assertEqual(args.max_attempts, 6)
+        self.assertEqual(args.connect_timeout, 5)
 
 
-class VPNObratnoFetchSafetyTests(unittest.TestCase):
+    def test_explicit_five_second_tunnel_timeout_is_accepted(self):
+        import os
+        with patch.object(vpn_gate.sys, "argv", [
+            "vpn_gate.py", "--inventory", "inventory.tsv",
+            "--connect-timeout", "5",
+        ]), patch.object(vpn_gate.shutil, "which", return_value="/usr/bin/fake"), \
+             patch.object(os, "geteuid", return_value=0), \
+             patch.object(vpn_gate, "run", return_value=0) as run:
+            self.assertEqual(vpn_gate.main(), 0)
+        args = run.call_args.args[0]
+        self.assertEqual(args.connect_timeout, 5)
+
+
+class VPNObrattoFetchSafetyTests(unittest.TestCase):
     def test_redirect_handler_rejects_cross_origin_and_insecure_redirects(self):
         handler = vpn_gate.VPNObratnoSameOriginRedirect()
         request = urllib.request.Request(
