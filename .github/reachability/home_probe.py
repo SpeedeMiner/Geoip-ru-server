@@ -314,6 +314,7 @@ def run_probe(args: argparse.Namespace) -> int:
     output.mkdir(parents=True, exist_ok=True)
 
     attribution = source_metadata(args.timeout)
+    attribution["schema_version"] = 1
     attribution["required_country"] = args.required_country
     attribution["required_country_matches"] = (
         attribution["verified"] and attribution["country"] == args.required_country
@@ -329,6 +330,7 @@ def run_probe(args: argparse.Namespace) -> int:
 
     rows = [measure_target(target, args.timeout) for target in targets]
     summary = {
+        "schema_version": 1,
         "generated_at": utc_now(),
         "probe_type": "USER_CONTROLLED_HOME_OR_ACCESS_NETWORK",
         "required_country": args.required_country,
