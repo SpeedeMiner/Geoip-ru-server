@@ -448,7 +448,9 @@ def main():
     regional_union = union_networks(*rir.values())
     blocked_base = parse_blocked_base(args.blocked_base)
     ipsum, ipsum_stats = parse_ipsum(args.ipsum)
-    blocked = blocked_base | ipsum
+    # ipsum is a /24 approximation of exact blocked hosts, not a list of exact
+    # blocked addresses. Keep it review-only to avoid carving co-hosted services.
+    blocked = blocked_base
 
     additions = regional_union | service_union
     preblock = base_ru | additions
@@ -515,13 +517,13 @@ def main():
         row.update({k:str(v) for k,v in source_stats.get(source_id,{}).items() if isinstance(v,(str,int))})
         metrics_rows.append(row)
 
-    # Compute unique v38 delta and the incremental blocking effect of ipsum.
+    # Compute exact v38 delta and a separate what-if analysis of Antifilter ipsum.
     delta_v4 = interval_size(new_vs_base[4])
     delta_v6 = interval_size(new_vs_base[6])
     base_blocked_iv = {v: intervals(blocked_base, v) for v in (4,6)}
     ipsum_iv = {v: intervals(ipsum, v) for v in (4,6)}
-    # Count only block space not already covered by the v37 approved set,
-    # including containment by a broader v37 CIDR (not just exact CIDR equality).
+    # Only address space not already covered by the approved v37 block set is
+    # shown as potential /24 collateral. It is not automatically carved.
     ipsum_only_iv = {
         v: subtract(ipsum_iv[v], base_blocked_iv[v]) for v in (4,6)
     }
@@ -529,7 +531,7 @@ def main():
         v: interval_size(intersect(preblock_iv[v], ipsum_only_iv[v])) for v in (4,6)
     }
     blocked_rows = []
-    for source_id, networks in (("v37-approved-rkn",blocked_base),("antifilter-ipsum-24",ipsum)):
+    for source_id, networks in (("v37-approved-rkn",blocked_base),("antifilter-ipsum-24-review-only",ipsum)):
         for net in sorted(networks,key=lambda n:(n.version,int(n.network_address),n.prefixlen)):
             v=net.version
             one_prefix = [(int(net.network_address),int(net.broadcast_address))]
@@ -543,7 +545,7 @@ def main():
                 "addresses":net.num_addresses,
                 "overlap_preblock_direct":overlap,
                 "already_approved_blocked":already,
-                "newly_carved_direct_addresses":max(0,overlap-already),
+                "potential_additional_proxy_addresses":max(0,overlap-already),
             })
 
     output_entries = {"PRIVATE":final_private,"RU":final}
@@ -570,12 +572,13 @@ def main():
         writer.writeheader()
         writer.writerows(prefix_rows)
     with args.blocked_provenance.open("w",encoding="utf-8",newline="") as f:
-        fields=["source_id","prefix","family","addresses","overlap_preblock_direct","already_approved_blocked","newly_carved_direct_addresses"]
+        fields=["source_id","prefix","family","addresses","overlap_preblock_direct","already_approved_blocked","potential_additional_proxy_addresses"]
         writer=csv.DictWriter(f,fieldnames=fields,delimiter="\t",lineterminator="\n")
         writer.writeheader()
         writer.writerows(blocked_rows)
     args.blocked_output.write_text(
-        "# v38 approved blocked destinations: v37 conservative set plus Antifilter ipsum /24 summary.\n"
+        "# v38 automatically approved blocked destinations: existing v37 exact-host/bounded-prefix set.\n"
+        "# Antifilter ipsum /24 summary is review-only and does not affect this set.\n"
         + "".join(str(n)+"\n" for n in sorted(blocked,key=lambda n:(n.version,int(n.network_address),n.prefixlen))),
         encoding="utf-8",
     )
@@ -634,10 +637,11 @@ def main():
         "",
         "RKN BLOCKS",
         f"v37 approved blocked CIDRs: {len(blocked_base)}",
-        f"Antifilter ipsum unique IPv4 /24 prefixes: {len(ipsum)}",
+        f"Antifilter ipsum REVIEW-ONLY IPv4 /24 prefixes: {len(ipsum)}",
         f"Antifilter ipsum raw/valid/invalid rows: {ipsum_stats['raw_rows']}/{ipsum_stats['valid_rows']}/{ipsum_stats['invalid_rows']}",
-        f"Antifilter ipsum new IPv4 addresses intersecting preblock DIRECT: {ipsum_overlap_direct[4]}",
-        f"Antifilter ipsum new IPv6 addresses intersecting preblock DIRECT: {ipsum_overlap_direct[6]}",
+        f"Potential additional IPv4 DIRECT address space affected by /24 review candidates: {ipsum_overlap_direct[4]}",
+        f"Potential additional IPv6 DIRECT address space affected by /24 review candidates: {ipsum_overlap_direct[6]}",
+        "ipsum /24 candidates are NOT automatically removed from DIRECT; only exact host and bounded prefixes already approved by v37 remain automatic.",
         f"Combined v38 blocked IPv4 address space: {blocked_counts['ipv4']}",
         f"Combined v38 blocked IPv6 address space: {blocked_counts['ipv6']}",
         "ipsum is a third-party RKN-derived /24 summary, not a direct official RKN API.",
@@ -647,7 +651,7 @@ def main():
         "- geoip_RU.dat: final v38 GeoIP protobuf with RU and PRIVATE categories only.",
         "- geoip_RU_v38_source_metrics.tsv: per-source unique CIDR and address-space contribution; rows overlap and must not be summed.",
         "- geoip_RU_v38_prefix_provenance.tsv: service and resource prefix provenance.",
-        "- geoip_RU_v38_blocked_provenance.tsv: source-level blocked prefix and DIRECT overlap.",
+        "- geoip_RU_v38_blocked_provenance.tsv: automatic blocked overlaps plus review-only /24 collateral estimate.",
         "- geoip_RU_v38_blocked_ip_exclusions.txt: exact combined blocked set applied to v38.",
         "",
         "SHA-256 output: "+sha256(payload),
@@ -662,7 +666,7 @@ def main():
         "sources":SOURCE_REFS,
         "rir_inventory":{"rows":rir_rows,"countries":{c:len(rir[c]) for c in ("RU","BY","KZ")}},
         "service_sources":source_stats,
-        "blocked":{"v37_unique":len(blocked_base),"ipsum_unique":len(ipsum),"ipsum_sha256":sha256(args.ipsum.read_bytes())},
+        "blocked":{"v37_approved_unique":len(blocked_base),"ipsum_review_only_unique":len(ipsum),"ipsum_auto_carved":False,"ipsum_sha256":sha256(args.ipsum.read_bytes()),"potential_additional_proxy_ipv4_addresses":ipsum_overlap_direct[4],"potential_additional_proxy_ipv6_addresses":ipsum_overlap_direct[6]},
         "base_v37_address_space":base_counts,
         "final_v38_address_space":final_counts,
         "new_after_policy":{"ipv4":delta_v4,"ipv6":delta_v6},
@@ -673,6 +677,7 @@ def main():
             "geolocation_used_as_admission_gate":False,
             "private_precedence_applied":True,
             "rkn_blocklist_applied":True,
+            "ipsum_24_auto_carved":False,
             "candidate_status":"REVIEW",
         },
         "input_sha256":{
