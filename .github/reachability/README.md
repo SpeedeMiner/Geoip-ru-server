@@ -28,7 +28,10 @@ Russian VPN Gate volunteer exits. `vpnobratno.info` describes its Russian server
 as VPN Gate volunteer servers using Russian ISP connections; the implementation
 uses the official VPN Gate CSV API rather than scraping the directory page.
 
-The workflow defaults to three exits and has a hard cap of six per run. It:
+The workflow defaults to three exits and has a hard cap of six per run. Its
+manual job timeout is 120 minutes to accommodate the sequential candidate-ASN
+lookups and bounded DNS/HTTPS requests at the maximum exit count. A and AAAA
+answers are collected in one resolver call per target. It:
 
 - selects only VPN Gate records with country code RU, a public IPv4 address and a usable OpenVPN profile;
 - validates the profile structure, then builds a minimal client configuration from an allowlist; untrusted script, plugin, route and external-file directives are never executed or copied;
