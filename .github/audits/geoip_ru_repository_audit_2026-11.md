@@ -277,3 +277,24 @@ Run full PR #7 CI after the spot-check/worklist changes; inspect the new worklis
 - Then sample/validate the 237 residuals not observed in ipverse, without treating absence as route withdrawal.
 - Complete raw immutable input retention; current source catalog has 38 validated metadata rows but current v37 release explicitly does not retain raw upstream GeoIP .dat inputs.
 - No production ADD/EXCLUDE yet.
+
+
+## 2026-11-11 — Production-output delta versus audit-only workstream
+
+Production run #35 (main commit 580a25a..., release branch snapshot ac2e9a...) changed published v37 after the run #34 snapshot (d613c5f...).
+
+Exact output comparison extracted from the old and current canonical inventory artifacts:
+- RU output CIDRs: 76,292 -> 76,293.
+- IPv4 address union: 52,618,729 -> 52,619,113 (+384; old IPv4 space fully retained).
+- IPv6 address union: +one /48 (2^80 addresses).
+- Added exact RU output CIDRs: 147.45.36.0/23, 192.144.38.0/24, 2001:678:13e0::/48.
+- Removed exact RU output CIDRs: 147.45.36.0/24 and 147.45.37.128/25. The new /23 aggregate retains those previous addresses and includes the newly covered 147.45.37.0/25; 192.144.38.0/24 adds the other 256 IPv4 addresses.
+- Accepted additional feed exact CIDRs: 190 -> 193, with new rows 147.45.37.0/25, 192.144.38.0/24 and 2001:678:13e0::/48. Provenance points to Davoyan and overlapping RU-RIR address-space evidence. Raw source .dat inputs are not retained, so attribution of every final aggregate to exact upstream raw rows is not yet reproducible.
+- The production change was caused by main production run #35 and happened before PR #7 run #215. PR #7 is audit-only and did not change any production file or binary.
+
+### Practical production impact of the improvement plan
+
+- Source catalog, immutable raw snapshots, audit inventory, synchronized RIB/VRP collection and review ledgers do not change routing or GeoIP output by themselves.
+- A later, explicitly approved change to the exact-prefix source-of-truth and production builder can change geoip_RU.dat; the expected CIDR/address diff must be reviewed first.
+- A future strict geographic RU artifact should be separate from the legacy RU+BY+KZ/company DIRECT bucket.
+- Merging docs-only PR #7 into main can still trigger the current production build/publish workflow. Treat the release output as potentially changed because main workflow pulls mutable upstream inputs.

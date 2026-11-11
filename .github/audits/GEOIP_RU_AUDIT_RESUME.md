@@ -60,3 +60,21 @@ Run #215: combined correction passed.
 - Keep all unresolved candidates REVIEW; do not infer ownership or geography from ASN countryCode.
 - Never project exact origin/ROA/IRR state between a parent and child prefix.
 - Any merge into main triggers production release workflow, including docs-only changes.
+
+
+## Фактическое изменение production output и границы влияния
+
+Сравнение предыдущего v37 с production run #35:
+- +1 net exact CIDR (RU 76292 -> 76293).
+- IPv4 +384 адреса; IPv6 +один /48.
+- Added exact output: 147.45.36.0/23, 192.144.38.0/24, 2001:678:13e0::/48.
+- Removed exact output: 147.45.36.0/24, 147.45.37.128/25; их IPv4 address space сохранено новым /23.
+- Дополнительный accepted feed count 190 -> 193.
+Это production run #35; PR #7 не менял бинарник.
+
+План влияет на production поэтапно:
+- catalog/snapshot/inventory/diff/RIB/VRP/holder audit — только проверки и отчёты, клиентский output не меняется;
+- review ledger — не меняет output, пока ADD/EXCLUDE явно не утверждены и не подключены к builder;
+- будущий data PR может изменить GeoIP output и должен иметь exact CIDR/address-space diff и отдельный review;
+- strict geographic RU будет отдельным output, legacy RU+BY+KZ+company contract сохраняется.
+Merge PR #7 в main всё же запускает текущий production workflow на push; mutable upstream feeds могут обновить release. Перед merge проверять ожидаемый output diff.

@@ -342,3 +342,42 @@ Selected-origin BGP interval coverage is 99.982380% for IPv4 and 100% for IPv6. 
 5. Design separate strict-RU output and tests without changing legacy production output.
 
 PR #7 stays Draft. No production prefixes, builders, allowlist, DIRECT semantics, GeoIP binary, release/tag or main are modified by this audit workstream.
+
+
+## 13. Влияние плана на сборку и фактический production diff
+
+### Что уже делает PR #7
+
+PR #7 остаётся audit-only. Текущие изменения в нём (source catalog, validators, canonical inventory, RIR residual queue, external evidence ledger, checkpoint docs) не меняют production builder, его production inputs, company ASN allowlist, DIRECT policy или GeoIP binary. Запуск PR #7 выполняет отдельный workflow Prefix audit validation; он скачивает уже опубликованный release snapshot и создаёт audit artifacts.
+
+Сами этапы catalog, immutable snapshot capture, exact-prefix inventory, address-space diff, RouteViews/RIPE RIS/VRP capture и review ledger не должны изменять маршрутный список клиента. Они создают проверяемые входы для решения. Запись REVIEW или появление кандидата в audit TSV не равняется ADD в production.
+
+Production output изменится только после отдельного решения, когда проверенный exact-prefix ADD/EXCLUDE будет помещён в управляемый source-of-truth/policy layer и эта запись намеренно будет подключена к production builder. Строгий географический RU должен выпускаться отдельным артефактом; legacy RU category остаётся unified DIRECT RU+BY+KZ плюс утверждённые company/affiliate exceptions, пока не будет отдельного согласованного изменения контракта.
+
+### Почему merge docs-only PR всё равно требует осторожности
+
+Текущий production workflow запускается на push в main и публикует v37 release / обновляет release branch. Поэтому merge PR #7 в main может вызвать новый production build даже если PR не менял source prefix или builder. При сборке используются mutable upstream refs (release/main/master/latest); очередной запуск способен подтянуть новые upstream bytes и изменить geoip_RU.dat. Перед merge нужно проверять ожидаемый diff и release output, а не считать docs-only merge no-op.
+
+### Что реально изменилось между прошлым и текущим v37
+
+Production run #35 обновил release branch с предыдущего audited snapshot (d613c5f... / GeoIP SHA c7031007...) до ac2e9a... / GeoIP SHA 7ece8f27.... Это изменение было выполнено production workflow до текущего PR #7 inventory correction; оно не было вызвано audit PR.
+
+- RU output exact CIDRs: 76,292 -> 76,293 (+1 net).
+- IPv4 address union: 52,618,729 -> 52,619,113 (+384; old IPv4 address space fully retained).
+- IPv6 address union: +one /48, exactly 2^80 addresses.
+- New exact RU-output CIDRs: 147.45.36.0/23, 192.144.38.0/24, 2001:678:13e0::/48.
+- Removed exact RU-output CIDRs: 147.45.36.0/24 and 147.45.37.128/25. The new 147.45.36.0/23 covers their prior address space plus 147.45.37.0/25; the other IPv4 addition is 192.144.38.0/24.
+- Accepted additional-feed provenance increased 190 -> 193 exact CIDRs. Newly present accepted feed rows are 147.45.37.0/25, 192.144.38.0/24 and 2001:678:13e0::/48; recorded feed group is Davoyan with RU-RIR address-space overlap. 147.45.37.0/25 is a more-specific fully covered by output aggregate 147.45.36.0/23, not an extra output CIDR itself.
+- RIR inventory, selected-origin input, global ipverse archive and PRIVATE output metrics were unchanged across these snapshots.
+
+The current audit finds 360 residual RU-RIR exact prefixes; none is auto-approved. This is precisely why the next steps must explain every address-space addition/removal, preserve source hashes and distinguish exact NLRI from partial address overlap before changing production inputs.
+
+### Production safeguards to implement in a later, separate PR
+
+1. Preserve raw source inputs and immutable refs so each production output can be reproduced.
+2. Emit exact-prefix additions/removals and address-space additions/removals as separate reports.
+3. Require a reason/evidence/reviewer/expiry for every curated exact-prefix ADD/EXCLUDE.
+4. Keep new and conflicting candidates REVIEW by default; never auto-promote a source row just because it appears in an audit queue.
+5. Validate policy-contract changes separately: legacy DIRECT RU+BY+KZ must not silently become strict RU; strict RU is a parallel output.
+6. Fail production publish on unexplained large diffs or failed source/provenance checks; do not block a build merely because an unresolved REVIEW candidate exists.
+
