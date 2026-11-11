@@ -1,0 +1,48 @@
+name: VPN route source candidate build
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - ".github/workflows/vpn-route-candidate-build.yml"
+      - "tools/build_vpn_route_candidates.py"
+      - "tools/tests/test_vpn_route_candidates.py"
+      - "docs/VPN_ROUTE_SOURCE_MATRIX.md"
+      - "docs/VPN_ROUTE_SOURCE_REGISTRY.tsv"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: vpn-route-candidates-\${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-candidate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Run unit tests
+        run: python -m unittest discover -s tools/tests -v
+
+      - name: Build pinned VPN route candidates
+        run: |
+          python tools/build_vpn_route_candidates.py \
+            --output-dir artifacts/vpn-route-candidates
+
+      - name: Upload candidate database and coverage report
+        uses: actions/upload-artifact@v4
+        with:
+          name: vpn-route-candidates-\${{ github.run_number }}
+          path: artifacts/vpn-route-candidates/
+          if-no-files-found: error
+          retention-days: 30
