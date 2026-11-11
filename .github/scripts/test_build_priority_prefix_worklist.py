@@ -53,6 +53,7 @@ class WorklistTests(unittest.TestCase):
             spots = [
                 {"PREFIX":"198.51.100.0/24","STATUS":"CHECKED_2026-11-10","OBSERVED_PREFIXES":"198.51.100.0/24","SUMMARY":"exact scope","SOURCE_URLS":"https://example.test/source"},
                 {"PREFIX":"198.18.0.0/23","STATUS":"CHECKED_2026-11-10","OBSERVED_PREFIXES":"198.18.1.0/24","SUMMARY":"more-specific only; not the covering prefix","SOURCE_URLS":"https://example.test/more-specific"},
+                {"PREFIX":"203.0.113.0/24","STATUS":"CHECKED_2026-11-11","OBSERVED_PREFIXES":"203.0.113.0/24 | 203.0.113.128/25","SUMMARY":"fresh exact route plus child; checked on a later date","SOURCE_URLS":"https://example.test/fresh"},
             ]
             evidence = self.build_inputs(root, rows, spots)
             out, stats = root/"worklist.tsv", root/"stats.txt"
@@ -65,6 +66,8 @@ class WorklistTests(unittest.TestCase):
             self.assertEqual(got[0]["EXTERNAL_SPOT_CHECK_STATUS"], "CHECKED_2026-11-10")
             self.assertEqual(got[0]["EXTERNAL_SPOT_CHECK_SCOPE_RELATION"], "EXACT_ONLY")
             self.assertEqual(got[4]["EXTERNAL_SPOT_CHECK_SCOPE_RELATION"], "MORE_SPECIFIC_ONLY")
+            self.assertEqual(got[1]["EXTERNAL_SPOT_CHECK_STATUS"], "CHECKED_2026-11-11")
+            self.assertEqual(got[1]["EXTERNAL_SPOT_CHECK_SCOPE_RELATION"], "EXACT_AND_MORE_SPECIFIC")
             self.assertTrue(all(r["STATUS"] == "REVIEW" for r in got))
             self.assertIn("no row is approved", stats.read_text(encoding="utf-8"))
 
@@ -74,6 +77,20 @@ class WorklistTests(unittest.TestCase):
             evidence=self.build_inputs(root,[row("192.0.2.0/24","MOAS",status="APPROVED")],[])
             with self.assertRaisesRegex(ValueError,"non-REVIEW"):
                 build_worklist(evidence,root/"out.tsv",root/"stats.txt",expected_scope=None)
+
+    def test_rejects_invalid_spot_check_date(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            spots = [{
+                "PREFIX": "192.0.2.0/24",
+                "STATUS": "CHECKED_2026-02-30",
+                "OBSERVED_PREFIXES": "192.0.2.0/24",
+                "SUMMARY": "invalid calendar date",
+                "SOURCE_URLS": "https://example.test/source",
+            }]
+            evidence = self.build_inputs(root, [row("192.0.2.0/24", "MOAS")], spots)
+            with self.assertRaisesRegex(ValueError, "invalid spot-check date"):
+                build_worklist(evidence, root / "out.tsv", root / "stats.txt", expected_scope=None)
 
     def test_rejects_unrelated_spot_checked_prefix(self):
         with tempfile.TemporaryDirectory() as tmp:
