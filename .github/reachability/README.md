@@ -196,12 +196,16 @@ It writes `home_probe_provider.tsv`, `home_probe_observations.tsv`,
 `home_probe_candidates.tsv` and `home_probe_ingest_summary.json` locally;
 it does not upload data or edit `geoip_RU.dat`.
 
-Only an exact source IP outside RU inventory becomes a
-`HOME_PROBE_SOURCE_IP` review candidate. The importer does not infer a CIDR
-from a single IP. DNS destination addresses are reported separately and must
-not be confused with the volunteer's source ISP range. The access-network
-class remains `RESIDENTIAL_OR_OTHER_ACCESS_NETWORK_UNVERIFIED` until the
-operator, origin ASN and access type are independently confirmed.
+Only an exact source IP attributed to RU and outside RU inventory becomes a
+`HOME_PROBE_SOURCE_IP` review candidate. KZ/BY reports can be imported and
+mapped for context, but they never create missing-RU-prefix candidates. The
+importer also rejects inconsistent source ASN/organization summaries and
+mismatched DNS/HTTPS evidence (for example, DNS answers without the expected
+HEAD attempt). It does not infer a CIDR from a single IP. DNS destination
+addresses are reported separately and must not be confused with the
+volunteer's source ISP range. The access-network class remains
+`RESIDENTIAL_OR_OTHER_ACCESS_NETWORK_UNVERIFIED` until the operator, origin
+ASN and access type are independently confirmed.
 
 A useful pilot needs consenting volunteers on several different Russian
 operators and, ideally, regions. One machine measures only its own current
