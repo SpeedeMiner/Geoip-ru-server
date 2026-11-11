@@ -310,3 +310,13 @@ Durable resume point for PR #5. After any conversation/network interruption, rea
 - New validation covers: pinned Cloudflare/Google DoH JSON parsing, A/AAAA fallback after NSS errors, pinned metadata HTTPS fallback, pinned target HTTPS HEAD with SNI/certificate verification, and non-zero exit status if no requested RU exit is verified.
 - Auth file permissions are now 0600, OpenVPN diagnostic tail is 60 lines, and DNS fallback does not route requests via the runner's pre-VPN resolver.
 - The next pilot may now be retried. If no RU exit succeeds, expected workflow conclusion is **failure**, with diagnostics still uploaded. A failed measurement must not be called a successful reachability test.
+
+
+### 2026-11-11 — Third VPN Gate pilot launched with pinned DoH and strict failure status
+
+- Third one-shot marker update commit: `73c5fc37146bbd843d97510af3ee0c97bf069630`, message `[vpn-gate-once] Retry Russian VPN pilot with pinned DoH fallback`.
+- Live run: `42964869207`, URL https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/42964869207.
+- This run tests the new pinned DoH resolver and pinned TLS/SNI HTTPS fallback after tunnel establishment. Requested one successful verified RU exit; maximum three candidate attempts across origin ASNs.
+- New workflow behavior: measurement failure does not suppress artifact upload; a final workflow gate reports job failure if no verified RU exit is achieved.
+- Validation before launch: Run #106 `42964285730` passed 53 Python tests plus Go formatting/tests/build.
+- Run currently in progress; do not infer a result until the job and artifact are available.
