@@ -8,6 +8,7 @@ import pathlib
 import socket
 import subprocess
 import tempfile
+import time
 import unittest
 from unittest.mock import patch
 
@@ -503,6 +504,18 @@ class VPNGateResolverSafetyTests(unittest.TestCase):
         self.assertEqual(result[0:2], ("INCONCLUSIVE", None))
         self.assertIn("IPv6 HTTPS is not enabled", result[2])
         doh.assert_called_once_with("ipv6-only.example", "A", timeout=5)
+
+
+class VPNObrattoWallClockTimeoutTests(unittest.TestCase):
+    def test_wall_clock_timeout_returns_callback_result(self):
+        result = vpn_gate.call_with_wall_clock_timeout(lambda: "done", 0.5)
+        self.assertEqual(result, "done")
+
+    def test_wall_clock_timeout_interrupts_a_slow_operation(self):
+        started = time.monotonic()
+        with self.assertRaisesRegex(TimeoutError, "wall-clock deadline"):
+            vpn_gate.call_with_wall_clock_timeout(lambda: time.sleep(0.2), 0.02)
+        self.assertLess(time.monotonic() - started, 0.15)
 
 
 class VPNObratnoDiscoveryTests(unittest.TestCase):
