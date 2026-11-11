@@ -33,7 +33,7 @@ class HomeProbeIngestTests(unittest.TestCase):
                 "id": "ru-example",
                 "domain": "example.ru",
                 "role": "service",
-                "country_scope": ["RU"],
+                "country_scope": ["RU", "KZ"],
                 "port": 443,
                 "path": "/",
             }],
@@ -47,7 +47,7 @@ class HomeProbeIngestTests(unittest.TestCase):
             writer.writerow(["RU", "8.8.8.0/24", "IPv4", 256])
             writer.writerow(["PRIVATE", "10.0.0.0/8", "IPv4", 16777216])
 
-    def write_report(self, source_ip="5.143.110.119", country="RU"):
+    def write_report(self, source_ip="5.143.110.119", country="RU", required_country="RU"):
         source = {
             "schema_version": 1,
             "observations": [
@@ -61,13 +61,14 @@ class HomeProbeIngestTests(unittest.TestCase):
             "country": country,
             "asn_candidates": [12389],
             "organizations": ["Example ISP"],
-            "required_country": "RU",
-            "required_country_matches": country == "RU",
+            "required_country": required_country,
+            "required_country_matches": country == required_country,
         }
         summary = {
             "schema_version": 1,
             "probe_type": "USER_CONTROLLED_HOME_OR_ACCESS_NETWORK",
-            "required_country": "RU",
+            "required_country": required_country,
+            "source_attribution_status": "TWO_SOURCE_CONSENSUS",
             "source_ip_verified_by_two_services": True,
             "source_public_ip": source_ip,
             "source_country": country,
@@ -108,13 +109,13 @@ class HomeProbeIngestTests(unittest.TestCase):
             json.dumps(measurement) + "\n", encoding="utf-8"
         )
 
-    def args(self):
+    def args(self, required_country="RU"):
         return argparse.Namespace(
             report_dir=str(self.report),
             inventory=str(self.inventory_path),
             targets=str(self.targets_path),
             output_dir=str(self.output),
-            required_country="RU",
+            required_country=required_country,
         )
 
     def test_verified_report_maps_source_and_dns_addresses(self):
@@ -145,6 +146,19 @@ class HomeProbeIngestTests(unittest.TestCase):
         self.assertEqual(row["SOURCE_PUBLIC_IP"], "77.88.99.100")
         self.assertEqual(row["MATCHED_RU_PREFIX"], "")
         self.assertIn("NO_AUTOMATIC_CIDR_ADDITION", row["REVIEW_POLICY"])
+
+    def test_kz_source_outside_ru_inventory_does_not_become_a_ru_candidate(self):
+        self.write_report(
+            source_ip="77.88.99.100",
+            country="KZ",
+            required_country="KZ",
+        )
+        result = home_probe_ingest.ingest_report(self.args(required_country="KZ"))
+        self.assertEqual(result["source_geoip_category"], "OUTSIDE_GEOIP_RU")
+        self.assertEqual(result["source_candidate_count"], 0)
+        with (self.output / "home_probe_candidates.tsv").open(encoding="utf-8") as stream:
+            rows = list(csv.DictReader(stream, delimiter="\\t"))
+        self.assertEqual(rows, [])
 
     def test_unverified_source_metadata_is_rejected(self):
         source = json.loads((self.report / "home_probe_source.json").read_text(encoding="utf-8"))
@@ -207,6 +221,25 @@ class HomeProbeIngestTests(unittest.TestCase):
         row["https_ipv4_tested_address"] = "1.1.1.1"
         (self.report / "home_probe_measurements.jsonl").write_text(json.dumps(row) + "\n", encoding="utf-8")
         with self.assertRaisesRegex(home_probe_ingest.ImportError, "first observed DNS address"):
+            home_probe_ingest.ingest_report(self.args())
+
+    def test_dns_answer_must_have_an_https_attempt(self):
+        row = json.loads((self.report / "home_probe_measurements.jsonl").read_text(encoding="utf-8"))
+        row["https_ipv4_result"] = "NOT_TESTED"
+        row["https_ipv4_tested_address"] = ""
+        row["https_ipv4_status"] = None
+        (self.report / "home_probe_measurements.jsonl").write_text(json.dumps(row) + "\\n", encoding="utf-8")
+        with self.assertRaisesRegex(home_probe_ingest.ImportError, "must have a corresponding HTTPS attempt"):
+            home_probe_ingest.ingest_report(self.args())
+
+    def test_dns_no_answer_cannot_claim_an_https_response(self):
+        row = json.loads((self.report / "home_probe_measurements.jsonl").read_text(encoding="utf-8"))
+        row["dns_ipv4_status"] = "DNS_NO_ANSWER"
+        row["dns_ipv4_addresses"] = []
+        row["https_ipv4_result"] = "HTTP_RESPONSE"
+        row["https_ipv4_tested_address"] = "8.8.8.8"
+        (self.report / "home_probe_measurements.jsonl").write_text(json.dumps(row) + "\\n", encoding="utf-8")
+        with self.assertRaisesRegex(home_probe_ingest.ImportError, "HTTPS must be NOT_TESTED"):
             home_probe_ingest.ingest_report(self.args())
 
     def test_existing_output_directory_is_never_overwritten(self):
