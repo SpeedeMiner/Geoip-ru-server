@@ -4,7 +4,8 @@ on:
   pull_request:
     branches: [main]
     paths:
-      - "review/v38_postrelease_prefix_audit_bundle_20261111.tar.gz"
+      - "review/v38_postrelease_code_20261111.tar.gz"
+      - "review/v38_postrelease_targets_20261111.tar.gz"
       - ".github/workflows/v38-postrelease-prefix-audit.yml"
   workflow_dispatch:
 
@@ -28,9 +29,14 @@ jobs:
       - name: Extract and verify immutable review bundle
         run: |
           set -euo pipefail
-          echo "a1cdc9716618483ed6214613b65f6b4dec52c0602141e5894a08ea1182623d50  review/v38_postrelease_prefix_audit_bundle_20261111.tar.gz" | sha256sum -c -
-          tar -xzf review/v38_postrelease_prefix_audit_bundle_20261111.tar.gz -C .
-          sha256sum -c SHA256SUMS
+          echo "0c90df7643f4370a0560afe687d525db74068c946f19d73cc48af76c4e498a7e  review/v38_postrelease_code_20261111.tar.gz" | sha256sum -c -
+          echo "873bcdae20690c70271e97bdc7a15beb30f84cf7c6aba17501cd528990e9390c  review/v38_postrelease_targets_20261111.tar.gz" | sha256sum -c -
+          echo "1e1970912baadfed28aac92f1c2b2df20c25b120dbdb041e4ae58a1c32b15f1e  review/v38_postrelease_docs_20261111.tar.gz" | sha256sum -c -
+          tar -xzf review/v38_postrelease_code_20261111.tar.gz -C .
+          tar -xzf review/v38_postrelease_targets_20261111.tar.gz -C .
+          tar -xzf review/v38_postrelease_docs_20261111.tar.gz -C .
+          sha256sum -c .github/scripts/SHA256SUMS
+          sha256sum -c review/SHA256SUMS
 
       - name: Compile and test audit parser
         run: |
