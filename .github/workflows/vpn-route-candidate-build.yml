@@ -15,7 +15,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: vpn-route-candidates-\${{ github.event.pull_request.number || github.ref }}
+  group: vpn-route-candidates-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
 jobs:
@@ -42,7 +42,7 @@ jobs:
       - name: Upload candidate database and coverage report
         uses: actions/upload-artifact@v4
         with:
-          name: vpn-route-candidates-\${{ github.run_number }}
+          name: vpn-route-candidates-${{ github.run_number }}
           path: artifacts/vpn-route-candidates/
           if-no-files-found: error
           retention-days: 30
