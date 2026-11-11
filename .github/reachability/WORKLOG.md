@@ -925,3 +925,15 @@ Durable resume point for PR #5. After any conversation/network interruption, rea
 
 
 - **Repeated overdue-status snapshot (2026-11-11T17:21:23Z):** a second GitHub Actions query again reports job `130679257182` and measurement step 7 `in_progress`, upload step 8 `pending`, no artifacts; decoded log fetch again returns `BlobNotFound` (Azure response time 2026-11-11T17:21:23Z). This is 1 minute 43 seconds beyond the nominal 17:19:40 UTC step timeout and approximately 3 minutes 38 seconds beyond the nominal 17:17:45 UTC GNU timeout/KILL point. No new owner-visible progress marker or later-stage evidence has been received. Run remains non-terminal in GitHub's job API; job deadline remains approximately 17:22:16 UTC.
+
+
+### 2026-11-11 — Run #21 remains IN_PROGRESS after the 12-minute job deadline — runner/status overrun
+
+- Monitoring snapshot: 2026-11-11T17:22:52Z, 36 seconds after the expected job deadline of 17:22:16 UTC (job started 17:10:16 UTC; workflow has `timeout-minutes: 12`).
+- A fresh GitHub Actions API query still reports run `43065501624` job `130679257182` as `in_progress`; measurement step 7 remains `in_progress`; artifact-upload step 8 remains `pending`; workflow artifact list remains empty.
+- Decoded log fetch at 2026-11-11T17:22:52Z again returns Azure `BlobNotFound`; there is no usable job `logs_url`.
+- This is now beyond all configured execution limits: GNU process timeout (7m plus 5s kill grace; nominal ~17:17:45 UTC), measurement step timeout (9m; nominal 17:19:40 UTC), and job timeout (12m; nominal 17:22:16 UTC). The Actions API still has not transitioned the job or step to a terminal state.
+- Interpretation: GitHub's visible job state is no longer a trustworthy indicator of process liveness. A disconnected/stale runner-controller state is plausible, but the available API cannot distinguish that from an uninterruptible/otherwise stuck process. The successful synthetic process-group preflight in Run #200 proves the tested GNU timeout topology on ubuntu-24.04; it does not prove the remote runner/controller will always report and complete a timed-out job.
+- No terminal log archive, runner process state, artifact, OpenVPN attempt, verified RU exit, or target measurement row is available. The last owner-visible line remains `profile_fetch_started=6/24 wall_timeout=20s transport=pinned_doh_https`.
+- Do not classify target domains as blocked, do not treat the five VPNObratto server IPs as residential household access, and do not start another VPN run while GitHub still reports this run as active. Do not cancel or rerun it without an explicit owner decision.
+- PR #5 remains OPEN. Only the PR #5 reachability continuity documentation was updated; no production GeoIP builder/data, DIRECT policy, ASN allowlists, main/release, PR #6, or other branch was changed.
