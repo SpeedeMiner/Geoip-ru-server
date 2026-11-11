@@ -35,7 +35,7 @@ SOURCES = [
          urls=["https://raw.githubusercontent.com/lib4u/amnezia-tunneling-ru/0d10135f04fc57846b44e3dc2523e6253a91dfdc/amnezia.json"]),
     dict(id="jirnobruh-amnezia", label="Jirnobruh Amnezia service-IP observations", kind="amnezia", group="service-domain-resolution", license="UNDECLARED", export=False, required=False,
          urls=["https://raw.githubusercontent.com/jirnobruh/Split-Tunneling-Amnezia-for-Russia/c76daf8cd0ed4daacd1f3010ef16a716949c31ea/amnezia_split_ru_full.json"]),
-    dict(id="pvd-dog-service", label="PVD Dog service-IP observations", kind="amnezia", group="service-domain-resolution", license="UNDECLARED", export=False, required=False,
+    dict(id="pvd-dog-service", label="PVD Dog pre-aggregated /24 route list", kind="amnezia", group="aggregated-cidr-whitelist-review", license="UNDECLARED", export=False, required=False,
          urls=["https://raw.githubusercontent.com/pvd-dog/russia-no-vpn-list/5f344d993f882f91449e03e98c25cb64ddc0251e/russia-no-vpn-list_by_%40pvd_dog.json"]),
 ]
 
@@ -119,6 +119,53 @@ def parse_amnezia(data: bytes):
             elif status == "non_global": non_global += 1
             elif status == "invalid": invalid += 1
     return nets, {"raw_tokens": raw, "invalid_tokens": invalid, "non_global_tokens": non_global, "records": len(obj)}
+
+def parse_amnezia_observations(source_id: str, data: bytes):
+    """Preserve hostname-to-IP rows for domain-level review; never used for GeoIP export."""
+    obj = json.loads(data.decode("utf-8-sig"))
+    if isinstance(obj, dict):
+        for key in ("routes", "items", "list", "rules"):
+            if isinstance(obj.get(key), list):
+                obj = obj[key]
+                break
+    if not isinstance(obj, list):
+        raise ValueError("not an Amnezia list")
+    rows = []
+    for item in obj:
+        if not isinstance(item, dict):
+            continue
+        hostname = str(item.get("hostname", "")).strip()
+        if not hostname:
+            hostname = str(item.get("domain", "")).strip()
+        if not hostname:
+            hostname = str(item.get("name", "")).strip()
+        try:
+            ipaddress.ip_network(hostname, strict=False)
+            hostname_type = "cidr"
+        except ValueError:
+            try:
+                ipaddress.ip_address(hostname)
+                hostname_type = "ip"
+            except ValueError:
+                hostname_type = "domain" if hostname else "missing"
+        values = [item.get("ip")]
+        if isinstance(item.get("ips"), list):
+            values.extend(item["ips"])
+        values = [str(value).strip() for value in values if value]
+        if not values:
+            rows.append({
+                "source_id": source_id, "hostname": hostname, "hostname_type": hostname_type,
+                "raw_ip": "", "normalized_prefix": "", "family": "", "status": "no_ip",
+            })
+            continue
+        for value in values:
+            net, status = parse_net(value)
+            rows.append({
+                "source_id": source_id, "hostname": hostname, "hostname_type": hostname_type,
+                "raw_ip": value, "normalized_prefix": str(net) if net is not None else "",
+                "family": "IPv" + str(net.version) if net is not None else "", "status": status,
+            })
+    return rows
 
 def varint(data: bytes, offset: int):
     value, shift = 0, 0
@@ -264,12 +311,14 @@ def metrics(nets, baseline_iv, baseline_exact, policy_iv=None):
             row[f"ipv{v}_new_after_private_blocked"]=size(subtract(src,policy_iv[v]))
     return row
 
-def read_source(spec):
+def read_source(spec, observation_rows=None):
     nets=set(); raw_files=[]; totals={"raw_tokens":0,"invalid_tokens":0,"non_global_tokens":0}; errors=[]
     for url in spec["urls"]:
         try:
             payload=fetch(url)
             parsed, stats = parse_amnezia(payload) if spec["kind"]=="amnezia" else parse_text(payload)
+            if spec["kind"] == "amnezia" and observation_rows is not None:
+                observation_rows.extend(parse_amnezia_observations(spec["id"], payload))
             nets.update(parsed)
             for key in totals: totals[key] += stats.get(key,0)
             raw_files.append({"url":url,"bytes":len(payload),"sha256":sha(payload)})
@@ -326,9 +375,9 @@ def main():
                 })
         rir_residual_intervals[version]=intervals(interval_networks(residual_parts,version),version)
 
-    loaded={}; source_rows=[]
+    loaded={}; source_rows=[]; service_observation_rows=[]
     for spec in SOURCES:
-        nets, info=read_source(spec); loaded[spec["id"]]=nets
+        nets, info=read_source(spec, service_observation_rows); loaded[spec["id"]]=nets
         info.update(metrics(nets,baseline_iv,baseline_exact,policy_iv)); source_rows.append(info)
     export_specs=[s for s in SOURCES if s["export"]]
     union=set().union(*(loaded[s["id"]] for s in export_specs))
@@ -374,6 +423,8 @@ def main():
             "ipv6_cidrs","ipv6_addresses","ipv6_covered_by_v37","ipv6_new_vs_v37","ipv6_new_after_private_blocked",
             "exact_baseline_matches","raw_tokens","invalid_tokens","non_global_tokens"]})
     write_tsv(out/"candidate_source_metrics.tsv",list(metric_rows[0].keys()),metric_rows)
+    observation_path = out/"candidate_amnezia_host_ip_observations.tsv"
+    write_tsv(observation_path, ["source_id","hostname","hostname_type","raw_ip","normalized_prefix","family","status"], service_observation_rows)
     with (out/"candidate_new_vs_v37.txt").open("w",encoding="utf-8") as f:
         f.write("# REVIEW ONLY. These addresses appear in the VPN candidate union and are outside v37 RU.\n")
         f.writelines(str(n)+"\n" for n in new)
@@ -501,6 +552,11 @@ def main():
         *["| {label} | {ipv4_rir_residual_rows_fully_covered}/{ipv4_rir_residual_prefix_rows} | {ipv4_rir_residual_exact_cidr_matches} | {ipv4_rir_residual_coverage_pct}% | {ipv6_rir_residual_rows_fully_covered}/{ipv6_rir_residual_prefix_rows} | {ipv6_rir_residual_exact_cidr_matches} | {ipv6_rir_residual_coverage_pct}% |".format(**r) for r in residual_summary],
         "",
         "Prefix detail: candidate_rir_ru_residual_prefix_coverage.tsv. Exact RIR prefix rows may overlap; address coverage uses unique merged intervals.",
+        "",
+        "## Amnezia hostname/IP evidence",
+        "",
+        "The candidate_amnezia_host_ip_observations.tsv sidecar preserves source hostname-to-IP/CIDR records for Lib4u, Jirnobruh and PVD Dog. It is audit-only and is not exported to the candidate protobuf.",
+        "Rows are tagged hostname_type=domain, ip or cidr. PVD Dog current snapshot contains pre-aggregated /24 prefixes rather than domain hostnames; do not treat it as independent domain-resolution evidence.",
         "",
         "## Decision limits",
         "",
