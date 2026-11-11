@@ -8,6 +8,8 @@ from pathlib import Path
 
 BASELINE_COMMIT = "ac2e9a4322c0b7efe293983c88cf5b304771e4c5"
 BASELINE_URL = "https://raw.githubusercontent.com/SpeedeMiner/Geoip-ru-server/" + BASELINE_COMMIT + "/geoip_RU.dat"
+BASELINE_RIR_URL = "https://raw.githubusercontent.com/SpeedeMiner/Geoip-ru-server/" + BASELINE_COMMIT + "/geoip_RU_rir_registered_prefixes.txt"
+BASELINE_BLOCKED_URL = "https://raw.githubusercontent.com/SpeedeMiner/Geoip-ru-server/" + BASELINE_COMMIT + "/geoip_RU_blocked_ip_exclusions.txt"
 
 SOURCES = [
     dict(id="kyoresuas-lite", label="Kyoresuas lite", kind="cidr", group="kyoresuas-service-catalog", license="MIT", export=True, required=True,
@@ -250,7 +252,7 @@ def interval_networks(iv, version):
 def address_counts(nets):
     return {f"ipv{v}": size(intervals(nets,v)) for v in (4,6)}
 
-def metrics(nets, baseline_iv, baseline_exact):
+def metrics(nets, baseline_iv, baseline_exact, policy_iv=None):
     row={"unique_cidrs":len(nets),"compacted_cidrs":len(compact(nets)),"exact_baseline_matches":len({str(n) for n in nets}&baseline_exact)}
     for v in (4,6):
         src=intervals(nets,v); base=baseline_iv[v]; overlap=intersect(src,base); new=subtract(src,base)
@@ -258,6 +260,8 @@ def metrics(nets, baseline_iv, baseline_exact):
         row[f"ipv{v}_addresses"]=size(src)
         row[f"ipv{v}_covered_by_v37"]=size(overlap)
         row[f"ipv{v}_new_vs_v37"]=size(new)
+        if policy_iv is not None:
+            row[f"ipv{v}_new_after_private_blocked"]=size(subtract(src,policy_iv[v]))
     return row
 
 def read_source(spec):
@@ -292,16 +296,49 @@ def main():
     baseline_ru=baseline.get("RU")
     if not baseline_ru: raise RuntimeError("pinned v37 baseline has no RU category")
     baseline_iv={v:intervals(baseline_ru,v) for v in (4,6)}
+    baseline_private=baseline.get("PRIVATE",set())
+    rir_bytes=fetch(BASELINE_RIR_URL)
+    rir_nets,rir_parse_stats=parse_text(rir_bytes)
+    blocked_bytes=fetch(BASELINE_BLOCKED_URL)
+    blocked_nets,blocked_parse_stats=parse_text(blocked_bytes)
+    policy_nets=baseline_ru | baseline_private | blocked_nets
+    policy_iv={v:intervals(policy_nets,v) for v in (4,6)}
     baseline_exact={str(n) for n in baseline_ru}
+
+    # Preserve exact RIR resource prefixes while measuring the portions not
+    # already covered by RU output, PRIVATE or approved BLOCKED carve-outs.
+    rir_residual_rows=[]
+    rir_residual_intervals={}
+    for version in (4,6):
+        residual_parts=[]
+        for net in rir_nets:
+            if net.version != version:
+                continue
+            remainder=subtract([(int(net.network_address),int(net.broadcast_address))],policy_iv[version])
+            if remainder:
+                residual_parts.extend(remainder)
+                rir_residual_rows.append({
+                    "prefix":str(net),
+                    "family":"IPv"+str(version),
+                    "version":version,
+                    "uncovered_intervals":remainder,
+                    "uncovered_addresses":size(remainder),
+                })
+        rir_residual_intervals[version]=intervals(interval_networks(residual_parts,version),version)
+
     loaded={}; source_rows=[]
     for spec in SOURCES:
         nets, info=read_source(spec); loaded[spec["id"]]=nets
-        info.update(metrics(nets,baseline_iv,baseline_exact)); source_rows.append(info)
+        info.update(metrics(nets,baseline_iv,baseline_exact,policy_iv)); source_rows.append(info)
     export_specs=[s for s in SOURCES if s["export"]]
     union=set().union(*(loaded[s["id"]] for s in export_specs))
     new=[]
     for v in (4,6): new += interval_networks(subtract(intervals(union,v),baseline_iv[v]),v)
     new=compact(new)
+    new_after_policy=[]
+    for v in (4,6):
+        new_after_policy += interval_networks(subtract(intervals(union,v),policy_iv[v]),v)
+    new_after_policy=compact(new_after_policy)
     categories={
         "ru_vpn_kyoresuas_lite":loaded["kyoresuas-lite"],
         "ru_vpn_kyoresuas_standard":loaded["kyoresuas-standard"],
@@ -312,6 +349,7 @@ def main():
         "ru_vpn_operator_whitelist":loaded["escapingworm-operator"],
         "ru_vpn_export_union":union,
         "ru_vpn_new_vs_v37":set(new),
+        "ru_vpn_new_after_private_blocked":set(new_after_policy),
     }
     candidate=encode(categories)
     roundtrip=parse_geoip(candidate)
@@ -331,18 +369,90 @@ def main():
     metric_rows=[]
     for info in source_rows:
         metric_rows.append({k:info.get(k,"") for k in [
-            "id","label","group","license","status","exported","unique_cidrs","compacted_cidrs","ipv4_cidrs","ipv4_addresses","ipv4_covered_by_v37","ipv4_new_vs_v37","ipv6_cidrs","ipv6_addresses","ipv6_covered_by_v37","ipv6_new_vs_v37","exact_baseline_matches","raw_tokens","invalid_tokens","non_global_tokens"]})
+            "id","label","group","license","status","exported","unique_cidrs","compacted_cidrs",
+            "ipv4_cidrs","ipv4_addresses","ipv4_covered_by_v37","ipv4_new_vs_v37","ipv4_new_after_private_blocked",
+            "ipv6_cidrs","ipv6_addresses","ipv6_covered_by_v37","ipv6_new_vs_v37","ipv6_new_after_private_blocked",
+            "exact_baseline_matches","raw_tokens","invalid_tokens","non_global_tokens"]})
     write_tsv(out/"candidate_source_metrics.tsv",list(metric_rows[0].keys()),metric_rows)
     with (out/"candidate_new_vs_v37.txt").open("w",encoding="utf-8") as f:
         f.write("# REVIEW ONLY. These addresses appear in the VPN candidate union and are outside v37 RU.\n")
         f.writelines(str(n)+"\n" for n in new)
-    union_stats=metrics(union,baseline_iv,baseline_exact)
+    union_stats=metrics(union,baseline_iv,baseline_exact,policy_iv)
     base_stats={"cidrs":len(baseline_ru),"ipv4_addresses":size(baseline_iv[4]),"ipv6_addresses":size(baseline_iv[6])}
+
+    # Source-specific coverage of exact RIR resource prefixes that still have
+    # address space outside the v37 RU + PRIVATE + approved BLOCKED union.
+    residual_summary=[]
+    residual_prefix_rows=[]
+    for spec in SOURCES:
+        source_id=spec["id"]
+        source_nets=loaded[source_id]
+        source_exact={str(n) for n in source_nets}
+        source_iv={v:intervals(source_nets,v) for v in (4,6)}
+        source_starts={v:[item[0] for item in source_iv[v]] for v in (4,6)}
+        row={"source_id":source_id,"label":spec["label"],"license":spec["license"],"exported":str(bool(spec["export"])).lower()}
+        for v in (4,6):
+            relevant=[r for r in rir_residual_rows if r["version"]==v]
+            any_rows=full_rows=exact_rows=0
+            for residual in relevant:
+                covered=sum(overlap_size(lo,hi,source_iv[v],source_starts[v]) for lo,hi in residual["uncovered_intervals"])
+                if covered: any_rows += 1
+                if covered == residual["uncovered_addresses"]: full_rows += 1
+                if residual["prefix"] in source_exact: exact_rows += 1
+                if spec["export"]:
+                    residual_prefix_rows.append({
+                        "source_id":source_id,
+                        "prefix":residual["prefix"],
+                        "family":residual["family"],
+                        "policy_uncovered_addresses":residual["uncovered_addresses"],
+                        "candidate_overlap_addresses":covered,
+                        "fully_covered":str(covered==residual["uncovered_addresses"]).lower(),
+                        "exact_cidr_match":str(residual["prefix"] in source_exact).lower(),
+                    })
+            unique_residual=size(rir_residual_intervals[v])
+            unique_covered=size(intersect(source_iv[v],rir_residual_intervals[v]))
+            row[f"ipv{v}_rir_residual_prefix_rows"]=len(relevant)
+            row[f"ipv{v}_rir_residual_rows_with_overlap"]=any_rows
+            row[f"ipv{v}_rir_residual_rows_fully_covered"]=full_rows
+            row[f"ipv{v}_rir_residual_exact_cidr_matches"]=exact_rows
+            row[f"ipv{v}_rir_residual_unique_addresses"]=unique_residual
+            row[f"ipv{v}_rir_residual_addresses_covered"]=unique_covered
+            row[f"ipv{v}_rir_residual_coverage_pct"]=round(100*unique_covered/unique_residual,6) if unique_residual else 0.0
+        residual_summary.append(row)
+
+    write_tsv(
+        out/"candidate_rir_ru_residual_coverage.tsv",
+        ["source_id","label","license","exported",
+         "ipv4_rir_residual_prefix_rows","ipv4_rir_residual_rows_with_overlap","ipv4_rir_residual_rows_fully_covered","ipv4_rir_residual_exact_cidr_matches","ipv4_rir_residual_unique_addresses","ipv4_rir_residual_addresses_covered","ipv4_rir_residual_coverage_pct",
+         "ipv6_rir_residual_prefix_rows","ipv6_rir_residual_rows_with_overlap","ipv6_rir_residual_rows_fully_covered","ipv6_rir_residual_exact_cidr_matches","ipv6_rir_residual_unique_addresses","ipv6_rir_residual_addresses_covered","ipv6_rir_residual_coverage_pct"],
+        residual_summary,
+    )
+    write_tsv(
+        out/"candidate_rir_ru_residual_prefix_coverage.tsv",
+        ["source_id","prefix","family","policy_uncovered_addresses","candidate_overlap_addresses","fully_covered","exact_cidr_match"],
+        residual_prefix_rows,
+    )
+    (out/"candidate_new_after_private_blocked.txt").write_text(
+        "# REVIEW ONLY. Candidate address space outside v37 RU, PRIVATE and approved blocked exclusions.\\n"
+        + "".join(str(n)+"\\n" for n in new_after_policy),
+        encoding="utf-8",
+    )
     manifest={
         "schema":1,"generated_at":datetime.now(timezone.utc).isoformat(),
         "baseline":{"commit":BASELINE_COMMIT,"url":BASELINE_URL,"sha256":sha(baseline_bytes),**base_stats},
         "candidate_union":union_stats,
         "new_vs_v37":{"cidrs":len(new),"ipv4_addresses":sum(n.num_addresses for n in new if n.version==4),"ipv6_addresses":sum(n.num_addresses for n in new if n.version==6)},
+        "new_after_private_blocked":{"cidrs":len(new_after_policy),"ipv4_addresses":sum(n.num_addresses for n in new_after_policy if n.version==4),"ipv6_addresses":sum(n.num_addresses for n in new_after_policy if n.version==6)},
+        "baseline_policy_evidence":{
+            "rir_snapshot_url":BASELINE_RIR_URL,"rir_snapshot_bytes":len(rir_bytes),"rir_snapshot_sha256":sha(rir_bytes),
+            "rir_parsed_cidrs":len(rir_nets),"rir_parse_stats":rir_parse_stats,
+            "approved_blocked_url":BASELINE_BLOCKED_URL,"approved_blocked_bytes":len(blocked_bytes),"approved_blocked_sha256":sha(blocked_bytes),
+            "approved_blocked_parsed_cidrs":len(blocked_nets),"blocked_parse_stats":blocked_parse_stats,
+            "rir_residual_prefix_rows":len(rir_residual_rows),
+            "rir_residual_ipv4_unique_addresses":size(rir_residual_intervals[4]),
+            "rir_residual_ipv6_unique_addresses":size(rir_residual_intervals[6]),
+        },
+        "rir_residual_source_coverage":residual_summary,
         "sources":source_rows,
         "candidate_dat":{"file":"geoip_RU_vpn_candidates.dat","bytes":len(candidate),"sha256":sha(candidate),"categories":{k:{"cidrs":len(compact(v)),**address_counts(v)} for k,v in categories.items()}},
         "safety":{"production_geoip_RU_dat_modified":False,"production_builder_modified":False,"production_sources_modified":False,"main_or_release_updated":False,"unlicensed_sources_in_dat":False,"unlicensed_prefixes_redistributed":False,"all_new_vs_v37_rows_review_only":True}
@@ -373,6 +483,19 @@ def main():
         "IPv6 candidate addresses: "+str(union_stats["ipv6_addresses"]),
         "IPv6 address space new vs v37: "+str(union_stats["ipv6_new_vs_v37"]),
         "Candidate protobuf SHA-256: "+sha(candidate),
+        "",
+        "## RIR residual coverage after existing policy",
+        "",
+        "RIR RU residual exact-prefix rows after RU + PRIVATE + approved BLOCKED carve-outs: "+str(len(rir_residual_rows)),
+        "Unique residual IPv4 addresses: "+str(size(rir_residual_intervals[4])),
+        "Unique residual IPv6 addresses: "+str(size(rir_residual_intervals[6])),
+        "Candidate addresses outside all three existing policy sets: IPv4 "+str(sum(n.num_addresses for n in new_after_policy if n.version==4))+", IPv6 "+str(sum(n.num_addresses for n in new_after_policy if n.version==6)),
+        "",
+        "| Source | IPv4 rows fully covered | IPv4 exact RIR CIDR matches | IPv4 address coverage | IPv6 rows fully covered | IPv6 exact RIR CIDR matches | IPv6 address coverage |",
+        "|---|---:|---:|---:|---:|---:|---:|",
+        *["| {label} | {ipv4_rir_residual_rows_fully_covered}/{ipv4_rir_residual_prefix_rows} | {ipv4_rir_residual_exact_cidr_matches} | {ipv4_rir_residual_coverage_pct}% | {ipv6_rir_residual_rows_fully_covered}/{ipv6_rir_residual_prefix_rows} | {ipv6_rir_residual_exact_cidr_matches} | {ipv6_rir_residual_coverage_pct}% |".format(**r) for r in residual_summary],
+        "",
+        "Prefix detail: candidate_rir_ru_residual_prefix_coverage.tsv. Exact RIR prefix rows may overlap; address coverage uses unique merged intervals.",
         "",
         "## Decision limits",
         "",
