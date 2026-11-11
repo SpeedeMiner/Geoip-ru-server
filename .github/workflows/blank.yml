@@ -3108,7 +3108,7 @@ jobs:
             test -s "$file" || { echo "::error::Missing or empty v38 build artifact: $file"; exit 1; }
           done
 
-      - name: Validate v37 protobuf, RU+BY+KZ coverage and blocked-IP exclusions
+      - name: Validate v37 base and final v38 RU+BY+KZ DIRECT protobuf
         shell: bash
         run: |
           set -euo pipefail
@@ -3371,6 +3371,61 @@ jobs:
           print("Raw source categories reconcile with assigned builder roles, including ignored categories.")
           PY
 
+          # Independent v38 validation: the final GeoIP must contain exactly RU and PRIVATE,
+          # with PRIVATE and the combined RKN set excluded from RU.
+          test -s "$V38_OUTPUT_FILE"
+          test -s "$V38_QUALITY_REPORT"
+          test -s "$V38_MANIFEST"
+          test -s "$V38_METRICS"
+          test -s "$V38_PREFIX_PROVENANCE"
+          test -s "$V38_BLOCKED_PROVENANCE"
+          test -s "$RIR_RUKZBY_PREFIX_INPUT"
+          test -s "$RIR_RUKZBY_STATS"
+          python3 - "$V38_OUTPUT_FILE" "$V38_BLOCKED_FILE" "$V38_MANIFEST" "$V38_QUALITY_REPORT" "$RIR_RUKZBY_PREFIX_INPUT" <<'PY'
+          import csv, json, sys
+          from pathlib import Path
+          sys.path.insert(0, ".github/scripts")
+          import build_v38_overlay as v38
+
+          output, blocked_path, manifest_path, quality_path, rir_path = map(Path, sys.argv[1:])
+          decoded = v38.parse_geoip_dat(output)
+          if set(decoded) != {"RU", "PRIVATE"}:
+              raise SystemExit(f"v38 must contain exactly RU and PRIVATE, got {sorted(decoded)}")
+          blocked = v38.parse_cidr_file(blocked_path)[0]
+          for version in (4, 6):
+              if v38.intersect(v38.intervals(decoded["RU"], version), v38.intervals(decoded["PRIVATE"], version)):
+                  raise SystemExit(f"v38 PRIVATE overlap in IPv{version}")
+              if v38.intersect(v38.intervals(decoded["RU"], version), v38.intervals(blocked, version)):
+                  raise SystemExit(f"v38 RKN-block overlap in IPv{version}")
+          manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+          safety = manifest.get("safety", {})
+          if safety.get("geolocation_used_as_admission_gate") is not False:
+              raise SystemExit("v38 manifest says geolocation was used as an admission gate")
+          if safety.get("private_precedence_applied") is not True or safety.get("rkn_blocklist_applied") is not True:
+              raise SystemExit("v38 policy safety flags are missing")
+          if safety.get("production_main_modified") is not False or safety.get("production_release_published") is not False:
+              raise SystemExit("feature-branch v38 must not modify/publish production")
+          countries = set()
+          with rir_path.open(encoding="utf-8", newline="") as stream:
+              for row in csv.DictReader(stream, delimiter="\\t"):
+                  countries.add(row["country"])
+          if countries != {"RU", "BY", "KZ"}:
+              raise SystemExit(f"v38 RIR resources missing regional country rows: {countries}")
+          quality = quality_path.read_text(encoding="utf-8")
+          for marker in ("New IPv4 addresses vs v37", "New IPv6 addresses vs v37", "Antifilter ipsum unique IPv4 /24 prefixes"):
+              if marker not in quality:
+                  raise SystemExit(f"v38 quality report is missing marker: {marker}")
+          print(f"Validated v38 final GeoIP: {output.stat().st_size} bytes; RU CIDRs={len(decoded['RU'])}; PRIVATE CIDRs={len(decoded['PRIVATE'])}")
+          PY
+
+          echo "=== v38 RU+BY+KZ RIR resource inventory ==="
+          cat "$RIR_RUKZBY_STATS"
+          echo "=== v38 service source coverage ==="
+          cat "$V38_METRICS"
+          echo "=== v38 quality report ==="
+          cat "$V38_QUALITY_REPORT"
+          echo "=== v38 output SHA256 ==="
+          sha256sum -c "$OUTPUT_SHA_FILE"
 
           echo "=== RIR registered RU address resources (BY/KZ ASN resources are separate) ==="
           cat "$RIR_STATS"
