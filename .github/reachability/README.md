@@ -99,6 +99,16 @@ using an always-run upload step, then marks the job failed. A green job therefor
 requires the requested count of confirmed RU egresses, not just successful
 artifact upload.
 
+The OpenVPN client is rebuilt rather than running the volunteer-provided profile.
+Alongside the pinned remote and inline CA/key blocks, it preserves only
+allowlisted TLS compatibility settings present in the profile (TLS min/max,
+TLS cipher/ciphersuites, certificate profile, EKU/KU and optional certificate
+name verification). Inline `tls-auth`, `tls-crypt` and `tls-crypt-v2` blocks
+are retained. Profiles that refer to external TLS key files are rejected.
+Scripts, plugins, external config files and route directives are never copied.
+Sanitized profile-feature flags (not key material) are included in the raw
+diagnostic report to help compare failed volunteer relays.
+
 ## What “full” means
 
 The inventory exporter reads the actual published \`release/geoip_RU.dat\`
