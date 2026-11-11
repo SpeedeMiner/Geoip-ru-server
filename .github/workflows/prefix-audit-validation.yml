@@ -277,6 +277,7 @@ jobs:
           if len(top_levels) != 1:
               raise SystemExit(f"Unexpected ipverse archive roots: {sorted(top_levels)}")
 
+          pinned_archive_url = f"https://codeload.github.com/ipverse/as-ip-blocks/tar.gz/{pinned_commit}"
           source_record = (
               "IPVERSE PINNED SOURCE\n"
               f"UPSTREAM_REPOSITORY=https://github.com/ipverse/as-ip-blocks\n"
@@ -288,8 +289,23 @@ jobs:
               f"V37_PROVENANCE_FETCH_URL={row['FETCH_URL']}\n"
               f"V37_PROVENANCE_SHA256={row['SHA256']}\n"
               f"V37_PROVENANCE_BYTES={row['BYTES']}\n"
+              f"AUDIT_FETCH_URL={pinned_archive_url}\n"
+              f"AUDIT_SHA256={digest}\n"
+              f"AUDIT_BYTES={len(archive)}\n"
           )
           Path("ipverse-pinned-source.txt").write_text(source_record, encoding="utf-8")
+
+          # Keep the release provenance immutable. Builders use a separate,
+          # temporary audit provenance row that binds this exact commit archive
+          # to its actual bytes and digest.
+          row["FETCH_URL"] = pinned_archive_url
+          row["SHA256"] = digest
+          row["BYTES"] = str(len(archive))
+          audit_provenance = Path("geoip_RU_input_provenance_audit.tsv")
+          with audit_provenance.open("w", encoding="utf-8", newline="") as stream:
+              writer = csv.DictWriter(stream, fieldnames=rows[0].keys(), delimiter="\\t", lineterminator="\\n")
+              writer.writeheader()
+              writer.writerows(rows)
           print(
               f"Verified immutable ipverse commit {pinned_commit}: "
               f"{len(archive)} bytes, SHA256={digest}, aggregated.json={aggregate_count}"
@@ -316,7 +332,7 @@ jobs:
             --company-asns geoip_RU_company_asns.txt \
             --company-manifest geoip_RU_company_asn_manifest.tsv \
             --regional-prefixes geoip_RU_BY_KZ_asn_bgp_prefixes.txt \
-            --input-provenance geoip_RU_input_provenance.tsv \
+            --input-provenance geoip_RU_input_provenance_audit.tsv \
             --bgp-archive as-ip-blocks.tar.gz \
             --output prefix-audit/company_origin_prefix_review.tsv \
             --stats prefix-audit/company_origin_prefix_review_stats.txt
@@ -325,13 +341,15 @@ jobs:
             --selected-prefixes geoip_RU_BY_KZ_asn_bgp_prefixes.txt \
             --company-asns geoip_RU_company_asns.txt \
             --company-manifest geoip_RU_company_asn_manifest.tsv \
-            --input-provenance geoip_RU_input_provenance.tsv \
+            --input-provenance geoip_RU_input_provenance_audit.tsv \
             --bgp-archive as-ip-blocks.tar.gz \
             --output prefix-audit/selected_origin_prefix_review.tsv \
             --stats prefix-audit/selected_origin_prefix_review_stats.txt
 
           cp v37-release-inputs.sha256 prefix-audit/
           cp v37-release-commit.txt prefix-audit/
+          cp geoip_RU_input_provenance.tsv prefix-audit/geoip_RU_input_provenance.release.tsv
+          cp geoip_RU_input_provenance_audit.tsv prefix-audit/
           cp ipverse-pinned-source.txt prefix-audit/
 
       - name: Validate generated prefix review queues against v37 production quality report
@@ -397,7 +415,7 @@ jobs:
               missing = sorted(company_prefixes - selected_prefixes)[:10]
               raise SystemExit(f"Company-origin prefixes are absent from the full selected-origin queue: {missing}")
 
-          input_provenance = Path("geoip_RU_input_provenance.tsv").read_bytes()
+          input_provenance = Path("geoip_RU_input_provenance_audit.tsv").read_bytes()
           provenance_sha = hashlib.sha256(input_provenance).hexdigest()
           for stats_path in (
               Path("prefix-audit/company_origin_prefix_review_stats.txt"),
