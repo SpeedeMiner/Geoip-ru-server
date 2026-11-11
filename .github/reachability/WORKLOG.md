@@ -806,3 +806,55 @@ Durable resume point for PR #5. After any conversation/network interruption, rea
 - The test file has duplicate historical `VPNGateDoHTests` definitions; both definitions were synchronized so the active later class includes the test. The test is included in the executed suite.
 - Latest validation [run #198](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43059875117), job `130659190333`, tested commit `9e2df8920fab45f293bd0faeb47f4459530a9e1d` and completed **SUCCESS** in 13 seconds: **123 Python tests passed**, gofmt passed, `go test ./...` passed and `go build` passed.
 - Run #21 remains undispatched. The new test validates the application-level timeout propagation hole, but does not prove that the independent GNU timeout / GitHub Runner / job-timeout overrun seen in Run #20 is resolved.
+
+
+### 2026-11-11 — Runner watchdog process-group preflight on ubuntu-24.04 — VALIDATED
+
+#### Continuity recovery and source-of-truth review
+
+- Resumed from the feature branch and re-read the current `.github/reachability/WORKLOG.md`, `.github/reachability/CHECKPOINT.json`, `.github/workflows/reachability-vpn-gate.yml`, and PR #5 metadata before making changes.
+- The pre-session code/checkpoint anchor was `9e2df8920fab45f293bd0faeb47f4459530a9e1d` (latest green validation #198) plus documentation checkpoints. Run #20's exact record remains: run `43053531258`, job `130636812894`, cancelled, no terminal log archive/artifact, five VPNObratto profiles confirmed usable and sixth fetch started. No subsequent OpenVPN/verified-exit/target result can be inferred.
+- Reconfirmed the independent DoH absolute-deadline fix and both regression tests. This fixes an application-level timeout hole but is not proven to have caused Run #20 or explain the outer runner/job timeout overrun.
+
+#### Local process-tree experiment
+
+- Created an isolated parent/child Python process pair. Both explicitly ignore SIGTERM; the child inherits the parent's process group and writes its PID/PGID/session marker.
+- Ran GNU `timeout --verbose --signal=TERM --kill-after=1s 2s` under `sudo`. On the local environment (GNU coreutils 9.7), logs showed TERM then KILL; the wrapper returned `-9` because final process-group KILL may also terminate the timeout wrapper. Both recorded child processes reached zombie/non-running state, proving the process group no longer had active parent/child tasks.
+- This local result was only a development check; the same scenario was then implemented as a runner preflight because local behavior alone is not evidence about GitHub-hosted Ubuntu.
+
+#### Added runner watchdog preflight
+
+- Added `.github/reachability/runner_watchdog_preflight.py` in commit `3ae66f2616b0154b804a46fa345a0e72b4af6307`.
+- The helper is network-free and does not invoke OpenVPN. It verifies `sudo -n timeout` can supervise a TERM-resistant Python parent and descendant, waits for the forced KILL escalation, confirms the descendants share the process group/session, and checks both recorded PIDs are absent or non-running zombies. It has an outer 8-second bound and emergency process cleanup.
+- The test intentionally accepts timeout exit `124`, `-9` or `137` only when both TERM and KILL diagnostics are present and every recorded process is no longer active. On this runner topology, killing the whole process group can also kill the timeout wrapper, so `-9` is not alone considered failure or success.
+
+#### Integrated the check into PR validation
+
+- Updated `.github/workflows/reachability-validation.yml` in commits `8e06142cc6f7db34774daebc9a9ad6b3c9579a16` and `212e11f2f33a07a3c1630bbc51f5cb2b3d80b9a5`.
+- Validation now uses `ubuntu-24.04`, matching the manual VPN workflow image. A separate step runs the watchdog preflight with a one-minute step timeout. The helper is included in Python compilation and both push/PR path filters.
+- Latest source/workflow commit for this validation: `212e11f2f33a07a3c1630bbc51f5cb2b3d80b9a5`.
+
+#### GitHub-hosted runner evidence — PASS
+
+- Validation run [#200](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43062327051), job `130667948305`, tested commit `212e11f2f33a07a3c1630bbc51f5cb2b3d80b9a5`. GitHub reports **SUCCESS**, total duration 24 seconds.
+- Exact runtime log from the Ubuntu 24.04 runner reports GNU coreutils 9.4:
+  - `[watchdog-preflight] start timeout (GNU coreutils) 9.4; timeout=2s; kill_after=1s`
+  - `/usr/bin/timeout: sending signal TERM to command '/usr/bin/python3'`
+  - `/usr/bin/timeout: sending signal KILL to command '/usr/bin/python3'`
+  - `PASS timeout_exit=-9 parent_pid=2388 child_pid=2389 pgid=2387 parent_state=absent child_state=absent term_ignored=true kill_after_exercised=true descendants_terminated=true`
+- The whole validation job also reports: 123 Python tests passed; Python compile/JSON validation passed; Go formatting, `go test ./...` and `go build` passed.
+- This is direct evidence that the GNU timeout/process-group mechanism used by the workflow terminates a TERM-resistant child tree on the same Ubuntu image. The helper uses a synthetic process tree, not an OpenVPN session and not a live network connection.
+
+#### OpenVPN process-tree source review
+
+- Reviewed the current `vpn_gate.py`: OpenVPN is started with `subprocess.Popen(["openvpn", "--config", str(config_path), "--verb", "3"], ...)` without `start_new_session`, `setsid` or detached session parameters. It inherits the Python supervisor's process group.
+- `build_safe_openvpn_config()` reconstructs a minimal allowlisted configuration and does not add OpenVPN's `daemon` directive or arbitrary user profile scripts/plugins. The profile's untrusted daemon/script/plugin settings are not copied.
+- Normal shutdown explicitly calls `terminate()`, waits up to 8 seconds, then calls `kill()` and waits up to 5 seconds. If the outer timeout forcibly kills the Python process before its finally block, the validated process-group KILL should include its inherited OpenVPN child as well.
+- Conclusion: the previously unverified GNU timeout process-tree cleanup path is now demonstrated on the target hosted runner, and source review did not find a detached OpenVPN child path. This does **not** prove that GitHub's controller/runner status reporting or job timeout cancellation cannot become stale; Run #20's outer Actions status overrun remains an unknown runner/platform-state issue.
+
+#### State and next action
+
+- Run #21 was **not** dispatched. No live VPN connection or target measurement was started during this session.
+- Added `.github/reachability/RESUME.md` as a read-first navigation/continuity guide. New sessions should read it, then the last dated WORKLOG entry and CHECKPOINT, and query the live PR head/runs.
+- PR #5 remains OPEN / DRAFT. No production GeoIP builder/data, release assets, DIRECT policy, ASN allowlists, main/release, PR #6 or other PR branches were changed.
+- Next: re-query current PR head and confirm no active VPN run. With Run #200 green and OpenVPN process-group containment reviewed, one short manual VPNObratto pilot is now eligible for consideration: request one verified RU exit, at most six profile attempts, and persist phase checkpoints/logs. A verified RU exit still does not prove residential household access. Do not classify targets from an unverified exit or incomplete artifact.
