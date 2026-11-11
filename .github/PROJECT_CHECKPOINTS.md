@@ -1,29 +1,15 @@
-# Project checkpoint log
+## Current state / resume from — 2026-11-11
 
-Append-only recovery log for the Geoip-ru-server audit work. Keep each completed stage as a short, separate entry. Update the **Current state / resume from** block whenever work moves to a new stage.
-
-## How to resume after an interruption
-
-1. Read **Current state / resume from** first.
-2. Verify the recorded branch head, PR state and latest workflow run in GitHub; do not assume a previously in-progress run is still in progress.
-3. Continue from the stated next step. Do not redo completed stages unless new evidence invalidates them.
-4. After each finished stage, append one compact entry with: UTC date, result, commit SHA(s), workflow run ID/URL and artifact SHA when applicable, plus the next step.
-5. Keep the current-state block aligned with the latest verified state.
-
-
-## Current state / resume from — 2026-11-10
-
-- **Project:** Geoip-ru-server; current production tag is `latest-geoip-client-v37`.
-- **PR #3:** merged; baseline merge SHA `c71b5eff48f34b363ef2430ba6b5c41603f36126`.
-- **PR #4:** [Add current exact-origin checks for archived RPKI-invalid prefixes](https://github.com/SpeedeMiner/Geoip-ru-server/pull/4) is CLOSED and MERGED. Merge commit: `226214fde6100818bfe8c4d214c330027a593ea3`. PR was audit-only: no production builder, company ASN allowlist or DIRECT selection changed.
-- **Latest completed PR validation:** [run #91](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/42862618510), ID `42862618510`, success on head `b0fae825dd43c6c1f0757d327eea5c87bbf5f6ce`; all 17 steps passed.
-- **Post-merge production build:** [v37 run #29](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/42863173174), ID `42863173174`, success on merge commit `226214fde6100818bfe8c4d214c330027a593ea3`; build, protobuf/coverage/blocked-exclusion validation, GitHub Release publish and release-branch publish all passed.
-- **Published release:** [`latest-geoip-client-v37`](https://github.com/SpeedeMiner/Geoip-ru-server/releases/tag/latest-geoip-client-v37); release branch SHA `d4a5de9de898ca5c2f10f0308e04c3c0c3484c25`. `geoip_RU.dat` is 950,909 bytes; checksum sidecar SHA-256 `cbe460b3c352dcf33f055e488f15e15caccfb6487e71e0e3ea81d508cda9bad1`. New quality report: RU=76,231 CIDRs / 52,613,105 IPv4 addresses; IPv6 count unchanged; Yandex Turkey AS212066 checks remain 2/2.
-- **CDN purge:** all seven requested paths reported `finished`, not throttled, with Cloudflare and Fastly both true (`CF=true`, `FY=true`).
-- **Production-input drift:** compared against the prior v37 release SHA `fc9900456cb8e69059257e7193f23e6ce5eec2aaf99de6e70ff9ec8547e3fea2` (951,279 bytes), current output is 370 bytes smaller and has 7 fewer IPv4 addresses / 37 fewer RU CIDRs; IPv6 and PRIVATE counts are unchanged. Recorded production input provenance shows the Antifilter `antifilter-ip.lst` changed (old SHA `16677d55acf724c2a2c86aa34a87051d941a5cd11ac41f223a8b9b9d1a7a1878`, 51,273 rows; new SHA `d68a9d5bd5f617bb4bac0b7c0421423c80badacc162244a72ced52c5eaf39d32`, 50,763 rows). Other recorded GeoIP, RIR, IANA, ipverse and blocked-feed source hashes remained the same. Approved blocked-prefix records decreased from 193,639 to 193,242. This explains the observed output drift as refreshed live inputs rather than a change to the PR's builder logic; no rollback was performed.
-- **Audit result carried into main:** worklist 56 rows, reconciliation 19 rows / 20 archived invalid pairs, all `REVIEW`; scope EXACT_ONLY=5, EXACT_AND_MORE_SPECIFIC=16, MORE_SPECIFIC_ONLY=1; reconciliation classes 16/1/1/1. Remaining caveats stay REVIEW: `94.131.190.0/23` has only observed /24 child evidence, and `93.181.240.0/20` has non-synchronized exact /20 vs child /21 observations.
-- **Resume from:** there is no unfinished PR #4 or release step. For a future continuation, first verify live `main`, `release`, tag and latest workflow run, then resume the requested next audit stage. Continue appending one short record after each completed stage.
-- **Safety boundary:** no audit row authorizes DIRECT changes or an ownership conclusion. The merged journal/workflow preserve review-only status and exact-NLRI scope separation.
+- **Active workstream:** repository-wide source inventory and improvement of actual Russian prefix inputs. Plan: docs/GEOIP_RU_SOURCE_IMPROVEMENT_PLAN.md; full audit: .github/audits/geoip_ru_repository_audit_2026-11.md; resume note: .github/audits/GEOIP_RU_AUDIT_RESUME.md.
+- **Baseline:** main commit d6fa94a691a9635b72be4e6b941c87d29c802dfa; production tag latest-geoip-client-v37; production run #34 succeeded. Release branch commit: d613c5f0ef482f2051cbc37a303b2ac30076d313.
+- **Current artifact:** geoip_RU.dat is 951,531 bytes; SHA-256 c70310071f7611d5c7ae54d409ae7c8d7b4598bbbbb706cbb44e9f0ca9303904. v37 report: 76,292 RU-category CIDRs, 52,618,729 IPv4 addresses and 1,192,441,882,017,908,537,250,295,700,258,816 IPv6 addresses.
+- **Semantics guard:** RU category is legacy DIRECT RU+BY+KZ plus company/affiliate origins, not strict geographic RU. Do not change this contract in the documentation/audit stage; develop strict RU as a separate parallel output.
+- **Audit result:** 21 tracked files reviewed across production workflow, builder/tests, input/release artifacts, all audit scripts/tests, prefix audit workflow and checkpoints. Findings and staged plan are recorded in the audit journal.
+- **Documentation branch:** docs/source-improvement-plan-2026-11; documentation-only. No production builder, prefix list, company ASN allowlist, release or output changed.
+- **PR #6:** remains open Draft and independent; do not retarget or merge as part of this workstream.
+- **PR #5 / feature/reachability-full-ru-kz-by:** untouched; do not edit that branch or run new CI/measurements for PR #5.
+- **Resume from:** verify the documentation-only PR and its read-only validation; then create versioned source catalog and immutable snapshot bundle. Next build the complete canonical exact-prefix inventory and diff it against current v37. All ambiguous candidates remain REVIEW.
+- **Production caution:** merging any PR to main triggers production build/publish, which publishes release assets and force-updates release. Consider this before merging even docs-only PRs.
 
 
 ## Completed stage records
