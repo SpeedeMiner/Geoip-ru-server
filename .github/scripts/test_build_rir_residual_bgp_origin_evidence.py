@@ -81,7 +81,7 @@ class RIRResidualBGPOriginEvidenceTests(unittest.TestCase):
             self.assertEqual(by_prefix["198.51.100.0/24"]["GLOBAL_BGP_90D_EXACT_ORIGIN_ASNS"], "")
             self.assertTrue(all(row["STATUS"] == "REVIEW" for row in rows))
             stats = args.stats.read_text(encoding="utf-8")
-            self.assertIn("missing exact route in this rolling 90-day snapshot is not proof", stats)
+            self.assertIn("No exact observation is not evidence of route withdrawal", stats)
 
     def test_rejects_non_review_residual_input(self):
         with tempfile.TemporaryDirectory() as tmp:
