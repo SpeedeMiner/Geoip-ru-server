@@ -1081,7 +1081,17 @@ def fetch_vpnobratno_in_worker(
                 if worker.is_alive():
                     worker.kill()
                     worker.join(timeout=1.0)
-            worker.close()
+            # multiprocessing.Process.close() raises while the child is still
+            # alive. Preserve the original timeout/cleanup diagnosis in that
+            # exceptional case instead of masking it from this finally block.
+            if not worker.is_alive():
+                worker.close()
+            else:
+                print(
+                    f"[vpn-gate] profile_fetch_worker_cleanup_unconfirmed "
+                    f"worker_pid={worker.pid} exitcode={worker.exitcode}",
+                    flush=True,
+                )
         else:
             worker.close()
 
