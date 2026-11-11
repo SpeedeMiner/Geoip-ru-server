@@ -1,14 +1,14 @@
 {
   "schema_version": 1,
-  "updated_at_utc": "2026-11-11T18:01:21Z",
+  "updated_at_utc": "2026-11-11T18:05:40Z",
   "repository": "SpeedeMiner/Geoip-ru-server",
   "pull_request": 5,
   "pull_request_url": "https://github.com/SpeedeMiner/Geoip-ru-server/pull/5",
   "branch": "feature/reachability-full-ru-kz-by",
-  "recorded_pr_head_before_checkpoint_commit": "c2d16f54b075f59a0dada3b212dcc7a12ee5a6d3",
+  "recorded_pr_head_before_checkpoint_commit": "763135f81a46e559cdf5dfcbc3dc70160f03781a",
   "base_sha": "a68e5d6589361814cb1cfedd2af7857e4af806fa",
-  "state": "RUN22_IN_PROGRESS_AFTER_GNU_WATCHDOG_AND_MEASUREMENT_STEP_DEADLINE; FIVE_PROFILES_USABLE; PROFILE_6_BODY_READ_PARTIAL; NO_ARTIFACT_YET",
-  "current_phase": "RUN22_PROFILE_DISCOVERY; PROFILE6_LAST_SUPPLIED_MARKER_BODY_READ_COMPLETED_3830_BYTES; MANIFEST_PERSISTENCE_IS_NEXT_CODE_OPERATION_TO_INSPECT",
+  "state": "RUN22_GITHUB_JOB_STILL_IN_PROGRESS_102S_AFTER_12M_JOB_TIMEOUT; NO_ARTIFACT; MANIFEST_FSYNC_REMOVED_ON_BRANCH; VALIDATION_RUN211_IN_PROGRESS",
+  "current_phase": "RUN22_RUNNER_STATUS_NONTERMINAL_AFTER_MAX_JOB_LIMIT; PROFILE6_TRACE_STOPS_AT_BODY_READ_COMPLETED_3830; NEXT_RUN_NEEDS_MANIFEST_SUBPHASE_EVIDENCE",
   "completed": [
     "repository_reconnaissance",
     "protobuf_inventory_exporter",
@@ -460,13 +460,13 @@
     "production_release_artifact_byte_delta_verified": false
   },
   "next_steps": [
-    "Run #22 (43072239130) / job 130702892228 remains in_progress at the 18:01:21Z snapshot. Do not cancel it or dispatch another VPN workflow. Upload step 8 has not started; artifacts are empty.",
-    "Five real VPNObratno profiles have fully downloaded and validated. Profile 6 (vpn950792227.opengw.net) completed DoH, pinned TCP/TLS and HTTP 200, and the provided excerpt shows 3,830 body bytes. Last supplied marker is body_read_completed; profile 6 completion/validation/server IP are unconfirmed.",
-    "The 7-minute GNU guard + 5-second grace was nominally due ~17:59:23Z; the 9-minute measurement step deadline was 18:01:18Z. At 18:01:21Z GitHub still reported the step in_progress, logs BlobNotFound, no artifact. Job maximum 12m is due 18:03:58Z.",
-    "If the supplied 314-line log is complete, inspect manifest persistence immediately after the last body_read_completed trace. Trace prints before record_vpnobratno_progress, which performs read/JSON rewrite/flush/fsync/os.replace. This is a high-priority hypothesis, not a proven cause. The excerpt may be truncated and live GitHub logs may be unavailable.",
-    "On terminal state, retrieve complete job logs and the uploaded artifact including reachability-output/vpn_gate_vpnobratto_progress.json. Inspect the last manifest event per profile before changing code. Confirm whether worker_timeout / worker_failed_without_result / cleanup_unconfirmed appears and distinguish process termination from controller status.",
-    "No confirmed OpenVPN attempt, tunnel route, verified RU exit or target measurements exist in the provided evidence. Do not infer target blocking.",
-    "Keep PR #5 OPEN/DRAFT. Do not start another VPN workflow while Run #22 is active; do not alter production GeoIP/DIRECT/ASN policy or PR #6."
+    "Run #22 remains in_progress despite exceeding the 12-minute job ceiling by 102 seconds at 18:05:40Z. Measurement step 7 in_progress, upload pending, no artifact, logs BlobNotFound. Do not dispatch another VPN workflow or attempt an overlapping run.",
+    "Its last supplied profile-6 trace remains body_read_completed at 3,830 bytes. Profiles 1–5 completed real worker fetches/validation; profile 6 did DoH, pinned TCP/TLS and HTTP 200 but no fetch-completed/profile-validation result is confirmed.",
+    "The last trace prints before record_vpnobratno_progress. That function previously did a read/JSON rewrite/flush/fsync/os.replace per phase. This is a high-priority but unproven stall hypothesis; the supplied paste may be incomplete and no manifest artifact exists to confirm.",
+    "The branch now contains a preventive manifest-I/O hardening change: commit d15de0f6c879e5b3f692bbdbb15d725f12c0785b removes per-phase fsync and adds explicit mkdir/read/temp-write/atomic-replace markers. Test commit d9f2fff136fdc919730b99bf43c810f0ff23d96d adds a regression test ensuring per-event fsync is not called. Validation Run #211 (43074433130) was in_progress at 18:05:40Z; check its result before further source change.",
+    "On Run #22 terminal state, immediately fetch complete logs and uploaded artifact. If no artifact/log and API remains non-terminal well beyond job limit, record controller/runner observability failure separately from VPN/target results.",
+    "No OpenVPN attempt, tunnel route, verified RU exit or target measurement is confirmed. Do not label target sites blocked.",
+    "Keep PR #5 OPEN/DRAFT. Preserve production GeoIP/DIRECT/ASN policy, main/release and PR #6."
   ],
   "ci_policy": {
     "push_validation_paths": [
@@ -2504,7 +2504,7 @@
       "job_timeout": "2026-11-11T18:03:58Z"
     },
     "last_rest_snapshot": {
-      "observed_at_utc": "2026-11-11T18:01:21Z",
+      "observed_at_utc": "2026-11-11T18:05:40Z",
       "run_status": "in_progress",
       "run_updated_at_utc": "2026-11-11T17:51:59Z",
       "job_status": "in_progress",
@@ -2515,7 +2515,10 @@
       "upload_step_status": "pending",
       "artifacts": [],
       "logs_api": "BlobNotFound",
-      "logs_error_at_utc": "2026-11-11T18:01:21.931Z"
+      "logs_error_at_utc": "2026-11-11T18:01:21.931Z",
+      "failure_gate_step_status": "pending",
+      "job_timeout_overrun_seconds": 102,
+      "interpretation": "GitHub API still non-terminal 1m42s beyond the configured 12m job deadline. Runner/controller stale or unresponsive state remains possible; no terminal process evidence is available."
     },
     "manifest_persistence_hypothesis": {
       "priority": "high_but_unconfirmed",
@@ -2526,7 +2529,12 @@
         "the GitHub job-log API for an active job may not expose the latest buffered output",
         "a different worker or runner operation after the trace may have blocked"
       ],
-      "no_root_cause_claimed": true
+      "no_root_cause_claimed": true,
+      "status": "high_priority_unconfirmed",
+      "next_operation_after_last_marker": "record_vpnobratno_progress for the body_read_completed event",
+      "source_order": "vpnobratno_fetch_trace prints and flushes the body_read_completed marker before calling record_vpnobratno_progress; that function performs read/JSON rewrite/flush/fsync/os.replace.",
+      "mitigration_commit": "d15de0f6c879e5b3f692bbdbb15d725f12c0785b",
+      "mitigation": "Removed os.fsync from every progress-phase write, retained flush and same-directory atomic os.replace, and added progress_manifest stage markers before mkdir/read/write/replace. This does not affect Run #22's pinned checkout."
     },
     "latest_api_log_fetch": "BlobNotFound",
     "notes": [
@@ -2535,6 +2543,14 @@
       "No OpenVPN attempt, route, RU public exit or target request is confirmed.",
       "Do not attribute the issue to VPNObratno, Cloudflare DoH or a target service based on this partial trace.",
       "Artifact list remains empty because upload step 8 has not started; absence before upload is not a failure."
-    ]
+    ],
+    "followup_manifest_io_test": {
+      "commit": "d9f2fff136fdc919730b99bf43c810f0ff23d96d",
+      "test": "test_progress_manifest_uses_atomic_replace_without_per_event_fsync",
+      "expected": "PASS",
+      "validation_run_id": 43074433130,
+      "validation_run_number": 211,
+      "validation_status": "in_progress_at_2026-11-11T18:05:40Z"
+    }
   }
 }
