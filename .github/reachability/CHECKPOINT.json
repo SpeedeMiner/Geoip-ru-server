@@ -5,7 +5,7 @@
   "pull_request": 5,
   "pull_request_url": "https://github.com/SpeedeMiner/Geoip-ru-server/pull/5",
   "branch": "feature/reachability-full-ru-kz-by",
-  "recorded_pr_head_before_checkpoint_commit": "c7d6ffdf2866df22ac1b5ad466b534b2def40d99",
+  "recorded_pr_head_before_checkpoint_commit": "beba9f75a0bfc08703e79555635698b130ed47a8",
   "base_sha": "a68e5d6589361814cb1cfedd2af7857e4af806fa",
   "state": "RUN21_IN_PROGRESS_PROFILE_6_FETCH_STARTED; RUNNER_TIMEOUT_PROCESS_GROUP_PREFLIGHT_GREEN_RUN200; RUN20_CANCELLED_NO_ARTIFACT",
   "current_phase": "RUN21_VPNOBRATTO_PROFILE_DISCOVERY_IN_PROGRESS; FIVE_PROFILES_CONFIRMED_USABLE; SIXTH_FETCH_STARTED; NO_OPENVPN_OR_TARGET_EVIDENCE_YET",
@@ -1999,7 +1999,8 @@
     "final_worklog_entry_commit": "01085045a9e224a9abe9a4b7dd36d3f32f67da69",
     "checkpoint_written_after_worklog_commit": "01085045a9e224a9abe9a4b7dd36d3f32f67da69",
     "resume_guide_active_run21_commit": "e971a8f62c213bee068e3595b67def86d609b348",
-    "run21_monitoring_snapshot_worklog_commit": "c7d6ffdf2866df22ac1b5ad466b534b2def40d99"
+    "run21_monitoring_snapshot_worklog_commit": "c7d6ffdf2866df22ac1b5ad466b534b2def40d99",
+    "resume_guide_live_status_refresh_commit": "beba9f75a0bfc08703e79555635698b130ed47a8"
   },
   "run21_result": {
     "run_id": 43065501624,
@@ -2111,6 +2112,14 @@
       "measurement_step_timeout": "2026-11-11T17:19:40Z",
       "job_timeout": "2026-11-11T17:22:16Z",
       "calculation_note": "Based on measurement step start 17:10:40Z, GNU timeout 7m + 5s kill grace, step timeout 9m, and job start 17:10:16Z with 12m timeout. GNU timeout's exact start is a little after step start because py_compile/echo prelude runs first."
+    },
+    "last_run_page_snapshot": {
+      "checked_at_utc": "2026-11-11T17:16:11Z",
+      "run_page_status": "In progress",
+      "displayed_duration": "not available",
+      "displayed_artifacts": "none",
+      "job_page": "Loading",
+      "interpretation": "Actions UI confirms In progress but cannot render live job logs at this snapshot."
     }
   }
 }
