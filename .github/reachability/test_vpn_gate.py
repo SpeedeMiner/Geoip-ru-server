@@ -198,6 +198,13 @@ class RIPEstatNetworkInfoTests(unittest.TestCase):
         self.assertEqual(result, {"prefix": "", "asn": 15169})
 
 
+class VPNGateMeasurementStatusTests(unittest.TestCase):
+    def test_no_verified_ru_exit_is_not_a_successful_measurement(self):
+        self.assertNotEqual(vpn_gate.measurement_exit_code(0, 1), 0)
+        self.assertEqual(vpn_gate.measurement_exit_code(1, 1), 0)
+        self.assertEqual(vpn_gate.measurement_exit_code(2, 1), 0)
+
+
 class VPNGateHandshakeFailureTests(unittest.TestCase):
     def test_tls_handshake_failure_stops_wait_early(self):
         class RunningProcess:
@@ -275,6 +282,43 @@ class VPNGateDoHTests(unittest.TestCase):
         self.assertEqual(payload, b'{"ip":"8.8.8.8"}')
         pinned.assert_called_once_with("https://ipwho.is/", 5)
 
+
+    def test_https_head_uses_pinned_sni_fallback_after_system_dns_failure(self):
+        opener = type("Opener", (), {
+            "open": lambda self, request, timeout: (_ for _ in ()).throw(
+                urllib.error.URLError("temporary DNS failure")
+            )
+        })()
+
+        class FakeResponse:
+            status = 403
+            def read(self, limit):
+                return b""
+
+        class FakeConnection:
+            def __init__(self, host, address, port, timeout):
+                self.args = (host, address, port, timeout)
+                self.request_args = None
+            def request(self, method, path, headers):
+                self.request_args = (method, path, headers)
+            def getresponse(self):
+                return FakeResponse()
+            def close(self):
+                pass
+
+        connections = []
+        def factory(host, address, port, timeout):
+            connection = FakeConnection(host, address, port, timeout)
+            connections.append(connection)
+            return connection
+
+        with patch.object(vpn_gate.urllib.request, "build_opener", return_value=opener):
+            with patch.object(vpn_gate, "doh_query", return_value=["8.8.8.8"]):
+                with patch.object(vpn_gate, "PinnedHTTPSConnection", side_effect=factory):
+                    result = vpn_gate.https_head("example.com", 443, "/", 5)
+        self.assertEqual(result, ("HTTP_RESPONSE", 403, ""))
+        self.assertEqual(connections[0].args, ("example.com", "8.8.8.8", 443, 5))
+        self.assertEqual(connections[0].request_args[0:2], ("HEAD", "/"))
 
 class VPNGateDNSResolutionTests(unittest.TestCase):
     def test_a_and_aaaa_are_collected_in_one_resolver_call(self):
