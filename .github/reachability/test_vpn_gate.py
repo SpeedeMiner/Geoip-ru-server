@@ -1,6 +1,8 @@
 import base64
 import csv
 import io
+import json
+import urllib.error
 import pathlib
 import socket
 import subprocess
@@ -211,6 +213,67 @@ class VPNGateHandshakeFailureTests(unittest.TestCase):
             )
             with self.assertRaisesRegex(vpn_gate.ProbeError, "TLS key negotiation failed"):
                 vpn_gate.wait_for_tunnel(RunningProcess(), 60, log_path)
+
+
+class VPNGateDoHTests(unittest.TestCase):
+    def test_doh_query_uses_pinned_resolver_and_filters_requested_type(self):
+        class FakeResponse:
+            status = 200
+            def read(self, limit):
+                return json.dumps({
+                    "Status": 0,
+                    "Answer": [
+                        {"type": 1, "data": "8.8.8.8"},
+                        {"type": 28, "data": "2001:4860:4860::8888"},
+                        {"type": 1, "data": "10.0.0.1"},
+                    ],
+                }).encode()
+
+        class FakeConnection:
+            def __init__(self, host, address, timeout):
+                self.host, self.address, self.timeout = host, address, timeout
+                self.request_args = None
+            def request(self, method, path, headers):
+                self.request_args = (method, path, headers)
+            def getresponse(self):
+                return FakeResponse()
+            def close(self):
+                pass
+
+        made = []
+        def factory(host, address, timeout):
+            connection = FakeConnection(host, address, timeout)
+            made.append(connection)
+            return connection
+
+        with patch.object(vpn_gate, "PinnedHTTPSConnection", side_effect=factory):
+            result = vpn_gate.doh_query("example.com", "A")
+        self.assertEqual(result, ["8.8.8.8"])
+        self.assertEqual(made[0].host, "cloudflare-dns.com")
+        self.assertEqual(made[0].address, "1.1.1.1")
+        self.assertIn("type=A", made[0].request_args[1])
+
+    def test_system_dns_failure_falls_back_to_pinned_doh_for_both_families(self):
+        with patch.object(vpn_gate.socket, "getaddrinfo", side_effect=socket.gaierror(-3, "temporary failure")):
+            with patch.object(vpn_gate, "doh_query", side_effect=[
+                ["8.8.8.8"], ["2001:4860:4860::8888"]
+            ]) as doh:
+                ipv4, ipv6 = vpn_gate.resolve_domain_families("example.com", 5)
+        self.assertEqual(ipv4, ("DNS_ANSWER", ["8.8.8.8"], ""))
+        self.assertEqual(ipv6, ("DNS_ANSWER", ["2001:4860:4860::8888"], ""))
+        self.assertEqual([call.args[1] for call in doh.call_args_list], ["A", "AAAA"])
+
+    def test_metadata_fetch_uses_pinned_https_when_system_dns_fails(self):
+        opener = type("Opener", (), {
+            "open": lambda self, request, timeout: (_ for _ in ()).throw(
+                urllib.error.URLError("temporary DNS failure")
+            )
+        })()
+        with patch.object(vpn_gate.urllib.request, "build_opener", return_value=opener):
+            with patch.object(vpn_gate, "fetch_https_pinned", return_value=b'{"ip":"8.8.8.8"}') as pinned:
+                payload = vpn_gate.fetch_bytes("https://ipwho.is/", timeout=5)
+        self.assertEqual(payload, b'{"ip":"8.8.8.8"}')
+        pinned.assert_called_once_with("https://ipwho.is/", 5)
 
 
 class VPNGateDNSResolutionTests(unittest.TestCase):
