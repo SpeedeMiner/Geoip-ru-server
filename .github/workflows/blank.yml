@@ -3579,7 +3579,7 @@ jobs:
             "$V38_OUTPUT_FILE" "$OUTPUT_SHA_FILE" "$CATEGORY_FILE" "$SOURCE_FILE" \
             "$SOURCE_COUNTS" "$CATEGORY_AUDIT" "$V38_QUALITY_REPORT" "$QUALITY_REPORT" "$V38_METRICS" "$V38_PREFIX_PROVENANCE" "$V38_BLOCKED_PROVENANCE" "$V38_BLOCKED_FILE" "$V38_BLOCKED_SHA" "$V38_MANIFEST" "$PROVENANCE_FILE" "$ASN_MANIFEST" "$COMPANY_ASN_MANIFEST" "$COMPANY_ASN_REGISTRY" "$ASN_STATS" \
             "$RU_PREFIX_INPUT" "$RU_ASN_REGISTRY" "$BY_KZ_ASN_REGISTRY" "$RIR_PREFIX_INPUT" "$RIR_STATS" "$RIR_RUKZBY_PREFIX_INPUT" "$RIR_RUKZBY_STATS" "$GLOBAL_BGP_PREFIX_INPUT" \
-            "$BLOCKED_IP_INPUT" "$BLOCKED_IP_SHA_FILE" "$V38_BLOCKED_FILE" "$V38_BLOCKED_SHA" "$BLOCKED_REVIEW_INPUT" "$BLOCKED_STATS_INPUT" "$BLOCKED_CHECKSUMS_INPUT" "$INPUT_PROVENANCE" "$INPUT_PROVENANCE_SHA" "$KY_STANDARD_V4_INPUT" "$KY_STANDARD_V6_INPUT" "$KY_SERVICES_INPUT" "$W1ZARDZ_INPUT" "$HXEHEX_IP_INPUT" "$ESCAPINGWORM_OPERATOR_INPUT" "$BLOCKED_IPSUM_INPUT"; do
+            "$BLOCKED_IP_INPUT" "$BLOCKED_IP_SHA_FILE" "$BLOCKED_REVIEW_INPUT" "$BLOCKED_STATS_INPUT" "$BLOCKED_CHECKSUMS_INPUT" "$INPUT_PROVENANCE" "$INPUT_PROVENANCE_SHA" "$KY_STANDARD_V4_INPUT" "$KY_STANDARD_V6_INPUT" "$KY_SERVICES_INPUT" "$W1ZARDZ_INPUT" "$HXEHEX_IP_INPUT" "$ESCAPINGWORM_OPERATOR_INPUT" "$BLOCKED_IPSUM_INPUT"; do
             cp "$file" /tmp/geoip-client-release/"$(basename "$file")"
           done
           cd /tmp/geoip-client-release
@@ -3608,7 +3608,10 @@ jobs:
           purge_jsdelivr "geoip_RU.dat"
           purge_jsdelivr "geoip_RU.dat.sha256sum"
           purge_jsdelivr "geoip_RU_quality_report.txt"
-          purge_jsdelivr "geoip_RU_additional_provenance.tsv"
+          purge_jsdelivr "geoip_RU_v37_additional_provenance.tsv"
+          purge_jsdelivr "geoip_RU_v38_prefix_provenance.tsv"
+          purge_jsdelivr "geoip_RU_v38_blocked_provenance.tsv"
+          purge_jsdelivr "geoip_RU_v38_manifest.json"
           purge_jsdelivr "geoip_RU_input_provenance.tsv"
           purge_jsdelivr "geoip_RU_input_provenance.tsv.sha256sum"
           purge_jsdelivr "geoip_RU_blocked_ip_exclusions.txt"
@@ -3621,14 +3624,19 @@ jobs:
           echo "Raw release branch: https://raw.githubusercontent.com/${{ github.repository }}/release/geoip_RU.dat"
           echo "jsDelivr: https://cdn.jsdelivr.net/gh/${{ github.repository }}@release/geoip_RU.dat"
           echo "Quality report: https://raw.githubusercontent.com/${{ github.repository }}/release/geoip_RU_quality_report.txt"
-          echo "Additional prefix provenance: https://raw.githubusercontent.com/${{ github.repository }}/release/geoip_RU_additional_provenance.tsv"
+          echo "v37 baseline prefix provenance: https://raw.githubusercontent.com/${{ github.repository }}/release/geoip_RU_v37_additional_provenance.tsv"
+          echo "v38 service/resource prefix provenance: https://raw.githubusercontent.com/${{ github.repository }}/release/geoip_RU_v38_prefix_provenance.tsv"
+          echo "v38 blocked-prefix provenance: https://raw.githubusercontent.com/${{ github.repository }}/release/geoip_RU_v38_blocked_provenance.tsv"
+          echo "v38 source manifest: https://raw.githubusercontent.com/${{ github.repository }}/release/geoip_RU_v38_manifest.json"
           echo "Input source hashes: https://raw.githubusercontent.com/${{ github.repository }}/release/geoip_RU_input_provenance.tsv"
           echo "Source contribution report: https://raw.githubusercontent.com/${{ github.repository }}/release/geoip_RU_source_counts.txt"
           echo "ASN manifest: https://raw.githubusercontent.com/${{ github.repository }}/release/geoip_RU_asn_manifest.txt"
           echo "Company ASN manifest: https://raw.githubusercontent.com/${{ github.repository }}/release/geoip_RU_company_asn_manifest.tsv"
-          echo "RIR RU resources: https://raw.githubusercontent.com/${{ github.repository }}/release/geoip_RU_rir_registered_prefixes.txt"
+          echo "RIR RU+BY+KZ resource inventory: https://raw.githubusercontent.com/${{ github.repository }}/release/geoip_RU_BY_KZ_rir_registered_prefixes.tsv"
+          echo "RIR RU-only legacy corroboration list: https://raw.githubusercontent.com/${{ github.repository }}/release/geoip_RU_rir_registered_prefixes.txt"
           echo "Global BGP observation set: https://raw.githubusercontent.com/${{ github.repository }}/release/geoip_RU_global_bgp_prefixes.txt"
           echo "BY/KZ RIR ASN inventory: https://raw.githubusercontent.com/${{ github.repository }}/release/geoip_BY_KZ_registered_asns.txt"
-          echo "Approved blocked prefixes: https://raw.githubusercontent.com/${{ github.repository }}/release/geoip_RU_blocked_ip_exclusions.txt"
+          echo "v37 approved blocked prefixes: https://raw.githubusercontent.com/${{ github.repository }}/release/geoip_RU_blocked_ip_exclusions.txt"
+          echo "v38 expanded RKN exclusions: https://raw.githubusercontent.com/${{ github.repository }}/release/geoip_RU_v38_blocked_ip_exclusions.txt"
           echo "Blocked feed stats: https://raw.githubusercontent.com/${{ github.repository }}/release/geoip_RU_blocked_source_stats.txt"
           echo "Blocked source review candidates: https://raw.githubusercontent.com/${{ github.repository }}/release/geoip_RU_blocked_review_candidates.tsv"
