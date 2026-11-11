@@ -30,7 +30,7 @@ uses the official VPN Gate CSV API rather than scraping the directory page.
 
 The workflow asks for a number of successful RU exits (default one for
 the feature-branch one-shot pilot; manual dispatch defaults to three) and a
-separate candidate-attempt limit (default three, hard cap six). Failed TLS or
+separate candidate-attempt limit (default six for the feature-branch one-shot pilot; manual dispatch defaults to three, hard cap six). Failed TLS or
 authentication handshakes are detected from the live OpenVPN log and stop that
 candidate early; the collector then tries the next candidate from a different
 origin ASN before reusing an ASN. It stops as soon as the requested number of
