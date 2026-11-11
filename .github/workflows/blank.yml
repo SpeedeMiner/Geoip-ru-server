@@ -33,6 +33,11 @@ jobs:
       LOYALSOLDIER_PRIVATE_INPUT: loyalsoldier-private.dat
       HXEHEX_INPUT: hxehex-cidrwhitelist.txt
       W1ZARDZ_INPUT: w1zardz-ru-ipv4.txt
+      KY_STANDARD_V4_INPUT: kyoresuas-ru-standard-ipv4.txt
+      KY_STANDARD_V6_INPUT: kyoresuas-ru-standard-ipv6.txt
+      KY_SERVICES_INPUT: kyoresuas-services.json
+      HXEHEX_IP_INPUT: hxehex-ipwhitelist.txt
+      ESCAPINGWORM_OPERATOR_INPUT: escapingworm-operator-cidr.txt
       RU_ASN_REGISTRY: geoip_RU_registered_asns.txt
       BY_KZ_ASN_REGISTRY: geoip_BY_KZ_registered_asns.txt
       COMPANY_ASN_REGISTRY: geoip_RU_company_asns.txt
@@ -448,9 +453,21 @@ jobs:
             "https://raw.githubusercontent.com/hxehex/russia-mobile-internet-whitelist/main/cidrwhitelist.txt" \
             "https://cdn.jsdelivr.net/gh/hxehex/russia-mobile-internet-whitelist@main/cidrwhitelist.txt"
 
+          # Pin VPN service-direct candidates to immutable source commits.
           download_file "W1ZARDZ RU DIRECT IPV4" "$W1ZARDZ_INPUT" \
-            "https://raw.githubusercontent.com/w1zardz/amnezia-vpn-russia-split-tunneling/master/dist/ru-direct-ipv4.txt" \
-            "https://cdn.jsdelivr.net/gh/w1zardz/amnezia-vpn-russia-split-tunneling@master/dist/ru-direct-ipv4.txt"
+            "https://raw.githubusercontent.com/w1zardz/amnezia-vpn-russia-split-tunneling/6157cdfb55f1748c98cab121cde008b5f69d325d/dist/ru-direct-ipv4.txt"
+
+          download_file "KY ORESUAS RU STANDARD IPV4" "$KY_STANDARD_V4_INPUT" \
+            "https://raw.githubusercontent.com/kyoresuas/ru-direct/0781793a159f9a53c5e68da2f46b0a64855f8cb6/ru-standard.ipv4.txt"
+          download_file "KY ORESUAS RU STANDARD IPV6" "$KY_STANDARD_V6_INPUT" \
+            "https://raw.githubusercontent.com/kyoresuas/ru-direct/0781793a159f9a53c5e68da2f46b0a64855f8cb6/ru-standard.ipv6.txt"
+          download_file "KY ORESUAS SERVICE CATALOG" "$KY_SERVICES_INPUT" \
+            "https://raw.githubusercontent.com/kyoresuas/ru-direct/0781793a159f9a53c5e68da2f46b0a64855f8cb6/services.json"
+
+          download_file "HXEHEX MOBILE WHITELIST HOST IPS" "$HXEHEX_IP_INPUT" \
+            "https://raw.githubusercontent.com/hxehex/russia-mobile-internet-whitelist/fad3653ebd4b212643774a4d10af3eb33838e4ff/ipwhitelist.txt"
+          download_file "ESCAPINGWORM OPERATOR WHITELIST CIDRS" "$ESCAPINGWORM_OPERATOR_INPUT" \
+            "https://raw.githubusercontent.com/escapingworm/russia-whitelist/2bb6c0788f21986b7928d986ea2577c6ebc11b36/ru-whitelist-cidr.txt"
 
           echo "==============================================="
           echo "Downloading additive RU ASN/BGP data"
@@ -787,6 +804,11 @@ jobs:
             "https://antifilter.download/list/ipresolve.lst"
           download_file "ANTIFILTER SUBNET LIST" "$BLOCKED_SUBNET_INPUT" \
             "https://antifilter.download/list/subnet.lst"
+          # Officially described by the aggregator as /24 summarization of individual
+          # RKN-derived IPs. The v38 builder applies it separately and reports its
+          # wider shared-hosting/CDN collateral risk instead of hiding it in subnet.lst.
+          download_file "ANTIFILTER IPSUM IPV4 /24 SUMMARY" "$BLOCKED_IPSUM_INPUT" \
+            "https://antifilter.download/list/ipsum.lst"
 
           # Community and Re-filter are intentionally review-only. They must never
           # be silently promoted into automatic DIRECT exclusions.
