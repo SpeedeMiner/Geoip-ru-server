@@ -51,7 +51,7 @@ The v37 source manifest recorded HXEHEX CIDR SHA-256 149d27a8e3502b95b9a37881785
 | WhisperOfTheSteppe/ru-rules-dat | Release includes ru-ip.txt, domain list, Shadowrocket lists, sing-box rule sets and Xray GeoIP. README says IP set comes from ipdeny RU country zones. | Independent format/output benchmark and current country-zone comparison. | No repository license declared in inspected metadata; do not redistribute CIDRs until licensing clarified. Correlated with ipdeny. |
 | lib4u/amnezia-tunneling-ru | Amnezia JSON with hostnames and resolved IP arrays; project claims 1,900+ Russian service domains and daily updates. | Domain-to-IP discovery; potential new service hosts and CDN endpoints missing from static lists. | No repository license found. Metrics-only; no prefix redistribution. May overlap v2fly geosite. |
 | jirnobruh/Split-Tunneling-Amnezia-for-Russia | Amnezia JSON with hostname, ip and ips values; last repo update older than the other feeds. | Another service-domain/IP snapshot for comparison and drift discovery. | No repository license found. Metrics-only; no prefix redistribution. |
-| pvd-dog/russia-no-vpn-list | Amnezia JSON primarily containing service /24 and host candidates. | Additional service coverage and comparison against service catalog lists. | No repository license found. Metrics-only; raw networks can be shared CDN/hosting. |
+| pvd-dog/russia-no-vpn-list | Pinned JSON contains 1,029 IPv4 prefixes, all `/24`; `hostname` and `ip` fields both contain the network, not a domain. | Broad network-candidate comparison only. | Not domain→IP evidence and not independent service confirmation. Keep metrics/review-only; every `/24` may include unrelated co-hosted destinations. |
 | jutsu-dev/ru-route-lists | MIT; release updates every 3 hours. Provides RKN-restricted domains/IP sets and foreign-geoblock domains/IP sets. | Important reverse-polarity source for a future separate PROXY / foreign-exit route set. | Never add IP sets to RU DIRECT. README warns about shared CDN impact; domain lists safer first input. |
 | itdoginfo/allow-domains | Russia/outside-raw.lst identifies RU-side domain routing; Russia/inside-raw.lst has opposite meaning. | Geosite/domain coverage and DNS discovery. | Domain-only; keep inside/outside polarity explicit. |
 | UnRKN/ru-blocklist | Domains marked by maintainers as restricted over VPN / subject to Russian restrictions. | Reverse route/domain evidence for PROXY. | Not geographic RU or prefix admission; verify licensing before redistribution. |
@@ -135,7 +135,8 @@ Per-source address space outside RU + PRIVATE + approved BLOCKED (the rows below
 | W1ZARDZ Direct | 518 | Existing v37 candidate feed; changed pinned snapshot but limited additional space. |
 | Escapingworm operator whitelist | 0 | All 79 new-vs-RU addresses are already covered by PRIVATE/BLOCKED or overlap. |
 | Whisper (metrics-only) | 328,935 | ipdeny-correlated; unlicensed in inspected repo metadata, do not redistribute. |
-| Lib4u / Jirnobruh / PVD Dog (metrics-only) | 335 / 45 / 27,433 | Small domain-resolved service observations; licenses not declared. |
+| Lib4u / Jirnobruh (domain→IP, metrics-only) | 335 / 45 | Resolved service-host observations; export hostname/IP pairs for domain-level review. |
+| PVD Dog (CIDR-only, metrics-only) | 27,433 | 1,029 `/24` networks; not domain-resolved observations. |
 
 - **Kyoresuas Full** is the standout geographic residual comparator: it covers **320/320 IPv4 and 40/40 IPv6 RU-RIR residual prefix rows** after existing policy; exact CIDR matches are 214/320 IPv4 and 40/40 IPv6; unique residual address coverage is 100% in each family.
 - **Whisper** covers 319/320 IPv4 residual rows, 213 exact CIDR matches and 99.922174% of unique IPv4 residual address space, but the repository has no declared license in inspected metadata and the dataset is ipdeny-derived. It is benchmark-only and its prefixes are not redistributed.
@@ -143,6 +144,10 @@ Per-source address space outside RU + PRIVATE + approved BLOCKED (the rows below
 **Interpretation:** the Kyoresuas Full result identifies the feed lineage that appears to explain the entire registered-resource residual. It does not independently prove ownership or live route status: its country-zone component is ipdeny-correlated, and a country file may include static/registered ranges that are not currently announced. Before any production admission, exact candidates must be joined to the RIR residual ledger and checked against exact current RouteViews/RIPE RIS NLRI, per-origin VRP/RPKI maxLength, IRR route objects and holder/assignment evidence. The upstream data license/attribution for the embedded country-zone portion also needs confirmation despite the repository's MIT declaration.
 
 Artifact: vpn-route-candidates-5, run #43017072072, SHA-256 999389acc931cfceca2f40a56fe947cf616465156c32aefce6c0271bf0c9d8c8. Candidate protobuf SHA-256: 0978561c1c3607ea4288724507a8544e715f8b36283dc04a43fe57bf546b0072. It contains namespaced ru_vpn_* categories and does not replace or mutate production geoip:ru.
+
+
+
+**PVD Dog source-shape check (pinned snapshot):** all 1,029 rows parse as IPv4 `/24`; total covered address space is 263,424 addresses. No hostname row is a DNS name. These prefixes overlap 841 of 1,843 unique Lib4u host IPs and 512 of 755 unique Jirnobruh host IPs. They should not be counted as independent hostname-level service observations. The builder now exports the raw Amnezia hostname/IP/CIDR mapping sidecar for audit, but none of these metric-only feeds is added to the candidate protobuf.
 
 ## 7. Next improvements to final production build
 
