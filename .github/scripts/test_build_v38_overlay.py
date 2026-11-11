@@ -47,6 +47,16 @@ class GeoIPV38OverlayTests(unittest.TestCase):
             self.assertEqual(build.intersect(build.intervals(final, mask.version), mask_intervals), [])
 
 
+    def test_ipsum_collateral_excludes_private_and_already_blocked_space(self):
+        preblock = {ipaddress.ip_network("203.0.113.0/24")}
+        private = {ipaddress.ip_network("203.0.113.0/26")}
+        approved = {ipaddress.ip_network("203.0.113.64/26")}
+        ipsum = {ipaddress.ip_network("203.0.113.0/24")}
+        self.assertEqual(
+            build.potential_ipsum_direct_overlap(preblock, private, approved, ipsum),
+            {4: 128, 6: 0},
+        )
+
     def test_ipsum_requires_exact_ipv4_24_only(self):
         with tempfile.TemporaryDirectory() as tmp:
             p=Path(tmp)/"ipsum"
