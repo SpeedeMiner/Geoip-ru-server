@@ -1,14 +1,14 @@
 {
   "schema_version": 1,
-  "updated_at_utc": "2026-11-11T05:45:00Z",
+  "updated_at_utc": "2026-11-11T06:19:00Z",
   "repository": "SpeedeMiner/Geoip-ru-server",
   "pull_request": 5,
   "pull_request_url": "https://github.com/SpeedeMiner/Geoip-ru-server/pull/5",
   "branch": "feature/reachability-full-ru-kz-by",
-  "recorded_pr_head_before_checkpoint_commit": "f440918b86bfed2fdda553221db79d390fd2d5ab",
+  "recorded_pr_head_before_checkpoint_commit": "30da4c3192a5157ecf0f16b2764772996fb79d4d",
   "base_sha": "a68e5d6589361814cb1cfedd2af7857e4af806fa",
-  "state": "VPN_GATE_PILOT_COMPLETE_SOURCE_LIMITATION",
-  "current_phase": "AWAIT_OWNER_DIRECTION_FOR_RESIDENTIAL_PROBE_AGENT",
+  "state": "HOME_PROBE_IMPORTER_READY_FOR_CONSENTED_PILOT",
+  "current_phase": "VOLUNTEER_HOME_PROBE_AND_LOCAL_GEOIP_REVIEW",
   "completed": [
     "repository_reconnaissance",
     "protobuf_inventory_exporter",
@@ -125,12 +125,24 @@
     "vpn_gate_one_shot_marker_removed",
     "vpn_gate_feature_branch_push_trigger_disabled",
     "vpn_gate_workflow_manual_only",
-    "vpn_gate_validation_after_cleanup_58_tests_and_go_success"
+    "vpn_gate_validation_after_cleanup_58_tests_and_go_success",
+    "voluntary_local_home_probe_client",
+    "home_probe_explicit_consent_and_proxy_guard",
+    "home_probe_two_source_source_ip_country_attribution",
+    "home_probe_country_mismatch_prevents_target_requests",
+    "home_probe_output_directory_no_overwrite",
+    "home_probe_report_schema_versioning",
+    "home_probe_exact_https_tested_address_recording",
+    "home_probe_local_geoip_inventory_importer",
+    "home_probe_source_candidate_exact_ip_only",
+    "home_probe_report_target_dns_and_https_validation",
+    "home_probe_regression_tests_26_total_home_probe",
+    "home_probe_ci_84_python_tests_plus_go_success_run_42971505831"
   ],
-  "latest_successful_validation_run": 42967694579,
-  "latest_successful_validation_commit": "678534d57b01bb797669c81305a4239fc8ea5435",
+  "latest_successful_validation_run": 42971505831,
+  "latest_successful_validation_commit": "e729971d11c39389015bfeca43cc6e39ff90fed5",
   "test_counts": {
-    "python_unit_tests": 58,
+    "python_unit_tests": 84,
     "python_unit_tests_status": "PASS",
     "gofmt_status": "PASS",
     "go_tests_status": "PASS",
@@ -284,10 +296,11 @@
     "automatic_geoip_mutation": false
   },
   "next_steps": [
-    "Stop automatic VPN Gate measurements. Do not run again until new evidence establishes a stable alternative relay pool or the owner wants a different provider.",
-    "If continuing the original home-ISP objective, build an outbound-only, explicitly consented probe agent for actual household routers/PCs or connect to documented probes whose access-network ASN/operator can be independently confirmed. Keep each measurement low-volume and collect only DNS/HTTPS results.",
-    "Globalping/VPN Gate remain supplementary evidence; residential status must not be inferred from RU country or ISP metadata alone.",
-    "Keep PR #5 Draft. No merge/rebase, and do not modify production builder, geoip_RU.dat, release assets, DIRECT policy, ASN allowlists, main/release or PR #6."
+    "Obtain one or more explicitly consented home-probe reports from actual Russian household ISP connections. Begin with --max-targets 3; then optionally run all RU-scoped targets on the same connection after the smoke test.",
+    "For each report, generate the exact complete inventory from release/geoip_RU.dat, then run home_probe_ingest.py. Review source IP mapping, observed ASN/operator, route visibility and DNS/HTTPS observations.",
+    "Treat HOME_PROBE_SOURCE_IP rows as exact-IP review leads only. Confirm origin ASN and household/access-network status independently before making any CIDR proposal; never infer a prefix from one IP.",
+    "Once several distinct operators/regions submit reports, aggregate repeat observations by source ASN/prefix and review the actual RU range list. Globalping/VPN Gate remain supplementary.",
+    "Keep PR #5 Draft. No merge/rebase; do not modify production builder, geoip_RU.dat, release assets, DIRECT policy, ASN allowlists, main/release or PR #6."
   ],
   "ci_policy": {
     "push_validation_paths": [
@@ -324,18 +337,18 @@
     "vpn_gate_push_once_daily_schedule_enabled": false
   },
   "pending_validation": {
-    "commit": "678534d57b01bb797669c81305a4239fc8ea5435",
+    "commit": "e729971d11c39389015bfeca43cc6e39ff90fed5",
     "workflow": "Reachability validation",
-    "run_id": 42967694579,
-    "run_url": "https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/42967694579",
+    "run_id": 42971505831,
+    "run_url": "https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/42971505831",
     "status": "SUCCESS",
-    "verified_python_test_count": 58,
+    "verified_python_test_count": 84,
     "go_checks": [
       "gofmt",
       "go test ./...",
       "go build"
     ],
-    "note": "Run #42967694579 passed 58 Python tests and Go checks. Compare to current PR HEAD 5204c5215d983be518fd5024199549b3473cff91 contains only README/WORKLOG changes and deletion of the completed one-shot marker."
+    "note": "Run #131 logs report Ran 84 tests and successful Go formatting/tests/build. All executable files and the validation workflow at the tested head were included."
   },
   "vpn_gate_measurement": {
     "source": "VPN Gate official CSV API",
@@ -554,5 +567,42 @@
       "doH_exercised_in_live_run": false,
       "interpretation": "The volunteer relay pool did not provide a stable RU tunnel. No target sites were tested and no missing GeoIP CIDR was discovered."
     }
+  },
+  "home_probe": {
+    "client": ".github/reachability/home_probe.py",
+    "importer": ".github/reachability/home_probe_ingest.py",
+    "report_schema_version": 1,
+    "required_country_codes": [
+      "RU",
+      "KZ",
+      "BY"
+    ],
+    "explicit_consent_required": true,
+    "configured_proxy_environment_rejected": true,
+    "source_ip_country_verification": "two distinct metadata providers must agree on one public IP and country",
+    "confirmed_country_mismatch_blocks_target_requests": true,
+    "system_dns_a_aaaa": true,
+    "https_head_max_per_target": 2,
+    "tested_address_recorded_per_family": true,
+    "report_local_only": true,
+    "no_automatic_upload": true,
+    "importer_requires_two_source_country_consensus": true,
+    "importer_requires_proxy_environment_clear": true,
+    "importer_validates_target_catalogue": true,
+    "importer_maps_source_and_dns_ips_to_complete_inventory": true,
+    "source_candidate_policy": "exact public source IP outside RU inventory only; no automatic CIDR inference or addition",
+    "access_network_class": "RESIDENTIAL_OR_OTHER_ACCESS_NETWORK_UNVERIFIED",
+    "outputs": [
+      "home_probe_source.json",
+      "home_probe_measurements.jsonl",
+      "home_probe_summary.json",
+      "home_probe_provider.tsv",
+      "home_probe_observations.tsv",
+      "home_probe_candidates.tsv",
+      "home_probe_ingest_summary.json"
+    ],
+    "pilot_status": "READY_FOR_EXPLICITLY_CONSENTED_VOLUNTEER_RUN",
+    "live_home_probe_performed": false,
+    "next_run_instructions": "Start with --max-targets 3 on an actual Russian household ISP connection with VPN/proxy disabled; inspect local reports; run the importer against the complete inventory generated from the exact published release/geoip_RU.dat."
   }
 }
