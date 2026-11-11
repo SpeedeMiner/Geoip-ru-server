@@ -731,16 +731,27 @@ def discover_vpnobratno_servers(
         raise ValueError(
             f"max_profiles must be between 1 and {VPNOBRATNO_PROFILE_DOWNLOAD_LIMIT}"
         )
+    print("[vpn-gate] phase=profile_listing started", flush=True)
     page = fetcher(
         VPNOBRATNO_LIST_URL, timeout=40, max_bytes=VPNOBRATNO_LISTING_MAX_BYTES
     ).decode("utf-8", "replace")
     listed = parse_vpnobratno_listing(page)
+    print(
+        f"[vpn-gate] phase=profile_listing completed links={len(listed)} "
+        f"download_cap={max_profiles}",
+        flush=True,
+    )
     if not listed:
         raise ProbeError("VPNObratno page contains no supported OpenVPN profile links")
     selected_profiles = listed[:max_profiles]
     servers: list[dict[str, Any]] = []
     skipped = collections.Counter()
-    for entry in selected_profiles:
+    for profile_index, entry in enumerate(selected_profiles, start=1):
+        print(
+            f"[vpn-gate] profile_download={profile_index}/{len(selected_profiles)} "
+            f"host={entry['hostname']} variant={entry['profile_variant']}",
+            flush=True,
+        )
         try:
             payload = fetcher(
                 entry["profile_url"], timeout=25, max_bytes=VPNOBRATNO_PROFILE_MAX_BYTES
@@ -771,8 +782,18 @@ def discover_vpnobratno_servers(
                 "profile_variant": entry["profile_variant"].upper(),
                 "profile_url": entry["profile_url"],
             })
+            print(
+                f"[vpn-gate] profile_download_result={profile_index}/{len(selected_profiles)} "
+                f"host={entry['hostname']} result=usable",
+                flush=True,
+            )
         except (OSError, ProbeError, UnicodeDecodeError, ValueError) as exc:
             skipped[type(exc).__name__ + ": " + str(exc)[:120]] += 1
+            print(
+                f"[vpn-gate] profile_download_result={profile_index}/{len(selected_profiles)} "
+                f"host={entry['hostname']} result=skipped reason={type(exc).__name__}",
+                flush=True,
+            )
     if not servers:
         raise ProbeError(
             "VPNObratno listed profiles were found, but none passed validation; "
@@ -819,8 +840,13 @@ def select_diverse_servers(
     groups: dict[str, list[dict[str, Any]]] = {}
     asn_lookups = 0
     origin_cache: dict[str, dict[str, Any]] = {}
-    for server in candidates:
+    for candidate_index, server in enumerate(candidates, start=1):
         server_ip = server["server_ip"]
+        print(
+            f"[vpn-gate] origin_asn_lookup={candidate_index}/{len(candidates)} "
+            f"host={server['hostname']}",
+            flush=True,
+        )
         if server_ip not in origin_cache:
             origin_cache[server_ip] = network_info(server_ip)
         origin = dict(origin_cache[server_ip])
@@ -1151,6 +1177,7 @@ def run(args: argparse.Namespace) -> int:
     output.mkdir(parents=True, exist_ok=True)
 
     if args.source == "vpnobratno":
+        print("[vpn-gate] phase=discovery source=vpnobratno started", flush=True)
         servers, discovery_meta = discover_vpnobratno_servers()
         discovery_source = "vpnobratno.info Russian server list and linked OpenVPN profiles"
         raw_rows: list[dict[str, Any]] = [{
@@ -1172,8 +1199,22 @@ def run(args: argparse.Namespace) -> int:
             "ru_openvpn_servers_with_usable_profiles": len(servers),
             "policy": "RU country in VPN Gate record; ISP/residential status is not assumed",
         }]
+    print(
+        f"[vpn-gate] phase=discovery completed usable_profiles={len(servers)}",
+        flush=True,
+    )
+    print(
+        f"[vpn-gate] phase=origin_asn_selection candidates={len(servers)} "
+        f"max_attempts={args.max_attempts} started",
+        flush=True,
+    )
     selected, selection_meta = select_diverse_servers(
         servers, args.max_servers, max_attempts=args.max_attempts
+    )
+    print(
+        f"[vpn-gate] phase=origin_asn_selection completed "
+        f"selected_profiles={len(selected)} distinct_asns={selection_meta['selected_distinct_asns']}",
+        flush=True,
     )
     raw_rows[0]["selected_servers"] = len(selected)
     raw_rows[0]["provider_diversity_selection"] = selection_meta
@@ -1183,10 +1224,16 @@ def run(args: argparse.Namespace) -> int:
     exit_categories: collections.Counter[str] = collections.Counter()
     connection_counts: collections.Counter[str] = collections.Counter()
 
-    for server in selected:
+    for attempt_index, server in enumerate(selected, start=1):
         if connection_counts["connected_ru_exit"] >= args.max_servers:
             break
         server_ip = server["server_ip"]
+        print(
+            f"[vpn-gate] openvpn_attempt={attempt_index}/{len(selected)} "
+            f"host={server['hostname']} variant={server.get('profile_variant', 'VPN_GATE_API')} "
+            f"server_ip={server_ip} connect_timeout={args.connect_timeout}s",
+            flush=True,
+        )
         server_category, server_prefix = runner.map_address(server_ip, networks)
         try:
             server_meta = ip_metadata(f"https://ipwho.is/{server_ip}")
@@ -1279,6 +1326,10 @@ def run(args: argparse.Namespace) -> int:
                             )
                             try:
                                 wait_for_tunnel(process, args.connect_timeout, log_path)
+                                print(
+                                    f"[vpn-gate] tunnel_result=route_installed host={server['hostname']}",
+                                    flush=True,
+                                )
                                 exit_info = ip_metadata()
                                 if exit_info["country"] != "RU":
                                     provider["CONNECTION_RESULT"] = "REJECTED_EXIT_NOT_RU"
