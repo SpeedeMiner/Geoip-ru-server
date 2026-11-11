@@ -1,14 +1,14 @@
 {
   "schema_version": 1,
-  "updated_at_utc": "2026-11-11T15:10:30Z",
+  "updated_at_utc": "2026-11-11T15:12:30Z",
   "repository": "SpeedeMiner/Geoip-ru-server",
   "pull_request": 5,
   "pull_request_url": "https://github.com/SpeedeMiner/Geoip-ru-server/pull/5",
   "branch": "feature/reachability-full-ru-kz-by",
-  "recorded_pr_head_before_checkpoint_commit": "4712e1a538e102214c9c6e590970b0d946c88676",
+  "recorded_pr_head_before_checkpoint_commit": "5874b6a5c1b8a679c47ffa3261132575909a67cd",
   "base_sha": "a68e5d6589361814cb1cfedd2af7857e4af806fa",
-  "state": "RUN17_APT_DOH_SUCCESS_GEOIP_INVENTORY_EXPORTED_PYTHON_CACHE_PERMISSION_FAILURE_FIXED_VALIDATION_PENDING",
-  "current_phase": "VALIDATE_PYTHON_BYTECODE_CACHE_PREVENTION_BEFORE_NEXT_MANUAL_RUN",
+  "state": "RUN17_APT_DOH_AND_INVENTORY_SUCCESS_PYTHON_CACHE_FIX_CI_GREEN_120_TESTS_READY_FOR_RUN18",
+  "current_phase": "READY_FOR_MANUAL_RUN18_AFTER_PYTHON_BYTECODE_CACHE_FIX",
   "completed": [
     "repository_reconnaissance",
     "protobuf_inventory_exporter",
@@ -412,9 +412,9 @@
     "production_release_artifact_byte_delta_verified": false
   },
   "next_steps": [
-    "Confirm Reachability validation CI passes after the workflow now invokes the privileged bootstrap as python3 -B.",
-    "Manually dispatch another run on feature/reachability-full-ru-kz-by with source=vpnobratno, one verified RU exit and six max profile attempts.",
-    "Confirm apt bootstrap and package installation remain successful, then verify discovery, OpenVPN attempts, RU exit consensus and persisted target DNS/HTTPS reports.",
+    "Owner manually dispatches the next Russian ISP VPN Gate reachability run on feature/reachability-full-ru-kz-by with source=vpnobratno, max_vpn_gate_servers=1 and max_vpn_gate_attempts=6.",
+    "Confirm live apt DNS bootstrap again (three pinned-DoH lookups, hosts override, all getent checks, apt update and apt install) and ensure py_compile now passes without Permission denied.",
+    "Then inspect profile discovery and selection, all bounded OpenVPN attempts, two-source RU exit consensus and uploaded target DNS/HTTPS measurement rows.",
     "Keep PR #5 OPEN / DRAFT. Do not merge, mark ready, rebase or alter production GeoIP files, DIRECT policy, or PR #6."
   ],
   "ci_policy": {
@@ -1081,15 +1081,8 @@
     "validation_result": "SUCCESS: 108 Python tests, py_compile/JSON validation, gofmt, go test ./..., go build."
   },
   "current_manual_dispatch": {
-    "run_id": 43038105495,
-    "branch": "feature/reachability-full-ru-kz-by",
-    "commit": "7723e818a94e8fc22706bdc37474b3f04c640435",
-    "result": "failure",
-    "failure_stage": "Install isolated VPN measurement tools",
-    "artifact_count": 0,
-    "interpretation": "No VPN endpoint or target was measured.",
-    "next_run_number": 17,
-    "state": "ready_for_owner_manual_dispatch_after_green_ci",
+    "next_run_number": 18,
+    "state": "ready_for_owner_manual_dispatch_after_ci_green",
     "parameters": {
       "branch": "feature/reachability-full-ru-kz-by",
       "source": "vpnobratno",
@@ -1191,12 +1184,12 @@
     "interpretation": "No verified RU tunnel and no target requests. The two 5-second failures are VPN relay connection outcomes, not target-site blocking evidence."
   },
   "latest_validation": {
-    "run_id": 43043473870,
-    "job_id": 130603794526,
-    "tested_commit": "b6d5ffcd20dd8e488d6e9c2563f7fda781a5c20d",
+    "run_id": 43045941300,
+    "job_id": 130609765536,
+    "tested_commit": "5874b6a5c1b8a679c47ffa3261132575909a67cd",
     "workflow_conclusion": "success",
     "job_conclusion": "success",
-    "python_tests": 119,
+    "python_tests": 120,
     "python_result": "OK",
     "gofmt": "success",
     "go_test": "success",
@@ -1692,11 +1685,27 @@
     ],
     "openvpn_attempts": 0,
     "verified_ru_exits": 0,
-    "target_measurement_rows": 0
+    "target_measurement_rows": 0,
+    "validation_followup": {
+      "workflow_change_run": 43045809575,
+      "workflow_change_commit": "c939bef92a0d9e9a8c2b8379d8184cb4fb414608",
+      "result": "success",
+      "python_tests": 119,
+      "latest_test_run": 43045941300,
+      "latest_test_commit": "5874b6a5c1b8a679c47ffa3261132575909a67cd",
+      "latest_result": "success",
+      "latest_python_tests": 120
+    }
   },
   "python_bytecode_cache_fix": {
     "implementation": "Run privileged apt bootstrap as python3 -B so importing vpn_gate does not write root-owned .pyc files under .github/reachability/__pycache__.",
     "workflow_file": ".github/workflows/reachability-vpn-gate.yml",
-    "validation": "pending"
+    "validation": {
+      "run_id": 43045941300,
+      "tested_commit": "5874b6a5c1b8a679c47ffa3261132575909a67cd",
+      "workflow_conclusion": "success",
+      "python_tests": 120,
+      "dedicated_regression_test": "passed"
+    }
   }
 }
