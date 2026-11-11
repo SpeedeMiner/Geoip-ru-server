@@ -41,8 +41,8 @@ VPN_GATE_API = "https://www.vpngate.net/api/iphone/"
 VPNOBRATNO_LIST_URL = "https://vpnobratno.info/russia_server_list.html"
 VPNOBRATNO_HOST = "vpnobratno.info"
 VPNOBRATNO_PROFILE_RE = re.compile(
-    r"^/servers/(?P<hostname>vpn[0-9]+\\.opengw\\.net)/"
-    r"(?P=hostname)_(?P<address_mode>ddns|ip)_(?P<transport>udp|tcp)\\.ovpn$",
+    r"^/servers/(?P<hostname>vpn[0-9]+\.opengw\.net)/"
+    r"(?P=hostname)_(?P<address_mode>ddns|ip)_(?P<transport>udp|tcp)\.ovpn$",
     re.IGNORECASE,
 )
 VPNOBRATNO_VARIANT_ORDER = {
@@ -342,7 +342,7 @@ def inspect_openvpn_profile(config: str) -> dict[str, Any]:
     if not remotes or len(remotes[0]) < 3 or not protocols or len(protocols[0]) < 2:
         raise ValueError("OpenVPN profile has no usable remote/proto")
     remote_host = remotes[0][1].strip().rstrip(".").lower()
-    if not re.fullmatch(r"(?:[a-z0-9-]+\\.)*[a-z0-9-]+|(?:[0-9]{1,3}\\.){3}[0-9]{1,3}", remote_host):
+    if not re.fullmatch(r"(?:[a-z0-9-]+\.)*[a-z0-9-]+|(?:[0-9]{1,3}\.){3}[0-9]{1,3}", remote_host):
         raise ValueError("OpenVPN remote host is not a supported hostname or IPv4 literal")
     port = parse_int(remotes[0][2])
     if not 1 <= port <= 65535:
@@ -619,7 +619,7 @@ def resolve_vpnobratno_server_ip(
 ) -> str:
     """Pin a profile to a public IPv4 that belongs to its listed VPN Gate hostname."""
     expected = expected_hostname.rstrip(".").lower()
-    if not re.fullmatch(r"vpn[0-9]+\\.opengw\\.net", expected):
+    if not re.fullmatch(r"vpn[0-9]+\.opengw\.net", expected):
         raise ValueError("VPNObratno listing has an unsupported server hostname")
     if address_mode == "ddns":
         if remote_host.rstrip(".").lower() != expected:
