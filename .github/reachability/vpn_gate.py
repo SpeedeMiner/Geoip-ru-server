@@ -525,7 +525,7 @@ def wait_for_tunnel(
             raise ProbeError(f"OpenVPN exited early with code {process.returncode}")
         if log_path and log_path.exists():
             try:
-                tail = "\\n".join(log_path.read_text(encoding="utf-8", errors="replace").splitlines()[-30:])
+                tail = "\n".join(log_path.read_text(encoding="utf-8", errors="replace").splitlines()[-30:])
             except OSError:
                 tail = ""
             for marker in fatal_markers:
