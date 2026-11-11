@@ -44,24 +44,28 @@ RIPESTAT_NETWORK_INFO = "https://stat.ripe.net/data/network-info/data.json"
 USER_AGENT = "Geoip-ru-server-vpn-gate-validation/1.0"
 PROVIDER_FIELDS = [
     "SOURCE", "SERVER_HOSTNAME", "SERVER_IP", "SERVER_COUNTRY",
-    "SERVER_ASN", "SERVER_PREFIX", "SERVER_ORG", "SERVER_PTR",
+    "SERVER_ASN", "SERVER_ASN_IP_METADATA", "SERVER_ASN_RIPESTAT", "SERVER_ASN_CONFLICT",
+    "SERVER_PREFIX", "SERVER_ORG", "SERVER_PTR",
     "SERVER_GEOIP_CATEGORY", "SERVER_GEOIP_RU_PREFIX",
     "VPN_SCORE", "VPN_PING_MS", "VPN_SPEED_BPS", "VPN_SESSIONS",
     "VPN_UPTIME", "ERROR", "EXIT_IP", "EXIT_COUNTRY", "EXIT_ASN",
+    "EXIT_ASN_IP_METADATA", "EXIT_ASN_RIPESTAT", "EXIT_ASN_CONFLICT",
     "EXIT_PREFIX", "EXIT_ORG", "EXIT_GEOIP_CATEGORY",
     "EXIT_GEOIP_RU_PREFIX", "CONNECTION_RESULT", "TARGETS_TESTED",
 ]
 MEASUREMENT_FIELDS = [
     "SOURCE", "OBSERVED_AT", "SERVER_HOSTNAME", "SERVER_IP",
     "SERVER_ASN", "SERVER_ORG", "EXIT_IP", "EXIT_COUNTRY",
-    "EXIT_ASN", "EXIT_ORG", "EXIT_GEOIP_CATEGORY", "EXIT_GEOIP_RU_PREFIX",
+    "EXIT_ASN", "EXIT_ASN_IP_METADATA", "EXIT_ASN_RIPESTAT", "EXIT_ASN_CONFLICT",
+    "EXIT_ORG", "EXIT_GEOIP_CATEGORY", "EXIT_GEOIP_RU_PREFIX",
     "TARGET_ID", "TARGET_DOMAIN", "DNS_A_RESULT", "DNS_A_ADDRESSES",
     "DNS_A_RU_PREFIXES", "DNS_AAAA_RESULT", "DNS_AAAA_ADDRESSES",
     "DNS_AAAA_RU_PREFIXES", "HTTPS_RESULT", "HTTP_STATUS", "ERROR",
 ]
 CANDIDATE_FIELDS = [
     "CANDIDATE_TYPE", "SERVER_HOSTNAME", "SERVER_IP", "EXIT_IP",
-    "EXIT_COUNTRY", "EXIT_ASN", "EXIT_ORG", "GEOIP_CATEGORY",
+    "EXIT_COUNTRY", "EXIT_ASN", "EXIT_ASN_IP_METADATA", "EXIT_ASN_RIPESTAT",
+    "EXIT_ASN_CONFLICT", "EXIT_ORG", "GEOIP_CATEGORY",
     "MATCHED_RU_PREFIX", "REASON", "REVIEW_POLICY",
 ]
 
@@ -598,8 +602,15 @@ def run(args: argparse.Namespace) -> int:
         except ProbeError:
             server_meta = {"asn": 0, "org": ""}
         server_origin = server.pop("_network_info", None) or network_info(server_ip)
-        server_asn = server_meta["asn"] or server_origin["asn"]
+        server_asn_ip_meta = parse_int(server_meta.get("asn"))
+        server_asn_ripestat = parse_int(server_origin.get("asn"))
+        server_asn_conflict = bool(
+            server_asn_ip_meta and server_asn_ripestat
+            and server_asn_ip_meta != server_asn_ripestat
+        )
+        server_asn = server_asn_ripestat or server_asn_ip_meta
         server_meta["asn"] = server_asn
+
         server_meta["network_prefix"] = server_origin["prefix"]
         ptr = resolve_ptr(server_ip)
         provider = {
@@ -608,6 +619,9 @@ def run(args: argparse.Namespace) -> int:
             "SERVER_IP": server_ip,
             "SERVER_COUNTRY": server["country_long"],
             "SERVER_ASN": server_asn,
+            "SERVER_ASN_IP_METADATA": server_asn_ip_meta,
+            "SERVER_ASN_RIPESTAT": server_asn_ripestat,
+            "SERVER_ASN_CONFLICT": server_asn_conflict,
             "SERVER_PREFIX": server_origin["prefix"],
             "SERVER_ORG": server_meta["org"],
             "SERVER_PTR": ptr,
@@ -621,6 +635,9 @@ def run(args: argparse.Namespace) -> int:
             "EXIT_IP": "",
             "EXIT_COUNTRY": "",
             "EXIT_ASN": "",
+            "EXIT_ASN_IP_METADATA": "",
+            "EXIT_ASN_RIPESTAT": "",
+            "EXIT_ASN_CONFLICT": "",
             "EXIT_PREFIX": "",
             "EXIT_ORG": "",
             "EXIT_GEOIP_CATEGORY": "",
@@ -654,12 +671,41 @@ def run(args: argparse.Namespace) -> int:
                                 else:
                                     exit_origin = network_info(exit_info["ip"])
                                     exit_info["network_prefix"] = exit_origin["prefix"]
-                                    exit_info["asn"] = exit_info["asn"] or exit_origin["asn"]
+                                    exit_asn_ip_meta = parse_int(exit_info.get("asn"))
+                                    exit_asn_ripestat = parse_int(exit_origin.get("asn"))
+                                    exit_asn_conflict = bool(
+                                        exit_asn_ip_meta and exit_asn_ripestat
+                                        and exit_asn_ip_meta != exit_asn_ripestat
+                                    )
+                                    exit_info["asn_ip_metadata"] = exit_asn_ip_meta
+                                    exit_info["asn_ripestat"] = exit_asn_ripestat
+                                    exit_info["asn_conflict"] = exit_asn_conflict
+                                    exit_info["asn"] = exit_asn_ripestat or exit_asn_ip_meta
                                     exit_category, exit_prefix = runner.map_address(exit_info["ip"], networks)
+                                    if exit_asn_conflict:
+                                        candidates.append({
+                                            "CANDIDATE_TYPE": "ASN_CONFLICT",
+                                            "SERVER_HOSTNAME": server["hostname"],
+                                            "SERVER_IP": server_ip,
+                                            "EXIT_IP": exit_info["ip"],
+                                            "EXIT_COUNTRY": exit_info["country"],
+                                            "EXIT_ASN": exit_info["asn"],
+                                            "EXIT_ASN_IP_METADATA": exit_asn_ip_meta,
+                                            "EXIT_ASN_RIPESTAT": exit_asn_ripestat,
+                                            "EXIT_ASN_CONFLICT": True,
+                                            "EXIT_ORG": exit_info["org"],
+                                            "GEOIP_CATEGORY": exit_category,
+                                            "MATCHED_RU_PREFIX": exit_prefix,
+                                            "REASON": "IP metadata and RIPEstat report different origin ASNs for the VPN exit IP",
+                                            "REVIEW_POLICY": "REVIEW_ONLY_ORIGIN_CONFLICT_REQUIRES_ROUTE_REVIEW",
+                                        })
                                     provider.update({
                                         "EXIT_IP": exit_info["ip"],
                                         "EXIT_COUNTRY": exit_info["country"],
                                         "EXIT_ASN": exit_info["asn"],
+                                        "EXIT_ASN_IP_METADATA": exit_asn_ip_meta,
+                                        "EXIT_ASN_RIPESTAT": exit_asn_ripestat,
+                                        "EXIT_ASN_CONFLICT": exit_asn_conflict,
                                         "EXIT_PREFIX": exit_info["network_prefix"],
                                         "EXIT_ORG": exit_info["org"],
                                         "EXIT_GEOIP_CATEGORY": exit_category,
@@ -676,6 +722,9 @@ def run(args: argparse.Namespace) -> int:
                                             "EXIT_IP": exit_info["ip"],
                                             "EXIT_COUNTRY": exit_info["country"],
                                             "EXIT_ASN": exit_info["asn"],
+                                            "EXIT_ASN_IP_METADATA": exit_asn_ip_meta,
+                                            "EXIT_ASN_RIPESTAT": exit_asn_ripestat,
+                                            "EXIT_ASN_CONFLICT": exit_asn_conflict,
                                             "EXIT_ORG": exit_info["org"],
                                             "GEOIP_CATEGORY": exit_category,
                                             "MATCHED_RU_PREFIX": exit_prefix,
@@ -688,7 +737,13 @@ def run(args: argparse.Namespace) -> int:
                                             "SERVER_HOSTNAME": server["hostname"],
                                             "SERVER_IP": server_ip,
                                             "SERVER_ASN": server_asn,
+                                            "SERVER_ASN_IP_METADATA": server_asn_ip_meta,
+                                            "SERVER_ASN_RIPESTAT": server_asn_ripestat,
+                                            "SERVER_ASN_CONFLICT": server_asn_conflict,
                                             "SERVER_ORG": server_meta["org"],
+                                            "EXIT_ASN_IP_METADATA": exit_asn_ip_meta,
+                                            "EXIT_ASN_RIPESTAT": exit_asn_ripestat,
+                                            "EXIT_ASN_CONFLICT": exit_asn_conflict,
                                             "EXIT_GEOIP_CATEGORY": exit_category,
                                             "EXIT_GEOIP_RU_PREFIX": exit_prefix,
                                         })
