@@ -16,6 +16,10 @@ on:
       - ".github/scripts/test_build_priority_prefix_worklist.py"
       - ".github/scripts/build_priority_rpki_reconciliation.py"
       - ".github/scripts/test_build_priority_prefix_rpki_reconciliation.py"
+      - ".github/scripts/validate_geoip_source_catalog.py"
+      - ".github/scripts/test_build_geoip_source_prefix_catalog.py"
+      - "docs/GEOIP_RU_SOURCE_CATALOG_v1.tsv"
+      - "docs/GEOIP_RU_SOURCE_CATALOG_v1.md"
       - ".github/audits/priority_prefix_rpki_invalid_assessment_v37.tsv"
       - ".github/audits/priority_prefix_external_spot_checks_v37.tsv"
       - ".github/PROJECT_CHECKPOINTS.md"
@@ -53,9 +57,14 @@ jobs:
           .github/scripts/test_build_priority_prefix_worklist.py
           .github/scripts/build_priority_rpki_reconciliation.py
           .github/scripts/test_build_priority_prefix_rpki_reconciliation.py
+          .github/scripts/validate_geoip_source_catalog.py
+          .github/scripts/test_build_geoip_source_prefix_catalog.py
 
       - name: Run audit unit tests
         run: python3 -m unittest discover -s .github/scripts -p 'test_build_*prefix*.py' -v
+
+      - name: Validate versioned production GeoIP source catalog
+        run: python3 .github/scripts/validate_geoip_source_catalog.py
 
       - name: Validate v37 legal-evidence additions TSV
         run: |
