@@ -25,3 +25,19 @@
 - Не переносить BGP/RPKI status между parent и child prefix.
 - Нерешённые кандидаты сохранять REVIEW.
 - Любой merge в main запускает текущий production build/publish workflow, даже для docs-only PR.
+
+
+## CI blocker — run #148
+
+- PR #7: https://github.com/SpeedeMiner/Geoip-ru-server/pull/7 (open, Draft).
+- Validation: https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/42975245329 — failure at the priority-evidence collector.
+- Compile, unit tests, legal-evidence checks, immutable v37 input fetch, generation of company/full selected-origin queues and their quality-report validation all passed.
+- Queue counts: 3,169 company-origin prefixes and 23,564 selected-origin prefixes; all REVIEW.
+- ipverse snapshot SHA-256: fadde6a3997e55556c94509032b675dde06684f131e596b88c2910ab907b0f79 (16,268,123 bytes); release input commit d613c5f0ef482f2051cbc37a303b2ac30076d313.
+- Blocker: the audit script expects 56 priority prefixes (52 MOAS + 4 company-only), but the current snapshot yields 57 (53 MOAS + 4 company-only). Failure occurs before RDAP/RPKI queries; this is not an API/network failure.
+- The exact additional MOAS CIDR is not yet recovered from this failed run. Do not guess it or mechanically change the count to 57. No artifact was uploaded because the workflow failed before upload.
+
+## Resume from
+
+Reproduce priority selection using the exact release inputs and the SHA-256-verified ipverse snapshot above. Identify the extra exact prefix, compare it with the previous 56-row audit inventory, inspect each exact origin independently, and only then update scope constants/tests and any curated evidence expectations. Keep all new rows REVIEW. No production prefix, builder, company allowlist, DIRECT output or release change. Do not touch PR #5 or its branch.
+
