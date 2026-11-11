@@ -101,7 +101,7 @@ jobs:
             --output-dir reachability-output \
             --max-servers "${{ inputs.max_vpn_gate_servers || '1' }}" \
             --max-attempts "${{ inputs.max_vpn_gate_attempts || '6' }}" \
-            --connect-timeout 60 \
+            --connect-timeout 5 \
             --request-timeout 12
 
       - name: Upload VPN Gate reports
