@@ -1900,6 +1900,7 @@
     "interpretation": "This closes a discovered unbounded slow-drip DoH read path. It is not evidence that this defect caused Run #20's timeout overrun. Source-level review also found that the previous broad OSError fallback could catch the outer SIGALRM TimeoutError and continue to the next resolver. The new absolute deadline closes that specific timeout-propagation hole. The independent 7-minute process-guard / 9-minute step / 12-minute job overrun in Run #20 remains unexplained.",
     "validation_workflow_conclusion": "success",
     "workflow_duration_seconds": 10,
-    "outer_sigalrm_regression_test": "passed; simulates TimeoutError during read1, advances monotonic time beyond deadline, and verifies that doh_query does not try the next resolver."
+    "outer_sigalrm_regression_test": "passed; simulates TimeoutError during read1, advances monotonic time beyond deadline, and verifies that doh_query does not try the next resolver.",
+    "run20_relevance": "fetch_vpnobratto_bytes calls doh_query with a maximum four-second resolver timeout. Before this fix, doh_query used one inactivity-timeout response.read and caught the outer 20-second SIGALRM TimeoutError through its OSError fallback, potentially proceeding to another resolver without an absolute deadline. This is a plausible explanation for a profile fetch stalling at the last visible marker, but not proven because Run #20 terminal logs are unavailable; it does not explain the separate 7-minute GNU timeout and GitHub step/job timeout overrun."
   }
 }
