@@ -589,5 +589,20 @@ class VPNObratnoDiscoveryTests(unittest.TestCase):
             )
 
 
+class VPNGateDefaultArgumentsTests(unittest.TestCase):
+    def test_default_invocation_requests_one_ru_exit_and_six_profile_attempts(self):
+        import os
+        with patch.object(vpn_gate.sys, "argv", [
+            "vpn_gate.py", "--inventory", "inventory.tsv"
+        ]), patch.object(vpn_gate.shutil, "which", return_value="/usr/bin/fake"), \
+             patch.object(os, "geteuid", return_value=0), \
+             patch.object(vpn_gate, "run", return_value=0) as run:
+            self.assertEqual(vpn_gate.main(), 0)
+        args = run.call_args.args[0]
+        self.assertEqual(args.source, "vpnobratno")
+        self.assertEqual(args.max_servers, 1)
+        self.assertEqual(args.max_attempts, 6)
+
+
 if __name__ == "__main__":
     unittest.main()
