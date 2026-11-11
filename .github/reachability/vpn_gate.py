@@ -2077,7 +2077,7 @@ def run(args: argparse.Namespace) -> int:
 
     if args.source == "vpnobratno":
         print("[vpn-gate] phase=discovery source=vpnobratno started", flush=True)
-        progress_manifest = output / "vpnobratto_progress.json"
+        progress_manifest = output / "vpn_gate_vpnobratto_progress.json"
         servers, discovery_meta = discover_vpnobratno_servers(
             max_unique_hosts=args.max_attempts,
             progress_path=progress_manifest,
