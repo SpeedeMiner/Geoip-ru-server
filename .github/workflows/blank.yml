@@ -3405,8 +3405,8 @@ jobs:
               raise SystemExit("v38 manifest says geolocation was used as an admission gate")
           if safety.get("private_precedence_applied") is not True or safety.get("rkn_blocklist_applied") is not True:
               raise SystemExit("v38 policy safety flags are missing")
-          if safety.get("production_main_modified") is not False or safety.get("production_release_published") is not False:
-              raise SystemExit("feature-branch v38 must not modify/publish production")
+          if safety.get("this_builder_modifies_production_main") is not False or safety.get("this_builder_publishes_release") is not False or safety.get("release_workflow_is_main_only") is not True:
+              raise SystemExit("v38 overlay safety/production-publish boundary flags are invalid")
           countries = set()
           with rir_path.open(encoding="utf-8", newline="") as stream:
               for row in csv.DictReader(stream, delimiter=chr(9)):
