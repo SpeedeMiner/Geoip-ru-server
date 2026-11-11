@@ -673,15 +673,49 @@ def parse_vpnobratno_listing(html: str) -> list[dict[str, str]]:
     return ordered
 
 
-def _public_ipv4_answers(hostname: str, resolver: Any = socket.getaddrinfo) -> list[str]:
-    try:
-        records = resolver(hostname, None, socket.AF_INET, socket.SOCK_STREAM)
-    except OSError as exc:
-        raise ValueError(f"could not resolve VPNObratno server hostname {hostname}: {exc}") from exc
+def _public_ipv4_answers(
+    hostname: str,
+    resolver: Any | None = None,
+    timeout: float = 3.0,
+) -> list[str]:
+    """Resolve DDNS profiles with a hard subprocess timeout."""
+    if resolver is None:
+        try:
+            completed = subprocess.run(
+                ["getent", "ahostsv4", hostname],
+                capture_output=True,
+                text=True,
+                encoding="utf-8",
+                errors="replace",
+                check=False,
+                timeout=timeout,
+            )
+        except (OSError, subprocess.TimeoutExpired) as exc:
+            raise ValueError(
+                f"bounded DNS lookup failed for VPNObratno hostname {hostname}: {exc}"
+            ) from exc
+        if completed.returncode != 0:
+            raise ValueError(
+                f"bounded DNS lookup returned {completed.returncode} for VPNObratno hostname {hostname}"
+            )
+        records = []
+        for line in completed.stdout.splitlines():
+            fields = line.split()
+            if fields:
+                records.append(fields[0])
+    else:
+        try:
+            records = resolver(hostname, None, socket.AF_INET, socket.SOCK_STREAM)
+        except OSError as exc:
+            raise ValueError(
+                f"could not resolve VPNObratto server hostname {hostname}: {exc}"
+            ) from exc
+
     answers: list[str] = []
     for record in records:
         try:
-            address = ipaddress.ip_address(record[4][0])
+            candidate = record if isinstance(record, str) else record[4][0]
+            address = ipaddress.ip_address(candidate)
         except (IndexError, TypeError, ValueError):
             continue
         if address.version == 4 and address.is_global:
@@ -693,18 +727,18 @@ def resolve_vpnobratno_server_ip(
     expected_hostname: str,
     remote_host: str,
     address_mode: str,
-    resolver: Any = socket.getaddrinfo,
+    resolver: Any | None = None,
 ) -> str:
-    """Pin a profile to a public IPv4 that belongs to its listed VPN Gate hostname."""
+    """Return a listed server's public IPv4 without pre-tunnel DNS for IP variants."""
     expected = expected_hostname.rstrip(".").lower()
-    if not re.fullmatch(r"vpn[0-9]+\.opengw\.net", expected):
-        raise ValueError("VPNObratno listing has an unsupported server hostname")
+    if not re.fullmatch(r"vpn[0-9]+\\.opengw\\.net", expected):
+        raise ValueError("VPNObratto listing has an unsupported server hostname")
     if address_mode == "ddns":
         if remote_host.rstrip(".").lower() != expected:
             raise ValueError("DDNS profile remote does not match its listing hostname")
         answers = _public_ipv4_answers(expected, resolver)
         if not answers:
-            raise ValueError("VPNObratno DDNS hostname has no global IPv4 answer")
+            raise ValueError("VPNObratto DDNS hostname has no global IPv4 answer")
         return answers[0]
     if address_mode == "ip":
         try:
@@ -713,23 +747,26 @@ def resolve_vpnobratno_server_ip(
             raise ValueError("IP profile remote is not an IP literal") from exc
         if address.version != 4 or not address.is_global:
             raise ValueError("IP profile remote is not a global IPv4 address")
-        answers = _public_ipv4_answers(expected, resolver)
-        if str(address) not in answers:
-            raise ValueError("IP profile address does not match the listed hostname DNS")
+        # This IP literal is inside a profile downloaded from the exact
+        # same-origin URL whose path embeds the listed hostname. Avoid a
+        # second resolver call in the pre-tunnel critical path.
         return str(address)
-    raise ValueError("unsupported VPNObratno address mode")
+    raise ValueError("unsupported VPNObratto address mode")
 
 
 def discover_vpnobratno_servers(
     fetcher: Any = fetch_vpnobratno_bytes,
-    resolver: Any = socket.getaddrinfo,
+    resolver: Any | None = None,
     max_profiles: int = VPNOBRATNO_PROFILE_DOWNLOAD_LIMIT,
+    max_unique_hosts: int = 6,
 ) -> tuple[list[dict[str, Any]], dict[str, Any]]:
-    """Download a bounded, diversity-friendly sample of listed profiles."""
+    """Download until enough distinct listed server hostnames have usable profiles."""
     if not 1 <= max_profiles <= VPNOBRATNO_PROFILE_DOWNLOAD_LIMIT:
         raise ValueError(
             f"max_profiles must be between 1 and {VPNOBRATNO_PROFILE_DOWNLOAD_LIMIT}"
         )
+    if not 1 <= max_unique_hosts <= 6:
+        raise ValueError("max_unique_hosts must be between 1 and 6")
     print("[vpn-gate] phase=profile_listing started", flush=True)
     page = fetcher(
         VPNOBRATNO_LIST_URL, timeout=40, max_bytes=VPNOBRATNO_LISTING_MAX_BYTES
@@ -737,7 +774,7 @@ def discover_vpnobratno_servers(
     listed = parse_vpnobratno_listing(page)
     print(
         f"[vpn-gate] phase=profile_listing completed links={len(listed)} "
-        f"download_cap={max_profiles}",
+        f"download_cap={max_profiles} host_target={max_unique_hosts}",
         flush=True,
     )
     if not listed:
@@ -745,7 +782,11 @@ def discover_vpnobratno_servers(
     selected_profiles = listed[:max_profiles]
     servers: list[dict[str, Any]] = []
     skipped = collections.Counter()
+    profiles_inspected = 0
+    unique_hosts: set[str] = set()
+    stop_reason = "all_selected_profiles_inspected"
     for profile_index, entry in enumerate(selected_profiles, start=1):
+        profiles_inspected = profile_index
         print(
             f"[vpn-gate] profile_download={profile_index}/{len(selected_profiles)} "
             f"host={entry['hostname']} variant={entry['profile_variant']}",
@@ -768,6 +809,11 @@ def discover_vpnobratno_servers(
             servers.append({
                 "hostname": entry["hostname"],
                 "server_ip": server_ip,
+                "server_ip_resolution": (
+                    "profile_literal_same_origin_no_dns"
+                    if entry["address_mode"] == "ip"
+                    else "bounded_getent_ahostsv4"
+                ),
                 "country_long": "Russian Federation (VPNObratno listing)",
                 "country_short": "RU",
                 "score": 0,
@@ -781,11 +827,23 @@ def discover_vpnobratno_servers(
                 "profile_variant": entry["profile_variant"].upper(),
                 "profile_url": entry["profile_url"],
             })
+            unique_hosts.add(entry["hostname"].rstrip(".").lower())
             print(
                 f"[vpn-gate] profile_download_result={profile_index}/{len(selected_profiles)} "
-                f"host={entry['hostname']} result=usable",
+                f"host={entry['hostname']} result=usable "
+                f"unique_hosts={len(unique_hosts)}",
                 flush=True,
             )
+            if len(unique_hosts) >= max_unique_hosts:
+                stop_reason = "distinct_server_host_budget_reached"
+                print(
+                    f"[vpn-gate] profile_discovery_early_stop "
+                    f"reason={stop_reason} profiles_inspected={profile_index} "
+                    f"unique_server_hosts={len(unique_hosts)} "
+                    f"attempt_budget={max_unique_hosts}",
+                    flush=True,
+                )
+                break
         except (OSError, ProbeError, UnicodeDecodeError, ValueError) as exc:
             skipped[type(exc).__name__ + ": " + str(exc)[:120]] += 1
             print(
@@ -795,18 +853,26 @@ def discover_vpnobratno_servers(
             )
     if not servers:
         raise ProbeError(
-            "VPNObratno listed profiles were found, but none passed validation; "
+            "VPNObratto listed profiles were found, but none passed validation; "
             + json.dumps(dict(skipped), ensure_ascii=False, sort_keys=True)
         )
     meta = {
         "listing_url": VPNOBRATNO_LIST_URL,
         "profile_links_found": len(listed),
         "profile_download_limit": max_profiles,
-        "profiles_considered_for_download": len(selected_profiles),
-        "profiles_not_downloaded_due_to_limit": max(0, len(listed) - len(selected_profiles)),
-        "profile_download_limit_reached": len(listed) > max_profiles,
+        "profiles_considered_for_download": profiles_inspected,
+        "profiles_not_downloaded_due_to_limit": max(0, len(listed) - profiles_inspected),
+        "profile_download_limit_reached": (
+            profiles_inspected >= max_profiles and len(listed) > profiles_inspected
+        ),
+        "discovery_stop_reason": stop_reason,
+        "unique_server_host_target": max_unique_hosts,
         "usable_profiles": len(servers),
-        "unique_server_hostnames": len({server["hostname"] for server in servers}),
+        "unique_server_hostnames": len(unique_hosts),
+        "server_ip_resolution": {
+            "ip_variant": "profile literal from exact same-origin listing path; no DNS lookup",
+            "ddns_variant": "getent ahostsv4 in subprocess with 3s hard timeout",
+        },
         "profile_variants": dict(collections.Counter(
             server["profile_variant"] for server in servers
         )),
@@ -1213,7 +1279,9 @@ def run(args: argparse.Namespace) -> int:
 
     if args.source == "vpnobratno":
         print("[vpn-gate] phase=discovery source=vpnobratno started", flush=True)
-        servers, discovery_meta = discover_vpnobratno_servers()
+        servers, discovery_meta = discover_vpnobratno_servers(
+            max_unique_hosts=args.max_attempts
+        )
         discovery_source = "vpnobratno.info Russian server list and linked OpenVPN profiles"
         raw_rows: list[dict[str, Any]] = [{
             "source": "vpnobratno_profile_discovery",
