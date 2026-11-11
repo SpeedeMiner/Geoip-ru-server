@@ -227,6 +227,11 @@ jobs:
           PY
           )
 
+          if [[ "$snapshot_commit" != "2cc76341e26fbab3009196146c71648480c40e55" ]]; then
+            echo "::error::Unexpected pinned ipverse commit: $snapshot_commit"
+            exit 1
+          fi
+
           curl --fail --location --silent --show-error \
             --retry 3 --retry-all-errors --connect-timeout 15 --max-time 600 \
             "$snapshot_url" -o as-ip-blocks.tar.gz
@@ -250,8 +255,6 @@ jobs:
           # Verify the immutable commit archive by tar integrity and the aggregate
           # file count recorded in the v37 build report instead.
           pinned_commit = "2cc76341e26fbab3009196146c71648480c40e55"
-          if pinned_commit != snapshot_commit:
-              raise SystemExit("Pinned ipverse commit differs from selected download URL")
           try:
               with tarfile.open("as-ip-blocks.tar.gz", mode="r:gz") as tar:
                   members = tar.getmembers()
