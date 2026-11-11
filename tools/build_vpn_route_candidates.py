@@ -143,7 +143,7 @@ def fields(data: bytes):
         elif wire == 5:
             value = data[offset:offset+4]; offset += 4
         else: raise ValueError("unsupported protobuf wire")
-        if len(value) == 0 and wire in (1,2,5): raise ValueError("truncated protobuf value")
+        if wire in (1,2,5) and len(value) == 0: raise ValueError("truncated protobuf value")
         yield number, wire, value
 
 def parse_geoip(data: bytes):
