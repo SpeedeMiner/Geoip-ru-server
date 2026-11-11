@@ -1,14 +1,14 @@
 {
   "schema_version": 1,
-  "updated_at_utc": "2026-11-11T12:24:55Z",
+  "updated_at_utc": "2026-11-11T12:26:10Z",
   "repository": "SpeedeMiner/Geoip-ru-server",
   "pull_request": 5,
   "pull_request_url": "https://github.com/SpeedeMiner/Geoip-ru-server/pull/5",
   "branch": "feature/reachability-full-ru-kz-by",
-  "recorded_pr_head_before_checkpoint_commit": "6fd95321be3f43f236812470f02fa2f3df279450",
+  "recorded_pr_head_before_checkpoint_commit": "37e2a3ea55ca61739649b37f1c2e32eae2cc6b65",
   "base_sha": "a68e5d6589361814cb1cfedd2af7857e4af806fa",
-  "state": "VPNOBRATTO_RUN_11_CANCELLED_AT_ORIGIN_ASN_SCAN_EARLY_STOP_FIX_CI_PENDING",
-  "current_phase": "WAIT_FOR_CI_43020108512_THEN_RUN_12",
+  "state": "VPNOBRATTO_RUN_11_CANCELLED_EARLY_STOP_AND_COUNTER_FIX_CI_SUCCESS_114_TESTS",
+  "current_phase": "CONFIRM_NO_ACTIVE_VPN_RUN_THEN_DISPATCH_RUN_12",
   "completed": [
     "repository_reconnaissance",
     "protobuf_inventory_exporter",
@@ -402,12 +402,11 @@
     "production_release_artifact_byte_delta_verified": false
   },
   "next_steps": [
-    "Require CI run #43020108512 to pass on test commit 6fd95321be3f43f236812470f02fa2f3df279450.",
-    "Confirm run #43016153615 remains terminal cancelled and no VPN reachability workflow run is active.",
-    "Dispatch exactly one manual VPNObratto pilot from the current feature-branch tip: one verified RU exit, maximum six connection attempts, five-second route wait.",
-    "Verify origin ASN selection stops as soon as six distinct ASNs are found (expected within first eight candidate records in the prior log) and emits origin_asn_selection_early_stop plus phase completion.",
-    "Verify OpenVPN actually starts; capture route result and two-source exact exit IPv4/RU consensus; then persist and reconcile per-target DNS/HTTPS report rows and artifact digest.",
-    "Do not infer residential/home ISP classification from volunteer VPN exits. Keep PR #5 OPEN / DRAFT; do not touch PR #6, production GeoIP or release outputs."
+    "Confirm no active run of reachability-vpn-gate.yml before dispatch.",
+    "Dispatch exactly one manual VPNObratto pilot from the current feature-branch tip, requesting one verified RU exit and up to six connection attempts.",
+    "Verify live logs show origin_asn_selection_early_stop as soon as six distinct ASNs are observed (based on run #11 results, expected after candidate 8/24), followed by exactly six selected candidates and phase completion.",
+    "Verify an OpenVPN process starts and capture route result, independent public exit IPv4/country consensus, and target DNS/HTTPS measurements.",
+    "After termination, download artifact and verify SHA-256 and every measurement/summary row. Do not infer residential/home ISP classification from volunteer VPN exits."
   ],
   "ci_policy": {
     "push_validation_paths": [
@@ -445,18 +444,18 @@
     "vpn_gate_manual_dispatch_requires_default_branch_workflow": true
   },
   "pending_validation": {
-    "commit": "6fd95321be3f43f236812470f02fa2f3df279450",
+    "commit": "ffe2ab13fbeb8f61330ff09ed0fea34a9c69252c",
     "workflow": "Reachability validation",
-    "run_id": 43020108512,
-    "run_url": "https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43020108512",
-    "status": "QUEUED",
-    "expected_python_test_count": 114,
+    "run_id": 43020242265,
+    "run_url": "https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43020242265",
+    "status": "SUCCESS",
+    "verified_python_test_count": 114,
     "go_checks": [
       "gofmt",
       "go test ./...",
       "go build"
     ],
-    "note": "Added tests for early stop when max_attempts distinct verified ASNs have been found and for continuing when the ASN budget is not yet met."
+    "note": "Full logs confirm 114 Python tests, py_compile/JSON validation, gofmt, Go tests and build. The preceding run #43020108512 failed only because candidate_servers_inspected reported the full input length after early stop; corrected and revalidated."
   },
   "vpn_gate_measurement": {
     "source": "VPNObratno linked OpenVPN profiles (default); official VPN Gate CSV API remains selectable fallback",
@@ -1240,20 +1239,22 @@
     "interpretation": "No verified RU tunnel and no target requests. The two 5-second failures are VPN relay connection outcomes, not target-site blocking evidence."
   },
   "latest_validation": {
-    "run_id": 43015247219,
-    "run_url": "https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43015247219",
-    "commit": "069bbee351f2b6f2b3dcc2adf7b1c3806d8ca224",
+    "run_id": 43020242265,
+    "run_url": "https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43020242265",
+    "commit": "ffe2ab13fbeb8f61330ff09ed0fea34a9c69252c",
     "status": "SUCCESS",
-    "python_tests": 112,
+    "python_tests": 114,
     "python_status": "PASS",
     "python_compile_and_json": "PASS",
     "gofmt": "PASS",
     "go_test": "PASS",
     "go_build": "PASS",
     "features_validated": [
-      "selection_only_RIPEstat_lookup_with_ipv4_curl_7s_subprocess_guard",
-      "nonblocking_ASN_lookup_failure",
-      "per_candidate_ASN_result_markers"
+      "selection_only_RIPEstat_ipv4_curl_lookup_outer_7s_timeout",
+      "selector_early_stops_when_attempt_budget_distinct_verified_ASNs_reached",
+      "origin_asn_selection_early_stop_progress_marker",
+      "candidate_servers_inspected_counts_only_records_actually_scanned",
+      "tests_for_early_stop_and_insufficient_ASN_fallback"
     ]
   },
   "run9_result": {
@@ -1435,7 +1436,13 @@
     "behavior": "Stop scanning once distinct verified origin ASNs reaches max_attempts; emit origin_asn_selection_early_stop before fallback ordering.",
     "expected_lookup_count_in_run11_first8_pattern": 8,
     "tests_added": 2,
-    "validation_run_id": 43020108512,
-    "validation_status": "QUEUED"
+    "validation_run_id": 43020242265,
+    "validation_status": "SUCCESS",
+    "metric_correction": {
+      "commit": "ffe2ab13fbeb8f61330ff09ed0fea34a9c69252c",
+      "issue": "candidate_servers_inspected initially returned len(candidates), even when selector stopped early",
+      "correction": "increment candidate_servers_inspected for each iterated server and return the actual count",
+      "validation_status": "PASS"
+    }
   }
 }
