@@ -991,3 +991,38 @@ Durable resume point for PR #5. After any conversation/network interruption, rea
 - No verified VPN exit, OpenVPN connection, or target measurement was produced by Run #21; do not infer target blocking.
 - PR #5 remains OPEN / DRAFT. No production GeoIP builder/data, DIRECT policy, ASN allowlists, main, release, PR #6 or other branches were modified.
 - Next: verify CI for the manifest-name follow-up commit 196cf4c...; inspect the full diff and workflow status; only after green validation should a single bounded manual pilot be considered. Do not auto-rerun or overlap VPN workflows.
+
+
+### 2026-11-11 — Isolated VPNObratto fetch supervisor hardened and fully CI-validated — GREEN
+
+#### Follow-up fixes after the first worker implementation
+
+- Run #207 initially failed exactly one new test because the synthetic crash callback used positional parameter names, while the production worker correctly invokes fetchers with named `timeout=` and `max_bytes=` keyword arguments. This was a test-fixture signature error, not a production fetch or worker failure.
+- Fixed the helper to accept the named arguments and deliberately execute `os._exit(17)`. The regression then exercises an early child exit with no result envelope.
+- Hardened the worker supervisor's finalizer: `multiprocessing.Process.close()` is now called only after the child is confirmed not alive. If a worker remains alive even after the final TERM/KILL attempts, the finalizer emits `profile_fetch_worker_cleanup_unconfirmed` rather than allowing `Process.close()` to raise and mask the original timeout/cleanup diagnostic.
+- Added an explicit early-exit outcome (`worker_failed_without_result`) distinct from `worker_timeout`. The parent detects EOF / a worker that exits without a message before the wall deadline, records the reason and exit code, and raises a bounded `ProbeError`; it no longer labels this case as a timeout.
+- The outer 20-second worker deadline and inner network timeout remain separate: 15 seconds for listing, 12 seconds for an individual profile. The worker continues to enforce its own pinned-DoH/HTTPS deadlines and body-size cap.
+
+#### Validation history for the worker series
+
+- [Run #204](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43070544887), job `130696904710`, commit `f50f32c3338526a3aaec20d71f8daefdff1454b3`: SUCCESS; 126 Python tests; hosted watchdog preflight; Go formatting, `go test ./...` and `go build` passed.
+- [Run #205](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43070661123), job `130697325802`, commit `196cf4c3dbdf713b750bfd4f73b75a26e4fc7a4b`: SUCCESS; 126 Python tests plus all Go checks. This validated the manifest filename matching the existing artifact glob.
+- [Run #207](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43070953538), job `130698404810`, commit `ecb2c1f0c9e2bc122594cc003432e3e307a84dde`: FAILURE in one new early-crash regression test because its test callback did not accept the worker's named timeout/max_bytes arguments. The other 126 tests passed. The fixture was corrected immediately; no production-path failure was reported.
+- [Run #208](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43071136044), job `130698992788`, commit `e9c2977fb9dd183e8600c62b785fa3154879da03`: SUCCESS; **127 Python tests** passed, including the early worker-crash classification test; hosted watchdog preflight and all Go checks passed.
+- [Run #209](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43071264599), job `130699445722`, final code commit `c49dece293541d46b6af14282b382459164315d7`: SUCCESS; **127 Python tests** passed in 0.921s, including:
+  - production discovery dispatches the default VPNObratto fetcher through a worker;
+  - successful worker returns bytes and atomically records its manifest;
+  - TERM-resistant worker receives KILL and is reaped; the test verifies its PID no longer exists and manifest records TERM/KILL/exit code;
+  - worker early exit (synthetic exit code 17) is recorded as `worker_failed_without_result`, distinct from a deadline timeout.
+  - hosted `ubuntu-24.04` process-group watchdog preflight passed;
+  - `gofmt`, `go test ./...` and `go build` passed.
+- Run #209 tested the exact current code HEAD `c49dece293541d46b6af14282b382459164315d7`. No new VPN workflow was dispatched.
+
+#### Operator documentation and next state
+
+- Updated `.github/reachability/README.md` in commit `863f0c5251cbab17a85ac150735dff7f37fcdd30` to describe the true 7-minute GNU process guard + 5-second KILL grace, 9-minute measurement step and 12-minute job ceiling; the separate worker/network deadlines; the marker/manifest path; and test coverage.
+- The generated manifest path is `reachability-output/vpn_gate_vpnobratto_progress.json` and matches the existing artifact upload path glob. It contains profile identifiers and timing/event metadata only, not downloaded profile bytes or key material.
+- Latest code CI is green on Run #209. The subsequent README/worklog/checkpoint/resume changes are documentation-only; they do not dispatch a VPN workflow.
+- PR #5 remains OPEN / DRAFT. Run #21 is still the last measurement attempt and remains terminal completed/cancelled due to GitHub's maximum 12-minute job time, with no terminal log archive or artifact. The precise inner stall cause is not proven.
+- No new VPN pilot was started in this session. After recovery-file updates are saved, the next step can be one bounded manual VPNObratto pilot on the validated worker version (one verified RU exit requested, maximum six profile attempts) only after confirming there is no active VPN run. Do not infer residential household access from a RU exit, ASN or organization.
+- No production GeoIP builder/data, DIRECT policy, ASN allowlists, `main`, `release`, PR #6 or other branches were changed.
