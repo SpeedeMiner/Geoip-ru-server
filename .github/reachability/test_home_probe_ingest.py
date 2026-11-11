@@ -161,7 +161,7 @@ class HomeProbeIngestTests(unittest.TestCase):
         self.assertEqual(result["source_geoip_category"], "OUTSIDE_GEOIP_RU")
         self.assertEqual(result["source_candidate_count"], 0)
         with (self.output / "home_probe_candidates.tsv").open(encoding="utf-8") as stream:
-            rows = list(csv.DictReader(stream, delimiter="\\t"))
+            rows = list(csv.DictReader(stream, delimiter="\t"))
         self.assertEqual(rows, [])
 
     def test_unverified_source_metadata_is_rejected(self):
@@ -232,7 +232,7 @@ class HomeProbeIngestTests(unittest.TestCase):
         row["https_ipv4_result"] = "NOT_TESTED"
         row["https_ipv4_tested_address"] = ""
         row["https_ipv4_status"] = None
-        (self.report / "home_probe_measurements.jsonl").write_text(json.dumps(row) + "\\n", encoding="utf-8")
+        (self.report / "home_probe_measurements.jsonl").write_text(json.dumps(row) + "\n", encoding="utf-8")
         with self.assertRaisesRegex(home_probe_ingest.ImportError, "must have a corresponding HTTPS attempt"):
             home_probe_ingest.ingest_report(self.args())
 
@@ -242,7 +242,7 @@ class HomeProbeIngestTests(unittest.TestCase):
         row["dns_ipv4_addresses"] = []
         row["https_ipv4_result"] = "HTTP_RESPONSE"
         row["https_ipv4_tested_address"] = "8.8.8.8"
-        (self.report / "home_probe_measurements.jsonl").write_text(json.dumps(row) + "\\n", encoding="utf-8")
+        (self.report / "home_probe_measurements.jsonl").write_text(json.dumps(row) + "\n", encoding="utf-8")
         with self.assertRaisesRegex(home_probe_ingest.ImportError, "HTTPS must be NOT_TESTED"):
             home_probe_ingest.ingest_report(self.args())
 
