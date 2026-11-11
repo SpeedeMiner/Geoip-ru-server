@@ -125,15 +125,23 @@ class PinnedHTTPSConnection(http.client.HTTPSConnection):
 
 
 def doh_query(domain: str, record_type: str, timeout: int = 10) -> list[str]:
-    """Resolve one RR type over HTTPS to a pinned public DoH resolver, without system DNS."""
+    """Resolve one RR type over pinned HTTPS under one absolute wall-clock deadline."""
     qtype = record_type.upper()
     if qtype not in {"A", "AAAA"}:
         raise ValueError("DoH record type must be A or AAAA")
+    if isinstance(timeout, bool) or not isinstance(timeout, (int, float)) or timeout <= 0:
+        raise ValueError("DoH timeout must be positive")
+    deadline = time.monotonic() + timeout
     errors: list[str] = []
     for host, address, provider in DOH_RESOLVERS:
+        remaining = deadline - time.monotonic()
+        if remaining <= 0:
+            break
         connection = None
         try:
-            connection = PinnedHTTPSConnection(host, address, timeout=timeout)
+            connection = PinnedHTTPSConnection(
+                host, address, timeout=max(0.1, remaining)
+            )
             if provider == "cloudflare":
                 path = "/dns-query?" + urllib.parse.urlencode({"name": domain, "type": qtype})
                 headers = {"Accept": "application/dns-json", "User-Agent": USER_AGENT}
@@ -141,10 +149,36 @@ def doh_query(domain: str, record_type: str, timeout: int = 10) -> list[str]:
                 path = "/resolve?" + urllib.parse.urlencode({"name": domain, "type": qtype})
                 headers = {"Accept": "application/dns-json", "User-Agent": USER_AGENT}
             connection.request("GET", path, headers=headers)
+            remaining = deadline - time.monotonic()
+            if remaining <= 0:
+                raise TimeoutError("pinned DoH request exceeded its wall-clock deadline")
+            if connection.sock is None:
+                raise ProbeError("pinned DoH HTTPS socket was not created")
+            connection.sock.settimeout(remaining)
             response = connection.getresponse()
-            payload = response.read(1_000_000)
             if response.status != 200:
                 raise ProbeError(f"{provider} DoH returned HTTP {response.status}")
+            payload = bytearray()
+            while len(payload) <= 1_000_000:
+                remaining = deadline - time.monotonic()
+                if remaining <= 0:
+                    raise TimeoutError("pinned DoH response exceeded its wall-clock deadline")
+                # getresponse() transfers socket ownership to HTTPResponse.
+                # Refresh the remaining absolute budget before every read so
+                # a slow-drip DNS response cannot extend the total deadline.
+                response_socket = getattr(
+                    getattr(getattr(response, "fp", None), "raw", None),
+                    "_sock",
+                    None,
+                )
+                if response_socket is not None:
+                    response_socket.settimeout(remaining)
+                chunk = response.read1(min(4096, 1_000_001 - len(payload)))
+                if not chunk:
+                    break
+                payload.extend(chunk)
+            if len(payload) > 1_000_000:
+                raise ProbeError("pinned DoH response exceeds 1000000 bytes")
             result = json.loads(payload.decode("utf-8"))
             if parse_int(result.get("Status"), -1) != 0:
                 raise ProbeError(f"{provider} DoH DNS status {result.get('Status')}")
