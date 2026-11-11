@@ -18,6 +18,19 @@ class GeoIPV38OverlayTests(unittest.TestCase):
             path.write_bytes(build.encode_geoip(entries))
             self.assertEqual(build.parse_geoip_dat(path), {"RU":set(build.collapse(entries["RU"])),"PRIVATE":set(build.collapse(entries["PRIVATE"]))})
 
+    def test_indexed_single_range_interval_intersection_and_subtraction(self):
+        values = [(0, 9), (20, 30), (40, 50)]
+        self.assertEqual(
+            build.intersect_one_range(8, 25, values),
+            [(8, 9), (20, 25)],
+        )
+        self.assertEqual(
+            build.subtract_one_range(5, 45, values),
+            [(10, 19), (31, 39)],
+        )
+        self.assertEqual(build.intersect_one_range(60, 70, values), [])
+        self.assertEqual(build.subtract_one_range(5, 45, [(0, 100)]), [])
+
     def test_interval_subtraction_and_intersection(self):
         a=build.intervals([ipaddress.ip_network("198.51.100.0/24")],4)
         b=build.intervals([ipaddress.ip_network("198.51.100.0/25")],4)
