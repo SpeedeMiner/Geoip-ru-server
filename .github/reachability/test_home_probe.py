@@ -195,6 +195,12 @@ class HomeProbeSafetyTests(unittest.TestCase):
             "asn_candidates": [12345], "organizations": ["Example ISP"],
         }
         with tempfile.TemporaryDirectory() as directory:
+            args.targets = str(pathlib.Path(directory) / "targets.json")
+            pathlib.Path(args.targets).write_text(json.dumps({
+                "schema_version": 1,
+                "countries": ["RU", "KZ", "BY"],
+                "targets": [TARGET],
+            }), encoding="utf-8")
             args.output_dir = str(pathlib.Path(directory) / "out")
             with patch.object(home_probe, "source_metadata", return_value=attribution):
                 with patch.object(home_probe, "measure_target") as measure:
@@ -213,6 +219,12 @@ class HomeProbeSafetyTests(unittest.TestCase):
             output_dir="out", required_country="RU", max_targets=None, timeout=5,
         )
         with tempfile.TemporaryDirectory() as directory:
+            args.targets = str(pathlib.Path(directory) / "targets.json")
+            pathlib.Path(args.targets).write_text(json.dumps({
+                "schema_version": 1,
+                "countries": ["RU", "KZ", "BY"],
+                "targets": [TARGET],
+            }), encoding="utf-8")
             args.output_dir = str(pathlib.Path(directory) / "out")
             pathlib.Path(args.output_dir).mkdir()
             (pathlib.Path(args.output_dir) / "existing.txt").write_text("keep", encoding="utf-8")
