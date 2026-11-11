@@ -433,8 +433,8 @@ def main():
         residual_prefix_rows,
     )
     (out/"candidate_new_after_private_blocked.txt").write_text(
-        "# REVIEW ONLY. Candidate address space outside v37 RU, PRIVATE and approved blocked exclusions.\\n"
-        + "".join(str(n)+"\\n" for n in new_after_policy),
+        "# REVIEW ONLY. Candidate address space outside v37 RU, PRIVATE and approved blocked exclusions.\n"
+        + "".join(str(n)+"\n" for n in new_after_policy),
         encoding="utf-8",
     )
     manifest={
