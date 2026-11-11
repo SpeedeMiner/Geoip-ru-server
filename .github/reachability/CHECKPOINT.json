@@ -1,14 +1,14 @@
 {
   "schema_version": 1,
-  "updated_at_utc": "2026-11-11T18:10:06Z",
+  "updated_at_utc": "2026-11-11T18:10:30Z",
   "repository": "SpeedeMiner/Geoip-ru-server",
   "pull_request": 5,
   "pull_request_url": "https://github.com/SpeedeMiner/Geoip-ru-server/pull/5",
   "branch": "feature/reachability-full-ru-kz-by",
-  "recorded_pr_head_before_checkpoint_commit": "77dc41587d70f5ff5cb0f347ec91796394ab600f",
+  "recorded_pr_head_before_checkpoint_commit": "7d040d697387b16afbb9d15db75698f8f50d1f05",
   "base_sha": "a68e5d6589361814cb1cfedd2af7857e4af806fa",
-  "state": "RUN22_COMPLETED_CANCELLED_BY_GITHUB_MAX_12M_JOB_EXECUTION_TIME; NO_TERMINAL_LOGS_OR_ARTIFACT; MANIFEST_FSYNC_LEADING_UNPROVEN_HYPOTHESIS; FIX_VALIDATED_RUN211",
-  "current_phase": "RUN22_TERMINAL_TIMEOUT_CONFIRMED; PROFILE6_LAST_VISIBLE_BODY_READ_3830; PER_EVENT_FSYNC_REMOVED_AND_CI_GREEN",
+  "state": "RUN22_TERMINAL_COMPLETED_CANCELLED_BY_GITHUB_MAX_12M; TERMINAL_LOGS_AND_ARTIFACT_MISSING; MANIFEST_FSYNC_HYPOTHESIS_MITIGATED_AND_RUN211_CI_GREEN",
+  "current_phase": "RUN22_POSTMORTEM_RECORDED; NO_PER_EVENT_FSYNC_FIX_VALIDATED; READY_FOR_NEXT_BOUNDED_MANUAL_LIVE_PILOT",
   "completed": [
     "repository_reconnaissance",
     "protobuf_inventory_exporter",
@@ -467,13 +467,14 @@
     "production_release_artifact_byte_delta_verified": false
   },
   "next_steps": [
-    "Run #22 (43072239130 / job 130702892228) is terminal completed/cancelled because GitHub enforced the 12-minute job execution ceiling. The annotation explicitly says maximum execution time 12m0s. No terminal job logs or artifact are available; step summary is stale/inconsistent.",
-    "Five VPNObratno profiles fully downloaded and validated. Profile 6 completed DoH, pinned TCP, TLS and HTTP 200 and has partial body evidence to 3,830 bytes only. No OpenVPN attempt, tunnel route, verified RU exit or target measurements were confirmed.",
-    "Leading unproven code-level hypothesis: last visible body_read_completed marker is printed before record_vpnobratno_progress, whose old checkout then called fsync for every phase event. A blocking per-event fsync may have stalled the worker and possibly the parent's timeout-manifest write. This is not proven because Run #22 has no terminal logs/artifact.",
-    "Mitigation already landed on the current branch: code commit d15de0f6c879e5b3f692bbdbb15d725f12c0785b removes per-event fsync but keeps flush and atomic os.replace; adds explicit parent_mkdir/read/temp_write/atomic_replace markers.",
-    "Regression commit d9f2fff136fdc919730b99bf43c810f0ff23d96d adds a no-fsync atomic manifest test. CI Run #211 / job 130710450443 completed SUCCESS: 128 Python tests, hosted ubuntu-24.04 GNU timeout process-tree preflight, Go formatting/tests/build passed.",
-    "A fresh manual VPNObratto pilot against the current branch is still required to validate the fix in a live run. Before running it, confirm the branch head and no active/queued VPN workflow, and use one requested verified RU exit with maximum six profile attempts. Inspect all progress_manifest operation markers and the uploaded manifest.",
-    "Do not infer target blocking from a timeout or missing output. Keep PR #5 OPEN/DRAFT and preserve production GeoIP data/builders, DIRECT policy, ASN allowlists, main/release and PR #6."
+    "Run #22 (43072239130 / job 130702892228) is terminal completed/cancelled; owner annotation confirms GitHub max execution time 12m0s. Job completed at 18:08:58Z; run updated 18:08:59Z. Post-terminal log fetch returned BlobNotFound; no artifacts. Step summaries still incorrectly show measurement step 7 in_progress and upload/failure steps pending.",
+    "Evidence from supplied log: listing HTTP 200 / 23,641 bytes / 35 links; profiles 1–5 fully downloaded and validated; profile 6 completed DoH, TCP, TLS and HTTP 200 but only partial response-body evidence to 3,830 bytes. No OpenVPN attempt, route, verified RU exit or target measurements confirmed.",
+    "Leading but unproven source-level hypothesis: the last body_read_completed marker is printed/flushed before record_vpnobratno_progress; in Run #22 checkout that manifest write then called stream.flush, os.fsync and os.replace. Per-event fsync could have blocked the worker and possibly the parent's timeout-manifest write. No terminal logs/artifact exist, so do not claim root cause proven.",
+    "Mitigation code d15de0f6c879e5b3f692bbdbb15d725f12c0785b removes per-phase fsync but retains temporary-file flush and same-directory atomic os.replace; it adds progress_manifest markers around parent mkdir, manifest read, temporary write and atomic replace.",
+    "Regression test d9f2fff136fdc919730b99bf43c810f0ff23d96d passed in CI Run #211 / job 130710450443: 128 Python tests in 0.883 seconds including test_progress_manifest_uses_atomic_replace_without_per_event_fsync; hosted ubuntu-24.04 GNU timeout process-tree preflight, Go formatting, go test ./... and go build also passed.",
+    "Run #22 used the old checkout 447bdf... and did not contain the no-fsync mitigation. It is not evidence that the updated code failed.",
+    "Next: after confirming latest PR #5 head and no active/queued VPN workflow, execute one bounded manual VPNObratto live pilot on the current branch, requesting one independently verified RU exit and capping profile attempts at six. Confirm the first log line's checkout SHA; inspect all progress_manifest markers and the artifact manifest after terminal state. No such new run has been dispatched yet.",
+    "Do not infer target blocking from timeout or missing artifact. Keep PR #5 OPEN/DRAFT and do not change production GeoIP/DIRECT/ASN policy, main/release or PR #6."
   ],
   "ci_policy": {
     "push_validation_paths": [
@@ -2039,7 +2040,11 @@
     "final_recovery_worklog_commit": "135276198abe03d05e435616b6a3b8e9ba1e89ba",
     "checkpoint_written_after_final_recovery_worklog_commit": "135276198abe03d05e435616b6a3b8e9ba1e89ba",
     "README_manifest_no_fsync_commit": "66cb1cdcce634c05de5eec13abc2e98c42c47d96",
-    "WORKLOG_run211_and_run22_commit": "77dc41587d70f5ff5cb0f347ec91796394ab600f"
+    "WORKLOG_run211_and_run22_commit": "77dc41587d70f5ff5cb0f347ec91796394ab600f",
+    "final_run22_terminal_checkpoint_commit": "1749e95bd2777eaeda0dfdcfd45dd764eef72363",
+    "final_resume_terminal_update_commit": "4466a2e703e00423fce27ea1c537b2541c028956",
+    "final_worklog_sync_commit": "7d040d697387b16afbb9d15db75698f8f50d1f05",
+    "operator_readme_no_fsync_commit": "66cb1cdcce634c05de5eec13abc2e98c42c47d96"
   },
   "run21_result": {
     "run_id": 43065501624,
