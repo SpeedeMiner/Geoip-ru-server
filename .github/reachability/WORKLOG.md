@@ -735,3 +735,12 @@ Durable resume point for PR #5. After any conversation/network interruption, rea
 - Downloaded artifact `geoip-ru-vpn-gate-43045491865` (ID 13865929395, 284,687 bytes) and independently verified SHA-256 `56192f146a354011e8ca4a22cf50fb9c51ef4d2efba36959f307d11fc4505b2c` against GitHub. It contains only `reachability_inventory.tsv` (2,501,267 bytes); there are no VPN result files. Thus no profile attempts, verified RU exits or target rows were produced.
 - Fixed the bootstrap interpreter invocation to `python3 -B`. This disables bytecode-cache writes during the privileged import, preventing a root-owned `__pycache__` from being left behind for the unprivileged measurement step. No change to VPN measurement behavior or production GeoIP files.
 - CI validation is pending for this workflow change. Do not describe run #17 as VPN failure; it is a local filesystem-permission failure before any VPN process ran.
+
+
+### 2026-11-11 — Validate root bytecode-cache prevention — DONE
+
+- Validation run [43045809575](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43045809575) passed for workflow change c939bef92a0d9e9a8c2b8379d8184cb4fb414608: 119 Python tests and Go format/tests/build all succeeded.
+- Added a regression test that asserts the privileged apt bootstrap invokes `python3 -B`; this protects against reintroducing root-owned `__pycache__` entries.
+- Latest-head validation [43045941300](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43045941300), job 130609765536, commit 5874b6a5c1b8a679c47ffa3261132575909a67cd: SUCCESS. The suite reports 120 Python tests, result OK; Go formatting, `go test ./...` and `go build` succeeded.
+- The privileged Python import now uses `-B`; the live run #17 proved the DoH/apt setup path, while the new workflow change has green CI. A subsequent live manual run is still needed to confirm the full setup plus actual VPN attempts.
+- Current PR #5 head 5874b6a5c1b8a679c47ffa3261132575909a67cd; PR remains OPEN / DRAFT / not merged.
