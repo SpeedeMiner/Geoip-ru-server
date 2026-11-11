@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "updated_at_utc": "2026-11-11T17:46:30Z",
+  "updated_at_utc": "2026-11-11T17:47:00Z",
   "repository": "SpeedeMiner/Geoip-ru-server",
   "pull_request": 5,
   "pull_request_url": "https://github.com/SpeedeMiner/Geoip-ru-server/pull/5",
   "branch": "feature/reachability-full-ru-kz-by",
-  "recorded_pr_head_before_checkpoint_commit": "0f2afc6cf627156ae5bdf6e553f6c7db0ee96254",
+  "recorded_pr_head_before_checkpoint_commit": "135276198abe03d05e435616b6a3b8e9ba1e89ba",
   "base_sha": "a68e5d6589361814cb1cfedd2af7857e4af806fa",
   "state": "RUN21_TERMINAL_TIMEOUT_CONFIRMED; VPNOBRATTO_ISOLATED_FETCH_WORKER_IMPLEMENTED_AND_CI_GREEN_RUN209; NO_NEW_VPN_RUN",
   "current_phase": "PROFILE_FETCH_WORKER_ISOLATION_AND_DURABLE_PHASE_MANIFEST_VALIDATED; READY_FOR_ONE_BOUNDED_MANUAL_PILOT_AFTER_LIVE_RUN_CHECK",
@@ -461,12 +461,12 @@
   },
   "next_steps": [
     "Run #21 is terminal completed/cancelled because GitHub enforced the maximum 12-minute job execution time. It has no terminal log archive or artifact; five profiles were usable and profile 6 fetch started, but no OpenVPN attempt, verified RU exit or target rows were confirmed. The precise inner stall cause remains unknown.",
-    "Latest code HEAD c49dece293541d46b6af14282b382459164315d7 passed CI Run #209 / job 130699445722: 127 Python tests including worker success/manifest, TERM-resistant KILL/reap, early crash classification and production discovery worker routing; hosted ubuntu-24.04 watchdog preflight, gofmt, go test ./... and go build also passed.",
-    "Production VPNObratto listing/profile downloads now run in forked workers supervised by a parent-side monotonic 20-second wall deadline; listing and profile network budgets remain 15s and 12s. Parent escalates TERM→KILL, joins/reaps, and reports worker timeout separately from early worker exit. A live worker that remains after KILL is not Process.close()'d, preserving cleanup diagnostics.",
-    "The fetch worker writes flushed phase markers and an atomic per-profile manifest at reachability-output/vpn_gate_vpnobratto_progress.json; this matches the existing reachability-output/vpn_gate_* upload glob. The manifest stores only identifiers and phase/timing metadata, not profile bytes or secrets.",
-    "No VPN pilot has been dispatched against this new worker code. Before the next pilot, confirm the live PR head and no queued/in-progress VPN run. When authorized, run one manual VPNObratto pilot only: request one independently verified RU exit and cap profile attempts at six; inspect the manifest/log/artifact after terminal state.",
-    "Do not infer target blocking from timeout/missing artifacts and do not treat RU exit ASN/organization as proof of residential household access.",
-    "Keep PR #5 OPEN/DRAFT; preserve production GeoIP data/builders, DIRECT policy, ASN allowlists, main/release and PR #6."
+    "Latest code HEAD c49dece293541d46b6af14282b382459164315d7 passed CI Run #209 / job 130699445722: 127 Python tests including worker success/manifest, TERM-resistant KILL/reap, early crash classification and production discovery worker routing; hosted ubuntu-24.04 watchdog preflight, Go formatting/tests/build also passed.",
+    "Production VPNObratto listing/profile downloads now run in forked workers with a parent-side monotonic 20-second wall deadline; listing/profile network budgets remain 15s/12s. Parent escalates TERM→KILL, joins/reaps, and reports worker timeout separately from early worker exit. A live worker that remains after KILL is not Process.close()'d, preserving cleanup diagnostics.",
+    "The fetch worker emits flushed phase markers and atomically writes reachability-output/vpn_gate_vpnobratto_progress.json, matching the existing reachability-output/vpn_gate_* artifact glob. The manifest stores run/commit identifiers and phase/timing metadata only, not profile contents or keys.",
+    "No VPN pilot was dispatched against this new worker code. Before the next pilot, re-query the live PR head and confirm no active/queued VPN workflow. When the owner authorizes a manual pilot, use source=vpnobratno, request one independently verified RU exit, and cap profile attempts at six. Inspect the progress manifest, logs and uploaded artifact after terminal state.",
+    "Do not infer target blocking from timeouts or missing artifacts; RU exit/ASN/organization does not prove residential household access.",
+    "Keep PR #5 OPEN/DRAFT and preserve production GeoIP data/builders, DIRECT policy, ASN allowlists, main/release and PR #6."
   ],
   "ci_policy": {
     "push_validation_paths": [
@@ -2028,7 +2028,9 @@
     "vpn_worker_readme_commit": "863f0c5251cbab17a85ac150735dff7f37fcdd30",
     "vpn_worker_worklog_commit": "b3ed33fd06b88b23b0625170c0bdd8d252754f34",
     "vpn_worker_resume_commit": "797ddcf3af72c785cf8de9feff883f263edae9fa",
-    "checkpoint_written_after_final_worklog_commit": "0f2afc6cf627156ae5bdf6e553f6c7db0ee96254"
+    "checkpoint_written_after_final_worklog_commit": "0f2afc6cf627156ae5bdf6e553f6c7db0ee96254",
+    "final_recovery_worklog_commit": "135276198abe03d05e435616b6a3b8e9ba1e89ba",
+    "checkpoint_written_after_final_recovery_worklog_commit": "135276198abe03d05e435616b6a3b8e9ba1e89ba"
   },
   "run21_result": {
     "run_id": 43065501624,
