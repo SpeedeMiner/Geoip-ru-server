@@ -1,13 +1,13 @@
 {
   "schema_version": 1,
-  "updated_at_utc": "2026-11-11T07:32:53Z",
+  "updated_at_utc": "2026-11-11T07:47:11Z",
   "repository": "SpeedeMiner/Geoip-ru-server",
   "pull_request": 5,
   "pull_request_url": "https://github.com/SpeedeMiner/Geoip-ru-server/pull/5",
   "branch": "feature/reachability-full-ru-kz-by",
-  "recorded_pr_head_before_checkpoint_commit": "f3a7abaea0fe3378115b1fedd38b871b15a61479",
+  "recorded_pr_head_before_checkpoint_commit": "7f4d965ae1968c91bf0a1febb3eb02ebdbc631d2",
   "base_sha": "a68e5d6589361814cb1cfedd2af7857e4af806fa",
-  "state": "VPNOBRATNO_BOUNDED_PILOT_DEFAULTS_VALIDATED",
+  "state": "VPNOBRATNO_FETCH_SECURITY_VALIDATED",
   "current_phase": "AWAIT_DEFAULT_BRANCH_AUTHORIZATION_FOR_MANUAL_PILOT",
   "completed": [
     "repository_reconnaissance",
@@ -163,12 +163,18 @@
     "vpnobratno_cli_defaults_regression_test",
     "vpnobratno_manual_workflow_pilot_defaults_1_exit_6_attempts",
     "vpnobratno_bounded_retry_budget_readme_worklog",
-    "vpnobratno_bounded_pilot_defaults_ci_96_python_tests_go_success_run_42979907101"
+    "vpnobratno_bounded_pilot_defaults_ci_96_python_tests_go_success_run_42979907101",
+    "vpnobratno_same_origin_redirect_guard",
+    "vpnobratno_proxy_and_https_only_profile_fetcher",
+    "vpnobratno_final_response_origin_verification",
+    "vpnobratno_four_fetch_security_regression_tests",
+    "vpnobratno_fetch_security_ci_100_python_tests_go_success_run_42981728009",
+    "vpnobratno_readme_worklog_sstp_l2tp_scope_documented"
   ],
-  "latest_successful_validation_run": 42979907101,
-  "latest_successful_validation_commit": "0961e543b723dd90c14a4c3c5ed5cad931d0cc88",
+  "latest_successful_validation_run": 42981728009,
+  "latest_successful_validation_commit": "5b2d74a8b2653d16248e965abfaa0a05f0d3d344",
   "test_counts": {
-    "python_unit_tests": 96,
+    "python_unit_tests": 100,
     "python_unit_tests_status": "PASS",
     "gofmt_status": "PASS",
     "go_tests_status": "PASS",
@@ -311,7 +317,10 @@
     "VPNObratno describes its nodes as Russian VPN Gate user-operated servers using Russian ISPs; this does not independently prove that every node is a household broadband connection.",
     "A profile variant is an alternative connection method for one server, not a distinct ISP/provider. Provider diversity is counted only by independently derived origin ASN.",
     "The VPNObratno manual workflow defaults to one verified RU exit and up to six profile attempts; this is a bounded discovery pilot, not a multi-provider completeness claim.",
-    "The profile retry budget is bounded across variants and servers. A successful artifact upload is not success unless a confirmed RU exit and target measurement rows are present."
+    "The profile retry budget is bounded across variants and servers. A successful artifact upload is not success unless a confirmed RU exit and target measurement rows are present.",
+    "VPNObratno listing/profile downloads are restricted to the exact HTTPS origin; configured proxies and cross-origin redirects are rejected.",
+    "VPNObratno documents SSTP and L2TP/IPsec for selected servers, but automated support is not implemented. Do not guess the SSTP port or L2TP endpoint; add them only after machine-readable endpoint discovery and transport-specific fail-closed firewall/route lifecycle validation.",
+    "The latest 100-test CI verifies VPNObratno discovery, profile validation and download redirect policy. It does not verify a live VPN tunnel or any target reachability result."
   ],
   "policy_invariants": {
     "geoip_RU_dat_mutated": false,
@@ -335,6 +344,7 @@
     "When the owner authorizes making the workflow available on the default branch, run source=vpnobratno with the default one successful RU exit and up to six profile attempts. Treat only a verified RU egress plus actual target rows as a successful measurement.",
     "For any successful tunnel, require two independent IP metadata services to agree on the actual public exit IPv4 and RU country, then record origin ASN/prefix and only afterward run DNS/HTTPS tests against the RU target catalogue.",
     "Inspect SOURCE, PROFILE_VARIANT and PROFILE_URL in the artifact. Variants from one hostname/IP do not increase provider diversity; compare origin ASNs and independently validate the actual access-network operator/type.",
+    "Consider SSTP only after obtaining and validating the site's actual copy-button hostname/port metadata and implementing pppd interface, route cleanup and fail-closed firewall tests. Consider L2TP/IPsec only after equivalent server discovery plus IPsec/XFRM and PPP lifecycle validation; do not guess either protocol's endpoints.",
     "Keep the direct home_probe as optional corroborating evidence for an actual household line; a volunteer-run direct probe is not a prerequisite for attempting VPNObratno profiles.",
     "Keep production builder, release/geoip_RU.dat, release assets, DIRECT policy, ASN allowlists, main/release and PR #6 untouched."
   ],
@@ -374,18 +384,18 @@
     "vpn_gate_manual_dispatch_requires_default_branch_workflow": true
   },
   "pending_validation": {
-    "commit": "0961e543b723dd90c14a4c3c5ed5cad931d0cc88",
+    "commit": "5b2d74a8b2653d16248e965abfaa0a05f0d3d344",
     "workflow": "Reachability validation",
-    "run_id": 42979907101,
-    "run_url": "https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/42979907101",
+    "run_id": 42981728009,
+    "run_url": "https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/42981728009",
     "status": "SUCCESS",
-    "verified_python_test_count": 96,
+    "verified_python_test_count": 100,
     "go_checks": [
       "gofmt",
       "go test ./...",
       "go build"
     ],
-    "note": "Full job log reports Ran 96 tests, OK, and successful Go formatting/tests/build. Subsequent WORKLOG/CHECKPOINT commits are documentation/state-only."
+    "note": "Full job logs confirm Ran 100 tests, OK, plus successful Go formatting, tests and build. Subsequent README/WORKLOG/CHECKPOINT commits are documentation/state-only."
   },
   "vpn_gate_measurement": {
     "source": "VPNObratno linked OpenVPN profiles (default); official VPN Gate CSV API remains selectable fallback",
@@ -639,9 +649,32 @@
       ],
       "discovery_unit_tests": 5,
       "live_vpnobratto_tunnel_performed": false,
-      "default_pilot_budget": "one verified RU exit; up to six profile attempts"
+      "default_pilot_budget": "one verified RU exit; up to six profile attempts",
+      "fetch_security": {
+        "source_https_only": true,
+        "trusted_origin": "https://vpnobratno.info",
+        "proxies_disabled": true,
+        "same_origin_redirects_only": true,
+        "final_response_origin_rechecked": true,
+        "security_regression_tests": 4
+      }
     },
-    "live_vpnobratno_tunnel_performed": false
+    "live_vpnobratno_tunnel_performed": false,
+    "protocol_scope": {
+      "automated": [
+        "OPENVPN_IP_UDP",
+        "OPENVPN_DDNS_UDP",
+        "OPENVPN_IP_TCP",
+        "OPENVPN_DDNS_TCP"
+      ],
+      "sstp_documented_by_site": true,
+      "sstp_automated": false,
+      "l2tp_ipsec_documented_by_site": true,
+      "l2tp_ipsec_automated": false,
+      "exclusion_reason": "The site’s copy-button endpoint/port metadata is not validated as a machine-readable source; PPP/IPsec tunnel, route and firewall lifecycle has not yet been implemented and tested.",
+      "guess_sstp_port": false,
+      "guessed_l2tp_endpoints": false
+    }
   },
   "home_probe": {
     "client": ".github/reachability/home_probe.py",
