@@ -3,13 +3,21 @@ name: Russian ISP VPN Gate reachability
 on:
   workflow_dispatch:
     inputs:
+      source:
+        description: Profile discovery source
+        required: true
+        default: vpnobratno
+        type: choice
+        options:
+          - vpnobratno
+          - vpngate
       max_vpn_gate_servers:
-        description: Maximum Russian VPN Gate volunteer exits to test (hard cap 6)
+        description: Maximum verified Russian VPN exits to test (hard cap 6)
         required: true
         default: "3"
         type: string
       max_vpn_gate_attempts:
-        description: Maximum VPN Gate candidates to try; must be >= successful exits (hard cap 6)
+        description: Maximum connection profiles to try; must be >= successful exits (hard cap 6)
         required: true
         default: "3"
         type: string
@@ -24,10 +32,8 @@ concurrency:
 
 jobs:
   measure:
-    if: >-
-      github.event_name == 'workflow_dispatch' ||
-      (github.event_name == 'push' && startsWith(github.event.head_commit.message, '[vpn-gate-once]'))
-    name: Test public services through Russian volunteer ISP exits
+    if: github.event_name == 'workflow_dispatch'
+    name: Test public services through VPNObratno / VPN Gate Russian exits
     runs-on: ubuntu-latest
     timeout-minutes: 120
     steps:
@@ -81,7 +87,7 @@ jobs:
           ./geoip-reachability-inventory geoip_RU.dat reachability_inventory.tsv
           test -s reachability_inventory.tsv
 
-      - name: Run capped VPN Gate Russian-exit measurements
+      - name: Run capped VPNObratno / VPN Gate Russian-exit measurements
         id: vpn_measurement
         continue-on-error: true
         shell: bash
@@ -89,6 +95,7 @@ jobs:
           set -euo pipefail
           python3 -m py_compile .github/reachability/runner.py .github/reachability/vpn_gate.py
           sudo python3 .github/reachability/vpn_gate.py \
+            --source "\${{ inputs.source || 'vpnobratno' }}" \
             --inventory reachability_inventory.tsv \
             --targets .github/reachability/targets.json \
             --output-dir reachability-output \
@@ -112,5 +119,5 @@ jobs:
         if: steps.vpn_measurement.outcome == 'failure'
         shell: bash
         run: |
-          echo "No complete verified RU VPN Gate measurement was achieved; diagnostic artifacts were uploaded."
+          echo "No complete verified RU VPN measurement was achieved; diagnostic artifacts were uploaded."
           exit 1
