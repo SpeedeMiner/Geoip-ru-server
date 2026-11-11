@@ -445,6 +445,44 @@ class VPNGateDoHTests(unittest.TestCase):
         self.assertGreaterEqual(len(made[0].sock.timeouts), 3)
         self.assertLess(made[0].sock.timeouts[-1], made[0].sock.timeouts[0])
 
+    def test_doh_query_does_not_retry_after_outer_alarm_timeout(self):
+        clock = [0.0]
+        made = []
+
+        class FakeSocket:
+            def settimeout(self, _value):
+                pass
+
+        class AlarmResponse:
+            status = 200
+            def __init__(self, sock):
+                self.fp = type("FakeFP", (), {
+                    "raw": type("FakeRaw", (), {"_sock": sock})()
+                })()
+            def read1(self, _limit):
+                clock[0] = 1.1
+                raise TimeoutError("wall-clock deadline")
+
+        class FakeConnection:
+            def __init__(self, host, address, timeout):
+                self.host, self.address, self.timeout = host, address, timeout
+                self.sock = FakeSocket()
+                self.response = AlarmResponse(self.sock)
+                made.append(self)
+            def request(self, *_args, **_kwargs):
+                pass
+            def getresponse(self):
+                return self.response
+            def close(self):
+                pass
+
+        with patch.object(vpn_gate.time, "monotonic", side_effect=lambda: clock[0]), \\
+             patch.object(vpn_gate, "PinnedHTTPSConnection", side_effect=FakeConnection):
+            with self.assertRaisesRegex(vpn_gate.ProbeError, "all pinned DNS-over-HTTPS resolvers failed"):
+                vpn_gate.doh_query("example.com", "A", timeout=1)
+
+        self.assertEqual(len(made), 1)
+
     def test_system_dns_failure_falls_back_to_pinned_doh_for_both_families(self):
         with patch.object(vpn_gate.socket, "getaddrinfo", side_effect=socket.gaierror(-3, "temporary failure")):
             with patch.object(vpn_gate, "doh_query", side_effect=[
@@ -1288,6 +1326,44 @@ class VPNGateDoHTests(unittest.TestCase):
         self.assertEqual(made[0].response.reads, 2)
         self.assertGreaterEqual(len(made[0].sock.timeouts), 3)
         self.assertLess(made[0].sock.timeouts[-1], made[0].sock.timeouts[0])
+
+    def test_doh_query_does_not_retry_after_outer_alarm_timeout(self):
+        clock = [0.0]
+        made = []
+
+        class FakeSocket:
+            def settimeout(self, _value):
+                pass
+
+        class AlarmResponse:
+            status = 200
+            def __init__(self, sock):
+                self.fp = type("FakeFP", (), {
+                    "raw": type("FakeRaw", (), {"_sock": sock})()
+                })()
+            def read1(self, _limit):
+                clock[0] = 1.1
+                raise TimeoutError("wall-clock deadline")
+
+        class FakeConnection:
+            def __init__(self, host, address, timeout):
+                self.host, self.address, self.timeout = host, address, timeout
+                self.sock = FakeSocket()
+                self.response = AlarmResponse(self.sock)
+                made.append(self)
+            def request(self, *_args, **_kwargs):
+                pass
+            def getresponse(self):
+                return self.response
+            def close(self):
+                pass
+
+        with patch.object(vpn_gate.time, "monotonic", side_effect=lambda: clock[0]), \\
+             patch.object(vpn_gate, "PinnedHTTPSConnection", side_effect=FakeConnection):
+            with self.assertRaisesRegex(vpn_gate.ProbeError, "all pinned DNS-over-HTTPS resolvers failed"):
+                vpn_gate.doh_query("example.com", "A", timeout=1)
+
+        self.assertEqual(len(made), 1)
 
     def test_system_dns_failure_falls_back_to_pinned_doh_for_both_families(self):
         with patch.object(vpn_gate.socket, "getaddrinfo", side_effect=socket.gaierror(-3, "temporary failure")):
