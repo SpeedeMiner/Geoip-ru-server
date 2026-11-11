@@ -7,8 +7,8 @@
 - main: `580a25a7a65d957d46d83e827ccbd9308969713e`; production run #35 SUCCESS.
 - Текущий v37 immutable release snapshot: commit `ac2e9a4322c0b7efe293983c88cf5b304771e4c5`; tag ref `latest-geoip-client-v37` при последней проверке был `f8015a10105f55a1d86ce2dc687a92ec30d3deb9` (не совпадает с release branch, хранить отдельно).
 - `geoip_RU.dat`: 951553 bytes; SHA-256 `7ece8f277af01ba528b55c5af54f3cbb88224f3f2a65bc0558876992f9676d13`.
-- PR #7: open Draft; latest validated HEAD `09cbe1db1cc4de7d50bdda59cca471532364f3fb`; latest CI [run #215](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43002597856) SUCCESS.
-- Artifact ID `13847281344`, size 6,871,809 bytes; SHA-256 `6e5e4e31f53e46c621b85915239891c7ea1d5acb5bf6bf9c4aabc5c469645239`.
+- PR #7: open Draft; latest validated HEAD `1af723f808e014a2284eab04a377ac0035d4f77d`; latest CI [run #217](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43005737653) SUCCESS.
+- Latest artifact ID `13848571135`, size 6,871,801 bytes; SHA-256 `9f232cab7755381f9c6363ea8c51278f395c450a2ddeed714f6d82a89b7feae4` (run #217). The single-snapshot proof was first confirmed in run #215.
 - PR base is `d6fa94a...`; current main is `580a25a...` (one main commit ahead). Не выполнять rebase/merge автоматически.
 
 ## Что было исправлено
@@ -78,3 +78,11 @@ Run #215: combined correction passed.
 - будущий data PR может изменить GeoIP output и должен иметь exact CIDR/address-space diff и отдельный review;
 - strict geographic RU будет отдельным output, legacy RU+BY+KZ+company contract сохраняется.
 Merge PR #7 в main всё же запускает текущий production workflow на push; mutable upstream feeds могут обновить release. Перед merge проверять ожидаемый output diff.
+
+
+## Последний CI checkpoint
+
+- Run #217 fully passed 21/21 on HEAD 1af723f808e014a2284eab04a377ac0035d4f77d.
+- Artifact ID 13848571135; SHA-256 9f232cab7755381f9c6363ea8c51278f395c450a2ddeed714f6d82a89b7feae4.
+- Both residual MOAS ledger entries were validated as REVIEW/NO_CHANGE.
+- Next work remains current exact RouteViews/RIPE RIS and same-time VRP for 123 observed residuals; no production prefix changes.

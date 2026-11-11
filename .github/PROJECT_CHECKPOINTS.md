@@ -10,23 +10,26 @@ Append-only recovery log for the Geoip-ru-server audit work. Keep each completed
 4. After each finished stage, append one compact entry with: UTC date, result, commit SHA(s), workflow run ID/URL and artifact SHA when applicable, plus the next step.
 5. Keep the current-state block aligned with the latest verified state.
 
-## Current state / resume from — 2026-11-11
+## Current state / resume from — 2026-11-11 (run #217 verified)
 
-- **Active workstream:** full source inventory and improvement of actual Russian prefix inputs. Plan: docs/GEOIP_RU_SOURCE_IMPROVEMENT_PLAN.md; audit journal: .github/audits/geoip_ru_repository_audit_2026-11.md; resume: .github/audits/GEOIP_RU_AUDIT_RESUME.md.
-- **Baseline:** main d6fa94a691a9635b72be4e6b941c87d29c802dfa; production tag latest-geoip-client-v37; production run #34 success; release branch d613c5f0ef482f2051cbc37a303b2ac30076d313.
-- **Production semantics guard:** RU category is legacy DIRECT RU+BY+KZ plus company/affiliate origins, not strict geographic RU. Preserve this contract; strict RU must be a separate parallel output.
-- **PR #7:** open Draft on branch docs/source-improvement-plan-2026-11. It contains source plan/full audit/resume docs and audit-only fixes for dynamic priority scope plus dated external spot-check validation. Production builder, prefix inputs, company allowlist, geoip_RU.dat, release and tag unchanged.
-- **Latest fully green validation:** run #174, 18/18 SUCCESS, https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/42981784990, head 543fb9329dfb127cd6fd82dc2dba393e8cccc23e. Artifact v37-prefix-audit-7, ID 13837562711, 646,557 bytes, SHA-256 41f8ada9315b872566eb9deea810bbe10dbab13dc4f429064d56964e70b874cf. The checkpoint/journal updates below require a fresh push-trigger CI.
-- **Priority inventory:** 57 exact prefixes = 53 MOAS + 4 company-only; all 57 priority, triage and worklist rows REVIEW. RDAP 171/171 successful; RPKI 111 exact prefix/origin queries (66 valid, 20 invalid_asn, 25 unknown); IRR 57 queries.
-- **External spot-checks:** 23 entries; 22 CHECKED_2026-11-10 and 5.255.192.0/18 CHECKED_2026-11-11. Worklist scope: 5 EXACT_ONLY, 17 EXACT_AND_MORE_SPECIFIC, 1 MORE_SPECIFIC_ONLY.
-- **New candidate:** 5.255.192.0/18, exact origins AS13238 + AS208398. RIPE allocation RU-YANDEX-20120914/YANDEX LLC; 3 RDAP samples point to RU/Yandex child objects, not exhaustive holder proof. Both exact ROAs valid (maxLength /24); exact RIPE/GRS object only AS13238; AS208398 is a Serbian origin ASN. Cross-border MOAS/IRR discrepancy, not proof resource is foreign or transferred. Keep REVIEW; no production action.
-- **Archived-invalid reconciliation:** 19 rows, all REVIEW; classes 16 EXACT_ORIGIN_SET_CHANGED, 1 EXACT_MOAS_RPKI_STATUS_CHANGED, 1 MORE_SPECIFIC_ONLY_NO_EXACT_VERDICT, 1 EXACT_MOAS_INVALID_ORIGIN_REMAINS_UNCONFIRMED.
-- **PR #6:** independent, open Draft; do not retarget or merge in this workstream.
-- **PR #5 / feature/reachability-full-ru-kz-by:** untouched; do not inspect/edit or run CI/measurements for PR #5.
-- **Resume from:** validate the latest checkpoint commit via push-trigger CI; then confirm PR #7 remains open/Draft. Next technical work: versioned source catalog + immutable raw snapshots, then complete canonical exact-prefix inventory and exact address-space diff against v37. Keep unresolved candidates REVIEW.
-- **Production caution:** any merge to main triggers production build/publish and force-updates release, even for docs-only changes. Consider this before merge.
-
-
+- **Active workstream:** actual RU IP prefix source inventory and improvement. Plan: docs/GEOIP_RU_SOURCE_IMPROVEMENT_PLAN.md; audit journal: .github/audits/geoip_ru_repository_audit_2026-11.md; resume: .github/audits/GEOIP_RU_AUDIT_RESUME.md.
+- **main:** 580a25a7a65d957d46d83e827ccbd9308969713e; production run #35 SUCCESS.
+- **Current production v37 release snapshot:** release branch commit ac2e9a4322c0b7efe293983c88cf5b304771e4c5; tag ref latest-geoip-client-v37 observed separately at f8015a10105f55a1d86ce2dc687a92ec30d3deb9.
+- **geoip_RU.dat:** 951553 bytes; SHA-256 7ece8f277af01ba528b55c5af54f3cbb88224f3f2a65bc0558876992f9676d13. RU output 76293 CIDR / 52619113 IPv4; PRIVATE 151 CIDR.
+- **PR #7:** open Draft, branch docs/source-improvement-plan-2026-11; current HEAD 1af723f808e014a2284eab04a377ac0035d4f77d. Do not mark Ready or merge.
+- **Latest fully green audit:** run #217 https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43005737653, 21/21 SUCCESS. Artifact ID 13848571135, 6,871,801 bytes, SHA-256 9f232cab7755381f9c6363ea8c51278f395c450a2ddeed714f6d82a89b7feae4; downloaded and verified.
+- **Snapshot alignment:** run #215 proved all canonical artifacts use the same immutable release commit ac2e9a...; GeoIP SHA equals release sidecar; per-file SHA manifest retained. Run #217 revalidated the updated ledger, plan, journal and checkpoints.
+- **Current canonical inventory:** 795017 unique exact CIDRs; RU output 76293; PRIVATE 151; selected-origin BGP 23564; RIR RU-registered 13679; global ipverse 90-day 520065; accepted additional feed 193.
+- **RU RIR residuals:** 360 exact prefixes (320 IPv4 / 40 IPv6), all REVIEW; unexplained address union 328940 IPv4 and 11532729195086697206485771878400 IPv6.
+- **Residual exact BGP:** 123 observed in ipverse archive; 237 not observed; two exact MOAS. No observed origin countryCode=RU; this is ASN metadata, not a resource ownership or geographic verdict.
+- **MOAS:** 92.51.48.0/21 and 193.238.192.0/22, exact origins AS9009 + AS209372. Public BGP pages still show both; registration/IRR evidence is mixed; synchronized direct VRP verdict for both exact prefix/origin pairs remains pending. Both REVIEW/NO_CHANGE.
+- **Production delta from previous v37:** +1 net exact CIDR; +384 IPv4 addresses; +one IPv6 /48. New exact output 147.45.36.0/23, 192.144.38.0/24, 2001:678:13e0::/48; removed exact output 147.45.36.0/24 and 147.45.37.128/25. This came from production run #35, not PR #7.
+- **Build impact:** audit catalog/snapshot/inventory/RIB/VRP/holder/IRR checks do not modify output. Only a separately approved exact-prefix source/policy change connected to builder can change geoip_RU.dat. Merge to main may trigger current production workflow; mutable feeds can update output.
+- **Production semantics:** legacy DIRECT bucket remains RU+BY+KZ plus company/affiliate exceptions; strict geographic RU must be a separate output.
+- **PR #6:** separate Draft; no retarget/merge.
+- **PR #5 / feature/reachability-full-ru-kz-by:** untouched; do not inspect/edit/run CI/measurements for PR #5.
+- **Resume from:** independent current RouteViews + RIPE RIS exact RIB for all 123 observed residuals, same-time VRP and maxLength validation, then RDAP/IRR/holder hierarchy. Investigate 237 not observed without inferring withdrawal. Continue immutable raw source retention. No production ADD/EXCLUDE before explicit review.
+- **Production caution:** merge of any PR into main triggers the existing production build/publish workflow; docs-only merge is not guaranteed to be a no-op.
 
 ## Completed stage records
 
@@ -200,3 +203,12 @@ Use one concise record per completed stage:
 - Source catalog: 38 validated metadata rows. Raw upstream GeoIP .dat snapshots are still not retained; mutable source pins need work.
 - No production inputs, builder, allowlist, DIRECT policy, GeoIP binary, release/tag or main changed by this audit PR. PR #7 remains Draft; PR #5/#6 untouched.
 - Next: independent live RouteViews+RIPE RIS exact RIB and same-time VRPs for all 123 observed residuals; then RDAP/IRR for residuals and raw immutable source snapshots. Strict RU remains a separate scope.
+
+
+### 2026-11-11 — Run #217 validates current ledger and production-impact documentation — DONE
+
+- [Run #217](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43005737653): 21/21 SUCCESS on HEAD 1af723f808e014a2284eab04a377ac0035d4f77d.
+- Artifact ID 13848571135; 6,871,801 bytes; SHA-256 9f232cab7755381f9c6363ea8c51278f395c450a2ddeed714f6d82a89b7feae4.
+- Updated and validated residual MOAS evidence ledger; both candidate rows remain REVIEW/NO_CHANGE.
+- Verified current release snapshot and current 360-prefix residual inventory; no production changes from PR #7.
+- Next: independent current RouteViews/RIPE RIS + time-aligned VRP for 123 exact-observed residuals, then holder/IRR and immutable raw-source retention.
