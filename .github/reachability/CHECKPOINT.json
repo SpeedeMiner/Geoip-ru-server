@@ -1,14 +1,14 @@
 {
   "schema_version": 1,
-  "updated_at_utc": "2026-11-11T17:16:11Z",
+  "updated_at_utc": "2026-11-11T17:19:52Z",
   "repository": "SpeedeMiner/Geoip-ru-server",
   "pull_request": 5,
   "pull_request_url": "https://github.com/SpeedeMiner/Geoip-ru-server/pull/5",
   "branch": "feature/reachability-full-ru-kz-by",
   "recorded_pr_head_before_checkpoint_commit": "beba9f75a0bfc08703e79555635698b130ed47a8",
   "base_sha": "a68e5d6589361814cb1cfedd2af7857e4af806fa",
-  "state": "RUN21_IN_PROGRESS_PROFILE_6_FETCH_STARTED; RUNNER_TIMEOUT_PROCESS_GROUP_PREFLIGHT_GREEN_RUN200; RUN20_CANCELLED_NO_ARTIFACT",
-  "current_phase": "RUN21_VPNOBRATTO_PROFILE_DISCOVERY_IN_PROGRESS; FIVE_PROFILES_CONFIRMED_USABLE; SIXTH_FETCH_STARTED; NO_OPENVPN_OR_TARGET_EVIDENCE_YET",
+  "state": "RUN21_GITHUB_JOB_STILL_IN_PROGRESS_AFTER_GNU_AND_STEP_TIMEOUTS; LOGS_BLOB_NOT_FOUND; NO_ARTIFACT; RUN20_CANCELLED_NO_ARTIFACT",
+  "current_phase": "RUN21_ACTIONS_STATUS_OVERRUN; PROFILE_6_FETCH_LAST_VISIBLE_ONLY; NO_CONFIRMED_OPENVPN_RU_EXIT_OR_TARGET_ROWS",
   "completed": [
     "repository_reconnaissance",
     "protobuf_inventory_exporter",
@@ -2094,17 +2094,25 @@
     "logs_api_while_active": "BlobNotFound",
     "interpretation": "Pinned-DoH profile fetches 1–5 completed and sixth began, indicating discovery is progressing past the previous Run #20 marker. Do not infer OpenVPN, RU exit or target results from the current excerpt.",
     "last_rest_snapshot": {
-      "observed_at_utc": "2026-11-11T17:16:11Z",
+      "observed_at_utc": "2026-11-11T17:19:52Z",
       "run_status": "in_progress",
-      "run_updated_at_utc": "2026-11-11T17:10:17Z",
       "job_status": "in_progress",
       "measurement_step_status": "in_progress",
       "upload_step_status": "pending",
       "artifacts": [],
       "logs_api": "BlobNotFound",
-      "owner_latest_marker_received_at_utc": "2026-11-11T17:11:10Z",
-      "owner_latest_marker": "profile_fetch_started=6/24 wall_timeout=20s transport=pinned_doh_https",
-      "interpretation": "No newer owner-visible progress marker was provided; GitHub status timestamp has not advanced since startup. This is an observability/state freshness warning, not proof that the collector process is running or failed."
+      "logs_url": null,
+      "expected_gnu_term_approx_utc": "2026-11-11T17:17:40Z",
+      "expected_gnu_kill_after_grace_approx_utc": "2026-11-11T17:17:45Z",
+      "measurement_step_timeout_utc": "2026-11-11T17:19:40Z",
+      "measurement_step_timeout_overrun_seconds": 12,
+      "job_timeout_utc": "2026-11-11T17:22:16Z",
+      "confirmed_profile_fetch_completion_index": 5,
+      "profile_6_fetch_started": true,
+      "confirmed_openvpn_attempts": 0,
+      "confirmed_verified_ru_exits": 0,
+      "confirmed_target_measurement_rows": 0,
+      "interpretation": "Actions status exceeds GNU/step deadline but no terminal evidence is available; do not infer that the process is live, dead, or that target measurement happened."
     },
     "expected_timeout_milestones_utc": {
       "process_term_approx": "2026-11-11T17:17:40Z",
@@ -2120,6 +2128,30 @@
       "displayed_artifacts": "none",
       "job_page": "Loading",
       "interpretation": "Actions UI confirms In progress but cannot render live job logs at this snapshot."
-    }
+    },
+    "observability_warning": "At 2026-11-11T17:19:52Z GitHub still reported job and measurement step in_progress even though the nominal GNU timeout+KILL grace (~17:17:45Z) and 9-minute measurement step deadline (~17:19:40Z) had elapsed; the log archive remained BlobNotFound and no artifact existed. Runner/controller stale state is possible but unproven.",
+    "monitoring_snapshots": [
+      {
+        "observed_at_utc": "2026-11-11T17:19:52Z",
+        "run_status": "in_progress",
+        "job_status": "in_progress",
+        "measurement_step_status": "in_progress",
+        "upload_step_status": "pending",
+        "artifacts": [],
+        "logs_api": "BlobNotFound",
+        "logs_url": null,
+        "expected_gnu_term_approx_utc": "2026-11-11T17:17:40Z",
+        "expected_gnu_kill_after_grace_approx_utc": "2026-11-11T17:17:45Z",
+        "measurement_step_timeout_utc": "2026-11-11T17:19:40Z",
+        "measurement_step_timeout_overrun_seconds": 12,
+        "job_timeout_utc": "2026-11-11T17:22:16Z",
+        "confirmed_profile_fetch_completion_index": 5,
+        "profile_6_fetch_started": true,
+        "confirmed_openvpn_attempts": 0,
+        "confirmed_verified_ru_exits": 0,
+        "confirmed_target_measurement_rows": 0,
+        "interpretation": "Actions status exceeds GNU/step deadline but no terminal evidence is available; do not infer that the process is live, dead, or that target measurement happened."
+      }
+    ]
   }
 }
