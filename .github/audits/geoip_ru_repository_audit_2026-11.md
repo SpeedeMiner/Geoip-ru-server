@@ -210,3 +210,16 @@ Run full PR #7 CI after the spot-check/worklist changes; inspect the new worklis
 - Only audit TSV, review scripts/tests, validation workflow and documentation were changed. No production prefix inputs, company allowlist, Go builder policy, geoip_RU.dat, release/tag changed; PR #5/#6 untouched.
 - Resume from: update PR #7 body and checkpoint with run #168/artifact, validate the final checkpoint head via push CI, then begin source catalog + immutable snapshot bundle and full canonical exact-prefix inventory/diff. No production data action until evidence-based review.
 
+
+
+## 2026-11-11 — Checkpoint-head validation after external spot-check integration (run #171)
+
+- [Run #171](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/42981204736) passed all 18 steps on HEAD `b467babef15dae5d24259771f77849639fd673b5`. This run includes the updated external spot-check ledger, date parser/test, 23-row exact-scope/date gate, plan, journal and checkpoint.
+- Artifact `v37-prefix-audit-7`, ID `13837906300`, 646,551 bytes; SHA-256 `9c5aa104d10c7b004b91f23183134a43bf21a1441d5f0371283d59e576796a4a`; downloaded and verified.
+- Priority/evidence output: 57 prefixes (53 exact MOAS + 4 company-only); priority, triage and worklist all 57 REVIEW.
+- RDAP 171/171 OK; RPKI 111 exact pairs (66 valid, 20 invalid_asn, 25 unknown); IRR 57 queries (55 OK, one no exact object in query results, one no object in queried sources).
+- External spot checks: 23 rows, 22 dated 2026-11-10 plus 5.255.192.0/18 dated 2026-11-11. Relation counts 5 exact-only / 17 exact+more-specific / 1 more-specific-only.
+- Archived-invalid reconciliation: 19 rows all REVIEW; classes 16/1/1/1. No production changes.
+- PR #7 body now documents the plan, scope correction, 5.255.192.0/18 evidence, run #171 and artifact. PR #7 remains Draft and unmerged.
+- Resume from: current checkpoint commit needs a push-triggered full CI; after that, the next technical task is immutable source catalog/raw snapshot retention and a complete canonical exact-prefix inventory/diff vs v37. PR #5/#6 remain untouched.
+
