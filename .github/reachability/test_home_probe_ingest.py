@@ -49,6 +49,7 @@ class HomeProbeIngestTests(unittest.TestCase):
 
     def write_report(self, source_ip="5.143.110.119", country="RU"):
         source = {
+            "schema_version": 1,
             "observations": [
                 {"provider": "ipwho.is", "ip": source_ip, "country": country, "asn": 12389, "organization": "Example ISP"},
                 {"provider": "ipapi.co", "ip": source_ip, "country": country, "asn": 12389, "organization": "Example ISP"},
@@ -64,6 +65,7 @@ class HomeProbeIngestTests(unittest.TestCase):
             "required_country_matches": country == "RU",
         }
         summary = {
+            "schema_version": 1,
             "probe_type": "USER_CONTROLLED_HOME_OR_ACCESS_NETWORK",
             "required_country": "RU",
             "source_ip_verified_by_two_services": True,
@@ -169,6 +171,20 @@ class HomeProbeIngestTests(unittest.TestCase):
         summary["proxy_environment_variables"] = ["HTTPS_PROXY"]
         (self.report / "home_probe_summary.json").write_text(json.dumps(summary), encoding="utf-8")
         with self.assertRaisesRegex(home_probe_ingest.ImportError, "proxy"):
+            home_probe_ingest.ingest_report(self.args())
+    
+    def test_missing_direct_network_attestation_is_rejected(self):
+        summary = json.loads((self.report / "home_probe_summary.json").read_text(encoding="utf-8"))
+        summary["proxy_environment_clear"] = False
+        (self.report / "home_probe_summary.json").write_text(json.dumps(summary), encoding="utf-8")
+        with self.assertRaisesRegex(home_probe_ingest.ImportError, "proxy"):
+            home_probe_ingest.ingest_report(self.args())
+
+    def test_unsupported_report_schema_is_rejected(self):
+        summary = json.loads((self.report / "home_probe_summary.json").read_text(encoding="utf-8"))
+        summary["schema_version"] = 2
+        (self.report / "home_probe_summary.json").write_text(json.dumps(summary), encoding="utf-8")
+        with self.assertRaisesRegex(home_probe_ingest.ImportError, "schema version"):
             home_probe_ingest.ingest_report(self.args())
 
     def test_unknown_target_is_rejected(self):
