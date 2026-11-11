@@ -131,7 +131,11 @@ jobs:
           python3 -m py_compile .github/reachability/runner.py .github/reachability/vpn_gate.py
           bash -n .github/reachability/vpn_netns_exec.sh
           echo "[vpn-gate] runner_network_namespace=true host_firewall_untouched=true"
-          sudo bash .github/reachability/vpn_netns_exec.sh -- \
+          sudo env \
+          GITHUB_SHA="${GITHUB_SHA}" \
+          GITHUB_RUN_ID="${GITHUB_RUN_ID}" \
+          GITHUB_RUN_ATTEMPT="${GITHUB_RUN_ATTEMPT}" \
+          bash .github/reachability/vpn_netns_exec.sh -- \
             timeout --verbose --signal=TERM --kill-after=5s 7m \
               python3 .github/reachability/vpn_gate.py \
                 --source "${{ inputs.source || 'vpnobratno' }}" \

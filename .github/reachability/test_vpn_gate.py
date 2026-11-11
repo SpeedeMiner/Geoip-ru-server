@@ -256,6 +256,39 @@ class RIPEstatNetworkInfoTests(unittest.TestCase):
 
 
 class VPNGateMeasurementStatusTests(unittest.TestCase):
+    def test_target_scan_summary_reports_unverified_and_partial_scans(self):
+        not_started = vpn_gate.summarize_target_scans([])
+        self.assertEqual(
+            not_started["target_scan_status"],
+            "NOT_STARTED_NO_VERIFIED_RU_EXIT",
+        )
+        partial = vpn_gate.summarize_target_scans([{
+            "server_hostname": "vpn.example.net",
+            "targets_requested": 30,
+            "targets_tested": 28,
+            "targets_not_tested": ["by-kufar", "by-nbrb"],
+            "complete": False,
+        }])
+        self.assertEqual(partial["target_scan_status"], "PARTIAL")
+        self.assertEqual(partial["target_scans_incomplete"], 1)
+        self.assertEqual(partial["targets_not_tested_count"], 2)
+        self.assertEqual(
+            partial["targets_not_tested"],
+            [{
+                "server_hostname": "vpn.example.net",
+                "target_ids": ["by-kufar", "by-nbrb"],
+            }],
+        )
+        complete = vpn_gate.summarize_target_scans([{
+            "server_hostname": "vpn.example.net",
+            "targets_requested": 30,
+            "targets_tested": 30,
+            "targets_not_tested": [],
+            "complete": True,
+        }])
+        self.assertEqual(complete["target_scan_status"], "COMPLETE")
+        self.assertEqual(complete["targets_not_tested_count"], 0)
+
     def test_no_verified_ru_exit_is_not_a_successful_measurement(self):
         self.assertNotEqual(vpn_gate.measurement_exit_code(0, 1), 0)
         self.assertEqual(vpn_gate.measurement_exit_code(1, 1), 0)
@@ -296,6 +329,9 @@ class UbuntuAptDNSBootstrapTests(unittest.TestCase):
             "sudo bash .github/reachability/vpn_netns_exec.sh -- \\",
             workflow,
         )
+        self.assertIn("GITHUB_SHA=\"${GITHUB_SHA}\"", workflow)
+        self.assertIn("GITHUB_RUN_ID=\"${GITHUB_RUN_ID}\"", workflow)
+        self.assertIn("GITHUB_RUN_ATTEMPT=\"${GITHUB_RUN_ATTEMPT}\"", workflow)
         self.assertIn(
             "timeout --verbose --signal=TERM --kill-after=5s 7m \\",
             workflow,
@@ -793,6 +829,9 @@ class VPNGateTimeoutRegressionTests(unittest.TestCase):
         self.assertEqual(result["ip"], first["ip"])
         self.assertEqual(lookup.call_count, 3)
 
+    def test_profile_attempt_budget_has_room_for_all_30_target_probes(self):
+        self.assertEqual(vpn_gate.ATTEMPT_WALL_CLOCK_BUDGET_SECONDS, 120)
+
     def test_attempt_budget_helper_never_extends_expired_deadline(self):
         with patch.object(vpn_gate.time, "monotonic", return_value=102.0):
             self.assertEqual(vpn_gate._bounded_remaining_seconds(105.0, 10.0), 3.0)
@@ -960,6 +999,25 @@ class VPNGateResolverSafetyTests(unittest.TestCase):
 
 
 class VPNObrattoWallClockTimeoutTests(unittest.TestCase):
+    def test_progress_manifest_records_github_run_identity(self):
+        with tempfile.TemporaryDirectory() as directory:
+            progress = pathlib.Path(directory) / "progress.json"
+            identity = {
+                "GITHUB_SHA": "abc123",
+                "GITHUB_RUN_ID": "123456",
+                "GITHUB_RUN_ATTEMPT": "2",
+            }
+            with patch.dict(os.environ, identity):
+                vpn_gate.record_vpnobratno_progress(
+                    progress,
+                    {"profile_index": 1, "profile_count": 1, "hostname": "vpn.example.net"},
+                    "fetch_started",
+                )
+            manifest = json.loads(progress.read_text(encoding="utf-8"))
+            self.assertEqual(manifest["execution_sha"], "abc123")
+            self.assertEqual(manifest["workflow_run_id"], "123456")
+            self.assertEqual(manifest["workflow_run_attempt"], "2")
+
     def test_wall_clock_timeout_returns_callback_result(self):
         result = vpn_gate.call_with_wall_clock_timeout(lambda: "done", 0.5)
         self.assertEqual(result, "done")

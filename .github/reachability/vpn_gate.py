@@ -56,7 +56,7 @@ VPNOBRATNO_LISTING_MAX_BYTES = 2_000_000
 VPNOBRATNO_PROFILE_MAX_BYTES = 64_000
 VPNOBRATNO_FETCH_HARD_MAX_BYTES = 8_000_000
 RUN_WALL_CLOCK_BUDGET_SECONDS = 360
-ATTEMPT_WALL_CLOCK_BUDGET_SECONDS = 90
+ATTEMPT_WALL_CLOCK_BUDGET_SECONDS = 120
 IP_INFO_URLS = (
     "https://ipwho.is/",
     "https://ipapi.co/json/",
@@ -2199,6 +2199,38 @@ def _bounded_remaining_seconds(
     return min(float(maximum), remaining)
 
 
+def summarize_target_scans(target_scans: list[dict[str, Any]]) -> dict[str, Any]:
+    """Make incomplete/untested target work explicit in the run summary."""
+    completed = sum(bool(scan.get("complete")) for scan in target_scans)
+    incomplete = len(target_scans) - completed
+    untested = []
+    for scan in target_scans:
+        target_ids = [
+            str(target_id)
+            for target_id in scan.get("targets_not_tested", [])
+            if str(target_id)
+        ]
+        if target_ids:
+            untested.append({
+                "server_hostname": str(scan.get("server_hostname", "")),
+                "target_ids": target_ids,
+            })
+    if not target_scans:
+        status = "NOT_STARTED_NO_VERIFIED_RU_EXIT"
+    elif incomplete:
+        status = "PARTIAL"
+    else:
+        status = "COMPLETE"
+    return {
+        "target_scan_status": status,
+        "target_scans": target_scans,
+        "target_scans_completed": completed,
+        "target_scans_incomplete": incomplete,
+        "targets_not_tested": untested,
+        "targets_not_tested_count": sum(len(item["target_ids"]) for item in untested),
+    }
+
+
 def measurement_exit_code(successful_ru_exits: int, requested_ru_exits: int) -> int:
     """A diagnostic artifact without the requested verified RU exits is not a pass."""
     return 0 if successful_ru_exits >= requested_ru_exits else 2
@@ -2317,6 +2349,7 @@ def run(args: argparse.Namespace) -> int:
     exit_categories: collections.Counter[str] = collections.Counter()
     connection_counts: collections.Counter[str] = collections.Counter()
     interrupted_reason = ""
+    target_scans: list[dict[str, Any]] = []
 
     try:
         if args.source == "vpnobratno":
@@ -2457,6 +2490,7 @@ def run(args: argparse.Namespace) -> int:
                 },
             })
             connection_counts["selected"] += 1
+            target_scan: dict[str, Any] | None = None
             with tempfile.TemporaryDirectory(prefix="geoip-vpngate-") as directory:
                 tmp = pathlib.Path(directory)
                 auth_path = tmp / "auth.txt"
@@ -2577,12 +2611,26 @@ def run(args: argparse.Namespace) -> int:
                                                 "REASON": "IP metadata reports RU but the published GeoIP inventory does not map this exit IP to RU",
                                                 "REVIEW_POLICY": "REVIEW_ONLY_NO_AUTOMATIC_CIDR_CHANGE",
                                             })
+                                        target_scan = {
+                                            "server_hostname": server["hostname"],
+                                            "exit_ip": exit_info["ip"],
+                                            "targets_requested": len(targets),
+                                            "targets_tested": 0,
+                                            "targets_not_tested": [str(item["id"]) for item in targets],
+                                            "complete": False,
+                                        }
+                                        target_scans.append(target_scan)
                                         for target_index, target in enumerate(targets, start=1):
                                             remaining_target = attempt_deadline - time.monotonic()
                                             if remaining_target <= 2:
+                                                target_scan["targets_tested"] = provider["TARGETS_TESTED"]
+                                                target_scan["targets_not_tested"] = [
+                                                    str(item["id"]) for item in targets[target_index - 1:]
+                                                ]
                                                 print(
                                                     f"[vpn-gate] target_loop_budget_exhausted "
-                                                    f"host={server['hostname']} tested={provider['TARGETS_TESTED']}/{len(targets)}",
+                                                    f"host={server['hostname']} tested={provider['TARGETS_TESTED']}/{len(targets)} "
+                                                    f"remaining_targets={','.join(target_scan['targets_not_tested'])}",
                                                     flush=True,
                                                 )
                                                 break
@@ -2620,12 +2668,22 @@ def run(args: argparse.Namespace) -> int:
                                             })
                                             measurement_rows.append(row)
                                             provider["TARGETS_TESTED"] += 1
+                                            target_scan["targets_tested"] = provider["TARGETS_TESTED"]
+                                            target_scan["targets_not_tested"] = [
+                                                str(item["id"]) for item in targets[target_index:]
+                                            ]
+                                            target_scan["complete"] = not target_scan["targets_not_tested"]
                                             print(
                                                 f"[vpn-gate] target_probe_completed={target_index}/{len(targets)} "
                                                 f"target={target['id']} https={row['HTTPS_RESULT']}",
                                                 flush=True,
                                             )
                                 except (ProbeError, TimeoutError, OSError, subprocess.SubprocessError) as exc:
+                                    if target_scan is not None and not target_scan["complete"]:
+                                        target_scan["targets_tested"] = provider["TARGETS_TESTED"]
+                                        target_scan["targets_not_tested"] = [
+                                            str(item["id"]) for item in targets[provider["TARGETS_TESTED"]:]
+                                        ]
                                     if provider["CONNECTION_RESULT"] != "CONNECTED_RU_EGRESS":
                                         provider["CONNECTION_RESULT"] = "CONNECT_OR_VERIFY_FAILED"
                                         connection_counts["connect_or_verify_failed"] += 1
@@ -2681,8 +2739,12 @@ def run(args: argparse.Namespace) -> int:
             exit_ip = row.get("EXIT_IP")
             row["EXIT_IP"] = exit_ip or ""
         candidates = candidates[:]
+        target_scan_summary = summarize_target_scans(target_scans)
         summary = {
             "generated_at": utc_now(),
+            "workflow_run_id": os.environ.get("GITHUB_RUN_ID", ""),
+            "workflow_run_attempt": os.environ.get("GITHUB_RUN_ATTEMPT", ""),
+            "execution_sha": os.environ.get("GITHUB_SHA", ""),
             "source": discovery_source,
             "discovery": discovery_meta,
             "selected_source": args.source,
@@ -2697,6 +2759,7 @@ def run(args: argparse.Namespace) -> int:
             "exit_geoip_categories": dict(exit_categories),
             "targets_in_ru_scope": len(targets),
             "target_measurements": len(measurement_rows),
+            **target_scan_summary,
             "geoip_candidates": len(candidates),
             "provider_rows": len(provider_rows),
             "server_asn_conflicts": sum(bool(row.get("SERVER_ASN_CONFLICT")) for row in provider_rows),
