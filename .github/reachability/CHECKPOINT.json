@@ -1,14 +1,14 @@
 {
   "schema_version": 1,
-  "updated_at_utc": "2026-11-11T14:35:00Z",
+  "updated_at_utc": "2026-11-11T14:57:17Z",
   "repository": "SpeedeMiner/Geoip-ru-server",
   "pull_request": 5,
   "pull_request_url": "https://github.com/SpeedeMiner/Geoip-ru-server/pull/5",
   "branch": "feature/reachability-full-ru-kz-by",
-  "recorded_pr_head_before_checkpoint_commit": "bf3bbd6bb3af4b1f527a081af62aafde0eff8b55",
+  "recorded_pr_head_before_checkpoint_commit": "b6d5ffcd20dd8e488d6e9c2563f7fda781a5c20d",
   "base_sha": "a68e5d6589361814cb1cfedd2af7857e4af806fa",
-  "state": "RUN16_APT_MIRROR_DNS_FAILURE_INSPECTED_PINNED_DOH_BOOTSTRAP_IMPLEMENTED_VALIDATION_PENDING",
-  "current_phase": "VALIDATE_PINNED_DOH_APT_DNS_BOOTSTRAP_BEFORE_NEXT_MANUAL_VPN_RUN",
+  "state": "APT_DOH_BOOTSTRAP_IMPLEMENTED_CODE_WORKFLOW_JOB_VALIDATED_119_TESTS_LATEST_TEST_FIX_CI_PENDING",
+  "current_phase": "WAIT_FOR_LATEST_HEAD_CI_THEN_MANUAL_VPN_RUN",
   "completed": [
     "repository_reconnaissance",
     "protobuf_inventory_exporter",
@@ -229,7 +229,10 @@
     "vpnobratto_selection_now_uses_distinct_server_hostnames",
     "vpnobratto_outer_gnu_timeout_9m_kill_after_5s_added",
     "vpnobratto_validation_111_python_tests_and_go_checks_success_43023729793",
-    "run_16_ubuntu2404_apt_dns_failure_inspected"
+    "run_16_ubuntu2404_apt_dns_failure_inspected",
+    "apt_mirror_dns_bootstrap_implementation",
+    "apt_mirror_dns_bootstrap_regression_tests",
+    "run16_apt_dns_failure_durable_record"
   ],
   "latest_successful_validation_run": 43037445995,
   "latest_successful_validation_commit": "05c0d0431990e97851628f7b87ef0b29b0f8763c",
@@ -408,10 +411,10 @@
     "production_release_artifact_byte_delta_verified": false
   },
   "next_steps": [
-    "Confirm Reachability validation CI passes with the new apt mirror DNS bootstrap tests.",
-    "After CI success, manually dispatch Russian ISP VPN Gate reachability on feature/reachability-full-ru-kz-by with source=vpnobratto, max_vpn_gate_servers=1, max_vpn_gate_attempts=6.",
-    "Verify apt_dns_bootstrap_completed, all three mirror_getent_verified markers, apt_update_completed and apt_install_completed before accepting any VPN measurements.",
-    "Keep PR #5 OPEN / DRAFT. Do not merge, mark ready, or alter the production GeoIP builder, release data, DIRECT policy, or PR #6."
+    "Check validation run 43043473870 on branch head b6d5ffcd20dd8e488d6e9c2563f7fda781a5c20d; require complete green job and workflow result.",
+    "Only after green validation, manually dispatch Russian ISP VPN Gate reachability on feature/reachability-full-ru-kz-by with source=vpnobratto, max_vpn_gate_servers=1, max_vpn_gate_attempts=6.",
+    "Inspect pinned DoH, getent, apt update and apt install markers before counting any subsequent VPN activity.",
+    "Keep PR #5 OPEN / DRAFT. Do not merge, mark ready, or alter production GeoIP files, DIRECT policy, or PR #6."
   ],
   "ci_policy": {
     "push_validation_paths": [
@@ -1641,6 +1644,19 @@
       "reachability-vpn-gate.yml"
     ],
     "tests_added": 3,
-    "validation": "pending"
+    "validation": {
+      "run_id": 43043009808,
+      "tested_commit": "d8e679ae7080407e31042a195c545453b05ab9c7",
+      "job_conclusion": "success",
+      "workflow_run_status_at_last_check": "in_progress",
+      "python_tests": 119,
+      "gofmt": "passed",
+      "go_test": "passed",
+      "go_build": "passed",
+      "latest_test_only_commit": "b6d5ffcd20dd8e488d6e9c2563f7fda781a5c20d",
+      "latest_head_validation_run": 43043473870,
+      "latest_head_validation_status": "pending",
+      "live_doh_from_westus2": "not yet verified"
+    }
   }
 }
