@@ -23,7 +23,7 @@
 |---|---|---|---|---|
 | #6 | OPEN / DRAFT | `audit/exact-origin-followup-2026-11` | `9014b18a2f7bf4de9d4493d19b50f399b57b0e3e` | Exact-NLRI / RPKI evidence, review-only |
 | #7 | OPEN / DRAFT | `docs/source-improvement-plan-2026-11` | `3f3dbb51c999b0de833ebda233e7b02f8c082b35` | Source inventory and prefix-audit plan, audit-only |
-| #8 | OPEN / DRAFT | `experiment/vpn-route-candidate-build-2026-11` | `426808bfea6d88d4b09e7f7d71a33ca1ebea0a30` | Pinned VPN source comparison and v38 hostname/IP review |
+| #8 | OPEN / DRAFT | `experiment/vpn-route-candidate-build-2026-11` | `453bf1f69c28fa2f956a7616b3b35af3bcbd1b22` (last branch head before this append-only journal update) | Pinned VPN source comparison and v38 hostname/IP review |
 | #9 | OPEN / DRAFT | `feature/geoip-direct-rukzby-v38` | `b73c9de3be254b1074eff160f5b697ac2762b421` | v38 candidate plus Antifilter BGP direct-block evidence procedure |
 
 Latest metadata check confirms all four PRs are open, draft=true, merged=false, base=main. All four branch names are present. PR #6 and #7 HEADs were unchanged; PR #8 and #9 HEADs above include the work in this journal.
@@ -206,3 +206,12 @@ Append the next dated continuation here. Record exactly what was read, what was 
 - PR #8 run #19 `43065567757` remains `in_progress` at last recheck: unit tests SUCCESS, pinned source build SUCCESS, enrichment step IN PROGRESS, no uploaded artifact. It runs the exact code at parent commit `f9d6ec1...`; the later journal commit is documentation-only and excluded from the workflow path filters. PR #8 current HEAD is `426808b...`.
 - Latest PR metadata: #6/#7 unchanged; #8 HEAD `426808b...`; #9 HEAD `b73c9de...`; all four remain OPEN/DRAFT/merged=false. `main` stays `580a25a...`; `release` stays `d780450...`.
 - Actual BGP registration and snapshot remain NOT VERIFIED / NOT MEASURED. No BGP route count may be reported as zero.
+
+### 2026-11-11 — retry of cancelled PR #8 enrichment
+
+- Re-fetched PR #8 run #19 `43065567757`: attempt 1 completed `cancelled`; `Run unit tests` and `Build pinned VPN route candidates` were SUCCESS; `Enrich v38 Lib4u/Jirnobruh exact-host candidates` was CANCELLED; upload was SKIPPED; artifacts list empty.
+- GitHub run/job metadata did not provide a reliable cancellation actor or reason. Cause is UNKNOWN; do not attribute it to a particular commit, actor, rate limit or API.
+- Used GitHub's single-job rerun action on the cancelled job ID `130679614952`. The API returned success. This retries only the PR #8 candidate job, not the v38 PR #9 workflow and not production.
+- Immediate follow-up showed run #19 `run_attempt=2`, status `pending`, on original workflow head `f9d6ec1f36199bae6c9de9502ec43ee91eb99d9a`; no attempt-2 jobs or artifacts had appeared yet.
+- The run's candidate-build code is unchanged from the verified branch content; docs-only journal commits are not in the workflow's path filters. Wait for attempt 2 to finish before declaring the 360-IP enrichment result.
+- Safety recheck: PRs #6–#9 OPEN/DRAFT; `main` `580a25a...`; `release` `d780450...`; no production changes.
