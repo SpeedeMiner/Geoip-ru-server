@@ -1172,6 +1172,22 @@ def test_target(target: dict[str, Any], exit_info: dict[str, Any], networks: dic
     }
 
 
+def server_measurement_report_fields(
+    server_asn: int,
+    server_asn_ip_metadata: int,
+    server_asn_ripestat: int,
+    server_asn_conflict: bool,
+) -> dict[str, Any]:
+    """Return only metadata retained in the measurement row after preflight enrichment was removed."""
+    return {
+        "SERVER_ASN": server_asn,
+        "SERVER_ASN_IP_METADATA": server_asn_ip_metadata,
+        "SERVER_ASN_RIPESTAT": server_asn_ripestat,
+        "SERVER_ASN_CONFLICT": server_asn_conflict,
+        "SERVER_ORG": "",
+    }
+
+
 def measurement_exit_code(successful_ru_exits: int, requested_ru_exits: int) -> int:
     """A diagnostic artifact without the requested verified RU exits is not a pass."""
     return 0 if successful_ru_exits >= requested_ru_exits else 2
@@ -1425,11 +1441,12 @@ def run(args: argparse.Namespace) -> int:
                                             "PROFILE_URL": server.get("profile_url", ""),
                                             "SERVER_HOSTNAME": server["hostname"],
                                             "SERVER_IP": server_ip,
-                                            "SERVER_ASN": server_asn,
-                                            "SERVER_ASN_IP_METADATA": server_asn_ip_meta,
-                                            "SERVER_ASN_RIPESTAT": server_asn_ripestat,
-                                            "SERVER_ASN_CONFLICT": server_asn_conflict,
-                                            "SERVER_ORG": server_meta["org"],
+                                            **server_measurement_report_fields(
+                                                server_asn,
+                                                server_asn_ip_meta,
+                                                server_asn_ripestat,
+                                                server_asn_conflict,
+                                            ),
                                             "EXIT_ASN_IP_METADATA": exit_asn_ip_meta,
                                             "EXIT_ASN_RIPESTAT": exit_asn_ripestat,
                                             "EXIT_ASN_CONFLICT": exit_asn_conflict,
