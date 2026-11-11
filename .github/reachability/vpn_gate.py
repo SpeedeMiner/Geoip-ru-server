@@ -664,7 +664,7 @@ def fetch_vpnobratno_bytes(
     timeout: int = 25,
     max_bytes: int = VPNOBRATNO_FETCH_HARD_MAX_BYTES,
 ) -> bytes:
-    """Fetch bounded VPNObratno content without proxies or cross-origin redirects."""
+    """Fetch VPNObratno content over pinned-DoH HTTPS without system DNS."""
     if (
         isinstance(max_bytes, bool)
         or not isinstance(max_bytes, int)
@@ -682,31 +682,121 @@ def fetch_vpnobratno_bytes(
         or parts.password is not None
     ):
         raise ProbeError("VPNObratno fetch URL is not on the trusted HTTPS origin")
-    request = urllib.request.Request(
-        url, headers={"User-Agent": USER_AGENT, "Accept": "*/*"}
-    )
-    opener = urllib.request.build_opener(
-        urllib.request.ProxyHandler({}),
-        VPNObratnoSameOriginRedirect(),
-    )
-    try:
-        with opener.open(request, timeout=timeout) as response:
-            final_parts = urllib.parse.urlsplit(response.geturl())
-            if (
-                final_parts.scheme.lower() != "https"
-                or (final_parts.hostname or "").lower() != VPNOBRATNO_HOST
-                or final_parts.port not in (None, 443)
-            ):
-                raise ProbeError("VPNObratno response escaped the trusted HTTPS origin")
-            payload = response.read(max_bytes + 1)
-            if len(payload) > max_bytes:
-                raise ProbeError(
-                    f"VPNObratno response exceeds configured {max_bytes}-byte limit"
-                )
-            return payload
-    except (urllib.error.URLError, TimeoutError, OSError) as exc:
-        raise ProbeError(f"VPNObratno same-origin fetch failed: {exc}") from exc
+    if isinstance(timeout, bool) or not isinstance(timeout, int) or timeout < 1:
+        raise ValueError("VPNObratto fetch timeout must be a positive integer")
 
+    deadline = time.monotonic() + timeout
+    current_url = url
+    redirect_codes = {301, 302, 303, 307, 308}
+    for redirect_index in range(4):
+        parts = urllib.parse.urlsplit(current_url)
+        hostname = (parts.hostname or "").lower()
+        if (
+            parts.scheme.lower() != "https"
+            or hostname != VPNOBRATNO_HOST
+            or parts.port not in (None, 443)
+            or parts.username is not None
+            or parts.password is not None
+        ):
+            raise ProbeError("VPNObratno download attempted a cross-origin or insecure redirect")
+
+        remaining = deadline - time.monotonic()
+        if remaining <= 0:
+            raise TimeoutError("VPNObratto pinned HTTPS fetch exceeded its wall-clock deadline")
+        # The resolver endpoints themselves are pinned IPs. This avoids the
+        # runner's system resolver, which could stall inside getaddrinfo().
+        addresses = doh_query(hostname, "A", timeout=max(1, min(4, int(remaining))))
+        public_addresses: list[str] = []
+        for value in addresses:
+            try:
+                address = ipaddress.ip_address(str(value))
+            except ValueError:
+                continue
+            if address.version == 4 and address.is_global:
+                public_addresses.append(str(address))
+        public_addresses = sorted(set(public_addresses))
+        if not public_addresses:
+            raise ProbeError("pinned DoH returned no public IPv4 for VPNObratto")
+
+        errors: list[str] = []
+        redirect_target = ""
+        request_path = urllib.parse.urlunsplit(
+            ("", "", parts.path or "/", parts.query, "")
+        )
+        for address in public_addresses[:2]:
+            remaining = deadline - time.monotonic()
+            if remaining <= 0:
+                break
+            connection = None
+            try:
+                connection = PinnedHTTPSConnection(
+                    hostname, address, port=443, timeout=max(1, min(6, int(remaining)))
+                )
+                connection.request(
+                    "GET",
+                    request_path,
+                    headers={
+                        "User-Agent": USER_AGENT,
+                        "Accept": "*/*",
+                        "Connection": "close",
+                    },
+                )
+                if connection.sock is not None:
+                    connection.sock.settimeout(max(0.1, deadline - time.monotonic()))
+                response = connection.getresponse()
+                if response.status in redirect_codes:
+                    location = response.getheader("Location") or ""
+                    if not location:
+                        raise ProbeError("VPNObratto redirect has no Location header")
+                    candidate = urllib.parse.urljoin(current_url, location)
+                    redirected = urllib.parse.urlsplit(candidate)
+                    if (
+                        redirected.scheme.lower() != "https"
+                        or (redirected.hostname or "").lower() != VPNOBRATNO_HOST
+                        or redirected.port not in (None, 443)
+                        or redirected.username is not None
+                        or redirected.password is not None
+                    ):
+                        raise ProbeError(
+                            "VPNObratto download attempted a cross-origin or insecure redirect"
+                        )
+                    redirect_target = candidate
+                    break
+                if response.status < 200 or response.status >= 300:
+                    raise ProbeError(f"HTTP {response.status} from VPNObratto")
+                payload = bytearray()
+                while len(payload) <= max_bytes:
+                    remaining = deadline - time.monotonic()
+                    if remaining <= 0:
+                        raise TimeoutError(
+                            "VPNObratto response body exceeded its wall-clock deadline"
+                        )
+                    if connection.sock is None:
+                        raise ProbeError("VPNObratto HTTPS socket closed before response completed")
+                    connection.sock.settimeout(max(0.1, remaining))
+                    read_size = min(4096, max_bytes + 1 - len(payload))
+                    chunk = response.read1(read_size)
+                    if not chunk:
+                        break
+                    payload.extend(chunk)
+                if len(payload) > max_bytes:
+                    raise ProbeError(
+                        f"VPNObratto response exceeds configured {max_bytes}-byte limit"
+                    )
+                return bytes(payload)
+            except (OSError, TimeoutError, http.client.HTTPException, ssl.SSLError, ProbeError) as exc:
+                errors.append(f"{address}: {exc}")
+            finally:
+                if connection is not None:
+                    connection.close()
+
+        if redirect_target:
+            current_url = redirect_target
+            continue
+        details = "; ".join(errors) if errors else "wall-clock budget exhausted"
+        raise ProbeError("pinned VPNObratto HTTPS fetch failed: " + details)
+
+    raise ProbeError("VPNObratto download exceeded the same-origin redirect limit")
 
 def parse_vpnobratno_listing(html: str) -> list[dict[str, str]]:
     """Return supported same-origin OpenVPN profile links from the public RU list."""
@@ -933,7 +1023,7 @@ def discover_vpnobratno_servers(
         try:
             print(
                 f"[vpn-gate] profile_fetch_started={profile_index}/{len(selected_profiles)} "
-                "wall_timeout=15s",
+                "wall_timeout=20s transport=pinned_doh_https",
                 flush=True,
             )
             payload = call_with_wall_clock_timeout(
@@ -942,7 +1032,7 @@ def discover_vpnobratno_servers(
                     timeout=12,
                     max_bytes=VPNOBRATNO_PROFILE_MAX_BYTES,
                 ),
-                15,
+                20,
             )
             print(
                 f"[vpn-gate] profile_fetch_completed={profile_index}/{len(selected_profiles)} "

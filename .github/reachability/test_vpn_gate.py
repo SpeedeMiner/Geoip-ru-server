@@ -271,6 +271,13 @@ class UbuntuAptDNSBootstrapTests(unittest.TestCase):
             "sudo timeout --signal=TERM --kill-after=2s 45s python3 -B - <<'PY'",
             workflow,
         )
+        self.assertIn("    timeout-minutes: 12\\n", workflow)
+        self.assertIn("        timeout-minutes: 9\\n", workflow)
+        self.assertIn(
+            "sudo timeout --verbose --signal=TERM --kill-after=5s 7m "
+            "python3 .github/reachability/vpn_gate.py",
+            workflow,
+        )
 
     def test_pinned_doh_answers_create_public_ipv4_hosts_overrides(self):
         answers = {
@@ -1767,7 +1774,9 @@ class VPNObrattoFetchSafetyTests(unittest.TestCase):
         )
 
     def test_fetcher_rejects_untrusted_input_before_opening_network(self):
-        with patch.object(vpn_gate.urllib.request, "build_opener") as build_opener:
+        with patch.object(vpn_gate, "doh_query") as doh, patch.object(
+            vpn_gate, "PinnedHTTPSConnection"
+        ) as pinned:
             for url in (
                 "http://vpnobratno.info/profile.ovpn",
                 "https://evil.example/profile.ovpn",
@@ -1777,56 +1786,159 @@ class VPNObrattoFetchSafetyTests(unittest.TestCase):
                 with self.subTest(url=url):
                     with self.assertRaisesRegex(vpn_gate.ProbeError, "trusted HTTPS origin"):
                         vpn_gate.fetch_vpnobratno_bytes(url)
-            build_opener.assert_not_called()
+            doh.assert_not_called()
+            pinned.assert_not_called()
 
-    def test_fetcher_enforces_response_size_during_read(self):
+    def test_fetcher_uses_pinned_doh_and_enforces_response_size_during_read(self):
+        class FakeSocket:
+            def __init__(self):
+                self.timeouts = []
+
+            def settimeout(self, value):
+                self.timeouts.append(value)
+
         class FakeResponse(io.BytesIO):
+            status = 200
+
             def __init__(self, payload):
                 super().__init__(payload)
                 self.read_limit = None
 
-            def geturl(self):
-                return "https://vpnobratno.info/test"
+            def getheader(self, name):
+                return None
 
-            def read(self, size=-1):
+            def read1(self, size=-1):
                 self.read_limit = size
                 return super().read(size)
 
-        class FakeOpener:
-            def __init__(self, response):
+        class FakeConnection:
+            def __init__(self, response, host, address, port, timeout):
                 self.response = response
+                self.host = host
+                self.address = address
+                self.port = port
+                self.timeout = timeout
+                self.sock = FakeSocket()
+                self.request_args = None
+                self.closed = False
 
-            def open(self, request, timeout):
+            def request(self, method, path, headers):
+                self.request_args = (method, path, headers)
+
+            def getresponse(self):
                 return self.response
 
+            def close(self):
+                self.closed = True
+
         url = "https://vpnobratno.info/test"
-        exact_limit_response = FakeResponse(b"1234")
-        with patch.object(
-            vpn_gate.urllib.request,
-            "build_opener",
-            return_value=FakeOpener(exact_limit_response),
+        exact_response = FakeResponse(b"1234")
+        exact_connections = []
+        def exact_factory(host, address, port, timeout):
+            item = FakeConnection(exact_response, host, address, port, timeout)
+            exact_connections.append(item)
+            return item
+
+        with patch.object(vpn_gate, "doh_query", return_value=["8.8.8.8"]) as doh, patch.object(
+            vpn_gate, "PinnedHTTPSConnection", side_effect=exact_factory
         ):
-            self.assertEqual(
-                vpn_gate.fetch_vpnobratno_bytes(url, max_bytes=4), b"1234"
-            )
-        self.assertEqual(exact_limit_response.read_limit, 5)
+            self.assertEqual(vpn_gate.fetch_vpnobratno_bytes(url, timeout=12, max_bytes=4), b"1234")
+        doh.assert_called_once_with("vpnobratno.info", "A", timeout=4)
+        self.assertEqual(exact_response.read_limit, 5)
+        self.assertEqual(len(exact_connections), 1)
+        connection = exact_connections[0]
+        self.assertEqual(
+            (connection.host, connection.address, connection.port),
+            ("vpnobratno.info", "8.8.8.8", 443),
+        )
+        self.assertEqual(connection.request_args[0:2], ("GET", "/test"))
+        self.assertTrue(connection.closed)
+        self.assertTrue(connection.sock.timeouts)
 
         oversized_response = FakeResponse(b"12345")
-        with patch.object(
-            vpn_gate.urllib.request,
-            "build_opener",
-            return_value=FakeOpener(oversized_response),
+        with patch.object(vpn_gate, "doh_query", return_value=["8.8.8.8"]), patch.object(
+            vpn_gate, "PinnedHTTPSConnection",
+            side_effect=lambda host, address, port, timeout: FakeConnection(
+                oversized_response, host, address, port, timeout
+            ),
         ):
-            with self.assertRaisesRegex(vpn_gate.ProbeError, "exceeds configured 4-byte limit"):
-                vpn_gate.fetch_vpnobratno_bytes(url, max_bytes=4)
+            with self.assertRaisesRegex(
+                vpn_gate.ProbeError, "exceeds configured 4-byte limit"
+            ):
+                vpn_gate.fetch_vpnobratno_bytes(url, timeout=12, max_bytes=4)
         self.assertEqual(oversized_response.read_limit, 5)
 
-        with patch.object(vpn_gate.urllib.request, "build_opener") as build_opener:
+        with patch.object(vpn_gate, "doh_query") as doh:
             with self.assertRaisesRegex(ValueError, "max_bytes"):
                 vpn_gate.fetch_vpnobratno_bytes(
                     url, max_bytes=vpn_gate.VPNOBRATNO_FETCH_HARD_MAX_BYTES + 1
                 )
-            build_opener.assert_not_called()
+            doh.assert_not_called()
+
+    def test_fetcher_follows_same_origin_redirect_but_rejects_cross_origin(self):
+        class FakeSocket:
+            def settimeout(self, _value):
+                pass
+
+        class FakeResponse(io.BytesIO):
+            def __init__(self, status, payload=b"", location=None):
+                super().__init__(payload)
+                self.status = status
+                self.location = location
+
+            def getheader(self, name):
+                return self.location if name.lower() == "location" else None
+
+            def read1(self, size=-1):
+                return super().read(size)
+
+        class FakeConnection:
+            def __init__(self, response, host, address, port, timeout):
+                self.response = response
+                self.sock = FakeSocket()
+                self.host = host
+                self.address = address
+                self.port = port
+                self.timeout = timeout
+                self.path = None
+
+            def request(self, method, path, headers):
+                self.path = path
+
+            def getresponse(self):
+                return self.response
+
+            def close(self):
+                pass
+
+        url = "https://vpnobratno.info/list"
+        responses = [
+            FakeResponse(302, location="/servers/profile.ovpn"),
+            FakeResponse(200, b"profile"),
+        ]
+        connections = []
+        def factory(host, address, port, timeout):
+            item = FakeConnection(responses.pop(0), host, address, port, timeout)
+            connections.append(item)
+            return item
+
+        with patch.object(vpn_gate, "doh_query", return_value=["8.8.8.8"]), patch.object(
+            vpn_gate, "PinnedHTTPSConnection", side_effect=factory
+        ):
+            self.assertEqual(vpn_gate.fetch_vpnobratno_bytes(url), b"profile")
+        self.assertEqual([item.path for item in connections], ["/list", "/servers/profile.ovpn"])
+
+        bad_redirect = FakeResponse(302, location="https://evil.example/profile.ovpn")
+        with patch.object(vpn_gate, "doh_query", return_value=["8.8.8.8"]), patch.object(
+            vpn_gate, "PinnedHTTPSConnection",
+            side_effect=lambda host, address, port, timeout: FakeConnection(
+                bad_redirect, host, address, port, timeout
+            ),
+        ):
+            with self.assertRaisesRegex(
+                vpn_gate.ProbeError, "cross-origin or insecure redirect"
+            ):
+                vpn_gate.fetch_vpnobratno_bytes(url)
 
     def test_discovery_uses_the_same_origin_fetcher_by_default(self):
         defaults = vpn_gate.discover_vpnobratno_servers.__defaults__
