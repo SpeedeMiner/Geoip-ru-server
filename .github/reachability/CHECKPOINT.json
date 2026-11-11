@@ -1,14 +1,14 @@
 {
   "schema_version": 1,
-  "updated_at_utc": "2026-11-11T16:12:01Z",
+  "updated_at_utc": "2026-11-11T16:15:33Z",
   "repository": "SpeedeMiner/Geoip-ru-server",
   "pull_request": 5,
   "pull_request_url": "https://github.com/SpeedeMiner/Geoip-ru-server/pull/5",
   "branch": "feature/reachability-full-ru-kz-by",
   "recorded_pr_head_before_checkpoint_commit": "e339340436f6d17a31494c16f2a7c0f22a82e165",
   "base_sha": "a68e5d6589361814cb1cfedd2af7857e4af806fa",
-  "state": "RUN20_TIMEOUT_OVERRUN_ACTIONS_JOB_STILL_IN_PROGRESS_OWNER_CANCELLATION_REQUIRED",
-  "current_phase": "RUN20_TIMEOUT_OVERRUN_WAIT_FOR_OWNER_CANCEL_OR_GITHUB_TERMINAL_STATE",
+  "state": "RUN20_CANCELLED_TIMEOUT_OVERRUN_NO_ARTIFACT_NO_VERIFIABLE_TUNNEL",
+  "current_phase": "INVESTIGATE_RUNNER_WATCHDOG_AND_TERMINATION_BEFORE_RUN21",
   "completed": [
     "repository_reconnaissance",
     "protobuf_inventory_exporter",
@@ -243,7 +243,11 @@
     "vpnobratto_run20_exceeded_process_step_and_job_timeouts",
     "vpnobratto_run20_github_run_job_still_in_progress_at_16_12_01z",
     "vpnobratto_run20_no_artifact_available_after_timeout_overrun",
-    "vpnobratto_run20_cancel_action_not_exposed_through_connected_github_tools"
+    "vpnobratto_run20_cancel_action_not_exposed_through_connected_github_tools",
+    "vpnobratto_run20_completed_cancelled_2026_11_11_16_14_53z",
+    "vpnobratto_run20_artifact_absent_after_cancel",
+    "vpnobratto_run20_job_log_unavailable_blobnotfound_after_cancel",
+    "vpnobratto_run20_timeout_overrun_recorded_terminal"
   ],
   "latest_successful_validation_run": 43051897730,
   "latest_successful_validation_commit": "a9967f52b4bd3d7a50638ad9ce63d685d57b84a9",
@@ -398,7 +402,7 @@
     "VPNObratno discovery response bodies are bounded during streaming: at most 2,000,000 bytes for the listing and 64,000 bytes for each profile; the fetch helper rejects caller limits above 8,000,000 bytes and reads only one byte beyond the resource limit.",
     "Manual VPNObratno dispatch preflight on 2026-11-11 confirmed that .github/workflows/reachability-vpn-gate.yml is present only on feature/reachability-full-ru-kz-by, not on default branch main. The main workflow tree currently contains only blank.yml and prefix-audit-validation.yml. GitHub workflow_dispatch requires the workflow file on the default branch before manual dispatch is available; no VPN run was started.",
     "The current VPNObratto workflow has a 7-minute collector watchdog, 9-minute measurement-step timeout and 12-minute job timeout; do not reuse historical 10/20-minute or 120-minute limits from older revisions.",
-    "Run #20 exceeded its 7m collector, 9m step and 12m job timeout ceilings while GitHub still reported the job active; the precise runner/controller cause is unknown, and this is not evidence of target blocking."
+    "VPNObratto run #20 completed cancelled after exceeding the configured 7m collector, 9m step and 12m job timeout ceilings. Five usable profiles and a sixth fetch start are confirmed, but later phases are unknown because no terminal log or artifact was available. This is not target-block evidence."
   ],
   "policy_invariants": {
     "geoip_RU_dat_mutated": false,
@@ -421,11 +425,10 @@
     "production_release_artifact_byte_delta_verified": false
   },
   "next_steps": [
-    "Owner requests cancellation of run #20 from its GitHub Actions run page; no connected GitHub cancellation action is exposed.",
-    "Do not dispatch another VPN workflow until run #20 is terminal.",
-    "After run #20 is terminal, retrieve the full job log and uploaded artifacts if any; confirm whether collector watchdog/step timeout executed or the runner/controller lost status.",
-    "Update run20_result with terminal run/job conclusion, final markers, artifact ID/hash and exact profile/OpenVPN/exit/target counts.",
-    "If failure is confined to VPNObratno profile 6 or another discovery stage, diagnose from terminal logs before changing code or dispatching run #21.",
+    "Investigate why run #20 did not reach a terminal GitHub state within the 7m process guard, 9m step timeout and 12m job timeout; use available terminal job metadata if it becomes retrievable.",
+    "Review pinned VPNObratno HTTPS fetch, socket/read timeouts and GNU timeout/process-group behavior; do not claim the sixth profile fetch itself caused the full 13-minute overrun without logs.",
+    "Add or improve deterministic timeout/termination observability and tests before another live attempt, if source-level evidence justifies a change.",
+    "Do not dispatch another VPN workflow until the runner/watchdog issue has been addressed and the new code/workflow has green CI.",
     "Keep PR #5 OPEN / DRAFT; do not merge, mark ready, rebase, or alter production GeoIP outputs, DIRECT policy, ASN allowlists, or PR #6."
   ],
   "ci_policy": {
@@ -1092,13 +1095,13 @@
     "validation_result": "SUCCESS: 108 Python tests, py_compile/JSON validation, gofmt, go test ./..., go build."
   },
   "current_manual_dispatch": {
-    "next_run_number": 20,
-    "state": "timeout_overrun_in_progress_owner_cancellation_required",
+    "next_run_number": 21,
+    "state": "run20_terminal_cancelled_investigate_before_next_dispatch",
     "run_id": 43053531258,
     "job_id": 130636812894,
     "run_url": "https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43053531258",
     "execution_commit": "e339340436f6d17a31494c16f2a7c0f22a82e165",
-    "observed_at_utc": "2026-11-11T16:12:01Z",
+    "observed_at_utc": "2026-11-11T16:15:33Z",
     "parameters": {
       "branch": "feature/reachability-full-ru-kz-by",
       "source": "vpnobratto",
@@ -1112,9 +1115,12 @@
     "job_id": 130636812894,
     "branch": "feature/reachability-full-ru-kz-by",
     "commit": "e339340436f6d17a31494c16f2a7c0f22a82e165",
-    "status": "in_progress_timeout_overrun",
-    "conclusion": null,
-    "observed_at_utc": "2026-11-11T16:12:01Z"
+    "status": "completed",
+    "conclusion": "cancelled",
+    "updated_at_utc": "2026-11-11T16:14:53Z",
+    "last_owner_visible_marker": "profile_fetch_started=6/24 wall_timeout=20s transport=pinned_doh_https",
+    "artifact_count": 0,
+    "job_log_download": "BlobNotFound"
   },
   "cancellation_investigation": {
     "run7_cancel_request": {
@@ -1525,7 +1531,7 @@
     "source": "vpnobratto",
     "max_vpn_gate_servers": 1,
     "max_vpn_gate_attempts": 6,
-    "precondition": "Run #20 must be terminal and fully reviewed; owner cancellation is currently required because it exceeded all configured timeouts.",
+    "precondition": "Run #20 is cancelled. Diagnose the watchdog/runner overrun and validate any fix before a new manual dispatch.",
     "not_yet_dispatched": true
   },
   "run14_result": {
@@ -1805,10 +1811,10 @@
     "run_started_at_utc": "2026-11-11T15:57:47Z",
     "job_started_at_utc": "2026-11-11T15:57:52Z",
     "measurement_step_started_at_utc": "2026-11-11T15:58:36Z",
-    "observed_at_utc": "2026-11-11T16:12:01Z",
-    "run_status": "in_progress",
-    "job_status": "in_progress",
-    "measurement_step_status": "in_progress",
+    "observed_at_utc": "2026-11-11T16:15:33Z",
+    "run_status": "completed",
+    "job_status": "completed",
+    "measurement_step_status": "in_progress_in_cancelled_job",
     "upload_step_status": "pending",
     "artifacts": [],
     "last_owner_visible_log_marker": "profile_fetch_started=6/24 wall_timeout=20s transport=pinned_doh_https",
@@ -1817,13 +1823,59 @@
     "expected_step_timeout_utc": "2026-11-11T16:07:36Z",
     "expected_job_timeout_utc": "2026-11-11T16:09:52Z",
     "all_configured_timeouts_exceeded": true,
-    "job_logs_api": "BlobNotFound_while_run_reported_active",
+    "job_logs_api": "BlobNotFound_after_cancellation",
     "cancellation_tool_available": false,
     "confirmed_openvpn_attempts": 0,
     "confirmed_verified_ru_exits": 0,
     "confirmed_target_measurement_rows": 0,
     "phase_after_last_marker": "unknown",
     "diagnosis": "Actions run and job remained in_progress after the collector process, step and job nominal timeout ceilings. Available read-only REST state does not distinguish a still-running measurement process from a stale/lost runner or controller status.",
-    "owner_action": "Request Cancel workflow on the GitHub Actions run page; wait for terminal state before dispatching any subsequent run."
+    "owner_action": "Request Cancel workflow on the GitHub Actions run page; wait for terminal state before dispatching any subsequent run.",
+    "run_conclusion": "cancelled",
+    "job_conclusion": "cancelled",
+    "cancellation_actor": "unknown",
+    "owner_last_visible_marker": "profile_fetch_started=6/24 wall_timeout=20s transport=pinned_doh_https"
+  },
+  "run20_result": {
+    "run_id": 43053531258,
+    "run_url": "https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43053531258",
+    "run_number": 20,
+    "job_id": 130636812894,
+    "branch": "feature/reachability-full-ru-kz-by",
+    "commit": "e339340436f6d17a31494c16f2a7c0f22a82e165",
+    "status": "completed",
+    "conclusion": "cancelled",
+    "updated_at_utc": "2026-11-11T16:14:53Z",
+    "setup": "success",
+    "geoip_checksum": "success",
+    "inventory": {
+      "RU": 76293,
+      "PRIVATE": 151,
+      "total": 76444
+    },
+    "latest_owner_visible_marker": "profile_fetch_started=6/24 wall_timeout=20s transport=pinned_doh_https",
+    "discovery_listing_bytes": 21587,
+    "profile_links_found": 29,
+    "profile_download_cap": 24,
+    "confirmed_usable_profiles": 5,
+    "confirmed_unique_server_hosts": 5,
+    "sixth_profile_fetch_started": true,
+    "measurement_step_summary_status": "in_progress_in_cancelled_job",
+    "artifact_upload_step_summary_status": "pending",
+    "artifacts": [],
+    "logs_download": "BlobNotFound",
+    "openvpn_attempts_confirmed_from_available_evidence": 0,
+    "verified_ru_exits_confirmed_from_available_evidence": 0,
+    "target_measurement_rows_confirmed_from_available_evidence": 0,
+    "later_phases": "unknown_after_sixth_profile_fetch_started",
+    "configured_timeouts_exceeded": {
+      "process_guard_minutes": 7,
+      "process_kill_grace_seconds": 5,
+      "measurement_step_minutes": 9,
+      "job_minutes": 12
+    },
+    "cancellation_actor": "unknown",
+    "diagnosis": "The Actions run exceeded all nominal process/step/job timeout ceilings and was later marked cancelled. No terminal logs or artifacts are available to distinguish a still-running process from a lost/stale hosted runner or controller state.",
+    "interpretation": "Five profile downloads completed successfully and the sixth started. Later discovery/OpenVPN/exit/target phases are unknown; no target blocking or residential ISP verdict is supported."
   }
 }
