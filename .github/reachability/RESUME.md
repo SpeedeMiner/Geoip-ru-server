@@ -69,13 +69,13 @@ Workflow integration: `.github/workflows/reachability-validation.yml` now runs o
 - Normal-path cleanup calls terminate → wait(8s) → kill → wait(5s). If Python is forcibly killed, GNU timeout's validated process-group KILL is expected to include OpenVPN and its inherited descendants.
 - Thus the demonstrated process-tree cleanup gap is now addressed for the exact sudo/GNU-timeout group topology used by the workflow. The independent GitHub runner/controller state-overrun question remains an observability/runner-platform limitation.
 
-## Next steps
+## Next steps and current blocker
 
-1. Query the current PR #5 head and latest workflow run state.
-2. Keep run #21 blocked until this green preflight and source review are confirmed from the live branch head (already achieved as of run #200).
-3. Before a live pilot, re-check there is no queued/in-progress VPN workflow run. Then at most one manual pilot: `source=vpnobratno`, one successful verified RU exit requested, maximum six profile attempts. Observe short log checkpoints and stop interpreting after the first missing phase marker; never run overlapping VPN pilots.
-4. For the pilot, separately record: profile discovery count/results; OpenVPN process start/exit; route installed; two-source public exit IP/country agreement; exit ASN/prefix; each target DNS A/AAAA and HTTPS result; artifact presence and digest. No verified RU exit means no target verdict.
-5. After the pilot, append the full evidence and limitations to WORKLOG and update CHECKPOINT. Do not overwrite historical run records.
+- The one-shot VPNObratto pilot is technically ready after the green hosted-runner preflight, but **Run #21 has not been dispatched**.
+- One browser-dispatch attempt was refused before the browser session started because the automation service wallet was insufficient. GitHub's workflow form was never opened or submitted; no GitHub run or VPN job was created. This is a tool/billing blocker, not an Actions or VPN failure. Do not retry that browser action while the refusal remains.
+- When a supported GitHub Actions `workflow_dispatch` capability is available (or the user resolves the browser-service wallet blocker), query the live branch head and confirm again that no VPN run is queued/in progress. Then send exactly one run with branch `feature/reachability-full-ru-kz-by`, `source=vpnobratno`, `max_vpn_gate_servers=1`, and `max_vpn_gate_attempts=6`.
+- For that pilot, separately record: profile discovery/download results; OpenVPN process start/exit; route installed; two-source public exit IP/country agreement; exit ASN/prefix; each target DNS A/AAAA and HTTPS result; artifact presence and digest. No verified RU exit means no target verdict.
+- After the pilot reaches terminal state, append the full evidence and limitations to WORKLOG and update CHECKPOINT. Do not overwrite historical run records.
 
 ## Continuity rules
 
