@@ -183,6 +183,54 @@ class VPNExitVerificationTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "max_attempts"):
             vpn_gate.select_diverse_servers([], max_servers=2, max_attempts=1)
 
+    def test_selection_stops_when_distinct_asn_attempt_budget_is_met(self):
+        servers = [
+            {"hostname": f"host-{index}", "server_ip": f"8.8.8.{index}", "score": 100 - index}
+            for index in range(1, 11)
+        ]
+        asns = {
+            "8.8.8.1": 12345,
+            "8.8.8.2": 54321,
+            "8.8.8.3": 65001,
+            "8.8.8.4": 20485,
+            "8.8.8.5": 41789,
+            "8.8.8.6": 41733,
+        }
+        with patch.object(
+            vpn_gate, "selection_network_info",
+            side_effect=lambda ip: {"asn": asns[ip], "prefix": ""},
+        ) as lookup:
+            selected, metadata = vpn_gate.select_diverse_servers(
+                servers, max_servers=1, max_attempts=6
+            )
+
+        self.assertEqual(len(selected), 6)
+        self.assertEqual(metadata["candidate_servers_inspected"], 6)
+        self.assertEqual(metadata["server_asn_lookups"], 6)
+        self.assertEqual(metadata["selected_distinct_asns"], 6)
+        self.assertEqual(lookup.call_count, 6)
+
+    def test_selection_keeps_scanning_when_distinct_asn_budget_not_yet_met(self):
+        servers = [
+            {"hostname": "a", "server_ip": "8.8.8.1", "score": 100},
+            {"hostname": "b", "server_ip": "8.8.8.2", "score": 90},
+            {"hostname": "c", "server_ip": "8.8.8.3", "score": 80},
+            {"hostname": "d", "server_ip": "8.8.8.4", "score": 70},
+        ]
+        asns = {"8.8.8.1": 12345, "8.8.8.2": 12345, "8.8.8.3": 65001, "8.8.8.4": 20485}
+        with patch.object(
+            vpn_gate, "selection_network_info",
+            side_effect=lambda ip: {"asn": asns[ip], "prefix": ""},
+        ) as lookup:
+            selected, metadata = vpn_gate.select_diverse_servers(
+                servers, max_servers=1, max_attempts=3
+            )
+
+        self.assertEqual(metadata["candidate_servers_inspected"], 4)
+        self.assertEqual(metadata["selected_distinct_asns"], 3)
+        self.assertEqual([server["hostname"] for server in selected], ["a", "c", "d"])
+        self.assertEqual(lookup.call_count, 4)
+
 class RIPEstatSelectionNetworkInfoTests(unittest.TestCase):
     def test_selection_lookup_uses_bounded_ipv4_curl(self):
         payload = {"data": {"prefix": "8.8.8.0/24", "asns": ["AS15169"]}}
