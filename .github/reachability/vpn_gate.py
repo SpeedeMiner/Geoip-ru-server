@@ -2216,6 +2216,16 @@ def persist_vpn_gate_reports(
     output.mkdir(parents=True, exist_ok=True)
     errors: list[str] = []
     pending_signal: BaseException | None = None
+    deferred_signals: list[int] = []
+    previous_handlers: dict[int, Any] = {}
+
+    def defer_termination(signum: int, _frame: Any) -> None:
+        if signum not in deferred_signals:
+            deferred_signals.append(signum)
+
+    for signum in (signal.SIGTERM, signal.SIGINT):
+        previous_handlers[signum] = signal.getsignal(signum)
+        signal.signal(signum, defer_termination)
 
     def write_atomic(filename: str, writer: Any) -> None:
         nonlocal pending_signal
@@ -2242,37 +2252,44 @@ def persist_vpn_gate_reports(
                     f"{filename} temporary cleanup: {type(cleanup_error).__name__}"
                 )
 
-    reports = (
-        (
-            "vpn_gate_providers.tsv",
-            lambda path: runner.write_tsv(path, provider_rows, PROVIDER_FIELDS),
-        ),
-        (
-            "vpn_gate_measurements.jsonl",
-            lambda path: runner.write_jsonl(path, measurement_rows),
-        ),
-        (
-            "vpn_gate_geoip_candidates.tsv",
-            lambda path: runner.write_tsv(path, candidates, CANDIDATE_FIELDS),
-        ),
-        (
-            "vpn_gate_raw.jsonl",
-            lambda path: runner.write_jsonl(path, raw_rows),
-        ),
-    )
-    for filename, writer in reports:
-        write_atomic(filename, writer)
+    try:
+        reports = (
+            (
+                "vpn_gate_providers.tsv",
+                lambda path: runner.write_tsv(path, provider_rows, PROVIDER_FIELDS),
+            ),
+            (
+                "vpn_gate_measurements.jsonl",
+                lambda path: runner.write_jsonl(path, measurement_rows),
+            ),
+            (
+                "vpn_gate_geoip_candidates.tsv",
+                lambda path: runner.write_tsv(path, candidates, CANDIDATE_FIELDS),
+            ),
+            (
+                "vpn_gate_raw.jsonl",
+                lambda path: runner.write_jsonl(path, raw_rows),
+            ),
+        )
+        for filename, writer in reports:
+            write_atomic(filename, writer)
 
-    summary["report_write_errors"] = list(errors)
-    write_atomic(
-        "vpn_gate_summary.json",
-        lambda path: path.write_text(
-            json.dumps(summary, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
-            encoding="utf-8",
-        ),
-    )
+        summary["report_write_errors"] = list(errors)
+        write_atomic(
+            "vpn_gate_summary.json",
+            lambda path: path.write_text(
+                json.dumps(summary, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
+                encoding="utf-8",
+            ),
+        )
+
+    finally:
+        for signum, handler in previous_handlers.items():
+            signal.signal(signum, handler)
     if pending_signal is not None:
         raise pending_signal
+    if deferred_signals:
+        raise SystemExit(128 + deferred_signals[0])
     return errors
 
 

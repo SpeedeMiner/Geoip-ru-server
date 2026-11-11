@@ -824,31 +824,37 @@ class VPNGateFirewallRejectTests(unittest.TestCase):
 
 
 class VPNGateReportPersistenceTests(unittest.TestCase):
-    def test_sigterm_during_one_report_still_attempts_remaining_artifacts(self):
+    def test_sigterm_between_report_writes_is_deferred_until_all_artifacts_are_persisted(self):
         with tempfile.TemporaryDirectory() as directory:
             output = pathlib.Path(directory)
             summary = {}
             real_write_tsv = vpn_gate.runner.write_tsv
             tsv_calls = []
+            previous_term_handler = signal.getsignal(signal.SIGTERM)
 
             def write_tsv(path, rows, fields):
                 tsv_calls.append(path.name)
                 if len(tsv_calls) == 1:
-                    raise SystemExit(143)
+                    os.kill(os.getpid(), signal.SIGTERM)
                 return real_write_tsv(path, rows, fields)
 
             with patch.object(vpn_gate.runner, "write_tsv", side_effect=write_tsv):
                 with self.assertRaises(SystemExit) as raised:
-                    vpn_gate.persist_vpn_gate_reports(output, [], [], [], [], summary)
+                    vpn_gate.persist_vpn_gate_reports(
+                        output, [], [], [], [], summary
+                    )
 
-            self.assertEqual(raised.exception.code, 143)
+            self.assertEqual(raised.exception.code, 128 + signal.SIGTERM)
             self.assertEqual(len(tsv_calls), 2)
-            self.assertEqual(summary["report_write_errors"][0].split(":")[0], "vpn_gate_providers.tsv")
+            self.assertEqual(signal.getsignal(signal.SIGTERM), previous_term_handler)
+            self.assertEqual(summary["report_write_errors"], [])
+            self.assertTrue((output / "vpn_gate_providers.tsv").exists())
             self.assertTrue((output / "vpn_gate_measurements.jsonl").exists())
             self.assertTrue((output / "vpn_gate_geoip_candidates.tsv").exists())
             self.assertTrue((output / "vpn_gate_raw.jsonl").exists())
             self.assertTrue((output / "vpn_gate_summary.json").exists())
             self.assertFalse(any(path.name.endswith(".tmp") for path in output.iterdir()))
+
 
 
 class VPNNetnsWrapperSignalTests(unittest.TestCase):
