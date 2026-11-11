@@ -858,3 +858,17 @@ Durable resume point for PR #5. After any conversation/network interruption, rea
 - Added `.github/reachability/RESUME.md` as a read-first navigation/continuity guide. New sessions should read it, then the last dated WORKLOG entry and CHECKPOINT, and query the live PR head/runs.
 - PR #5 remains OPEN / DRAFT. No production GeoIP builder/data, release assets, DIRECT policy, ASN allowlists, main/release, PR #6 or other PR branches were changed.
 - Next: re-query current PR head and confirm no active VPN run. With Run #200 green and OpenVPN process-group containment reviewed, one short manual VPNObratto pilot is now eligible for consideration: request one verified RU exit, at most six profile attempts, and persist phase checkpoints/logs. A verified RU exit still does not prove residential household access. Do not classify targets from an unverified exit or incomplete artifact.
+
+
+### 2026-11-11 — Single-pilot dispatch attempt blocked before GitHub action — NOT STARTED
+
+- After Run #200 passed and the VPN workflow page showed the previous run #20 terminal-cancelled with no queued/in-progress run visible, one attempt was made to dispatch the planned single manual VPNObratno pilot using:
+  - branch `feature/reachability-full-ru-kz-by`
+  - `source=vpnobratno`
+  - `max_vpn_gate_servers=1`
+  - `max_vpn_gate_attempts=6`
+- The browser automation service refused to start the browser task because its service wallet balance was insufficient (reported balance `-$0.152`). This happened before the GitHub workflow form was opened or submitted.
+- **No GitHub dispatch request was sent. No Run #21 was created. No workflow/job was queued, no VPN/profile connection was attempted, and no repository state was changed by this blocked dispatch attempt.**
+- Do not report this as a GitHub Actions failure or a VPN/provider failure. The runner watchdog validation #200 remains SUCCESS and unchanged.
+- Resume action: use a working authorized GitHub Actions dispatch capability once available; the exact intended branch and inputs are listed above and in RESUME.md/CHECKPOINT.json. Do not submit any payment automatically or retry the blocked browser action before the user resolves the service-wallet blocker.
+- PR #5 remains OPEN / DRAFT; no production GeoIP or PR #6 files were touched.
