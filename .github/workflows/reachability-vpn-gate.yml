@@ -12,14 +12,14 @@ on:
           - vpnobratno
           - vpngate
       max_vpn_gate_servers:
-        description: Maximum verified Russian VPN exits to test (hard cap 6)
+        description: Number of successful verified RU exits to obtain (hard cap 6)
         required: true
-        default: "3"
+        default: "1"
         type: string
       max_vpn_gate_attempts:
         description: Maximum connection profiles to try; must be >= successful exits (hard cap 6)
         required: true
-        default: "3"
+        default: "6"
         type: string
   # Manual dispatch becomes available after this workflow is integrated on the default branch.
 
