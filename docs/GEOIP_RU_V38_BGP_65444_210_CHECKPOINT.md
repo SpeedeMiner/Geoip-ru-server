@@ -20,7 +20,7 @@ The Antifilter.network BGP page and FAQ were checked on 2026-11-11:
 - `65444:210`: subset classified by Antifilter.network as directly blocked by Roskomnadzor; announced together with `65444:200`.
 - `65444:300`: /24 summary; not suitable for this exact-IP audit and must not be substituted.
 
-The provider page currently shows the selected `65444:200, 65444:210` bundle as 100,366 prefixes / 196,360 addresses. This is a combined display count and must **not** be attributed to community 210 alone. The FAQ distinguishes the two communities: 200 is the wider unsummarized host-IP set; 210 is the unsummarized subset classified as directly blocked and is announced together with 200. The same FAQ documents additional summarized communities (100–107 and 110); do not silently substitute those for the required exact-host 200/210 bundle.
+The provider page currently shows the selected `65444:200, 65444:210` bundle as 100,367 prefixes / 196,363 addresses (observed 2026-11-11, current page fetch). This is a combined display count and must **not** be attributed to community 210 alone. The FAQ says the lists refresh hourly, so counts should always be timestamped. The FAQ distinguishes the two communities: 200 is the wider unsummarized host-IP set; 210 is the unsummarized subset classified as directly blocked and is announced together with 200. The same FAQ documents additional summarized communities (100–107 and 110); do not silently substitute those for the required exact-host 200/210 bundle.
 
 Source pages (checked 2026-11-11):
 - https://antifilter.network/bgp
@@ -100,3 +100,8 @@ No snapshot can honestly be reported until the registered BGP session has been o
 ## 8. Non-negotiable safety boundary
 
 This checkpoint is evidence acquisition only. Do not change `geoip_RU.dat`, the production builder, blocked inputs, v38 manifest, `main`, `release`, tags, CDN assets, or the release workflow as part of capture. Keep PR #9 Draft. Keep PRs #5–#8 separate and untouched. No merge or production publish is requested.
+
+
+## 9. Cross-chat recovery journal
+
+The detailed append-only project history and current PR #6–#9 inventory are maintained in [`docs/PROJECT_EXECUTION_JOURNAL.md`](https://github.com/SpeedeMiner/Geoip-ru-server/blob/experiment/vpn-route-candidate-build-2026-11/docs/PROJECT_EXECUTION_JOURNAL.md) on the PR #8 review branch. Read that journal before continuing in a new chat. Its latest recorded PR #8 run #19 state must be refreshed from GitHub Actions before relying on it.
