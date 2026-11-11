@@ -84,7 +84,7 @@ class V37CanonicalInventoryTests(unittest.TestCase):
             )
             (root / "blocked.txt").write_text("8.8.8.0/24 # source=test\n", encoding="utf-8")
             (root / "review.tsv").write_text(
-                "SOURCE\tPREFIX\tREASON\nreview\t6.6.6.0/24\tmanual\n",
+                "SOURCE\tPREFIX\tREASON\nreview-a\t6.6.6.0/24\tmanual\nreview-b\t6.6.6.0/24\tindependent source\n",
                 encoding="utf-8",
             )
             args = argparse.Namespace(
@@ -115,6 +115,7 @@ class V37CanonicalInventoryTests(unittest.TestCase):
             self.assertEqual(by_prefix["8.8.8.0/24"]["IN_ACCEPTED_ADDITIONAL_GEOIP_FEEDS"], "yes")
             self.assertEqual(by_prefix["8.8.8.0/24"]["IN_APPROVED_BLOCKED_EXCLUSIONS"], "yes")
             self.assertEqual(by_prefix["6.6.6.0/24"]["IN_BLOCKED_REVIEW_ONLY_CANDIDATES"], "yes")
+            self.assertEqual(result["blocked_review"], 1)
             self.assertEqual(result["output_ru"], 1)
             self.assertEqual(result["selected_bgp"], 2)
             stats = args.stats.read_text(encoding="utf-8")
