@@ -209,7 +209,7 @@ jobs:
           import re
 
           with open("geoip_RU_input_provenance.tsv", encoding="utf-8", newline="") as stream:
-              rows = list(csv.DictReader(stream, delimiter="\t"))
+              rows = list(csv.DictReader(stream, dialect="excel-tab"))
           matches = [row for row in rows if row["LOCAL_FILE"] == "as-ip-blocks.tar.gz"]
           if len(matches) != 1:
               raise SystemExit("Expected exactly one ipverse archive row in release provenance")
