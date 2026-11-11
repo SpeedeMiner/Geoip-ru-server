@@ -41,6 +41,12 @@ server. Provider diversity is measured by the server IP's independently
 looked-up origin ASN; another profile for the same server cannot increase the
 distinct-provider count.
 
+The listing and profile downloader disables configured HTTP proxies and
+accepts only HTTPS URLs on the exact `vpnobratno.info` origin. HTTP,
+non-default ports, embedded credentials and redirects to another hostname
+are rejected before profile content is accepted. The final response URL is
+checked again after download.
+
 Before a profile can be attempted, the collector checks that its filename
 matches the server hostname and variant shown in the listing, that the profile
 remote agrees with the listed hostname (or that an IP-literal remote is in the
@@ -73,6 +79,16 @@ The artifacts include `vpn_gate_providers.tsv`,
 `vpn_gate_raw.jsonl` and `vpn_gate_summary.json`. Provider and measurement
 rows retain the discovery source, profile variant and profile URL so a result
 can be traced to the exact connection method used.
+
+**Protocol coverage limit:** this collector currently automates the
+four published OpenVPN profile variants only. VPNObratno also documents SSTP
+and L2TP/IPsec for selected servers, but these are not yet automated: the
+listing's copy-button metadata and endpoint parameters have not been validated
+as a machine-readable source, and their PPP/IPsec tunnel lifecycle has not
+been integrated with the same fail-closed firewall and route checks. Do not
+hardcode a guessed SSTP port or L2TP server list. OpenVPN remains the tested
+and preferred path; SSTP/L2TP can be added after endpoint discovery and
+transport-specific safety checks are independently verified.
 
 **Important evidence limit:** VPNObratno says its servers belong to Russian
 VPN Gate users and use services from Russian Internet providers. That is useful
