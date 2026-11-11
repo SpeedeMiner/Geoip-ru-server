@@ -162,14 +162,23 @@ def summarize(record: dict[str, Any]) -> dict[str, Any]:
     if record["source"] == "routeviews_exact_rib":
         entries = payload if isinstance(payload, list) else []
         exact = [x for x in entries if isinstance(x, dict) and x.get("prefix") == record["prefix"]]
+        origin_rpki = {
+            str(x.get("origin_asn")): x.get("rpki_state")
+            for x in exact if x.get("origin_asn") is not None
+        }
+        peer_rows = [
+            peer for x in exact for peer in x.get("reporting_peers", [])
+            if isinstance(peer, dict)
+        ]
         result.update({
             "exact_entries_returned": len(exact),
-            "origins": sorted({str(x.get("origin_asn")) for x in exact if x.get("origin_asn") is not None}),
-            "rpki_states": sorted({str(x.get("rpki_state")) for x in exact if x.get("rpki_state") is not None}),
-            "reporting_peer_count": sum(len(x.get("reporting_peers", [])) for x in exact),
+            "origins": sorted(origin_rpki),
+            "origin_rpki_states": origin_rpki,
+            "rpki_states": sorted({str(state) for state in origin_rpki.values() if state is not None}),
+            "reporting_peer_count": len(peer_rows),
+            "collectors": sorted({str(peer.get("collector")) for peer in peer_rows if peer.get("collector")}),
             "latest_peer_timestamp": max(
-                (str(peer.get("timestamp")) for x in exact
-                 for peer in x.get("reporting_peers", []) if peer.get("timestamp")),
+                (str(peer.get("timestamp")) for peer in peer_rows if peer.get("timestamp")),
                 default=None,
             ),
         })
