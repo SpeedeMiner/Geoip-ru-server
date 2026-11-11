@@ -372,6 +372,19 @@ def potential_ipsum_direct_overlap(preblock, private, approved_blocked, ipsum):
         result[version] = interval_size(intersect(eligible, review_only))
     return result
 
+def blocked_prefix_impact(network, preblock_after_private, approved_blocked):
+    """Return eligible DIRECT overlap, approved overlap within it, and incremental impact."""
+    version = network.version
+    start = int(network.network_address)
+    end = int(network.broadcast_address)
+    direct_overlap = intersect_one_range(start, end, preblock_after_private[version])
+    overlap = interval_size(direct_overlap)
+    already = sum(
+        interval_size(intersect_one_range(lo, hi, approved_blocked[version]))
+        for lo, hi in direct_overlap
+    )
+    return overlap, already, max(0, overlap - already)
+
 def parse_blocked_base(path: Path):
     return parse_cidr_file(path, allow_hosts=True)[0]
 
@@ -593,11 +606,9 @@ def main():
     for source_id, networks in (("v37-approved-rkn",blocked_base),("antifilter-ipsum-24-review-only",ipsum)):
         for net in sorted(networks,key=lambda n:(n.version,int(n.network_address),n.prefixlen)):
             v=net.version
-            first = int(net.network_address)
-            last = int(net.broadcast_address)
-            direct_overlap = intersect_one_range(first, last, preblock_after_private_iv[v])
-            overlap = interval_size(direct_overlap)
-            already = interval_size(intersect_one_range(first, last, base_blocked_iv[v]))
+            overlap, already, potential = blocked_prefix_impact(
+                net, preblock_after_private_iv, base_blocked_iv
+            )
             blocked_rows.append({
                 "source_id":source_id,
                 "prefix":str(net),
@@ -605,7 +616,7 @@ def main():
                 "addresses":net.num_addresses,
                 "overlap_preblock_direct":overlap,
                 "already_approved_blocked":already,
-                "potential_additional_proxy_addresses":max(0,overlap-already),
+                "potential_additional_proxy_addresses":potential,
             })
 
     output_entries = {"PRIVATE":final_private,"RU":final}
