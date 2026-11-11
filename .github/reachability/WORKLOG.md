@@ -1199,3 +1199,14 @@ Durable resume point for PR #5. After any conversation/network interruption, rea
 - Next live step remains one manual source=vpnobratno pilot, max_vpn_gate_servers=1, max_vpn_gate_attempts=6, selected on the current feature branch. Confirm first log checkout SHA and inspect the five reports plus vpn_gate_vpnobratto_progress.json.
 - Do not call a VPN Gate volunteer exit a residential/home ISP without independent access-network evidence. Do not infer blocking from timeouts or missing artifacts. Keep all candidate CIDRs review-only.
 - No production GeoIP builder/data, geoip_RU.dat, release assets, DIRECT policy, ASN allowlists, main, release or PR #6 was modified.
+
+
+## 2026-11-11 20:04 UTC — Defer SIGTERM/SIGINT across the complete report sequence; Run #217 green
+
+- Follow-up code commit: 6e497c5642a5c5ac5a25cb2d7e7594443378c3ee.
+- Tightened report persistence after reviewing the signal boundary: persist_vpn_gate_reports now temporarily installs handlers that record SIGTERM/SIGINT without interrupting the sequence, attempts all four data reports and the summary, restores the previous handlers, and only then raises SystemExit with the original signal-derived exit status.
+- The regression test sends a real SIGTERM to the current Python process from the first TSV writer. It asserts all five main reports exist, no temporary files remain, the previous SIGTERM handler is restored, and SystemExit(143) is raised only after writes finish.
+- Validation [Run #217 / 43093034260](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43093034260), job 130774717136, checked out 6e497c5642a5c5ac5a25cb2d7e7594443378c3ee and completed SUCCESS at 20:04:38Z.
+- Python: 139 tests passed in 1.539s; the new real-SIGTERM report-persistence test passed. GNU timeout process-tree preflight, Go formatting, go test ./... and go build all passed.
+- Run #217 is CI-only. No VPN workflow was dispatched; there is still no live tunnel, verified RU exit or new target measurement.
+- Checkpoint/readme/resume need to treat the report guarantee as best-effort only under SIGTERM/SIGINT; SIGKILL, runner termination and filesystem failure can still prevent report persistence.

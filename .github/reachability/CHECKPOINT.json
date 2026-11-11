@@ -1,14 +1,14 @@
 {
   "schema_version": 1,
-  "updated_at_utc": "2026-11-11T20:00:04Z",
+  "updated_at_utc": "2026-11-11T20:04:38Z",
   "repository": "SpeedeMiner/Geoip-ru-server",
   "pull_request": 5,
   "pull_request_url": "https://github.com/SpeedeMiner/Geoip-ru-server/pull/5",
   "branch": "feature/reachability-full-ru-kz-by",
-  "recorded_pr_head_before_checkpoint_commit": "9eec7e142e81ad287b0c20ae89ba094ee08aa51a",
+  "recorded_pr_head_before_checkpoint_commit": "6e497c5642a5c5ac5a25cb2d7e7594443378c3ee",
   "base_sha": "a68e5d6589361814cb1cfedd2af7857e4af806fa",
-  "state": "RUN23_TERMINAL_CANCELLED_NO_ARTIFACT; USER_PATCH_INTEGRATED; RUN216_CI_SUCCESS_139_PYTHON_TESTS_GO_GREEN; READY_FOR_BOUNDED_MANUAL_LIVE_PILOT",
-  "current_phase": "RUN23_POSTMORTEM_RECORDED; RUN_BUDGET_AND_SIGTERM_REPORT_PERSISTENCE_PATCH_VALIDATED_IN_RUN216; READY_FOR_NEXT_MANUAL_VPNOBRATTO_PILOT",
+  "state": "RUN23_TERMINAL_CANCELLED_NO_ARTIFACT; USER_PATCH_INTEGRATED; RUN217_CI_SUCCESS_139_PYTHON_TESTS_GO_GREEN; READY_FOR_BOUNDED_MANUAL_LIVE_PILOT",
+  "current_phase": "RUN23_POSTMORTEM_RECORDED; WHOLE_REPORT_SEQUENCE_SIGNAL_DEFERRAL_VALIDATED_IN_RUN217; READY_FOR_NEXT_MANUAL_VPNOBRATTO_PILOT",
   "completed": [
     "repository_reconnaissance",
     "protobuf_inventory_exporter",
@@ -280,8 +280,8 @@
     "progress_manifest_no_fsync_regression_test_passed",
     "manifest_no_fsync_validation_run211_green_128_tests"
   ],
-  "latest_successful_validation_run": 43092300671,
-  "latest_successful_validation_commit": "9eec7e142e81ad287b0c20ae89ba094ee08aa51a",
+  "latest_successful_validation_run": 43093034260,
+  "latest_successful_validation_commit": "6e497c5642a5c5ac5a25cb2d7e7594443378c3ee",
   "test_counts": {
     "python_unit_tests": 128,
     "python_unit_tests_status": "PASS",
@@ -467,12 +467,12 @@
     "production_release_artifact_byte_delta_verified": false
   },
   "next_steps": [
-    "Run #23 (43076269266 / job 130716786396) is terminal completed/cancelled. Checkout 72bbb1f had no network namespace wrapper and FirewallGuard changed OUTPUT in the runner's current namespace; this is a confirmed code hazard, not a proven cause of cancellation. No artifacts; job logs BlobNotFound; no confirmed OpenVPN route, RU exit or target rows.",
-    "Current PR #5 head at this checkpoint is 9eec7e142e81ad287b0c20ae89ba094ee08aa51a. PR #5 remains OPEN/DRAFT, base main.",
-    "CI Run #216 (43092300671 / job 130772224969) passed 139 Python tests, hosted GNU timeout process-tree preflight, Go formatting, go test ./... and go build.",
-    "The user patch adds no-timeout-retry behavior, early metadata exit after two failures with zero observations, 360-second run budget, 90-second attempt budget, independent atomic finally report writes and wrapper signal-forward/wait ordering. Report writes are best-effort under SIGTERM; SIGKILL/filesystem failures can still prevent them.",
-    "Before the next manual live pilot, verify no active/queued VPN workflow and dispatch only one run from the current feature branch with source=vpnobratno, one successful RU exit requested and max attempts=6. Confirm checkout SHA in logs and inspect the progress manifest plus five main reports.",
-    "No new VPN run was dispatched in this session. Do not infer target blocking from timeouts or missing artifacts; do not call a VPN Gate volunteer exit residential without independent access-network evidence.",
+    "Run #23 is terminal completed/cancelled on checkout 72bbb1f. It predates network namespace isolation; the old FirewallGuard could change host OUTPUT policy. This is a confirmed old-code hazard, not a proven cancellation cause. No artifacts or terminal logs; no OpenVPN route/RU exit/target rows.",
+    "Current PR #5 code head at this checkpoint is 6e497c5642a5c5ac5a25cb2d7e7594443378c3ee. PR #5 remains OPEN/DRAFT, base main.",
+    "CI Run #217 / job 130774717136 passed 139 Python tests, including real-SIGTERM whole-sequence report persistence, GNU timeout process-tree preflight, Go formatting, go test ./... and go build.",
+    "The five reports are attempted independently and atomically. SIGTERM/SIGINT are deferred across the complete write sequence and re-raised afterward. SIGKILL, runner destruction and filesystem failure can still prevent persistence.",
+    "Before the next manual live pilot, verify no active/queued VPN workflow and dispatch only one run from the current feature branch with source=vpnobratno, one successful RU exit requested and max attempts=6. Confirm checkout SHA and inspect the progress manifest plus five reports.",
+    "No new VPN workflow was dispatched in this session. Do not infer target blocking from timeout/missing artifacts or claim a VPN Gate volunteer exit is residential without independent access-network evidence.",
     "Do not change production GeoIP builder/data, geoip_RU.dat, release assets, DIRECT policy, ASN allowlists, main, release or PR #6. Keep PR #5 OPEN/DRAFT."
   ],
   "ci_policy": {
@@ -1251,20 +1251,21 @@
     "interpretation": "No verified RU tunnel and no target requests. The two 5-second failures are VPN relay connection outcomes, not target-site blocking evidence."
   },
   "latest_validation": {
-    "run_id": 43092300671,
-    "run_number": 216,
-    "job_id": 130772224969,
-    "tested_commit": "9eec7e142e81ad287b0c20ae89ba094ee08aa51a",
+    "run_id": 43093034260,
+    "run_number": 217,
+    "job_id": 130774717136,
+    "tested_commit": "6e497c5642a5c5ac5a25cb2d7e7594443378c3ee",
     "workflow_conclusion": "success",
     "job_conclusion": "success",
     "python_tests": 139,
     "python_result": "OK",
-    "python_elapsed_seconds": 2.198,
+    "python_elapsed_seconds": 1.539,
+    "sigterm_report_persistence_test": "success",
     "watchdog_process_tree_preflight": "success",
     "gofmt": "success",
     "go_test": "success",
     "go_build": "success",
-    "observed_at_utc": "2026-11-11T20:00:04Z",
+    "observed_at_utc": "2026-11-11T20:04:38Z",
     "validation_scope": "Hermetic CI only; no VPN tunnel, RU exit or target reachability measurement"
   },
   "run9_result": {
@@ -2622,19 +2623,24 @@
       "interpretation": "Terminal job-level timeout confirmed by owner-provided annotation; step summary remains stale/inconsistent; no log archive or artifact."
     }
   },
-  "previous_latest_successful_validation_run": 43074433130,
-  "previous_latest_successful_validation_commit": "d9f2fff136fdc919730b99bf43c810f0ff23d96d",
+  "previous_latest_successful_validation_run": 43092300671,
+  "previous_latest_successful_validation_commit": "9eec7e142e81ad287b0c20ae89ba094ee08aa51a",
   "previous_latest_validation": {
-    "run_id": 43051897730,
-    "job_id": 130630977611,
-    "tested_commit": "a9967f52b4bd3d7a50638ad9ce63d685d57b84a9",
+    "run_id": 43092300671,
+    "run_number": 216,
+    "job_id": 130772224969,
+    "tested_commit": "9eec7e142e81ad287b0c20ae89ba094ee08aa51a",
     "workflow_conclusion": "success",
     "job_conclusion": "success",
-    "python_tests": 121,
+    "python_tests": 139,
     "python_result": "OK",
+    "python_elapsed_seconds": 2.198,
+    "watchdog_process_tree_preflight": "success",
     "gofmt": "success",
     "go_test": "success",
-    "go_build": "success"
+    "go_build": "success",
+    "observed_at_utc": "2026-11-11T20:00:04Z",
+    "validation_scope": "Hermetic CI only; no VPN tunnel, RU exit or target reachability measurement"
   },
   "run23_result": {
     "run_id": 43076269266,
@@ -2700,6 +2706,24 @@
     "report_persistence": "Five main reports written independently with temporary files and atomic replace in finally; SystemExit/SIGTERM is re-raised only after remaining reports are attempted.",
     "hard_limit": "SIGKILL, runner destruction and filesystem failure can still prevent persistence.",
     "namespace_signal_order": "Forward SIGTERM/SIGINT to child, wait for child report handling, then namespace cleanup.",
-    "ci_run": 43092300671
+    "ci_run": 43092300671,
+    "report_signal_handling": "Temporarily defer SIGTERM/SIGINT across all five writes, restore prior handlers, then re-raise SystemExit after all write attempts.",
+    "report_signal_test": "Actual SIGTERM sent during the first TSV writer; all five files verified before signal exit; old handler restored."
+  },
+  "run217_validation": {
+    "run_id": 43093034260,
+    "run_number": 217,
+    "job_id": 130774717136,
+    "commit": "6e497c5642a5c5ac5a25cb2d7e7594443378c3ee",
+    "conclusion": "success",
+    "python_tests": 139,
+    "python_seconds": 1.539,
+    "sigterm_report_persistence_test": "success",
+    "watchdog_preflight": "success",
+    "gofmt": "success",
+    "go_test": "success",
+    "go_build": "success",
+    "completed_at_utc": "2026-11-11T20:04:38Z",
+    "live_vpn_measurement": false
   }
 }

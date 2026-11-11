@@ -119,7 +119,8 @@ Workflow integration: `.github/workflows/reachability-validation.yml` now runs o
 - Thus the demonstrated process-tree cleanup gap is now addressed for the exact sudo/GNU-timeout group topology used by the workflow. The independent GitHub runner/controller state-overrun question remains an observability/runner-platform limitation.
 
 
-## Latest state — 2026-11-11 20:00 UTC
+
+## Latest state — 2026-11-11 20:04 UTC
 
 ### Latest VPN workflow — Run #23 (TERMINAL / NO EVIDENCE)
 
@@ -129,15 +130,17 @@ Workflow integration: `.github/workflows/reachability-validation.yml` now runs o
 - The Run #23 checkout did not yet use vpn_netns_exec.sh; its FirewallGuard edited OUTPUT rules in the runner's current namespace. This is a confirmed old-code isolation hazard, not a proven explanation for cancellation. The exact cause remains unknown.
 - No OpenVPN route, verified RU egress or target measurements were recovered. Do not infer target blocking.
 
-### Latest code validation — Run #216 (SUCCESS)
+### Latest code validation — Run #217 (SUCCESS)
 
-- [Run #216 / 43092300671](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43092300671), job 130772224969, validated commit 9eec7e142e81ad287b0c20ae89ba094ee08aa51a.
-- Python 139/139 passed; GNU timeout process-tree preflight passed; Go formatting, go test ./... and go build passed.
-- The uploaded timeout/report patch is in commits 3d399a1, c9e0ab8, 9eec7e1. It adds a 360-second run budget, 90-second per-profile budget, timeout-aware no-retry behavior, early metadata stop after two failures with no observations, SIGTERM-safe independent atomic report writes, and wrapper child-wait ordering.
-- Run #216 is CI-only, not a live VPN measurement.
+- [Run #217 / 43093034260](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43093034260), job 130774717136, validated commit 6e497c5642a5c5ac5a25cb2d7e7594443378c3ee.
+- Python 139/139 passed in 1.539s; the real-SIGTERM report-persistence test passed. GNU timeout process-tree preflight, Go formatting, go test ./... and go build passed.
+- Report persistence now defers SIGTERM/SIGINT for the entire five-file sequence, then restores the previous handlers and raises SystemExit with the signal exit code. The test verifies all five reports exist before SIGTERM is re-raised.
+- The preceding Run #216 / 43092300671 also passed 139 tests, but Run #217 is the latest and includes this additional signal-deferral regression.
+- The patch commits are 3d399a1 (runtime patch), c9e0ab8 (integer timeout compatibility), 9eec7e1 (executable test fixtures), and 6e497c5 (whole-sequence signal deferral).
 
 ### Next steps
 
+- Current code head at this checkpoint is 6e497c5642a5c5ac5a25cb2d7e7594443378c3ee. PR #5 remains OPEN / DRAFT, base main.
 - Before a new pilot, re-query PR #5 head and ensure no active/queued VPN run.
 - Manually dispatch the VPN workflow from feature/reachability-full-ru-kz-by with source vpnobratno, one independently verified RU exit requested, and six profile attempts maximum. No such workflow was dispatched in this session.
 - Confirm the checkout SHA in the first logs. Inspect vpn_gate_vpnobratto_progress.json and all five report files. If SIGTERM occurs, verify report_persisted markers precede wrapper cleanup_started.
