@@ -225,3 +225,14 @@ Durable resume point for PR #5. After any conversation/network interruption, rea
 - Latest validation-triggering code/test commit: `e1272f0e9b4c3048537a11e91b5d7bddf782012f`; ASN provenance implementation commit: `5668f225362f8e0945b983ffdfcce492c90a5397`; documentation commit: `ba7cee32ecae140a02522c93aceb94a0a64a6f83`.
 - No visible CI checks or Actions run result has been returned by the available GitHub connector. Validation remains pending; previous successful CI predates all VPN Gate code.
 - No live VPN Gate workflow has been dispatched or executed. No GeoIP builder/input/release/DIRECT/ASN allowlist or PR #6 changes.
+
+
+### 2026-11-11 — Bound dual-stack VPN measurement runtime — IMPLEMENTED / CI PENDING
+
+- Replaced separate DNS A and AAAA resolver calls with one `getaddrinfo(AF_UNSPEC)` call per target; returned IPv4 and IPv6 answers are split and recorded independently. This halves DNS resolver invocations without allowing host IPv6 transport (the IPv6 firewall policy remains DROP).
+- Added two regression tests for successful A+AAAA extraction in one call and shared DNS-error classification.
+- VPN Gate test module now has 16 tests; original reachability module has 29; expected combined discovery is 45 Python tests.
+- The manual VPN Gate workflow timeout increased from 45 to 120 minutes. This leaves room for up to six sequential exits, candidate ASN lookups, bounded DNS/HTTPS requests and artifact upload even when some requests reach their timeouts.
+- Updated README with the dual-stack one-call behavior and workflow timeout.
+- Latest validation-triggering Python code/test commit: `09a61810013effee87fc5fdb6d304a3b132a7ba5`; workflow timeout commit: `a3098c15351de5dabc5f286f05024678fe4707fa`; README commit: `ba1371566bd12965940fb5bd05c78813b6b176fd`.
+- Validation is still pending; no confirmed CI run or visible check is returned by the GitHub connector. No VPN Gate workflow has been dispatched.
