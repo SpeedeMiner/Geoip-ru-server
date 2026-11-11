@@ -153,11 +153,14 @@ def fetch_https_pinned(url: str, timeout: int) -> bytes:
     if parts.scheme != "https" or not parts.hostname:
         raise ProbeError("pinned fallback supports HTTPS URLs only")
     host = parts.hostname
+    # This backend deliberately uses an IPv4-only VPN tunnel. Do not attempt
+    # an AAAA-only connection: host IPv6 egress is blocked by the kill-switch.
     addresses = doh_query(host, "A", timeout=min(timeout, 12))
     if not addresses:
-        addresses = doh_query(host, "AAAA", timeout=min(timeout, 12))
-    if not addresses:
-        raise ProbeError(f"DoH returned no global address for {host}")
+        raise ProbeError(
+            f"DoH returned no global IPv4 address for {host}; "
+            "IPv6 HTTPS is not enabled by this IPv4-tunnel workflow"
+        )
     path = urllib.parse.urlunsplit(("", "", parts.path or "/", parts.query, ""))
     errors: list[str] = []
     for address in addresses[:3]:
@@ -601,18 +604,17 @@ class FirewallGuard:
 
 
 class ResolverGuard:
-    """Use a public resolver only while the default route is verified through tun0."""
-    def __init__(self):
-        self.path = pathlib.Path("/etc/resolv.conf")
-        self.original = b""
+    """Compatibility scope that deliberately never edits the host resolver config.
 
+    System NSS lookups are attempted while the fail-closed firewall is active.
+    If the runner's configured resolver is unavailable through the tunnel,
+    fetch_bytes/resolve_domain_families use IP-pinned DNS-over-HTTPS instead.
+    """
     def __enter__(self):
-        self.original = self.path.read_bytes()
-        self.path.write_text("nameserver 1.1.1.1\noptions timeout:2 attempts:2\n", encoding="ascii")
         return self
 
     def __exit__(self, exc_type, exc_value, traceback):
-        self.path.write_bytes(self.original)
+        return False
 
 
 class NoRedirect(urllib.request.HTTPRedirectHandler):
@@ -700,9 +702,14 @@ def https_head(domain: str, port: int, path: str, timeout: int) -> tuple[str, in
         # A system resolver/NSS error is not a service failure. Retry with a
         # pinned DoH-resolved IP, preserving Host, SNI and certificate checks.
         try:
+            # Only IPv4 HTTPS is in scope. AAAA answers are still recorded
+            # by resolve_domain_families, but IPv6 transport is firewall-blocked.
             addresses = doh_query(domain, "A", timeout=min(timeout, 12))
             if not addresses:
-                addresses = doh_query(domain, "AAAA", timeout=min(timeout, 12))
+                return "INCONCLUSIVE", None, (
+                    f"system HTTPS: {str(exc)[:160]}; pinned DoH: no global IPv4 "
+                    "address (IPv6 HTTPS is not enabled)"
+                )
             errors = []
             for address in addresses[:3]:
                 connection = None
