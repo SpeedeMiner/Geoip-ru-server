@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "updated_at_utc": "2026-11-11T17:12:00Z",
+  "updated_at_utc": "2026-11-11T17:13:00Z",
   "repository": "SpeedeMiner/Geoip-ru-server",
   "pull_request": 5,
   "pull_request_url": "https://github.com/SpeedeMiner/Geoip-ru-server/pull/5",
   "branch": "feature/reachability-full-ru-kz-by",
-  "recorded_pr_head_before_checkpoint_commit": "5a1badef9e19a71c44cd4b1fa42748f4d688e90f",
+  "recorded_pr_head_before_checkpoint_commit": "e971a8f62c213bee068e3595b67def86d609b348",
   "base_sha": "a68e5d6589361814cb1cfedd2af7857e4af806fa",
   "state": "RUN21_IN_PROGRESS_PROFILE_6_FETCH_STARTED; RUNNER_TIMEOUT_PROCESS_GROUP_PREFLIGHT_GREEN_RUN200; RUN20_CANCELLED_NO_ARTIFACT",
   "current_phase": "RUN21_VPNOBRATTO_PROFILE_DISCOVERY_IN_PROGRESS; FIVE_PROFILES_CONFIRMED_USABLE; SIXTH_FETCH_STARTED; NO_OPENVPN_OR_TARGET_EVIDENCE_YET",
@@ -440,12 +440,11 @@
     "production_release_artifact_byte_delta_verified": false
   },
   "next_steps": [
-    "Continue monitoring only Run #21 (43065501624). Do not cancel it and do not start another VPN workflow while it is active.",
-    "The latest confirmed owner log marker is profile_fetch_started=6/24; profile 6 completion, discovery completion, selection and OpenVPN start have not yet been confirmed. Check current workflow/job state and retrieve logs again after new output or terminal status.",
-    "Record the next markers with timestamps: profile download completion/results; discovery completed; selected profile count/ASNs; openvpn_process_started; tunnel_route_wait_started; tunnel_result=route_installed; dual-source public exit IP/country consensus; target DNS/HTTPS rows.",
-    "When the run reaches a terminal state, retrieve complete job logs and artifacts, verify the artifact digest, and reconcile summary/provider/measurement outputs. If no verified RU exit is obtained, report zero target requests only when the final artifact/log proves it; otherwise preserve unknowns.",
-    "Do not attribute any DNS/HTTPS timeout or runner issue to target blocking. RU exit, ASN or organization is not evidence by itself that the relay is a residential home connection.",
-    "Append all terminal evidence to WORKLOG.md and update CHECKPOINT.json. Keep PR #5 OPEN/DRAFT; do not modify production GeoIP, DIRECT policy, ASN allowlists, release assets or PR #6."
+    "Run #21 (43065501624) remains the only active VPN run. Do not cancel it and do not dispatch another VPN workflow.",
+    "Last owner-visible marker: profile 6 of 24 started; profiles 1–5 are usable. Discovery completion, OpenVPN attempt start, installed route, exit consensus and target result remain unknown. Re-query the same run/job, not a new run.",
+    "Expected watchdog landmarks from measurement step start 17:10:40Z: GNU TERM about 17:17:40Z, KILL grace through about 17:17:45Z, step timeout 17:19:40Z, job timeout 17:22:16Z. The GNU points are approximate because command startup follows a short compile/prelude.",
+    "When the run becomes terminal, download complete logs and artifacts, verify SHA/digest, reconcile provider/measurement/summary data, and record exact counts. Do not interpret absent live logs or an empty pre-completion artifact list as a VPN failure.",
+    "Append all terminal evidence to WORKLOG.md and update CHECKPOINT.json. Keep PR #5 OPEN/DRAFT; preserve production GeoIP, DIRECT policy, ASN allowlists, release assets and PR #6."
   ],
   "ci_policy": {
     "push_validation_paths": [
@@ -1997,7 +1996,8 @@
     "read_first_resume_guide_initial_commit": "ee7ee866692fc2bbc487e837a1da78124d60fcf4",
     "read_first_resume_guide_blocker_update_commit": "8761626e83c08bbe6a0a98a38b8fccd0b2bff505",
     "final_worklog_entry_commit": "01085045a9e224a9abe9a4b7dd36d3f32f67da69",
-    "checkpoint_written_after_worklog_commit": "01085045a9e224a9abe9a4b7dd36d3f32f67da69"
+    "checkpoint_written_after_worklog_commit": "01085045a9e224a9abe9a4b7dd36d3f32f67da69",
+    "resume_guide_active_run21_commit": "e971a8f62c213bee068e3595b67def86d609b348"
   },
   "run21_result": {
     "run_id": 43065501624,
@@ -2089,6 +2089,23 @@
     "confirmed_target_measurement_rows": 0,
     "later_phases": "not confirmed from available evidence",
     "logs_api_while_active": "BlobNotFound",
-    "interpretation": "Pinned-DoH profile fetches 1–5 completed and sixth began, indicating discovery is progressing past the previous Run #20 marker. Do not infer OpenVPN, RU exit or target results from the current excerpt."
+    "interpretation": "Pinned-DoH profile fetches 1–5 completed and sixth began, indicating discovery is progressing past the previous Run #20 marker. Do not infer OpenVPN, RU exit or target results from the current excerpt.",
+    "last_rest_snapshot": {
+      "run_status": "in_progress",
+      "run_updated_at_utc": "2026-11-11T17:10:17Z",
+      "job_status": "in_progress",
+      "measurement_step_status": "in_progress",
+      "upload_step_status": "pending",
+      "artifacts": [],
+      "job_logs_api": "BlobNotFound_while_active",
+      "observation": "Repeated REST checks showed no new terminal state or artifact; job-level updated_at remained stale at the initial in-progress timestamp."
+    },
+    "expected_timeout_milestones_utc": {
+      "process_term_approx": "2026-11-11T17:17:40Z",
+      "process_kill_after_grace_approx": "2026-11-11T17:17:45Z",
+      "measurement_step_timeout": "2026-11-11T17:19:40Z",
+      "job_timeout": "2026-11-11T17:22:16Z",
+      "calculation_note": "Based on step start 17:10:40Z, 7m process timeout + 5s kill grace, 9m step timeout and job start 17:10:16Z with 12m timeout. GNU command starts shortly after the step's compile/prelude, so process TERM/KILL times are approximate."
+    }
   }
 }
