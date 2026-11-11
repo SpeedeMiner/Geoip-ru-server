@@ -160,7 +160,10 @@ def summarize(record: dict[str, Any]) -> dict[str, Any]:
     if record.get("transport_status") != "HTTP_OK" or payload is None:
         return result
     if record["source"] == "routeviews_exact_rib":
-        entries = payload if isinstance(payload, list) else []
+        if not isinstance(payload, list):
+            result["response_shape_error"] = "RouteViews exact-prefix response is not a JSON array"
+            return result
+        entries = payload
         exact = [x for x in entries if isinstance(x, dict) and x.get("prefix") == record["prefix"]]
         origin_rpki = {
             str(x.get("origin_asn")): x.get("rpki_state")
@@ -183,7 +186,10 @@ def summarize(record: dict[str, Any]) -> dict[str, Any]:
             ),
         })
     elif record["source"] == "routeviews_timestamped_rpki":
-        prefix_key_present = isinstance(payload, dict) and record["prefix"] in payload
+        if not isinstance(payload, dict):
+            result["response_shape_error"] = "RouteViews RPKI response is not a JSON object"
+            return result
+        prefix_key_present = record["prefix"] in payload
         item = payload.get(record["prefix"]) if prefix_key_present else None
         asn_rows = item.get("asn", []) if isinstance(item, dict) else []
         states = {}
@@ -197,11 +203,19 @@ def summarize(record: dict[str, Any]) -> dict[str, Any]:
             "origin_states": states,
         })
     elif record["source"] == "ripestat_routing_status":
-        data = payload.get("data", {}) if isinstance(payload, dict) else {}
-        origins = data.get("origins", []) if isinstance(data, dict) else []
+        api_status = payload.get("status") if isinstance(payload, dict) else None
+        data = payload.get("data") if isinstance(payload, dict) else None
+        if api_status != "ok" or not isinstance(data, dict) or not isinstance(data.get("origins"), list):
+            result.update({
+                "api_status": api_status,
+                "api_messages": payload.get("messages", []) if isinstance(payload, dict) else [],
+                "response_shape_error": "RIPEstat routing-status response is not a successful origins payload",
+            })
+            return result
+        origins = data["origins"]
         result.update({
-            "api_status": payload.get("status") if isinstance(payload, dict) else None,
-            "query_time": data.get("query_time") if isinstance(data, dict) else None,
+            "api_status": api_status,
+            "query_time": data.get("query_time"),
             "exact_origins": [
                 {
                     "origin": row.get("origin"),
@@ -213,8 +227,16 @@ def summarize(record: dict[str, Any]) -> dict[str, Any]:
             "more_specific_count": len(data.get("more_specifics", [])) if isinstance(data, dict) else None,
         })
     elif record["source"] == "ripestat_looking_glass_24h":
-        data = payload.get("data", {}) if isinstance(payload, dict) else {}
-        rrcs = data.get("rrcs", []) if isinstance(data, dict) else []
+        api_status = payload.get("status") if isinstance(payload, dict) else None
+        data = payload.get("data") if isinstance(payload, dict) else None
+        rrcs = data.get("rrcs") if isinstance(data, dict) else None
+        if api_status != "ok" or not isinstance(data, dict) or not isinstance(rrcs, (list, dict)):
+            result.update({
+                "api_status": api_status,
+                "api_messages": payload.get("messages", []) if isinstance(payload, dict) else [],
+                "response_shape_error": "RIPEstat Looking Glass response is not a successful RRC payload",
+            })
+            return result
         peers = []
         rrc_entries = []
         if isinstance(rrcs, list):
@@ -243,8 +265,8 @@ def summarize(record: dict[str, Any]) -> dict[str, Any]:
                         "latest_time": entry.get("latest_time"),
                     })
         result.update({
-            "api_status": payload.get("status") if isinstance(payload, dict) else None,
-            "query_time": data.get("query_time") if isinstance(data, dict) else None,
+            "api_status": api_status,
+            "query_time": data.get("query_time"),
             "latest_time": data.get("latest_time") if isinstance(data, dict) else None,
             "rrc_count": len(rrc_entries),
             "peer_observation_count": len(peers),
