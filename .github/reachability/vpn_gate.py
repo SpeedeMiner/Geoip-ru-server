@@ -421,7 +421,7 @@ def build_safe_openvpn_config(server: dict[str, Any], auth_path: pathlib.Path) -
         "route-nopull",
         "redirect-gateway def1",
         "connect-retry 2 5",
-        "verb 3",
+        "verb 4",
         "mute 10",
         "data-ciphers AES-256-GCM:AES-128-GCM:AES-128-CBC",
     ]
@@ -439,12 +439,12 @@ def build_safe_openvpn_config(server: dict[str, Any], auth_path: pathlib.Path) -
                 "tls_cert_profile": "tls-cert-profile",
                 "remote_cert_eku": "remote-cert-eku",
             }[option]
-            value = shlex.quote(profile[option]) if option == "remote_cert_eku" else profile[option]
+            value = f'"{profile[option]}"' if option == "remote_cert_eku" else profile[option]
             lines.append(f"{directive} {value}")
     if profile.get("remote_cert_ku"):
         lines.append("remote-cert-ku " + " ".join(profile["remote_cert_ku"]))
     if profile.get("verify_x509_name"):
-        x509_line = "verify-x509-name " + shlex.quote(profile["verify_x509_name"])
+        x509_line = 'verify-x509-name "' + profile["verify_x509_name"] + '"'
         if profile.get("verify_x509_name_mode"):
             x509_line += " " + profile["verify_x509_name_mode"]
         lines.append(x509_line)
