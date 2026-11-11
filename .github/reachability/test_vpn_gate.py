@@ -1608,6 +1608,37 @@ class VPNObrattoWallClockTimeoutTests(unittest.TestCase):
         self.assertLess(time.monotonic() - started, 0.15)
 
 
+    def test_progress_manifest_uses_atomic_replace_without_per_event_fsync(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            manifest = pathlib.Path(tmp) / "vpn_gate_vpnobratto_progress.json"
+            context = {
+                "profile_index": 6,
+                "profile_count": 24,
+                "hostname": "vpn950792227.opengw.net",
+                "variant": "ip_udp",
+                "address_mode": "ip",
+            }
+            with patch.object(
+                vpn_gate.os,
+                "fsync",
+                side_effect=AssertionError("per-phase manifest updates must not fsync"),
+            ) as fsync:
+                vpn_gate.record_vpnobratno_progress(
+                    manifest,
+                    context,
+                    "profile_https.body_read_completed",
+                    elapsed_ms=534,
+                    total_bytes=3830,
+                )
+            fsync.assert_not_called()
+            data = json.loads(manifest.read_text(encoding="utf-8"))
+            record = data["profiles"]["6"]
+            self.assertEqual(record["state"], "profile_https.body_read_completed")
+            self.assertEqual(record["total_bytes"], 3830)
+            self.assertEqual(data["last_event"]["profile"], "6")
+            self.assertTrue(manifest.exists())
+
+
     def test_isolated_fetch_worker_returns_payload_and_writes_manifest(self):
         with tempfile.TemporaryDirectory() as tmp:
             manifest = pathlib.Path(tmp) / "vpnobratto_progress.json"
