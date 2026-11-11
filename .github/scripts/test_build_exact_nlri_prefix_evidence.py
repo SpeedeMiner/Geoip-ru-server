@@ -7,11 +7,11 @@ from collect_exact_nlri_live_evidence import build_plan, summarize
 class ExactNlriCaptureTests(unittest.TestCase):
     def test_plan_covers_exact_prefixes_and_each_source_once(self):
         plan = build_plan()
-        self.assertEqual(len(plan), 20)
+        self.assertEqual(len(plan), 24)
         self.assertEqual(
             {row["prefix"] for row in plan},
             {
-                "93.181.240.0/20", "93.181.248.0/21",
+                "93.181.240.0/20", "93.181.240.0/21", "93.181.248.0/21",
                 "94.131.190.0/23", "94.131.190.0/24", "94.131.191.0/24",
             },
         )
@@ -19,10 +19,10 @@ class ExactNlriCaptureTests(unittest.TestCase):
             {source: sum(row["source"] == source for row in plan)
              for source in {row["source"] for row in plan}},
             {
-                "routeviews_exact_rib": 5,
-                "routeviews_timestamped_rpki": 5,
-                "ripestat_routing_status": 5,
-                "ripestat_looking_glass_24h": 5,
+                "routeviews_exact_rib": 6,
+                "routeviews_timestamped_rpki": 6,
+                "ripestat_routing_status": 6,
+                "ripestat_looking_glass_24h": 6,
             },
         )
         self.assertTrue(all(row["url"].startswith("https://") for row in plan))
