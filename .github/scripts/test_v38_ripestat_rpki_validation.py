@@ -40,8 +40,11 @@ class RipestatRPKIValidationTests(unittest.TestCase):
     def test_invalid_routeviews_vs_ripe_valid_is_explicit_disagreement(self):
         self.assertEqual(compare_status("invalid", "valid"), "STATUS_DISAGREEMENT")
 
-    def test_not_found_vs_ripe_unknown_is_not_conflict(self):
-        self.assertEqual(compare_status("not-found", "unknown"), "NO_DECISIVE_ROA_STATE")
+    def test_not_found_vs_ripe_unknown_is_unknown_on_both_views(self):
+        self.assertEqual(compare_status("not-found", "unknown"), "BOTH_UNKNOWN_NO_ROA")
+
+    def test_unknown_vs_valid_is_a_source_disagreement(self):
+        self.assertEqual(compare_status("unknown", "valid"), "STATUS_DISAGREEMENT")
 
     def test_unknown_is_not_valid(self):
         self.assertNotEqual(compare_status("unknown", "valid"), "MATCH")
