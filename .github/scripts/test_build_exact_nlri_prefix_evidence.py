@@ -1,7 +1,11 @@
 from __future__ import annotations
 
+import io
 import unittest
-from collect_exact_nlri_live_evidence import build_plan, summarize
+import urllib.error
+from unittest.mock import patch
+
+from collect_exact_nlri_live_evidence import build_plan, fetch_one, summarize
 
 
 class ExactNlriCaptureTests(unittest.TestCase):
@@ -217,6 +221,57 @@ class ExactNlriCaptureTests(unittest.TestCase):
         self.assertIn("response_shape_error", summary)
         self.assertNotIn("exact_entries_returned", summary)
         self.assertNotIn("origins", summary)
+
+    def test_fetch_retries_http_5xx_once_and_preserves_recovery_trace(self):
+        prefix = "93.181.240.0/21"
+        url = "https://api.routeviews.org/prefix/93.181.240.0/21?strict-match=yes"
+
+        class FakeResponse:
+            status = 200
+
+            def __enter__(self):
+                return self
+
+            def __exit__(self, exc_type, exc, traceback):
+                return False
+
+            def read(self, limit):
+                return (
+                    b'[{"prefix":"93.181.240.0/21","origin_asn":12389,'
+                    b'"rpki_state":"valid","reporting_peers":[]}]'
+                )
+
+        first_error = urllib.error.HTTPError(
+            url, 500, "Internal Server Error", hdrs=None,
+            fp=io.BytesIO(b'{"error":"transient"}'),
+        )
+        item = {
+            "prefix": prefix,
+            "source": "routeviews_exact_rib",
+            "url": url,
+        }
+        with patch(
+            "collect_exact_nlri_live_evidence.urllib.request.urlopen",
+            side_effect=[first_error, FakeResponse()],
+        ) as mocked_open, patch(
+            "collect_exact_nlri_live_evidence.time.sleep"
+        ) as mocked_sleep:
+            record = fetch_one(item, timeout=1.0)
+
+        self.assertEqual(mocked_open.call_count, 2)
+        mocked_sleep.assert_called_once_with(1.1)
+        self.assertEqual(record["transport_status"], "HTTP_OK")
+        self.assertEqual(record["attempt_count"], 2)
+        self.assertEqual(
+            record["prior_attempt_errors"],
+            ["HTTPError: 500 Internal Server Error"],
+        )
+        self.assertIsNone(record["error"])
+        summary = summarize(record)
+        self.assertEqual(summary["request_attempts"], 2)
+        self.assertEqual(summary["prior_attempt_errors"], ["HTTPError: 500 Internal Server Error"])
+        self.assertEqual(summary["exact_entries_returned"], 1)
+        self.assertEqual(summary["origins"], ["12389"])
 
     def test_transport_error_is_preserved_not_interpreted_as_absence(self):
         record = {
