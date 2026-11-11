@@ -1,14 +1,14 @@
 {
   "schema_version": 1,
-  "updated_at_utc": "2026-11-11T16:55:00Z",
+  "updated_at_utc": "2026-11-11T17:05:00Z",
   "repository": "SpeedeMiner/Geoip-ru-server",
   "pull_request": 5,
   "pull_request_url": "https://github.com/SpeedeMiner/Geoip-ru-server/pull/5",
   "branch": "feature/reachability-full-ru-kz-by",
   "recorded_pr_head_before_checkpoint_commit": "212e11f2f33a07a3c1630bbc51f5cb2b3d80b9a5",
   "base_sha": "a68e5d6589361814cb1cfedd2af7857e4af806fa",
-  "state": "RUN20_CANCELLED_NO_ARTIFACT; RUNNER_TIMEOUT_PROCESS_GROUP_VERIFIED_ON_UBUNTU_24_04; RUN21_READY_FOR_ONE_BOUNDED_PILOT",
-  "current_phase": "RUNNER_WATCHDOG_PRECHECK_GREEN_ON_UBUNTU_24_04; OPENVPN_INHERITS_SUPERVISED_PROCESS_GROUP; READY_FOR_ONE_MANUAL_VPNOBRATNO_PILOT",
+  "state": "RUN20_CANCELLED_NO_ARTIFACT; RUNNER_TIMEOUT_PROCESS_GROUP_VERIFIED_ON_UBUNTU_24_04; RUN21_NOT_DISPATCHED_TOOL_WALLET_BLOCKED",
+  "current_phase": "RUNNER_WATCHDOG_VERIFIED; SINGLE_VPNOBRATNO_PILOT_READY_BUT_DISPATCH_BLOCKED_BEFORE_GITHUB_FORM",
   "completed": [
     "repository_reconnaissance",
     "protobuf_inventory_exporter",
@@ -255,7 +255,10 @@
     "vpnobratto_validation_123_python_tests_go_success_run_43059875117",
     "runner_watchdog_process_group_preflight_added",
     "runner_watchdog_process_group_preflight_passed_on_ubuntu_24_04_run_43062327051",
-    "openvpn_inherits_supervised_process_group_and_safe_config_has_no_daemon_directive"
+    "openvpn_inherits_supervised_process_group_and_safe_config_has_no_daemon_directive",
+    "read_first_resume_guide_added",
+    "worklog_runner_watchdog_run200_evidence_appended",
+    "single_run21_dispatch_attempt_refused_before_browser_start_due_insufficient_tinyfish_wallet"
   ],
   "latest_successful_validation_run": 43062327051,
   "latest_successful_validation_commit": "212e11f2f33a07a3c1630bbc51f5cb2b3d80b9a5",
@@ -434,12 +437,12 @@
     "production_release_artifact_byte_delta_verified": false
   },
   "next_steps": [
-    "The ubuntu-24.04 runner process-group watchdog preflight is green (Run #200). Re-query the live feature branch head and confirm again that no VPN workflow run is queued or in progress.",
-    "Dispatch exactly one short VPNObratto pilot from feature/reachability-full-ru-kz-by: source=vpnobratno, request one verified RU exit, max six profile attempts. Do not overlap runs.",
-    "Monitor short phase checkpoints: profile listing/download results; host selection; OpenVPN process start; tunnel route; two-source exit IPv4/country consensus; target DNS A/AAAA and HTTPS; artifact upload. Stop interpreting at the last actual marker; do not infer later phases.",
-    "After terminal state, retrieve the full job log and artifact, verify artifact digest and reconcile summary/provider/measurement rows. No verified RU exit means no target measurement verdict.",
-    "Record whether exit network is demonstrably residential separately; a RU country/ASN/organization alone is not proof of household access.",
-    "Append the new run evidence to WORKLOG.md and update CHECKPOINT.json. Keep PR #5 OPEN/DRAFT and preserve main, production GeoIP, DIRECT policy, ASN allowlists and PR #6."
+    "Keep Run #21 uncreated for now. The hosted-runner process-group watchdog preflight is green (Run #200); the intended single pilot is ready but browser dispatch could not start because the automation service wallet is insufficient.",
+    "When a supported GitHub Actions workflow_dispatch capability is available, or after the user resolves the browser-automation service wallet blocker, re-query the live feature branch head and confirm no VPN workflow run is queued/in progress. Then dispatch exactly one pilot: source=vpnobratno, one verified RU exit requested, maximum six profile attempts.",
+    "Do not retry the browser automation task while its non-retryable insufficient-wallet refusal remains. Do not pay, top up, or alter auto-reload on the user's behalf.",
+    "For the eventual pilot, record profile listing/download results, host selection, OpenVPN process start, tunnel route, two-source exit IPv4/country consensus, exit ASN/prefix, target DNS A/AAAA and HTTPS results, artifact upload and digest. A verified RU exit alone is not proof of residential/household ISP access.",
+    "After terminal state, reconcile the full job log and artifact; no verified RU exit means no target measurement verdict. Append detailed evidence to WORKLOG and update CHECKPOINT.",
+    "Keep PR #5 OPEN/DRAFT; preserve main, production GeoIP, DIRECT policy, ASN allowlists, release assets and PR #6."
   ],
   "ci_policy": {
     "push_validation_paths": [
@@ -1962,5 +1965,31 @@
     "latest_run_conclusion": "cancelled",
     "queued_or_in_progress_runs_visible": 0,
     "interpretation": "No active or queued VPN workflow run was visible before the next pilot."
+  },
+  "run21_dispatch_attempt": {
+    "attempted_at_utc": "2026-11-11T17:00:00Z",
+    "intended_branch": "feature/reachability-full-ru-kz-by",
+    "intended_inputs": {
+      "source": "vpnobratno",
+      "max_vpn_gate_servers": "1",
+      "max_vpn_gate_attempts": "6"
+    },
+    "action_attempted": "Open GitHub Actions workflow_dispatch form using browser automation",
+    "result": "NOT_STARTED",
+    "blocker": "Browser automation service refused to start because service wallet balance was insufficient.",
+    "refusal_stage": "Before browser task start; GitHub workflow form was not opened or submitted.",
+    "github_dispatch_request_sent": false,
+    "github_run_created": false,
+    "vpn_job_queued": false,
+    "vpn_process_started": false,
+    "repository_files_changed_by_attempt": false,
+    "retry_policy": "Do not retry the blocked browser automation until user resolves the wallet blocker or a supported GitHub Actions dispatch tool is available.",
+    "interpretation": "This is a tool/billing access blocker, not a GitHub Actions, VPN, provider, profile or target failure."
+  },
+  "documentation_updates": {
+    "read_first_resume_guide_commit": "ee7ee866692fc2bbc487e837a1da78124d60fcf4",
+    "hosted_runner_watchdog_worklog_commit": "67c6cddfdbbae177fe40d50adaf0e0a34ba82fd4",
+    "blocked_dispatch_worklog_commit": "30179eb3f92b0f1400ccf0d19e1ede2130ef9f9e",
+    "note": "Documentation and checkpoint commits intentionally do not trigger another VPN measurement or code-validation workflow."
   }
 }
