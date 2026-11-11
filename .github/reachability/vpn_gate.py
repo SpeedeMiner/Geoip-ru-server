@@ -315,6 +315,62 @@ def _parse_ip_metadata(endpoint: str) -> dict[str, Any]:
     }
 
 
+def select_diverse_servers(
+    servers: list[dict[str, Any]],
+    max_servers: int,
+    candidate_limit: int = 24,
+) -> tuple[list[dict[str, Any]], dict[str, Any]]:
+    """Prefer one VPN exit per observed origin ASN before choosing a second from one ASN."""
+    if max_servers < 1:
+        raise ValueError("max_servers must be positive")
+    candidates = servers[:min(len(servers), max(candidate_limit, max_servers))]
+    groups: dict[str, list[dict[str, Any]]] = {}
+    asn_lookups = 0
+    for server in candidates:
+        origin = network_info(server["server_ip"])
+        asn = parse_int(origin.get("asn"))
+        server["_network_info"] = origin
+        server["_selection_asn"] = asn
+        group = f"AS{asn}" if asn > 0 else "ASN_UNVERIFIED"
+        groups.setdefault(group, []).append(server)
+        asn_lookups += 1
+
+    selected: list[dict[str, Any]] = []
+    group_order = sorted(
+        groups,
+        key=lambda group: (
+            group == "ASN_UNVERIFIED",
+            -groups[group][0]["score"],
+            groups[group][0]["hostname"],
+        ),
+    )
+    # Pass 1: one best-scoring server per observed ASN.
+    for group in group_order:
+        if len(selected) >= max_servers:
+            break
+        selected.append(groups[group][0])
+    # Pass 2: only use additional nodes after every observed ASN had a chance.
+    if len(selected) < max_servers:
+        selected_ids = {server["hostname"] for server in selected}
+        for server in candidates:
+            if len(selected) >= max_servers:
+                break
+            if server["hostname"] not in selected_ids:
+                selected.append(server)
+                selected_ids.add(server["hostname"])
+
+    selected_asns = sorted({server["_selection_asn"] for server in selected if server["_selection_asn"] > 0})
+    return selected, {
+        "candidate_servers_inspected": len(candidates),
+        "server_asn_lookups": asn_lookups,
+        "distinct_candidate_asns": len([group for group in groups if group != "ASN_UNVERIFIED"]),
+        "selected_distinct_asns": len(selected_asns),
+        "selected_asns": selected_asns,
+        "unverified_asn_candidates": len(groups.get("ASN_UNVERIFIED", [])),
+        "selection_policy": "one_best_candidate_per_observed_asn_before_second_server_from_same_asn",
+    }
+
+
 def ip_metadata(url: str | None = None) -> dict[str, Any]:
     """Get metadata for a known server IP or require two-source egress consensus."""
     endpoints = (url,) if url else IP_INFO_URLS
@@ -518,13 +574,14 @@ def run(args: argparse.Namespace) -> int:
 
     csv_text = fetch_bytes(VPN_GATE_API, timeout=40).decode("utf-8", "replace")
     servers = parse_vpngate_csv(csv_text)
-    selected = servers[:args.max_servers]
+    selected, selection_meta = select_diverse_servers(servers, args.max_servers)
     raw_rows: list[dict[str, Any]] = [{
         "source": "vpn_gate_official_api",
         "url": VPN_GATE_API,
         "retrieved_at": utc_now(),
         "ru_openvpn_servers_with_usable_profiles": len(servers),
         "selected_servers": len(selected),
+        "provider_diversity_selection": selection_meta,
         "policy": "RU country in VPN Gate record; ISP/residential status is not assumed",
     }]
     provider_rows: list[dict[str, Any]] = []
@@ -540,7 +597,7 @@ def run(args: argparse.Namespace) -> int:
             server_meta = ip_metadata(f"https://ipwho.is/{server_ip}")
         except ProbeError:
             server_meta = {"asn": 0, "org": ""}
-        server_origin = network_info(server_ip)
+        server_origin = server.pop("_network_info", None) or network_info(server_ip)
         server_asn = server_meta["asn"] or server_origin["asn"]
         server_meta["asn"] = server_asn
         server_meta["network_prefix"] = server_origin["prefix"]
@@ -679,6 +736,7 @@ def run(args: argparse.Namespace) -> int:
         "source": "VPN Gate official CSV API; vpnobratno.info is a public directory of VPN Gate Russian volunteer nodes",
         "selected_vpn_gate_ru_servers": len(selected),
         "usable_ru_openvpn_servers_discovered": len(servers),
+        "provider_diversity_selection": selection_meta,
         "connection_counts": dict(connection_counts),
         "exit_geoip_categories": dict(exit_categories),
         "targets_in_ru_scope": len(targets),
