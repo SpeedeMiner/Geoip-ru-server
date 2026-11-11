@@ -57,9 +57,9 @@ v38 retains the v37 conservative blocked set:
 - bounded explicit subnet.lst networks;
 - curated Telegram prefixes already accepted by the repository's policy.
 
-It additionally imports Antifilter Download ipsum.lst, documented by that aggregator as a summary of individual blocked IPv4 addresses into /24 prefixes. The site says its data is supplied in accordance with Government Resolution 1101, but this is still a third-party feed/aggregator, not a direct RKN API endpoint. The exact downloaded bytes and SHA-256 are retained.
+It additionally downloads Antifilter Download ipsum.lst for a separate review-only impact analysis. The publisher documents it as a summary of individual blocked IPv4 addresses into /24 prefixes and currently reports 19,015 such prefixes versus 50,806 individual ip.lst records. The site says its source data is supplied in accordance with Government Resolution 1101, but this is still a third-party feed/aggregator, not a direct RKN API endpoint. The exact downloaded bytes and SHA-256 are retained.
 
-**Collateral risk:** a /24 carve removes all 256 addresses, not only the one blocked host. On shared hosting, CDN or multi-tenant ranges this can send unrelated co-resident traffic through VPN. v38 publishes a per-prefix overlap ledger and exact additional address-space carve count so this risk can be reviewed.
+**Collateral risk:** a /24 summary can cover 256 addresses even when only one or a few IPs in that block appeared in the source list. On shared hosting, CDN or multi-tenant ranges this could send unrelated co-resident traffic through VPN. Therefore v38 does **not** automatically carve ipsum /24s. It publishes a per-prefix review ledger and counts the potential extra DIRECT address space that would be affected. Only exact host addresses from approved sources and the existing bounded subnet policy remain automatic.
 
 Community Antifilter and Re-filter candidate lists remain review-only. They are not automatically subtracted from DIRECT. Privacy/telemetry classification does not move traffic to VPN; only membership in the approved RKN-derived blocked set does.
 
@@ -70,7 +70,7 @@ Domain-only blocked rules should be handled separately. A future client-compatib
 For each address:
 1. Add v37 DIRECT baseline plus RU/BY/KZ RIR resources and named service DIRECT prefixes.
 2. Subtract PRIVATE.
-3. Subtract the union of the approved v37 RKN carve-outs and v38 Antifilter ipsum.lst /24 summaries.
+3. Subtract the approved v37 RKN carve-outs. Keep Antifilter ipsum.lst /24 summaries review-only; they do not change the client output.
 4. Emit the remaining addresses as RU; emit PRIVATE unchanged.
 
 The final protobuf is independently decoded and checked to contain only RU and PRIVATE. Validation confirms no RU address overlaps PRIVATE or any approved blocked prefix.
@@ -83,7 +83,7 @@ The final protobuf is independently decoded and checked to contain only RU and P
 - geoip_RU_v38_manifest.json — output digest, immutable source refs and input SHA-256 values.
 - geoip_RU_v38_source_metrics.tsv — per-source CIDR/address contribution; rows overlap and must not be summed.
 - geoip_RU_v38_prefix_provenance.tsv — per-service and regional resource prefix attribution.
-- geoip_RU_v38_blocked_provenance.tsv — RKN source-prefix overlap and incremental DIRECT carve.
+- geoip_RU_v38_blocked_provenance.tsv — approved block overlaps plus review-only /24 collateral estimates.
 - geoip_RU_v38_blocked_ip_exclusions.txt — exact combined blocked set applied to v38.
 - geoip_RU_BY_KZ_rir_registered_prefixes.tsv and geoip_RU_BY_KZ_rir_stats.txt — regional resource-registration inventory.
 - geoip_RU_v37_base.dat and geoip_RU_v37_base_quality_report.txt — retained baseline intermediate for exact comparison.
