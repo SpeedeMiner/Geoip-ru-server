@@ -872,3 +872,6 @@ Durable resume point for PR #5. After any conversation/network interruption, rea
 - Do not report this as a GitHub Actions failure or a VPN/provider failure. The runner watchdog validation #200 remains SUCCESS and unchanged.
 - Resume action: use a working authorized GitHub Actions dispatch capability once available; the exact intended branch and inputs are listed above and in RESUME.md/CHECKPOINT.json. Do not submit any payment automatically or retry the blocked browser action before the user resolves the service-wallet blocker.
 - PR #5 remains OPEN / DRAFT; no production GeoIP or PR #6 files were touched.
+
+
+- Recovery-guide follow-up: `.github/reachability/RESUME.md` was amended in commit `8761626e83c08bbe6a0a98a38b8fccd0b2bff505` to make the pre-GitHub dispatch refusal and the no-Run-#21 state explicit for the next chat. `CHECKPOINT.json` is the authoritative structured state and contains the same blocker.
