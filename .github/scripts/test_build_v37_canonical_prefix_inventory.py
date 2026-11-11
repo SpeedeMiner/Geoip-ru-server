@@ -110,6 +110,11 @@ class V37CanonicalInventoryTests(unittest.TestCase):
             self.assertEqual(by_prefix["8.8.0.0/16"]["IN_V37_RU_OUTPUT"], "yes")
             self.assertEqual(by_prefix["8.8.0.0/16"]["IN_SELECTED_RIR_OR_COMPANY_ORIGIN_BGP"], "no")
             self.assertEqual(by_prefix["8.8.8.0/24"]["IN_V37_RU_OUTPUT"], "no")
+            self.assertEqual(by_prefix["8.8.8.0/24"]["RU_OUTPUT_COVERED_ADDRESSES"], "256")
+            self.assertEqual(by_prefix["8.8.8.0/24"]["RU_OUTPUT_ADDRESS_COVERAGE"], "FULL")
+            self.assertEqual(by_prefix["1.1.1.0/24"]["RU_OUTPUT_COVERED_ADDRESSES"], "0")
+            self.assertEqual(by_prefix["1.1.1.0/24"]["RU_OUTPUT_ADDRESS_COVERAGE"], "NONE")
+            self.assertEqual(by_prefix["9.9.9.0/24"]["RU_OUTPUT_ADDRESS_COVERAGE"], "NONE")
             self.assertEqual(by_prefix["8.8.8.0/24"]["SELECTED_ORIGIN_ASNS"], "AS12345")
             self.assertEqual(by_prefix["8.8.8.0/24"]["IN_RIR_RU_REGISTERED_RESOURCES"], "yes")
             self.assertEqual(by_prefix["8.8.8.0/24"]["IN_ACCEPTED_ADDITIONAL_GEOIP_FEEDS"], "yes")
@@ -119,7 +124,8 @@ class V37CanonicalInventoryTests(unittest.TestCase):
             self.assertEqual(result["output_ru"], 1)
             self.assertEqual(result["selected_bgp"], 2)
             stats = args.stats.read_text(encoding="utf-8")
-            self.assertIn("Parent/child CIDRs are not inferred as exact matches", stats)
+            self.assertIn("parent/child routes are not inferred as exact NLRI matches", stats)
+            self.assertIn("ADDRESS-SPACE COVERAGE BY RU OUTPUT", stats)
 
     def test_empty_or_invalid_geoip_file_fails_closed(self):
         with self.assertRaisesRegex(InventoryError, "empty"):
