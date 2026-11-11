@@ -1,14 +1,14 @@
 {
   "schema_version": 1,
-  "updated_at_utc": "2026-11-11T11:50:35Z",
+  "updated_at_utc": "2026-11-11T12:24:55Z",
   "repository": "SpeedeMiner/Geoip-ru-server",
   "pull_request": 5,
   "pull_request_url": "https://github.com/SpeedeMiner/Geoip-ru-server/pull/5",
   "branch": "feature/reachability-full-ru-kz-by",
-  "recorded_pr_head_before_checkpoint_commit": "069bbee351f2b6f2b3dcc2adf7b1c3806d8ca224",
+  "recorded_pr_head_before_checkpoint_commit": "6fd95321be3f43f236812470f02fa2f3df279450",
   "base_sha": "a68e5d6589361814cb1cfedd2af7857e4af806fa",
-  "state": "VPNOBRATTO_RUN_10_CANCELLED_SLOW_ASN_PREFLIGHT_FIXED_VALIDATED_112_TESTS",
-  "current_phase": "CONFIRM_NO_ACTIVE_RUN_THEN_RUN_11_ON_VALIDATED_HEAD",
+  "state": "VPNOBRATTO_RUN_11_CANCELLED_AT_ORIGIN_ASN_SCAN_EARLY_STOP_FIX_CI_PENDING",
+  "current_phase": "WAIT_FOR_CI_43020108512_THEN_RUN_12",
   "completed": [
     "repository_reconnaissance",
     "protobuf_inventory_exporter",
@@ -219,7 +219,11 @@
     "vpnobratto_selection_ripe_stat_lookup_hard_bounded_7s",
     "vpnobratto_origin_asn_lookup_result_progress_markers",
     "vpnobratto_selection_lookup_timeout_and_failure_tests_added",
-    "vpnobratto_validation_112_python_tests_and_go_checks_success_43015247219"
+    "vpnobratto_validation_112_python_tests_and_go_checks_success_43015247219",
+    "vpnobratto_run11_cancelled_after_origin_asn_lookup_stalled_at_candidate_15",
+    "vpnobratto_run11_zero_openvpn_attempts_zero_target_measurements",
+    "vpnobratto_asn_selector_early_stop_after_attempt_budget_unique_asns",
+    "vpnobratto_asn_selector_early_stop_and_fallback_tests_added"
   ],
   "latest_successful_validation_run": 42999166787,
   "latest_successful_validation_commit": "26b12ab8b83f766391168f179837ff44aee6681a",
@@ -398,11 +402,12 @@
     "production_release_artifact_byte_delta_verified": false
   },
   "next_steps": [
-    "Confirm run #43012803707 is terminal cancelled and no VPN reachability workflow run is queued or in progress.",
-    "Dispatch exactly one manual VPNObratto run from the current feature-branch tip, requesting one verified RU exit and allowing up to six connection attempts.",
-    "Inspect live logs for origin_asn_lookup_result markers after every candidate; verify phase=origin_asn_selection completes and an OpenVPN attempt actually starts.",
-    "After the run terminates, download and verify the artifact; reconcile exit IPv4/country consensus and every target DNS/HTTPS measurement row before interpreting reachability.",
-    "Do not infer household/residential ISP classification from a volunteer VPN exit; preserve PR #5 as OPEN / DRAFT and do not touch PR #6 or production GeoIP/release paths."
+    "Require CI run #43020108512 to pass on test commit 6fd95321be3f43f236812470f02fa2f3df279450.",
+    "Confirm run #43016153615 remains terminal cancelled and no VPN reachability workflow run is active.",
+    "Dispatch exactly one manual VPNObratto pilot from the current feature-branch tip: one verified RU exit, maximum six connection attempts, five-second route wait.",
+    "Verify origin ASN selection stops as soon as six distinct ASNs are found (expected within first eight candidate records in the prior log) and emits origin_asn_selection_early_stop plus phase completion.",
+    "Verify OpenVPN actually starts; capture route result and two-source exact exit IPv4/RU consensus; then persist and reconcile per-target DNS/HTTPS report rows and artifact digest.",
+    "Do not infer residential/home ISP classification from volunteer VPN exits. Keep PR #5 OPEN / DRAFT; do not touch PR #6, production GeoIP or release outputs."
   ],
   "ci_policy": {
     "push_validation_paths": [
@@ -440,18 +445,18 @@
     "vpn_gate_manual_dispatch_requires_default_branch_workflow": true
   },
   "pending_validation": {
-    "commit": "069bbee351f2b6f2b3dcc2adf7b1c3806d8ca224",
+    "commit": "6fd95321be3f43f236812470f02fa2f3df279450",
     "workflow": "Reachability validation",
-    "run_id": 43015247219,
-    "run_url": "https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43015247219",
-    "status": "SUCCESS",
-    "verified_python_test_count": 112,
+    "run_id": 43020108512,
+    "run_url": "https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43020108512",
+    "status": "QUEUED",
+    "expected_python_test_count": 114,
     "go_checks": [
       "gofmt",
       "go test ./...",
       "go build"
     ],
-    "note": "Full job log confirms 112 Python tests, py_compile/JSON validation, gofmt, Go tests and build."
+    "note": "Added tests for early stop when max_attempts distinct verified ASNs have been found and for continuing when the ASN budget is not yet met."
   },
   "vpn_gate_measurement": {
     "source": "VPNObratno linked OpenVPN profiles (default); official VPN Gate CSV API remains selectable fallback",
@@ -1068,88 +1073,98 @@
     "validation_result": "SUCCESS: 108 Python tests, py_compile/JSON validation, gofmt, go test ./..., go build."
   },
   "current_manual_dispatch": {
-    "run_id": 43012803707,
-    "run_url": "https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43012803707",
-    "run_number": 10,
+    "run_id": 43016153615,
+    "run_url": "https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43016153615",
+    "run_number": 11,
     "event": "workflow_dispatch",
     "branch": "feature/reachability-full-ru-kz-by",
-    "commit": "89ddd9c346dd062c900ec2610d2f55a28ac91a72",
+    "commit": "5d530c423b61d571c4271671f9e912c55ad2167e",
     "source": "vpnobratno",
     "max_vpn_gate_servers": 1,
     "max_vpn_gate_attempts": 6,
     "connect_timeout_seconds": 5,
     "dns_https_request_timeout_seconds": 12,
-    "created_at_utc": "2026-11-11T11:32:39Z",
-    "last_checked_at_utc": "2026-11-11T11:50:00Z",
+    "created_at_utc": "2026-11-11T11:57:02Z",
+    "last_checked_at_utc": "2026-11-11T12:22:06Z",
     "last_checked_status": "completed",
     "last_checked_conclusion": "cancelled",
     "measurement_step_status": "cancelled",
     "report_upload_status": "not_reached",
     "artifacts": [],
-    "successful_ru_exits": 0,
-    "target_measurements": 0,
-    "profile_discovery": {
+    "discovery": {
       "listing_links": 36,
       "usable_profiles": 24,
       "profile_download_cap": 24,
       "status": "COMPLETED"
     },
     "origin_asn_selection": {
-      "candidate_count": 24,
-      "latest_visible_marker": "origin_asn_lookup=10/24 host=vpn765560917.opengw.net",
-      "completion_marker_seen": false,
-      "selected_profiles": null,
-      "selected_distinct_asns": null,
-      "no_progress_observed_minutes": ">6",
-      "status": "CANCELLED_BEFORE_SELECTION_COMPLETED"
+      "candidates": 24,
+      "latest_visible_marker": "origin_asn_lookup=15/24 host=vpn712485771.opengw.net",
+      "latest_marker_at_utc": "2026-11-11T11:57:45Z",
+      "completed_results_visible": 14,
+      "completed_phase": false,
+      "openvpn_attempts": 0,
+      "verified_ru_exits": 0,
+      "target_requests_sent": 0,
+      "cancellation_reason": "No progress for >10min step timeout and owner-authorized cancellation",
+      "distinct_asns_observed_in_first_eight_records": [
+        42116,
+        12389,
+        3216,
+        41789,
+        41733,
+        20485
+      ],
+      "note": "The first-eight ASN list has six distinct values. An earlier browser summary saying 24 selected profiles/eight distinct ASNs was inconsistent with max_attempts=6 and is superseded."
     },
-    "openvpn_attempts": 0,
-    "verified_ru_exits": 0,
-    "target_requests_sent": 0,
-    "artifact_count": 0,
-    "interpretation": "Preparation and 24 profile downloads succeeded. The serial origin ASN selection did not advance beyond the 10/24 marker; no OpenVPN process was started, no tunnel/exit consensus was reached and no target was queried. This is a selection-preflight execution failure, not target reachability evidence."
+    "interpretation": "Profile discovery and downloads succeeded, but origin ASN scanning stalled at candidate 15 without a result marker. No OpenVPN attempt, exit consensus or target request occurred. This is not target reachability evidence."
   },
   "latest_manual_dispatch": {
-    "run_id": 43012803707,
-    "run_url": "https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43012803707",
-    "run_number": 10,
+    "run_id": 43016153615,
+    "run_url": "https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43016153615",
+    "run_number": 11,
     "event": "workflow_dispatch",
     "branch": "feature/reachability-full-ru-kz-by",
-    "commit": "89ddd9c346dd062c900ec2610d2f55a28ac91a72",
+    "commit": "5d530c423b61d571c4271671f9e912c55ad2167e",
     "source": "vpnobratno",
     "max_vpn_gate_servers": 1,
     "max_vpn_gate_attempts": 6,
     "connect_timeout_seconds": 5,
     "dns_https_request_timeout_seconds": 12,
-    "created_at_utc": "2026-11-11T11:32:39Z",
-    "last_checked_at_utc": "2026-11-11T11:50:00Z",
+    "created_at_utc": "2026-11-11T11:57:02Z",
+    "last_checked_at_utc": "2026-11-11T12:22:06Z",
     "last_checked_status": "completed",
     "last_checked_conclusion": "cancelled",
     "measurement_step_status": "cancelled",
     "report_upload_status": "not_reached",
     "artifacts": [],
-    "successful_ru_exits": 0,
-    "target_measurements": 0,
-    "profile_discovery": {
+    "discovery": {
       "listing_links": 36,
       "usable_profiles": 24,
       "profile_download_cap": 24,
       "status": "COMPLETED"
     },
     "origin_asn_selection": {
-      "candidate_count": 24,
-      "latest_visible_marker": "origin_asn_lookup=10/24 host=vpn765560917.opengw.net",
-      "completion_marker_seen": false,
-      "selected_profiles": null,
-      "selected_distinct_asns": null,
-      "no_progress_observed_minutes": ">6",
-      "status": "CANCELLED_BEFORE_SELECTION_COMPLETED"
+      "candidates": 24,
+      "latest_visible_marker": "origin_asn_lookup=15/24 host=vpn712485771.opengw.net",
+      "latest_marker_at_utc": "2026-11-11T11:57:45Z",
+      "completed_results_visible": 14,
+      "completed_phase": false,
+      "openvpn_attempts": 0,
+      "verified_ru_exits": 0,
+      "target_requests_sent": 0,
+      "cancellation_reason": "No progress for >10min step timeout and owner-authorized cancellation",
+      "distinct_asns_observed_in_first_eight_records": [
+        42116,
+        12389,
+        3216,
+        41789,
+        41733,
+        20485
+      ],
+      "note": "The first-eight ASN list has six distinct values. An earlier browser summary saying 24 selected profiles/eight distinct ASNs was inconsistent with max_attempts=6 and is superseded."
     },
-    "openvpn_attempts": 0,
-    "verified_ru_exits": 0,
-    "target_requests_sent": 0,
-    "artifact_count": 0,
-    "interpretation": "Preparation and 24 profile downloads succeeded. The serial origin ASN selection did not advance beyond the 10/24 marker; no OpenVPN process was started, no tunnel/exit consensus was reached and no target was queried. This is a selection-preflight execution failure, not target reachability evidence."
+    "interpretation": "Profile discovery and downloads succeeded, but origin ASN scanning stalled at candidate 15 without a result marker. No OpenVPN attempt, exit consensus or target request occurred. This is not target reachability evidence."
   },
   "cancellation_investigation": {
     "run7_cancel_request": {
@@ -1172,6 +1187,19 @@
       "rest_final_conclusion": "cancelled",
       "rest_final_updated_at_utc": "2026-11-11T11:50:00Z",
       "job_id": 130496358155,
+      "job_conclusion": "cancelled",
+      "artifacts": []
+    },
+    "run11_cancel_request": {
+      "run_id": 43016153615,
+      "user_authorization_context": "Explicit previous authorization to cancel and continue a stalled VPN run in this workstream.",
+      "request_submitted_by_assistant": true,
+      "interface": "Authenticated GitHub Actions web UI",
+      "ui_confirmation": "You have successfully requested the workflow to be canceled.",
+      "rest_final_status": "completed",
+      "rest_final_conclusion": "cancelled",
+      "rest_final_updated_at_utc": "2026-11-11T12:22:06Z",
+      "job_id": 130507629391,
       "job_conclusion": "cancelled",
       "artifacts": []
     }
@@ -1223,11 +1251,9 @@
     "go_test": "PASS",
     "go_build": "PASS",
     "features_validated": [
-      "selection_only_RIPEstat_lookup_uses_ipv4_curl_max_time_5s_and_outer_subprocess_timeout_7s",
-      "failed_or_slow_candidate_ASN_lookup_is_nonblocking_and_unverified",
-      "per_candidate_origin_asn_lookup_result_progress_marker",
-      "selection_lookup_success_timeout_and_HTTP_failure_tests",
-      "existing_post_tunnel_network_info_DoH_fallback_and_two_source_exit_consensus_unchanged"
+      "selection_only_RIPEstat_lookup_with_ipv4_curl_7s_subprocess_guard",
+      "nonblocking_ASN_lookup_failure",
+      "per_candidate_ASN_result_markers"
     ]
   },
   "run9_result": {
@@ -1355,5 +1381,61 @@
   },
   "progress_log_events": [
     "origin_asn_lookup_result=i/n host asn status=ok|unavailable"
-  ]
+  ],
+  "run11_result": {
+    "run_id": 43016153615,
+    "run_url": "https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43016153615",
+    "run_number": 11,
+    "event": "workflow_dispatch",
+    "branch": "feature/reachability-full-ru-kz-by",
+    "commit": "5d530c423b61d571c4271671f9e912c55ad2167e",
+    "source": "vpnobratno",
+    "max_vpn_gate_servers": 1,
+    "max_vpn_gate_attempts": 6,
+    "connect_timeout_seconds": 5,
+    "dns_https_request_timeout_seconds": 12,
+    "created_at_utc": "2026-11-11T11:57:02Z",
+    "last_checked_at_utc": "2026-11-11T12:22:06Z",
+    "last_checked_status": "completed",
+    "last_checked_conclusion": "cancelled",
+    "measurement_step_status": "cancelled",
+    "report_upload_status": "not_reached",
+    "artifacts": [],
+    "discovery": {
+      "listing_links": 36,
+      "usable_profiles": 24,
+      "profile_download_cap": 24,
+      "status": "COMPLETED"
+    },
+    "origin_asn_selection": {
+      "candidates": 24,
+      "latest_visible_marker": "origin_asn_lookup=15/24 host=vpn712485771.opengw.net",
+      "latest_marker_at_utc": "2026-11-11T11:57:45Z",
+      "completed_results_visible": 14,
+      "completed_phase": false,
+      "openvpn_attempts": 0,
+      "verified_ru_exits": 0,
+      "target_requests_sent": 0,
+      "cancellation_reason": "No progress for >10min step timeout and owner-authorized cancellation",
+      "distinct_asns_observed_in_first_eight_records": [
+        42116,
+        12389,
+        3216,
+        41789,
+        41733,
+        20485
+      ],
+      "note": "The first-eight ASN list has six distinct values. An earlier browser summary saying 24 selected profiles/eight distinct ASNs was inconsistent with max_attempts=6 and is superseded."
+    },
+    "interpretation": "Profile discovery and downloads succeeded, but origin ASN scanning stalled at candidate 15 without a result marker. No OpenVPN attempt, exit consensus or target request occurred. This is not target reachability evidence."
+  },
+  "selector_early_stop_fix": {
+    "code_commit": "fb70d8e62611ed03e4d29d3816862b5f6acebecb",
+    "test_commit": "6fd95321be3f43f236812470f02fa2f3df279450",
+    "behavior": "Stop scanning once distinct verified origin ASNs reaches max_attempts; emit origin_asn_selection_early_stop before fallback ordering.",
+    "expected_lookup_count_in_run11_first8_pattern": 8,
+    "tests_added": 2,
+    "validation_run_id": 43020108512,
+    "validation_status": "QUEUED"
+  }
 }
