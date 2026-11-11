@@ -66,8 +66,8 @@ class WorklistTests(unittest.TestCase):
             self.assertEqual(got[0]["EXTERNAL_SPOT_CHECK_STATUS"], "CHECKED_2026-11-10")
             self.assertEqual(got[0]["EXTERNAL_SPOT_CHECK_SCOPE_RELATION"], "EXACT_ONLY")
             self.assertEqual(got[4]["EXTERNAL_SPOT_CHECK_SCOPE_RELATION"], "MORE_SPECIFIC_ONLY")
-            self.assertEqual(got[1]["EXTERNAL_SPOT_CHECK_STATUS"], "CHECKED_2026-11-11")
-            self.assertEqual(got[1]["EXTERNAL_SPOT_CHECK_SCOPE_RELATION"], "EXACT_AND_MORE_SPECIFIC")
+            self.assertEqual(got[2]["EXTERNAL_SPOT_CHECK_STATUS"], "CHECKED_2026-11-11")
+            self.assertEqual(got[2]["EXTERNAL_SPOT_CHECK_SCOPE_RELATION"], "EXACT_AND_MORE_SPECIFIC")
             self.assertTrue(all(r["STATUS"] == "REVIEW" for r in got))
             self.assertIn("no row is approved", stats.read_text(encoding="utf-8"))
 
