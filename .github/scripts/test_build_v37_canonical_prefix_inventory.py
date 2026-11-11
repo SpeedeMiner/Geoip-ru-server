@@ -75,7 +75,7 @@ class V37CanonicalInventoryTests(unittest.TestCase):
                 "8.8.8.0/24 # AS12345[RIR-RU]\n1.1.1.0/24 # AS64500\n",
                 encoding="utf-8",
             )
-            (root / "rir.txt").write_text("8.8.8.0/24\n", encoding="utf-8")
+            (root / "rir.txt").write_text("8.8.8.0/24\n9.9.9.0/24\n", encoding="utf-8")
             (root / "global.txt").write_text("8.8.8.0/24\n4.4.4.0/24\n", encoding="utf-8")
             (root / "additional.tsv").write_text(
                 "PREFIX\tFAMILY\tPREFIX_ADDRESSES\tGROUPS_WITH_OVERLAP\n"
