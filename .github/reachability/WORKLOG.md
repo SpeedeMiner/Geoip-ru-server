@@ -472,3 +472,13 @@ Durable resume point for PR #5. After any conversation/network interruption, rea
 - The live page snapshot is time-varying. The 24-link cap and metadata prevent excessive downloads and make truncation visible; no inference is made about servers beyond the fetched sample. A run with a truncated sample cannot claim complete server/provider discovery.
 - No VPN connection was attempted. CI verifies selection order and bounded downloads, not actual tunnel availability or household/residential status.
 - PR #5 remains OPEN / DRAFT. No production builder, release database/assets, DIRECT policy, ASN allowlists, main/release or PR #6 were touched.
+
+### 2026-11-11 — Bound VPNObratno response reads by resource — CI PASS
+
+- Re-audited the profile download path after the 24-link discovery cap. The previous downloader used an 8,000,000-byte read limit for both the HTML listing and each .ovpn profile, then applied the 64,000-byte profile check only after the response had already been read.
+- Added explicit resource limits: 2,000,000 bytes for the listing and 64,000 bytes per profile. The shared fetch helper validates every requested limit against a hard 8,000,000-byte ceiling and reads only max_bytes + 1; an over-limit body is rejected immediately after the single extra byte proves it oversized.
+- Discovery now passes the smaller limit for each resource. The existing post-fetch profile-size check remains as defense in depth for custom/test fetchers.
+- Added regression coverage for exact-limit acceptance, limit-plus-one rejection, enforcement of the hard ceiling before opening a connection, and correct listing/profile limit forwarding. Existing mocked discovery fetchers were updated to accept the explicit limit.
+- Validation run #42986373320 (https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/42986373320) succeeded on code commit 7dd4eb483e6fba9143c5664210625b1e7dfdd23c. Full job logs confirm Ran 104 tests, OK; gofmt, go test ./... and go build passed.
+- This hardens transfer-size/resource bounds only. No VPN connection was attempted, no target was tested through a VPNObratno exit, and no residential/home-network status was established.
+- PR #5 remains OPEN / DRAFT. Production GeoIP builder/data, release assets, DIRECT policy, ASN allowlists, main/release and PR #6 remain untouched.

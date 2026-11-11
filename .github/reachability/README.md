@@ -36,9 +36,10 @@ the exact `vpnobratno.info` origin and recognises these variants:
 - `TCP` — hostname-based TCP fallback.
 
 The profile variants are **connection alternatives for one server**, not
-independent providers. They are ordered IP UDP, UDP, IP TCP, TCP within a
-server. Provider diversity is measured by the server IP's independently
-looked-up origin ASN; another profile for the same server cannot increase the
+independent providers. Discovery interleaves variants across the listed
+hostnames: IP UDP for each server first, then DDNS UDP, IP TCP and DDNS TCP.
+Provider diversity is measured by the server IP's independently looked-up
+origin ASN; another profile for the same server cannot increase the
 distinct-provider count.
 
 The listing and profile downloader disables configured HTTP proxies and
@@ -47,13 +48,18 @@ non-default ports, embedded credentials and redirects to another hostname
 are rejected before profile content is accepted. The final response URL is
 checked again after download.
 
-Discovery is bounded to **24 profile downloads per run**. The source page is
-ordered so the preferred IP UDP profile is taken from each listed server
-before downloading second and third variants; this prevents the first few
-servers from consuming the entire download budget. The summary records the
-number of links found, profiles considered, links omitted by the cap and
-whether the cap was reached. This is a discovery/download limit, separate
+Discovery is bounded to **24 profile downloads per run**. The parser
+interleaves preferred variants across hostnames, so one server's alternative
+profiles do not consume the initial sample before other listed servers are
+considered. The summary records links found, profiles considered, links
+omitted by the cap and whether the cap was reached. This is a separate limit
 from the six actual connection-attempt limit.
+
+The downloader also bounds response bodies while they are being read: the
+listing page is limited to 2,000,000 bytes and each linked profile to 64,000
+bytes. The fetch helper rejects any configured limit above its 8,000,000-byte
+hard ceiling and reads at most one byte beyond the selected limit to detect
+oversized responses without buffering the entire body.
 
 Before a profile can be attempted, the collector checks that its filename
 matches the server hostname and variant shown in the listing, that the profile
