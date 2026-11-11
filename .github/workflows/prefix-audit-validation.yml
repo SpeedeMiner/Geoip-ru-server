@@ -915,7 +915,7 @@ jobs:
 
           path = Path("prefix-audit/exact-nlri-live-capture.json")
           capture = json.loads(path.read_text(encoding="utf-8"))
-          if capture.get("request_count") != 20 or len(capture.get("results", [])) != 20:
+          if capture.get("request_count") != 24 or len(capture.get("results", [])) != 24:
               raise SystemExit("Live exact-NLRI capture is incomplete")
           print(f"Live exact-NLRI requests: {capture['request_count']}")
           print(f"Transport status counts: {capture['transport_status_counts']}")
