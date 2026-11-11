@@ -25,20 +25,22 @@ The first “Current repository state” section near the top of WORKLOG is hist
 
 ## Current measurement state
 
-### Run #21 — GITHUB JOB STILL IN PROGRESS AFTER ALL DEADLINES; NO TERMINAL LOGS OR ARTIFACT
+### Run #21 — TERMINAL: GITHUB MAXIMUM 12-MINUTE JOB TIME EXCEEDED; NO ARTIFACT / TERMINAL LOGS
 
 - Run: [#21 / 43065501624](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43065501624), job [130679257182](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43065501624/job/130679257182).
-- Manual dispatch actor: `SpeedeMiner`; branch `feature/reachability-full-ru-kz-by`; checked-out commit: `5a1badef9e19a71c44cd4b1fa42748f4d688e90f`.
-- Started 2026-11-11 17:10:12 UTC; measurement step started 17:10:40 UTC; runner `ubuntu-24.04`.
-- Setup/install, Go setup, exact published GeoIP download/checksum and RU/PRIVATE inventory export all completed successfully.
-- VPNObratto listing: 22,381 bytes; 32 profile links, download cap 24, six-host target. Five IP_UDP profiles fetched, validated and resolved to five distinct server IPs. Sixth profile fetch started with pinned-DoH HTTPS and a 20-second wall deadline.
-- Latest owner-visible marker (sent 17:11:10 UTC): `profile_fetch_started=6/24 wall_timeout=20s transport=pinned_doh_https`.
-- Confirmed addresses from profiles 1–5: `185.112.224.250`, `94.159.74.210`, `92.124.94.110`, `2.61.109.142`, `93.157.20.218`.
-- Last owner-visible marker: profile 6 fetch started at the end of the supplied excerpt; no later marker has been supplied. Repeated GitHub REST checks through 17:16:11 UTC and the Actions run page still showed the run/job/measurement step as `in_progress`, upload pending, and no artifacts. Run `updated_at` remained `17:10:17Z`; the live job page rendered `Loading`, and the decoded job-log endpoint returned `BlobNotFound`. This is an observability/stale-status warning, not proof that the process is still executing or has failed. No OpenVPN process start, installed tunnel route, verified RU exit or target row is confirmed by available evidence.
-- Workflow limits on the checked-out commit: 7-minute GNU process watchdog + 5-second KILL grace, 9-minute measurement step, 12-minute job; 5-second OpenVPN route wait per candidate.
-- Workflow default inputs are one verified RU exit and six profile attempts. GitHub's run metadata does not echo submitted form inputs; distinguish configured defaults from a confirmed input payload.
-- Do not cancel or overlap this run. Re-query status and retrieve full logs/artifacts after terminal state. The absence of an active log archive is not evidence of measurement failure.
-- Current PR branch head may advance through documentation-only updates while the active run continues. The running job remains pinned to checkout SHA `5a1bade...`; always distinguish run SHA from current PR head.
+- Dispatch actor: `SpeedeMiner`; branch `feature/reachability-full-ru-kz-by`; checked-out SHA `5a1badef9e19a71c44cd4b1fa42748f4d688e90f`; runner `ubuntu-24.04`.
+- Started 2026-11-11 17:10:12 UTC; job started 17:10:16 UTC; measurement step started 17:10:40 UTC.
+- Owner supplied terminal GitHub Actions annotation at 17:28:19 UTC: **“The job has exceeded the maximum execution time of 12m0s.”**
+- GitHub run API at 17:28:39 UTC: `status=completed`, `conclusion=cancelled`, `updated_at=2026-11-11T17:27:17Z`, attempt 1. Job API: `completed / cancelled`. Interpret this cancellation as GitHub's max-execution-time enforcement, not manual cancellation by the dispatch actor. The actor field identifies who triggered the workflow, not who cancelled it.
+- The job step-summary API is stale/inconsistent even after terminal job state: measurement step 7 remains `in_progress`, artifact upload step 8 `pending`, and failure gate step 9 `pending`. No artifact exists. Fetching decoded job logs after completion still returns Azure `BlobNotFound`; there is no terminal log archive available for forensic inspection.
+- Setup, checkout, tool installation, Go setup, exact published GeoIP checksum verification and RU/PRIVATE inventory export all succeeded.
+- Owner's last live log excerpt: VPNObratto listing was 22,381 bytes, with 32 profile links (download cap 24, target six unique hosts); profiles 1–5 were fetched/validated/resolved and yielded five distinct hosts. The sixth fetch began with `profile_fetch_started=6/24 wall_timeout=20s transport=pinned_doh_https`. No completion marker for profile 6 was received.
+- Confirmed profile server IPs from profiles 1–5: `185.112.224.250`, `94.159.74.210`, `92.124.94.110`, `2.61.109.142`, `93.157.20.218`.
+- Evidence counts: five usable profiles; profile 6 started but completion unknown; confirmed OpenVPN attempts 0; confirmed verified RU exits 0; confirmed target measurement rows 0. These zeros mean **no results confirmed in the available evidence**, not a measured finding of zero site reachability.
+- Timing limits on the run checkout: GNU watchdog 7 minutes + 5-second KILL grace; measurement step timeout 9 minutes; job timeout 12 minutes. The owner annotation confirms the outer job maximum was reached. The precise inner stall location and why there is no terminal log/artifact remain unresolved. The successful synthetic process-group watchdog preflight in Run #200 only proves the tested process topology on ubuntu-24.04; it does not diagnose this live run's inner stall.
+- No verified RU exit or target DNS/HTTPS requests are confirmed. Do not classify any target as blocked. A RU VPN exit would not, by itself, prove residential household access.
+- **No automatic rerun or replacement VPN run was started.** Before another attempt, inspect and improve the VPN measurement workflow's per-stage bounded execution and durable diagnostic persistence so that a stalled profile-fetch phase cannot leave the run without an inspectable terminal result.
+- PR #5 remains OPEN / DRAFT; no production GeoIP builder/data, DIRECT policy, ASN allowlists, `main`, `release`, PR #6 or other branches were changed.
 
 ### Run #20 — cancelled, no usable result
 ### Run #20 — cancelled, no usable result
@@ -87,13 +89,11 @@ Workflow integration: `.github/workflows/reachability-validation.yml` now runs o
 
 ## Next steps
 
-- **Run #21 is already in progress.** Continue monitoring only this run; do not dispatch or queue another VPN workflow while it is active, and do not cancel it merely because live log retrieval is unavailable.
-- The earlier attempt by this assistant to open the GitHub dispatch form was refused before browser start due to insufficient browser-automation service wallet. That historical refusal did not create a GitHub run. The owner subsequently started Run #21 manually; do not describe the pilot as blocked or undispatched now.
-- On terminal state, retrieve the complete job logs and artifact, verify artifact SHA/digest, and reconcile the summary, provider rows, measurement rows and raw diagnostics. If no verified RU exit was established, no target verdict is supported.
-- For Run #21, record profile fetch/download results; discovery completion/selection; OpenVPN process start/exit; route installed; two-source public exit IP/country agreement; exit ASN/prefix; each target DNS A/AAAA and HTTPS result; artifact presence/digest.
-- After the terminal inspection, append the full evidence and limitations to WORKLOG and update CHECKPOINT. Do not overwrite historical run records.
-- For that pilot, separately record: profile discovery/download results; OpenVPN process start/exit; route installed; two-source public exit IP/country agreement; exit ASN/prefix; each target DNS A/AAAA and HTTPS result; artifact presence and digest. No verified RU exit means no target verdict.
-- After the pilot reaches terminal state, append the full evidence and limitations to WORKLOG and update CHECKPOINT. Do not overwrite historical run records.
+- Run #21 is terminal. GitHub confirmed that its job exceeded the maximum execution time of 12 minutes; the run/job API reports `completed / cancelled`. This is a platform-enforced timeout, not evidence of a manual owner cancellation.
+- No terminal log archive or artifact is available. The last confirmed measurement marker remains the start of profile 6 fetch. Do not infer an OpenVPN attempt, a verified RU exit, or target reachability.
+- Diagnose the inner stall using the source at the run's pinned SHA `5a1badef9e19a71c44cd4b1fa42748f4d688e90f`. Review each operation after the profile-fetch boundary for a hard total wall-clock bound, and ensure phase progress and diagnostic output survive a killed measurement step. The 7-minute GNU guard, 9-minute step timeout and successful synthetic watchdog preflight did not prevent this run reaching the outer 12-minute job ceiling.
+- Do not automatically rerun VPNObratno. A replacement pilot should follow only after the next bounded-stage/diagnostic changes are validated; use one exit and a small profile cap, then inspect the run to terminal state. No overlapping VPN run exists now.
+- Keep PR #5 OPEN / DRAFT. Do not modify production GeoIP data/builders, DIRECT policy, ASN allowlists, `main`, `release`, PR #6 or other branches.
 
 ## Continuity rules
 
