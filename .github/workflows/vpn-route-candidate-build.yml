@@ -7,8 +7,12 @@ on:
       - ".github/workflows/vpn-route-candidate-build.yml"
       - "tools/build_vpn_route_candidates.py"
       - "tools/tests/test_vpn_route_candidates.py"
+      - "tools/review_v38_host_ip_candidates.py"
+      - "tools/tests/test_review_v38_host_ip_candidates.py"
+      - "review/v38_pr8_new_host_ip_candidates_20261111.tsv.gz"
       - "docs/VPN_ROUTE_SOURCE_MATRIX.md"
       - "docs/VPN_ROUTE_SOURCE_REGISTRY.tsv"
+      - "docs/V38_HOST_IP_CANDIDATE_REVIEW.md"
   workflow_dispatch:
 
 permissions:
@@ -21,7 +25,7 @@ concurrency:
 jobs:
   build-candidate:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 45
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -38,6 +42,13 @@ jobs:
         run: |
           python tools/build_vpn_route_candidates.py \
             --output-dir artifacts/vpn-route-candidates
+
+      - name: Enrich v38 Lib4u/Jirnobruh exact-host candidates (review-only)
+        run: |
+          python tools/review_v38_host_ip_candidates.py \
+            --candidates review/v38_pr8_new_host_ip_candidates_20261111.tsv.gz \
+            --output-dir artifacts/vpn-route-candidates/v38-host-ip-review \
+            --workers 4
 
       - name: Upload candidate database and coverage report
         uses: actions/upload-artifact@v4
