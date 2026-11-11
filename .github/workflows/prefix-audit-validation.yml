@@ -303,7 +303,7 @@ jobs:
           row["BYTES"] = str(len(archive))
           audit_provenance = Path("geoip_RU_input_provenance_audit.tsv")
           with audit_provenance.open("w", encoding="utf-8", newline="") as stream:
-              writer = csv.DictWriter(stream, fieldnames=rows[0].keys(), delimiter="\\t", lineterminator="\\n")
+              writer = csv.DictWriter(stream, fieldnames=rows[0].keys(), delimiter="\t", lineterminator="\n")
               writer.writeheader()
               writer.writerows(rows)
           print(
