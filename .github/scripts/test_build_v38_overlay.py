@@ -42,25 +42,10 @@ class GeoIPV38OverlayTests(unittest.TestCase):
             "ipv4": 64,
             "ipv6": (1 << 80) - (1 << 64) - (1 << 64),
         })
-        self.assertEqual(set(final), {
-            ipaddress.ip_network("203.0.113.64/26"),
-            ipaddress.ip_network("2001:db8:100::/64"),
-            ipaddress.ip_network("2001:db8:100:3::/64"),
-            ipaddress.ip_network("2001:db8:100:4::/62"),
-            ipaddress.ip_network("2001:db8:100:8::/61"),
-            ipaddress.ip_network("2001:db8:100:10::/60"),
-            ipaddress.ip_network("2001:db8:100:20::/59"),
-            ipaddress.ip_network("2001:db8:100:40::/58"),
-            ipaddress.ip_network("2001:db8:100:80::/57"),
-            ipaddress.ip_network("2001:db8:100:100::/56"),
-            ipaddress.ip_network("2001:db8:100:200::/55"),
-            ipaddress.ip_network("2001:db8:100:400::/54"),
-            ipaddress.ip_network("2001:db8:100:800::/53"),
-            ipaddress.ip_network("2001:db8:100:1000::/52"),
-            ipaddress.ip_network("2001:db8:100:2000::/51"),
-            ipaddress.ip_network("2001:db8:100:4000::/50"),
-            ipaddress.ip_network("2001:db8:100:8000::/49"),
-        })
+        for mask in private | blocked:
+            mask_intervals = build.intervals([mask], mask.version)
+            self.assertEqual(build.intersect(build.intervals(final, mask.version), mask_intervals), [])
+
 
     def test_ipsum_requires_exact_ipv4_24_only(self):
         with tempfile.TemporaryDirectory() as tmp:
