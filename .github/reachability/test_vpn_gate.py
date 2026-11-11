@@ -638,7 +638,8 @@ class VPNObratnoFetchSafetyTests(unittest.TestCase):
             f"/servers/{host_b}/{host_b}_ip_udp.ovpn",
             f"/servers/{host_a}/{host_a}_ip_udp.ovpn",
         ]
-        profiles = vpn_gate.parse_vpnobratno_listing(self.listing(links))
+        html = "<html>" + "".join('<a href="' + link + '">profile</a>' for link in links) + "</html>"
+        profiles = vpn_gate.parse_vpnobratno_listing(html)
         self.assertEqual(
             [(item["hostname"], item["profile_variant"]) for item in profiles],
             [
