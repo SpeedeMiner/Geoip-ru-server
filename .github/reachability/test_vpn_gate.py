@@ -396,6 +396,17 @@ class OpenVPNProfileSafetyTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "port"):
             vpn_gate.inspect_openvpn_profile(config)
 
+    def test_external_tls_auth_key_file_is_rejected(self):
+        config = SAMPLE_CONFIG.replace(
+            "<tls-auth>\n#\n# 2048 bit OpenVPN static key\n#\n"
+            "-----BEGIN OpenVPN Static key V1-----\nVEVUS0VZ\n"
+            "-----END OpenVPN Static key V1-----\n</tls-auth>\n",
+            "tls-auth /etc/openvpn/ta.key 1\n"
+        )
+        with self.assertRaisesRegex(ValueError, "external key file"):
+            vpn_gate.inspect_openvpn_profile(config)
+
+
     def test_profile_without_inline_ca_is_rejected(self):
         config = SAMPLE_CONFIG.replace(
             "<ca>\n-----BEGIN CERTIFICATE-----\nVEVTVENB\n-----END CERTIFICATE-----\n</ca>\n", ""
