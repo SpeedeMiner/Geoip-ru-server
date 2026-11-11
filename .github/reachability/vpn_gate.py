@@ -906,6 +906,20 @@ def select_diverse_servers(
             f"status={'ok' if asn > 0 else 'unavailable'}",
             flush=True,
         )
+        distinct_verified_asns = sum(
+            1 for candidate_group in groups
+            if candidate_group != "ASN_UNVERIFIED"
+        )
+        if distinct_verified_asns >= attempt_limit:
+            print(
+                f"[vpn-gate] origin_asn_selection_early_stop "
+                f"reason=distinct_asn_budget_reached "
+                f"lookups={candidate_index}/{len(candidates)} "
+                f"distinct_asns={distinct_verified_asns} "
+                f"attempt_budget={attempt_limit}",
+                flush=True,
+            )
+            break
 
     group_order = sorted(
         groups,
