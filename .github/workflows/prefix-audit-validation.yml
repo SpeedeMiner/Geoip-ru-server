@@ -564,7 +564,7 @@ jobs:
           for required in (
               f"RIR residual exact prefixes: {len(residual)}",
               "All rows remain STATUS=REVIEW.",
-              "A missing exact route in this rolling 90-day snapshot is not proof of route withdrawal",
+              "No exact observation is not evidence of route withdrawal",
               "Covering and more-specific routes are not used as exact-prefix origin evidence.",
           ):
               if required not in stats:
