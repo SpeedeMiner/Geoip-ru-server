@@ -498,7 +498,8 @@ class VPNObratnoDiscoveryTests(unittest.TestCase):
             "http://vpnobratno.info" + valid_ip,
             f"/servers/{self.HOST}/{self.HOST}_l2tp_udp.ovpn",
         ]
-        profiles = vpn_gate.parse_vpnobratno_listing(self.listing(links))
+        html = "<html>" + "".join('<a href="' + link + '">profile</a>' for link in links) + "</html>"
+        profiles = vpn_gate.parse_vpnobratno_listing(html)
         self.assertEqual(
             [item["profile_variant"] for item in profiles],
             ["ip_udp", "ddns_udp"],
