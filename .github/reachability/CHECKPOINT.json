@@ -7,8 +7,8 @@
   "branch": "feature/reachability-full-ru-kz-by",
   "recorded_pr_head_before_checkpoint_commit": "f267e14228ed6ef179784c5b7285ada40f78cca3",
   "base_sha": "a68e5d6589361814cb1cfedd2af7857e4af806fa",
-  "state": "VPNOBRATNO_MANUAL_DISPATCH_CANCELLED_NO_ARTIFACTS",
-  "current_phase": "MANUAL_DISPATCH_CANCELLED_AWAITING_OWNER_DECISION",
+  "state": "VPNOBRATTO_MANUAL_DISPATCH_CANCELLED_CAUSE_UNKNOWN",
+  "current_phase": "RESUME_VPNOBRATTO_PILOT_AFTER_UNATTRIBUTED_CANCELLATION",
   "completed": [
     "repository_reconnaissance",
     "protobuf_inventory_exporter",
@@ -185,7 +185,8 @@
     "vpnobratno_manual_workflow_added_to_main_single_file_commit_580a25a7a65d957d46d83e827ccbd9308969713e",
     "vpnobratno_default_branch_dispatch_visibility_enabled",
     "vpnobratno_main_push_side_effect_build_v37_run_42989906746_reviewed",
-    "vpnobratno_manual_dispatch_run_42993670031_cancelled_before_artifacts"
+    "vpnobratno_manual_dispatch_run_42993670031_cancelled_before_artifacts",
+    "vpnobratto_cancellation_attribution_investigated_user_denies_cancelling"
   ],
   "latest_successful_validation_run": 42986373320,
   "latest_successful_validation_commit": "7dd4eb483e6fba9143c5664210625b1e7dfdd23c",
@@ -364,11 +365,12 @@
     "production_release_artifact_byte_delta_verified": false
   },
   "next_steps": [
-    "Manual workflow_dispatch #42993670031 was started on feature/reachability-full-ru-kz-by with source=vpnobratno, max_vpn_gate_servers=1 and max_vpn_gate_attempts=6. Setup and GeoIP inventory export passed; the measurement step entered in_progress, but the run was cancelled before report upload. No artifact or final tunnel result exists.",
-    "Do not dispatch a replacement automatically after the cancelled run. Establish whether the cancellation was intentional or obtain explicit owner authorization before another live attempt.",
-    "If another attempt is authorized, keep the same one-successful-RU-exit / six-profile-attempt budget, inspect the uploaded diagnostics, and require agreement by two independent metadata providers on the same public IPv4 and RU country before any target DNS/HTTPS request.",
-    "A cancelled attempt is not a VPN failure, not a service-blocking result and not evidence that any RU target is reachable or unreachable.",
-    "Keep PR #5 OPEN / DRAFT. Do not merge it, touch PR #6, or change production builder/data, release branch/assets, DIRECT policy or ASN allowlists without separate authorization."
+    "The owner confirmed they did not cancel run #42993670031. GitHub REST exposes workflow dispatch actor/triggering_actor but no canceller field; cancellation cause remains UNKNOWN. Do not attribute the cancellation to the owner.",
+    "The first VPNObratto run #42993670031 ended as cancelled before artifact upload. No VPN exit or target outcome was measured.",
+    "Resume the original owner-authorized live pilot with one fresh workflow_dispatch on feature/reachability-full-ru-kz-by: source=vpnobratno, max_vpn_gate_servers=1, max_vpn_gate_attempts=6. Check there is no active duplicate first; dispatch only once.",
+    "Track the new run and artifacts. Require two independent IP metadata services to agree on exact public IPv4 and RU country before sending any target request. A tunnel/setup failure is not evidence of target blocking.",
+    "If the replacement run is cancelled again, stop automatic retries and capture the exact status/time; do not guess the actor or cause.",
+    "Keep PR #5 OPEN / DRAFT. Do not touch PR #6 or production builder/data, release assets/branch, DIRECT policy or ASN allowlists."
   ],
   "ci_policy": {
     "push_validation_paths": [
@@ -794,7 +796,30 @@
       "target_measurements": null,
       "tunnel_result": "NOT_MEASURED_CANCELLED",
       "interpretation": "No conclusion about VPNObratno tunnel availability or target reachability can be drawn from this cancelled run.",
-      "cancellation_attribution_note": "Live browser UI labelled cancellation as manually cancelled by @SpeedeMiner. GitHub REST actor fields identify the triggering account, not independently the actor issuing cancellation."
+      "cancellation_attribution_note": "UNKNOWN. Owner says they did not cancel. The GitHub REST run response contains actor/triggering_actor for the dispatch, not a cancellation actor. The UI attribution was not reliable."
+    },
+    "cancellation_investigation": {
+      "owner_statement_utc": "2026-11-11T09:30:39Z",
+      "owner_denies_cancelling": true,
+      "github_run_cancelled_at_utc": "2026-11-11T09:22:46Z",
+      "dispatch_browser_session": {
+        "created_at": "2026-11-11T09:14:41Z",
+        "started_at": "2026-11-11T09:14:43Z",
+        "finished_at": "2026-11-11T09:18:31Z"
+      },
+      "read_only_log_browser_session": {
+        "created_at": "2026-11-11T09:20:47Z",
+        "started_at": "2026-11-11T09:20:49Z",
+        "finished_at": "2026-11-11T09:22:03Z"
+      },
+      "followup_read_only_browser_session": {
+        "created_at": "2026-11-11T09:22:53Z",
+        "started_at": "2026-11-11T09:22:55Z",
+        "finished_at": "2026-11-11T09:23:32Z"
+      },
+      "no_browser_session_active_at_cancellation": true,
+      "assistant_explicit_cancel_command_invoked": false,
+      "cause": "UNKNOWN"
     }
   },
   "home_probe": {
