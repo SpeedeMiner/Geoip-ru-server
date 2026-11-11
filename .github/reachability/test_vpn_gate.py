@@ -160,6 +160,26 @@ class VPNExitVerificationTests(unittest.TestCase):
         self.assertEqual(metadata["selected_distinct_asns"], 2)
 
 
+    def test_one_successful_exit_allows_three_distinct_asn_fallback_attempts(self):
+        servers = [
+            {"hostname": "a", "server_ip": "8.8.8.1", "score": 100},
+            {"hostname": "b", "server_ip": "8.8.8.2", "score": 90},
+            {"hostname": "c", "server_ip": "8.8.8.3", "score": 80},
+            {"hostname": "d", "server_ip": "8.8.8.4", "score": 70},
+        ]
+        asns = {"8.8.8.1": 12345, "8.8.8.2": 12345, "8.8.8.3": 54321, "8.8.8.4": 65001}
+        with patch.object(vpn_gate, "network_info", side_effect=lambda ip: {"asn": asns[ip], "prefix": ""}):
+            selected, metadata = vpn_gate.select_diverse_servers(
+                servers, max_servers=1, max_attempts=3
+            )
+        self.assertEqual([server["hostname"] for server in selected], ["a", "c", "d"])
+        self.assertEqual(metadata["selected_distinct_asns"], 3)
+        self.assertEqual(metadata["max_connection_attempts"], 3)
+
+    def test_max_attempts_cannot_be_lower_than_successful_exit_target(self):
+        with self.assertRaisesRegex(ValueError, "max_attempts"):
+            vpn_gate.select_diverse_servers([], max_servers=2, max_attempts=1)
+
 class RIPEstatNetworkInfoTests(unittest.TestCase):
     def test_network_prefix_is_kept_only_when_it_contains_the_query_ip(self):
         with patch.object(vpn_gate, "fetch_json", return_value={
@@ -174,6 +194,23 @@ class RIPEstatNetworkInfoTests(unittest.TestCase):
         }):
             result = vpn_gate.network_info("8.8.8.8")
         self.assertEqual(result, {"prefix": "", "asn": 15169})
+
+
+class VPNGateHandshakeFailureTests(unittest.TestCase):
+    def test_tls_handshake_failure_stops_wait_early(self):
+        class RunningProcess:
+            returncode = None
+            def poll(self):
+                return None
+
+        with tempfile.TemporaryDirectory() as directory:
+            log_path = pathlib.Path(directory) / "openvpn.log"
+            log_path.write_text(
+                "TCP connection established\\nTLS key negotiation failed to occur within 60 seconds\\n",
+                encoding="utf-8",
+            )
+            with self.assertRaisesRegex(vpn_gate.ProbeError, "TLS key negotiation failed"):
+                vpn_gate.wait_for_tunnel(RunningProcess(), 60, log_path)
 
 
 class VPNGateDNSResolutionTests(unittest.TestCase):
