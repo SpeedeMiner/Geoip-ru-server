@@ -28,7 +28,9 @@ def _vpnobratto_worker_test_hang(pid_path, timeout, max_bytes):
         time.sleep(0.05)
 
 
-def _vpnobratto_worker_test_crash(_url, _timeout, _max_bytes):
+def _vpnobratto_worker_test_crash(_url, *, timeout, max_bytes):
+    # The production worker invokes fetchers with named timeout/max_bytes args.
+    _ = (timeout, max_bytes)
     os._exit(17)
 
 
