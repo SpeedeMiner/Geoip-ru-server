@@ -1,13 +1,13 @@
 {
   "schema_version": 1,
-  "updated_at_utc": "2026-11-11T07:09:53Z",
+  "updated_at_utc": "2026-11-11T07:12:05Z",
   "repository": "SpeedeMiner/Geoip-ru-server",
   "pull_request": 5,
   "pull_request_url": "https://github.com/SpeedeMiner/Geoip-ru-server/pull/5",
   "branch": "feature/reachability-full-ru-kz-by",
   "recorded_pr_head_before_checkpoint_commit": "09593a90250ac61a5395447e3568c25581dcd7a4",
   "base_sha": "a68e5d6589361814cb1cfedd2af7857e4af806fa",
-  "state": "VPNOBRATTO_PROFILE_DISCOVERY_AND_VALIDATION_CI_PASS",
+  "state": "VPNOBRATNO_PROFILE_DISCOVERY_AND_VALIDATION_CI_PASS",
   "current_phase": "AWAIT_AUTHORIZED_MANUAL_VPNOBRATTO_PILOT",
   "completed": [
     "repository_reconnaissance",
@@ -147,17 +147,17 @@
     "home_probe_asn_org_consistency_regression_tests",
     "home_probe_ci_90_python_tests_plus_go_success_run_42974036482",
     "home_probe_importer_readme_ru_candidate_policy_clarified",
-    "vpnobratto_site_profile_link_research",
-    "vpnobratto_same_origin_listing_parser",
-    "vpnobratto_ip_udp_udp_ip_tcp_tcp_profile_discovery",
-    "vpnobratto_profile_remote_hostname_and_dns_validation",
-    "vpnobratto_protocol_variant_validation",
-    "vpnobratto_profile_provenance_in_reports",
-    "vpnobratto_source_selector_default_vpnobratto",
-    "vpnobratto_manual_workflow_source_selector",
-    "vpnobratto_five_regression_tests",
-    "vpnobratto_validation_ci_95_python_tests_and_go_success_run_42977158414",
-    "vpnobratto_readme_worklog_checkpoint_updated"
+    "vpnobratno_site_profile_link_research",
+    "vpnobratno_same_origin_listing_parser",
+    "vpnobratno_ip_udp_udp_ip_tcp_tcp_profile_discovery",
+    "vpnobratno_profile_remote_hostname_and_dns_validation",
+    "vpnobratno_protocol_variant_validation",
+    "vpnobratno_profile_provenance_in_reports",
+    "vpnobratno_source_selector_default_vpnobratno",
+    "vpnobratno_manual_workflow_source_selector",
+    "vpnobratno_five_regression_tests",
+    "vpnobratno_validation_ci_95_python_tests_and_go_success_run_42977158414",
+    "vpnobratno_readme_worklog_checkpoint_updated"
   ],
   "latest_successful_validation_run": 42977158414,
   "latest_successful_validation_commit": "3fb7646d2005a7787bf715b680ec5683b1365818",
@@ -597,7 +597,7 @@
       "interpretation": "This historical run used official VPN Gate CSV API profiles only. It did not test the newly implemented VPNObratno direct profile variants."
     },
     "profile_sources": {
-      "default": "VPNOBRATTO",
+      "default": "VPNOBRATNO",
       "alternatives": [
         "VPN_GATE_OFFICIAL_CSV"
       ],
