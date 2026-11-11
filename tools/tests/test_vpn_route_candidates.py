@@ -55,13 +55,13 @@ class VpnRouteCandidateTests(unittest.TestCase):
         self.assertNotIn("RU", parsed)
 
     def test_amnezia_observations_keep_domain_and_cidr_types(self):
-        payload = b'[{"hostname":"shop.example","ip":"1.2.3.4","ips":["1.2.3.5"]},{"hostname":"198.51.100.0/24","ip":"198.51.100.0/24"},{"hostname":"empty.example","ip":""}]'
+        payload = b'[{"hostname":"shop.example","ip":"1.2.3.4","ips":["1.2.3.5"]},{"hostname":"8.8.8.0/24","ip":"8.8.8.0/24"},{"hostname":"empty.example","ip":""}]'
         rows = build.parse_amnezia_observations("fixture", payload)
         self.assertEqual(rows[0]["hostname_type"], "domain")
         self.assertEqual(rows[0]["normalized_prefix"], "1.2.3.4/32")
-        self.assertEqual(rows[1]["hostname_type"], "cidr")
-        self.assertEqual(rows[1]["normalized_prefix"], "198.51.100.0/24")
-        self.assertEqual(rows[2]["status"], "no_ip")
+        self.assertEqual(rows[2]["hostname_type"], "cidr")
+        self.assertEqual(rows[2]["normalized_prefix"], "8.8.8.0/24")
+        self.assertEqual(rows[3]["status"], "no_ip")
 
     def test_source_registry_contains_reverse_polarity_neither_as_direct(self):
         self.assertTrue(all(s["export"] is False for s in build.SOURCES if s["license"] == "UNDECLARED"))
