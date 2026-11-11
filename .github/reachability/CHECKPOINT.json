@@ -1,14 +1,14 @@
 {
   "schema_version": 1,
-  "updated_at_utc": "2026-11-11T07:12:37Z",
+  "updated_at_utc": "2026-11-11T07:32:53Z",
   "repository": "SpeedeMiner/Geoip-ru-server",
   "pull_request": 5,
   "pull_request_url": "https://github.com/SpeedeMiner/Geoip-ru-server/pull/5",
   "branch": "feature/reachability-full-ru-kz-by",
-  "recorded_pr_head_before_checkpoint_commit": "7029315cf358e7635b19101567f5ae33e3f12f40",
+  "recorded_pr_head_before_checkpoint_commit": "f3a7abaea0fe3378115b1fedd38b871b15a61479",
   "base_sha": "a68e5d6589361814cb1cfedd2af7857e4af806fa",
-  "state": "VPNOBRATNO_PROFILE_DISCOVERY_AND_VALIDATION_CI_PASS",
-  "current_phase": "AWAIT_AUTHORIZED_MANUAL_VPNOBRATNO_PILOT",
+  "state": "VPNOBRATNO_BOUNDED_PILOT_DEFAULTS_VALIDATED",
+  "current_phase": "AWAIT_DEFAULT_BRANCH_AUTHORIZATION_FOR_MANUAL_PILOT",
   "completed": [
     "repository_reconnaissance",
     "protobuf_inventory_exporter",
@@ -157,12 +157,18 @@
     "vpnobratno_manual_workflow_source_selector",
     "vpnobratno_five_regression_tests",
     "vpnobratno_validation_ci_95_python_tests_and_go_success_run_42977158414",
-    "vpnobratno_readme_worklog_checkpoint_updated"
+    "vpnobratno_readme_worklog_checkpoint_updated",
+    "vpnobratno_one_successful_ru_exit_default",
+    "vpnobratno_six_profile_attempt_default",
+    "vpnobratno_cli_defaults_regression_test",
+    "vpnobratno_manual_workflow_pilot_defaults_1_exit_6_attempts",
+    "vpnobratno_bounded_retry_budget_readme_worklog",
+    "vpnobratno_bounded_pilot_defaults_ci_96_python_tests_go_success_run_42979907101"
   ],
-  "latest_successful_validation_run": 42977158414,
-  "latest_successful_validation_commit": "3fb7646d2005a7787bf715b680ec5683b1365818",
+  "latest_successful_validation_run": 42979907101,
+  "latest_successful_validation_commit": "0961e543b723dd90c14a4c3c5ed5cad931d0cc88",
   "test_counts": {
-    "python_unit_tests": 95,
+    "python_unit_tests": 96,
     "python_unit_tests_status": "PASS",
     "gofmt_status": "PASS",
     "go_tests_status": "PASS",
@@ -303,7 +309,9 @@
     "The four earlier live VPN Gate pilots used the official CSV API profiles; they did not test the direct VPNObratno-linked IP UDP, UDP, IP TCP and TCP profile variants.",
     "The VPNObratno listing and linked-profile parser have passed deterministic tests, but no live tunnel has yet been established through the newly supported profile variants.",
     "VPNObratno describes its nodes as Russian VPN Gate user-operated servers using Russian ISPs; this does not independently prove that every node is a household broadband connection.",
-    "A profile variant is an alternative connection method for one server, not a distinct ISP/provider. Provider diversity is counted only by independently derived origin ASN."
+    "A profile variant is an alternative connection method for one server, not a distinct ISP/provider. Provider diversity is counted only by independently derived origin ASN.",
+    "The VPNObratno manual workflow defaults to one verified RU exit and up to six profile attempts; this is a bounded discovery pilot, not a multi-provider completeness claim.",
+    "The profile retry budget is bounded across variants and servers. A successful artifact upload is not success unless a confirmed RU exit and target measurement rows are present."
   ],
   "policy_invariants": {
     "geoip_RU_dat_mutated": false,
@@ -323,11 +331,11 @@
     "vpnobratno_is_default_discovery_source": true
   },
   "next_steps": [
-    "Keep PR #5 OPEN / DRAFT. The VPNObratno workflow is manual-only and GitHub workflow_dispatch is unavailable until that workflow exists on the default branch; do not restore a branch push trigger or schedule to bypass this.",
-    "When the owner authorizes making the workflow available on the default branch, run the manual workflow with source=vpnobratno, initially requesting one verified RU exit and allowing up to six profile attempts. Do not count a green artifact-upload step as a successful tunnel.",
+    "Keep PR #5 OPEN / DRAFT; do not merge, rebase or change base. The VPNObratno workflow is manual-only and workflow_dispatch is unavailable until the workflow exists on the default branch; do not restore a branch push trigger or schedule to bypass this.",
+    "When the owner authorizes making the workflow available on the default branch, run source=vpnobratno with the default one successful RU exit and up to six profile attempts. Treat only a verified RU egress plus actual target rows as a successful measurement.",
     "For any successful tunnel, require two independent IP metadata services to agree on the actual public exit IPv4 and RU country, then record origin ASN/prefix and only afterward run DNS/HTTPS tests against the RU target catalogue.",
-    "Inspect the artifact's SOURCE, PROFILE_VARIANT and PROFILE_URL fields. Variants from one hostname/IP do not increase provider diversity; compare origin ASNs and independently validate the actual access-network operator/type.",
-    "Keep the direct home_probe as optional corroborating evidence for an actual household line; a volunteer-run direct probe is not a prerequisite for starting VPNObratno profile exploration.",
+    "Inspect SOURCE, PROFILE_VARIANT and PROFILE_URL in the artifact. Variants from one hostname/IP do not increase provider diversity; compare origin ASNs and independently validate the actual access-network operator/type.",
+    "Keep the direct home_probe as optional corroborating evidence for an actual household line; a volunteer-run direct probe is not a prerequisite for attempting VPNObratno profiles.",
     "Keep production builder, release/geoip_RU.dat, release assets, DIRECT policy, ASN allowlists, main/release and PR #6 untouched."
   ],
   "ci_policy": {
@@ -366,25 +374,25 @@
     "vpn_gate_manual_dispatch_requires_default_branch_workflow": true
   },
   "pending_validation": {
-    "commit": "3fb7646d2005a7787bf715b680ec5683b1365818",
+    "commit": "0961e543b723dd90c14a4c3c5ed5cad931d0cc88",
     "workflow": "Reachability validation",
-    "run_id": 42977158414,
-    "run_url": "https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/42977158414",
+    "run_id": 42979907101,
+    "run_url": "https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/42979907101",
     "status": "SUCCESS",
-    "verified_python_test_count": 95,
+    "verified_python_test_count": 96,
     "go_checks": [
       "gofmt",
       "go test ./...",
       "go build"
     ],
-    "note": "Run logs confirm Ran 95 tests, OK; Go formatting, tests and build all passed. README/WORKLOG/CHECKPOINT commits after this validation are documentation/state-only."
+    "note": "Full job log reports Ran 96 tests, OK, and successful Go formatting/tests/build. Subsequent WORKLOG/CHECKPOINT commits are documentation/state-only."
   },
   "vpn_gate_measurement": {
     "source": "VPNObratno linked OpenVPN profiles (default); official VPN Gate CSV API remains selectable fallback",
     "directory_reference": "https://vpnobratno.info/",
     "workflow": ".github/workflows/reachability-vpn-gate.yml",
     "mode": "manual_only",
-    "default_max_servers": 3,
+    "default_max_servers": 1,
     "hard_max_servers": 6,
     "actual_run_performed": true,
     "validation_status": "SUCCESS",
@@ -414,7 +422,7 @@
     "marker_commit_message": "[vpn-gate-once] Run first single-exit Russian ISP pilot",
     "github_dispatch_constraint": "workflow_dispatch requires workflow file on default branch; this Draft PR branch cannot run it yet. Keep workflow manual-only and do not restore a push marker.",
     "marker_path": ".github/reachability/VPN_GATE_RUN_ONCE",
-    "default_max_attempts": 3,
+    "default_max_attempts": 6,
     "hard_max_attempts": 6,
     "previous_run": {
       "run_id": 42960930985,
@@ -438,12 +446,16 @@
       "interpretation": "Relay TLS/session failure only; no target request was sent and no service blocking verdict is possible."
     },
     "retry_policy": {
-      "requested_successful_ru_exits": 1,
-      "max_candidate_attempts": 3,
-      "selection": "one_candidate_per_origin_ASN_before_repeat_ASN",
-      "continue_after_failed_or_non_ru_exit": true,
-      "stop_after_requested_verified_ru_exits": true,
-      "fail_fast_on_tls_auth_log_markers": true
+      "requested_successful_ru_exits_default": 1,
+      "max_profile_attempts_default": 6,
+      "hard_max_profile_attempts": 6,
+      "variants_attempted": [
+        "IP_UDP",
+        "DDNS_UDP",
+        "IP_TCP",
+        "DDNS_TCP"
+      ],
+      "variants_are_not_distinct_providers": true
     },
     "second_run": {
       "run_id": 42962715822,
@@ -626,8 +638,10 @@
         "PROFILE_URL"
       ],
       "discovery_unit_tests": 5,
-      "live_vpnobratto_tunnel_performed": false
-    }
+      "live_vpnobratto_tunnel_performed": false,
+      "default_pilot_budget": "one verified RU exit; up to six profile attempts"
+    },
+    "live_vpnobratno_tunnel_performed": false
   },
   "home_probe": {
     "client": ".github/reachability/home_probe.py",
