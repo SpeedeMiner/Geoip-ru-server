@@ -136,136 +136,88 @@ class VPNExitVerificationTests(unittest.TestCase):
             with self.assertRaisesRegex(vpn_gate.ProbeError, "two independent"):
                 vpn_gate.ip_metadata()
 
-    def test_server_selection_prefers_distinct_origin_asns(self):
+    def test_server_selection_prefers_distinct_hostnames_without_network_lookup(self):
+        servers = [
+            {"hostname": "a", "server_ip": "8.8.8.1", "score": 100},
+            {"hostname": "a", "server_ip": "8.8.8.1", "score": 95},
+            {"hostname": "b", "server_ip": "8.8.8.2", "score": 90},
+            {"hostname": "c", "server_ip": "8.8.8.3", "score": 80},
+            {"hostname": "d", "server_ip": "8.8.8.4", "score": 70},
+        ]
+        with patch.object(vpn_gate, "network_info") as lookup:
+            selected, metadata = vpn_gate.select_server_host_diverse_candidates(servers, 3)
+
+        self.assertEqual([server["hostname"] for server in selected], ["a", "b", "c"])
+        self.assertEqual(metadata["selected_server_hosts"], ["a", "b", "c"])
+        self.assertEqual(metadata["selected_distinct_asns"], 0)
+        self.assertEqual(metadata["server_asn_lookups"], 0)
+        self.assertEqual(metadata["candidate_servers_inspected"], 4)
+        lookup.assert_not_called()
+
+    def test_server_selection_uses_second_variant_only_after_distinct_hosts(self):
+        servers = [
+            {"hostname": "a", "server_ip": "8.8.8.1", "score": 100, "profile_variant": "IP_UDP"},
+            {"hostname": "a", "server_ip": "8.8.8.1", "score": 95, "profile_variant": "DDNS_UDP"},
+            {"hostname": "b", "server_ip": "8.8.8.2", "score": 90, "profile_variant": "IP_UDP"},
+            {"hostname": "c", "server_ip": "8.8.8.3", "score": 80, "profile_variant": "IP_UDP"},
+        ]
+        selected, metadata = vpn_gate.select_server_host_diverse_candidates(
+            servers, max_servers=1, max_attempts=3
+        )
+        self.assertEqual([server["hostname"] for server in selected], ["a", "b", "c"])
+        self.assertEqual(metadata["distinct_candidate_server_hosts"], 3)
+        self.assertEqual(metadata["candidate_servers_inspected"], 4)
+
+    def test_one_successful_exit_allows_three_distinct_host_fallback_attempts(self):
         servers = [
             {"hostname": "a", "server_ip": "8.8.8.1", "score": 100},
             {"hostname": "b", "server_ip": "8.8.8.2", "score": 90},
             {"hostname": "c", "server_ip": "8.8.8.3", "score": 80},
             {"hostname": "d", "server_ip": "8.8.8.4", "score": 70},
         ]
-        asns = {"8.8.8.1": 12345, "8.8.8.2": 12345, "8.8.8.3": 54321, "8.8.8.4": 65001}
-        with patch.object(vpn_gate, "selection_network_info", side_effect=lambda ip: {"asn": asns[ip], "prefix": ""}):
-            selected, metadata = vpn_gate.select_diverse_servers(servers, 3)
-        self.assertEqual([server["hostname"] for server in selected], ["a", "c", "d"])
-        self.assertEqual(metadata["selected_distinct_asns"], 3)
-        self.assertEqual(metadata["selected_asns"], [12345, 54321, 65001])
-
-    def test_server_selection_fills_budget_after_each_asn_has_a_chance(self):
-        servers = [
-            {"hostname": "a", "server_ip": "8.8.8.1", "score": 100},
-            {"hostname": "b", "server_ip": "8.8.8.2", "score": 90},
-            {"hostname": "c", "server_ip": "8.8.8.3", "score": 80},
-        ]
-        asns = {"8.8.8.1": 12345, "8.8.8.2": 12345, "8.8.8.3": 65001}
-        with patch.object(vpn_gate, "selection_network_info", side_effect=lambda ip: {"asn": asns[ip], "prefix": ""}):
-            selected, metadata = vpn_gate.select_diverse_servers(servers, 3)
-        self.assertEqual([server["hostname"] for server in selected], ["a", "c", "b"])
-        self.assertEqual(metadata["selected_distinct_asns"], 2)
-
-
-    def test_one_successful_exit_allows_three_distinct_asn_fallback_attempts(self):
-        servers = [
-            {"hostname": "a", "server_ip": "8.8.8.1", "score": 100},
-            {"hostname": "b", "server_ip": "8.8.8.2", "score": 90},
-            {"hostname": "c", "server_ip": "8.8.8.3", "score": 80},
-            {"hostname": "d", "server_ip": "8.8.8.4", "score": 70},
-        ]
-        asns = {"8.8.8.1": 12345, "8.8.8.2": 12345, "8.8.8.3": 54321, "8.8.8.4": 65001}
-        with patch.object(vpn_gate, "selection_network_info", side_effect=lambda ip: {"asn": asns[ip], "prefix": ""}):
-            selected, metadata = vpn_gate.select_diverse_servers(
-                servers, max_servers=1, max_attempts=3
-            )
-        self.assertEqual([server["hostname"] for server in selected], ["a", "c", "d"])
-        self.assertEqual(metadata["selected_distinct_asns"], 3)
+        selected, metadata = vpn_gate.select_server_host_diverse_candidates(
+            servers, max_servers=1, max_attempts=3
+        )
+        self.assertEqual([server["hostname"] for server in selected], ["a", "b", "c"])
+        self.assertEqual(metadata["selected_distinct_asns"], 0)
         self.assertEqual(metadata["max_connection_attempts"], 3)
 
     def test_max_attempts_cannot_be_lower_than_successful_exit_target(self):
         with self.assertRaisesRegex(ValueError, "max_attempts"):
-            vpn_gate.select_diverse_servers([], max_servers=2, max_attempts=1)
+            vpn_gate.select_server_host_diverse_candidates([], max_servers=2, max_attempts=1)
 
-    def test_selection_stops_when_distinct_asn_attempt_budget_is_met(self):
+    def test_selection_stops_when_distinct_host_attempt_budget_is_met(self):
         servers = [
             {"hostname": f"host-{index}", "server_ip": f"8.8.8.{index}", "score": 100 - index}
             for index in range(1, 11)
         ]
-        asns = {
-            "8.8.8.1": 12345,
-            "8.8.8.2": 54321,
-            "8.8.8.3": 65001,
-            "8.8.8.4": 20485,
-            "8.8.8.5": 41789,
-            "8.8.8.6": 41733,
-        }
-        with patch.object(
-            vpn_gate, "selection_network_info",
-            side_effect=lambda ip: {"asn": asns[ip], "prefix": ""},
-        ) as lookup:
-            selected, metadata = vpn_gate.select_diverse_servers(
+        with patch.object(vpn_gate, "network_info") as lookup:
+            selected, metadata = vpn_gate.select_server_host_diverse_candidates(
                 servers, max_servers=1, max_attempts=6
             )
 
         self.assertEqual(len(selected), 6)
         self.assertEqual(metadata["candidate_servers_inspected"], 6)
-        self.assertEqual(metadata["server_asn_lookups"], 6)
-        self.assertEqual(metadata["selected_distinct_asns"], 6)
-        self.assertEqual(lookup.call_count, 6)
+        self.assertEqual(metadata["distinct_candidate_server_hosts"], 6)
+        self.assertEqual(metadata["server_asn_lookups"], 0)
+        self.assertEqual(metadata["selected_distinct_asns"], 0)
+        lookup.assert_not_called()
 
-    def test_selection_keeps_scanning_when_distinct_asn_budget_not_yet_met(self):
+    def test_selection_keeps_scanning_when_distinct_host_budget_not_yet_met(self):
         servers = [
             {"hostname": "a", "server_ip": "8.8.8.1", "score": 100},
+            {"hostname": "a", "server_ip": "8.8.8.1", "score": 95},
             {"hostname": "b", "server_ip": "8.8.8.2", "score": 90},
             {"hostname": "c", "server_ip": "8.8.8.3", "score": 80},
-            {"hostname": "d", "server_ip": "8.8.8.4", "score": 70},
         ]
-        asns = {"8.8.8.1": 12345, "8.8.8.2": 12345, "8.8.8.3": 65001, "8.8.8.4": 20485}
-        with patch.object(
-            vpn_gate, "selection_network_info",
-            side_effect=lambda ip: {"asn": asns[ip], "prefix": ""},
-        ) as lookup:
-            selected, metadata = vpn_gate.select_diverse_servers(
-                servers, max_servers=1, max_attempts=3
-            )
+        selected, metadata = vpn_gate.select_server_host_diverse_candidates(
+            servers, max_servers=1, max_attempts=3
+        )
 
         self.assertEqual(metadata["candidate_servers_inspected"], 4)
-        self.assertEqual(metadata["selected_distinct_asns"], 3)
-        self.assertEqual([server["hostname"] for server in selected], ["a", "c", "d"])
-        self.assertEqual(lookup.call_count, 4)
-
-class RIPEstatSelectionNetworkInfoTests(unittest.TestCase):
-    def test_selection_lookup_uses_bounded_ipv4_curl(self):
-        payload = {"data": {"prefix": "8.8.8.0/24", "asns": ["AS15169"]}}
-        completed = subprocess.CompletedProcess(
-            ["curl"], 0, stdout=json.dumps(payload), stderr=""
-        )
-        with patch.object(
-            vpn_gate.subprocess, "run", return_value=completed
-        ) as run:
-            result = vpn_gate.selection_network_info("8.8.8.8")
-
-        self.assertEqual(result, {"prefix": "8.8.8.0/24", "asn": 15169})
-        args, kwargs = run.call_args
-        self.assertIn("--ipv4", args[0])
-        self.assertEqual(args[0][args[0].index("--max-time") + 1], "5")
-        self.assertEqual(kwargs["timeout"], 7)
-
-    def test_selection_lookup_timeout_returns_unverified_asn(self):
-        with patch.object(
-            vpn_gate.subprocess, "run",
-            side_effect=subprocess.TimeoutExpired(["curl"], 7),
-        ):
-            result = vpn_gate.selection_network_info("8.8.8.8")
-        self.assertEqual(result, {"prefix": "", "asn": 0})
-
-    def test_selection_lookup_http_failure_returns_unverified_asn(self):
-        completed = subprocess.CompletedProcess(
-            ["curl"], 28, stdout="", stderr="operation timed out"
-        )
-        with patch.object(
-            vpn_gate.subprocess, "run", return_value=completed
-        ):
-            result = vpn_gate.selection_network_info("8.8.8.8")
-        self.assertEqual(result, {"prefix": "", "asn": 0})
-
+        self.assertEqual(metadata["distinct_candidate_server_hosts"], 3)
+        self.assertEqual(metadata["selected_distinct_asns"], 0)
+        self.assertEqual([server["hostname"] for server in selected], ["a", "b", "c"])
 
 class RIPEstatNetworkInfoTests(unittest.TestCase):
     def test_network_prefix_is_kept_only_when_it_contains_the_query_ip(self):
