@@ -174,14 +174,16 @@ def summarize(record: dict[str, Any]) -> dict[str, Any]:
             ),
         })
     elif record["source"] == "routeviews_timestamped_rpki":
-        item = payload.get(record["prefix"], {}) if isinstance(payload, dict) else {}
+        prefix_key_present = isinstance(payload, dict) and record["prefix"] in payload
+        item = payload.get(record["prefix"]) if prefix_key_present else None
         asn_rows = item.get("asn", []) if isinstance(item, dict) else []
         states = {}
         for row in asn_rows:
             if isinstance(row, dict):
                 states.update({str(k): v for k, v in row.items()})
         result.update({
-            "prefix_key_present": isinstance(payload, dict) and record["prefix"] in payload,
+            "prefix_key_present": prefix_key_present,
+            "prefix_entry_is_null": prefix_key_present and item is None,
             "snapshot_timestamp": item.get("timestamp") if isinstance(item, dict) else None,
             "origin_states": states,
         })
