@@ -78,6 +78,21 @@ class ExactNlriCaptureTests(unittest.TestCase):
         self.assertEqual(summary["snapshot_timestamp"], "2026-11-11T08:00:00+00:00")
         self.assertEqual(summary["origin_states"], {"215013": "invalid", "219109": "notfound"})
 
+    def test_routeviews_rpki_preserves_null_exact_prefix_result(self):
+        record = {
+            "prefix": "94.131.190.0/23",
+            "source": "routeviews_timestamped_rpki",
+            "transport_status": "HTTP_OK",
+            "http_status": 200,
+            "response_received_utc": "2026-11-11T10:00:00Z",
+            "response_json": {"94.131.190.0/23": None},
+        }
+        summary = summarize(record)
+        self.assertTrue(summary["prefix_key_present"])
+        self.assertTrue(summary["prefix_entry_is_null"])
+        self.assertIsNone(summary["snapshot_timestamp"])
+        self.assertEqual(summary["origin_states"], {})
+
     def test_ripestat_routing_status_summary_keeps_exact_origin_scope(self):
         record = {
             "prefix": "94.131.190.0/23",
