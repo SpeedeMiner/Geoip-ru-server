@@ -9,7 +9,7 @@
 - Working branch: `feature/reachability-full-ru-kz-by`
 - PR #5 must remain **OPEN / DRAFT**. Do not mark ready, merge, or rebase without explicit owner approval.
 - Do not modify `main`, `release`, production GeoIP builder/data, `geoip_RU.dat`, release assets, DIRECT policy, ASN allowlists, PR #6 or other PR branches.
-- Do not launch overlapping VPN runs. **Run #21 is terminal** (`completed / cancelled` by GitHub's maximum 12-minute execution-time limit). No replacement VPN run has been dispatched.
+- Do not launch overlapping VPN runs. Run #21 is terminal (`completed / cancelled` by GitHub's maximum 12-minute execution-time limit). **Run #22 is the current live pilot; do not dispatch a second run while it remains active.**
 - A RU VPN exit does not prove that the relay is a residential/household ISP line. Never label it residential without independent evidence.
 - DNS/HTTPS timeouts, TLS failures, missing probes, runner failures and missing artifacts are not evidence of target blocking.
 
@@ -22,6 +22,18 @@
 5. Continue only from the first pending item. Do not repeat a finished VPN/CI phase.
 
 The first “Current repository state” section near the top of WORKLOG is historical and may be stale; prefer its newest dated entries plus CHECKPOINT.
+
+## Latest live pilot — Run #22 (IN PROGRESS / step deadline exceeded)
+
+- Run [#22 / 43072239130](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43072239130); job [130702892228](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43072239130/job/130702892228).
+- Started 2026-11-11 17:51:55 UTC; job 17:51:58 UTC; measurement step 7 started 17:52:18 UTC. Branch `feature/reachability-full-ru-kz-by`, checkout SHA `447bdf6083b3d69b0fbdcf0e126cc27a0ee3db71`.
+- The checkout differs from code-tested SHA `c49dece293541d46b6af14282b382459164315d7` by nine documentation-only commits; `.github/reachability/vpn_gate.py` includes the same tested isolated worker and manifest code.
+- Setup steps 1–6 all succeeded. Listing HTTP 200 / 23,641 bytes / 35 profile links; five profiles downloaded and validated: `vpn712640336.opengw.net` → `92.124.94.110`; `vpn847521830.opengw.net` → `2.61.109.142`; `vpn856084155.opengw.net` → `93.157.20.218`; `vpn144814701.opengw.net` → `94.31.243.156`; `vpn953719594.opengw.net` → `5.143.32.148`.
+- Sixth profile `vpn950792227.opengw.net`, worker PID `3220`, completed DoH, pinned TCP/TLS to `93.127.223.115`, HTTP 200, and the supplied log shows body reads to 3,830 bytes. Last supplied trace is `body_read_completed ... chunk_bytes=1369 total_bytes=3830`; no later fetch-completed, profile-validation, server-IP-resolution or usable/skipped marker was supplied.
+- At 18:01:21 UTC GitHub still reported run/job/measurement step `in_progress`; upload step 8 `pending`; no artifact; active job log endpoint `BlobNotFound`. Step deadline was 18:01:18 UTC; inner GNU guard + KILL grace nominally ~17:59:23 UTC; outer job timeout 18:03:58 UTC.
+- High-priority but **unproven** next code location: `vpnobratno_fetch_trace()` prints/flushes the body-read marker, then synchronously updates the manifest using read/JSON/write/flush/`os.fsync`/`os.replace`. If the supplied log excerpt is complete, inspect this persistence call after the last marker; do not assume the HTTP read itself is stuck. The excerpt may be partial and GitHub live logs are inaccessible.
+- No OpenVPN attempt, installed tunnel route, verified RU exit or target measurement is confirmed. Do not attribute the stall to VPNObratno/DoH/targets.
+- Do not cancel Run #22 or start a parallel VPN workflow. On terminal state, retrieve logs and uploaded `reachability-output/vpn_gate_vpnobratto_progress.json` to identify the last persisted event.
 
 ## Current branch engineering state — FETCH WORKER ISOLATION VALIDATED
 
@@ -100,12 +112,12 @@ Workflow integration: `.github/workflows/reachability-validation.yml` now runs o
 
 ## Next steps
 
-- Run #21 is terminal because GitHub enforced its maximum 12-minute job execution time. The run/job API reports `completed / cancelled`; the last visible marker is profile 6 fetch started, and there are no terminal logs or artifacts.
-- The profile-fetch hard boundary and durable diagnostics have now been implemented and validated on current code HEAD `c49dece...` (Run #209, 127 Python tests plus hosted-runner watchdog, Go format/test/build). No new VPN pilot has been dispatched.
-- Before a new pilot, re-query the live PR head and make sure no VPN workflow run is queued/in progress. Then, when authorized, run only one manual VPNObratno pilot: request one independently verified RU exit and cap profile attempts at six. Inspect logs, progress manifest and artifact through terminal state.
-- The manifest expected in the artifact is `reachability-output/vpn_gate_vpnobratto_progress.json`. Check its last per-profile event to distinguish a wall deadline, worker crash, DNS/TCP/TLS/header/body/close stall, and successful payload.
-- Do not infer target blocking from a timeout or missing artifact. A RU exit/ASN/organization alone is not proof of residential household access.
-- Keep PR #5 OPEN / DRAFT. Do not modify production GeoIP data/builders, DIRECT policy, ASN allowlists, `main`, `release`, PR #6 or other branches.
+- **Run #22 is currently active/overdue.** Do not cancel it or dispatch any overlapping VPN workflow. Current last REST snapshot: step 7 in_progress, upload pending, no artifact, logs BlobNotFound.
+- Re-check Run #22 until a terminal state. On completion fetch complete job logs and the artifact; inspect `reachability-output/vpn_gate_vpnobratto_progress.json` before inferring a failure point.
+- The latest supplied profile-6 marker is body-read completion at 3,830 bytes. Inspect whether the next manifest read/write/fsync/replace operation is the point of stall, but preserve this as a hypothesis until the full log/manifest proves it.
+- No OpenVPN attempt, tunnel route, verified RU exit or target result is currently confirmed.
+- Keep PR #5 OPEN / DRAFT and preserve production GeoIP/DIRECT/ASN policy, `main`, `release` and PR #6.
+
 
 ## Continuity rules
 
