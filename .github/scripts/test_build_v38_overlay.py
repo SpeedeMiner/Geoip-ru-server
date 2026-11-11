@@ -50,7 +50,7 @@ class GeoIPV38OverlayTests(unittest.TestCase):
     def test_ipsum_requires_exact_ipv4_24_only(self):
         with tempfile.TemporaryDirectory() as tmp:
             p=Path(tmp)/"ipsum"
-            p.write_text("".join(f"198.51.{i}.0/24\n" for i in range(1001)),encoding="utf-8")
+            p.write_text("".join(f"10.{i // 65536}.{(i // 256) % 256}.0/24\n" for i in range(1001)),encoding="utf-8")
             nets, stats=build.parse_ipsum(p)
             self.assertEqual(len(nets),1001)
             self.assertEqual(stats["invalid_rows"],0)
