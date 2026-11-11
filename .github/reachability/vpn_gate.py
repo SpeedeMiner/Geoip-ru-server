@@ -343,6 +343,14 @@ def inspect_openvpn_profile(config: str) -> dict[str, Any]:
     if "ca" not in blocks or "-----BEGIN CERTIFICATE-----" not in blocks["ca"]:
         raise ValueError("OpenVPN profile has no valid inline CA block")
 
+    for directive_name in ("tls-auth", "tls-crypt", "tls-crypt-v2"):
+        for item in directives:
+            if item[0].lower() == directive_name and directive_name not in blocks:
+                if len(item) < 2 or item[1].lower() != "[inline]":
+                    raise ValueError(
+                        f"OpenVPN {directive_name} references an external key file; unsafe to execute"
+                    )
+
     def selected_value(name: str, pattern: str, maximum_tokens: int = 2) -> str:
         values = [
             item[1] for item in directives
@@ -691,6 +699,8 @@ def wait_for_tunnel(
     fatal_markers = (
         "TLS key negotiation failed to occur",
         "TLS handshake failed",
+        "TLS Error:",
+        "VERIFY ERROR:",
         "AUTH_FAILED",
         "Exiting due to fatal error",
     )
