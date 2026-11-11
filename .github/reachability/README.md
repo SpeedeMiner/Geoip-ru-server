@@ -402,3 +402,12 @@ critical API endpoints. Until then, \`NO_MATCHED_ENDPOINT\` means only
 - The main GeoIP build, GeoIP quality gates, release publishing, PRIVATE
   precedence and the two-category client format are not changed by this
   diagnostic workflow.
+
+
+### VPNObratto pilot runtime and live progress
+
+- The manual VPN pilot now uses a **5-second per-profile tunnel-route timeout** (`--connect-timeout 5`), with the accepted CLI range starting at 5 seconds. It still allows at most six connection profiles and requests one independently verified RU exit.
+- The 12-second DNS/HTTPS request timeout is unchanged; it is separate from the OpenVPN tunnel establishment timeout.
+- The collector now emits flushed progress markers for profile listing, every profile download, each origin-ASN lookup, candidate selection and each OpenVPN attempt. This makes slow discovery/metadata phases visible in GitHub Actions instead of appearing idle until the final JSON summary.
+- The 5-second setting deliberately favors a short pilot. Slow but potentially viable volunteer endpoints may be classified as no tunnel within the short budget; this is a candidate-availability diagnostic, not evidence that target websites are blocked.
+- Existing run #42996316782 was dispatched before this change and continues with its original `--connect-timeout 60` command. Changes apply only to later runs on the updated feature branch.
