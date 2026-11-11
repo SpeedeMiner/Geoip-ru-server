@@ -75,8 +75,13 @@ def validate_catalog(path: Path = DEFAULT_CATALOG) -> dict[str, object]:
         by_id[source_id] = row
         layers[row.get("SOURCE_LAYER", "")] += 1
 
+        nonblank_fields = (
+            "SOURCE_ID", "SOURCE_LAYER", "LOCAL_INPUT", "FORMAT", "ACQUISITION",
+            "REQUIREDNESS", "PRODUCTION_ROLE", "IMPORT_OR_SELECTION_RULE",
+            "REF_PINNING", "PROVENANCE_CAPTURE", "LICENSE_STATUS", "LIMITATIONS",
+        )
         missing_values = [
-            field for field in REQUIRED_COLUMNS
+            field for field in nonblank_fields
             if field not in row or not row[field].strip()
         ]
         if missing_values:
