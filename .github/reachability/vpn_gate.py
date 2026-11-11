@@ -19,6 +19,8 @@ from html.parser import HTMLParser
 import ipaddress
 import io
 import json
+import multiprocessing
+import os
 import http.client
 import pathlib
 import re
@@ -97,6 +99,103 @@ def utc_now() -> str:
     return dt.datetime.now(dt.timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z")
 
 
+_VPNOBRATNO_FETCH_CONTEXT: dict[str, Any] | None = None
+_VPNOBRATNO_FETCH_OPERATION = "worker"
+_VPNOBRATNO_PROGRESS_PATH: str | None = None
+_VPNOBRATNO_FETCH_STARTED_MONOTONIC = 0.0
+
+
+def record_vpnobratno_progress(
+    progress_path: pathlib.Path | str | None,
+    context: dict[str, Any],
+    event: str,
+    **fields: Any,
+) -> None:
+    """Atomically persist the last profile-fetch phase without storing profile contents."""
+    if progress_path is None:
+        return
+    path = pathlib.Path(progress_path)
+    try:
+        path.parent.mkdir(parents=True, exist_ok=True)
+        try:
+            manifest = json.loads(path.read_text(encoding="utf-8"))
+            if not isinstance(manifest, dict):
+                manifest = {}
+        except (OSError, ValueError, json.JSONDecodeError):
+            manifest = {}
+        manifest.setdefault("schema_version", 1)
+        manifest.setdefault("workflow_run_id", os.environ.get("GITHUB_RUN_ID", ""))
+        manifest.setdefault("workflow_run_attempt", os.environ.get("GITHUB_RUN_ATTEMPT", ""))
+        manifest.setdefault("execution_sha", os.environ.get("GITHUB_SHA", ""))
+        manifest.setdefault("profiles", {})
+        key = "listing" if not context.get("profile_index") else str(context["profile_index"])
+        record = manifest["profiles"].setdefault(key, {})
+        for name in ("profile_index", "profile_count", "hostname", "variant", "address_mode"):
+            if name in context:
+                record[name] = context[name]
+        record.update(fields)
+        record["state"] = event
+        record["updated_at_utc"] = utc_now()
+        events = record.setdefault("events", [])
+        events.append({
+            "at_utc": record["updated_at_utc"],
+            "event": event,
+            **fields,
+        })
+        if len(events) > 64:
+            del events[:-64]
+        manifest["updated_at_utc"] = record["updated_at_utc"]
+        manifest["last_event"] = {
+            "profile": key,
+            "event": event,
+            "at_utc": record["updated_at_utc"],
+            **fields,
+        }
+        temporary = path.with_name(f".{path.name}.{os.getpid()}.tmp")
+        with temporary.open("w", encoding="utf-8") as stream:
+            json.dump(manifest, stream, ensure_ascii=False, sort_keys=True)
+            stream.write("\n")
+            stream.flush()
+            os.fsync(stream.fileno())
+        os.replace(temporary, path)
+    except (OSError, TypeError, ValueError) as exc:
+        print(
+            f"[vpn-gate] progress_manifest_write_failed error={type(exc).__name__} "
+            f"message={str(exc)[:120].replace(' ', '_')}",
+            flush=True,
+        )
+
+
+def vpnobratno_fetch_trace(operation: str, phase: str, **fields: Any) -> None:
+    """Flush a small phase marker and persist it when inside an isolated fetch worker."""
+    context = _VPNOBRATNO_FETCH_CONTEXT
+    if context is None:
+        return
+    elapsed_ms = max(0, int((time.monotonic() - _VPNOBRATNO_FETCH_STARTED_MONOTONIC) * 1000))
+    safe_fields = {
+        key: str(value).replace("\n", "_").replace("\r", "_").replace(" ", "_")[:180]
+        for key, value in fields.items()
+    }
+    suffix = " ".join(f"{key}={value}" for key, value in sorted(safe_fields.items()))
+    label = (
+        f"profile={context.get('profile_index', 0)}/{context.get('profile_count', 0)} "
+        f"host={context.get('hostname', VPNOBRATNO_HOST)} "
+        f"variant={context.get('variant', 'listing')}"
+    )
+    print(
+        f"[vpn-gate] profile_fetch_trace {label} operation={operation} phase={phase} "
+        f"elapsed_ms={elapsed_ms} {suffix}".rstrip(),
+        flush=True,
+    )
+    record_vpnobratno_progress(
+        _VPNOBRATNO_PROGRESS_PATH,
+        context,
+        f"{operation}.{phase}",
+        elapsed_ms=elapsed_ms,
+        **safe_fields,
+    )
+
+
 DOH_RESOLVERS = (
     ("cloudflare-dns.com", "1.1.1.1", "cloudflare"),
     ("dns.google", "8.8.8.8", "google"),
@@ -118,10 +217,31 @@ class PinnedHTTPSConnection(http.client.HTTPSConnection):
         self.pinned_address = address
 
     def connect(self):
+        vpnobratno_fetch_trace(
+            _VPNOBRATNO_FETCH_OPERATION,
+            "tcp_connect_started",
+            pinned_ip=self.pinned_address,
+            port=self.port,
+        )
         sock = self._create_connection(
             (self.pinned_address, self.port), self.timeout, self.source_address
         )
+        vpnobratno_fetch_trace(
+            _VPNOBRATNO_FETCH_OPERATION,
+            "tcp_connect_completed",
+            pinned_ip=self.pinned_address,
+        )
+        vpnobratno_fetch_trace(
+            _VPNOBRATNO_FETCH_OPERATION,
+            "tls_handshake_started",
+            server_name=self.host,
+        )
         self.sock = self._context.wrap_socket(sock, server_hostname=self.host)
+        vpnobratno_fetch_trace(
+            _VPNOBRATNO_FETCH_OPERATION,
+            "tls_handshake_completed",
+            server_name=self.host,
+        )
 
 
 def doh_query(domain: str, record_type: str, timeout: int = 10) -> list[str]:
@@ -693,6 +813,234 @@ class VPNObratnoSameOriginRedirect(urllib.request.HTTPRedirectHandler):
         return super().redirect_request(req, fp, code, msg, headers, newurl)
 
 
+def _vpnobratno_fetch_worker_entry(
+    send_connection: Any,
+    fetcher: Any,
+    url: str,
+    timeout: int,
+    max_bytes: int,
+    context: dict[str, Any],
+    progress_path: str | None,
+) -> None:
+    """Run one fetch in a killable forked process; only bytes/errors cross the pipe."""
+    global _VPNOBRATNO_FETCH_CONTEXT
+    global _VPNOBRATNO_FETCH_OPERATION
+    global _VPNOBRATNO_PROGRESS_PATH
+    global _VPNOBRATNO_FETCH_STARTED_MONOTONIC
+    try:
+        # Do not inherit any armed in-process alarm from a caller.
+        signal.setitimer(signal.ITIMER_REAL, 0)
+        signal.signal(signal.SIGALRM, signal.SIG_DFL)
+        _VPNOBRATNO_FETCH_CONTEXT = context
+        _VPNOBRATNO_FETCH_OPERATION = "doh"
+        _VPNOBRATNO_PROGRESS_PATH = progress_path
+        _VPNOBRATNO_FETCH_STARTED_MONOTONIC = time.monotonic()
+        record_vpnobratno_progress(
+            progress_path, context, "worker_started", worker_pid=os.getpid(),
+            requested_timeout_seconds=timeout,
+        )
+        print(
+            f"[vpn-gate] profile_fetch_worker_started pid={os.getpid()} "
+            f"timeout={timeout}s max_bytes={max_bytes}",
+            flush=True,
+        )
+        payload = fetcher(url, timeout=timeout, max_bytes=max_bytes)
+        if not isinstance(payload, bytes):
+            raise TypeError("VPNObratno fetch worker returned a non-bytes payload")
+        vpnobratno_fetch_trace("worker", "payload_ready", bytes=len(payload))
+        send_connection.send(("ok", payload))
+    except BaseException as exc:
+        record_vpnobratno_progress(
+            progress_path,
+            context,
+            "worker_error",
+            worker_pid=os.getpid(),
+            error_type=type(exc).__name__,
+            error_message=str(exc)[:240],
+        )
+        try:
+            send_connection.send(("error", type(exc).__name__, str(exc)[:1000]))
+        except (BrokenPipeError, EOFError, OSError):
+            pass
+    finally:
+        send_connection.close()
+
+
+def fetch_vpnobratno_in_worker(
+    fetcher: Any,
+    url: str,
+    *,
+    timeout: float,
+    max_bytes: int,
+    context: dict[str, Any],
+    progress_path: pathlib.Path | str | None = None,
+) -> bytes:
+    """Fetch in a forked worker with a parent-enforced deadline and TERM→KILL cleanup."""
+    if timeout <= 0:
+        raise ValueError("worker wall-clock timeout must be positive")
+    try:
+        multiprocessing_context = multiprocessing.get_context("fork")
+    except ValueError as exc:
+        raise ProbeError("VPNObratto isolated fetch requires the Linux fork start method") from exc
+    receive_connection, send_connection = multiprocessing_context.Pipe(duplex=False)
+    worker = multiprocessing_context.Process(
+        target=_vpnobratno_fetch_worker_entry,
+        args=(
+            send_connection,
+            fetcher,
+            url,
+            timeout,
+            max_bytes,
+            context,
+            str(progress_path) if progress_path is not None else None,
+        ),
+        name=f"vpnobratno-fetch-{context.get('profile_index', 'listing')}",
+    )
+    started = time.monotonic()
+    deadline = started + timeout
+    started_worker = False
+    message: tuple[Any, ...] | None = None
+    try:
+        worker.start()
+        started_worker = True
+        send_connection.close()
+        print(
+            f"[vpn-gate] profile_fetch_supervisor_started worker_pid={worker.pid} "
+            f"wall_timeout={timeout:g}s",
+            flush=True,
+        )
+        record_vpnobratno_progress(
+            progress_path,
+            context,
+            "supervisor_waiting",
+            worker_pid=worker.pid or 0,
+            wall_timeout_seconds=timeout,
+        )
+        while message is None:
+            remaining = deadline - time.monotonic()
+            if remaining <= 0:
+                break
+            if receive_connection.poll(min(remaining, 0.2)):
+                try:
+                    message = receive_connection.recv()
+                except EOFError:
+                    break
+                break
+            if not worker.is_alive():
+                if receive_connection.poll(0):
+                    try:
+                        message = receive_connection.recv()
+                    except EOFError:
+                        message = None
+                break
+
+        if message is None:
+            worker.terminate()
+            worker.join(timeout=0.5)
+            term_sent = True
+            kill_sent = False
+            if worker.is_alive():
+                worker.kill()
+                worker.join(timeout=1.5)
+                kill_sent = True
+            elapsed = time.monotonic() - started
+            record_vpnobratno_progress(
+                progress_path,
+                context,
+                "worker_timeout",
+                worker_pid=worker.pid or 0,
+                timeout_seconds=timeout,
+                elapsed_ms=int(elapsed * 1000),
+                term_sent=term_sent,
+                kill_sent=kill_sent,
+                worker_exitcode=worker.exitcode,
+            )
+            print(
+                f"[vpn-gate] profile_fetch_worker_timeout worker_pid={worker.pid} "
+                f"elapsed_ms={int(elapsed * 1000)} term_sent={term_sent} "
+                f"kill_sent={kill_sent} exitcode={worker.exitcode}",
+                flush=True,
+            )
+            if worker.is_alive():
+                raise ProbeError(
+                    f"VPNObratto fetch worker {worker.pid} did not exit after SIGKILL"
+                )
+            raise TimeoutError(
+                f"VPNObratto isolated fetch exceeded {timeout:g}s wall-clock deadline "
+                f"(worker_pid={worker.pid})"
+            )
+
+        worker.join(timeout=max(0.05, min(1.0, deadline - time.monotonic())))
+        if worker.is_alive():
+            worker.terminate()
+            worker.join(timeout=0.25)
+            if worker.is_alive():
+                worker.kill()
+                worker.join(timeout=1.0)
+            raise ProbeError(
+                f"VPNObratto fetch worker {worker.pid} sent a result but did not exit"
+            )
+
+        if not message:
+            raise ProbeError(
+                f"VPNObratto fetch worker {worker.pid} exited without a result "
+                f"(exitcode={worker.exitcode})"
+            )
+        if message[0] == "error":
+            error_type = str(message[1]) if len(message) > 1 else "ProbeError"
+            error_message = str(message[2]) if len(message) > 2 else "worker error"
+            record_vpnobratno_progress(
+                progress_path,
+                context,
+                "worker_error_received",
+                worker_pid=worker.pid or 0,
+                error_type=error_type,
+                error_message=error_message[:240],
+                worker_exitcode=worker.exitcode,
+            )
+            exception_types = {
+                "OSError": OSError,
+                "TimeoutError": TimeoutError,
+                "ValueError": ValueError,
+                "ProbeError": ProbeError,
+            }
+            exception_type = exception_types.get(error_type, ProbeError)
+            raise exception_type(error_message)
+        if message[0] != "ok" or len(message) != 2 or not isinstance(message[1], bytes):
+            raise ProbeError("VPNObratto fetch worker returned an invalid result envelope")
+        record_vpnobratno_progress(
+            progress_path,
+            context,
+            "worker_completed",
+            worker_pid=worker.pid or 0,
+            bytes=len(message[1]),
+            elapsed_ms=int((time.monotonic() - started) * 1000),
+            worker_exitcode=worker.exitcode,
+        )
+        print(
+            f"[vpn-gate] profile_fetch_worker_completed worker_pid={worker.pid} "
+            f"bytes={len(message[1])} elapsed_ms={int((time.monotonic() - started) * 1000)}",
+            flush=True,
+        )
+        return message[1]
+    finally:
+        receive_connection.close()
+        try:
+            send_connection.close()
+        except OSError:
+            pass
+        if started_worker:
+            if worker.is_alive():
+                worker.terminate()
+                worker.join(timeout=0.25)
+                if worker.is_alive():
+                    worker.kill()
+                    worker.join(timeout=1.0)
+            worker.close()
+        else:
+            worker.close()
+
+
 def fetch_vpnobratno_bytes(
     url: str,
     timeout: int = 25,
@@ -722,6 +1070,7 @@ def fetch_vpnobratno_bytes(
     deadline = time.monotonic() + timeout
     current_url = url
     redirect_codes = {301, 302, 303, 307, 308}
+    vpnobratno_fetch_trace("fetch", "started", timeout_seconds=timeout, max_bytes=max_bytes)
     for redirect_index in range(4):
         parts = urllib.parse.urlsplit(current_url)
         hostname = (parts.hostname or "").lower()
@@ -739,7 +1088,14 @@ def fetch_vpnobratno_bytes(
             raise TimeoutError("VPNObratto pinned HTTPS fetch exceeded its wall-clock deadline")
         # The resolver endpoints themselves are pinned IPs. This avoids the
         # runner's system resolver, which could stall inside getaddrinfo().
-        addresses = doh_query(hostname, "A", timeout=max(1, min(4, int(remaining))))
+        vpnobratno_fetch_trace("doh", "started", hostname=hostname)
+        previous_operation = _VPNOBRATNO_FETCH_OPERATION
+        globals()["_VPNOBRATNO_FETCH_OPERATION"] = "doh"
+        try:
+            addresses = doh_query(hostname, "A", timeout=max(1, min(4, int(remaining))))
+        finally:
+            globals()["_VPNOBRATNO_FETCH_OPERATION"] = previous_operation
+        vpnobratno_fetch_trace("doh", "completed", answers=len(addresses))
         public_addresses: list[str] = []
         for value in addresses:
             try:
@@ -763,6 +1119,10 @@ def fetch_vpnobratno_bytes(
                 break
             connection = None
             try:
+                globals()["_VPNOBRATNO_FETCH_OPERATION"] = "profile_https"
+                vpnobratno_fetch_trace(
+                    "profile_https", "request_started", pinned_ip=address, redirect_index=redirect_index
+                )
                 connection = PinnedHTTPSConnection(
                     hostname, address, port=443, timeout=max(1, min(6, int(remaining)))
                 )
@@ -778,7 +1138,12 @@ def fetch_vpnobratno_bytes(
                 if connection.sock is None:
                     raise ProbeError("VPNObratto HTTPS socket was not created for the request")
                 connection.sock.settimeout(max(0.1, deadline - time.monotonic()))
+                vpnobratno_fetch_trace("profile_https", "response_headers_started", pinned_ip=address)
                 response = connection.getresponse()
+                vpnobratno_fetch_trace(
+                    "profile_https", "response_headers_completed",
+                    status=response.status, pinned_ip=address,
+                )
                 if response.status in redirect_codes:
                     location = response.getheader("Location") or ""
                     if not location:
@@ -811,7 +1176,15 @@ def fetch_vpnobratno_bytes(
                     # read timeout configured before that ownership transfer;
                     # call_with_wall_clock_timeout() bounds slow-drip bodies.
                     read_size = min(4096, max_bytes + 1 - len(payload))
+                    vpnobratno_fetch_trace(
+                        "profile_https", "body_read_started",
+                        requested_bytes=read_size, received_bytes=len(payload),
+                    )
                     chunk = response.read1(read_size)
+                    vpnobratno_fetch_trace(
+                        "profile_https", "body_read_completed",
+                        chunk_bytes=len(chunk), total_bytes=len(payload) + len(chunk),
+                    )
                     if not chunk:
                         break
                     payload.extend(chunk)
@@ -824,7 +1197,11 @@ def fetch_vpnobratno_bytes(
                 errors.append(f"{address}: {exc}")
             finally:
                 if connection is not None:
-                    connection.close()
+                    vpnobratno_fetch_trace("profile_https", "connection_close_started", pinned_ip=address)
+                    try:
+                        connection.close()
+                    finally:
+                        vpnobratno_fetch_trace("profile_https", "connection_close_completed", pinned_ip=address)
 
         if redirect_target:
             current_url = redirect_target
@@ -1007,11 +1384,52 @@ def call_with_wall_clock_timeout(callback: Any, timeout: float) -> Any:
             signal.setitimer(signal.ITIMER_REAL, remaining, previous_interval)
 
 
+def fetch_vpnobratno_payload_with_deadline(
+    fetcher: Any,
+    url: str,
+    *,
+    timeout: int,
+    max_bytes: int,
+    context: dict[str, Any],
+    progress_path: pathlib.Path | str | None = None,
+) -> bytes:
+    """Use a killable worker for the production fetcher; keep injected tests in-process."""
+    if fetcher is fetch_vpnobratno_bytes:
+        return fetch_vpnobratno_in_worker(
+            fetcher,
+            url,
+            timeout=timeout,
+            max_bytes=max_bytes,
+            context=context,
+            progress_path=progress_path,
+        )
+    record_vpnobratno_progress(progress_path, context, "fetch_started", timeout_seconds=timeout)
+    try:
+        payload = call_with_wall_clock_timeout(
+            lambda: fetcher(url, timeout=min(timeout, 15), max_bytes=max_bytes),
+            timeout,
+        )
+    except BaseException as exc:
+        record_vpnobratno_progress(
+            progress_path,
+            context,
+            "fetch_error",
+            error_type=type(exc).__name__,
+            error_message=str(exc)[:240],
+        )
+        raise
+    record_vpnobratno_progress(
+        progress_path, context, "fetch_completed", bytes=len(payload)
+    )
+    return payload
+
+
 def discover_vpnobratno_servers(
     fetcher: Any = fetch_vpnobratno_bytes,
     resolver: Any | None = None,
     max_profiles: int = VPNOBRATNO_PROFILE_DOWNLOAD_LIMIT,
     max_unique_hosts: int = 6,
+    progress_path: pathlib.Path | str | None = None,
 ) -> tuple[list[dict[str, Any]], dict[str, Any]]:
     """Download until enough distinct listed server hostnames have usable profiles."""
     if not 1 <= max_profiles <= VPNOBRATNO_PROFILE_DOWNLOAD_LIMIT:
@@ -1020,15 +1438,25 @@ def discover_vpnobratno_servers(
         )
     if not 1 <= max_unique_hosts <= 6:
         raise ValueError("max_unique_hosts must be between 1 and 6")
+    listing_context = {
+        "profile_index": 0,
+        "profile_count": 0,
+        "hostname": VPNOBRATNO_HOST,
+        "variant": "listing",
+        "address_mode": "listing",
+    }
+    record_vpnobratno_progress(
+        progress_path, listing_context, "listing_started", wall_timeout_seconds=20
+    )
     print("[vpn-gate] phase=profile_listing started", flush=True)
     print("[vpn-gate] profile_listing_fetch_started wall_timeout=20s", flush=True)
-    page_bytes = call_with_wall_clock_timeout(
-        lambda: fetcher(
-            VPNOBRATNO_LIST_URL,
-            timeout=15,
-            max_bytes=VPNOBRATNO_LISTING_MAX_BYTES,
-        ),
-        20,
+    page_bytes = fetch_vpnobratno_payload_with_deadline(
+        fetcher,
+        VPNOBRATNO_LIST_URL,
+        timeout=20,
+        max_bytes=VPNOBRATNO_LISTING_MAX_BYTES,
+        context=listing_context,
+        progress_path=progress_path,
     )
     print(
         f"[vpn-gate] profile_listing_fetch_completed bytes={len(page_bytes)}",
@@ -1056,19 +1484,33 @@ def discover_vpnobratno_servers(
             f"host={entry['hostname']} variant={entry['profile_variant']}",
             flush=True,
         )
+        profile_context = {
+            "profile_index": profile_index,
+            "profile_count": len(selected_profiles),
+            "hostname": entry["hostname"],
+            "variant": entry["profile_variant"],
+            "address_mode": entry["address_mode"],
+        }
         try:
             print(
                 f"[vpn-gate] profile_fetch_started={profile_index}/{len(selected_profiles)} "
                 "wall_timeout=20s transport=pinned_doh_https",
                 flush=True,
             )
-            payload = call_with_wall_clock_timeout(
-                lambda: fetcher(
-                    entry["profile_url"],
-                    timeout=12,
-                    max_bytes=VPNOBRATNO_PROFILE_MAX_BYTES,
-                ),
-                20,
+            record_vpnobratno_progress(
+                progress_path,
+                profile_context,
+                "fetch_started",
+                wall_timeout_seconds=20,
+                url_path=urllib.parse.urlsplit(entry["profile_url"]).path,
+            )
+            payload = fetch_vpnobratno_payload_with_deadline(
+                fetcher,
+                entry["profile_url"],
+                timeout=20,
+                max_bytes=VPNOBRATNO_PROFILE_MAX_BYTES,
+                context=profile_context,
+                progress_path=progress_path,
             )
             print(
                 f"[vpn-gate] profile_fetch_completed={profile_index}/{len(selected_profiles)} "
@@ -1087,6 +1529,13 @@ def discover_vpnobratno_servers(
                 f"remote={profile['remote_host']} transport={profile['proto']}",
                 flush=True,
             )
+            record_vpnobratno_progress(
+                progress_path,
+                profile_context,
+                "profile_validated",
+                remote=profile["remote_host"],
+                transport=profile["proto"],
+            )
             print(
                 f"[vpn-gate] profile_server_ip_resolution_started={profile_index}/{len(selected_profiles)} "
                 f"mode={entry['address_mode']}",
@@ -1099,6 +1548,12 @@ def discover_vpnobratno_servers(
                 f"[vpn-gate] profile_server_ip_resolution_completed={profile_index}/{len(selected_profiles)} "
                 f"server_ip={server_ip}",
                 flush=True,
+            )
+            record_vpnobratno_progress(
+                progress_path,
+                profile_context,
+                "server_ip_resolved",
+                server_ip=server_ip,
             )
             servers.append({
                 "hostname": entry["hostname"],
@@ -1128,6 +1583,13 @@ def discover_vpnobratno_servers(
                 f"unique_hosts={len(unique_hosts)}",
                 flush=True,
             )
+            record_vpnobratno_progress(
+                progress_path,
+                profile_context,
+                "usable",
+                server_ip=server_ip,
+                unique_hosts=len(unique_hosts),
+            )
             if len(unique_hosts) >= max_unique_hosts:
                 stop_reason = "distinct_server_host_budget_reached"
                 print(
@@ -1140,6 +1602,13 @@ def discover_vpnobratno_servers(
                 break
         except (OSError, ProbeError, UnicodeDecodeError, ValueError) as exc:
             skipped[type(exc).__name__ + ": " + str(exc)[:120]] += 1
+            record_vpnobratno_progress(
+                progress_path,
+                profile_context,
+                "skipped",
+                error_type=type(exc).__name__,
+                error_message=str(exc)[:240],
+            )
             print(
                 f"[vpn-gate] profile_download_result={profile_index}/{len(selected_profiles)} "
                 f"host={entry['hostname']} result=skipped reason={type(exc).__name__}",
@@ -1174,6 +1643,15 @@ def discover_vpnobratno_servers(
         "profile_order": ["IP_UDP", "DDNS_UDP", "IP_TCP", "DDNS_TCP"],
         "profile_directives_executed": False,
     }
+    record_vpnobratno_progress(
+        progress_path,
+        {"profile_index": 0, "profile_count": len(selected_profiles), "hostname": VPNOBRATNO_HOST, "variant": "discovery"},
+        "discovery_completed",
+        usable_profiles=len(servers),
+        profiles_inspected=profiles_inspected,
+        unique_server_hosts=len(unique_hosts),
+    )
+    meta["progress_manifest"] = str(progress_path) if progress_path is not None else ""
     return servers, meta
 
 
@@ -1573,8 +2051,10 @@ def run(args: argparse.Namespace) -> int:
 
     if args.source == "vpnobratno":
         print("[vpn-gate] phase=discovery source=vpnobratno started", flush=True)
+        progress_manifest = output / "vpnobratto_progress.json"
         servers, discovery_meta = discover_vpnobratno_servers(
-            max_unique_hosts=args.max_attempts
+            max_unique_hosts=args.max_attempts,
+            progress_path=progress_manifest,
         )
         discovery_source = "vpnobratno.info Russian server list and linked OpenVPN profiles"
         raw_rows: list[dict[str, Any]] = [{
