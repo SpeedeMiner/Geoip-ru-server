@@ -48,6 +48,7 @@ VPNOBRATNO_PROFILE_RE = re.compile(
 VPNOBRATNO_VARIANT_ORDER = {
     "ip_udp": 0, "ddns_udp": 1, "ip_tcp": 2, "ddns_tcp": 3,
 }
+VPNOBRATNO_PROFILE_DOWNLOAD_LIMIT = 24
 IP_INFO_URLS = (
     "https://ipwho.is/",
     "https://ipapi.co/json/",
@@ -635,11 +636,21 @@ def parse_vpnobratno_listing(html: str) -> list[dict[str, str]]:
             by_host[hostname] = []
         by_host[hostname].append(profile)
     ordered: list[dict[str, str]] = []
-    for hostname in host_order:
-        ordered.extend(sorted(
+    # Interleave variants across hostnames so a bounded discovery sample sees
+    # one preferred profile per server before downloading alternatives.
+    per_host = {
+        hostname: sorted(
             by_host[hostname],
             key=lambda item: VPNOBRATNO_VARIANT_ORDER[item["profile_variant"]],
-        ))
+        )
+        for hostname in host_order
+    }
+    for variant in sorted(VPNOBRATNO_VARIANT_ORDER, key=VPNOBRATNO_VARIANT_ORDER.get):
+        for hostname in host_order:
+            ordered.extend(
+                item for item in per_host[hostname]
+                if item["profile_variant"] == variant
+            )
     return ordered
 
 
@@ -693,15 +704,21 @@ def resolve_vpnobratno_server_ip(
 def discover_vpnobratno_servers(
     fetcher: Any = fetch_vpnobratno_bytes,
     resolver: Any = socket.getaddrinfo,
+    max_profiles: int = VPNOBRATNO_PROFILE_DOWNLOAD_LIMIT,
 ) -> tuple[list[dict[str, Any]], dict[str, Any]]:
-    """Download and validate listed profiles without executing supplied directives."""
+    """Download a bounded, diversity-friendly sample of listed profiles."""
+    if not 1 <= max_profiles <= VPNOBRATNO_PROFILE_DOWNLOAD_LIMIT:
+        raise ValueError(
+            f"max_profiles must be between 1 and {VPNOBRATNO_PROFILE_DOWNLOAD_LIMIT}"
+        )
     page = fetcher(VPNOBRATNO_LIST_URL, timeout=40).decode("utf-8", "replace")
     listed = parse_vpnobratno_listing(page)
     if not listed:
         raise ProbeError("VPNObratno page contains no supported OpenVPN profile links")
+    selected_profiles = listed[:max_profiles]
     servers: list[dict[str, Any]] = []
     skipped = collections.Counter()
-    for entry in listed:
+    for entry in selected_profiles:
         try:
             payload = fetcher(entry["profile_url"], timeout=25)
             if not payload or len(payload) > 64_000:
@@ -740,6 +757,10 @@ def discover_vpnobratno_servers(
     meta = {
         "listing_url": VPNOBRATNO_LIST_URL,
         "profile_links_found": len(listed),
+        "profile_download_limit": max_profiles,
+        "profiles_considered_for_download": len(selected_profiles),
+        "profiles_not_downloaded_due_to_limit": max(0, len(listed) - len(selected_profiles)),
+        "profile_download_limit_reached": len(listed) > max_profiles,
         "usable_profiles": len(servers),
         "unique_server_hostnames": len({server["hostname"] for server in servers}),
         "profile_variants": dict(collections.Counter(
