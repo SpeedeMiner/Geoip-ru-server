@@ -405,6 +405,7 @@ def main():
     parser.add_argument("--blocked-base", type=Path, required=True)
     parser.add_argument("--ipsum", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--categories", type=Path, required=True)
     parser.add_argument("--quality", type=Path, required=True)
     parser.add_argument("--metrics", type=Path, required=True)
     parser.add_argument("--prefix-provenance", type=Path, required=True)
@@ -552,6 +553,13 @@ def main():
 
     base_counts = addr_counts(base_ru)
     final_counts = addr_counts(final)
+    private_counts = addr_counts(private)
+    args.categories.write_text(
+        "# GeoIP DIRECT RU+BY+KZ v38 categories; RU is the regional/service DIRECT bucket.\n"
+        + f"RU\t{len(final)}\tIPv4={final_counts['ipv4']}\tIPv6={final_counts['ipv6']}\n"
+        + f"PRIVATE\t{len(final_private)}\tIPv4={private_counts['ipv4']}\tIPv6={private_counts['ipv6']}\n",
+        encoding="utf-8",
+    )
     blocked_counts = addr_counts(blocked)
     private_counts = addr_counts(private)
     quality = [
