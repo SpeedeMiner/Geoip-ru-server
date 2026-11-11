@@ -320,3 +320,14 @@ Durable resume point for PR #5. After any conversation/network interruption, rea
 - New workflow behavior: measurement failure does not suppress artifact upload; a final workflow gate reports job failure if no verified RU exit is achieved.
 - Validation before launch: Run #106 `42964285730` passed 53 Python tests plus Go formatting/tests/build.
 - Run currently in progress; do not infer a result until the job and artifact are available.
+
+### 2026-11-11 — Harden resolver isolation and keep HTTPS fallback IPv4-only — IMPLEMENTED / CI PENDING
+
+- Rechecked the second VPN Gate pilot artifact from run #42962715822 (geoip-ru-vpn-gate-42962715822, artifact 13830405759, 288,476 bytes, SHA-256 6b85e2788c5690925d7b9355f610a39e9d32f1b9c0818ad427b03069aa3806aa). The report confirms 3 candidate attempts, 0 verified RU exits and 0 target measurements. Run-level job success was only artifact-upload success; the measurement script had not yet enforced a failing conclusion in that version.
+- Removed the global /etc/resolv.conf rewrite from ResolverGuard. It is now a no-op scope marker; system NSS is left untouched. Existing fail-closed firewall rules prevent direct non-tunnel egress, and system DNS failures use IP-pinned DoH fallbacks.
+- Restricted pinned HTTPS fallback for metadata and target HEAD requests to A records only. AAAA records remain independently collected as DNS evidence, but this backend has no IPv6 tunnel and host IPv6 egress remains blocked. An IPv6-only hostname now yields a clear inconclusive HTTPS result rather than an impossible IPv6 connection attempt.
+- Added three regression tests: no global resolver file access, metadata fallback does not dial an IPv6-only host, and target HTTPS fallback does not attempt AAAA-only transport. VPN Gate test module now has 27 tests; the existing reachability module has 29; expected combined total is 56.
+- Code commit: 01de6ed726c379811df0155c3db8534683a90009; tests commit: 110510c53551534f7dd216c8391ecf7ec3a61720; README commit: 00d398768c333beb6fac156985b21c5376c73784.
+- Validation is pending for the 56-test code head. The last confirmed green validation (Run #103, 48 Python tests) predates the DoH fallback and this resolver/IPv4-only hardening; do not reuse it as validation for the latest code.
+- Next: verify the new 56-test CI result; only then trigger the guarded one-shot pilot (one verified RU exit, at most three candidates), inspect the report/log and firewall restoration, then remove VPN_GATE_RUN_ONCE and the temporary feature-branch push trigger. Keep PR #5 Draft and preserve all production data/policy.
+- No changes to geoip_RU.dat, production builder, release assets, DIRECT policy, ASN allowlists, main/release, or PR #6.
