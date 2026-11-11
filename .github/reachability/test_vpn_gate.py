@@ -1866,7 +1866,7 @@ class VPNObrattoFetchSafetyTests(unittest.TestCase):
                 vpn_gate.ProbeError, "exceeds configured 4-byte limit"
             ):
                 vpn_gate.fetch_vpnobratno_bytes(url, timeout=12, max_bytes=4)
-        self.assertEqual(oversized_response.read_limit, 5)
+        self.assertEqual(oversized_response.read_limits[0], 5)
 
         with patch.object(vpn_gate, "doh_query") as doh:
             with self.assertRaisesRegex(ValueError, "max_bytes"):
