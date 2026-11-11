@@ -8,6 +8,13 @@ on:
         required: true
         default: "3"
         type: string
+  # workflow_dispatch only works after this workflow exists on the default branch.
+  # For the still-draft PR, allow one explicitly marked push from this feature branch.
+  push:
+    branches:
+      - feature/reachability-full-ru-kz-by
+    paths:
+      - ".github/reachability/VPN_GATE_RUN_ONCE"
 
 permissions:
   contents: read
@@ -18,6 +25,9 @@ concurrency:
 
 jobs:
   measure:
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      (github.event_name == 'push' && startsWith(github.event.head_commit.message, '[vpn-gate-once]'))
     name: Test public services through Russian volunteer ISP exits
     runs-on: ubuntu-latest
     timeout-minutes: 120
@@ -81,7 +91,7 @@ jobs:
             --inventory reachability_inventory.tsv \
             --targets .github/reachability/targets.json \
             --output-dir reachability-output \
-            --max-servers "${{ inputs.max_vpn_gate_servers }}" \
+            --max-servers "${{ inputs.max_vpn_gate_servers || '1' }}" \
             --connect-timeout 60 \
             --request-timeout 12
 
