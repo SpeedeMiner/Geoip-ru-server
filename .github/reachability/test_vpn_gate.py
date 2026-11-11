@@ -545,6 +545,17 @@ class VPNObratnoDiscoveryTests(unittest.TestCase):
             for item in profiles
         ))
 
+    def test_bounded_getent_dns_keeps_only_public_ipv4_answers(self):
+        completed = subprocess.CompletedProcess(
+            ["getent"], 0,
+            stdout="8.8.8.8 STREAM host\\n127.0.0.1 STREAM host\\n",
+            stderr="",
+        )
+        with patch.object(vpn_gate.subprocess, "run", return_value=completed) as run:
+            answers = vpn_gate._public_ipv4_answers(self.HOST)
+        self.assertEqual(answers, ["8.8.8.8"])
+        self.assertEqual(run.call_args.kwargs["timeout"], 3.0)
+
     def test_ddns_remote_must_match_the_hostname_from_listing(self):
         address = vpn_gate.resolve_vpnobratno_server_ip(
             self.HOST, self.HOST, "ddns", self.resolver
@@ -555,15 +566,29 @@ class VPNObratnoDiscoveryTests(unittest.TestCase):
                 self.HOST, "attacker.example", "ddns", self.resolver
             )
 
-    def test_ip_variant_must_match_public_dns_address_of_listed_host(self):
+    def test_ip_variant_uses_profile_literal_without_pre_tunnel_dns(self):
+        def forbidden_resolver(*_args):
+            raise AssertionError("IP profile selection must not perform DNS")
         address = vpn_gate.resolve_vpnobratno_server_ip(
-            self.HOST, "8.8.8.8", "ip", self.resolver
+            self.HOST, "8.8.8.8", "ip", forbidden_resolver
         )
         self.assertEqual(address, "8.8.8.8")
-        with self.assertRaisesRegex(ValueError, "does not match"):
+        with self.assertRaisesRegex(ValueError, "global IPv4"):
             vpn_gate.resolve_vpnobratno_server_ip(
-                self.HOST, "1.1.1.1", "ip", self.resolver
+                self.HOST, "192.168.1.1", "ip", forbidden_resolver
             )
+
+    def test_ddns_resolution_uses_a_hard_subprocess_timeout(self):
+        with patch.object(
+            vpn_gate.subprocess, "run",
+            side_effect=subprocess.TimeoutExpired(["getent"], 3),
+        ) as run:
+            with self.assertRaisesRegex(ValueError, "bounded DNS lookup failed"):
+                vpn_gate.resolve_vpnobratno_server_ip(
+                    self.HOST, self.HOST, "ddns"
+                )
+        self.assertEqual(run.call_args.kwargs["timeout"], 3.0)
+        self.assertEqual(run.call_args.args[0][:2], ["getent", "ahostsv4"])
 
     def test_discovery_downloads_and_validates_profiles_without_running_them(self):
         ip_udp_url = (
@@ -799,6 +824,51 @@ class VPNObrattoFetchSafetyTests(unittest.TestCase):
         self.assertEqual(metadata["profiles_considered_for_download"], 2)
         self.assertEqual(metadata["profiles_not_downloaded_due_to_limit"], 2)
         self.assertTrue(metadata["profile_download_limit_reached"])
+
+    def test_discovery_stops_after_six_distinct_ip_profile_hosts_without_dns(self):
+        hostnames = [f"vpn{100000001 + index}.opengw.net" for index in range(8)]
+        entries = [
+            {
+                "hostname": hostname,
+                "address_mode": "ip",
+                "transport": "udp",
+                "profile_variant": "ip_udp",
+                "profile_url": f"https://vpnobratno.info/servers/{hostname}/{hostname}_ip_udp.ovpn",
+            }
+            for hostname in hostnames
+        ]
+        calls = []
+
+        def fetcher(url, timeout, max_bytes):
+            calls.append(url)
+            if url == vpn_gate.VPNOBRATNO_LIST_URL:
+                return b"<html>listing</html>"
+            hostname = next(item["hostname"] for item in entries if item["profile_url"] == url)
+            remote = f"8.8.8.{len(calls)}"
+            return SAMPLE_CONFIG.replace(
+                "proto tcp", "proto udp"
+            ).replace(
+                "remote old-volunteer-host.opengw.net 443", f"remote {remote} 1194"
+            ).encode()
+
+        def forbidden_resolver(*_args):
+            raise AssertionError("IP profile discovery must not issue DNS lookups")
+
+        with patch.object(vpn_gate, "parse_vpnobratno_listing", return_value=entries):
+            servers, metadata = vpn_gate.discover_vpnobratno_servers(
+                fetcher=fetcher,
+                resolver=forbidden_resolver,
+                max_profiles=24,
+                max_unique_hosts=6,
+            )
+
+        self.assertEqual(len(servers), 6)
+        self.assertEqual(len({server["hostname"] for server in servers}), 6)
+        self.assertEqual(len(calls), 7)  # Listing plus six profile downloads.
+        self.assertEqual(metadata["profiles_considered_for_download"], 6)
+        self.assertEqual(metadata["unique_server_hostnames"], 6)
+        self.assertEqual(metadata["discovery_stop_reason"], "distinct_server_host_budget_reached")
+        self.assertFalse(metadata["profile_download_limit_reached"])
 
     def test_discovery_profile_download_limit_is_hard_capped(self):
         for value in (0, vpn_gate.VPNOBRATNO_PROFILE_DOWNLOAD_LIMIT + 1):
