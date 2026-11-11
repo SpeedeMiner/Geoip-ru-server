@@ -21,6 +21,7 @@ on:
       - ".github/scripts/build_v37_canonical_prefix_inventory.py"
       - ".github/scripts/test_build_v37_canonical_prefix_inventory.py"
       - "docs/GEOIP_RU_SOURCE_CATALOG_v1.tsv"
+      - ".github/workflows/prefix-audit-validation.yml"
       - "docs/GEOIP_RU_SOURCE_CATALOG_v1.md"
       - ".github/audits/priority_prefix_rpki_invalid_assessment_v37.tsv"
       - ".github/audits/priority_prefix_external_spot_checks_v37.tsv"
