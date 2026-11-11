@@ -1150,3 +1150,12 @@ Durable resume point for PR #5. After any conversation/network interruption, rea
 - In the next run, inspect `progress_manifest_*` markers around profile 6. Expected sequence: parent mkdir started/completed; read started/completed; temporary write started/completed; atomic replace started/completed. This will separate manifest I/O from HTTPS body reads.
 - On terminal state, retrieve the artifact promptly and inspect `reachability-output/vpn_gate_vpnobratto_progress.json` even if the job's step summary is stale.
 - PR #5 remains OPEN / DRAFT; no production GeoIP/DIRECT/ASN policy, `main`, `release` or PR #6 was modified.
+
+
+#### Recovery files synchronized after Run #22 terminal annotation
+
+- Run #22 terminal state has been copied into `.github/reachability/CHECKPOINT.json` in commit `1749e95bd2777eaeda0dfdcfd45dd764eef72363`: run/job completed/cancelled, owner annotation, completion timestamps, stale step summaries, no artifacts, post-terminal `BlobNotFound`, profile counts, and the manifest-fsync hypothesis/mitigation.
+- Read-first `RESUME.md` has been updated in commit `4466a2e703e00423fce27ea1c537b2541c028956`: Run #22 is no longer described as active; next action is a manual pilot on the no-fsync branch version.
+- Operator `README.md` already records the no-fsync manifest write sequence and new progress-manifest operation markers (commit `66cb1cdcce634c05de5eec13abc2e98c42c47d96`).
+- Final verified code validation remains Run #211 / job `130710450443`, commit `d9f2fff136fdc919730b99bf43c810f0ff23d96d`: 128 Python tests passed in 0.883s; no-fsync test explicitly passed; hosted watchdog preflight and Go format/test/build passed.
+- PR #5 remained OPEN / DRAFT at the final state check. No new VPN workflow was dispatched after Run #22; no production GeoIP/DIRECT/ASN policy or PR #6 changes.
