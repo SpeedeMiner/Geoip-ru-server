@@ -1,1 +1,0 @@
-Final bounded VPN Gate pilot: request one verified RU egress and try at most six candidate servers selected across distinct origin ASNs. Preserve diagnostics and fail the workflow if no verified RU exit is established.
