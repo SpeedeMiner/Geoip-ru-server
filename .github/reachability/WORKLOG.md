@@ -435,3 +435,16 @@ Durable resume point for PR #5. After any conversation/network interruption, rea
 - No live connection using VPNObratno's linked profile variants has been run. The four earlier failed tunnel pilots remain evidence only about their specific official-API profiles at that time; they do not establish that the newly supported profile variants fail. No target access or blocking conclusion is available until a verified RU tunnel yields target measurement rows.
 - GitHub workflow_dispatch for a workflow introduced only on a Draft PR is not available until the workflow exists on the default branch. The workflow remains manual-only; do not restore the one-shot push trigger or schedule merely to bypass that constraint.
 - PR #5 remains OPEN / DRAFT. Changes are limited to .github/reachability/ and .github/workflows/reachability-*; no production builder, release/geoip_RU.dat, release assets, DIRECT policy, ASN allowlists, main/release or PR #6 were touched.
+
+
+### 2026-11-11 — Tune the first VPNObratno pilot to exercise bounded profile fallback — validation pending
+
+- Reviewed the current VPNObratno listing and confirmed the published OpenVPN links include per-node UDP and IP UDP variants, with TCP and IP TCP on some nodes; several nodes expose fewer variants than others.
+- Found a configuration issue in the first manual pilot defaults: it requested three successful RU exits while allowing only three profile attempts. That left no practical retry budget for alternative profile variants.
+- Changed the collector CLI defaults to one verified RU exit and up to six total profile attempts. The source remains VPNObratno by default; the official VPN Gate CSV API remains selectable as fallback. The hard cap remains six attempts and six successful exits.
+- Changed workflow_dispatch defaults to one successful RU exit / six profile attempts. This is still manual-only; no schedule or push trigger was added.
+- Added a regression test that invokes the CLI with only the required inventory path and verifies source=vpnobratno, max_servers=1, max_attempts=6.
+- Updated README to explain the one-exit/six-profile pilot budget.
+- This is a configuration and deterministic-test improvement only. It does not establish a working tunnel or any target accessibility result. Do not infer a residential line from VPNObratno's listing.
+- Validation is pending for the code/workflow changes; update this entry and CHECKPOINT only after inspecting the full GitHub Actions logs.
+- PR #5 remains OPEN / DRAFT. No production builder, release database/assets, DIRECT policy, ASN allowlists, main/release or PR #6 were touched.
