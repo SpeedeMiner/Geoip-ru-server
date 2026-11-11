@@ -1,14 +1,14 @@
 {
   "schema_version": 1,
-  "updated_at_utc": "2026-11-11T18:07:30Z",
+  "updated_at_utc": "2026-11-11T18:10:06Z",
   "repository": "SpeedeMiner/Geoip-ru-server",
   "pull_request": 5,
   "pull_request_url": "https://github.com/SpeedeMiner/Geoip-ru-server/pull/5",
   "branch": "feature/reachability-full-ru-kz-by",
   "recorded_pr_head_before_checkpoint_commit": "77dc41587d70f5ff5cb0f347ec91796394ab600f",
   "base_sha": "a68e5d6589361814cb1cfedd2af7857e4af806fa",
-  "state": "RUN22_GITHUB_JOB_STILL_IN_PROGRESS_212S_AFTER_12M_JOB_TIMEOUT; NO_ARTIFACT; NOFSYNC_MANIFEST_CHANGE_VALIDATED_RUN211_SUCCESS",
-  "current_phase": "RUN22_RUNNER_STATUS_NONTERMINAL; PROFILE6_LAST_TRACE_BODY_READ_COMPLETED_3830; NEW_MANIFEST_IO_MITIGATION_CI_GREEN",
+  "state": "RUN22_COMPLETED_CANCELLED_BY_GITHUB_MAX_12M_JOB_EXECUTION_TIME; NO_TERMINAL_LOGS_OR_ARTIFACT; MANIFEST_FSYNC_LEADING_UNPROVEN_HYPOTHESIS; FIX_VALIDATED_RUN211",
+  "current_phase": "RUN22_TERMINAL_TIMEOUT_CONFIRMED; PROFILE6_LAST_VISIBLE_BODY_READ_3830; PER_EVENT_FSYNC_REMOVED_AND_CI_GREEN",
   "completed": [
     "repository_reconnaissance",
     "protobuf_inventory_exporter",
@@ -467,13 +467,13 @@
     "production_release_artifact_byte_delta_verified": false
   },
   "next_steps": [
-    "Run #22 remains in_progress at 18:07:30Z, 212 seconds beyond the 12-minute job ceiling. Step 7 in_progress; report upload pending; no artifacts; job logs BlobNotFound. Do not launch another VPN workflow.",
-    "The available owner log shows five complete real VPNObratno profile downloads and profile 6 DoH/TCP/TLS/HTTP 200 plus body bytes to 3,830. Last supplied trace is body_read_completed; profile 6 completion, OpenVPN, tunnel route, RU exit and target measurement are not confirmed.",
-    "The high-priority possible hang is the manifest persistence immediately after the last trace marker; it was implemented as per-phase read/write/flush/fsync/replace. New branch code commit d15de0f6c879e5b3f692bbdbb15d725f12c0785b removes per-event fsync, retains temp-file flush + same-directory atomic replace, and adds mkdir/read/temp-write/replace markers. Regression test commit d9f2fff136fdc919730b99bf43c810f0ff23d96d validates the new behavior.",
-    "CI Run #211 (43074433130) is SUCCESS: 128 Python tests, no-fsync test and all worker tests passed; hosted-runner GNU timeout process-tree preflight, Go formatting/tests/build passed.",
-    "Run #22 uses the old pinned checkout 447bdf... and is unaffected by later source fixes. Continue monitoring it through its terminal transition; on completion retrieve full logs and artifact/progress manifest. If it remains non-terminal beyond max timeout, document a separate GitHub runner/controller non-terminal failure.",
-    "Do not infer target blocking from timeout/missing output. No verified RU exit or target measurements exist yet.",
-    "Keep PR #5 OPEN/DRAFT and preserve production GeoIP/DIRECT/ASN policy, main/release and PR #6."
+    "Run #22 (43072239130 / job 130702892228) is terminal completed/cancelled because GitHub enforced the 12-minute job execution ceiling. The annotation explicitly says maximum execution time 12m0s. No terminal job logs or artifact are available; step summary is stale/inconsistent.",
+    "Five VPNObratno profiles fully downloaded and validated. Profile 6 completed DoH, pinned TCP, TLS and HTTP 200 and has partial body evidence to 3,830 bytes only. No OpenVPN attempt, tunnel route, verified RU exit or target measurements were confirmed.",
+    "Leading unproven code-level hypothesis: last visible body_read_completed marker is printed before record_vpnobratno_progress, whose old checkout then called fsync for every phase event. A blocking per-event fsync may have stalled the worker and possibly the parent's timeout-manifest write. This is not proven because Run #22 has no terminal logs/artifact.",
+    "Mitigation already landed on the current branch: code commit d15de0f6c879e5b3f692bbdbb15d725f12c0785b removes per-event fsync but keeps flush and atomic os.replace; adds explicit parent_mkdir/read/temp_write/atomic_replace markers.",
+    "Regression commit d9f2fff136fdc919730b99bf43c810f0ff23d96d adds a no-fsync atomic manifest test. CI Run #211 / job 130710450443 completed SUCCESS: 128 Python tests, hosted ubuntu-24.04 GNU timeout process-tree preflight, Go formatting/tests/build passed.",
+    "A fresh manual VPNObratto pilot against the current branch is still required to validate the fix in a live run. Before running it, confirm the branch head and no active/queued VPN workflow, and use one requested verified RU exit with maximum six profile attempts. Inspect all progress_manifest operation markers and the uploaded manifest.",
+    "Do not infer target blocking from a timeout or missing output. Keep PR #5 OPEN/DRAFT and preserve production GeoIP data/builders, DIRECT policy, ASN allowlists, main/release and PR #6."
   ],
   "ci_policy": {
     "push_validation_paths": [
@@ -2433,13 +2433,13 @@
     "job_started_at_utc": "2026-11-11T17:51:58Z",
     "measurement_step_started_at_utc": "2026-11-11T17:52:18Z",
     "observed_at_utc": "2026-11-11T18:01:21Z",
-    "run_status": "in_progress",
-    "job_status": "in_progress",
+    "run_status": "completed",
+    "job_status": "completed",
     "measurement_step_status": "in_progress",
     "upload_step_status": "pending",
     "failure_gate_step_status": "pending",
     "artifacts": [],
-    "log_archive": "BlobNotFound while run active",
+    "log_archive": "BlobNotFound after terminal completion",
     "owner_supplied_log": {
       "file_name": "Вставленный текст(20261111-175710).txt",
       "total_lines": 314,
@@ -2513,44 +2513,54 @@
       "job_timeout": "2026-11-11T18:03:58Z"
     },
     "last_rest_snapshot": {
-      "observed_at_utc": "2026-11-11T18:07:30Z",
-      "run_status": "in_progress",
-      "run_updated_at_utc": "2026-11-11T17:51:59Z",
-      "job_status": "in_progress",
+      "observed_at_utc": "2026-11-11T18:10:06Z",
+      "run_id": 43072239130,
+      "run_number": 22,
+      "run_status": "completed",
+      "run_conclusion": "cancelled",
+      "run_updated_at_utc": "2026-11-11T18:08:59Z",
+      "job_id": 130702892228,
+      "job_status": "completed",
+      "job_conclusion": "cancelled",
       "job_started_at_utc": "2026-11-11T17:51:58Z",
-      "measurement_step_status": "in_progress",
-      "measurement_step_started_at_utc": "2026-11-11T17:52:18Z",
-      "measurement_step_timeout_overrun_seconds": 3,
-      "upload_step_status": "pending",
+      "job_completed_at_utc": "2026-11-11T18:08:58Z",
+      "nominal_job_deadline_utc": "2026-11-11T18:03:58Z",
+      "job_timeout_overrun_seconds": 300,
+      "measurement_step_status_from_terminal_job_summary": "in_progress",
+      "upload_step_status_from_terminal_job_summary": "pending",
+      "failure_gate_step_status_from_terminal_job_summary": "pending",
       "artifacts": [],
-      "logs_api": "BlobNotFound",
-      "logs_error_at_utc": "2026-11-11T18:07:30.522Z",
-      "failure_gate_step_status": "pending",
-      "job_timeout_overrun_seconds": 212,
-      "interpretation": "Run/job/measurement step remain non-terminal 3m32s beyond the configured job deadline. No terminal logs or artifact. Runner/controller status is likely stale or unresponsive; no process/target diagnosis is yet confirmed."
+      "log_archive": "BlobNotFound",
+      "log_archive_error_at_utc": "2026-11-11T18:10:06Z",
+      "timeout_annotation": "The job has exceeded the maximum execution time of 12m0s",
+      "interpretation": "Terminal job-level timeout confirmed by owner-provided annotation; step summary remains stale/inconsistent; no log archive or artifact."
     },
     "manifest_persistence_hypothesis": {
-      "priority": "high_but_unconfirmed",
-      "evidence": "Last owner-supplied trace prints body_read_completed for profile 6 at 3830 bytes. vpnobratno_fetch_trace prints and flushes this line before calling record_vpnobratno_progress. That function reads JSON, writes a temporary file, flushes, calls os.fsync, and os.replace. No subsequent body_read_started or worker timeout marker is present in the supplied excerpt.",
-      "interpretation": "If the supplied excerpt is complete, the next code operation after the final line is the manifest persistence update, so inspect its read/write/fsync/replace stages before assuming the HTTP body read itself hung.",
-      "alternative_explanations": [
-        "the supplied log excerpt may simply be truncated while more output was produced",
-        "the GitHub job-log API for an active job may not expose the latest buffered output",
-        "a different worker or runner operation after the trace may have blocked"
+      "priority": "leading_code_level_hypothesis_but_unproven",
+      "status": "mitigated_in_current_branch_not_proven_by_live_pilot",
+      "last_visible_marker": "body_read_completed total_bytes=3830",
+      "source_order": "vpnobratno_fetch_trace prints and flushes this marker before calling record_vpnobratno_progress.",
+      "old_manifest_sequence": "JSON read/update -> temp file write -> stream.flush -> os.fsync -> os.replace",
+      "likely_blocking_operation": "per-phase os.fsync (synchronous filesystem I/O)",
+      "why_it_fits": "The log ends on a marker printed before manifest persistence. If that paste is complete, the next operation was a manifest update that called fsync. A worker blocked in uninterruptible kernel I/O could resist SIGKILL; the parent's timeout manifest write used the same fsync path.",
+      "alternatives": [
+        "the pasted log excerpt may not include later output",
+        "GitHub Actions live/terminal log archive is unavailable",
+        "the runner/controller could have stalled independently"
       ],
       "no_root_cause_claimed": true,
-      "status": "high_priority_unconfirmed",
-      "next_operation_after_last_marker": "record_vpnobratno_progress for the body_read_completed event",
-      "source_order": "vpnobratno_fetch_trace prints and flushes the body_read_completed marker before calling record_vpnobratno_progress; that function performs read/JSON rewrite/flush/fsync/os.replace.",
-      "mitigration_commit": "d15de0f6c879e5b3f692bbdbb15d725f12c0785b",
-      "mitigation": "Per-phase manifest updates now flush and atomically replace, without synchronous fsync. New progress_manifest_* markers expose mkdir/read/temp-write/replace boundaries. This does not affect Run #22's checkout.",
+      "old_execution_sha": "447bdf6083b3d69b0fbdcf0e126cc27a0ee3db71",
       "mitigation_commit": "d15de0f6c879e5b3f692bbdbb15d725f12c0785b",
-      "test_commit": "d9f2fff136fdc919730b99bf43c810f0ff23d96d",
+      "mitigation": "Removed per-phase os.fsync; retained temp-file flush and same-directory atomic os.replace; added explicit progress_manifest operation markers.",
+      "regression_test_commit": "d9f2fff136fdc919730b99bf43c810f0ff23d96d",
+      "regression_test": "test_progress_manifest_uses_atomic_replace_without_per_event_fsync",
       "validation_run_id": 43074433130,
       "validation_run_number": 211,
+      "validation_job_id": 130710450443,
       "validation_conclusion": "success",
       "validation_python_tests": 128,
-      "validated_at_utc": "2026-11-11T18:05:58Z"
+      "validated_at_utc": "2026-11-11T18:05:58Z",
+      "validated_live_pilot": false
     },
     "latest_api_log_fetch": "BlobNotFound",
     "notes": [
@@ -2558,7 +2568,9 @@
       "Profile 6 successfully completed DoH, pinned TCP, TLS and HTTP response headers with status 200; the supplied excerpt only shows 3,830 response-body bytes, not profile completion.",
       "No OpenVPN attempt, route, RU public exit or target request is confirmed.",
       "Do not attribute the issue to VPNObratno, Cloudflare DoH or a target service based on this partial trace.",
-      "Artifact list remains empty because upload step 8 has not started; absence before upload is not a failure."
+      "Run #22 is now terminal completed/cancelled after the max 12-minute job execution annotation; the annotation was supplied at 18:09:45Z.",
+      "Post-terminal job log fetch still returns BlobNotFound; no artifact exists. Terminal step summary remains inconsistent (step 7 in_progress, upload and failure gate pending).",
+      "Five profiles are fully usable; profile 6 is only partially observed through 3,830 body bytes. No OpenVPN/tunnel/verified RU exit/target measurements confirmed."
     ],
     "followup_manifest_io_test": {
       "commit": "d9f2fff136fdc919730b99bf43c810f0ff23d96d",
@@ -2567,6 +2579,38 @@
       "validation_run_id": 43074433130,
       "validation_run_number": 211,
       "validation_status": "in_progress_at_2026-11-11T18:05:40Z"
+    },
+    "run_conclusion": "cancelled",
+    "run_updated_at_utc": "2026-11-11T18:08:59Z",
+    "job_conclusion": "cancelled",
+    "job_completed_at_utc": "2026-11-11T18:08:58Z",
+    "timeout_annotation": {
+      "reported_by_owner_at_utc": "2026-11-11T18:09:45Z",
+      "message": "The job has exceeded the maximum execution time of 12m0s",
+      "interpretation": "GitHub-enforced max job execution time. The cancelled conclusion is not evidence of manual owner cancellation."
+    },
+    "terminal_snapshot": {
+      "observed_at_utc": "2026-11-11T18:10:06Z",
+      "run_id": 43072239130,
+      "run_number": 22,
+      "run_status": "completed",
+      "run_conclusion": "cancelled",
+      "run_updated_at_utc": "2026-11-11T18:08:59Z",
+      "job_id": 130702892228,
+      "job_status": "completed",
+      "job_conclusion": "cancelled",
+      "job_started_at_utc": "2026-11-11T17:51:58Z",
+      "job_completed_at_utc": "2026-11-11T18:08:58Z",
+      "nominal_job_deadline_utc": "2026-11-11T18:03:58Z",
+      "job_timeout_overrun_seconds": 300,
+      "measurement_step_status_from_terminal_job_summary": "in_progress",
+      "upload_step_status_from_terminal_job_summary": "pending",
+      "failure_gate_step_status_from_terminal_job_summary": "pending",
+      "artifacts": [],
+      "log_archive": "BlobNotFound",
+      "log_archive_error_at_utc": "2026-11-11T18:10:06Z",
+      "timeout_annotation": "The job has exceeded the maximum execution time of 12m0s",
+      "interpretation": "Terminal job-level timeout confirmed by owner-provided annotation; step summary remains stale/inconsistent; no log archive or artifact."
     }
   }
 }
