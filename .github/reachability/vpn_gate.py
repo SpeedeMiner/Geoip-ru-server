@@ -910,6 +910,7 @@ def fetch_vpnobratno_in_worker(
     deadline = started + timeout
     started_worker = False
     message: tuple[Any, ...] | None = None
+    no_result_reason = ""
     record_vpnobratno_progress(
         progress_path,
         context,
@@ -934,6 +935,7 @@ def fetch_vpnobratno_in_worker(
                 try:
                     message = receive_connection.recv()
                 except EOFError:
+                    no_result_reason = "pipe_eof"
                     break
                 break
             if not worker.is_alive():
@@ -941,43 +943,76 @@ def fetch_vpnobratno_in_worker(
                     try:
                         message = receive_connection.recv()
                     except EOFError:
-                        message = None
+                        no_result_reason = "pipe_eof_after_worker_exit"
+                else:
+                    no_result_reason = "worker_exited_without_message"
                 break
 
         if message is None:
-            worker.terminate()
-            worker.join(timeout=0.5)
-            term_sent = True
-            kill_sent = False
+            if not no_result_reason:
+                no_result_reason = "worker_deadline_expired"
+            if no_result_reason == "worker_deadline_expired":
+                worker.terminate()
+                worker.join(timeout=0.5)
+                term_sent = True
+                kill_sent = False
+                if worker.is_alive():
+                    worker.kill()
+                    worker.join(timeout=1.5)
+                    kill_sent = True
+                elapsed = time.monotonic() - started
+                record_vpnobratno_progress(
+                    progress_path,
+                    context,
+                    "worker_timeout",
+                    worker_pid=worker.pid or 0,
+                    timeout_seconds=timeout,
+                    elapsed_ms=int(elapsed * 1000),
+                    term_sent=term_sent,
+                    kill_sent=kill_sent,
+                    worker_exitcode=worker.exitcode,
+                )
+                print(
+                    f"[vpn-gate] profile_fetch_worker_timeout worker_pid={worker.pid} "
+                    f"elapsed_ms={int(elapsed * 1000)} term_sent={term_sent} "
+                    f"kill_sent={kill_sent} exitcode={worker.exitcode}",
+                    flush=True,
+                )
+                if worker.is_alive():
+                    raise ProbeError(
+                        f"VPNObratto fetch worker {worker.pid} did not exit after SIGKILL"
+                    )
+                raise TimeoutError(
+                    f"VPNObratto isolated fetch exceeded {timeout:g}s wall-clock deadline "
+                    f"(worker_pid={worker.pid})"
+                )
+
             if worker.is_alive():
-                worker.kill()
-                worker.join(timeout=1.5)
-                kill_sent = True
+                worker.terminate()
+                worker.join(timeout=0.5)
+                if worker.is_alive():
+                    worker.kill()
+                    worker.join(timeout=1.5)
+            else:
+                worker.join(timeout=0.1)
             elapsed = time.monotonic() - started
             record_vpnobratno_progress(
                 progress_path,
                 context,
-                "worker_timeout",
+                "worker_failed_without_result",
                 worker_pid=worker.pid or 0,
-                timeout_seconds=timeout,
+                reason=no_result_reason,
                 elapsed_ms=int(elapsed * 1000),
-                term_sent=term_sent,
-                kill_sent=kill_sent,
                 worker_exitcode=worker.exitcode,
             )
             print(
-                f"[vpn-gate] profile_fetch_worker_timeout worker_pid={worker.pid} "
-                f"elapsed_ms={int(elapsed * 1000)} term_sent={term_sent} "
-                f"kill_sent={kill_sent} exitcode={worker.exitcode}",
+                f"[vpn-gate] profile_fetch_worker_failed worker_pid={worker.pid} "
+                f"reason={no_result_reason} exitcode={worker.exitcode}",
                 flush=True,
             )
-            if worker.is_alive():
-                raise ProbeError(
-                    f"VPNObratto fetch worker {worker.pid} did not exit after SIGKILL"
-                )
-            raise TimeoutError(
-                f"VPNObratto isolated fetch exceeded {timeout:g}s wall-clock deadline "
-                f"(worker_pid={worker.pid})"
+            raise ProbeError(
+                f"VPNObratto fetch worker {worker.pid} ended without a result "
+                f"(reason={no_result_reason}, exitcode={worker.exitcode})"
             )
 
         worker.join(timeout=max(0.05, min(1.0, deadline - time.monotonic())))
