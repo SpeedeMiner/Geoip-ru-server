@@ -382,7 +382,7 @@ def inspect_openvpn_profile(config: str) -> dict[str, Any]:
     tls_cipher = selected_value("tls-cipher", r"[-A-Za-z0-9_:.!@,+=/]{1,256}")
     tls_ciphersuites = selected_value("tls-ciphersuites", r"[-A-Za-z0-9_:.!@,+=/]{1,256}")
     tls_cert_profile = selected_value("tls-cert-profile", r"(?:legacy|preferred)")
-    remote_cert_eku = selected_value("remote-cert-eku", r"[A-Za-z0-9_.:-]{1,120}")
+    remote_cert_eku = selected_value("remote-cert-eku", r"[A-Za-z0-9_.: -]{1,120}")
     verify_x509_name, verify_x509_name_mode = selected_x509_name()
     return {
         "port": port,
@@ -439,7 +439,8 @@ def build_safe_openvpn_config(server: dict[str, Any], auth_path: pathlib.Path) -
                 "tls_cert_profile": "tls-cert-profile",
                 "remote_cert_eku": "remote-cert-eku",
             }[option]
-            lines.append(f"{directive} {profile[option]}")
+            value = shlex.quote(profile[option]) if option == "remote_cert_eku" else profile[option]
+            lines.append(f"{directive} {value}")
     if profile.get("remote_cert_ku"):
         lines.append("remote-cert-ku " + " ".join(profile["remote_cert_ku"]))
     if profile.get("verify_x509_name"):
@@ -921,6 +922,24 @@ def run(args: argparse.Namespace) -> int:
             "CONNECTION_RESULT": "NOT_ATTEMPTED",
             "TARGETS_TESTED": 0,
         }
+        raw_rows.append({
+            "source": "openvpn_profile_safe_features",
+            "server_hostname": server["hostname"],
+            "profile_features": {
+                "has_inline_ca": "ca" in server["profile"]["blocks"],
+                "has_tls_auth": "tls-auth" in server["profile"]["blocks"],
+                "has_tls_crypt": "tls-crypt" in server["profile"]["blocks"],
+                "has_tls_crypt_v2": "tls-crypt-v2" in server["profile"]["blocks"],
+                "tls_version_min": server["profile"].get("tls_version_min", ""),
+                "tls_version_max": server["profile"].get("tls_version_max", ""),
+                "tls_cipher": server["profile"].get("tls_cipher", ""),
+                "tls_ciphersuites": server["profile"].get("tls_ciphersuites", ""),
+                "tls_cert_profile": server["profile"].get("tls_cert_profile", ""),
+                "verify_x509_name_present": bool(server["profile"].get("verify_x509_name")),
+                "remote_cert_eku_present": bool(server["profile"].get("remote_cert_eku")),
+                "remote_cert_ku_count": len(server["profile"].get("remote_cert_ku", [])),
+            },
+        })
         connection_counts["selected"] += 1
         with tempfile.TemporaryDirectory(prefix="geoip-vpngate-") as directory:
             tmp = pathlib.Path(directory)
