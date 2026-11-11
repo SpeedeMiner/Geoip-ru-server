@@ -1,4 +1,3 @@
-import ipaddress
 import unittest
 
 from tools.review_v38_host_ip_candidates import (
@@ -23,8 +22,7 @@ class ReviewV38HostIpCandidateTests(unittest.TestCase):
         self.assertEqual(normalize_asn("AS13335"), "AS13335")
 
     def test_shared_infrastructure_signal(self):
-        flags = find_shared_flags
-
+        flags = find_shared_flags(
             "AS16509=Amazon.com, Inc.",
             "Amazon Data Services",
             "kp-configs-smart-tv.s3.eu-central-1.amazonaws.com",
