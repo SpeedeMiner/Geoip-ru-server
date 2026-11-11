@@ -15,6 +15,7 @@ import base64
 import collections
 import csv
 import datetime as dt
+from html.parser import HTMLParser
 import ipaddress
 import io
 import json
@@ -37,6 +38,16 @@ from typing import Any
 import runner
 
 VPN_GATE_API = "https://www.vpngate.net/api/iphone/"
+VPNOBRATNO_LIST_URL = "https://vpnobratno.info/russia_server_list.html"
+VPNOBRATNO_HOST = "vpnobratno.info"
+VPNOBRATNO_PROFILE_RE = re.compile(
+    r"^/servers/(?P<hostname>vpn[0-9]+\\.opengw\\.net)/"
+    r"(?P=hostname)_(?P<address_mode>ddns|ip)_(?P<transport>udp|tcp)\\.ovpn$",
+    re.IGNORECASE,
+)
+VPNOBRATNO_VARIANT_ORDER = {
+    "ip_udp": 0, "ddns_udp": 1, "ip_tcp": 2, "ddns_tcp": 3,
+}
 IP_INFO_URLS = (
     "https://ipwho.is/",
     "https://ipapi.co/json/",
@@ -45,7 +56,7 @@ IP_INFO_URLS = (
 RIPESTAT_NETWORK_INFO = "https://stat.ripe.net/data/network-info/data.json"
 USER_AGENT = "Geoip-ru-server-vpn-gate-validation/1.0"
 PROVIDER_FIELDS = [
-    "SOURCE", "SERVER_HOSTNAME", "SERVER_IP", "SERVER_COUNTRY",
+    "SOURCE", "PROFILE_VARIANT", "PROFILE_URL", "SERVER_HOSTNAME", "SERVER_IP", "SERVER_COUNTRY",
     "SERVER_ASN", "SERVER_ASN_IP_METADATA", "SERVER_ASN_RIPESTAT", "SERVER_ASN_CONFLICT",
     "SERVER_PREFIX", "SERVER_ORG", "SERVER_PTR",
     "SERVER_GEOIP_CATEGORY", "SERVER_GEOIP_RU_PREFIX",
@@ -56,7 +67,7 @@ PROVIDER_FIELDS = [
     "EXIT_GEOIP_RU_PREFIX", "CONNECTION_RESULT", "TARGETS_TESTED",
 ]
 MEASUREMENT_FIELDS = [
-    "SOURCE", "OBSERVED_AT", "SERVER_HOSTNAME", "SERVER_IP",
+    "SOURCE", "OBSERVED_AT", "PROFILE_VARIANT", "PROFILE_URL", "SERVER_HOSTNAME", "SERVER_IP",
     "SERVER_ASN", "SERVER_ASN_IP_METADATA", "SERVER_ASN_RIPESTAT", "SERVER_ASN_CONFLICT",
     "SERVER_ORG", "EXIT_IP", "EXIT_COUNTRY",
     "EXIT_ASN", "EXIT_ASN_IP_METADATA", "EXIT_ASN_RIPESTAT", "EXIT_ASN_CONFLICT",
@@ -330,6 +341,9 @@ def inspect_openvpn_profile(config: str) -> dict[str, Any]:
     protocols = [item for item in directives if item[0].lower() == "proto"]
     if not remotes or len(remotes[0]) < 3 or not protocols or len(protocols[0]) < 2:
         raise ValueError("OpenVPN profile has no usable remote/proto")
+    remote_host = remotes[0][1].strip().rstrip(".").lower()
+    if not re.fullmatch(r"(?:[a-z0-9-]+\\.)*[a-z0-9-]+|(?:[0-9]{1,3}\\.){3}[0-9]{1,3}", remote_host):
+        raise ValueError("OpenVPN remote host is not a supported hostname or IPv4 literal")
     port = parse_int(remotes[0][2])
     if not 1 <= port <= 65535:
         raise ValueError("OpenVPN remote port is invalid")
@@ -393,6 +407,7 @@ def inspect_openvpn_profile(config: str) -> dict[str, Any]:
     remote_cert_eku = selected_value("remote-cert-eku", r"[A-Za-z0-9_.: -]{1,120}")
     verify_x509_name, verify_x509_name_mode = selected_x509_name()
     return {
+        "remote_host": remote_host,
         "port": port,
         "proto": proto,
         "cipher": selected_value("cipher", r"[A-Za-z0-9_.:+-]{1,80}"),
@@ -510,6 +525,185 @@ def _parse_ip_metadata(endpoint: str) -> dict[str, Any]:
     }
 
 
+
+class VPNObratnoLinkParser(HTMLParser):
+    """Collect links only; profile URLs are validated separately before download."""
+
+    def __init__(self) -> None:
+        super().__init__(convert_charrefs=True)
+        self.hrefs: list[str] = []
+
+    def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
+        if tag.lower() != "a":
+            return
+        href = next((value for key, value in attrs if key.lower() == "href"), None)
+        if href:
+            self.hrefs.append(href)
+
+
+def parse_vpnobratno_listing(html: str) -> list[dict[str, str]]:
+    """Return supported same-origin OpenVPN profile links from the public RU list."""
+    parser = VPNObratnoLinkParser()
+    parser.feed(html)
+    profiles: dict[str, dict[str, str]] = {}
+    for href in parser.hrefs:
+        absolute = urllib.parse.urljoin(VPNOBRATNO_LIST_URL, href)
+        parts = urllib.parse.urlsplit(absolute)
+        if (
+            parts.scheme.lower() != "https"
+            or (parts.hostname or "").lower() != VPNOBRATNO_HOST
+            or parts.port not in (None, 443)
+            or parts.username is not None
+            or parts.password is not None
+            or parts.query
+            or parts.fragment
+        ):
+            continue
+        match = VPNOBRATNO_PROFILE_RE.fullmatch(parts.path)
+        if not match:
+            continue
+        hostname = match.group("hostname").lower()
+        address_mode = match.group("address_mode").lower()
+        transport = match.group("transport").lower()
+        variant = f"{address_mode}_{transport}"
+        profile_url = urllib.parse.urlunsplit(
+            ("https", VPNOBRATNO_HOST, parts.path, "", "")
+        )
+        profiles.setdefault(profile_url, {
+            "hostname": hostname,
+            "address_mode": address_mode,
+            "transport": transport,
+            "profile_variant": variant,
+            "profile_url": profile_url,
+        })
+    # Keep the site's server ordering but put the most robust-to-DNS UDP profile
+    # first within each server, then the remaining UDP and TCP variants.
+    by_host: dict[str, list[dict[str, str]]] = {}
+    host_order: list[str] = []
+    for profile in profiles.values():
+        hostname = profile["hostname"]
+        if hostname not in by_host:
+            host_order.append(hostname)
+            by_host[hostname] = []
+        by_host[hostname].append(profile)
+    ordered: list[dict[str, str]] = []
+    for hostname in host_order:
+        ordered.extend(sorted(
+            by_host[hostname],
+            key=lambda item: VPNOBRATNO_VARIANT_ORDER[item["profile_variant"]],
+        ))
+    return ordered
+
+
+def _public_ipv4_answers(hostname: str, resolver: Any = socket.getaddrinfo) -> list[str]:
+    try:
+        records = resolver(hostname, None, socket.AF_INET, socket.SOCK_STREAM)
+    except OSError as exc:
+        raise ValueError(f"could not resolve VPNObratno server hostname {hostname}: {exc}") from exc
+    answers: list[str] = []
+    for record in records:
+        try:
+            address = ipaddress.ip_address(record[4][0])
+        except (IndexError, TypeError, ValueError):
+            continue
+        if address.version == 4 and address.is_global:
+            answers.append(str(address))
+    return sorted(set(answers))
+
+
+def resolve_vpnobratno_server_ip(
+    expected_hostname: str,
+    remote_host: str,
+    address_mode: str,
+    resolver: Any = socket.getaddrinfo,
+) -> str:
+    """Pin a profile to a public IPv4 that belongs to its listed VPN Gate hostname."""
+    expected = expected_hostname.rstrip(".").lower()
+    if not re.fullmatch(r"vpn[0-9]+\\.opengw\\.net", expected):
+        raise ValueError("VPNObratno listing has an unsupported server hostname")
+    if address_mode == "ddns":
+        if remote_host.rstrip(".").lower() != expected:
+            raise ValueError("DDNS profile remote does not match its listing hostname")
+        answers = _public_ipv4_answers(expected, resolver)
+        if not answers:
+            raise ValueError("VPNObratno DDNS hostname has no global IPv4 answer")
+        return answers[0]
+    if address_mode == "ip":
+        try:
+            address = ipaddress.ip_address(remote_host)
+        except ValueError as exc:
+            raise ValueError("IP profile remote is not an IP literal") from exc
+        if address.version != 4 or not address.is_global:
+            raise ValueError("IP profile remote is not a global IPv4 address")
+        answers = _public_ipv4_answers(expected, resolver)
+        if str(address) not in answers:
+            raise ValueError("IP profile address does not match the listed hostname DNS")
+        return str(address)
+    raise ValueError("unsupported VPNObratno address mode")
+
+
+def discover_vpnobratno_servers(
+    fetcher: Any = fetch_bytes,
+    resolver: Any = socket.getaddrinfo,
+) -> tuple[list[dict[str, Any]], dict[str, Any]]:
+    """Download and validate listed profiles without executing supplied directives."""
+    page = fetcher(VPNOBRATNO_LIST_URL, timeout=40).decode("utf-8", "replace")
+    listed = parse_vpnobratno_listing(page)
+    if not listed:
+        raise ProbeError("VPNObratno page contains no supported OpenVPN profile links")
+    servers: list[dict[str, Any]] = []
+    skipped = collections.Counter()
+    for entry in listed:
+        try:
+            payload = fetcher(entry["profile_url"], timeout=25)
+            if not payload or len(payload) > 64_000:
+                raise ValueError("profile is empty or exceeds 64 KiB")
+            config = payload.decode("utf-8")
+            profile = inspect_openvpn_profile(config)
+            expected_proto = "udp" if entry["transport"] == "udp" else "tcp-client"
+            if profile["proto"] != expected_proto:
+                raise ValueError("profile transport does not match the listed variant")
+            server_ip = resolve_vpnobratno_server_ip(
+                entry["hostname"], profile["remote_host"], entry["address_mode"], resolver
+            )
+            servers.append({
+                "hostname": entry["hostname"],
+                "server_ip": server_ip,
+                "country_long": "Russian Federation (VPNObratno listing)",
+                "country_short": "RU",
+                "score": 0,
+                "ping_ms": 0,
+                "speed_bps": 0,
+                "vpn_sessions": 0,
+                "uptime": "",
+                "config": config,
+                "profile": profile,
+                "source": "VPNOBRATNO",
+                "profile_variant": entry["profile_variant"].upper(),
+                "profile_url": entry["profile_url"],
+            })
+        except (OSError, ProbeError, UnicodeDecodeError, ValueError) as exc:
+            skipped[type(exc).__name__ + ": " + str(exc)[:120]] += 1
+    if not servers:
+        raise ProbeError(
+            "VPNObratno listed profiles were found, but none passed validation; "
+            + json.dumps(dict(skipped), ensure_ascii=False, sort_keys=True)
+        )
+    meta = {
+        "listing_url": VPNOBRATNO_LIST_URL,
+        "profile_links_found": len(listed),
+        "usable_profiles": len(servers),
+        "unique_server_hostnames": len({server["hostname"] for server in servers}),
+        "profile_variants": dict(collections.Counter(
+            server["profile_variant"] for server in servers
+        )),
+        "skipped_profiles": dict(skipped),
+        "profile_order": ["IP_UDP", "DDNS_UDP", "IP_TCP", "DDNS_TCP"],
+        "profile_directives_executed": False,
+    }
+    return servers, meta
+
+
 def select_diverse_servers(
     servers: list[dict[str, Any]],
     max_servers: int,
@@ -531,8 +725,12 @@ def select_diverse_servers(
     candidates = servers[:min(len(servers), max(candidate_limit, attempt_limit, max_servers))]
     groups: dict[str, list[dict[str, Any]]] = {}
     asn_lookups = 0
+    origin_cache: dict[str, dict[str, Any]] = {}
     for server in candidates:
-        origin = network_info(server["server_ip"])
+        server_ip = server["server_ip"]
+        if server_ip not in origin_cache:
+            origin_cache[server_ip] = network_info(server_ip)
+        origin = dict(origin_cache[server_ip])
         asn = parse_int(origin.get("asn"))
         server["_network_info"] = origin
         server["_selection_asn"] = asn
@@ -859,20 +1057,33 @@ def run(args: argparse.Namespace) -> int:
     output = pathlib.Path(args.output_dir)
     output.mkdir(parents=True, exist_ok=True)
 
-    csv_text = fetch_bytes(VPN_GATE_API, timeout=40).decode("utf-8", "replace")
-    servers = parse_vpngate_csv(csv_text)
+    if args.source == "vpnobratno":
+        servers, discovery_meta = discover_vpnobratno_servers()
+        discovery_source = "vpnobratno.info Russian server list and linked OpenVPN profiles"
+        raw_rows: list[dict[str, Any]] = [{
+            "source": "vpnobratno_profile_discovery",
+            "url": VPNOBRATNO_LIST_URL,
+            "retrieved_at": utc_now(),
+            "discovery": discovery_meta,
+            "policy": "The site lists Russian VPN Gate user-operated nodes; country and access-network type are reverified from the actual tunnel exit.",
+        }]
+    else:
+        csv_text = fetch_bytes(VPN_GATE_API, timeout=40).decode("utf-8", "replace")
+        servers = parse_vpngate_csv(csv_text)
+        discovery_meta = {"usable_profiles": len(servers), "source": VPN_GATE_API}
+        discovery_source = "VPN Gate official CSV API"
+        raw_rows = [{
+            "source": "vpn_gate_official_api",
+            "url": VPN_GATE_API,
+            "retrieved_at": utc_now(),
+            "ru_openvpn_servers_with_usable_profiles": len(servers),
+            "policy": "RU country in VPN Gate record; ISP/residential status is not assumed",
+        }]
     selected, selection_meta = select_diverse_servers(
         servers, args.max_servers, max_attempts=args.max_attempts
     )
-    raw_rows: list[dict[str, Any]] = [{
-        "source": "vpn_gate_official_api",
-        "url": VPN_GATE_API,
-        "retrieved_at": utc_now(),
-        "ru_openvpn_servers_with_usable_profiles": len(servers),
-        "selected_servers": len(selected),
-        "provider_diversity_selection": selection_meta,
-        "policy": "RU country in VPN Gate record; ISP/residential status is not assumed",
-    }]
+    raw_rows[0]["selected_servers"] = len(selected)
+    raw_rows[0]["provider_diversity_selection"] = selection_meta
     provider_rows: list[dict[str, Any]] = []
     measurement_rows: list[dict[str, Any]] = []
     candidates: list[dict[str, Any]] = []
@@ -901,7 +1112,9 @@ def run(args: argparse.Namespace) -> int:
         server_meta["network_prefix"] = server_origin["prefix"]
         ptr = resolve_ptr(server_ip)
         provider = {
-            "SOURCE": "VPN_GATE",
+            "SOURCE": server.get("source", "VPN_GATE"),
+            "PROFILE_VARIANT": server.get("profile_variant", "VPN_GATE_API"),
+            "PROFILE_URL": server.get("profile_url", ""),
             "SERVER_HOSTNAME": server["hostname"],
             "SERVER_IP": server_ip,
             "SERVER_COUNTRY": server["country_long"],
@@ -935,6 +1148,9 @@ def run(args: argparse.Namespace) -> int:
         raw_rows.append({
             "source": "openvpn_profile_safe_features",
             "server_hostname": server["hostname"],
+            "discovery_source": server.get("source", "VPN_GATE"),
+            "profile_variant": server.get("profile_variant", "VPN_GATE_API"),
+            "profile_url": server.get("profile_url", ""),
             "profile_features": {
                 "has_inline_ca": "ca" in server["profile"]["blocks"],
                 "has_tls_auth": "tls-auth" in server["profile"]["blocks"],
@@ -1040,6 +1256,9 @@ def run(args: argparse.Namespace) -> int:
                                     for target in targets:
                                         row = test_target(target, exit_info, networks, args.request_timeout)
                                         row.update({
+                                            "SOURCE": server.get("source", "VPN_GATE"),
+                                            "PROFILE_VARIANT": server.get("profile_variant", "VPN_GATE_API"),
+                                            "PROFILE_URL": server.get("profile_url", ""),
                                             "SERVER_HOSTNAME": server["hostname"],
                                             "SERVER_IP": server_ip,
                                             "SERVER_ASN": server_asn,
@@ -1094,7 +1313,9 @@ def run(args: argparse.Namespace) -> int:
     runner.write_jsonl(output / "vpn_gate_raw.jsonl", raw_rows)
     summary = {
         "generated_at": utc_now(),
-        "source": "VPN Gate official CSV API; vpnobratno.info is a public directory of VPN Gate Russian volunteer nodes",
+        "source": discovery_source,
+        "discovery": discovery_meta,
+        "selected_source": args.source,
         "selected_vpn_gate_ru_servers": len(selected),
         "requested_successful_ru_exits": args.max_servers,
         "max_connection_attempts": args.max_attempts,
@@ -1112,6 +1333,8 @@ def run(args: argparse.Namespace) -> int:
         "exit_asn_conflicts": sum(bool(row.get("EXIT_ASN_CONFLICT")) for row in provider_rows),
         "policy": {
             "vpn_gate_country_field_is_not_a_residential_attestation": True,
+            "vpnobratno_site_listing_is_not_a_residential_attestation": True,
+            "profile_variant_is_recorded_per_server_attempt": True,
             "volunteer_access_network_class": "RESIDENTIAL_OR_OTHER_ACCESS_NETWORK_UNVERIFIED",
             "only_ru_country_exits_are_tested": True,
             "non_ru_exit_is_rejected": True,
@@ -1152,6 +1375,10 @@ def main() -> int:
     parser.add_argument("--inventory", required=True, help="GeoIP RU/PRIVATE inventory TSV")
     parser.add_argument("--targets", default=".github/reachability/targets.json")
     parser.add_argument("--output-dir", default="reachability-output")
+    parser.add_argument(
+        "--source", choices=("vpnobratno", "vpngate"), default="vpnobratno",
+        help="Use VPNObratno's published profile variants or the official VPN Gate CSV API",
+    )
     parser.add_argument("--max-servers", type=int, default=3, help="Number of successful RU VPN exits to measure")
     parser.add_argument("--max-attempts", type=int, default=3, help="Maximum distinct VPN Gate candidates to try (hard cap 6)")
     parser.add_argument("--connect-timeout", type=int, default=60)
@@ -1175,7 +1402,7 @@ def main() -> int:
     try:
         return run(args)
     except (OSError, ValueError, ProbeError, json.JSONDecodeError) as exc:
-        print(f"VPN Gate reachability error: {exc}", file=sys.stderr)
+        print(f"Russian VPN reachability error: {exc}", file=sys.stderr)
         return 1
 
 
