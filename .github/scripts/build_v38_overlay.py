@@ -324,6 +324,16 @@ def subtract_networks(source, *masks):
         output.update(networks_from_intervals(remaining, version))
     return output
 
+def potential_ipsum_direct_overlap(preblock, private, approved_blocked, ipsum):
+    """Count review-only /24 address space intersecting eligible DIRECT, without summing rows."""
+    result = {}
+    for version in (4, 6):
+        eligible = subtract(intervals(preblock, version), intervals(private, version))
+        eligible = subtract(eligible, intervals(approved_blocked, version))
+        review_only = subtract(intervals(ipsum, version), intervals(approved_blocked, version))
+        result[version] = interval_size(intersect(eligible, review_only))
+    return result
+
 def parse_blocked_base(path: Path):
     return parse_cidr_file(path, allow_hosts=True)[0]
 
@@ -534,9 +544,7 @@ def main():
     ipsum_only_iv = {
         v: subtract(ipsum_iv[v], base_blocked_iv[v]) for v in (4,6)
     }
-    ipsum_overlap_direct = {
-        v: interval_size(intersect(preblock_direct_iv[v], ipsum_only_iv[v])) for v in (4,6)
-    }
+    ipsum_overlap_direct = potential_ipsum_direct_overlap(preblock, private, blocked_base, ipsum)
     blocked_rows = []
     for source_id, networks in (("v37-approved-rkn",blocked_base),("antifilter-ipsum-24-review-only",ipsum)):
         for net in sorted(networks,key=lambda n:(n.version,int(n.network_address),n.prefixlen)):
