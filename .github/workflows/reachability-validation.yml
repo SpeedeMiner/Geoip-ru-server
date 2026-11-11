@@ -9,6 +9,7 @@ on:
       - ".github/reachability/test_runner.py"
       - ".github/reachability/vpn_gate.py"
       - ".github/reachability/test_vpn_gate.py"
+      - ".github/reachability/runner_watchdog_preflight.py"
       - ".github/reachability/home_probe.py"
       - ".github/reachability/test_home_probe.py"
       - ".github/reachability/home_probe_ingest.py"
@@ -45,13 +46,21 @@ concurrency:
 jobs:
   validate:
     name: Validate inventory exporter and collectors
-    runs-on: ubuntu-latest
+     # Match the manual VPN workflow image so timeout semantics are checked on the same runner generation.
+    runs-on: ubuntu-24.04
     timeout-minutes: 20
     steps:
       - name: Checkout repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           persist-credentials: false
+
+      - name: Verify GNU timeout kills a TERM-resistant process tree
+        timeout-minutes: 1
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -B .github/reachability/runner_watchdog_preflight.py
 
       - name: Set up Go
         uses: actions/setup-go@0778a10ce47b5d450cf60fb94fafad4330008a35
@@ -65,7 +74,7 @@ jobs:
         run: |
           set -euo pipefail
           python3 --version
-          python3 -m py_compile .github/reachability/runner.py .github/reachability/test_runner.py .github/reachability/vpn_gate.py .github/reachability/test_vpn_gate.py .github/reachability/home_probe.py .github/reachability/test_home_probe.py .github/reachability/home_probe_ingest.py .github/reachability/test_home_probe_ingest.py
+          python3 -m py_compile .github/reachability/runner.py .github/reachability/test_runner.py .github/reachability/vpn_gate.py .github/reachability/test_vpn_gate.py .github/reachability/runner_watchdog_preflight.py .github/reachability/home_probe.py .github/reachability/test_home_probe.py .github/reachability/home_probe_ingest.py .github/reachability/test_home_probe_ingest.py
           python3 -m json.tool .github/reachability/targets.json >/dev/null
           python3 -m unittest discover -s .github/reachability -p 'test_*.py' -v
 
