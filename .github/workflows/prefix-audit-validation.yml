@@ -28,7 +28,6 @@ on:
       - ".github/PROJECT_CHECKPOINTS.md"
       - ".github/audits/company_asn_legal_evidence_v37_additions.tsv"
       - ".github/audits/company_asn_legal_evidence_v37.tsv"
-      - ".github/workflows/prefix-audit-validation.yml"
 
 permissions:
   contents: read
