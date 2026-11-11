@@ -122,6 +122,21 @@ The first successful policy-aware build is run **43017072072** (all CI steps pas
 - Compared with the legacy RU output alone, candidate address space adds **31,774,573 IPv4 addresses** and **11,532,729,195,086,697,206,485,771,878,400 IPv6 addresses**. These are comparison figures, not approved additions.
 - After subtracting v37 RU, PRIVATE and approved BLOCKED carve-outs, the candidate union still contains **31,760,166 IPv4 addresses** and the same IPv6 remainder. This is a candidate-only set, not a production policy change.
 - Source results are uneven. HXEHEX CIDR contributes 31,482,258 IPv4 addresses not in v37 RU, but HXEHEX CIDR is already a candidate-only production input; it is not a newly integrated source. The new HXEHEX host-IP companion contributes 122,974 IPv4 addresses versus RU alone and 122,948 outside RU+PRIVATE+BLOCKED. Escapingworm has only 79 IPv4 addresses new vs RU and zero remaining after current policy.
+
+Per-source address space outside RU + PRIVATE + approved BLOCKED (the rows below overlap and **must not be summed**):
+
+| Source | IPv4 addresses outside existing policy | Interpretation |
+|---|---:|---|
+| Kyoresuas Full | 329,004 | New geographic-composite comparison; ipdeny-correlated. |
+| Kyoresuas Lite | 64 | Service-tier-only residue. |
+| Kyoresuas Standard | 64 | Service-tier-only residue; same publisher as Lite/Full. |
+| HXEHEX CIDR | 31,474,575 | Already present as candidate-only input in v37; same source bytes as v37 snapshot. |
+| HXEHEX host-IP companion | 122,948 | New companion feed, host-level routes only. |
+| W1ZARDZ Direct | 518 | Existing v37 candidate feed; changed pinned snapshot but limited additional space. |
+| Escapingworm operator whitelist | 0 | All 79 new-vs-RU addresses are already covered by PRIVATE/BLOCKED or overlap. |
+| Whisper (metrics-only) | 328,935 | ipdeny-correlated; unlicensed in inspected repo metadata, do not redistribute. |
+| Lib4u / Jirnobruh / PVD Dog (metrics-only) | 335 / 45 / 27,433 | Small domain-resolved service observations; licenses not declared. |
+
 - **Kyoresuas Full** is the standout geographic residual comparator: it covers **320/320 IPv4 and 40/40 IPv6 RU-RIR residual prefix rows** after existing policy; exact CIDR matches are 214/320 IPv4 and 40/40 IPv6; unique residual address coverage is 100% in each family.
 - **Whisper** covers 319/320 IPv4 residual rows, 213 exact CIDR matches and 99.922174% of unique IPv4 residual address space, but the repository has no declared license in inspected metadata and the dataset is ipdeny-derived. It is benchmark-only and its prefixes are not redistributed.
 
