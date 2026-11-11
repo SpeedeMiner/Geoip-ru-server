@@ -624,42 +624,32 @@ class VPNGateDefaultArgumentsTests(unittest.TestCase):
         self.assertEqual(args.connect_timeout, 5)
 
 
-class VPNServerPTRTests(unittest.TestCase):
-    def test_reverse_dns_uses_bounded_getent_lookup(self):
-        completed = subprocess.CompletedProcess(
-            ["getent", "hosts", "217.144.174.117"],
-            0,
-            stdout="217.144.174.117 vpn.example.net alias.example.net\\n",
-            stderr="",
-        )
-        with patch.object(vpn_gate.shutil, "which", return_value="/usr/bin/getent"), \
-             patch.object(vpn_gate.subprocess, "run", return_value=completed) as run:
-            self.assertEqual(
-                vpn_gate.resolve_ptr("217.144.174.117"), "vpn.example.net"
-            )
-        self.assertEqual(
-            run.call_args.args[0],
-            ["getent", "hosts", "217.144.174.117"],
-        )
-        self.assertEqual(
-            run.call_args.kwargs["timeout"],
-            vpn_gate.PTR_LOOKUP_TIMEOUT_SECONDS,
-        )
+class VPNServerOriginCacheTests(unittest.TestCase):
+    def test_selected_server_origin_uses_cached_asn_and_prefix_without_network(self):
+        server = {
+            "server_ip": "217.144.174.117",
+            "_network_info": {"prefix": "217.144.174.0/24", "asn": 12345},
+        }
+        with patch.object(vpn_gate, "network_info") as network_info:
+            origin = vpn_gate.cached_server_origin(server)
+        self.assertEqual(origin, {"prefix": "217.144.174.0/24", "asn": 12345})
+        self.assertNotIn("_network_info", server)
+        network_info.assert_not_called()
 
-    def test_reverse_dns_timeout_is_non_fatal(self):
-        with patch.object(vpn_gate.shutil, "which", return_value="/usr/bin/getent"), \
-             patch.object(
-                 vpn_gate.subprocess,
-                 "run",
-                 side_effect=subprocess.TimeoutExpired("getent", 3),
-             ):
-            self.assertEqual(vpn_gate.resolve_ptr("217.144.174.117"), "")
+    def test_selected_server_origin_missing_cache_is_empty_and_nonblocking(self):
+        server = {"server_ip": "217.144.174.117"}
+        with patch.object(vpn_gate, "network_info") as network_info:
+            origin = vpn_gate.cached_server_origin(server)
+        self.assertEqual(origin, {"prefix": "", "asn": 0})
+        network_info.assert_not_called()
 
-    def test_reverse_dns_without_getent_is_skipped(self):
-        with patch.object(vpn_gate.shutil, "which", return_value=None), \
-             patch.object(vpn_gate.subprocess, "run") as run:
-            self.assertEqual(vpn_gate.resolve_ptr("217.144.174.117"), "")
-        run.assert_not_called()
+    def test_selected_server_origin_discards_prefix_not_containing_server_ip(self):
+        server = {
+            "server_ip": "203.0.113.17",
+            "_network_info": {"prefix": "198.51.100.0/24", "asn": 64500},
+        }
+        origin = vpn_gate.cached_server_origin(server)
+        self.assertEqual(origin, {"prefix": "", "asn": 64500})
 
 
 class VPNObrattoFetchSafetyTests(unittest.TestCase):
