@@ -237,7 +237,7 @@ jobs:
 
           provenance_path = Path("geoip_RU_input_provenance.tsv")
           with provenance_path.open(encoding="utf-8", newline="") as stream:
-              rows = list(csv.DictReader(stream, delimiter="\\t"))
+              rows = list(csv.DictReader(stream, delimiter="\t"))
           row = next(item for item in rows if item["LOCAL_FILE"] == "as-ip-blocks.tar.gz")
           archive = Path("as-ip-blocks.tar.gz").read_bytes()
           digest = hashlib.sha256(archive).hexdigest()
@@ -273,16 +273,16 @@ jobs:
               raise SystemExit(f"Unexpected ipverse archive roots: {sorted(top_levels)}")
 
           source_record = (
-              "IPVERSE PINNED SOURCE\\n"
-              f"UPSTREAM_REPOSITORY=https://github.com/ipverse/as-ip-blocks\\n"
-              f"UPSTREAM_COMMIT={pinned_commit}\\n"
-              f"ARCHIVE_ROOT={next(iter(top_levels))}\\n"
-              f"ARCHIVE_BYTES={len(archive)}\\n"
-              f"ARCHIVE_SHA256={digest}\\n"
-              f"AGGREGATED_JSON_FILES={aggregate_count}\\n"
-              f"V37_PROVENANCE_FETCH_URL={row['FETCH_URL']}\\n"
-              f"V37_PROVENANCE_SHA256={row['SHA256']}\\n"
-              f"V37_PROVENANCE_BYTES={row['BYTES']}\\n"
+              "IPVERSE PINNED SOURCE\n"
+              f"UPSTREAM_REPOSITORY=https://github.com/ipverse/as-ip-blocks\n"
+              f"UPSTREAM_COMMIT={pinned_commit}\n"
+              f"ARCHIVE_ROOT={next(iter(top_levels))}\n"
+              f"ARCHIVE_BYTES={len(archive)}\n"
+              f"ARCHIVE_SHA256={digest}\n"
+              f"AGGREGATED_JSON_FILES={aggregate_count}\n"
+              f"V37_PROVENANCE_FETCH_URL={row['FETCH_URL']}\n"
+              f"V37_PROVENANCE_SHA256={row['SHA256']}\n"
+              f"V37_PROVENANCE_BYTES={row['BYTES']}\n"
           )
           Path("ipverse-pinned-source.txt").write_text(source_record, encoding="utf-8")
           print(
@@ -290,8 +290,6 @@ jobs:
               f"{len(archive)} bytes, SHA256={digest}, aggregated.json={aggregate_count}"
           )
           PY
-
-     PY
 
           sha256sum \
             geoip_RU_company_asns.txt \
