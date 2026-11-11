@@ -102,6 +102,14 @@ DOH_RESOLVERS = (
     ("dns.google", "8.8.8.8", "google"),
 )
 
+UBUNTU_APT_MIRROR_HOSTS = (
+    "azure.archive.ubuntu.com",
+    "archive.ubuntu.com",
+    "security.ubuntu.com",
+)
+APT_HOSTS_BLOCK_START = "# BEGIN geoip-ru-apt-dns-bootstrap"
+APT_HOSTS_BLOCK_END = "# END geoip-ru-apt-dns-bootstrap"
+
 
 class PinnedHTTPSConnection(http.client.HTTPSConnection):
     """HTTPS connection pinned to an IP while retaining hostname SNI/cert checks."""
@@ -161,6 +169,96 @@ def doh_query(domain: str, record_type: str, timeout: int = 10) -> list[str]:
             if connection is not None:
                 connection.close()
     raise ProbeError("all pinned DNS-over-HTTPS resolvers failed: " + "; ".join(errors))
+
+
+def install_ubuntu_apt_host_overrides(
+    hosts_file: str | pathlib.Path = "/etc/hosts",
+    resolver=None,
+) -> dict[str, list[str]]:
+    """Pin Ubuntu mirror hostnames via TLS-verified DoH when runner DNS is broken.
+
+    Only globally routable IPv4 answers from the existing Cloudflare/Google
+    pinned-HTTPS resolver are accepted. Normal apt repository TLS and signed
+    Release-file verification remain enabled.
+    """
+    lookup = resolver or doh_query
+    resolved: dict[str, list[str]] = {}
+    failures: list[str] = []
+
+    for hostname in UBUNTU_APT_MIRROR_HOSTS:
+        print(
+            f"[vpn-gate-setup] mirror_doh_lookup_started host={hostname}",
+            flush=True,
+        )
+        try:
+            answers = lookup(hostname, "A", timeout=5)
+        except Exception as exc:
+            answers = []
+            lookup_error = str(exc)
+        else:
+            lookup_error = "no globally routable IPv4 answer"
+
+        addresses: list[str] = []
+        for value in answers or []:
+            try:
+                address = ipaddress.ip_address(str(value))
+            except ValueError:
+                continue
+            if address.version == 4 and address.is_global:
+                addresses.append(str(address))
+        addresses = sorted(set(addresses))
+        if not addresses:
+            failures.append(f"{hostname}: {lookup_error}")
+            print(
+                f"[vpn-gate-setup] mirror_doh_lookup_failed host={hostname} "
+                f"reason={lookup_error}",
+                flush=True,
+            )
+        else:
+            resolved[hostname] = addresses
+            print(
+                f"[vpn-gate-setup] mirror_doh_lookup_completed host={hostname} "
+                f"ipv4_count={len(addresses)}",
+                flush=True,
+            )
+
+    if failures:
+        raise ProbeError(
+            "could not resolve every Ubuntu apt mirror through pinned HTTPS DoH: "
+            + "; ".join(failures)
+        )
+
+    address_hosts: dict[str, list[str]] = collections.defaultdict(list)
+    for hostname, addresses in resolved.items():
+        for address in addresses:
+            address_hosts[address].append(hostname)
+    block_lines = [APT_HOSTS_BLOCK_START]
+    block_lines.extend(
+        f"{address} {' '.join(sorted(hostnames))}"
+        for address, hostnames in sorted(address_hosts.items())
+    )
+    block_lines.append(APT_HOSTS_BLOCK_END)
+
+    path = pathlib.Path(hosts_file)
+    original = path.read_text(encoding="utf-8")
+    start_count = original.count(APT_HOSTS_BLOCK_START)
+    end_count = original.count(APT_HOSTS_BLOCK_END)
+    if start_count != end_count or start_count > 1:
+        raise ProbeError("inconsistent pre-existing apt DNS override markers in hosts file")
+    pattern = re.compile(
+        rf"(?ms)^{re.escape(APT_HOSTS_BLOCK_START)}\n"
+        rf".*?^{re.escape(APT_HOSTS_BLOCK_END)}\n?"
+    )
+    cleaned = pattern.sub("", original).rstrip()
+    if cleaned:
+        cleaned += "\n\n"
+    path.write_text(cleaned + "\n".join(block_lines) + "\n", encoding="utf-8")
+    print(
+        f"[vpn-gate-setup] mirror_hosts_override_installed "
+        f"hosts={len(resolved)} addresses={len(address_hosts)}",
+        flush=True,
+    )
+    return resolved
 
 
 def fetch_https_pinned(url: str, timeout: int) -> bytes:
