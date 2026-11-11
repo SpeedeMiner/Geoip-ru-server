@@ -47,6 +47,14 @@ non-default ports, embedded credentials and redirects to another hostname
 are rejected before profile content is accepted. The final response URL is
 checked again after download.
 
+Discovery is bounded to **24 profile downloads per run**. The source page is
+ordered so the preferred IP UDP profile is taken from each listed server
+before downloading second and third variants; this prevents the first few
+servers from consuming the entire download budget. The summary records the
+number of links found, profiles considered, links omitted by the cap and
+whether the cap was reached. This is a discovery/download limit, separate
+from the six actual connection-attempt limit.
+
 Before a profile can be attempted, the collector checks that its filename
 matches the server hostname and variant shown in the listing, that the profile
 remote agrees with the listed hostname (or that an IP-literal remote is in the
