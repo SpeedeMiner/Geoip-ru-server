@@ -512,3 +512,12 @@ Durable resume point for PR #5. After any conversation/network interruption, rea
 - This attempt therefore produced no usable live VPNObratno connection result: verified RU exits and target measurements are **NOT MEASURED**, not zero and not evidence of blocking. The earlier four VPN Gate CSV pilot results remain separate and are not evidence about these linked VPNObratno profiles.
 - Do not automatically dispatch a replacement after this cancellation. First establish whether the cancellation was intentional or obtain explicit authorization for another attempt. Preserve the one verified RU exit / six-profile-attempt budget and the two-source exit-IP/country gate.
 - PR #5 remains OPEN / DRAFT. No production builder/data, release assets/branch, DIRECT policy, ASN allowlists or PR #6 were changed by this dispatch.
+
+
+### 2026-11-11 — Investigated the VPNObratto pilot cancellation attribution
+
+- The repository owner explicitly stated they did not cancel workflow run #42993670031.
+- The GitHub REST run object reports `actor` and `triggering_actor` for the workflow dispatch; it does not provide a `cancelled_by` field. Those account fields identify the run initiator and are not evidence of who cancelled it. The live browser UI's attribution to `@SpeedeMiner` was therefore misread; do not repeat it as a fact.
+- Browser automation chronology: dispatch session 09:14:43–09:18:31 UTC; read-only live-log inspection 09:20:49–09:22:03 UTC; GitHub run `updated_at` / cancellation at 09:22:46 UTC; follow-up read-only inspection started 09:22:55 UTC. No browser session was active at the recorded cancellation time. No explicit GitHub workflow-cancel command was invoked by this assistant.
+- The confirmed fact is only that GitHub ended run #42993670031 with conclusion `cancelled`. The cancellation actor/cause remains **UNKNOWN**. The prior WORKLOG sentence quoting the UI attribution is superseded by this correction.
+- The owner still expects the requested live pilot to proceed. Resume with a new manually dispatched run, preserving the same feature branch and limits (VPNObratno, one verified RU exit, at most six profile connection attempts). Do not change workflow triggers or production files to work around the cancellation.
