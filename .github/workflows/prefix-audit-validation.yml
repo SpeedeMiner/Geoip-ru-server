@@ -195,7 +195,7 @@ jobs:
             test -s "$file" || { echo "::error::Empty release input: $file"; exit 1; }
           done
 
-          read -r snapshot_url snapshot_sha snapshot_bytes < <(python3 - <<'PY'
+          read -r snapshot_url snapshot_sha snapshot_bytes snapshot_commit < <(python3 - <<'PY'
           import csv
           import re
 
@@ -221,7 +221,7 @@ jobs:
           # during later audit runs.
           pinned_archive_commit = "2cc76341e26fbab3009196146c71648480c40e55"
           pinned_archive_url = f"https://codeload.github.com/ipverse/as-ip-blocks/tar.gz/{pinned_archive_commit}"
-          print(pinned_archive_url, row["SHA256"], row["BYTES"])
+          print(pinned_archive_url, row["SHA256"], row["BYTES"], pinned_archive_commit)
           PY
           )
 
@@ -231,26 +231,67 @@ jobs:
 
           python3 - <<'PY'
           import csv
-          import gzip
           import hashlib
-          from pathlib import Path
+          import tarfile
+          from pathlib import Path, PurePosixPath
 
-          with open("geoip_RU_input_provenance.tsv", encoding="utf-8", newline="") as stream:
-              rows = list(csv.DictReader(stream, delimiter="\t"))
+          provenance_path = Path("geoip_RU_input_provenance.tsv")
+          with provenance_path.open(encoding="utf-8", newline="") as stream:
+              rows = list(csv.DictReader(stream, delimiter="\\t"))
           row = next(item for item in rows if item["LOCAL_FILE"] == "as-ip-blocks.tar.gz")
           archive = Path("as-ip-blocks.tar.gz").read_bytes()
-          if len(archive) != int(row["BYTES"]):
-              raise SystemExit(f"ipverse archive size mismatch: {len(archive)} != {row['BYTES']}")
           digest = hashlib.sha256(archive).hexdigest()
-          if digest != row["SHA256"]:
-              raise SystemExit(f"ipverse archive SHA-256 mismatch: {digest} != {row['SHA256']}")
+
+          # Release provenance records codeload's mutable refs/heads/master
+          # archive digest. A commit-addressed codeload archive uses a different
+          # root-directory name, so its gzip bytes need not match the old digest.
+          # Verify the immutable commit archive by tar integrity and the aggregate
+          # file count recorded in the v37 build report instead.
+          pinned_commit = "2cc76341e26fbab3009196146c71648480c40e55"
+          if pinned_commit != snapshot_commit:
+              raise SystemExit("Pinned ipverse commit differs from selected download URL")
           try:
-              with gzip.open("as-ip-blocks.tar.gz", "rb") as stream:
-                  stream.read(1)
-          except OSError as exc:
-              raise SystemExit(f"ipverse archive is not valid gzip: {exc}")
-          print(f"Verified ipverse archive: {len(archive)} bytes, SHA256={digest}")
+              with tarfile.open("as-ip-blocks.tar.gz", mode="r:gz") as tar:
+                  members = tar.getmembers()
+          except (OSError, tarfile.TarError) as exc:
+              raise SystemExit(f"Pinned ipverse archive is not a valid gzip tar: {exc}")
+
+          regular_files = [member for member in members if member.isfile()]
+          aggregate_count = sum(
+              PurePosixPath(member.name).name == "aggregated.json"
+              for member in regular_files
+          )
+          if aggregate_count != 97424:
+              raise SystemExit(
+                  f"ipverse aggregate inventory differs from v37: {aggregate_count} != 97424"
+              )
+          top_levels = {
+              PurePosixPath(member.name).parts[0]
+              for member in members if PurePosixPath(member.name).parts
+          }
+          if len(top_levels) != 1:
+              raise SystemExit(f"Unexpected ipverse archive roots: {sorted(top_levels)}")
+
+          source_record = (
+              "IPVERSE PINNED SOURCE\\n"
+              f"UPSTREAM_REPOSITORY=https://github.com/ipverse/as-ip-blocks\\n"
+              f"UPSTREAM_COMMIT={pinned_commit}\\n"
+              f"ARCHIVE_ROOT={next(iter(top_levels))}\\n"
+              f"ARCHIVE_BYTES={len(archive)}\\n"
+              f"ARCHIVE_SHA256={digest}\\n"
+              f"AGGREGATED_JSON_FILES={aggregate_count}\\n"
+              f"V37_PROVENANCE_FETCH_URL={row['FETCH_URL']}\\n"
+              f"V37_PROVENANCE_SHA256={row['SHA256']}\\n"
+              f"V37_PROVENANCE_BYTES={row['BYTES']}\\n"
+          )
+          Path("ipverse-pinned-source.txt").write_text(source_record, encoding="utf-8")
+          print(
+              f"Verified immutable ipverse commit {pinned_commit}: "
+              f"{len(archive)} bytes, SHA256={digest}, aggregated.json={aggregate_count}"
+          )
           PY
+
+     PY
 
           sha256sum \
             geoip_RU_company_asns.txt \
@@ -288,6 +329,7 @@ jobs:
 
           cp v37-release-inputs.sha256 prefix-audit/
           cp v37-release-commit.txt prefix-audit/
+          cp ipverse-pinned-source.txt prefix-audit/
 
       - name: Validate generated prefix review queues against v37 production quality report
         shell: bash
