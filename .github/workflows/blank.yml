@@ -3611,7 +3611,7 @@ jobs:
             - Community Antifilter and Re-filter suggestions remain review-only; privacy/telemetry labels do not change DIRECT.
             - The no-BGP public-source fallback cross-checks pinned bol-van/rulist ipban4 vs resolved4 and correlated prebuilt datasets; it does not claim or infer Antifilter community 65444:210 membership.
             - BGP registration is not a v38 release gate. All 360 new Lib4u/Jirnobruh host-IP candidates remain review-only; shared CIDR matches are not bulk-carved or promoted.
-            - Full pinned refs, candidate-match counts, enrichment limitations and source lineage are documented in [V38 public-source cross-check](https://github.com/\${{ github.repository }}/blob/main/docs/V38_PUBLIC_RKN_SOURCE_CROSSCHECK.md).
+            - Full pinned refs, candidate-match counts, enrichment limitations and source lineage are documented in [V38 public-source cross-check](https://github.com/SpeedeMiner/Geoip-ru-server/blob/main/docs/V38_PUBLIC_RKN_SOURCE_CROSSCHECK.md).
             - GeoIP cannot distinguish unrelated domains on the same IP; domain-only RKN rules remain a separate client geosite layer.
 
             ## Audit outputs
