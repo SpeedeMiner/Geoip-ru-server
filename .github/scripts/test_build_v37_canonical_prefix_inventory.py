@@ -82,7 +82,7 @@ class V37CanonicalInventoryTests(unittest.TestCase):
                 "8.8.8.0/24\tIPv4\t256\tdavoyan\n",
                 encoding="utf-8",
             )
-            (root / "blocked.txt").write_text("8.8.8.0/24 # source=test\n", encoding="utf-8")
+            (root / "blocked.txt").write_text("1.1.1.0/24 # source=test\n", encoding="utf-8")
             (root / "review.tsv").write_text(
                 "SOURCE\tPREFIX\tREASON\nreview-a\t6.6.6.0/24\tmanual\nreview-b\t6.6.6.0/24\tindependent source\n",
                 encoding="utf-8",
@@ -96,6 +96,7 @@ class V37CanonicalInventoryTests(unittest.TestCase):
                 blocked_approved=root / "blocked.txt",
                 blocked_review=root / "review.tsv",
                 output=root / "inventory.tsv",
+                rir_residual_output=root / "rir-residual.tsv",
                 stats=root / "stats.txt",
                 release_commit="d613c5f0ef482f2051cbc37a303b2ac30076d313",
                 geoip_sha256="a" * 64,
@@ -118,11 +119,18 @@ class V37CanonicalInventoryTests(unittest.TestCase):
             self.assertEqual(by_prefix["8.8.8.0/24"]["SELECTED_ORIGIN_ASNS"], "AS12345")
             self.assertEqual(by_prefix["8.8.8.0/24"]["IN_RIR_RU_REGISTERED_RESOURCES"], "yes")
             self.assertEqual(by_prefix["8.8.8.0/24"]["IN_ACCEPTED_ADDITIONAL_GEOIP_FEEDS"], "yes")
-            self.assertEqual(by_prefix["8.8.8.0/24"]["IN_APPROVED_BLOCKED_EXCLUSIONS"], "yes")
+            self.assertEqual(by_prefix["1.1.1.0/24"]["IN_APPROVED_BLOCKED_EXCLUSIONS"], "yes")
+            self.assertEqual(by_prefix["1.1.1.0/24"]["RU_OUTPUT_ADDRESS_COVERAGE"], "NONE")
             self.assertEqual(by_prefix["6.6.6.0/24"]["IN_BLOCKED_REVIEW_ONLY_CANDIDATES"], "yes")
             self.assertEqual(result["blocked_review"], 1)
             self.assertEqual(result["output_ru"], 1)
             self.assertEqual(result["selected_bgp"], 2)
+            self.assertEqual(result["rir_residual_review"], 1)
+            with args.rir_residual_output.open(encoding="utf-8", newline="") as stream:
+                residual_rows = list(csv.DictReader(stream, delimiter="\t"))
+            self.assertEqual([row["PREFIX"] for row in residual_rows], ["9.9.9.0/24"])
+            self.assertEqual(residual_rows[0]["UNEXPLAINED_OUTSIDE_RU_PRIVATE_BLOCKED_ADDRESSES"], "256")
+            self.assertEqual(residual_rows[0]["STATUS"], "REVIEW")
             stats = args.stats.read_text(encoding="utf-8")
             self.assertIn("parent/child routes are not inferred as exact NLRI matches", stats)
             self.assertIn("ADDRESS-SPACE COVERAGE BY RU OUTPUT", stats)
