@@ -293,10 +293,45 @@ class UbuntuAptDNSBootstrapTests(unittest.TestCase):
         self.assertIn("    timeout-minutes: 12\n", workflow)
         self.assertIn("        timeout-minutes: 9\n", workflow)
         self.assertIn(
-            "sudo timeout --verbose --signal=TERM --kill-after=5s 7m "
-            "python3 .github/reachability/vpn_gate.py",
+            "sudo bash .github/reachability/vpn_netns_exec.sh -- \\",
             workflow,
         )
+        self.assertIn(
+            "timeout --verbose --signal=TERM --kill-after=5s 7m \\",
+            workflow,
+        )
+
+    def test_namespace_wrapper_keeps_host_control_plane_outside_vpn_firewall(self):
+        wrapper = (
+            pathlib.Path(__file__).resolve().parent / "vpn_netns_exec.sh"
+        ).read_text(encoding="utf-8")
+        self.assertIn("ip netns add", wrapper)
+        self.assertIn('ip netns exec "$NAMESPACE" "$@"', wrapper)
+        self.assertIn("iptables -I FORWARD", wrapper)
+        self.assertIn("iptables -t nat -I POSTROUTING", wrapper)
+        self.assertIn("trap cleanup EXIT", wrapper)
+        self.assertIn("trap 'exit 143' TERM", wrapper)
+        self.assertIn('sysctl -w "net.ipv4.ip_forward=$IPV4_FORWARD_OLD"', wrapper)
+        self.assertNotIn('iptables -P OUTPUT DROP', wrapper)
+
+    def test_sigterm_handler_unwinds_context_managers(self):
+        restored = []
+
+        class Guard:
+            def __enter__(self):
+                return self
+
+            def __exit__(self, exc_type, exc_value, traceback):
+                restored.append(exc_type)
+                return False
+
+        with Guard():
+            with self.assertRaises(SystemExit) as raised:
+                vpn_gate.handle_termination_signal(signal.SIGTERM, None)
+
+        self.assertEqual(raised.exception.code, 128 + signal.SIGTERM)
+        self.assertEqual(restored, [SystemExit])
+
 
     def test_pinned_doh_answers_create_public_ipv4_hosts_overrides(self):
         answers = {

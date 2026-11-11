@@ -2514,6 +2514,11 @@ def run(args: argparse.Namespace) -> int:
     return exit_code
 
 
+def handle_termination_signal(signum: int, _frame: Any) -> None:
+    """Exit through Python stack unwinding so firewall context managers restore state."""
+    raise SystemExit(128 + int(signum))
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--inventory", required=True, help="GeoIP RU/PRIVATE inventory TSV")
@@ -2543,6 +2548,10 @@ def main() -> int:
         parser.error("missing system commands: " + ", ".join(missing))
     if hasattr(__import__("os"), "geteuid") and __import__("os").geteuid() != 0:
         parser.error("run as root (for the fail-closed tunnel firewall and resolver isolation)")
+    # GNU timeout and GitHub cancellation use SIGTERM. Raising SystemExit lets
+    # all active context managers unwind, including FirewallGuard.__exit__.
+    signal.signal(signal.SIGTERM, handle_termination_signal)
+    signal.signal(signal.SIGINT, handle_termination_signal)
     try:
         return run(args)
     except (OSError, ValueError, ProbeError, json.JSONDecodeError) as exc:
