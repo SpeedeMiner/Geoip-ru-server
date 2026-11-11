@@ -432,11 +432,16 @@ def main():
         ["source_id","prefix","family","policy_uncovered_addresses","candidate_overlap_addresses","fully_covered","exact_cidr_match"],
         residual_prefix_rows,
     )
-    (out/"candidate_new_after_private_blocked.txt").write_text(
+    delta_text = (
         "# REVIEW ONLY. Candidate address space outside v37 RU, PRIVATE and approved blocked exclusions.\n"
-        + "".join(str(n)+"\n" for n in new_after_policy),
-        encoding="utf-8",
+        + "".join(str(n)+"\n" for n in new_after_policy)
     )
+    if "\\n" in delta_text:
+        raise RuntimeError("candidate_new_after_private_blocked.txt contains literal backslash-n sequences")
+    delta_path = out/"candidate_new_after_private_blocked.txt"
+    delta_path.write_text(delta_text, encoding="utf-8")
+    if len(delta_path.read_text(encoding="utf-8").splitlines()) != len(new_after_policy) + 1:
+        raise RuntimeError("candidate_new_after_private_blocked.txt line count does not match CIDR count")
     manifest={
         "schema":1,"generated_at":datetime.now(timezone.utc).isoformat(),
         "baseline":{"commit":BASELINE_COMMIT,"url":BASELINE_URL,"sha256":sha(baseline_bytes),**base_stats},
