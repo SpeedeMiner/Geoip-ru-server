@@ -11,6 +11,7 @@ win. The client output remains exactly two GeoIP categories: RU and PRIVATE.
 from __future__ import annotations
 
 import argparse
+from bisect import bisect_left
 import csv
 import hashlib
 import ipaddress
@@ -267,6 +268,43 @@ def intervals(networks: Iterable[ipaddress._BaseNetwork], version: int):
 def interval_size(values):
     return sum(end - start + 1 for start, end in values)
 
+def intersect_one_range(start: int, end: int, values):
+    """Intersect one address interval with a sorted, disjoint interval list in O(log n + k)."""
+    output = []
+    index = bisect_left(values, (start, -1))
+    if index > 0 and values[index - 1][1] >= start:
+        index -= 1
+    while index < len(values) and values[index][0] <= end:
+        lo = max(start, values[index][0])
+        hi = min(end, values[index][1])
+        if lo <= hi:
+            output.append((lo, hi))
+        index += 1
+    return output
+
+def subtract_one_range(start: int, end: int, masks):
+    """Subtract a sorted, disjoint interval list from one range in O(log n + k)."""
+    output = []
+    cursor = start
+    index = bisect_left(masks, (start, -1))
+    if index > 0 and masks[index - 1][1] >= start:
+        index -= 1
+    while index < len(masks) and masks[index][0] <= end:
+        lo, hi = masks[index]
+        if lo > cursor:
+            output.append((cursor, min(end, lo - 1)))
+        cursor = max(cursor, hi + 1)
+        if cursor > end:
+            break
+        index += 1
+    if cursor <= end:
+        output.append((cursor, end))
+    return output
+
+def subtract_ranges(ranges, masks):
+    """Subtract a mask from a small list of intervals using indexed single-range subtraction."""
+    return [piece for start, end in ranges for piece in subtract_one_range(start, end, masks)]
+
 def intersect(a, b):
     out = []
     i = j = 0
@@ -490,10 +528,12 @@ def main():
     for country in ("RU", "BY", "KZ"):
         for net in sorted(rir[country], key=lambda n:(n.version,int(n.network_address),n.prefixlen)):
             v = net.version
-            overlap_base = interval_size(intersect([(int(net.network_address),int(net.broadcast_address))], base_ru_iv[v]))
-            after_policy = subtract([(int(net.network_address),int(net.broadcast_address))], private_iv[v])
-            after_policy = subtract(after_policy, blocked_iv[v])
-            new_only = subtract(after_policy, base_ru_iv[v])
+            first = int(net.network_address)
+            last = int(net.broadcast_address)
+            overlap_base = interval_size(intersect_one_range(first, last, base_ru_iv[v]))
+            after_policy = subtract_one_range(first, last, private_iv[v])
+            after_policy = subtract_ranges(after_policy, blocked_iv[v])
+            new_only = subtract_ranges(after_policy, base_ru_iv[v])
             rir_provenance.append({
                 "source_id":"rir-resource-"+country,
                 "country":country,
@@ -545,14 +585,19 @@ def main():
         v: subtract(ipsum_iv[v], base_blocked_iv[v]) for v in (4,6)
     }
     ipsum_overlap_direct = potential_ipsum_direct_overlap(preblock, private, blocked_base, ipsum)
+    # PRIVATE subtraction is common to every RKN row; compute it once.
+    preblock_after_private_iv = {
+        v: subtract(preblock_iv[v], private_iv[v]) for v in (4,6)
+    }
     blocked_rows = []
     for source_id, networks in (("v37-approved-rkn",blocked_base),("antifilter-ipsum-24-review-only",ipsum)):
         for net in sorted(networks,key=lambda n:(n.version,int(n.network_address),n.prefixlen)):
             v=net.version
-            one_prefix = [(int(net.network_address),int(net.broadcast_address))]
-            direct_overlap = intersect(one_prefix, subtract(preblock_iv[v], private_iv[v]))
+            first = int(net.network_address)
+            last = int(net.broadcast_address)
+            direct_overlap = intersect_one_range(first, last, preblock_after_private_iv[v])
             overlap = interval_size(direct_overlap)
-            already = interval_size(intersect(direct_overlap, base_blocked_iv[v]))
+            already = interval_size(intersect_one_range(first, last, base_blocked_iv[v]))
             blocked_rows.append({
                 "source_id":source_id,
                 "prefix":str(net),
