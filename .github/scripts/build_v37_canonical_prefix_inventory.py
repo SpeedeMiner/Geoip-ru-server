@@ -283,6 +283,8 @@ def build_inventory(args: argparse.Namespace) -> dict[str, object]:
     universe = set().union(*sets.values())
     sorted_prefixes = sorted(universe, key=_sort_key)
     ru_merged = {family: _merged_intervals(ru_output, family) for family in (4, 6)}
+    policy_prefixes = ru_output | private_output | blocked_approved
+    policy_merged = {family: _merged_intervals(policy_prefixes, family) for family in (4, 6)}
     ru_starts = {family: [start for start, _ in ru_merged[family]] for family in (4, 6)}
     ru_ends = {family: [end for _, end in ru_merged[family]] for family in (4, 6)}
 
@@ -367,6 +369,25 @@ def build_inventory(args: argparse.Namespace) -> dict[str, object]:
             stats_lines.append(
                 f"{source_id} IPv{family}: address_union={total}; covered_by_RU_output={covered}; "
                 f"coverage={_percent(covered, total)}; outside_RU_output={total-covered}"
+            )
+    stats_lines.extend([
+        "",
+        "SELECTED-ORIGIN / RIR RESOURCE RESIDUAL AFTER RU + PRIVATE + APPROVED BLOCKED",
+    ])
+    for source_id in ("selected_origin_bgp", "rir_registered_ru"):
+        prefixes = sets[source_id]
+        for family in (4, 6):
+            source_union = _merged_intervals(prefixes, family)
+            total = _address_union(prefixes, family)
+            covered_ru = _intersection_size(source_union, ru_merged[family])
+            covered_policy = _intersection_size(source_union, policy_merged[family])
+            outside_ru = total - covered_ru
+            unexplained = total - covered_policy
+            covered_by_other_policy = outside_ru - unexplained
+            stats_lines.append(
+                f"{source_id} IPv{family}: address_union={total}; covered_by_RU_output={covered_ru}; "
+                f"outside_RU_output={outside_ru}; covered_outside_RU_by_PRIVATE_or_approved_BLOCKED="
+                f"{covered_by_other_policy}; unexplained_outside_RU_PRIVATE_BLOCKED={unexplained}"
             )
     stats_lines.extend([
         "",
