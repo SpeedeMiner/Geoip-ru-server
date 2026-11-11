@@ -232,6 +232,33 @@ def _intersection_size(left: list[tuple[int, int]], right: list[tuple[int, int]]
     return total
 
 
+def _subtract_intervals(
+    source: list[tuple[int, int]], covered: list[tuple[int, int]]
+) -> list[tuple[int, int]]:
+    remaining: list[tuple[int, int]] = []
+    j = 0
+    for start, end in source:
+        cursor = start
+        while j < len(covered) and covered[j][1] < cursor:
+            j += 1
+        k = j
+        while k < len(covered) and covered[k][0] <= end:
+            covered_start, covered_end = covered[k]
+            if covered_start > cursor:
+                remaining.append((cursor, min(end, covered_start - 1)))
+            cursor = max(cursor, covered_end + 1)
+            if cursor > end:
+                break
+            k += 1
+        if cursor <= end:
+            remaining.append((cursor, end))
+    return remaining
+
+
+def _interval_size(intervals: list[tuple[int, int]]) -> int:
+    return sum(end - start + 1 for start, end in intervals)
+
+
 def _covered_addresses(
     network: ipaddress.IPv4Network | ipaddress.IPv6Network,
     starts: list[int],
@@ -285,8 +312,16 @@ def build_inventory(args: argparse.Namespace) -> dict[str, object]:
     ru_merged = {family: _merged_intervals(ru_output, family) for family in (4, 6)}
     policy_prefixes = ru_output | private_output | blocked_approved
     policy_merged = {family: _merged_intervals(policy_prefixes, family) for family in (4, 6)}
+    private_merged = {family: _merged_intervals(private_output, family) for family in (4, 6)}
+    blocked_merged = {family: _merged_intervals(blocked_approved, family) for family in (4, 6)}
     ru_starts = {family: [start for start, _ in ru_merged[family]] for family in (4, 6)}
     ru_ends = {family: [end for _, end in ru_merged[family]] for family in (4, 6)}
+    private_starts = {family: [start for start, _ in private_merged[family]] for family in (4, 6)}
+    private_ends = {family: [end for _, end in private_merged[family]] for family in (4, 6)}
+    blocked_starts = {family: [start for start, _ in blocked_merged[family]] for family in (4, 6)}
+    blocked_ends = {family: [end for _, end in blocked_merged[family]] for family in (4, 6)}
+    policy_starts = {family: [start for start, _ in policy_merged[family]] for family in (4, 6)}
+    policy_ends = {family: [end for _, end in policy_merged[family]] for family in (4, 6)}
 
     output_path = args.output
     output_path.parent.mkdir(parents=True, exist_ok=True)
@@ -338,6 +373,52 @@ def build_inventory(args: argparse.Namespace) -> dict[str, object]:
                     "EVIDENCE_OR_CANDIDATE_ONLY"
                 ),
             })
+
+    rir_residual_rows: list[dict[str, object]] = []
+    for prefix in sorted(rir_ru, key=_sort_key):
+        network = ipaddress.ip_network(prefix)
+        family = network.version
+        ru_covered = _covered_addresses(network, ru_starts[family], ru_ends[family])
+        private_covered = _covered_addresses(network, private_starts[family], private_ends[family])
+        blocked_covered = _covered_addresses(network, blocked_starts[family], blocked_ends[family])
+        policy_covered = _covered_addresses(network, policy_starts[family], policy_ends[family])
+        unexplained = network.num_addresses - policy_covered
+        if unexplained <= 0:
+            continue
+        rir_residual_rows.append({
+            "PREFIX": prefix,
+            "FAMILY": f"IPv{family}",
+            "PREFIX_ADDRESSES": network.num_addresses,
+            "RU_OUTPUT_COVERED_ADDRESSES": ru_covered,
+            "PRIVATE_COVERED_ADDRESSES": private_covered,
+            "APPROVED_BLOCKED_COVERED_ADDRESSES": blocked_covered,
+            "POLICY_COVERED_ADDRESSES": policy_covered,
+            "UNEXPLAINED_OUTSIDE_RU_PRIVATE_BLOCKED_ADDRESSES": unexplained,
+            "STATUS": "REVIEW",
+            "DECISION_NOTE": "RIR country is registration metadata only; requires exact BGP/GeoIP/resource-holder evidence before any production decision.",
+        })
+    args.rir_residual_output.parent.mkdir(parents=True, exist_ok=True)
+    residual_fields = [
+        "PREFIX", "FAMILY", "PREFIX_ADDRESSES",
+        "RU_OUTPUT_COVERED_ADDRESSES", "PRIVATE_COVERED_ADDRESSES",
+        "APPROVED_BLOCKED_COVERED_ADDRESSES", "POLICY_COVERED_ADDRESSES",
+        "UNEXPLAINED_OUTSIDE_RU_PRIVATE_BLOCKED_ADDRESSES", "STATUS", "DECISION_NOTE",
+    ]
+    with args.rir_residual_output.open("w", encoding="utf-8", newline="") as stream:
+        writer = csv.DictWriter(stream, fieldnames=residual_fields, delimiter="\\t", lineterminator="\\n")
+        writer.writeheader()
+        writer.writerows(rir_residual_rows)
+
+    residual_union = {
+        family: _subtract_intervals(
+            _merged_intervals(rir_ru, family), policy_merged[family]
+        )
+        for family in (4, 6)
+    }
+    residual_family_counts = {
+        family: sum(row["FAMILY"] == f"IPv{family}" for row in rir_residual_rows)
+        for family in (4, 6)
+    }
 
     stats_lines = [
         "v37 canonical exact-prefix inventory (review only)",
@@ -391,6 +472,14 @@ def build_inventory(args: argparse.Namespace) -> dict[str, object]:
             )
     stats_lines.extend([
         "",
+        f"RIR RU resource residual review rows: {len(rir_residual_rows)}; "
+        f"IPv4={residual_family_counts[4]}; IPv6={residual_family_counts[6]}; all STATUS=REVIEW",
+        f"RIR RU resource unique IPv4 address residual outside RU+PRIVATE+approved BLOCKED: "
+        f"{_interval_size(residual_union[4])}",
+        f"RIR RU resource unique IPv6 address residual outside RU+PRIVATE+approved BLOCKED: "
+        f"{_interval_size(residual_union[6])}",
+        "Residual review rows retain exact RIR resource prefixes; row address counts may overlap and are not additive.",
+        "",
         f"Approved blocked exclusions overlapping RU output IPv4 addresses: "
         f"{_intersection_size(_merged_intervals(blocked_approved, 4), ru_merged[4])}",
         f"Approved blocked exclusions overlapping RU output IPv6 addresses: "
@@ -430,6 +519,7 @@ def build_inventory(args: argparse.Namespace) -> dict[str, object]:
         "additional": len(additional),
         "blocked_approved": len(blocked_approved),
         "blocked_review": len(blocked_review),
+        "rir_residual_review": len(rir_residual_rows),
     }
 
 
@@ -443,6 +533,7 @@ def main() -> int:
     parser.add_argument("--blocked-approved", type=Path, required=True)
     parser.add_argument("--blocked-review", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--rir-residual-output", type=Path, required=True)
     parser.add_argument("--stats", type=Path, required=True)
     parser.add_argument("--release-commit", required=True)
     parser.add_argument("--geoip-sha256", required=True)
