@@ -1,14 +1,14 @@
 {
   "schema_version": 1,
-  "updated_at_utc": "2026-11-11T09:54:55Z",
+  "updated_at_utc": "2026-11-11T10:09:12Z",
   "repository": "SpeedeMiner/Geoip-ru-server",
   "pull_request": 5,
   "pull_request_url": "https://github.com/SpeedeMiner/Geoip-ru-server/pull/5",
   "branch": "feature/reachability-full-ru-kz-by",
   "recorded_pr_head_before_checkpoint_commit": "f267e14228ed6ef179784c5b7285ada40f78cca3",
   "base_sha": "a68e5d6589361814cb1cfedd2af7857e4af806fa",
-  "state": "VPNOBRATTO_FIVE_SECOND_TIMEOUT_PROGRESS_LOGGING_CI_PASS",
-  "current_phase": "RUN_6_ACTIVE_WITH_OLD_TIMEOUT_AWAIT_COMPLETION_THEN_REDISPATCH",
+  "state": "VPNOBRATTO_RUN_7_ACTIVE_FIVE_SECOND_TIMEOUT_CONFIRMED",
+  "current_phase": "LIVE_OPENVPN_ATTEMPT_1_OF_6",
   "completed": [
     "repository_reconnaissance",
     "protobuf_inventory_exporter",
@@ -190,7 +190,10 @@
     "vpnobratto_connect_timeout_reduced_to_five_seconds",
     "vpnobratto_cli_accepts_five_second_timeout",
     "vpnobratto_live_progress_logging_added",
-    "vpnobratto_five_second_timeout_and_progress_ci_105_tests_go_success_42999166787"
+    "vpnobratto_five_second_timeout_and_progress_ci_105_tests_go_success_42999166787",
+    "vpnobratto_run_6_completed_cancelled_cause_unknown_2026_11_11_09_58_48z",
+    "vpnobratto_run_7_dispatched_with_five_second_timeout",
+    "vpnobratto_run_7_live_log_confirms_five_second_timeout_and_progress_events"
   ],
   "latest_successful_validation_run": 42999166787,
   "latest_successful_validation_commit": "26b12ab8b83f766391168f179837ff44aee6681a",
@@ -369,13 +372,12 @@
     "production_release_artifact_byte_delta_verified": false
   },
   "next_steps": [
-    "Run #42996316782 (#6) remains in progress on its original checkout commit 435587a28778119e40d0bfdd6e45d7104ac4fe48 and still uses --connect-timeout 60. A running GitHub Actions process cannot have its arguments changed by a later commit. Do not claim this run used the new timeout. At the latest check it had not reached artifact upload and no artifacts were available.",
-    "The updated feature branch now defaults to --connect-timeout 5 and workflow command passes --connect-timeout 5. The CLI accepts 5..180 seconds and rejects smaller values. The separate DNS/HTTPS request timeout remains 12 seconds; max profile attempts remains 6.",
-    "Progress logging was added for VPNObratto listing, each profile download/result, candidate origin-ASN lookups, candidate selection, each OpenVPN attempt and successful route installation. Inspect the next run's logs to see which phase consumes time.",
-    "After existing run #42996316782 reaches a terminal state, inspect any diagnostic artifacts and status. Then perform one fresh manual workflow_dispatch using feature/reachability-full-ru-kz-by, source=vpnobratno, max_vpn_gate_servers=1 and max_vpn_gate_attempts=6 so the new five-second timeout/progress logs are actually used. Ensure no other active/queued instance exists before dispatch.",
-    "The 5-second route wait is a deliberate fast-pilot tradeoff and can reject slow volunteer relays. It only bounds the OpenVPN tunnel-route wait; discovery, profile downloads (up to 24), RIPEstat origin-ASN lookups and exit metadata have their own network timeouts and may still take additional time.",
-    "Require two independent IP metadata services to agree on the exact public IPv4 and RU country before sending any target DNS/HTTPS request. Tunnel failure or timeout is not evidence of target blocking.",
-    "Keep PR #5 OPEN / DRAFT. Do not touch PR #6 or production builder/data, release branch/assets, DIRECT policy or ASN allowlists."
+    "Run #43000272971 (#7) is active on feature commit 12d0f98f9b5e5d18518e3a517d8858f69f6f426c with source=vpnobratno, max_vpn_gate_servers=1, max_vpn_gate_attempts=6 and verified per-profile tunnel-route timeout 5 seconds. Continue monitoring this run; do not dispatch a duplicate while it is active.",
+    "Latest live log shows discovery completed: 24 usable profiles downloaded; origin ASN selection inspected 24 profile records and selected six profiles across six distinct ASNs. First OpenVPN attempt is host vpn266997445.opengw.net, variant IP_UDP, server IP 217.144.174.117, attempt 1/6, connect_timeout=5s.",
+    "At latest inspection the first attempt had not produced a TUN route; two-provider public exit IP/country verification has not started and no target request has been sent. Wait for the per-attempt result and all remaining bounded attempts or requested single RU exit.",
+    "After run #7 completes, retrieve the uploaded artifact, inspect vpn_gate_summary.json, vpn_gate_providers.tsv, vpn_gate_measurements.jsonl and raw/geoip-candidate reports. A zero-exit result is VPN tunnel diagnostics only, not proof of target blocking.",
+    "Run #42996316782 (#6) was later cancelled at 2026-11-11T09:58:48Z before report upload; cancellation cause/actor remains UNKNOWN. The prior read-only monitor ended 09:47:25Z and the next dispatch browser session started 09:59:34Z, after cancellation. No explicit workflow-cancel action was invoked by this assistant. Do not attribute the cancellation to the owner.",
+    "Keep PR #5 OPEN / DRAFT. Do not touch PR #6, production builder/data, release branch/assets, DIRECT policy or ASN allowlists."
   ],
   "ci_policy": {
     "push_validation_paths": [
@@ -773,35 +775,41 @@
       "interpretation": "Main push automatically executed the existing production publisher. No production source changes were authored by this task; release outputs were refreshed as an indirect side effect. Do not rollback without explicit authorization."
     },
     "latest_manual_dispatch": {
-      "run_id": 42993670031,
-      "run_url": "https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/42993670031",
-      "run_number": 5,
+      "run_id": 43000272971,
+      "run_url": "https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43000272971",
+      "run_number": 7,
       "event": "workflow_dispatch",
       "branch": "feature/reachability-full-ru-kz-by",
-      "commit": "70f7108f0916b2a2d0a671810e9da5d2526548d6",
+      "commit": "12d0f98f9b5e5d18518e3a517d8858f69f6f426c",
       "source": "vpnobratno",
       "max_vpn_gate_servers": 1,
       "max_vpn_gate_attempts": 6,
-      "created_at_utc": "2026-11-11T09:15:39Z",
-      "completed_at_utc": "2026-11-11T09:22:46Z",
-      "conclusion": "cancelled",
-      "setup_steps_successful": [
-        "runner setup",
-        "checkout",
-        "install OpenVPN and iptables",
-        "set up Go",
-        "download and verify published GeoIP protobuf",
-        "export RU and PRIVATE prefixes"
-      ],
-      "measurement_step_status_at_cancellation": "in_progress",
-      "live_log_observation": "Only shell prologue 'Run set -euo pipefail' was visible; no candidate or tunnel result was emitted before cancellation.",
+      "connect_timeout_seconds": 5,
+      "dns_https_request_timeout_seconds": 12,
+      "created_at_utc": "2026-11-11T10:02:51Z",
+      "last_checked_status": "in_progress",
+      "last_checked_step": "Run capped VPNObratto / VPN Gate Russian-exit measurements",
+      "discovery": {
+        "usable_profiles": 24,
+        "profile_download_limit": 24,
+        "selected_attempts": 6,
+        "selected_distinct_asns": 6,
+        "status": "COMPLETED"
+      },
+      "current_attempt": {
+        "index": 1,
+        "max_attempts": 6,
+        "hostname": "vpn266997445.opengw.net",
+        "profile_variant": "IP_UDP",
+        "server_ip": "217.144.174.117",
+        "connect_timeout_seconds": 5,
+        "tunnel_route": "NOT_YET_CONFIRMED",
+        "exit_ip_country_verification": "NOT_STARTED",
+        "target_requests": "NOT_SENT"
+      },
       "report_upload_started": false,
       "artifacts": [],
-      "successful_ru_exits": null,
-      "target_measurements": null,
-      "tunnel_result": "NOT_MEASURED_CANCELLED",
-      "interpretation": "No conclusion about VPNObratno tunnel availability or target reachability can be drawn from this cancelled run.",
-      "cancellation_attribution_note": "UNKNOWN. Owner says they did not cancel. The GitHub REST run response contains actor/triggering_actor for the dispatch, not a cancellation actor. The UI attribution was not reliable."
+      "interpretation": "Live progress confirms the five-second route-wait parameter is active. Tunnel attempt remains in progress at latest inspection; no target reachability outcome exists yet."
     },
     "cancellation_investigation": {
       "owner_statement_utc": "2026-11-11T09:30:39Z",
@@ -824,7 +832,17 @@
       },
       "no_browser_session_active_at_cancellation": true,
       "assistant_explicit_cancel_command_invoked": false,
-      "cause": "UNKNOWN"
+      "cause": "UNKNOWN",
+      "latest_run6": {
+        "owner_statement": "Owner denied cancelling run #5; cancellation attribution for #6 remains unknown.",
+        "run_id": 42996316782,
+        "cancelled_at_utc": "2026-11-11T09:58:48Z",
+        "rest_cancellation_actor": "NOT_EXPOSED",
+        "no_assistant_cancel_command": true,
+        "last_browser_session_before_cancel_finished_at": "2026-11-11T09:47:25Z",
+        "next_browser_session_after_cancel_started_at": "2026-11-11T09:59:34Z",
+        "assistant_browser_session_active_at_cancel": false
+      }
     },
     "connect_timeout_seconds": 5,
     "cli_connect_timeout": {
@@ -860,6 +878,43 @@
       "go_build": "PASS"
     },
     "current_manual_dispatch": {
+      "run_id": 43000272971,
+      "run_url": "https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43000272971",
+      "run_number": 7,
+      "event": "workflow_dispatch",
+      "branch": "feature/reachability-full-ru-kz-by",
+      "commit": "12d0f98f9b5e5d18518e3a517d8858f69f6f426c",
+      "source": "vpnobratno",
+      "max_vpn_gate_servers": 1,
+      "max_vpn_gate_attempts": 6,
+      "connect_timeout_seconds": 5,
+      "dns_https_request_timeout_seconds": 12,
+      "created_at_utc": "2026-11-11T10:02:51Z",
+      "last_checked_status": "in_progress",
+      "last_checked_step": "Run capped VPNObratto / VPN Gate Russian-exit measurements",
+      "discovery": {
+        "usable_profiles": 24,
+        "profile_download_limit": 24,
+        "selected_attempts": 6,
+        "selected_distinct_asns": 6,
+        "status": "COMPLETED"
+      },
+      "current_attempt": {
+        "index": 1,
+        "max_attempts": 6,
+        "hostname": "vpn266997445.opengw.net",
+        "profile_variant": "IP_UDP",
+        "server_ip": "217.144.174.117",
+        "connect_timeout_seconds": 5,
+        "tunnel_route": "NOT_YET_CONFIRMED",
+        "exit_ip_country_verification": "NOT_STARTED",
+        "target_requests": "NOT_SENT"
+      },
+      "report_upload_started": false,
+      "artifacts": [],
+      "interpretation": "Live progress confirms the five-second route-wait parameter is active. Tunnel attempt remains in progress at latest inspection; no target reachability outcome exists yet."
+    },
+    "previous_manual_dispatch": {
       "run_id": 42996316782,
       "run_url": "https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/42996316782",
       "run_number": 6,
@@ -871,11 +926,19 @@
       "max_vpn_gate_attempts": 6,
       "connect_timeout_seconds": 60,
       "dns_https_request_timeout_seconds": 12,
-      "last_checked_status": "in_progress",
+      "last_checked_status": "CANCELLED",
       "last_checked_step": "Run capped VPNObratto / VPN Gate Russian-exit measurements",
       "report_upload_started": false,
       "artifacts": [],
-      "note": "This running job uses the pre-change commit and cannot pick up the five-second setting or progress log commits."
+      "note": "This running job uses the pre-change commit and cannot pick up the five-second setting or progress log commits.",
+      "cancelled_at_utc": "2026-11-11T09:58:48Z",
+      "report_upload_conclusion": "failure",
+      "cancellation_actor": "UNKNOWN",
+      "browser_session_chronology": {
+        "last_read_only_monitor_finished_at": "2026-11-11T09:47:25Z",
+        "next_dispatch_browser_session_started_at": "2026-11-11T09:59:34Z",
+        "browser_session_active_at_cancellation": false
+      }
     }
   },
   "home_probe": {
