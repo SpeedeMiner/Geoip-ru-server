@@ -1,14 +1,14 @@
 {
   "schema_version": 1,
-  "updated_at_utc": "2026-11-11T13:55:57Z",
+  "updated_at_utc": "2026-11-11T13:57:46Z",
   "repository": "SpeedeMiner/Geoip-ru-server",
   "pull_request": 5,
   "pull_request_url": "https://github.com/SpeedeMiner/Geoip-ru-server/pull/5",
   "branch": "feature/reachability-full-ru-kz-by",
-  "recorded_pr_head_before_checkpoint_commit": "c179894d56331b23690bea785753fcb572d1a4b9",
+  "recorded_pr_head_before_checkpoint_commit": "44876fada938368cf6211ec6fc3a0572cd259479",
   "base_sha": "a68e5d6589361814cb1cfedd2af7857e4af806fa",
   "state": "VPNOBRATTO_RUN_14_STALLED_DURING_PROFILE_DOWNLOAD_LATEST_HEAD_HAS_15S_WALL_CLOCK_FETCH_GUARD_CI_SUCCESS_116",
-  "current_phase": "WAIT_FOR_RUN14_TERMINAL_OR_WALLET_TOPUP_FOR_LIVE_MONITORING",
+  "current_phase": "RUN14_STILL_ACTIVE_NO_ARTIFACT_BROWSER_MONITORING_WALLET_BLOCKED",
   "completed": [
     "repository_reconnaissance",
     "protobuf_inventory_exporter",
@@ -407,13 +407,11 @@
     "production_release_artifact_byte_delta_verified": false
   },
   "next_steps": [
-    "Poll run #43030660328 via GitHub REST until terminal; inspect upload step and artifacts after completion.",
-    "Do not dispatch run #15 while run #14 remains in progress.",
-    "Live DOM monitoring/cancellation requires TinyFish wallet top-up; do not claim cancellation or post-13:40 live progress without new evidence.",
-    "When run #14 is terminal, inspect logs/artifact and reconcile whether sixth profile completed, profile discovery early-stop fired, and whether OpenVPN was reached.",
-    "If run #14 failed to advance, dispatch exactly one run #15 from the latest feature branch head only after confirming no active workflow. The new code uses 15s hard profile-fetch deadlines and emits fetch/validation/IP-resolution boundaries.",
-    "After OpenVPN route install, require independent exact public IPv4 and RU-country consensus; save control-example and declared target DNS/HTTPS rows and verify artifact SHA before interpreting accessibility.",
-    "Keep PR #5 OPEN / DRAFT; do not touch PR #6, production GeoIP or release outputs."
+    "Do not dispatch another VPN workflow while run #14 is still in_progress.",
+    "To retrieve live DOM logs and cancel run #14 if it remains wedged, the authenticated TinyFish browser requires wallet top-up; no GitHub connector cancel-run action is available.",
+    "Continue checking run #14 status through GitHub REST. If it becomes terminal, inspect artifact list and job conclusion; zero evidence until report rows are recovered.",
+    "Once run #14 is terminal and browser access is available, dispatch one run #15 from latest branch HEAD 44876fada938368cf6211ec6fc3a0572cd259479, which includes per-request wall-clock guards and 116-test CI validation.",
+    "Do not make home/residential claims from volunteer VPN exits. Keep PR #5 OPEN / DRAFT; do not touch PR #6 or production GeoIP/releases."
   ],
   "ci_policy": {
     "push_validation_paths": [
@@ -1577,7 +1575,7 @@
     "branch": "feature/reachability-full-ru-kz-by",
     "commit": "20e6db7e6035c6af705b81bd4c8776a7cf9417f3",
     "created_at_utc": "2026-11-11T13:36:31Z",
-    "last_rest_check_at_utc": "2026-11-11T13:55:57Z",
+    "last_rest_check_at_utc": "2026-11-11T13:57:46Z",
     "status": "in_progress",
     "conclusion": null,
     "job_id": 130556541550,
@@ -1608,7 +1606,8 @@
     "openvpn_attempts_confirmed": 0,
     "verified_ru_exits_confirmed": 0,
     "target_measurements_confirmed": 0,
-    "interpretation": "Latest live screenshot at 13:40:14Z ended at start of profile 6. REST at 13:55:57Z still showed step 7 in progress and step 8 upload pending. No post-snapshot phases can be asserted; do not interpret as target blocking."
+    "interpretation": "Latest live screenshot at 13:40:14Z ended at start of profile 6. REST at 13:55:57Z still showed step 7 in progress and step 8 upload pending. No post-snapshot phases can be asserted; do not interpret as target blocking.",
+    "note": "A second REST check at 13:57:46Z still showed step 7 active, even after the 20-minute configured job ceiling should have elapsed. This run is on the older 20e6db7 code, before per-profile SIGALRM deadlines; live browser refresh and cancellation are blocked by TinyFish wallet negative balance."
   },
   "run14_monitoring_blocker": {
     "provider": "TinyFish authenticated browser",
