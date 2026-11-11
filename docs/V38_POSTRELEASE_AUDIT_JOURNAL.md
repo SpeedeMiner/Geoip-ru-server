@@ -50,3 +50,24 @@ Add a checkpoint after every meaningful phase: artifact receipt, parsing result,
 - Local reprocessing of the exact run #7 56-row TSV: 56 rows retained as REVIEW; 10 spelling-only variants; 1 semantic conflict (`5.45.215.0/24`, AS208398 invalid vs valid).
 - Corrected view counts: 26 `ORIGIN_SETS_AND_STATES_MATCH`, 24 `ORIGIN_SET_DIFFERS`, 3 `NO_TIMESTAMPED_VRP_STATE`, 2 `NO_EXACT_ROUTE`, 1 `SAME_ORIGIN_STATUS_DIFFERS`.
 - The postprocessing code and tests are committed on PR #10 branch; workflow updated to run those tests and the normalizer. Awaiting GitHub Actions verification.
+
+### 2026-11-12 00:36 +0500 — GitHub run #10 validated the RPKI normalizer
+
+- Audit workflow run: `43092507694`, workflow run number 10, commit `33dd1bbd501bbc150432f45b8b98db4f5cfa2a10`, conclusion `success`.
+- CI executed both parser suites: 8 existing post-release audit tests + 8 RPKI normalization regression tests; all passed.
+- Fresh capture: `2026-11-11T20:05:39Z`; 56 prefixes; 224/224 HTTP 200. RouteViews aggregate VRP snapshot timestamp: `2026-11-11T20:00:13.348Z`.
+- Uploaded artifact: ID `13889422624`, size 3,971,238 bytes, GitHub digest `sha256:64f9cfc536b57d33f53926a05bcce987d67cb112d8ad292926c0ae7f39ee6b1a`.
+- Artifact files were downloaded and independently rechecked. Manifest SHA-256 is `4850f77f72e0f49f62c158b9ca02d181a502cb64cc8aa4be66f59400566c496a`; TSV SHA-256 is `4c7b4718c46f541bbf52184dd05bf6af6ae59388b7b65e4b640c3ce6ee2e5898`; exact capture JSON SHA-256 is `8ff3b193b34bac11026f6d838b422efcbf03134f0089f3d225bef571666ac47e`; raw observation gzip SHA-256 is `44ea689d7b1a23bf96fb626137e55bb3ceed33e268b8508667df62c4bbe84a59`.
+- Exact origin cross-check: all three exact-NLRI source sets returned non-empty observations for all 56 targets. 52/56 origin sets agree; 4/56 disagree. Disagreements:
+  - `5.45.215.0/24`: RouteViews and RIPEstat Routing Status `13238, 208398, 212066`; 24h Looking Glass also sees `207304`.
+  - `91.231.134.0/24`: RouteViews and Looking Glass `28709, 47541, 47764`; Routing Status sees `47541, 47764`.
+  - `2a02:6b8:215::/48`: same pattern as `5.45.215.0/24`; Looking Glass additionally sees `207304`.
+  - `90.156.247.0/24`: RouteViews and Looking Glass `201512, 57073`; Routing Status sees only `57073`.
+- RPKI comparison after normalization: 26 origin sets/states match; 24 origin sets differ; 3 have no timestamped VRP state; 2 have no exact route; 1 genuine same-origin status conflict remains. Ten `not-found` vs `notfound` spelling variants are retained in a separate manifest/TSV list and are not semantic conflicts.
+- Genuine status conflict: `5.45.215.0/24`, AS208398 near-real-time RouteViews route-level state `invalid` vs two-hour aggregate VRP snapshot `valid`. Preserve both observations; do not resolve by choosing one.
+- Archived-invalid queue: 19 rows remain REVIEW. `177.1.199.0/24` still observes archived-invalid AS49505 in exact RouteViews with `invalid`, while AS401152 is `valid`. The other 18 archived-invalid origin entries are not currently seen as exact origins (one target has no exact route); their statuses are not converted to approval/clearance.
+- v38 overlap remains 54 FULL, 2 PARTIAL because of approved blocked IPs, 0 NONE; PRIVATE overlap remains 0. All 56 TSV rows are `REVIEW`.
+- Production pin still verified: release branch commit `3033248ea54cb298bafded25ddcd2805d5f0e7ac`, GeoIP hash `e757c1b7b8ca5b47c11117784eb78ab25c59fbadc0f6ab55229827560db76800`, blocked-set hash `df909b12b985b23080075821cedc5e2f73b7b1f89abcd9950293b400ce1e4a5d`.
+- Related PR-triggered GeoIP workflow run #81 (`43092778886`) on the audit branch completed candidate build/validation and uploaded candidate artifact `13888274829`; both GitHub Release and release-branch publication steps were explicitly `skipped`. It did not change production.
+- PR #10 remains Draft. A second audit run (#11, `43092778686`) was queued by a subsequent PR synchronization while this journal was updated; it is being allowed to finish rather than assuming its outcome. No production action is connected to this audit run.
+
