@@ -15,14 +15,15 @@ Append-only recovery log for the Geoip-ru-server audit work. Keep each completed
 - **Active workstream:** repository-wide source inventory and improvement of actual Russian prefix inputs. Plan: docs/GEOIP_RU_SOURCE_IMPROVEMENT_PLAN.md; full audit: .github/audits/geoip_ru_repository_audit_2026-11.md; resume note: .github/audits/GEOIP_RU_AUDIT_RESUME.md.
 - **Baseline:** main commit d6fa94a691a9635b72be4e6b941c87d29c802dfa; production tag latest-geoip-client-v37; production run #34 succeeded. Release branch commit: d613c5f0ef482f2051cbc37a303b2ac30076d313.
 - **Current artifact:** geoip_RU.dat is 951,531 bytes; SHA-256 c70310071f7611d5c7ae54d409ae7c8d7b4598bbbbb706cbb44e9f0ca9303904. v37 report: 76,292 RU-category CIDRs, 52,618,729 IPv4 addresses and 1,192,441,882,017,908,537,250,295,700,258,816 IPv6 addresses.
-- **Semantics guard:** RU category is legacy DIRECT RU+BY+KZ plus company/affiliate origins, not strict geographic RU. Do not change this contract in the documentation/audit stage; develop strict RU as a separate parallel output.
-- **Audit result:** 21 tracked files reviewed across production workflow, builder/tests, input/release artifacts, all audit scripts/tests, prefix audit workflow and checkpoints. Findings and staged plan are recorded in the audit journal.
-- **Documentation branch:** docs/source-improvement-plan-2026-11; documentation-only. No production builder, prefix list, company ASN allowlist, release or output changed.
+- **Semantics guard:** RU category is legacy DIRECT RU+BY+KZ plus company/affiliate origins, not strict geographic RU. Do not change this contract in this documentation/audit stage; develop strict RU as a separate parallel output.
+- **Audit result:** 21 tracked files reviewed across production workflow, builder/tests, input/release artifacts, all audit scripts/tests, prefix audit workflow and checkpoints. Findings and staged plan are in the audit journal.
+- **Documentation PR #7:** open, Draft, branch docs/source-improvement-plan-2026-11, based on main d6fa94a691a9635b72be4e6b941c87d29c802dfa. Documentation-only changes; production builder, prefix inputs, company ASN allowlist, output, tag and release unchanged.
+- **PR #7 validation blocker:** run #148 (42975245329) failed at priority evidence collection. Compile, unit tests, legal TSV checks, source snapshot fetch, queue generation and queue-vs-quality validation passed. Current queue counts: 3,169 company-origin rows; 23,564 selected-origin rows; all REVIEW.
+- **Scope drift:** pinned ipverse snapshot SHA fadde6a3997e55556c94509032b675dde06684f131e596b88c2910ab907b0f79 (16,268,123 bytes) produces 53 MOAS + 4 company-only = 57 priority prefixes, while audit code still expects 52 + 4 = 56. The step failed before RDAP/RPKI requests; this is not an API/network failure. The exact additional MOAS CIDR is not yet established. Do not guess it or change expected scope mechanically.
 - **PR #6:** remains open Draft and independent; do not retarget or merge as part of this workstream.
 - **PR #5 / feature/reachability-full-ru-kz-by:** untouched; do not edit that branch or run new CI/measurements for PR #5.
-- **Resume from:** verify the documentation-only PR and its read-only validation; then create versioned source catalog and immutable snapshot bundle. Next build the complete canonical exact-prefix inventory and diff it against current v37. All ambiguous candidates remain REVIEW.
-- **Production caution:** merging any PR to main triggers production build/publish, which publishes release assets and force-updates release. Consider this before merging even docs-only PRs.
-
+- **Resume from:** reproduce priority selection using the exact release inputs and ipverse snapshot above; identify and inspect the additional exact MOAS prefix, compare with prior 56-row inventory, then update scope constants/tests/assessment only after exact-prefix review. Keep new entries REVIEW. After that rerun PR #7 validation.
+- **Production caution:** merging any PR into main triggers production build/publish, publishes release assets and force-updates release. Consider this before merging even docs-only PRs.
 
 ## Completed stage records
 
@@ -122,4 +123,16 @@ Use one concise record per completed stage:
 - Audit finding to preserve: current RU category is legacy DIRECT RU+BY+KZ plus company/affiliate origins, not strict geographic RU. Next work starts with immutable source catalog/snapshots and a full exact-prefix inventory/diff.
 - The checkpoint header and resume instructions are preserved; existing PR #3/#4 history remains unchanged.
 - Resume from: verify the documentation-only Draft PR and read-only validation, then build the versioned source catalog and canonical prefix inventory. Do not change production data before candidate-level evidence review.
+
+
+
+### 2026-11-11 — Priority-prefix validation scope drift — BLOCKED
+
+- [PR #7 validation run #148](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/42975245329), head c49c8474ca0a35fb436c2a10cb81d897456e9e83, failed before external RDAP/RPKI queries.
+- Compile/tests, legal TSV checks, immutable v37 input fetch, queue generation and queue-vs-quality checks passed. Generated queue counts: 3,169 company-origin and 23,564 full selected-origin rows, all REVIEW.
+- ipverse snapshot SHA-256: fadde6a3997e55556c94509032b675dde06684f131e596b88c2910ab907b0f79; 16,268,123 bytes. Release snapshot commit: d613c5f0ef482f2051cbc37a303b2ac30076d313.
+- Priority selector observed 53 MOAS + 4 company-only = 57, but hard-coded audit scope expects 52 + 4 = 56. The step failed with "expected 56 company MOAS/company-only priority prefixes, got 57". No RDAP/RPKI network query ran; no run artifact was uploaded.
+- Exact additional MOAS prefix is not yet known from this failed run. Do not infer or mechanically update expected counts.
+- Audit journal append: commit 5a5d88fcea8799656a6d14fb9a9fae503d5c3df0. Resume note append: commit 6a6237712dc38a626697df940d8e72de9e390316.
+- Resume from: reproduce the priority selection from the pinned production inputs and SHA-256-verified ipverse snapshot; identify the exact extra prefix, inspect exact origin set, compare with historic 56-row scope, and only then update the audit inventory/validators. Keep REVIEW. PR #7 remains Draft; PR #5 remains untouched.
 
