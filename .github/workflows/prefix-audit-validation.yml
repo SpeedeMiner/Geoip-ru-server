@@ -18,6 +18,8 @@ on:
       - ".github/scripts/test_build_priority_prefix_rpki_reconciliation.py"
       - ".github/scripts/validate_geoip_source_catalog.py"
       - ".github/scripts/test_build_geoip_source_prefix_catalog.py"
+      - ".github/scripts/build_v37_canonical_prefix_inventory.py"
+      - ".github/scripts/test_build_v37_canonical_prefix_inventory.py"
       - "docs/GEOIP_RU_SOURCE_CATALOG_v1.tsv"
       - "docs/GEOIP_RU_SOURCE_CATALOG_v1.md"
       - ".github/audits/priority_prefix_rpki_invalid_assessment_v37.tsv"
@@ -59,6 +61,8 @@ jobs:
           .github/scripts/test_build_priority_prefix_rpki_reconciliation.py
           .github/scripts/validate_geoip_source_catalog.py
           .github/scripts/test_build_geoip_source_prefix_catalog.py
+          .github/scripts/build_v37_canonical_prefix_inventory.py
+          .github/scripts/test_build_v37_canonical_prefix_inventory.py
 
       - name: Run audit unit tests
         run: python3 -m unittest discover -s .github/scripts -p 'test_build_*prefix*.py' -v
@@ -382,6 +386,96 @@ jobs:
           ]
           Path("prefix-audit/README.txt").write_text("\n".join(bundle_manifest), encoding="utf-8")
           print("\n".join(bundle_manifest))
+          PY
+
+      - name: Build v37 canonical exact-prefix inventory from pinned release evidence
+        shell: bash
+        run: |
+          set -euo pipefail
+          inventory="prefix-audit/v37-canonical-inventory"
+          mkdir -p "$inventory"
+
+          # The release tag is mutable by name; the exact output bytes are pinned by SHA-256.
+          geoip_url="https://github.com/${{ github.repository }}/releases/download/latest-geoip-client-v37/geoip_RU.dat"
+          curl --fail --location --silent --show-error \
+            --retry 3 --retry-all-errors --connect-timeout 20 --max-time 180 \
+            "$geoip_url" -o "$inventory/geoip_RU.dat"
+          geoip_sha="$(sha256sum "$inventory/geoip_RU.dat" | awk '{print $1}')"
+          if [[ "$geoip_sha" != "c70310071f7611d5c7ae54d409ae7c8d7b4598bbbbb706cbb44e9f0ca9303904" ]]; then
+            echo "::error::v37 geoip_RU.dat SHA-256 mismatch: $geoip_sha"
+            exit 1
+          fi
+
+          # All text inputs below are read from the immutable release commit, not a moving release branch.
+          release_commit="d613c5f0ef482f2051cbc37a303b2ac30076d313"
+          raw_base="https://raw.githubusercontent.com/${{ github.repository }}/$release_commit"
+          declare -A expected_sha=(
+            ["geoip_RU_BY_KZ_asn_bgp_prefixes.txt"]="92e48d87414e4bbfb3ede304ba725436f2c174c6909499f68c2f18c93f8423b4"
+            ["geoip_RU_rir_registered_prefixes.txt"]="ad12b823e7b768b38d8b92406b2863ce9a6ccb1c07575d5aa0eddd4b680dff24"
+            ["geoip_RU_global_bgp_prefixes.txt"]="b591dd870391498161902a76b23fc748056bb4009089e6e23b7bf5df3ac723f0"
+            ["geoip_RU_additional_provenance.tsv"]="b616197bfdccbcad2655f7c81906da6cc66a1a7ba2558ccbb9e62ae2e27e1f4f"
+            ["geoip_RU_blocked_ip_exclusions.txt"]="6135c202ed520b8d6338575afc092156430233486be24e430fd507a1381dd8ec"
+            ["geoip_RU_blocked_review_candidates.tsv"]="523afb87ed1289390aea4a0072885f253d2593e32b27884acf8c6044412c0413"
+            ["geoip_RU_input_provenance.tsv"]="c06a8256ffb47d1851d0359728f26aee8b929776c74873b1135f1115b9279cc0"
+            ["geoip_RU_source_counts.txt"]="84d97989ae9386fb1c5e61a7b3920389554b8d9957d313780d4a9c688585fc53"
+            ["geoip_RU_category_audit.tsv"]="22a4000450193afa108f3739dc8f2b1a6303296175375c588f171601d4489faa"
+            ["geoip_RU_quality_report.txt"]="89474b94d7f6316ea32c93273114316b12c6bbd7691219ae77525e3d6bfb910b"
+            ["geoip_RU_sources.txt"]="7e493c946d1e815ff8de48919b0eb118446fd8a5a955a69e58485ee343019a35"
+          )
+          for file in "${!expected_sha[@]}"; do
+            curl --fail --location --silent --show-error \
+              --retry 3 --retry-all-errors --connect-timeout 20 --max-time 240 \
+              "$raw_base/$file" -o "$inventory/$file"
+            actual="$(sha256sum "$inventory/$file" | awk '{print $1}')"
+            if [[ "$actual" != "${expected_sha[$file]}" ]]; then
+              echo "::error::Immutable v37 file SHA-256 mismatch for $file: $actual"
+              exit 1
+            fi
+          done
+
+          python3 .github/scripts/build_v37_canonical_prefix_inventory.py \
+            --geoip-dat "$inventory/geoip_RU.dat" \
+            --selected-bgp "$inventory/geoip_RU_BY_KZ_asn_bgp_prefixes.txt" \
+            --rir-ru "$inventory/geoip_RU_rir_registered_prefixes.txt" \
+            --global-bgp "$inventory/geoip_RU_global_bgp_prefixes.txt" \
+            --additional-provenance "$inventory/geoip_RU_additional_provenance.tsv" \
+            --blocked-approved "$inventory/geoip_RU_blocked_ip_exclusions.txt" \
+            --blocked-review "$inventory/geoip_RU_blocked_review_candidates.tsv" \
+            --output "$inventory/canonical_prefix_inventory.tsv" \
+            --stats "$inventory/canonical_prefix_inventory_stats.txt" \
+            --release-commit "$release_commit" \
+            --geoip-sha256 "$geoip_sha"
+
+          python3 - "$inventory" <<'PY'
+          import re
+          import sys
+          from pathlib import Path
+
+          root = Path(sys.argv[1])
+          report = (root / "geoip_RU_quality_report.txt").read_text(encoding="utf-8")
+          stats = (root / "canonical_prefix_inventory_stats.txt").read_text(encoding="utf-8")
+          expected = {
+              "RU": (76292, 52618729, 1192441882017908537250295700258816),
+              "PRIVATE": (151, 592708862, 4325545831231176725068219651071148031),
+          }
+          for category, (cidrs, ipv4, ipv6) in expected.items():
+              match = re.search(
+                  rf"^{category}: CIDR=([0-9]+) IPv4=([0-9]+) IPv6=([0-9]+)$",
+                  report, re.MULTILINE,
+              )
+              if not match or tuple(map(int, match.groups())) != (cidrs, ipv4, ipv6):
+                  raise SystemExit(f"Unexpected frozen v37 {category} quality baseline")
+              if f"{category} output" in stats:
+                  pass
+          for required in (
+              f"output_ru\\t76292\\t",
+              f"output_private\\t151\\t",
+              "All joins are exact-prefix equality only.",
+              "Raw GeoIP .dat inputs are not retained in the v37 release",
+          ):
+              if required not in stats:
+                  raise SystemExit(f"Canonical inventory report missing: {required}")
+          print(stats)
           PY
 
       - name: Collect RDAP resource-holder samples and per-origin RPKI status for priority prefixes
