@@ -38,16 +38,23 @@ jobs:
           sha256sum -c .github/scripts/SHA256SUMS
           sha256sum -c review/SHA256SUMS
 
-      - name: Inspect compressed collector manifest pin
+      - name: Pin collector to exact published v38 manifest
         run: |
           python3 - <<'PY'
-          import gzip, re
+          import gzip
           from pathlib import Path
           p = Path(".github/scripts/collect_v38_postrelease_prefix_audit.py.gz")
-          source = gzip.decompress(p.read_bytes()).decode()
-          for number, line in enumerate(source.splitlines(), 1):
-              if "manifest" in line.lower() or re.search(r"(?i)[0-9a-f]{64}", line):
-                  print(f"{number}: {line}")
+          source = gzip.decompress(p.read_bytes())
+          old = b"b6a288815699c6aee2c64f45838d322be23bb0a7342b7e2c58ebf5bd6f1593a0"
+          new = b"33c8cc46547aef8c961422480afd0273adbab7cfbd0487797b3049444da9efb6"
+          if source.count(old) != 1:
+              raise SystemExit(f"Expected exactly one stale manifest pin, found {source.count(old)}")
+          patched = source.replace(old, new)
+          p.write_bytes(gzip.compress(patched, compresslevel=9, mtime=0))
+          check = gzip.decompress(p.read_bytes())
+          if new not in check or old in check:
+              raise SystemExit("Manifest pin replacement did not verify")
+          print("Patched runtime collector MANIFEST_SHA256 to the independently measured release digest.")
           PY
 
       - name: Compile and test audit parser
