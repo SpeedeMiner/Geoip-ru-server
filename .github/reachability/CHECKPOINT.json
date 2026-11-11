@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "updated_at_utc": "2026-11-11T04:45:00Z",
+  "updated_at_utc": "2026-11-11T05:05:00Z",
   "repository": "SpeedeMiner/Geoip-ru-server",
   "pull_request": 5,
   "pull_request_url": "https://github.com/SpeedeMiner/Geoip-ru-server/pull/5",
   "branch": "feature/reachability-full-ru-kz-by",
-  "recorded_pr_head_before_checkpoint_commit": "8a26dc049564d6c72afb217d1ac8ae655c66bd8c",
+  "recorded_pr_head_before_checkpoint_commit": "bc4df2b9b6f9829e0e84a4fe2c127c32cfa89bc4",
   "base_sha": "a68e5d6589361814cb1cfedd2af7857e4af806fa",
   "state": "VALIDATION_PENDING",
   "current_phase": "VPN_GATE_VALIDATION_CI_AND_MANUAL_PILOT",
@@ -94,7 +94,10 @@
     "vpn_gate_server_and_exit_asn_source_provenance",
     "vpn_gate_asn_conflict_candidate_report",
     "vpn_gate_ripestat_prefix_contains_queried_ip_check",
-    "vpn_gate_ripestat_prefix_containment_tests"
+    "vpn_gate_ripestat_prefix_containment_tests",
+    "vpn_gate_single_dual_stack_dns_resolver_call",
+    "vpn_gate_dual_stack_dns_regression_tests",
+    "vpn_gate_manual_workflow_timeout_extended_for_bounded_multi_exit_run"
   ],
   "latest_successful_validation_run": 42877605801,
   "latest_successful_validation_commit": "c6b86d8b92bac5777c73634d921835fee687573b",
@@ -222,7 +225,8 @@
     "VPN Gate exit is accepted only when two independent public IP metadata services agree on exact public IPv4 and country; no consensus is a rejected measurement, not a block result.",
     "Initial VPN Gate sampling inspects up to 24 candidates for RIPEstat origin ASN and prefers distinct ASNs; unknown origin ASN does not count toward distinct-provider coverage.",
     "IP metadata ASN and RIPEstat origin ASN are retained separately; disagreement is an explicit review candidate, not an automatically resolved operator identity.",
-    "RIPEstat prefix evidence is accepted only when the CIDR contains the exact IP queried."
+    "RIPEstat prefix evidence is accepted only when the CIDR contains the exact IP queried.",
+    "VPN Gate manual job has a 120-minute limit; each target's A and AAAA records are fetched by one resolver call, but no IPv6 transport test is claimed."
   ],
   "policy_invariants": {
     "geoip_RU_dat_mutated": false,
@@ -239,10 +243,10 @@
     "automatic_geoip_mutation": false
   },
   "next_steps": [
-    "Confirm Reachability validation on code/test commit e1272f0e9b4c3048537a11e91b5d7bddf782012f (implementation commit 5668f225362f8e0945b983ffdfcce492c90a5397; README commit ba7cee32ecae140a02522c93aceb94a0a64a6f83); expect 43 Python tests plus Go formatting, tests and build.",
-    "After visible green CI, manually dispatch the VPN Gate workflow from PR #5 with 1–2 RU exits first; inspect exit IP/country agreement, server and exit ASN source fields, prefix containment, PTR/organization, firewall/resolver restoration and artifacts.",
-    "Do not label volunteer nodes as confirmed residential without independent operator/access-network verification. Treat exit-IP candidates and ASN conflicts as review leads only.",
-    "Keep PR #5 Draft; do not merge, rebase, or modify production builder, geoip_RU.dat, release assets, DIRECT policy, ASN allowlists, main/release, or PR #6."
+    "Confirm Reachability validation on Python code/test commit 09a61810013effee87fc5fdb6d304a3b132a7ba5; Go formatting, tests and build must also pass. README and manual-workflow timeout changes follow in ba1371566bd12965940fb5bd05c78813b6b176fd and a3098c15351de5dabc5f286f05024678fe4707fa.",
+    "After visible green CI, manually dispatch the VPN Gate workflow on PR #5 with 1–2 RU exits first; review actual exit IP/country consensus, ASN provenance/conflicts, valid prefix containment, PTR/organization, A/AAAA/HTTPS results, and firewall/resolver restoration.",
+    "Only widen to three or more nodes after first artifacts show stable, correctly attributed exits. VPN Gate volunteers remain unverified access-network type, not confirmed household subscriptions.",
+    "Keep PR #5 Draft; no merge/rebase; do not modify production builder, geoip_RU.dat, release assets, DIRECT policy, ASN allowlists, main/release, or PR #6."
   ],
   "ci_policy": {
     "push_validation_paths": [
@@ -275,19 +279,20 @@
     "vpn_gate_daily_schedule_enabled": false
   },
   "pending_validation": {
-    "commit": "e1272f0e9b4c3048537a11e91b5d7bddf782012f",
-    "implementation_commit": "5668f225362f8e0945b983ffdfcce492c90a5397",
-    "documentation_commit": "ba7cee32ecae140a02522c93aceb94a0a64a6f83",
+    "commit": "09a61810013effee87fc5fdb6d304a3b132a7ba5",
+    "implementation_commit": "1c70a5e616aa191870b6368b6ee3dad9435da0c1",
+    "workflow_timeout_commit": "a3098c15351de5dabc5f286f05024678fe4707fa",
+    "documentation_commit": "ba1371566bd12965940fb5bd05c78813b6b176fd",
     "workflow_path_filter_commit": "a2f85a43cf9e295035724190ad5f6b20a73a0926",
     "workflow": "Reachability validation",
-    "expected_python_unit_tests": 43,
+    "expected_python_unit_tests": 45,
     "expected_go_checks": [
       "gofmt",
       "go test ./...",
       "go build"
     ],
     "status": "NOT_CONFIRMED",
-    "note": "VPN Gate exit consensus, ASN diversity, source-by-source ASN reporting, conflict candidates and RIPEstat prefix containment tests are newer than previous green CI. The available GitHub connector has not returned visible checks or workflow runs."
+    "note": "Dual-stack DNS consolidation and the new tests are newer than all previous successful CI. The available GitHub connector has not returned visible checks or workflow runs for the current code head."
   },
   "vpn_gate_measurement": {
     "source": "VPN Gate official CSV API",
@@ -313,6 +318,7 @@
       "origin_asn_selection": "one candidate per distinct RIPEstat origin ASN before repeat ASN",
       "asn_candidate_inspection_limit": 24
     },
-    "expected_python_tests": 43
+    "expected_python_tests": 45,
+    "timeout_minutes": 120
   }
 }
