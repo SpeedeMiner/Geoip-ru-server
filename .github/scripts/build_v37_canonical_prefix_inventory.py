@@ -8,6 +8,7 @@ layers, not unavailable raw upstream .dat inputs.
 from __future__ import annotations
 
 import argparse
+import bisect
 import csv
 import ipaddress
 import re
@@ -201,6 +202,58 @@ def _address_union(prefixes: set[str], family: int) -> int:
     return sum(net.num_addresses for net in ipaddress.collapse_addresses(networks))
 
 
+def _merged_intervals(prefixes: set[str], family: int) -> list[tuple[int, int]]:
+    intervals = sorted(
+        (int(net.network_address), int(net.broadcast_address))
+        for value in prefixes
+        if (net := ipaddress.ip_network(value)).version == family
+    )
+    merged: list[tuple[int, int]] = []
+    for start, end in intervals:
+        if merged and start <= merged[-1][1] + 1:
+            if end > merged[-1][1]:
+                merged[-1] = (merged[-1][0], end)
+        else:
+            merged.append((start, end))
+    return merged
+
+
+def _intersection_size(left: list[tuple[int, int]], right: list[tuple[int, int]]) -> int:
+    i = j = total = 0
+    while i < len(left) and j < len(right):
+        start = max(left[i][0], right[j][0])
+        end = min(left[i][1], right[j][1])
+        if start <= end:
+            total += end - start + 1
+        if left[i][1] < right[j][1]:
+            i += 1
+        else:
+            j += 1
+    return total
+
+
+def _covered_addresses(
+    network: ipaddress.IPv4Network | ipaddress.IPv6Network,
+    starts: list[int],
+    ends: list[int],
+) -> int:
+    start = int(network.network_address)
+    end = int(network.broadcast_address)
+    index = bisect.bisect_left(ends, start)
+    total = 0
+    while index < len(starts) and starts[index] <= end:
+        overlap_start = max(start, starts[index])
+        overlap_end = min(end, ends[index])
+        if overlap_start <= overlap_end:
+            total += overlap_end - overlap_start + 1
+        index += 1
+    return total
+
+
+def _percent(numerator: int, denominator: int) -> str:
+    return "n/a" if denominator == 0 else f"{100 * numerator / denominator:.6f}%"
+
+
 def build_inventory(args: argparse.Namespace) -> dict[str, object]:
     proto = parse_geoip_list(args.geoip_dat.read_bytes())
     ru_output, private_output = proto["ru"], proto["private"]
@@ -229,6 +282,9 @@ def build_inventory(args: argparse.Namespace) -> dict[str, object]:
     }
     universe = set().union(*sets.values())
     sorted_prefixes = sorted(universe, key=_sort_key)
+    ru_merged = {family: _merged_intervals(ru_output, family) for family in (4, 6)}
+    ru_starts = {family: [start for start, _ in ru_merged[family]] for family in (4, 6)}
+    ru_ends = {family: [end for _, end in ru_merged[family]] for family in (4, 6)}
 
     output_path = args.output
     output_path.parent.mkdir(parents=True, exist_ok=True)
@@ -240,6 +296,7 @@ def build_inventory(args: argparse.Namespace) -> dict[str, object]:
         "IN_GLOBAL_BGP_90D_OBSERVATIONS",
         "IN_ACCEPTED_ADDITIONAL_GEOIP_FEEDS", "ADDITIONAL_LOGICAL_GROUPS",
         "IN_APPROVED_BLOCKED_EXCLUSIONS", "IN_BLOCKED_REVIEW_ONLY_CANDIDATES",
+        "RU_OUTPUT_COVERED_ADDRESSES", "RU_OUTPUT_ADDRESS_COVERAGE",
         "EXACT_PREFIX_INTERPRETATION",
     ]
     with output_path.open("w", encoding="utf-8", newline="") as stream:
@@ -264,6 +321,14 @@ def build_inventory(args: argparse.Namespace) -> dict[str, object]:
                 "ADDITIONAL_LOGICAL_GROUPS": groups,
                 "IN_APPROVED_BLOCKED_EXCLUSIONS": "yes" if flags["blocked_approved"] else "no",
                 "IN_BLOCKED_REVIEW_ONLY_CANDIDATES": "yes" if flags["blocked_review_only"] else "no",
+                "RU_OUTPUT_COVERED_ADDRESSES": covered := _covered_addresses(
+                    network, ru_starts[network.version], ru_ends[network.version]
+                ),
+                "RU_OUTPUT_ADDRESS_COVERAGE": (
+                    "NONE" if covered == 0 else
+                    "FULL" if covered == network.num_addresses else
+                    "PARTIAL"
+                ),
                 "EXACT_PREFIX_INTERPRETATION": (
                     "CURRENT_RU_OUTPUT" if flags["output_ru"] else
                     "CURRENT_PRIVATE_OUTPUT" if flags["output_private"] else
@@ -291,6 +356,24 @@ def build_inventory(args: argparse.Namespace) -> dict[str, object]:
         )
     stats_lines.extend([
         "",
+        "ADDRESS-SPACE COVERAGE BY RU OUTPUT (interval intersection; separate from exact CIDR equality)",
+    ])
+    for source_id, prefixes in sets.items():
+        for family in (4, 6):
+            source_union = _merged_intervals(prefixes, family)
+            covered = _intersection_size(source_union, ru_merged[family])
+            total = _address_union(prefixes, family)
+            stats_lines.append(
+                f"{source_id} IPv{family}: address_union={total}; covered_by_RU_output={covered}; "
+                f"coverage={_percent(covered, total)}; outside_RU_output={total-covered}"
+            )
+    stats_lines.extend([
+        "",
+        f"Approved blocked exclusions overlapping RU output IPv4 addresses: "
+        f"{_intersection_size(_merged_intervals(blocked_approved, 4), ru_merged[4])}",
+        f"Approved blocked exclusions overlapping RU output IPv6 addresses: "
+        f"{_intersection_size(_merged_intervals(blocked_approved, 6), ru_merged[6])}",
+        "",
         f"Final RU output IPv4 address union: {_address_union(ru_output, 4)}",
         f"Final RU output IPv6 address union: {_address_union(ru_output, 6)}",
         f"Final PRIVATE output IPv4 address union: {_address_union(private_output, 4)}",
@@ -302,7 +385,8 @@ def build_inventory(args: argparse.Namespace) -> dict[str, object]:
         f"RU output exact CIDRs also in accepted additional feed provenance: {len(ru_output & additional)}",
         f"RU output exact CIDRs intersecting approved blocked list by exact CIDR: {len(ru_output & blocked_approved)}",
         "",
-        "All joins are exact-prefix equality only. Parent/child CIDRs are not inferred as exact matches.",
+        "Exact-prefix flags use canonical CIDR string equality only; parent/child routes are not inferred as exact NLRI matches.",
+        "RU_OUTPUT_COVERED_ADDRESSES and ADDRESS_COVERAGE add separate interval-based address-space intersection; they do not alter exact-prefix identity.",
         "Address unions are calculated per source after CIDR collapse; independent source totals overlap and must not be added.",
         "Selected-origin BGP is routing/operator evidence, not proof of physical location or legal ownership.",
         "RIR country is resource-registration country, not proof of physical hosting location.",
