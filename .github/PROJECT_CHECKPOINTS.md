@@ -1,3 +1,15 @@
+# Project checkpoint log
+
+Append-only recovery log for the Geoip-ru-server audit work. Keep each completed stage as a short, separate entry. Update the **Current state / resume from** block whenever work moves to a new stage.
+
+## How to resume after an interruption
+
+1. Read **Current state / resume from** first.
+2. Verify the recorded branch head, PR state and latest workflow run in GitHub; do not assume a previously in-progress run is still in progress.
+3. Continue from the stated next step. Do not redo completed stages unless new evidence invalidates them.
+4. After each finished stage, append one compact entry with: UTC date, result, commit SHA(s), workflow run ID/URL and artifact SHA when applicable, plus the next step.
+5. Keep the current-state block aligned with the latest verified state.
+
 ## Current state / resume from — 2026-11-11
 
 - **Active workstream:** repository-wide source inventory and improvement of actual Russian prefix inputs. Plan: docs/GEOIP_RU_SOURCE_IMPROVEMENT_PLAN.md; full audit: .github/audits/geoip_ru_repository_audit_2026-11.md; resume note: .github/audits/GEOIP_RU_AUDIT_RESUME.md.
@@ -100,3 +112,14 @@ Use one concise record per completed stage:
 - New `geoip_RU.dat`: 950,909 bytes, SHA-256 `cbe460b3c352dcf33f055e488f15e15caccfb6487e71e0e3ea81d508cda9bad1`; all seven jsDelivr purge requests succeeded for CF and FY.
 - The new build differs from prior v37 by -7 IPv4 addresses / -37 RU CIDRs; provenance identifies the changed Antifilter `ip.lst` snapshot as the changed recorded input. No production builder or company allowlist changed in PR #4.
 - Resume from: future requested audit work; PR #4 and its post-merge v37 publication are complete.
+
+### 2026-11-11 — Repository-wide source improvement plan and audit — IN PROGRESS
+
+- Created the plan in commit 6e3e727225fc5c1c70392a8913fc97f3ccec0921: docs/GEOIP_RU_SOURCE_IMPROVEMENT_PLAN.md.
+- Recorded the full repository audit in commit 731057857a7ff73dba94b77f6ba28c32a75e893e: .github/audits/geoip_ru_repository_audit_2026-11.md.
+- Added the recovery note in commit f561a025c3bf504e0c6fbd8847c6519eba0cb789: .github/audits/GEOIP_RU_AUDIT_RESUME.md.
+- Documentation branch: docs/source-improvement-plan-2026-11, based on main d6fa94a691a9635b72be4e6b941c87d29c802dfa. Production builder, prefix inputs, company ASN allowlist, output, tag and release were not changed.
+- Audit finding to preserve: current RU category is legacy DIRECT RU+BY+KZ plus company/affiliate origins, not strict geographic RU. Next work starts with immutable source catalog/snapshots and a full exact-prefix inventory/diff.
+- The checkpoint header and resume instructions are preserved; existing PR #3/#4 history remains unchanged.
+- Resume from: verify the documentation-only Draft PR and read-only validation, then build the versioned source catalog and canonical prefix inventory. Do not change production data before candidate-level evidence review.
+
