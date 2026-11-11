@@ -448,3 +448,15 @@ Durable resume point for PR #5. After any conversation/network interruption, rea
 - This is a configuration and deterministic-test improvement only. It does not establish a working tunnel or any target accessibility result. Do not infer a residential line from VPNObratno's listing.
 - Latest validation: GitHub Actions run #42979907101 (https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/42979907101) passed on code/workflow commit 0961e543b723dd90c14a4c3c5ed5cad931d0cc88. Full logs confirm Ran 96 tests, OK; gofmt, go test ./... and go build also passed. A concurrent earlier attempt #42979881032 was cancelled by the newer validation run; it is not the final result.
 - PR #5 remains OPEN / DRAFT. No production builder, release database/assets, DIRECT policy, ASN allowlists, main/release or PR #6 were touched.
+
+
+### 2026-11-11 — Harden VPNObratno profile downloads against cross-origin redirects — CI PASS
+
+- Re-audited the direct VPNObratno fetch path. The HTML parser already accepted only profile links on the exact HTTPS origin, but the generic urllib downloader could follow a server-side redirect to another hostname.
+- Added a dedicated downloader for the VPNObratno listing and linked profiles. It disables configured proxies, accepts HTTPS only on the exact vpnobratno.info origin/default port, rejects userinfo and non-default ports, permits redirects only within that origin, and checks the final response URL again.
+- The VPNObratno discovery routine now uses this constrained fetcher by default. The official VPN Gate API backend keeps its separate existing fetch behavior.
+- Added four regression tests for cross-origin/insecure redirect rejection, exact same-origin redirect acceptance, rejection of untrusted initial URLs before network access, and the discovery default fetcher.
+- Latest validation: GitHub Actions run #42981728009 (https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/42981728009) succeeded on code/test commit 5b2d74a8b2653d16248e965abfaa0a05f0d3d344. Full job logs confirm Ran 100 tests, OK; gofmt, go test ./... and go build also passed. The intermediate attempt #42981701144 was cancelled by the newer validation run.
+- Reviewed the remaining VPNObratno protocol documentation. SSTP is offered on some nodes; the site documents L2TP/IPsec for selected nodes. Neither has yet been wired into the collector: the copy-button endpoint metadata/port is not yet verified as a machine-readable source, and a PPP/IPsec tunnel requires explicit interface, route and firewall lifecycle checks. Do not guess the SSTP port or invent an L2TP endpoint. Continue with the four validated OpenVPN variants until those prerequisites are proven.
+- No live tunnel using the newly supported VPNObratno OpenVPN profiles has yet been run. The 100-test CI result verifies deterministic discovery, validation and the fetch safety policy, not live tunnel connectivity or target reachability.
+- PR #5 remains OPEN / DRAFT. No production builder, release database/assets, DIRECT policy, ASN allowlists, main/release or PR #6 were touched.
