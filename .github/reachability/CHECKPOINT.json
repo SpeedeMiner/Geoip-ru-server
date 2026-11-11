@@ -1,14 +1,14 @@
 {
   "schema_version": 1,
-  "updated_at_utc": "2026-11-11T14:20:14Z",
+  "updated_at_utc": "2026-11-11T14:35:00Z",
   "repository": "SpeedeMiner/Geoip-ru-server",
   "pull_request": 5,
   "pull_request_url": "https://github.com/SpeedeMiner/Geoip-ru-server/pull/5",
   "branch": "feature/reachability-full-ru-kz-by",
   "recorded_pr_head_before_checkpoint_commit": "bf3bbd6bb3af4b1f527a081af62aafde0eff8b55",
   "base_sha": "a68e5d6589361814cb1cfedd2af7857e4af806fa",
-  "state": "RUN15_APT_DNS_FAILURE_DOCUMENTED_RUNNER_FIX_COMMITTED_AND_CI_VALIDATED_116_TESTS",
-  "current_phase": "READY_FOR_MANUAL_RUN16_AFTER_UBUNTU2404_RUNNER_FIX_CI_PASS",
+  "state": "RUN16_APT_MIRROR_DNS_FAILURE_INSPECTED_PINNED_DOH_BOOTSTRAP_IMPLEMENTED_VALIDATION_PENDING",
+  "current_phase": "VALIDATE_PINNED_DOH_APT_DNS_BOOTSTRAP_BEFORE_NEXT_MANUAL_VPN_RUN",
   "completed": [
     "repository_reconnaissance",
     "protobuf_inventory_exporter",
@@ -228,7 +228,8 @@
     "vpnobratto_pre_tunnel_ASN_network_lookup_removed",
     "vpnobratto_selection_now_uses_distinct_server_hostnames",
     "vpnobratto_outer_gnu_timeout_9m_kill_after_5s_added",
-    "vpnobratto_validation_111_python_tests_and_go_checks_success_43023729793"
+    "vpnobratto_validation_111_python_tests_and_go_checks_success_43023729793",
+    "run_16_ubuntu2404_apt_dns_failure_inspected"
   ],
   "latest_successful_validation_run": 43037445995,
   "latest_successful_validation_commit": "05c0d0431990e97851628f7b87ef0b29b0f8763c",
@@ -407,11 +408,10 @@
     "production_release_artifact_byte_delta_verified": false
   },
   "next_steps": [
-    "Check the Reachability validation workflow triggered by commit 05c0d0431990e97851628f7b87ef0b29b0f8763c; do not claim the workflow-only change passed until that run is green.",
-    "After validation passes, manually dispatch the next VPNObratto run from feature/reachability-full-ru-kz-by with max_vpn_gate_servers=1 and max_vpn_gate_attempts=6.",
-    "Do not start overlapping VPN runs. In the next run, verify apt_update_started/completed and apt_install_completed before expecting Go/GeoIP/inventory/VPN steps.",
-    "Only count a reachability measurement after two independent sources agree on the exact RU exit IPv4 and persisted target DNS/HTTPS rows are present in the artifact.",
-    "Keep PR #5 OPEN / DRAFT; do not merge or change its base. Do not touch PR #6, the production GeoIP builder, release assets/branch, DIRECT policy or ASN allowlists."
+    "Confirm Reachability validation CI passes with the new apt mirror DNS bootstrap tests.",
+    "After CI success, manually dispatch Russian ISP VPN Gate reachability on feature/reachability-full-ru-kz-by with source=vpnobratto, max_vpn_gate_servers=1, max_vpn_gate_attempts=6.",
+    "Verify apt_dns_bootstrap_completed, all three mirror_getent_verified markers, apt_update_completed and apt_install_completed before accepting any VPN measurements.",
+    "Keep PR #5 OPEN / DRAFT. Do not merge, mark ready, or alter the production GeoIP builder, release data, DIRECT policy, or PR #6."
   ],
   "ci_policy": {
     "push_validation_paths": [
@@ -1077,64 +1077,22 @@
     "validation_result": "SUCCESS: 108 Python tests, py_compile/JSON validation, gofmt, go test ./..., go build."
   },
   "current_manual_dispatch": {
-    "run_id": 43035301161,
-    "run_url": "https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43035301161",
-    "run_number": 15,
+    "run_id": 43038105495,
     "branch": "feature/reachability-full-ru-kz-by",
-    "commit": "6992b4cb337e447f1d14d27fd37a99ee655b8a23",
-    "created_at_utc": "2026-11-11T14:06:34Z",
-    "completed_at_utc": "2026-11-11T14:12:09Z",
-    "status": "completed",
-    "conclusion": "failure",
-    "job_id": 130572433962,
-    "failed_step": "Install isolated VPN measurement tools",
-    "cause": "apt-get update/install failed because DNS lookups for azure.archive.ubuntu.com, archive.ubuntu.com and security.ubuntu.com failed on Ubuntu 26.04 runner; apt-get install exited 100.",
-    "next_steps_reached": [
-      "Set up job",
-      "Checkout repository",
-      "Upload VPN Gate reports"
-    ],
-    "skipped_steps": [
-      "Set up Go",
-      "Download the exact published GeoIP protobuf",
-      "Export every RU and PRIVATE prefix",
-      "Run capped VPNObratno / VPN Gate Russian-exit measurements"
-    ],
-    "artifacts": [],
-    "openvpn_attempts": 0,
-    "verified_ru_exits": 0,
-    "target_dns_https_measurements": 0,
-    "interpretation": "Runner package-install DNS failure only. No evidence about VPNObratno profiles, RU exit connectivity or target access."
+    "commit": "7723e818a94e8fc22706bdc37474b3f04c640435",
+    "result": "failure",
+    "failure_stage": "Install isolated VPN measurement tools",
+    "artifact_count": 0,
+    "interpretation": "No VPN endpoint or target was measured."
   },
   "latest_manual_dispatch": {
-    "run_id": 43035301161,
-    "run_url": "https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43035301161",
-    "run_number": 15,
+    "run_id": 43038105495,
     "branch": "feature/reachability-full-ru-kz-by",
-    "commit": "6992b4cb337e447f1d14d27fd37a99ee655b8a23",
-    "created_at_utc": "2026-11-11T14:06:34Z",
-    "completed_at_utc": "2026-11-11T14:12:09Z",
-    "status": "completed",
-    "conclusion": "failure",
-    "job_id": 130572433962,
-    "failed_step": "Install isolated VPN measurement tools",
-    "cause": "apt-get update/install failed because DNS lookups for azure.archive.ubuntu.com, archive.ubuntu.com and security.ubuntu.com failed on Ubuntu 26.04 runner; apt-get install exited 100.",
-    "next_steps_reached": [
-      "Set up job",
-      "Checkout repository",
-      "Upload VPN Gate reports"
-    ],
-    "skipped_steps": [
-      "Set up Go",
-      "Download the exact published GeoIP protobuf",
-      "Export every RU and PRIVATE prefix",
-      "Run capped VPNObratno / VPN Gate Russian-exit measurements"
-    ],
-    "artifacts": [],
-    "openvpn_attempts": 0,
-    "verified_ru_exits": 0,
-    "target_dns_https_measurements": 0,
-    "interpretation": "Runner package-install DNS failure only. No evidence about VPNObratno profiles, RU exit connectivity or target access."
+    "commit": "7723e818a94e8fc22706bdc37474b3f04c640435",
+    "result": "failure",
+    "failure_stage": "Install isolated VPN measurement tools",
+    "artifact_count": 0,
+    "interpretation": "No VPN endpoint or target was measured."
   },
   "cancellation_investigation": {
     "run7_cancel_request": {
@@ -1653,5 +1611,36 @@
     "strict_partial_update_error": "APT::Update::Error-Mode=any",
     "preinstalled_openvpn_check": true,
     "validation": "PENDING"
+  },
+  "run16_apt_dns_failure": {
+    "run_id": 43038105495,
+    "job_id": 130582289574,
+    "runner_os": "Ubuntu 24.04.5",
+    "runner_image": "ubuntu-24.04@20261101.360.1",
+    "runner_region": "westus2",
+    "result": "failure_before_measurement",
+    "apt_failure": "Ubuntu mirror hostnames repeatedly failed system DNS; apt setup step timed out after 5 minutes.",
+    "successful_host_resolution": [
+      "packages.microsoft.com"
+    ],
+    "attempted_mirror_hosts": [
+      "azure.archive.ubuntu.com",
+      "archive.ubuntu.com",
+      "security.ubuntu.com"
+    ],
+    "openvpn_attempts": 0,
+    "verified_ru_exits": 0,
+    "target_measurement_rows": 0,
+    "artifacts": 0
+  },
+  "apt_dns_bootstrap_fix": {
+    "implementation": "Resolve Ubuntu mirror A records using the existing TLS-verified pinned DoH client; append an ephemeral /etc/hosts block; validate with getent; keep apt signature validation intact.",
+    "code_changes": [
+      "vpn_gate.py",
+      "test_vpn_gate.py",
+      "reachability-vpn-gate.yml"
+    ],
+    "tests_added": 3,
+    "validation": "pending"
   }
 }
