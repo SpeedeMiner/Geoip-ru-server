@@ -50,12 +50,12 @@ non-default ports, embedded credentials and redirects to another hostname
 are rejected before profile content is accepted. The final response URL is
 checked again after download.
 
-Discovery is bounded to **24 profile downloads per run**. The parser
-interleaves preferred variants across hostnames, so one server's alternative
-profiles do not consume the initial sample before other listed servers are
-considered. The summary records links found, profiles considered, links
-omitted by the cap and whether the cap was reached. This is a separate limit
-from the six actual connection-attempt limit.
+Discovery has a hard cap of **24 profile downloads**, but stops earlier when it
+has six usable, distinct server hostnames (or the configured lower attempt
+budget). Since the listing interleaves IP UDP profiles across hostnames, the
+normal pilot should need only six profile downloads. The summary records links
+found, profiles actually considered, the early-stop reason and links omitted.
+This is separate from the six actual connection-attempt cap.
 
 The downloader also bounds response bodies while they are being read: the
 listing page is limited to 2,000,000 bytes and each linked profile to 64,000
@@ -64,14 +64,17 @@ hard ceiling and reads at most one byte beyond the selected limit to detect
 oversized responses without buffering the entire body.
 
 Before a profile can be attempted, the collector checks that its filename
-matches the server hostname and variant shown in the listing, that the profile
-remote agrees with the listed hostname (or that an IP-literal remote is in the
-hostname's current public DNS answers), and that the configured transport
-matches the advertised variant. Profiles are parsed but never executed
-directly: the client is rebuilt from the existing strict allowlist, pins the
-remote IP, and drops untrusted scripts, plugins, route directives and external
-key files. Each successful tunnel must still pass the two-source public exit
-IP/country check before any target is contacted.
+matches the server hostname and variant shown in the same-origin listing, that
+an IP-mode profile contains a global IPv4 literal, that a DDNS-mode remote
+exactly matches the listed hostname, and that the configured transport matches
+the advertised variant. IP-mode profiles do not trigger a second DNS lookup
+before OpenVPN; the IP literal is taken from the linked profile and marked as
+not independently DNS-correlated. DDNS fallback uses `getent ahostsv4` in a
+child process with a three-second hard timeout. Profiles are parsed but never
+executed directly: the client is rebuilt from the existing strict allowlist,
+pins the remote IP, and drops untrusted scripts, plugins, route directives and
+external key files. Each successful tunnel must still pass the two-source
+public exit IP/country check before any target is contacted.
 
 The workflow has a manual `source` selector:
 - `vpnobratno` (default): page discovery and the linked profile variants above;
@@ -414,8 +417,8 @@ critical API endpoints. Until then, \`NO_MATCHED_ENDPOINT\` means only
 
 - The manual VPN pilot now uses a **5-second per-profile tunnel-route timeout** (`--connect-timeout 5`), with the accepted CLI range starting at 5 seconds. It still allows at most six connection profiles and requests one independently verified RU exit.
 - The 12-second DNS/HTTPS request timeout is unchanged; it is separate from the OpenVPN tunnel establishment timeout.
-- The collector emits flushed progress markers for profile listing, every profile download, per-host candidate selection, the hostname-diversity early-stop decision, selection completion and each OpenVPN attempt. No pre-tunnel RIPEstat/DNS request is performed.
+- The collector emits flushed progress markers for profile listing, each bounded profile download, early stop after enough distinct server hostnames, selection completion and each OpenVPN attempt. IP-mode profiles do not invoke DNS; DDNS fallback resolution runs in a subprocess with a three-second hard timeout.
 - The 5-second setting deliberately favors a short pilot. Slow but potentially viable volunteer endpoints may be classified as no tunnel within the short budget; this is a candidate-availability diagnostic, not evidence that target websites are blocked.
 - Existing run #42996316782 was dispatched before this change and continues with its original `--connect-timeout 60` command. Changes apply only to later runs on the updated feature branch.
 - The collector no longer performs any origin-ASN network lookup before OpenVPN. It selects up to six distinct server hostnames, and leaves server ASN/prefix/org fields unverified rather than blocking tunnel attempts. Actual VPN exit IP/country verification still requires agreement from two independent metadata services after a tunnel is established; exit ASN enrichment remains separate from that country consensus.
-- The measurement step has a hard 10-minute timeout and the enclosing job a 20-minute timeout. The workflow still attempts to upload diagnostics after a measurement-step failure or timeout.
+- The measurement process runs as `sudo timeout --signal=TERM --kill-after=5s 8m python3 ...`: the timeout supervisor itself runs as root so it can terminate the child, leaving margin inside the existing 10-minute step and 20-minute job limits for the always-run diagnostic upload.
