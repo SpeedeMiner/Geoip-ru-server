@@ -63,6 +63,7 @@ jobs:
       V38_PREFIX_PROVENANCE: geoip_RU_v38_prefix_provenance.tsv
       V38_BLOCKED_PROVENANCE: geoip_RU_v38_blocked_provenance.tsv
       V38_BLOCKED_FILE: geoip_RU_v38_blocked_ip_exclusions.txt
+      V38_BLOCKED_SHA: geoip_RU_v38_blocked_ip_exclusions.txt.sha256sum
       V38_BLOCKED_FILE: geoip_RU_v38_blocked_ip_exclusions.txt
       V38_MANIFEST: geoip_RU_v38_manifest.json
       PROVENANCE_FILE: geoip_RU_v37_additional_provenance.tsv
@@ -3073,16 +3074,38 @@ jobs:
           } >> "$QUALITY_REPORT"
           sha256sum "$BLOCKED_IP_INPUT" > "$BLOCKED_IP_SHA_FILE"
 
-          # Generate the protobuf checksum BEFORE the build-artifact gate below.
-          # The Go builder writes geoip_RU.dat but intentionally does not write a sidecar.
-          test -s "$OUTPUT_FILE" || { echo "::error::GeoIP protobuf was not created: $OUTPUT_FILE"; exit 1; }
-          rm -f "$OUTPUT_SHA_FILE"
-          sha256sum "$OUTPUT_FILE" > "$OUTPUT_SHA_FILE"
-          test -s "$OUTPUT_SHA_FILE" || { echo "::error::Failed to create protobuf SHA256 file: $OUTPUT_SHA_FILE"; exit 1; }
-          sha256sum -c "$OUTPUT_SHA_FILE"
+          # Assemble v38 from the v37 trusted base plus regional RIR resources and
+          # named service-direct routes, then carve the explicit RKN-derived /24 set.
+          python3 .github/scripts/build_v38_overlay.py \
+            --base "$OUTPUT_FILE" \
+            --rir "$RIR_RUKZBY_PREFIX_INPUT" \
+            --kyoresuas-v4 "$KY_STANDARD_V4_INPUT" \
+            --kyoresuas-v6 "$KY_STANDARD_V6_INPUT" \
+            --kyoresuas-services "$KY_SERVICES_INPUT" \
+            --w1zardz "$W1ZARDZ_INPUT" \
+            --hxehex-ip "$HXEHEX_IP_INPUT" \
+            --escapingworm "$ESCAPINGWORM_OPERATOR_INPUT" \
+            --blocked-base "$BLOCKED_IP_INPUT" \
+            --ipsum "$BLOCKED_IPSUM_INPUT" \
+            --output "$V38_OUTPUT_FILE" \
+            --categories "$CATEGORY_FILE" \
+            --quality "$V38_QUALITY_REPORT" \
+            --metrics "$V38_METRICS" \
+            --prefix-provenance "$V38_PREFIX_PROVENANCE" \
+            --blocked-provenance "$V38_BLOCKED_PROVENANCE" \
+            --blocked-output "$V38_BLOCKED_FILE" \
+            --manifest "$V38_MANIFEST"
 
-          for file in "$OUTPUT_FILE" "$OUTPUT_SHA_FILE" "$BLOCKED_IP_SHA_FILE" "$CATEGORY_FILE" "$SOURCE_FILE" "$SOURCE_COUNTS" "$CATEGORY_AUDIT" "$QUALITY_REPORT" "$PROVENANCE_FILE" "$ASN_MANIFEST" "$COMPANY_ASN_MANIFEST" "$ASN_STATS" "$BY_KZ_ASN_REGISTRY" "$BLOCKED_IP_INPUT" "$BLOCKED_REVIEW_INPUT" "$BLOCKED_STATS_INPUT" "$BLOCKED_CHECKSUMS_INPUT" "$BLOCKED_IP_RAW_INPUT" "$BLOCKED_IPRESOLVE_INPUT" "$BLOCKED_SUBNET_INPUT" "$INPUT_PROVENANCE" "$INPUT_PROVENANCE_SHA"; do
-            test -s "$file" || { echo "::error::Missing or empty build artifact: $file"; exit 1; }
+          test -s "$OUTPUT_FILE" || { echo "::error::v37 base GeoIP protobuf was not created: $OUTPUT_FILE"; exit 1; }
+          test -s "$V38_OUTPUT_FILE" || { echo "::error::v38 GeoIP protobuf was not created: $V38_OUTPUT_FILE"; exit 1; }
+          rm -f "$OUTPUT_SHA_FILE" "$V38_BLOCKED_SHA"
+          sha256sum "$V38_OUTPUT_FILE" > "$OUTPUT_SHA_FILE"
+          sha256sum "$V38_BLOCKED_FILE" > "$V38_BLOCKED_SHA"
+          sha256sum -c "$OUTPUT_SHA_FILE"
+          sha256sum -c "$V38_BLOCKED_SHA"
+
+          for file in "$OUTPUT_FILE" "$V38_OUTPUT_FILE" "$OUTPUT_SHA_FILE" "$V38_BLOCKED_SHA" "$BLOCKED_IP_SHA_FILE" "$CATEGORY_FILE" "$SOURCE_FILE" "$SOURCE_COUNTS" "$CATEGORY_AUDIT" "$QUALITY_REPORT" "$V38_QUALITY_REPORT" "$V38_METRICS" "$V38_PREFIX_PROVENANCE" "$V38_BLOCKED_PROVENANCE" "$V38_BLOCKED_FILE" "$V38_MANIFEST" "$PROVENANCE_FILE" "$ASN_MANIFEST" "$COMPANY_ASN_MANIFEST" "$ASN_STATS" "$BY_KZ_ASN_REGISTRY" "$BLOCKED_IP_INPUT" "$BLOCKED_IPSUM_INPUT" "$BLOCKED_REVIEW_INPUT" "$BLOCKED_STATS_INPUT" "$BLOCKED_CHECKSUMS_INPUT" "$BLOCKED_IP_RAW_INPUT" "$BLOCKED_IPRESOLVE_INPUT" "$BLOCKED_SUBNET_INPUT" "$INPUT_PROVENANCE" "$INPUT_PROVENANCE_SHA" "$RIR_RUKZBY_PREFIX_INPUT" "$RIR_RUKZBY_STATS" "$KY_STANDARD_V4_INPUT" "$KY_STANDARD_V6_INPUT" "$KY_SERVICES_INPUT" "$HXEHEX_IP_INPUT" "$ESCAPINGWORM_OPERATOR_INPUT"; do
+            test -s "$file" || { echo "::error::Missing or empty v38 build artifact: $file"; exit 1; }
           done
 
       - name: Validate v37 protobuf, RU+BY+KZ coverage and blocked-IP exclusions
