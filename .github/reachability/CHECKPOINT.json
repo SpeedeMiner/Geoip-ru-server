@@ -1,14 +1,14 @@
 {
   "schema_version": 1,
-  "updated_at_utc": "2026-11-11T10:09:12Z",
+  "updated_at_utc": "2026-11-11T10:27:55Z",
   "repository": "SpeedeMiner/Geoip-ru-server",
   "pull_request": 5,
   "pull_request_url": "https://github.com/SpeedeMiner/Geoip-ru-server/pull/5",
   "branch": "feature/reachability-full-ru-kz-by",
   "recorded_pr_head_before_checkpoint_commit": "f267e14228ed6ef179784c5b7285ada40f78cca3",
   "base_sha": "a68e5d6589361814cb1cfedd2af7857e4af806fa",
-  "state": "VPNOBRATTO_RUN_7_ACTIVE_FIVE_SECOND_TIMEOUT_CONFIRMED",
-  "current_phase": "LIVE_OPENVPN_ATTEMPT_1_OF_6",
+  "state": "VPNOBRATTO_RUN_7_STALLED_BEFORE_OPENVPN_PREFLIGHT_BLOCKER_FIXED",
+  "current_phase": "RUN_7_OLD_REVISION_STILL_ACTIVE_AWAIT_CANCEL_AUTHORIZATION",
   "completed": [
     "repository_reconnaissance",
     "protobuf_inventory_exporter",
@@ -193,7 +193,13 @@
     "vpnobratto_five_second_timeout_and_progress_ci_105_tests_go_success_42999166787",
     "vpnobratto_run_6_completed_cancelled_cause_unknown_2026_11_11_09_58_48z",
     "vpnobratto_run_7_dispatched_with_five_second_timeout",
-    "vpnobratto_run_7_live_log_confirms_five_second_timeout_and_progress_events"
+    "vpnobratto_run_7_live_log_confirms_five_second_timeout_and_progress_events",
+    "vpnobratto_run_7_stall_root_cause_reviewed",
+    "vpnobratto_old_attempt_marker_identified_as_preflight_not_openvpn_started",
+    "vpnobratto_unbounded_reverse_ptr_lookup_replaced_with_three_second_getent_timeout",
+    "vpnobratto_preflight_and_openvpn_start_progress_markers_added",
+    "vpnobratto_ptr_timeout_tests_three_added",
+    "vpnobratto_ci_108_tests_go_build_pass_43002007469"
   ],
   "latest_successful_validation_run": 42999166787,
   "latest_successful_validation_commit": "26b12ab8b83f766391168f179837ff44aee6681a",
@@ -372,11 +378,12 @@
     "production_release_artifact_byte_delta_verified": false
   },
   "next_steps": [
-    "Run #43000272971 (#7) is active on feature commit 12d0f98f9b5e5d18518e3a517d8858f69f6f426c with source=vpnobratno, max_vpn_gate_servers=1, max_vpn_gate_attempts=6 and verified per-profile tunnel-route timeout 5 seconds. Continue monitoring this run; do not dispatch a duplicate while it is active.",
-    "Latest live log shows discovery completed: 24 usable profiles downloaded; origin ASN selection inspected 24 profile records and selected six profiles across six distinct ASNs. First OpenVPN attempt is host vpn266997445.opengw.net, variant IP_UDP, server IP 217.144.174.117, attempt 1/6, connect_timeout=5s.",
-    "At latest inspection the first attempt had not produced a TUN route; two-provider public exit IP/country verification has not started and no target request has been sent. Wait for the per-attempt result and all remaining bounded attempts or requested single RU exit.",
-    "After run #7 completes, retrieve the uploaded artifact, inspect vpn_gate_summary.json, vpn_gate_providers.tsv, vpn_gate_measurements.jsonl and raw/geoip-candidate reports. A zero-exit result is VPN tunnel diagnostics only, not proof of target blocking.",
-    "Run #42996316782 (#6) was later cancelled at 2026-11-11T09:58:48Z before report upload; cancellation cause/actor remains UNKNOWN. The prior read-only monitor ended 09:47:25Z and the next dispatch browser session started 09:59:34Z, after cancellation. No explicit workflow-cancel action was invoked by this assistant. Do not attribute the cancellation to the owner.",
+    "Run #43000272971 (#7) remains in_progress on old checkout commit 12d0f98f9b5e5d18518e3a517d8858f69f6f426c. The line openvpn_attempt=1/6 was emitted before IP metadata, RIPEstat fallback and reverse DNS; the five-second tunnel wait might not yet have started. The old resolve_ptr used socket.gethostbyaddr() without timeout, so an unbounded resolver call is the strongest identified stall candidate. Exact blocked call is not conclusively observable because this old run lacks phase markers.",
+    "The current feature branch at commit b58a9ef02acfe90a2210b7a055a113db97bbf33d fixes PTR with getent bounded to three seconds and logs server IP metadata, PTR start/result, OpenVPN process start, tunnel route wait start, per-attempt result and completion. Validation run #43002007469 passed 108 Python tests, py_compile/JSON, gofmt, Go tests and build.",
+    "Do not claim run #7 uses the PTR timeout fix: it remains on pre-fix commit 12d0f98 and has not produced an artifact. Its last REST updated_at was 10:02:55 UTC; measurement still in_progress; report-upload pending; artifacts empty.",
+    "The connected GitHub API tool exposes no cancel-run action. Canceling through the authenticated browser would be performed under the owner's SpeedeMiner identity. Do not trigger such a cancellation without explicit owner authorization; explain this limitation and ask whether the owner wants run #7 cancelled rather than silently polling.",
+    "After #7 reaches a terminal state or is explicitly cancelled with owner approval, inspect resulting artifacts/logs and dispatch one fresh run on current feature branch so it uses bounded PTR and the new preflight progress messages. Keep one successful RU exit target, six max attempts, 5-second tunnel route timeout, 12-second DNS/HTTPS request timeout and two-provider IP/country consensus gate.",
+    "No confirmed RU VPN exit, independent exit IP/country verification or target request has been recorded for #7. Do not call this evidence of target blocking.",
     "Keep PR #5 OPEN / DRAFT. Do not touch PR #6, production builder/data, release branch/assets, DIRECT policy or ASN allowlists."
   ],
   "ci_policy": {
@@ -867,15 +874,23 @@
       "tunnel_result=route_installed"
     ],
     "latest_validation": {
-      "run_id": 42999166787,
-      "run_url": "https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/42999166787",
-      "commit": "26b12ab8b83f766391168f179837ff44aee6681a",
-      "python_tests": 105,
+      "run_id": 43002007469,
+      "run_url": "https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43002007469",
+      "commit": "b58a9ef02acfe90a2210b7a055a113db97bbf33d",
+      "python_tests": 108,
       "python_status": "PASS",
       "python_compile_and_json": "PASS",
       "gofmt": "PASS",
       "go_test": "PASS",
-      "go_build": "PASS"
+      "go_build": "PASS",
+      "features_validated": [
+        "three_second_bounded_reverse_ptr_lookup",
+        "PTR_success_timeout_and_missing_getent_tests",
+        "server_ip_metadata_phase_logs",
+        "server_ptr_phase_logs",
+        "openvpn_process_start_and_tunnel_wait_phase_logs",
+        "per_attempt_result_logs"
+      ]
     },
     "current_manual_dispatch": {
       "run_id": 43000272971,
@@ -912,7 +927,21 @@
       },
       "report_upload_started": false,
       "artifacts": [],
-      "interpretation": "Live progress confirms the five-second route-wait parameter is active. Tunnel attempt remains in progress at latest inspection; no target reachability outcome exists yet."
+      "interpretation": "Live progress confirms the five-second route-wait parameter is active. Tunnel attempt remains in progress at latest inspection; no target reachability outcome exists yet.",
+      "last_checked_at_utc": "2026-11-11T10:27:55Z",
+      "last_log_markers": [
+        "phase=origin_asn_selection completed selected_profiles=6 distinct_asns=6",
+        "openvpn_attempt=1/6 host=vpn266997445.opengw.net variant=IP_UDP server_ip=217.144.174.117 connect_timeout=5s"
+      ],
+      "marker_interpretation": "The attempt marker predates server IP metadata, cached/fallback origin metadata and PTR lookup; it does not prove OpenVPN has been spawned or the five-second route wait has begun.",
+      "last_run_updated_at_utc": "2026-11-11T10:02:55Z",
+      "measurement_step_status": "in_progress",
+      "report_upload_status": "pending",
+      "successful_ru_exits": null,
+      "target_measurements": null,
+      "exact_stall_cause": "UNKNOWN; unbounded socket.gethostbyaddr PTR lookup is the strongest code-supported candidate. Server metadata/RIPEstat preflight also precede OpenVPN. The live old-run logs lack phase markers, so the blocked call cannot be proven.",
+      "cancel_action_available_via_github_connector": false,
+      "cancellation_sent_by_assistant": false
     },
     "previous_manual_dispatch": {
       "run_id": 42996316782,
