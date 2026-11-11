@@ -49,6 +49,9 @@ VPNOBRATNO_VARIANT_ORDER = {
     "ip_udp": 0, "ddns_udp": 1, "ip_tcp": 2, "ddns_tcp": 3,
 }
 VPNOBRATNO_PROFILE_DOWNLOAD_LIMIT = 24
+VPNOBRATNO_LISTING_MAX_BYTES = 2_000_000
+VPNOBRATNO_PROFILE_MAX_BYTES = 64_000
+VPNOBRATNO_FETCH_HARD_MAX_BYTES = 8_000_000
 IP_INFO_URLS = (
     "https://ipwho.is/",
     "https://ipapi.co/json/",
@@ -558,8 +561,20 @@ class VPNObratnoSameOriginRedirect(urllib.request.HTTPRedirectHandler):
         return super().redirect_request(req, fp, code, msg, headers, newurl)
 
 
-def fetch_vpnobratno_bytes(url: str, timeout: int = 25) -> bytes:
-    """Fetch a VPNObratno listing/profile without proxies or cross-origin redirects."""
+def fetch_vpnobratno_bytes(
+    url: str,
+    timeout: int = 25,
+    max_bytes: int = VPNOBRATNO_FETCH_HARD_MAX_BYTES,
+) -> bytes:
+    """Fetch bounded VPNObratno content without proxies or cross-origin redirects."""
+    if (
+        isinstance(max_bytes, bool)
+        or not isinstance(max_bytes, int)
+        or not 1 <= max_bytes <= VPNOBRATNO_FETCH_HARD_MAX_BYTES
+    ):
+        raise ValueError(
+            f"max_bytes must be between 1 and {VPNOBRATNO_FETCH_HARD_MAX_BYTES}"
+        )
     parts = urllib.parse.urlsplit(url)
     if (
         parts.scheme.lower() != "https"
@@ -585,7 +600,12 @@ def fetch_vpnobratno_bytes(url: str, timeout: int = 25) -> bytes:
                 or final_parts.port not in (None, 443)
             ):
                 raise ProbeError("VPNObratno response escaped the trusted HTTPS origin")
-            return response.read(8_000_000)
+            payload = response.read(max_bytes + 1)
+            if len(payload) > max_bytes:
+                raise ProbeError(
+                    f"VPNObratno response exceeds configured {max_bytes}-byte limit"
+                )
+            return payload
     except (urllib.error.URLError, TimeoutError, OSError) as exc:
         raise ProbeError(f"VPNObratno same-origin fetch failed: {exc}") from exc
 
@@ -711,7 +731,9 @@ def discover_vpnobratno_servers(
         raise ValueError(
             f"max_profiles must be between 1 and {VPNOBRATNO_PROFILE_DOWNLOAD_LIMIT}"
         )
-    page = fetcher(VPNOBRATNO_LIST_URL, timeout=40).decode("utf-8", "replace")
+    page = fetcher(
+        VPNOBRATNO_LIST_URL, timeout=40, max_bytes=VPNOBRATNO_LISTING_MAX_BYTES
+    ).decode("utf-8", "replace")
     listed = parse_vpnobratno_listing(page)
     if not listed:
         raise ProbeError("VPNObratno page contains no supported OpenVPN profile links")
@@ -720,8 +742,10 @@ def discover_vpnobratno_servers(
     skipped = collections.Counter()
     for entry in selected_profiles:
         try:
-            payload = fetcher(entry["profile_url"], timeout=25)
-            if not payload or len(payload) > 64_000:
+            payload = fetcher(
+                entry["profile_url"], timeout=25, max_bytes=VPNOBRATNO_PROFILE_MAX_BYTES
+            )
+            if not payload or len(payload) > VPNOBRATNO_PROFILE_MAX_BYTES:
                 raise ValueError("profile is empty or exceeds 64 KiB")
             config = payload.decode("utf-8")
             profile = inspect_openvpn_profile(config)

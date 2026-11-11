@@ -553,8 +553,8 @@ class VPNObratnoDiscoveryTests(unittest.TestCase):
         }
         calls = []
 
-        def fetcher(url, timeout):
-            calls.append((url, timeout))
+        def fetcher(url, timeout, max_bytes):
+            calls.append((url, timeout, max_bytes))
             return payloads[url]
 
         servers, metadata = vpn_gate.discover_vpnobratno_servers(
@@ -570,6 +570,10 @@ class VPNObratnoDiscoveryTests(unittest.TestCase):
         self.assertEqual(metadata["unique_server_hostnames"], 1)
         self.assertFalse(metadata["profile_directives_executed"])
         self.assertEqual(len(calls), 3)
+        self.assertEqual(calls[0][2], vpn_gate.VPNOBRATNO_LISTING_MAX_BYTES)
+        self.assertTrue(all(
+            call[2] == vpn_gate.VPNOBRATNO_PROFILE_MAX_BYTES for call in calls[1:]
+        ))
 
     def test_transport_mismatch_and_profile_for_another_host_are_skipped(self):
         ip_url = (
@@ -582,7 +586,7 @@ class VPNObratnoDiscoveryTests(unittest.TestCase):
             ip_url.replace("https://vpnobratno.info", "")
         ]).encode()
 
-        def fetcher(url, timeout):
+        def fetcher(url, timeout, max_bytes):
             return listing if url == vpn_gate.VPNOBRATNO_LIST_URL else config.encode()
 
         with self.assertRaisesRegex(vpn_gate.ProbeError, "none passed validation"):
@@ -677,8 +681,8 @@ class VPNObratnoFetchSafetyTests(unittest.TestCase):
             return [(socket.AF_INET, socket.SOCK_STREAM, 6, "", (addresses[hostname], 1194))]
 
         calls = []
-        def fetcher(url, timeout):
-            calls.append(url)
+        def fetcher(url, timeout, max_bytes):
+            calls.append((url, max_bytes))
             if url == vpn_gate.VPNOBRATNO_LIST_URL:
                 return b"<html>synthetic listing</html>"
             hostname = next(item["hostname"] for item in entries if item["profile_url"] == url)
@@ -694,6 +698,10 @@ class VPNObratnoFetchSafetyTests(unittest.TestCase):
             )
         self.assertEqual(len(servers), 2)
         self.assertEqual(len(calls), 3)  # Listing plus two profile downloads.
+        self.assertEqual(calls[0][1], vpn_gate.VPNOBRATNO_LISTING_MAX_BYTES)
+        self.assertTrue(all(
+            size == vpn_gate.VPNOBRATNO_PROFILE_MAX_BYTES for _, size in calls[1:]
+        ))
         self.assertEqual(metadata["profile_links_found"], 4)
         self.assertEqual(metadata["profiles_considered_for_download"], 2)
         self.assertEqual(metadata["profiles_not_downloaded_due_to_limit"], 2)
@@ -733,6 +741,55 @@ class VPNObratnoFetchSafetyTests(unittest.TestCase):
                 with self.subTest(url=url):
                     with self.assertRaisesRegex(vpn_gate.ProbeError, "trusted HTTPS origin"):
                         vpn_gate.fetch_vpnobratno_bytes(url)
+            build_opener.assert_not_called()
+
+    def test_fetcher_enforces_response_size_during_read(self):
+        class FakeResponse(io.BytesIO):
+            def __init__(self, payload):
+                super().__init__(payload)
+                self.read_limit = None
+
+            def geturl(self):
+                return "https://vpnobratno.info/test"
+
+            def read(self, size=-1):
+                self.read_limit = size
+                return super().read(size)
+
+        class FakeOpener:
+            def __init__(self, response):
+                self.response = response
+
+            def open(self, request, timeout):
+                return self.response
+
+        url = "https://vpnobratno.info/test"
+        exact_limit_response = FakeResponse(b"1234")
+        with patch.object(
+            vpn_gate.urllib.request,
+            "build_opener",
+            return_value=FakeOpener(exact_limit_response),
+        ):
+            self.assertEqual(
+                vpn_gate.fetch_vpnobratno_bytes(url, max_bytes=4), b"1234"
+            )
+        self.assertEqual(exact_limit_response.read_limit, 5)
+
+        oversized_response = FakeResponse(b"12345")
+        with patch.object(
+            vpn_gate.urllib.request,
+            "build_opener",
+            return_value=FakeOpener(oversized_response),
+        ):
+            with self.assertRaisesRegex(vpn_gate.ProbeError, "exceeds configured 4-byte limit"):
+                vpn_gate.fetch_vpnobratno_bytes(url, max_bytes=4)
+        self.assertEqual(oversized_response.read_limit, 5)
+
+        with patch.object(vpn_gate.urllib.request, "build_opener") as build_opener:
+            with self.assertRaisesRegex(ValueError, "max_bytes"):
+                vpn_gate.fetch_vpnobratno_bytes(
+                    url, max_bytes=vpn_gate.VPNOBRATNO_FETCH_HARD_MAX_BYTES + 1
+                )
             build_opener.assert_not_called()
 
     def test_discovery_uses_the_same_origin_fetcher_by_default(self):
