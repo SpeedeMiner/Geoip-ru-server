@@ -99,17 +99,17 @@ class VPNExitVerificationTests(unittest.TestCase):
     def test_exit_ip_requires_two_independent_matching_sources(self):
         responses = [
             {
-                "ip": "203.0.113.7", "country_code": "RU",
+                "ip": "8.8.8.8", "country_code": "RU",
                 "connection": {"asn": "AS12345", "org": "Example ISP"},
             },
             {
-                "ip": "203.0.113.7", "country_code": "RU",
+                "ip": "8.8.8.8", "country_code": "RU",
                 "asn": "AS12345", "org": "Example ISP",
             },
         ]
         with patch.object(vpn_gate, "fetch_json", side_effect=responses):
             info = vpn_gate.ip_metadata()
-        self.assertEqual(info["ip"], "203.0.113.7")
+        self.assertEqual(info["ip"], "8.8.8.8")
         self.assertEqual(info["country"], "RU")
         self.assertEqual(info["asn"], 12345)
         self.assertEqual(info["verified_by_sources"], 2)
@@ -117,15 +117,15 @@ class VPNExitVerificationTests(unittest.TestCase):
 
     def test_exit_ip_rejects_country_or_address_disagreement(self):
         responses = [
-            {"ip": "203.0.113.7", "country_code": "RU", "connection": {}},
-            {"ip": "203.0.113.8", "country_code": "RU", "connection": {}},
+            {"ip": "8.8.8.8", "country_code": "RU", "connection": {}},
+            {"ip": "1.1.1.1", "country_code": "RU", "connection": {}},
         ]
         with patch.object(vpn_gate, "fetch_json", side_effect=responses):
             with self.assertRaisesRegex(vpn_gate.ProbeError, "disagree"):
                 vpn_gate.ip_metadata()
 
     def test_exit_ip_requires_two_working_metadata_services(self):
-        first = {"ip": "203.0.113.7", "country_code": "RU", "connection": {}}
+        first = {"ip": "8.8.8.8", "country_code": "RU", "connection": {}}
         with patch.object(vpn_gate, "fetch_json", side_effect=[
             first, vpn_gate.ProbeError("offline"), vpn_gate.ProbeError("offline")
         ]):
