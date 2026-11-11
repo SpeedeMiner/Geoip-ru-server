@@ -73,7 +73,6 @@ jobs:
       V38_BLOCKED_PROVENANCE: geoip_RU_v38_blocked_provenance.tsv
       V38_BLOCKED_FILE: geoip_RU_v38_blocked_ip_exclusions.txt
       V38_BLOCKED_SHA: geoip_RU_v38_blocked_ip_exclusions.txt.sha256sum
-      V38_BLOCKED_FILE: geoip_RU_v38_blocked_ip_exclusions.txt
       V38_MANIFEST: geoip_RU_v38_manifest.json
       PROVENANCE_FILE: geoip_RU_v37_additional_provenance.tsv
       ASN_MANIFEST: geoip_RU_BY_KZ_asn_manifest.txt
