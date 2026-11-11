@@ -3160,10 +3160,12 @@ jobs:
               "kirill-geoip.dat", "golukon-geoip.dat", "v2fly-geoip.dat", "v2fly-geoip.dat.sha256sum",
               "loyalsoldier-ru.dat", "loyalsoldier-by.dat", "loyalsoldier-private.dat",
               "hxehex-cidrwhitelist.txt", "w1zardz-ru-ipv4.txt",
+              "kyoresuas-ru-standard-ipv4.txt", "kyoresuas-ru-standard-ipv6.txt", "kyoresuas-services.json",
+              "hxehex-ipwhitelist.txt", "escapingworm-operator-cidr.txt",
               "delegated-afrinic-latest", "delegated-apnic-latest", "delegated-arin-extended-latest",
               "delegated-lacnic-latest", "delegated-ripencc-latest", "iana-ipv4-special-registry.csv",
               "iana-ipv6-special-registry.csv", "as-ip-blocks.tar.gz",
-              "antifilter-ip.lst", "antifilter-ipresolve.lst", "antifilter-subnet.lst",
+              "antifilter-ip.lst", "antifilter-ipresolve.lst", "antifilter-subnet.lst", "antifilter-ipsum.lst",
               "antifilter-community.lst", "refilter-ipsum.lst",
           }
           missing_input_files = sorted(expected_input_files - seen_input_files)
@@ -3407,7 +3409,7 @@ jobs:
               raise SystemExit("feature-branch v38 must not modify/publish production")
           countries = set()
           with rir_path.open(encoding="utf-8", newline="") as stream:
-              for row in csv.DictReader(stream, delimiter="\\t"):
+              for row in csv.DictReader(stream, delimiter=chr(9)):
                   countries.add(row["country"])
           if countries != {"RU", "BY", "KZ"}:
               raise SystemExit(f"v38 RIR resources missing regional country rows: {countries}")
@@ -3555,7 +3557,7 @@ jobs:
             - GeoIP cannot distinguish unrelated domains on the same IP; domain-only RKN rules remain a separate client geosite layer.
 
             ## Audit outputs
-            - `geoip_RU_v38_quality_report.txt` records final v38 address coverage and the exact new-vs-v37 delta after PRIVATE and RKN policy.
+            - `geoip_RU_quality_report.txt` records final v38 address coverage and the exact new-vs-v37 delta after PRIVATE and RKN policy.
             - `geoip_RU_v38_manifest.json` records immutable source refs, source hashes and output SHA-256.
             - `geoip_RU_BY_KZ_rir_registered_prefixes.tsv` retains country, RIR and resource-status provenance.
             - The final client file remains `geoip_RU.dat` with `geoip:RU` and `geoip:PRIVATE` only.
