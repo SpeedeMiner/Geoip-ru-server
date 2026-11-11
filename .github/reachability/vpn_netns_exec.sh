@@ -31,7 +31,7 @@ NS_IF="gvrn${SUFFIX}"
 SUBNET="198.18.${OCTET}.0/30"
 HOST_IP="198.18.${OCTET}.1"
 NS_IP="198.18.${OCTET}.2"
-NETNS_CONFIG="/etc/netns/${NAMESPACE}"
+NETNS_CONFIG="${GEOIP_VPN_NETNS_CONFIG_ROOT:-/etc/netns}/${NAMESPACE}"
 
 EGRESS_IF=""
 IPV4_FORWARD_OLD=""
@@ -40,6 +40,7 @@ VETH_CREATED=0
 FORWARD_OUT_CREATED=0
 FORWARD_RETURN_CREATED=0
 MASQUERADE_CREATED=0
+CHILD_PID=""
 
 cleanup() {
   local exit_status=$?
@@ -91,9 +92,23 @@ cleanup() {
   exit "$exit_status"
 }
 
+forward_signal() {
+  local sig="$1"
+  local code="$2"
+  if [[ -n "$CHILD_PID" ]]; then
+    echo "[vpn-netns] child_signal_forwarded signal=${sig} pid=${CHILD_PID}"
+    kill "-${sig}" "$CHILD_PID" 2>/dev/null || true
+    # The child (GNU timeout -> Python -> report finally) must finish before
+    # EXIT cleanup removes the namespace and its resolver configuration.
+    wait "$CHILD_PID" 2>/dev/null || true
+    echo "[vpn-netns] child_exit_observed_after_signal=true"
+  fi
+  exit "$code"
+}
+
 trap cleanup EXIT
-trap 'exit 130' INT
-trap 'exit 143' TERM
+trap 'forward_signal INT 130' INT
+trap 'forward_signal TERM 143' TERM
 
 ROUTE="$(ip -4 route get 1.1.1.1)"
 EGRESS_IF="$(awk '{ for (i = 1; i <= NF; i++) if ($i == "dev") { print $(i + 1); exit } }' <<< "$ROUTE")"
@@ -137,4 +152,6 @@ iptables -t nat -I POSTROUTING 1 -s "$SUBNET" -o "$EGRESS_IF" -j MASQUERADE
 MASQUERADE_CREATED=1
 
 echo "[vpn-netns] setup_completed namespace=${NAMESPACE} host_output_policy_untouched=true host_default_route_untouched=true"
-ip netns exec "$NAMESPACE" "$@"
+ip netns exec "$NAMESPACE" "$@" &
+CHILD_PID=$!
+wait "$CHILD_PID"

@@ -55,6 +55,8 @@ VPNOBRATNO_PROFILE_DOWNLOAD_LIMIT = 24
 VPNOBRATNO_LISTING_MAX_BYTES = 2_000_000
 VPNOBRATNO_PROFILE_MAX_BYTES = 64_000
 VPNOBRATNO_FETCH_HARD_MAX_BYTES = 8_000_000
+RUN_WALL_CLOCK_BUDGET_SECONDS = 360
+ATTEMPT_WALL_CLOCK_BUDGET_SECONDS = 90
 IP_INFO_URLS = (
     "https://ipwho.is/",
     "https://ipapi.co/json/",
@@ -476,21 +478,44 @@ def fetch_https_pinned(url: str, timeout: int) -> bytes:
     raise ProbeError(f"pinned HTTPS request failed for {host}: " + "; ".join(errors))
 
 
+def _is_timeout_error(exc: BaseException) -> bool:
+    if isinstance(exc, TimeoutError):
+        return True
+    if isinstance(exc, urllib.error.URLError) and isinstance(exc.reason, TimeoutError):
+        return True
+    return "timed out" in str(exc).lower()
+
+
 def fetch_bytes(url: str, timeout: int = 25) -> bytes:
+    deadline = time.monotonic() + timeout
     request = urllib.request.Request(
         url, headers={"User-Agent": USER_AGENT, "Accept": "*/*"}
     )
     opener = urllib.request.build_opener(urllib.request.ProxyHandler({}))
-    try:
+
+    def system_fetch() -> bytes:
         with opener.open(request, timeout=timeout) as response:
             return response.read(8_000_000)
+
+    try:
+        # Bound the complete operation, not just socket inactivity. This also
+        # prevents a slow-drip body from keeping urllib.read() alive forever.
+        return call_with_wall_clock_timeout(system_fetch, timeout)
     except (urllib.error.URLError, TimeoutError, OSError) as exc:
-        # A resolver/NSS failure must not prevent metadata verification after
-        # the VPN route is established. The fallback queries DoH via a pinned
-        # resolver IP, then pins the API's address while preserving TLS SNI.
+        remaining = deadline - time.monotonic()
+        # A blackholed socket or dead tunnel is not a DNS/NSS problem. Retrying
+        # through DoH would multiply the same timeout across more connections.
+        if _is_timeout_error(exc) or remaining < 2:
+            raise ProbeError(
+                f"request timed out for {urllib.parse.urlparse(url).netloc}: {exc}"
+            ) from exc
+        # Only non-timeout resolver/NSS failures get an IPv4 pinned-HTTPS fallback.
         try:
-            return fetch_https_pinned(url, timeout)
-        except ProbeError as fallback_error:
+            return call_with_wall_clock_timeout(
+                lambda: fetch_https_pinned(url, remaining),
+                remaining,
+            )
+        except (ProbeError, OSError) as fallback_error:
             raise ProbeError(
                 f"request failed for {urllib.parse.urlparse(url).netloc}: {exc}; "
                 f"pinned DoH fallback: {fallback_error}"
@@ -854,6 +879,8 @@ def _vpnobratno_fetch_worker_entry(
         # Do not inherit any armed in-process alarm from a caller.
         signal.setitimer(signal.ITIMER_REAL, 0)
         signal.signal(signal.SIGALRM, signal.SIG_DFL)
+        signal.signal(signal.SIGTERM, signal.SIG_DFL)
+        signal.signal(signal.SIGINT, signal.SIG_DFL)
         _VPNOBRATNO_FETCH_CONTEXT = context
         _VPNOBRATNO_FETCH_OPERATION = "doh"
         _VPNOBRATNO_PROGRESS_PATH = progress_path
@@ -874,7 +901,7 @@ def _vpnobratno_fetch_worker_entry(
             raise TypeError("VPNObratno fetch worker returned a non-bytes payload")
         vpnobratno_fetch_trace("worker", "payload_ready", bytes=len(payload))
         send_connection.send(("ok", payload))
-    except BaseException as exc:
+    except Exception as exc:
         record_vpnobratno_progress(
             progress_path,
             context,
@@ -1850,6 +1877,10 @@ def ip_metadata(url: str | None = None) -> dict[str, Any]:
             errors.append(f"{urllib.parse.urlparse(endpoint).netloc}: {exc}")
         if len(observations) >= 2:
             break
+        # Two independent sources are required; if the first two both failed,
+        # querying the third cannot reach consensus and only wastes budget.
+        if not url and len(observations) == 0 and len(errors) >= 2:
+            break
 
     if url:
         raise ProbeError("unable to identify VPN server IP metadata: " + "; ".join(errors[:2]))
@@ -1920,9 +1951,11 @@ class FirewallGuard:
                 "iptables", "-A", "OUTPUT", "-d", self.server_ip,
                 "-p", proto, "--dport", str(self.port), "-j", "ACCEPT",
             ])
+            run_command(["iptables", "-A", "OUTPUT", "-j", "REJECT"])
             run_command(["ip6tables", "-F", "OUTPUT"])
             run_command(["ip6tables", "-P", "OUTPUT", "DROP"])
             run_command(["ip6tables", "-A", "OUTPUT", "-o", "lo", "-j", "ACCEPT"])
+            run_command(["ip6tables", "-A", "OUTPUT", "-j", "REJECT"])
         except BaseException:
             # __exit__ is not called when __enter__ fails; restore snapshots here.
             errors = self._restore()
@@ -2021,6 +2054,7 @@ def resolve_domain_families(
 
 
 def https_head(domain: str, port: int, path: str, timeout: int) -> tuple[str, int | None, str]:
+    deadline = time.monotonic() + timeout
     url = f"https://{domain}:{port}{path}"
     request = urllib.request.Request(
         url, method="HEAD",
@@ -2035,12 +2069,15 @@ def https_head(domain: str, port: int, path: str, timeout: int) -> tuple[str, in
         # not that the service is healthy or that content is unfiltered.
         return "HTTP_RESPONSE", int(exc.code), ""
     except (urllib.error.URLError, TimeoutError, OSError) as exc:
+        remaining = int(deadline - time.monotonic())
+        if _is_timeout_error(exc) or remaining < 2:
+            return "INCONCLUSIVE", None, f"system HTTPS timed out: {str(exc)[:200]}"
         # A system resolver/NSS error is not a service failure. Retry with a
         # pinned DoH-resolved IP, preserving Host, SNI and certificate checks.
         try:
             # Only IPv4 HTTPS is in scope. AAAA answers are still recorded
             # by resolve_domain_families, but IPv6 transport is firewall-blocked.
-            addresses = doh_query(domain, "A", timeout=min(timeout, 12))
+            addresses = doh_query(domain, "A", timeout=min(remaining, 8))
             if not addresses:
                 return "INCONCLUSIVE", None, (
                     f"system HTTPS: {str(exc)[:160]}; pinned DoH: no global IPv4 "
@@ -2048,10 +2085,13 @@ def https_head(domain: str, port: int, path: str, timeout: int) -> tuple[str, in
                 )
             errors = []
             for address in addresses[:3]:
+                step_timeout = int(deadline - time.monotonic())
+                if step_timeout < 1:
+                    break
                 connection = None
                 try:
                     connection = PinnedHTTPSConnection(
-                        domain, address, port=port, timeout=timeout
+                        domain, address, port=port, timeout=step_timeout
                     )
                     connection.request(
                         "HEAD", path,
@@ -2130,9 +2170,97 @@ def server_measurement_report_fields(
     }
 
 
+def _bounded_remaining_seconds(
+    deadline: float,
+    maximum: float,
+    *,
+    minimum: float = 1.0,
+) -> float:
+    """Return time remaining without extending a phase beyond its parent deadline."""
+    remaining = deadline - time.monotonic()
+    if remaining < minimum:
+        raise TimeoutError(
+            f"wall-clock budget exhausted: {remaining:.3f}s remains; "
+            f"at least {minimum:.3f}s is required"
+        )
+    return min(float(maximum), remaining)
+
+
 def measurement_exit_code(successful_ru_exits: int, requested_ru_exits: int) -> int:
     """A diagnostic artifact without the requested verified RU exits is not a pass."""
     return 0 if successful_ru_exits >= requested_ru_exits else 2
+
+
+def persist_vpn_gate_reports(
+    output: pathlib.Path,
+    provider_rows: list[dict[str, Any]],
+    measurement_rows: list[dict[str, Any]],
+    candidates: list[dict[str, Any]],
+    raw_rows: list[dict[str, Any]],
+    summary: dict[str, Any],
+) -> list[str]:
+    """Attempt every diagnostic report independently, replacing each file atomically."""
+    output.mkdir(parents=True, exist_ok=True)
+    errors: list[str] = []
+    pending_signal: BaseException | None = None
+
+    def write_atomic(filename: str, writer: Any) -> None:
+        nonlocal pending_signal
+        destination = output / filename
+        temporary = output / f".{filename}.{os.getpid()}.tmp"
+        try:
+            writer(temporary)
+            os.replace(temporary, destination)
+            print(f"[vpn-gate] report_persisted name={filename}", flush=True)
+        except BaseException as exc:
+            errors.append(f"{filename}: {type(exc).__name__}: {str(exc)[:180]}")
+            print(
+                f"[vpn-gate] report_persist_failed name={filename} "
+                f"error={type(exc).__name__} message={str(exc)[:120].replace(' ', '_')}",
+                flush=True,
+            )
+            if not isinstance(exc, Exception) and pending_signal is None:
+                pending_signal = exc
+        finally:
+            try:
+                temporary.unlink(missing_ok=True)
+            except OSError as cleanup_error:
+                errors.append(
+                    f"{filename} temporary cleanup: {type(cleanup_error).__name__}"
+                )
+
+    reports = (
+        (
+            "vpn_gate_providers.tsv",
+            lambda path: runner.write_tsv(path, provider_rows, PROVIDER_FIELDS),
+        ),
+        (
+            "vpn_gate_measurements.jsonl",
+            lambda path: runner.write_jsonl(path, measurement_rows),
+        ),
+        (
+            "vpn_gate_geoip_candidates.tsv",
+            lambda path: runner.write_tsv(path, candidates, CANDIDATE_FIELDS),
+        ),
+        (
+            "vpn_gate_raw.jsonl",
+            lambda path: runner.write_jsonl(path, raw_rows),
+        ),
+    )
+    for filename, writer in reports:
+        write_atomic(filename, writer)
+
+    summary["report_write_errors"] = list(errors)
+    write_atomic(
+        "vpn_gate_summary.json",
+        lambda path: path.write_text(
+            json.dumps(summary, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
+            encoding="utf-8",
+        ),
+    )
+    if pending_signal is not None:
+        raise pending_signal
+    return errors
 
 
 def run(args: argparse.Namespace) -> int:
@@ -2141,367 +2269,441 @@ def run(args: argparse.Namespace) -> int:
                if "RU" in target.get("country_scope", [])]
     output = pathlib.Path(args.output_dir)
     output.mkdir(parents=True, exist_ok=True)
+    run_deadline = time.monotonic() + RUN_WALL_CLOCK_BUDGET_SECONDS
 
-    if args.source == "vpnobratno":
-        print("[vpn-gate] phase=discovery source=vpnobratno started", flush=True)
-        progress_manifest = output / "vpn_gate_vpnobratto_progress.json"
-        servers, discovery_meta = discover_vpnobratno_servers(
-            max_unique_hosts=args.max_attempts,
-            progress_path=progress_manifest,
-        )
-        discovery_source = "vpnobratno.info Russian server list and linked OpenVPN profiles"
-        raw_rows: list[dict[str, Any]] = [{
-            "source": "vpnobratno_profile_discovery",
-            "url": VPNOBRATNO_LIST_URL,
-            "retrieved_at": utc_now(),
-            "discovery": discovery_meta,
-            "policy": "The site lists Russian VPN Gate user-operated nodes; country and access-network type are reverified from the actual tunnel exit.",
-        }]
-    else:
-        csv_text = fetch_bytes(VPN_GATE_API, timeout=40).decode("utf-8", "replace")
-        servers = parse_vpngate_csv(csv_text)
-        discovery_meta = {"usable_profiles": len(servers), "source": VPN_GATE_API}
-        discovery_source = "VPN Gate official CSV API"
-        raw_rows = [{
-            "source": "vpn_gate_official_api",
-            "url": VPN_GATE_API,
-            "retrieved_at": utc_now(),
-            "ru_openvpn_servers_with_usable_profiles": len(servers),
-            "policy": "RU country in VPN Gate record; ISP/residential status is not assumed",
-        }]
-    print(
-        f"[vpn-gate] phase=discovery completed usable_profiles={len(servers)}",
-        flush=True,
+    discovery_source = (
+        "vpnobratno.info Russian server list and linked OpenVPN profiles"
+        if args.source == "vpnobratno"
+        else "VPN Gate official CSV API"
     )
-    print(
-        f"[vpn-gate] phase=server_host_selection candidates={len(servers)} "
-        f"max_attempts={args.max_attempts} started asn_enrichment=deferred",
-        flush=True,
-    )
-    selected, selection_meta = select_server_host_diverse_candidates(
-        servers, args.max_servers, max_attempts=args.max_attempts
-    )
-    print(
-        f"[vpn-gate] phase=server_host_selection completed "
-        f"selected_profiles={len(selected)} "
-        f"distinct_server_hosts={selection_meta['distinct_candidate_server_hosts']} "
-        "selected_distinct_asns=0 asn_status=UNVERIFIED",
-        flush=True,
-    )
-    raw_rows[0]["selected_servers"] = len(selected)
-    raw_rows[0]["provider_diversity_selection"] = selection_meta
+    discovery_meta: dict[str, Any] = {}
+    selection_meta: dict[str, Any] = {}
+    servers: list[dict[str, Any]] = []
+    selected: list[dict[str, Any]] = []
+    raw_rows: list[dict[str, Any]] = []
     provider_rows: list[dict[str, Any]] = []
     measurement_rows: list[dict[str, Any]] = []
     candidates: list[dict[str, Any]] = []
     exit_categories: collections.Counter[str] = collections.Counter()
     connection_counts: collections.Counter[str] = collections.Counter()
+    interrupted_reason = ""
 
-    for attempt_index, server in enumerate(selected, start=1):
-        if connection_counts["connected_ru_exit"] >= args.max_servers:
-            break
-        server_ip = server["server_ip"]
+    try:
+        if args.source == "vpnobratno":
+            print("[vpn-gate] phase=discovery source=vpnobratno started", flush=True)
+            progress_manifest = output / "vpn_gate_vpnobratto_progress.json"
+            servers, discovery_meta = discover_vpnobratno_servers(
+                max_unique_hosts=args.max_attempts,
+                progress_path=progress_manifest,
+            )
+            raw_rows = [{
+                "source": "vpnobratno_profile_discovery",
+                "url": VPNOBRATNO_LIST_URL,
+                "retrieved_at": utc_now(),
+                "discovery": discovery_meta,
+                "policy": "The site lists Russian VPN Gate user-operated nodes; country and access-network type are reverified from the actual tunnel exit.",
+            }]
+        else:
+            csv_text = fetch_bytes(VPN_GATE_API, timeout=40).decode("utf-8", "replace")
+            servers = parse_vpngate_csv(csv_text)
+            discovery_meta = {"usable_profiles": len(servers), "source": VPN_GATE_API}
+            raw_rows = [{
+                "source": "vpn_gate_official_api",
+                "url": VPN_GATE_API,
+                "retrieved_at": utc_now(),
+                "ru_openvpn_servers_with_usable_profiles": len(servers),
+                "policy": "RU country in VPN Gate record; ISP/residential status is not assumed",
+            }]
         print(
-            f"[vpn-gate] openvpn_attempt={attempt_index}/{len(selected)} "
-            f"host={server['hostname']} variant={server.get('profile_variant', 'VPN_GATE_API')} "
-            f"server_ip={server_ip} connect_timeout={args.connect_timeout}s",
+            f"[vpn-gate] phase=discovery completed usable_profiles={len(servers)}",
             flush=True,
         )
-        server_category, server_prefix = runner.map_address(server_ip, networks)
-        # Origin ASN enrichment is deliberately deferred; it is not required to start
-        # OpenVPN or to verify the public exit country and target reachability.
-        server_origin = cached_server_origin(server)
-        server_asn_ip_meta = 0
-        server_asn_ripestat = parse_int(server_origin.get("asn"))
-        server_asn_conflict = False
-        server_asn = server_asn_ripestat
-        ptr = ""
         print(
-            f"[vpn-gate] server_metadata_enrichment=skipped host={server['hostname']} "
-            "reason=pre_tunnel_network_lookup_removed",
+            f"[vpn-gate] phase=server_host_selection candidates={len(servers)} "
+            f"max_attempts={args.max_attempts} started asn_enrichment=deferred",
             flush=True,
         )
-        provider = {
-            "SOURCE": server.get("source", "VPN_GATE"),
-            "PROFILE_VARIANT": server.get("profile_variant", "VPN_GATE_API"),
-            "PROFILE_URL": server.get("profile_url", ""),
-            "SERVER_HOSTNAME": server["hostname"],
-            "SERVER_IP": server_ip,
-            "SERVER_COUNTRY": server["country_long"],
-            "SERVER_ASN": server_asn,
-            "SERVER_ASN_IP_METADATA": server_asn_ip_meta,
-            "SERVER_ASN_RIPESTAT": server_asn_ripestat,
-            "SERVER_ASN_CONFLICT": server_asn_conflict,
-            "SERVER_PREFIX": server_origin["prefix"],
-            "SERVER_ORG": "",
-            "SERVER_PTR": ptr,
-            "SERVER_GEOIP_CATEGORY": server_category,
-            "SERVER_GEOIP_RU_PREFIX": server_prefix,
-            "VPN_SCORE": server["score"],
-            "VPN_PING_MS": server["ping_ms"],
-            "VPN_SPEED_BPS": server["speed_bps"],
-            "VPN_SESSIONS": server["vpn_sessions"],
-            "VPN_UPTIME": server["uptime"],
-            "EXIT_IP": "",
-            "EXIT_COUNTRY": "",
-            "EXIT_ASN": "",
-            "EXIT_ASN_IP_METADATA": "",
-            "EXIT_ASN_RIPESTAT": "",
-            "EXIT_ASN_CONFLICT": "",
-            "EXIT_PREFIX": "",
-            "EXIT_ORG": "",
-            "EXIT_GEOIP_CATEGORY": "",
-            "EXIT_GEOIP_RU_PREFIX": "",
-            "CONNECTION_RESULT": "NOT_ATTEMPTED",
-            "TARGETS_TESTED": 0,
-        }
-        raw_rows.append({
-            "source": "openvpn_profile_safe_features",
-            "server_hostname": server["hostname"],
-            "discovery_source": server.get("source", "VPN_GATE"),
-            "profile_variant": server.get("profile_variant", "VPN_GATE_API"),
-            "profile_url": server.get("profile_url", ""),
-            "profile_features": {
-                "has_inline_ca": "ca" in server["profile"]["blocks"],
-                "has_tls_auth": "tls-auth" in server["profile"]["blocks"],
-                "has_tls_crypt": "tls-crypt" in server["profile"]["blocks"],
-                "has_tls_crypt_v2": "tls-crypt-v2" in server["profile"]["blocks"],
-                "tls_version_min": server["profile"].get("tls_version_min", ""),
-                "tls_version_max": server["profile"].get("tls_version_max", ""),
-                "tls_cipher": server["profile"].get("tls_cipher", ""),
-                "tls_ciphersuites": server["profile"].get("tls_ciphersuites", ""),
-                "tls_cert_profile": server["profile"].get("tls_cert_profile", ""),
-                "verify_x509_name_present": bool(server["profile"].get("verify_x509_name")),
-                "remote_cert_eku_present": bool(server["profile"].get("remote_cert_eku")),
-                "remote_cert_ku_count": len(server["profile"].get("remote_cert_ku", [])),
-            },
-        })
-        connection_counts["selected"] += 1
-        with tempfile.TemporaryDirectory(prefix="geoip-vpngate-") as directory:
-            tmp = pathlib.Path(directory)
-            auth_path = tmp / "auth.txt"
-            auth_path.write_text("vpn\nvpn\n", encoding="ascii")
-            auth_path.chmod(0o600)
-            config_path = tmp / "client.ovpn"
-            config_path.write_text(build_safe_openvpn_config(server, auth_path), encoding="utf-8")
-            log_path = tmp / "openvpn.log"
-            process = None
-            try:
-                with FirewallGuard(server_ip, server["profile"]["proto"], server["profile"]["port"]):
-                    with ResolverGuard():
-                        with log_path.open("w", encoding="utf-8") as log_stream:
-                            print(
-                                f"[vpn-gate] openvpn_process_starting attempt={attempt_index}/{len(selected)} "
-                                f"host={server['hostname']}",
-                                flush=True,
-                            )
-                            process = subprocess.Popen(
-                                ["openvpn", "--config", str(config_path), "--verb", "3"],
-                                stdout=log_stream, stderr=subprocess.STDOUT,
-                            )
-                            print(
-                                f"[vpn-gate] openvpn_process_started attempt={attempt_index}/{len(selected)} "
-                                f"host={server['hostname']}",
-                                flush=True,
-                            )
-                            try:
-                                print(
-                                    f"[vpn-gate] tunnel_route_wait_started attempt={attempt_index}/{len(selected)} "
-                                    f"timeout={args.connect_timeout}s",
-                                    flush=True,
-                                )
-                                wait_for_tunnel(process, args.connect_timeout, log_path)
-                                print(
-                                    f"[vpn-gate] tunnel_result=route_installed host={server['hostname']}",
-                                    flush=True,
-                                )
-                                exit_info = ip_metadata()
-                                if exit_info["country"] != "RU":
-                                    provider["CONNECTION_RESULT"] = "REJECTED_EXIT_NOT_RU"
-                                    connection_counts["rejected_non_ru_exit"] += 1
-                                else:
-                                    exit_origin = network_info(exit_info["ip"])
-                                    exit_info["network_prefix"] = exit_origin["prefix"]
-                                    exit_asn_ip_meta = parse_int(exit_info.get("asn"))
-                                    exit_asn_ripestat = parse_int(exit_origin.get("asn"))
-                                    exit_asn_conflict = bool(
-                                        exit_asn_ip_meta and exit_asn_ripestat
-                                        and exit_asn_ip_meta != exit_asn_ripestat
-                                    )
-                                    exit_info["asn_ip_metadata"] = exit_asn_ip_meta
-                                    exit_info["asn_ripestat"] = exit_asn_ripestat
-                                    exit_info["asn_conflict"] = exit_asn_conflict
-                                    exit_info["asn"] = exit_asn_ripestat or exit_asn_ip_meta
-                                    exit_category, exit_prefix = runner.map_address(exit_info["ip"], networks)
-                                    if exit_asn_conflict:
-                                        candidates.append({
-                                            "CANDIDATE_TYPE": "ASN_CONFLICT",
-                                            "SERVER_HOSTNAME": server["hostname"],
-                                            "SERVER_IP": server_ip,
-                                            "EXIT_IP": exit_info["ip"],
-                                            "EXIT_COUNTRY": exit_info["country"],
-                                            "EXIT_ASN": exit_info["asn"],
-                                            "EXIT_ASN_IP_METADATA": exit_asn_ip_meta,
-                                            "EXIT_ASN_RIPESTAT": exit_asn_ripestat,
-                                            "EXIT_ASN_CONFLICT": True,
-                                            "EXIT_ORG": exit_info["org"],
-                                            "GEOIP_CATEGORY": exit_category,
-                                            "MATCHED_RU_PREFIX": exit_prefix,
-                                            "REASON": "IP metadata and RIPEstat report different origin ASNs for the VPN exit IP",
-                                            "REVIEW_POLICY": "REVIEW_ONLY_ORIGIN_CONFLICT_REQUIRES_ROUTE_REVIEW",
-                                        })
-                                    provider.update({
-                                        "EXIT_IP": exit_info["ip"],
-                                        "EXIT_COUNTRY": exit_info["country"],
-                                        "EXIT_ASN": exit_info["asn"],
-                                        "EXIT_ASN_IP_METADATA": exit_asn_ip_meta,
-                                        "EXIT_ASN_RIPESTAT": exit_asn_ripestat,
-                                        "EXIT_ASN_CONFLICT": exit_asn_conflict,
-                                        "EXIT_PREFIX": exit_info["network_prefix"],
-                                        "EXIT_ORG": exit_info["org"],
-                                        "EXIT_GEOIP_CATEGORY": exit_category,
-                                        "EXIT_GEOIP_RU_PREFIX": exit_prefix,
-                                        "CONNECTION_RESULT": "CONNECTED_RU_EGRESS",
-                                    })
-                                    connection_counts["connected_ru_exit"] += 1
-                                    exit_categories[exit_category] += 1
-                                    if exit_category != "RU":
-                                        candidates.append({
-                                            "CANDIDATE_TYPE": "VPN_EXIT_IP",
-                                            "SERVER_HOSTNAME": server["hostname"],
-                                            "SERVER_IP": server_ip,
-                                            "EXIT_IP": exit_info["ip"],
-                                            "EXIT_COUNTRY": exit_info["country"],
-                                            "EXIT_ASN": exit_info["asn"],
-                                            "EXIT_ASN_IP_METADATA": exit_asn_ip_meta,
-                                            "EXIT_ASN_RIPESTAT": exit_asn_ripestat,
-                                            "EXIT_ASN_CONFLICT": exit_asn_conflict,
-                                            "EXIT_ORG": exit_info["org"],
-                                            "GEOIP_CATEGORY": exit_category,
-                                            "MATCHED_RU_PREFIX": exit_prefix,
-                                            "REASON": "IP metadata reports RU but the published GeoIP inventory does not map this exit IP to RU",
-                                            "REVIEW_POLICY": "REVIEW_ONLY_NO_AUTOMATIC_CIDR_CHANGE",
-                                        })
-                                    for target in targets:
-                                        row = test_target(target, exit_info, networks, args.request_timeout)
-                                        row.update({
-                                            "SOURCE": server.get("source", "VPN_GATE"),
-                                            "PROFILE_VARIANT": server.get("profile_variant", "VPN_GATE_API"),
-                                            "PROFILE_URL": server.get("profile_url", ""),
-                                            "SERVER_HOSTNAME": server["hostname"],
-                                            "SERVER_IP": server_ip,
-                                            **server_measurement_report_fields(
-                                                server_asn,
-                                                server_asn_ip_meta,
-                                                server_asn_ripestat,
-                                                server_asn_conflict,
-                                            ),
-                                            "EXIT_ASN_IP_METADATA": exit_asn_ip_meta,
-                                            "EXIT_ASN_RIPESTAT": exit_asn_ripestat,
-                                            "EXIT_ASN_CONFLICT": exit_asn_conflict,
-                                            "EXIT_GEOIP_CATEGORY": exit_category,
-                                            "EXIT_GEOIP_RU_PREFIX": exit_prefix,
-                                        })
-                                        measurement_rows.append(row)
-                                        provider["TARGETS_TESTED"] += 1
-                            except (ProbeError, OSError, subprocess.SubprocessError) as exc:
-                                provider["CONNECTION_RESULT"] = "CONNECT_OR_VERIFY_FAILED"
-                                provider["ERROR"] = str(exc)[:400]
-                                connection_counts["connect_or_verify_failed"] += 1
-                                print(
-                                    f"[vpn-gate] openvpn_attempt_result={attempt_index}/{len(selected)} "
-                                    f"result=failed reason={str(exc)[:180]}",
-                                    flush=True,
-                                )
-                            finally:
-                                if process and process.poll() is None:
-                                    process.terminate()
-                                    try:
-                                        process.wait(timeout=8)
-                                    except subprocess.TimeoutExpired:
-                                        process.kill()
-                                        process.wait(timeout=5)
-            except (OSError, subprocess.SubprocessError, ProbeError) as exc:
-                provider["CONNECTION_RESULT"] = "FIREWALL_OR_TUNNEL_SETUP_FAILED"
-                provider["ERROR"] = str(exc)[:400]
-                connection_counts["setup_failed"] += 1
+        selected, selection_meta = select_server_host_diverse_candidates(
+            servers, args.max_servers, max_attempts=args.max_attempts
+        )
+        print(
+            f"[vpn-gate] phase=server_host_selection completed "
+            f"selected_profiles={len(selected)} "
+            f"distinct_server_hosts={selection_meta['distinct_candidate_server_hosts']} "
+            "selected_distinct_asns=0 asn_status=UNVERIFIED",
+            flush=True,
+        )
+        raw_rows[0]["selected_servers"] = len(selected)
+        raw_rows[0]["provider_diversity_selection"] = selection_meta
+
+        for attempt_index, server in enumerate(selected, start=1):
+            if connection_counts["connected_ru_exit"] >= args.max_servers:
+                break
+            if time.monotonic() >= run_deadline:
+                interrupted_reason = "run_wall_clock_budget_exhausted"
                 print(
-                    f"[vpn-gate] openvpn_attempt_result={attempt_index}/{len(selected)} "
-                    f"result=setup_failed reason={str(exc)[:180]}",
+                    f"[vpn-gate] run_budget_exhausted before_attempt={attempt_index}/{len(selected)}",
                     flush=True,
                 )
-            if provider["CONNECTION_RESULT"] not in {"CONNECTED_RU_EGRESS", "REJECTED_EXIT_NOT_RU"}:
-                try:
-                    tail = log_path.read_text(encoding="utf-8", errors="replace").splitlines()[-60:]
-                    if tail:
-                        raw_rows.append({
-                            "source": "openvpn_diagnostic_tail",
-                            "server_hostname": server["hostname"],
-                            "lines": tail,
-                        })
-                except OSError:
-                    pass
+                break
+            attempt_deadline = min(
+                run_deadline, time.monotonic() + ATTEMPT_WALL_CLOCK_BUDGET_SECONDS
+            )
+            server_ip = server["server_ip"]
             print(
-                f"[vpn-gate] openvpn_attempt_completed={attempt_index}/{len(selected)} "
-                f"result={provider['CONNECTION_RESULT']}",
+                f"[vpn-gate] openvpn_attempt={attempt_index}/{len(selected)} "
+                f"host={server['hostname']} variant={server.get('profile_variant', 'VPN_GATE_API')} "
+                f"server_ip={server_ip} connect_timeout={args.connect_timeout}s",
                 flush=True,
             )
-        provider_rows.append(provider)
+            server_category, server_prefix = runner.map_address(server_ip, networks)
+            # Origin ASN enrichment is deliberately deferred; it is not required to start
+            # OpenVPN or to verify the public exit country and target reachability.
+            server_origin = cached_server_origin(server)
+            server_asn_ip_meta = 0
+            server_asn_ripestat = parse_int(server_origin.get("asn"))
+            server_asn_conflict = False
+            server_asn = server_asn_ripestat
+            ptr = ""
+            print(
+                f"[vpn-gate] server_metadata_enrichment=skipped host={server['hostname']} "
+                "reason=pre_tunnel_network_lookup_removed",
+                flush=True,
+            )
+            provider = {
+                "SOURCE": server.get("source", "VPN_GATE"),
+                "PROFILE_VARIANT": server.get("profile_variant", "VPN_GATE_API"),
+                "PROFILE_URL": server.get("profile_url", ""),
+                "SERVER_HOSTNAME": server["hostname"],
+                "SERVER_IP": server_ip,
+                "SERVER_COUNTRY": server["country_long"],
+                "SERVER_ASN": server_asn,
+                "SERVER_ASN_IP_METADATA": server_asn_ip_meta,
+                "SERVER_ASN_RIPESTAT": server_asn_ripestat,
+                "SERVER_ASN_CONFLICT": server_asn_conflict,
+                "SERVER_PREFIX": server_origin["prefix"],
+                "SERVER_ORG": "",
+                "SERVER_PTR": ptr,
+                "SERVER_GEOIP_CATEGORY": server_category,
+                "SERVER_GEOIP_RU_PREFIX": server_prefix,
+                "VPN_SCORE": server["score"],
+                "VPN_PING_MS": server["ping_ms"],
+                "VPN_SPEED_BPS": server["speed_bps"],
+                "VPN_SESSIONS": server["vpn_sessions"],
+                "VPN_UPTIME": server["uptime"],
+                "EXIT_IP": "",
+                "EXIT_COUNTRY": "",
+                "EXIT_ASN": "",
+                "EXIT_ASN_IP_METADATA": "",
+                "EXIT_ASN_RIPESTAT": "",
+                "EXIT_ASN_CONFLICT": "",
+                "EXIT_PREFIX": "",
+                "EXIT_ORG": "",
+                "EXIT_GEOIP_CATEGORY": "",
+                "EXIT_GEOIP_RU_PREFIX": "",
+                "CONNECTION_RESULT": "NOT_ATTEMPTED",
+                "TARGETS_TESTED": 0,
+            }
+            provider_rows.append(provider)
+            raw_rows.append({
+                "source": "openvpn_profile_safe_features",
+                "server_hostname": server["hostname"],
+                "discovery_source": server.get("source", "VPN_GATE"),
+                "profile_variant": server.get("profile_variant", "VPN_GATE_API"),
+                "profile_url": server.get("profile_url", ""),
+                "profile_features": {
+                    "has_inline_ca": "ca" in server["profile"]["blocks"],
+                    "has_tls_auth": "tls-auth" in server["profile"]["blocks"],
+                    "has_tls_crypt": "tls-crypt" in server["profile"]["blocks"],
+                    "has_tls_crypt_v2": "tls-crypt-v2" in server["profile"]["blocks"],
+                    "tls_version_min": server["profile"].get("tls_version_min", ""),
+                    "tls_version_max": server["profile"].get("tls_version_max", ""),
+                    "tls_cipher": server["profile"].get("tls_cipher", ""),
+                    "tls_ciphersuites": server["profile"].get("tls_ciphersuites", ""),
+                    "tls_cert_profile": server["profile"].get("tls_cert_profile", ""),
+                    "verify_x509_name_present": bool(server["profile"].get("verify_x509_name")),
+                    "remote_cert_eku_present": bool(server["profile"].get("remote_cert_eku")),
+                    "remote_cert_ku_count": len(server["profile"].get("remote_cert_ku", [])),
+                },
+            })
+            connection_counts["selected"] += 1
+            with tempfile.TemporaryDirectory(prefix="geoip-vpngate-") as directory:
+                tmp = pathlib.Path(directory)
+                auth_path = tmp / "auth.txt"
+                auth_path.write_text("vpn\nvpn\n", encoding="ascii")
+                auth_path.chmod(0o600)
+                config_path = tmp / "client.ovpn"
+                config_path.write_text(build_safe_openvpn_config(server, auth_path), encoding="utf-8")
+                log_path = tmp / "openvpn.log"
+                process = None
+                try:
+                    with FirewallGuard(server_ip, server["profile"]["proto"], server["profile"]["port"]):
+                        with ResolverGuard():
+                            with log_path.open("w", encoding="utf-8") as log_stream:
+                                print(
+                                    f"[vpn-gate] openvpn_process_starting attempt={attempt_index}/{len(selected)} "
+                                    f"host={server['hostname']}",
+                                    flush=True,
+                                )
+                                process = subprocess.Popen(
+                                    ["openvpn", "--config", str(config_path), "--verb", "3"],
+                                    stdout=log_stream, stderr=subprocess.STDOUT,
+                                )
+                                print(
+                                    f"[vpn-gate] openvpn_process_started attempt={attempt_index}/{len(selected)} "
+                                    f"host={server['hostname']}",
+                                    flush=True,
+                                )
+                                try:
+                                    print(
+                                        f"[vpn-gate] tunnel_route_wait_started attempt={attempt_index}/{len(selected)} "
+                                        f"timeout={args.connect_timeout}s",
+                                        flush=True,
+                                    )
+                                    wait_for_tunnel(process, args.connect_timeout, log_path)
+                                    print(
+                                        f"[vpn-gate] tunnel_result=route_installed host={server['hostname']}",
+                                        flush=True,
+                                    )
+                                    print(
+                                        f"[vpn-gate] exit_metadata_verification_started host={server['hostname']}",
+                                        flush=True,
+                                    )
+                                    exit_info = call_with_wall_clock_timeout(
+                                        ip_metadata,
+                                        _bounded_remaining_seconds(attempt_deadline, 30.0, minimum=3.0),
+                                    )
+                                    print(
+                                        f"[vpn-gate] exit_metadata_verification_completed "
+                                        f"host={server['hostname']} exit_country={exit_info['country']}",
+                                        flush=True,
+                                    )
+                                    if exit_info["country"] != "RU":
+                                        provider["CONNECTION_RESULT"] = "REJECTED_EXIT_NOT_RU"
+                                        connection_counts["rejected_non_ru_exit"] += 1
+                                    else:
+                                        exit_origin = call_with_wall_clock_timeout(
+                                            lambda: network_info(exit_info["ip"]),
+                                            _bounded_remaining_seconds(attempt_deadline, 15.0, minimum=2.0),
+                                        )
+                                        exit_info["network_prefix"] = exit_origin["prefix"]
+                                        exit_asn_ip_meta = parse_int(exit_info.get("asn"))
+                                        exit_asn_ripestat = parse_int(exit_origin.get("asn"))
+                                        exit_asn_conflict = bool(
+                                            exit_asn_ip_meta and exit_asn_ripestat
+                                            and exit_asn_ip_meta != exit_asn_ripestat
+                                        )
+                                        exit_info["asn_ip_metadata"] = exit_asn_ip_meta
+                                        exit_info["asn_ripestat"] = exit_asn_ripestat
+                                        exit_info["asn_conflict"] = exit_asn_conflict
+                                        exit_info["asn"] = exit_asn_ripestat or exit_asn_ip_meta
+                                        exit_category, exit_prefix = runner.map_address(exit_info["ip"], networks)
+                                        if exit_asn_conflict:
+                                            candidates.append({
+                                                "CANDIDATE_TYPE": "ASN_CONFLICT",
+                                                "SERVER_HOSTNAME": server["hostname"],
+                                                "SERVER_IP": server_ip,
+                                                "EXIT_IP": exit_info["ip"],
+                                                "EXIT_COUNTRY": exit_info["country"],
+                                                "EXIT_ASN": exit_info["asn"],
+                                                "EXIT_ASN_IP_METADATA": exit_asn_ip_meta,
+                                                "EXIT_ASN_RIPESTAT": exit_asn_ripestat,
+                                                "EXIT_ASN_CONFLICT": True,
+                                                "EXIT_ORG": exit_info["org"],
+                                                "GEOIP_CATEGORY": exit_category,
+                                                "MATCHED_RU_PREFIX": exit_prefix,
+                                                "REASON": "IP metadata and RIPEstat report different origin ASNs for the VPN exit IP",
+                                                "REVIEW_POLICY": "REVIEW_ONLY_ORIGIN_CONFLICT_REQUIRES_ROUTE_REVIEW",
+                                            })
+                                        provider.update({
+                                            "EXIT_IP": exit_info["ip"],
+                                            "EXIT_COUNTRY": exit_info["country"],
+                                            "EXIT_ASN": exit_info["asn"],
+                                            "EXIT_ASN_IP_METADATA": exit_asn_ip_meta,
+                                            "EXIT_ASN_RIPESTAT": exit_asn_ripestat,
+                                            "EXIT_ASN_CONFLICT": exit_asn_conflict,
+                                            "EXIT_PREFIX": exit_info["network_prefix"],
+                                            "EXIT_ORG": exit_info["org"],
+                                            "EXIT_GEOIP_CATEGORY": exit_category,
+                                            "EXIT_GEOIP_RU_PREFIX": exit_prefix,
+                                            "CONNECTION_RESULT": "CONNECTED_RU_EGRESS",
+                                        })
+                                        connection_counts["connected_ru_exit"] += 1
+                                        exit_categories[exit_category] += 1
+                                        if exit_category != "RU":
+                                            candidates.append({
+                                                "CANDIDATE_TYPE": "VPN_EXIT_IP",
+                                                "SERVER_HOSTNAME": server["hostname"],
+                                                "SERVER_IP": server_ip,
+                                                "EXIT_IP": exit_info["ip"],
+                                                "EXIT_COUNTRY": exit_info["country"],
+                                                "EXIT_ASN": exit_info["asn"],
+                                                "EXIT_ASN_IP_METADATA": exit_asn_ip_meta,
+                                                "EXIT_ASN_RIPESTAT": exit_asn_ripestat,
+                                                "EXIT_ASN_CONFLICT": exit_asn_conflict,
+                                                "EXIT_ORG": exit_info["org"],
+                                                "GEOIP_CATEGORY": exit_category,
+                                                "MATCHED_RU_PREFIX": exit_prefix,
+                                                "REASON": "IP metadata reports RU but the published GeoIP inventory does not map this exit IP to RU",
+                                                "REVIEW_POLICY": "REVIEW_ONLY_NO_AUTOMATIC_CIDR_CHANGE",
+                                            })
+                                        for target_index, target in enumerate(targets, start=1):
+                                            remaining_target = attempt_deadline - time.monotonic()
+                                            if remaining_target <= 2:
+                                                print(
+                                                    f"[vpn-gate] target_loop_budget_exhausted "
+                                                    f"host={server['hostname']} tested={provider['TARGETS_TESTED']}/{len(targets)}",
+                                                    flush=True,
+                                                )
+                                                break
+                                            print(
+                                                f"[vpn-gate] target_probe_started={target_index}/{len(targets)} "
+                                                f"target={target['id']} domain={target['domain']}",
+                                                flush=True,
+                                            )
+                                            target_timeout = _bounded_remaining_seconds(
+                                                attempt_deadline,
+                                                float(args.request_timeout * 2 + 4),
+                                                minimum=4.0,
+                                            )
+                                            row = call_with_wall_clock_timeout(
+                                                lambda: test_target(target, exit_info, networks, args.request_timeout),
+                                                target_timeout,
+                                            )
+                                            row.update({
+                                                "SOURCE": server.get("source", "VPN_GATE"),
+                                                "PROFILE_VARIANT": server.get("profile_variant", "VPN_GATE_API"),
+                                                "PROFILE_URL": server.get("profile_url", ""),
+                                                "SERVER_HOSTNAME": server["hostname"],
+                                                "SERVER_IP": server_ip,
+                                                **server_measurement_report_fields(
+                                                    server_asn,
+                                                    server_asn_ip_meta,
+                                                    server_asn_ripestat,
+                                                    server_asn_conflict,
+                                                ),
+                                                "EXIT_ASN_IP_METADATA": exit_asn_ip_meta,
+                                                "EXIT_ASN_RIPESTAT": exit_asn_ripestat,
+                                                "EXIT_ASN_CONFLICT": exit_asn_conflict,
+                                                "EXIT_GEOIP_CATEGORY": exit_category,
+                                                "EXIT_GEOIP_RU_PREFIX": exit_prefix,
+                                            })
+                                            measurement_rows.append(row)
+                                            provider["TARGETS_TESTED"] += 1
+                                            print(
+                                                f"[vpn-gate] target_probe_completed={target_index}/{len(targets)} "
+                                                f"target={target['id']} https={row['HTTPS_RESULT']}",
+                                                flush=True,
+                                            )
+                                except (ProbeError, TimeoutError, OSError, subprocess.SubprocessError) as exc:
+                                    if provider["CONNECTION_RESULT"] != "CONNECTED_RU_EGRESS":
+                                        provider["CONNECTION_RESULT"] = "CONNECT_OR_VERIFY_FAILED"
+                                        connection_counts["connect_or_verify_failed"] += 1
+                                    provider["ERROR"] = str(exc)[:400]
+                                    print(
+                                        f"[vpn-gate] openvpn_attempt_result={attempt_index}/{len(selected)} "
+                                        f"result=failed reason={str(exc)[:180]}",
+                                        flush=True,
+                                    )
+                                finally:
+                                    if process and process.poll() is None:
+                                        process.terminate()
+                                        try:
+                                            process.wait(timeout=8)
+                                        except subprocess.TimeoutExpired:
+                                            process.kill()
+                                            process.wait(timeout=5)
+                except (OSError, subprocess.SubprocessError, ProbeError) as exc:
+                    provider["CONNECTION_RESULT"] = "FIREWALL_OR_TUNNEL_SETUP_FAILED"
+                    provider["ERROR"] = str(exc)[:400]
+                    connection_counts["setup_failed"] += 1
+                    print(
+                        f"[vpn-gate] openvpn_attempt_result={attempt_index}/{len(selected)} "
+                        f"result=setup_failed reason={str(exc)[:180]}",
+                        flush=True,
+                    )
+                if provider["CONNECTION_RESULT"] not in {"CONNECTED_RU_EGRESS", "REJECTED_EXIT_NOT_RU"}:
+                    try:
+                        tail = log_path.read_text(encoding="utf-8", errors="replace").splitlines()[-60:]
+                        if tail:
+                            raw_rows.append({
+                                "source": "openvpn_diagnostic_tail",
+                                "server_hostname": server["hostname"],
+                                "lines": tail,
+                            })
+                    except OSError:
+                        pass
+                print(
+                    f"[vpn-gate] openvpn_attempt_completed={attempt_index}/{len(selected)} "
+                    f"result={provider['CONNECTION_RESULT']}",
+                    flush=True,
+                )
+    except BaseException as exc:
+        interrupted_reason = f"{type(exc).__name__}: {str(exc)[:240]}"
+        print(
+            f"[vpn-gate] run_interrupted error_type={type(exc).__name__} "
+            f"message={str(exc)[:180].replace(' ', '_')}",
+            flush=True,
+        )
+        raise
+    finally:
+        for row in measurement_rows:
+            exit_ip = row.get("EXIT_IP")
+            row["EXIT_IP"] = exit_ip or ""
+        candidates = candidates[:]
+        summary = {
+            "generated_at": utc_now(),
+            "source": discovery_source,
+            "discovery": discovery_meta,
+            "selected_source": args.source,
+            "selected_vpn_gate_ru_servers": len(selected),
+            "requested_successful_ru_exits": args.max_servers,
+            "max_connection_attempts": args.max_attempts,
+            "connection_attempts": connection_counts["selected"],
+            "successful_ru_exits": connection_counts["connected_ru_exit"],
+            "usable_ru_openvpn_servers_discovered": len(servers),
+            "provider_diversity_selection": selection_meta,
+            "connection_counts": dict(connection_counts),
+            "exit_geoip_categories": dict(exit_categories),
+            "targets_in_ru_scope": len(targets),
+            "target_measurements": len(measurement_rows),
+            "geoip_candidates": len(candidates),
+            "provider_rows": len(provider_rows),
+            "server_asn_conflicts": sum(bool(row.get("SERVER_ASN_CONFLICT")) for row in provider_rows),
+            "exit_asn_conflicts": sum(bool(row.get("EXIT_ASN_CONFLICT")) for row in provider_rows),
+            "interrupted_reason": interrupted_reason,
+            "policy": {
+                "vpn_gate_country_field_is_not_a_residential_attestation": True,
+                "vpnobratno_site_listing_is_not_a_residential_attestation": True,
+                "profile_variant_is_recorded_per_server_attempt": True,
+                "volunteer_access_network_class": "RESIDENTIAL_OR_OTHER_ACCESS_NETWORK_UNVERIFIED",
+                "only_ru_country_exits_are_tested": True,
+                "non_ru_exit_is_rejected": True,
+                "non_tunnel_egress_is_firewall_blocked_while_connected": True,
+                "ipv6_direct_egress_is_firewall_blocked": True,
+                "http_response_including_403_or_5xx_is_transport_observation_only": True,
+                "timeouts_are_not_block_verdicts": True,
+                "geoip_mutation": False,
+                "automatic_cidr_additions": False,
+            },
+            "limitations": [
+                "VPN Gate nodes are volunteer-operated; a Russian exit IP does not prove a residential household line.",
+                "ISP/ASN metadata is supporting attribution only; confirm operator and access type independently before using a range decision.",
+                "The run tests declared RU-scope service hostnames, not every address in every GeoIP CIDR.",
+                "Only IPv4 VPN tunnel egress is used; IPv6 host egress is blocked during the test and AAAA resolution is recorded without an IPv6 HTTPS tunnel test.",
+                "VPN Gate may retain connection logs; only minimal public DNS/HTTPS requests are sent and no credentials or user data are submitted.",
+            ],
+        }
+        persist_vpn_gate_reports(
+            output,
+            provider_rows,
+            measurement_rows,
+            candidates,
+            raw_rows,
+            summary,
+        )
+        print(json.dumps(summary, ensure_ascii=False, indent=2, sort_keys=True), flush=True)
 
-    for row in measurement_rows:
-        exit_ip = row.get("EXIT_IP")
-        row["EXIT_IP"] = exit_ip or ""
-    candidates = candidates[:]
-    runner.write_tsv(output / "vpn_gate_providers.tsv", provider_rows, PROVIDER_FIELDS)
-    runner.write_jsonl(output / "vpn_gate_measurements.jsonl", measurement_rows)
-    runner.write_tsv(output / "vpn_gate_geoip_candidates.tsv", candidates, CANDIDATE_FIELDS)
-    runner.write_jsonl(output / "vpn_gate_raw.jsonl", raw_rows)
-    summary = {
-        "generated_at": utc_now(),
-        "source": discovery_source,
-        "discovery": discovery_meta,
-        "selected_source": args.source,
-        "selected_vpn_gate_ru_servers": len(selected),
-        "requested_successful_ru_exits": args.max_servers,
-        "max_connection_attempts": args.max_attempts,
-        "connection_attempts": connection_counts["selected"],
-        "successful_ru_exits": connection_counts["connected_ru_exit"],
-        "usable_ru_openvpn_servers_discovered": len(servers),
-        "provider_diversity_selection": selection_meta,
-        "connection_counts": dict(connection_counts),
-        "exit_geoip_categories": dict(exit_categories),
-        "targets_in_ru_scope": len(targets),
-        "target_measurements": len(measurement_rows),
-        "geoip_candidates": len(candidates),
-        "provider_rows": len(provider_rows),
-        "server_asn_conflicts": sum(bool(row.get("SERVER_ASN_CONFLICT")) for row in provider_rows),
-        "exit_asn_conflicts": sum(bool(row.get("EXIT_ASN_CONFLICT")) for row in provider_rows),
-        "policy": {
-            "vpn_gate_country_field_is_not_a_residential_attestation": True,
-            "vpnobratno_site_listing_is_not_a_residential_attestation": True,
-            "profile_variant_is_recorded_per_server_attempt": True,
-            "volunteer_access_network_class": "RESIDENTIAL_OR_OTHER_ACCESS_NETWORK_UNVERIFIED",
-            "only_ru_country_exits_are_tested": True,
-            "non_ru_exit_is_rejected": True,
-            "non_tunnel_egress_is_firewall_blocked_while_connected": True,
-            "ipv6_direct_egress_is_firewall_blocked": True,
-            "http_response_including_403_or_5xx_is_transport_observation_only": True,
-            "timeouts_are_not_block_verdicts": True,
-            "geoip_mutation": False,
-            "automatic_cidr_additions": False,
-        },
-        "limitations": [
-            "VPN Gate nodes are volunteer-operated; a Russian exit IP does not prove a residential household line.",
-            "ISP/ASN metadata is supporting attribution only; confirm operator and access type independently before using a range decision.",
-            "The run tests declared RU-scope service hostnames, not every address in every GeoIP CIDR.",
-            "Only IPv4 VPN tunnel egress is used; IPv6 host egress is blocked during the test and AAAA resolution is recorded without an IPv6 HTTPS tunnel test.",
-            "VPN Gate may retain connection logs; only minimal public DNS/HTTPS requests are sent and no credentials or user data are submitted.",
-        ],
-    }
-    (output / "vpn_gate_summary.json").write_text(
-        json.dumps(summary, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
-        encoding="utf-8",
-    )
-    print(json.dumps(summary, ensure_ascii=False, indent=2, sort_keys=True))
     exit_code = measurement_exit_code(
         connection_counts["connected_ru_exit"], args.max_servers
     )

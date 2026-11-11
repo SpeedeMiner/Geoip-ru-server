@@ -310,7 +310,8 @@ class UbuntuAptDNSBootstrapTests(unittest.TestCase):
         self.assertIn("iptables -I FORWARD", wrapper)
         self.assertIn("iptables -t nat -I POSTROUTING", wrapper)
         self.assertIn("trap cleanup EXIT", wrapper)
-        self.assertIn("trap 'exit 143' TERM", wrapper)
+        self.assertIn("trap 'forward_signal TERM 143' TERM", wrapper)
+        self.assertIn('wait "$CHILD_PID"', wrapper)
         self.assertIn('sysctl -w "net.ipv4.ip_forward=$IPV4_FORWARD_OLD"', wrapper)
         self.assertNotIn('iptables -P OUTPUT DROP', wrapper)
 
@@ -718,6 +719,207 @@ class OpenVPNProfileSafetyTests(unittest.TestCase):
 
         restore_commands = [call[0][0] for call in calls if call[0][0].endswith("-restore")]
         self.assertEqual(restore_commands, ["iptables-restore", "ip6tables-restore"])
+
+
+
+
+
+class VPNGateTimeoutRegressionTests(unittest.TestCase):
+    def test_fetch_bytes_does_not_retry_pinned_https_after_socket_timeout(self):
+        for failure in (
+            TimeoutError("timed out"),
+            urllib.error.URLError(TimeoutError("timed out")),
+        ):
+            opener = type("Opener", (), {
+                "open": lambda self, request, timeout, error=failure: (_ for _ in ()).throw(error)
+            })()
+            with (
+                patch.object(vpn_gate.urllib.request, "build_opener", return_value=opener),
+                patch.object(vpn_gate, "call_with_wall_clock_timeout", side_effect=lambda callback, _timeout: callback()),
+                patch.object(vpn_gate, "fetch_https_pinned") as pinned,
+            ):
+                with self.assertRaises(vpn_gate.ProbeError):
+                    vpn_gate.fetch_bytes("https://metadata.example/", timeout=5)
+            pinned.assert_not_called()
+
+    def test_fetch_bytes_passes_only_remaining_budget_to_dns_fallback(self):
+        opener = type("Opener", (), {
+            "open": lambda self, request, timeout: (_ for _ in ()).throw(
+                urllib.error.URLError(socket.gaierror("temporary resolver failure"))
+            )
+        })()
+        with (
+            patch.object(vpn_gate.urllib.request, "build_opener", return_value=opener),
+            patch.object(vpn_gate.time, "monotonic", side_effect=[100.0, 105.0]),
+            patch.object(vpn_gate, "call_with_wall_clock_timeout", side_effect=lambda callback, _timeout: callback()),
+            patch.object(vpn_gate, "fetch_https_pinned", return_value=b"ok") as pinned,
+        ):
+            self.assertEqual(vpn_gate.fetch_bytes("https://metadata.example/", timeout=20), b"ok")
+        pinned.assert_called_once_with("https://metadata.example/", 15.0)
+
+    def test_https_head_does_not_start_doh_after_socket_timeout(self):
+        opener = type("Opener", (), {
+            "open": lambda self, request, timeout: (_ for _ in ()).throw(
+                urllib.error.URLError(TimeoutError("timed out"))
+            )
+        })()
+        with patch.object(vpn_gate.urllib.request, "build_opener", return_value=opener):
+            with patch.object(vpn_gate, "doh_query") as doh:
+                result = vpn_gate.https_head("target.example", 443, "/", 5)
+        self.assertEqual(result[:2], ("INCONCLUSIVE", None))
+        doh.assert_not_called()
+
+    def test_ip_metadata_stops_after_two_failed_services(self):
+        with patch.object(vpn_gate, "_parse_ip_metadata", side_effect=[
+            vpn_gate.ProbeError("first offline"),
+            vpn_gate.ProbeError("second offline"),
+            {"ip": "203.0.113.10", "country": "RU"},
+        ]) as lookup:
+            with self.assertRaisesRegex(vpn_gate.ProbeError, "requires two independent"):
+                vpn_gate.ip_metadata()
+        self.assertEqual(lookup.call_count, 2)
+
+    def test_ip_metadata_continues_after_one_failed_service_to_reach_consensus(self):
+        first = {
+            "ip": "203.0.113.10", "country": "RU", "asn": 1234,
+            "org": "Example", "source": "second",
+        }
+        second = dict(first, source="third")
+        with patch.object(vpn_gate, "_parse_ip_metadata", side_effect=[
+            vpn_gate.ProbeError("first offline"), first, second
+        ]) as lookup:
+            result = vpn_gate.ip_metadata()
+        self.assertEqual(result["verified_by_sources"], 2)
+        self.assertEqual(result["ip"], first["ip"])
+        self.assertEqual(lookup.call_count, 3)
+
+    def test_attempt_budget_helper_never_extends_expired_deadline(self):
+        with patch.object(vpn_gate.time, "monotonic", return_value=102.0):
+            self.assertEqual(vpn_gate._bounded_remaining_seconds(105.0, 10.0), 3.0)
+        with patch.object(vpn_gate.time, "monotonic", return_value=106.0):
+            with self.assertRaisesRegex(TimeoutError, "budget exhausted"):
+                vpn_gate._bounded_remaining_seconds(105.0, 10.0)
+
+
+class VPNGateFirewallRejectTests(unittest.TestCase):
+    def test_firewall_adds_explicit_reject_after_allowed_egress(self):
+        calls = []
+
+        def fake_run(args, *, input_text=None, check=True):
+            calls.append(args)
+            output = "*filter\\nCOMMIT\\n" if args in (["iptables-save"], ["ip6tables-save"]) else ""
+            return subprocess.CompletedProcess(args, 0, stdout=output, stderr="")
+
+        guard = vpn_gate.FirewallGuard("8.8.8.8", "tcp-client", 443)
+        with patch.object(vpn_gate, "run_command", side_effect=fake_run):
+            guard.__enter__()
+            guard.__exit__(None, None, None)
+
+        ipv4_reject = calls.index(["iptables", "-A", "OUTPUT", "-j", "REJECT"])
+        ipv6_reject = calls.index(["ip6tables", "-A", "OUTPUT", "-j", "REJECT"])
+        ipv4_tunnel_allow = calls.index(["iptables", "-A", "OUTPUT", "-o", "tun+", "-j", "ACCEPT"])
+        ipv6_loopback_allow = calls.index(["ip6tables", "-A", "OUTPUT", "-o", "lo", "-j", "ACCEPT"])
+        self.assertGreater(ipv4_reject, ipv4_tunnel_allow)
+        self.assertGreater(ipv6_reject, ipv6_loopback_allow)
+
+
+class VPNGateReportPersistenceTests(unittest.TestCase):
+    def test_sigterm_during_one_report_still_attempts_remaining_artifacts(self):
+        with tempfile.TemporaryDirectory() as directory:
+            output = pathlib.Path(directory)
+            summary = {}
+            real_write_tsv = vpn_gate.runner.write_tsv
+            tsv_calls = []
+
+            def write_tsv(path, rows, fields):
+                tsv_calls.append(path.name)
+                if len(tsv_calls) == 1:
+                    raise SystemExit(143)
+                return real_write_tsv(path, rows, fields)
+
+            with patch.object(vpn_gate.runner, "write_tsv", side_effect=write_tsv):
+                with self.assertRaises(SystemExit) as raised:
+                    vpn_gate.persist_vpn_gate_reports(output, [], [], [], [], summary)
+
+            self.assertEqual(raised.exception.code, 143)
+            self.assertEqual(len(tsv_calls), 2)
+            self.assertEqual(summary["report_write_errors"][0].split(":")[0], "vpn_gate_providers.tsv")
+            self.assertTrue((output / "vpn_gate_measurements.jsonl").exists())
+            self.assertTrue((output / "vpn_gate_geoip_candidates.tsv").exists())
+            self.assertTrue((output / "vpn_gate_raw.jsonl").exists())
+            self.assertTrue((output / "vpn_gate_summary.json").exists())
+            self.assertFalse(any(path.name.endswith(".tmp") for path in output.iterdir()))
+
+
+class VPNNetnsWrapperSignalTests(unittest.TestCase):
+    def test_wrapper_waits_for_child_report_before_namespace_cleanup_on_sigterm(self):
+        wrapper = pathlib.Path(__file__).resolve().parent / "vpn_netns_exec.sh"
+        with tempfile.TemporaryDirectory() as directory:
+            root = pathlib.Path(directory)
+            fakebin = root / "bin"
+            fakebin.mkdir()
+            config_root = root / "netns-config"
+            report_path = root / "child-report.txt"
+
+            (fakebin / "id").write_text("#!/bin/sh\\necho 0\\n", encoding="utf-8")
+            ip_stub = """#!/bin/bash
+if [[ "$1" == "-4" && "$2" == "route" && "$3" == "get" ]]; then
+  echo "1.1.1.1 dev eth0"
+  exit 0
+fi
+if [[ "$1" == "route" && "$2" == "show" ]]; then exit 0; fi
+if [[ "$1" == "netns" && "$2" == "exec" ]]; then shift 3; exec "$@"; fi
+if [[ "$1" == "netns" && "$2" == "pids" ]]; then exit 0; fi
+exit 0
+"""
+            (fakebin / "ip").write_text(ip_stub, encoding="utf-8")
+            for name in ("iptables", "iptables-save", "iptables-restore"):
+                (fakebin / name).write_text("#!/bin/sh\\nexit 0\\n", encoding="utf-8")
+            sysctl_stub = """#!/bin/sh
+if [ "$1" = "-n" ]; then echo 0; fi
+exit 0
+"""
+            (fakebin / "sysctl").write_text(sysctl_stub, encoding="utf-8")
+            for path in fakebin.iterdir():
+                path.chmod(0o755)
+
+            child = (
+                "trap 'sleep 0.25; printf report-complete > \"$REPORT_PATH\"; "
+                "echo child_report_written; exit 0' TERM; "
+                "while :; do sleep 0.05; done"
+            )
+            env = dict(os.environ)
+            env.update({
+                "PATH": str(fakebin) + os.pathsep + "/usr/bin:/bin",
+                "GITHUB_RUN_ID": "999999",
+                "GITHUB_RUN_ATTEMPT": "1",
+                "GEOIP_VPN_NETNS_CONFIG_ROOT": str(config_root),
+                "REPORT_PATH": str(report_path),
+            })
+            process = subprocess.Popen(
+                ["bash", str(wrapper), "--", "bash", "-c", child],
+                stdout=subprocess.PIPE,
+                stderr=subprocess.STDOUT,
+                text=True,
+                env=env,
+            )
+            try:
+                time.sleep(0.3)
+                process.terminate()
+                output_text, _ = process.communicate(timeout=5)
+            finally:
+                if process.poll() is None:
+                    process.kill()
+                    process.wait(timeout=2)
+
+            self.assertTrue(report_path.exists(), output_text)
+            self.assertIn("report-complete", report_path.read_text(encoding="utf-8"))
+            self.assertLess(
+                output_text.index("child_report_written"),
+                output_text.index("[vpn-netns] cleanup_started"),
+            )
+            self.assertIn("[vpn-netns] child_exit_observed_after_signal=true", output_text)
+            self.assertIn("[vpn-netns] cleanup_completed", output_text)
 
 
 class VPNGateResolverSafetyTests(unittest.TestCase):
