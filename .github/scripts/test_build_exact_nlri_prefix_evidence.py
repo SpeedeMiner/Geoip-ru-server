@@ -40,8 +40,8 @@ class ExactNlriCaptureTests(unittest.TestCase):
                     "origin_asn": 13118,
                     "rpki_state": "valid",
                     "reporting_peers": [
-                        {"peer_asn": 123, "timestamp": "2026-11-11T09:58:00Z"},
-                        {"peer_asn": 456, "timestamp": "2026-11-11T09:59:00Z"},
+                        {"peer_asn": 123, "collector": "rrc00", "timestamp": "2026-11-11T09:58:00Z"},
+                        {"peer_asn": 456, "collector": "rrc01", "timestamp": "2026-11-11T09:59:00Z"},
                     ],
                 },
                 {
@@ -56,6 +56,8 @@ class ExactNlriCaptureTests(unittest.TestCase):
         self.assertEqual(summary["exact_entries_returned"], 1)
         self.assertEqual(summary["origins"], ["13118"])
         self.assertEqual(summary["rpki_states"], ["valid"])
+        self.assertEqual(summary["origin_rpki_states"], {"13118": "valid"})
+        self.assertEqual(summary["collectors"], ["rrc00", "rrc01"])
         self.assertEqual(summary["reporting_peer_count"], 2)
         self.assertEqual(summary["latest_peer_timestamp"], "2026-11-11T09:59:00Z")
 
