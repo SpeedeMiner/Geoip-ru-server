@@ -264,3 +264,20 @@ Durable resume point for PR #5. After any conversation/network interruption, rea
 - Added two unit tests for ASN-diverse fallback selection and attempt-budget validation; latest VPN Gate module count is 19 tests (expected combined suite 48). Full validation of this retry implementation is pending.
 - Next: wait for Reachability validation on vpn_gate.py/tests, then change the one-shot marker with a new [vpn-gate-once] commit to retry up to three distinct-ASN candidates for one successful RU tunnel. Do not rerun until CI is green.
 - Do not alter GeoIP production data based on this sample: the relay IP is already covered by RU CIDR. No main/release, builder, DIRECT, ASN allowlists or PR #6 touched.
+
+
+### 2026-11-11 — Add bounded VPN Gate fallback after first TLS failure — IMPLEMENTED / CI PASS
+
+- Reviewed first-run artifact `geoip-ru-vpn-gate-42960930985.zip` (artifact 13829435753, 287,650 bytes, SHA-256 `7b517cd1db899a766b7b65aba155756d94ada4285bcf75215167a91cc0f183cf`). It found 12 usable RU profiles across six ASNs and attempted one selected exit only.
+- The selected exit was `vpn971088675`, `188.242.100.160`, AS35807 / SkyNet Ltd., route `188.242.96.0/19`, PTR `188.242.100.160.pool.sknt.ru`. The server is already mapped as RU by the published GeoIP inventory via `188.242.64.0/18`; this observation is not a missing-RU-IP candidate. Public references also identify AS35807 as a Russian ISP and list the /19 as RPKI-valid:
+  - https://ipapi.is/asn/35807.html
+  - https://bgp.he.net/AS35807
+  - https://ipinfo.io/AS35807/188.242.96.0/19
+- TCP connected to the relay's advertised port 1439. OpenVPN then reported TLS key negotiation timeout after 60 seconds. No TUN default route was installed, no exit-IP metadata could be verified, and no DNS/HTTPS target request was sent. Workflow conclusion SUCCESS means the diagnostic artifact uploaded; it does **not** mean the VPN measurement or service checks succeeded.
+- Implemented bounded retry: `select_diverse_servers` now prepares up to six attempts in ASN-diverse round-robin order. `--max-servers` counts successful verified RU exits; `--max-attempts` separately limits candidate connections. The loop continues after connection/TLS failure or non-RU exit and stops when the requested number of verified RU exits is reached.
+- Added live-log fail-fast detection for TLS negotiation, TLS handshake and authentication failure markers. This avoids sleeping through the entire timeout when OpenVPN has already reported a fatal session failure.
+- Workflow exposes separate max-success and max-attempt values; the branch one-shot defaults to one successful RU exit and three connection candidates. The hard cap remains six for both. No recurring VPN schedule was added.
+- Regression suite additions: fallback ordering across distinct ASNs, attempt budget validation, and fail-fast TLS log detection. Latest VPN Gate test module has 19 tests; existing reachability module has 29; total expected 48.
+- CI validation Run #103 `42962158410` succeeded on `f8ecc2c894a2ea290b95bb2c1ab242a2a62ec5ce`; logs report `Ran 48 tests`, `OK`, plus gofmt, go test and go build all successful.
+- Retry is ready; no second measurement has yet been launched. Next one-shot marker commit must carry `[vpn-gate-once]` and will try up to three candidates to achieve one successful RU exit.
+- No production GeoIP mutation, main/release change, DIRECT/ASN allowlist change or PR #6 change.
