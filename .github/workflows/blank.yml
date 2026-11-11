@@ -1888,14 +1888,46 @@ jobs:
           	return new(big.Int).Lsh(big.NewInt(1), uint(prefix.Addr().BitLen()-prefix.Bits()))
           }
           
+          // countCoveredTrieAddresses sums the address space covered below one trie node.
+          // The caller provides the prefix depth represented by that node.
+          func countCoveredTrieAddresses(node *trieNode, depth, bitLen int) *big.Int {
+          	if node == nil {
+          		return new(big.Int)
+          	}
+          	if node.covered {
+          		return new(big.Int).Lsh(big.NewInt(1), uint(bitLen-depth))
+          	}
+          	total := new(big.Int)
+          	if node.child[0] != nil {
+          		total.Add(total, countCoveredTrieAddresses(node.child[0], depth+1, bitLen))
+          	}
+          	if node.child[1] != nil {
+          		total.Add(total, countCoveredTrieAddresses(node.child[1], depth+1, bitLen))
+          	}
+          	return total
+          }
+
           // prefixOverlapAddressCount counts addresses from one prefix covered by a set.
-          // Trie intersection handles both covering aggregate routes and more-specific routes.
+          // Walk the requested path once, then sum only the matching descendant subtree.
+          // This avoids allocating and intersecting a temporary trie for every output CIDR.
           func prefixOverlapAddressCount(prefix netip.Prefix, coverage *ipTrie) *big.Int {
-          	one := newIPTrie()
-          	one.insert(prefix)
-          	one.intersect(coverage)
-          	bits := prefix.Addr().BitLen()
-          	return countAddressSpace(one.toPrefixes(), bits)
+          	prefix = prefix.Masked()
+          	addr, bits := prefix.Addr(), prefix.Bits()
+          	root := coverage.v6
+          	if addr.Is4() {
+          		root = coverage.v4
+          	}
+          	node := root
+          	for depth := 0; depth < bits; depth++ {
+          		if node == nil {
+          			return new(big.Int)
+          		}
+          		if node.covered {
+          			return prefixAddressCount(prefix)
+          		}
+          		node = node.child[getBit(addr, depth)]
+          	}
+          	return countCoveredTrieAddresses(node, bits, addr.BitLen())
           }
           
           type familyBGPReachability struct {
