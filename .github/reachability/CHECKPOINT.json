@@ -1,14 +1,14 @@
 {
   "schema_version": 1,
-  "updated_at_utc": "2026-11-11T17:47:00Z",
+  "updated_at_utc": "2026-11-11T18:01:21Z",
   "repository": "SpeedeMiner/Geoip-ru-server",
   "pull_request": 5,
   "pull_request_url": "https://github.com/SpeedeMiner/Geoip-ru-server/pull/5",
   "branch": "feature/reachability-full-ru-kz-by",
-  "recorded_pr_head_before_checkpoint_commit": "135276198abe03d05e435616b6a3b8e9ba1e89ba",
+  "recorded_pr_head_before_checkpoint_commit": "c2d16f54b075f59a0dada3b212dcc7a12ee5a6d3",
   "base_sha": "a68e5d6589361814cb1cfedd2af7857e4af806fa",
-  "state": "RUN21_TERMINAL_TIMEOUT_CONFIRMED; VPNOBRATTO_ISOLATED_FETCH_WORKER_IMPLEMENTED_AND_CI_GREEN_RUN209; NO_NEW_VPN_RUN",
-  "current_phase": "PROFILE_FETCH_WORKER_ISOLATION_AND_DURABLE_PHASE_MANIFEST_VALIDATED; READY_FOR_ONE_BOUNDED_MANUAL_PILOT_AFTER_LIVE_RUN_CHECK",
+  "state": "RUN22_IN_PROGRESS_AFTER_GNU_WATCHDOG_AND_MEASUREMENT_STEP_DEADLINE; FIVE_PROFILES_USABLE; PROFILE_6_BODY_READ_PARTIAL; NO_ARTIFACT_YET",
+  "current_phase": "RUN22_PROFILE_DISCOVERY; PROFILE6_LAST_SUPPLIED_MARKER_BODY_READ_COMPLETED_3830_BYTES; MANIFEST_PERSISTENCE_IS_NEXT_CODE_OPERATION_TO_INSPECT",
   "completed": [
     "repository_reconnaissance",
     "protobuf_inventory_exporter",
@@ -460,13 +460,13 @@
     "production_release_artifact_byte_delta_verified": false
   },
   "next_steps": [
-    "Run #21 is terminal completed/cancelled because GitHub enforced the maximum 12-minute job execution time. It has no terminal log archive or artifact; five profiles were usable and profile 6 fetch started, but no OpenVPN attempt, verified RU exit or target rows were confirmed. The precise inner stall cause remains unknown.",
-    "Latest code HEAD c49dece293541d46b6af14282b382459164315d7 passed CI Run #209 / job 130699445722: 127 Python tests including worker success/manifest, TERM-resistant KILL/reap, early crash classification and production discovery worker routing; hosted ubuntu-24.04 watchdog preflight, Go formatting/tests/build also passed.",
-    "Production VPNObratto listing/profile downloads now run in forked workers with a parent-side monotonic 20-second wall deadline; listing/profile network budgets remain 15s/12s. Parent escalates TERM→KILL, joins/reaps, and reports worker timeout separately from early worker exit. A live worker that remains after KILL is not Process.close()'d, preserving cleanup diagnostics.",
-    "The fetch worker emits flushed phase markers and atomically writes reachability-output/vpn_gate_vpnobratto_progress.json, matching the existing reachability-output/vpn_gate_* artifact glob. The manifest stores run/commit identifiers and phase/timing metadata only, not profile contents or keys.",
-    "No VPN pilot was dispatched against this new worker code. Before the next pilot, re-query the live PR head and confirm no active/queued VPN workflow. When the owner authorizes a manual pilot, use source=vpnobratno, request one independently verified RU exit, and cap profile attempts at six. Inspect the progress manifest, logs and uploaded artifact after terminal state.",
-    "Do not infer target blocking from timeouts or missing artifacts; RU exit/ASN/organization does not prove residential household access.",
-    "Keep PR #5 OPEN/DRAFT and preserve production GeoIP data/builders, DIRECT policy, ASN allowlists, main/release and PR #6."
+    "Run #22 (43072239130) / job 130702892228 remains in_progress at the 18:01:21Z snapshot. Do not cancel it or dispatch another VPN workflow. Upload step 8 has not started; artifacts are empty.",
+    "Five real VPNObratno profiles have fully downloaded and validated. Profile 6 (vpn950792227.opengw.net) completed DoH, pinned TCP/TLS and HTTP 200, and the provided excerpt shows 3,830 body bytes. Last supplied marker is body_read_completed; profile 6 completion/validation/server IP are unconfirmed.",
+    "The 7-minute GNU guard + 5-second grace was nominally due ~17:59:23Z; the 9-minute measurement step deadline was 18:01:18Z. At 18:01:21Z GitHub still reported the step in_progress, logs BlobNotFound, no artifact. Job maximum 12m is due 18:03:58Z.",
+    "If the supplied 314-line log is complete, inspect manifest persistence immediately after the last body_read_completed trace. Trace prints before record_vpnobratno_progress, which performs read/JSON rewrite/flush/fsync/os.replace. This is a high-priority hypothesis, not a proven cause. The excerpt may be truncated and live GitHub logs may be unavailable.",
+    "On terminal state, retrieve complete job logs and the uploaded artifact including reachability-output/vpn_gate_vpnobratto_progress.json. Inspect the last manifest event per profile before changing code. Confirm whether worker_timeout / worker_failed_without_result / cleanup_unconfirmed appears and distinguish process termination from controller status.",
+    "No confirmed OpenVPN attempt, tunnel route, verified RU exit or target measurements exist in the provided evidence. Do not infer target blocking.",
+    "Keep PR #5 OPEN/DRAFT. Do not start another VPN workflow while Run #22 is active; do not alter production GeoIP/DIRECT/ASN policy or PR #6."
   ],
   "ci_policy": {
     "push_validation_paths": [
@@ -2396,5 +2396,145 @@
       "fixed_in_commit": "e9c2977fb9dd183e8600c62b785fa3154879da03",
       "validated_by_run_id": 43071136044
     }
+  },
+  "run22_result": {
+    "run_id": 43072239130,
+    "run_number": 22,
+    "run_url": "https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43072239130",
+    "job_id": 130702892228,
+    "job_url": "https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43072239130/job/130702892228",
+    "event": "workflow_dispatch",
+    "branch": "feature/reachability-full-ru-kz-by",
+    "execution_sha": "447bdf6083b3d69b0fbdcf0e126cc27a0ee3db71",
+    "validated_code_base_sha": "c49dece293541d46b6af14282b382459164315d7",
+    "compare_to_validated_code": {
+      "status": "ahead",
+      "ahead_by": 9,
+      "behind_by": 0,
+      "files_changed": [
+        ".github/reachability/CHECKPOINT.json",
+        ".github/reachability/README.md",
+        ".github/reachability/RESUME.md",
+        ".github/reachability/WORKLOG.md"
+      ],
+      "all_changes_documentation_only": true
+    },
+    "runner": "ubuntu-24.04",
+    "run_started_at_utc": "2026-11-11T17:51:55Z",
+    "job_started_at_utc": "2026-11-11T17:51:58Z",
+    "measurement_step_started_at_utc": "2026-11-11T17:52:18Z",
+    "observed_at_utc": "2026-11-11T18:01:21Z",
+    "run_status": "in_progress",
+    "job_status": "in_progress",
+    "measurement_step_status": "in_progress",
+    "upload_step_status": "pending",
+    "failure_gate_step_status": "pending",
+    "artifacts": [],
+    "log_archive": "BlobNotFound while run active",
+    "owner_supplied_log": {
+      "file_name": "Вставленный текст(20261111-175710).txt",
+      "total_lines": 314,
+      "listing_bytes": 23641,
+      "profile_links_found": 35,
+      "download_cap": 24,
+      "unique_server_host_target": 6,
+      "completed_profiles": [
+        {
+          "index": 1,
+          "hostname": "vpn712640336.opengw.net",
+          "server_ip": "92.124.94.110",
+          "bytes": 10006,
+          "worker_elapsed_ms": 626
+        },
+        {
+          "index": 2,
+          "hostname": "vpn847521830.opengw.net",
+          "server_ip": "2.61.109.142",
+          "bytes": 10005,
+          "worker_elapsed_ms": 570
+        },
+        {
+          "index": 3,
+          "hostname": "vpn856084155.opengw.net",
+          "server_ip": "93.157.20.218",
+          "bytes": 10006,
+          "worker_elapsed_ms": 579
+        },
+        {
+          "index": 4,
+          "hostname": "vpn144814701.opengw.net",
+          "server_ip": "94.31.243.156",
+          "bytes": 10006,
+          "worker_elapsed_ms": 586
+        },
+        {
+          "index": 5,
+          "hostname": "vpn953719594.opengw.net",
+          "server_ip": "5.143.32.148",
+          "bytes": 10005,
+          "worker_elapsed_ms": 599
+        }
+      ],
+      "profile_6": {
+        "hostname": "vpn950792227.opengw.net",
+        "worker_pid": 3220,
+        "fetch_started": true,
+        "doh_completed": true,
+        "pinned_https_ip": "93.127.223.115",
+        "tcp_connect_completed": true,
+        "tls_handshake_completed": true,
+        "response_status": 200,
+        "completed_body_bytes_in_excerpt": 3830,
+        "last_line": "profile_fetch_trace profile=6/24 host=vpn950792227.opengw.net variant=ip_udp operation=profile_https phase=body_read_completed elapsed_ms=534 chunk_bytes=1369 total_bytes=3830",
+        "fetch_completed": false,
+        "profile_validated": false,
+        "server_ip_resolved": false,
+        "usable": false
+      }
+    },
+    "confirmed_openvpn_attempts": 0,
+    "confirmed_tunnel_routes": 0,
+    "confirmed_verified_ru_exits": 0,
+    "confirmed_target_measurement_rows": 0,
+    "timeout_milestones_utc": {
+      "process_watchdog_start_approx": "2026-11-11T17:52:18Z",
+      "process_term_approx": "2026-11-11T17:59:18Z",
+      "process_kill_after_5s_approx": "2026-11-11T17:59:23Z",
+      "measurement_step_timeout": "2026-11-11T18:01:18Z",
+      "job_timeout": "2026-11-11T18:03:58Z"
+    },
+    "last_rest_snapshot": {
+      "observed_at_utc": "2026-11-11T18:01:21Z",
+      "run_status": "in_progress",
+      "run_updated_at_utc": "2026-11-11T17:51:59Z",
+      "job_status": "in_progress",
+      "job_started_at_utc": "2026-11-11T17:51:58Z",
+      "measurement_step_status": "in_progress",
+      "measurement_step_started_at_utc": "2026-11-11T17:52:18Z",
+      "measurement_step_timeout_overrun_seconds": 3,
+      "upload_step_status": "pending",
+      "artifacts": [],
+      "logs_api": "BlobNotFound",
+      "logs_error_at_utc": "2026-11-11T18:01:21.931Z"
+    },
+    "manifest_persistence_hypothesis": {
+      "priority": "high_but_unconfirmed",
+      "evidence": "Last owner-supplied trace prints body_read_completed for profile 6 at 3830 bytes. vpnobratno_fetch_trace prints and flushes this line before calling record_vpnobratno_progress. That function reads JSON, writes a temporary file, flushes, calls os.fsync, and os.replace. No subsequent body_read_started or worker timeout marker is present in the supplied excerpt.",
+      "interpretation": "If the supplied excerpt is complete, the next code operation after the final line is the manifest persistence update, so inspect its read/write/fsync/replace stages before assuming the HTTP body read itself hung.",
+      "alternative_explanations": [
+        "the supplied log excerpt may simply be truncated while more output was produced",
+        "the GitHub job-log API for an active job may not expose the latest buffered output",
+        "a different worker or runner operation after the trace may have blocked"
+      ],
+      "no_root_cause_claimed": true
+    },
+    "latest_api_log_fetch": "BlobNotFound",
+    "notes": [
+      "Profiles 1–5 demonstrate the new worker can complete real VPNObratno HTTPS profile downloads in ~0.57–0.63 seconds on the hosted runner.",
+      "Profile 6 successfully completed DoH, pinned TCP, TLS and HTTP response headers with status 200; the supplied excerpt only shows 3,830 response-body bytes, not profile completion.",
+      "No OpenVPN attempt, route, RU public exit or target request is confirmed.",
+      "Do not attribute the issue to VPNObratno, Cloudflare DoH or a target service based on this partial trace.",
+      "Artifact list remains empty because upload step 8 has not started; absence before upload is not a failure."
+    ]
   }
 }
