@@ -771,6 +771,11 @@ def test_target(target: dict[str, Any], exit_info: dict[str, Any], networks: dic
     }
 
 
+def measurement_exit_code(successful_ru_exits: int, requested_ru_exits: int) -> int:
+    """A diagnostic artifact without the requested verified RU exits is not a pass."""
+    return 0 if successful_ru_exits >= requested_ru_exits else 2
+
+
 def run(args: argparse.Namespace) -> int:
     inventory_rows, networks = runner.read_inventory(pathlib.Path(args.inventory))
     targets = [target for target in runner.load_targets(pathlib.Path(args.targets))
@@ -1036,14 +1041,16 @@ def run(args: argparse.Namespace) -> int:
         encoding="utf-8",
     )
     print(json.dumps(summary, ensure_ascii=False, indent=2, sort_keys=True))
-    if connection_counts["connected_ru_exit"] < args.max_servers:
+    exit_code = measurement_exit_code(
+        connection_counts["connected_ru_exit"], args.max_servers
+    )
+    if exit_code:
         print(
             f"measurement incomplete: verified {connection_counts['connected_ru_exit']} "
             f"of {args.max_servers} requested RU VPN exits",
             file=sys.stderr,
         )
-        return 2
-    return 0
+    return exit_code
 
 
 def main() -> int:
