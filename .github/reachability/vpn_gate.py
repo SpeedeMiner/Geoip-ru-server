@@ -506,6 +506,50 @@ def network_info(address: str) -> dict[str, Any]:
     except ProbeError:
         return {"prefix": "", "asn": 0}
 
+def selection_network_info(address: str) -> dict[str, Any]:
+    """Use a hard-bounded direct RIPEstat request for pre-tunnel ASN diversity.
+
+    Candidate selection is optional metadata. It must never block the whole VPN
+    pilot on system DNS/NSS resolution or the longer post-tunnel DoH fallback.
+    If RIPEstat is slow/unavailable, keep the candidate with an unverified ASN.
+    """
+    url = RIPESTAT_NETWORK_INFO + "?" + urllib.parse.urlencode({"resource": address})
+    try:
+        completed = subprocess.run(
+            [
+                "curl", "--fail", "--location", "--silent", "--show-error",
+                "--noproxy", "*", "--ipv4",
+                "--connect-timeout", "2", "--max-time", "5",
+                "--max-filesize", "1000000",
+                "--user-agent", USER_AGENT, url,
+            ],
+            capture_output=True,
+            text=True,
+            encoding="utf-8",
+            errors="replace",
+            check=False,
+            timeout=7,
+        )
+        if completed.returncode != 0:
+            return {"prefix": "", "asn": 0}
+        payload = json.loads(completed.stdout)
+    except (OSError, subprocess.TimeoutExpired, json.JSONDecodeError):
+        return {"prefix": "", "asn": 0}
+
+    if not isinstance(payload, dict):
+        return {"prefix": "", "asn": 0}
+    data = payload.get("data") or {}
+    asns = data.get("asns") or []
+    asn = parse_asn(asns[0]) if asns else 0
+    prefix = str(data.get("prefix") or "").strip()
+    try:
+        network = ipaddress.ip_network(prefix, strict=False)
+        if ipaddress.ip_address(address) not in network:
+            prefix = ""
+    except ValueError:
+        prefix = ""
+    return {"prefix": prefix, "asn": asn}
+
 
 def _parse_ip_metadata(endpoint: str) -> dict[str, Any]:
     payload = fetch_json(endpoint, timeout=15)
@@ -848,7 +892,7 @@ def select_diverse_servers(
             flush=True,
         )
         if server_ip not in origin_cache:
-            origin_cache[server_ip] = network_info(server_ip)
+            origin_cache[server_ip] = selection_network_info(server_ip)
         origin = dict(origin_cache[server_ip])
         asn = parse_int(origin.get("asn"))
         server["_network_info"] = origin
@@ -856,6 +900,12 @@ def select_diverse_servers(
         group = f"AS{asn}" if asn > 0 else "ASN_UNVERIFIED"
         groups.setdefault(group, []).append(server)
         asn_lookups += 1
+        print(
+            f"[vpn-gate] origin_asn_lookup_result={candidate_index}/{len(candidates)} "
+            f"host={server['hostname']} asn={asn} "
+            f"status={'ok' if asn > 0 else 'unavailable'}",
+            flush=True,
+        )
 
     group_order = sorted(
         groups,
