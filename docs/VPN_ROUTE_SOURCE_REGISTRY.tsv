@@ -1,0 +1,35 @@
+source_id	repository	role	polarity	data_type	coverage_or_method	current_status	license_or_group	decision
+loyalsoldier-geoip-ru	Loyalsoldier/geoip	Geographic GeoIP	DIRECT	IPv4+IPv6 CIDR	RU country category	Production core	Upstream attribution required	Keep; immutable snapshots and address-space diff
+v2fly-geoip	v2fly/geoip	Geographic GeoIP	DIRECT	IPv4+IPv6 CIDR	RU/BY/KZ categories	Production core	Upstream attribution required	Keep; count RU/BY/KZ separately
+grimbird-geoip	GrimbirdUsers/ru-routing-dat	Geographic GeoIP	DIRECT	GeoIP protobuf	RU category	Production additional	correlation: Grimbird+Digne	One source group; not independent corroboration
+digne-geoip	DigneZzZ/routing	Geographic GeoIP	DIRECT	GeoIP protobuf	RU category	Production additional	correlation: Grimbird+Digne	One source group; not independent corroboration
+davoyan-geoip	Davoyan/xray-routing	Geographic GeoIP	DIRECT	GeoIP protobuf	RU category	Production additional	Davoyan	Keep; compare exact address coverage and lineage
+golukon-geoip	golukon/russia-only-geoip	Geographic GeoIP	DIRECT	GeoIP protobuf	RU category	Production additional	Golukon	Keep; review provenance
+hydra-direct	hydraponique/roscomvpn-geoip	Service/direct candidate	DIRECT	GeoIP protobuf	direct/whitelist/private categories	Candidate-only	Hydra	Do not treat as RU country CIDR
+kirill-whitelist	kirilllavrov/RU-domain-list-for-whitelist	Domain/service candidate	DIRECT	GeoIP protobuf / domains	RU service whitelist	Candidate-only	Kirill	Domain/service review, no bulk country import
+hxehex-cidr	hxehex/russia-mobile-internet-whitelist	Service/mobile candidate	DIRECT	CIDR	Mobile whitelist CIDR; current input	Already in v37 candidate-only	MIT; mobile-operator group	Do not auto-admit
+hxehex-ip	hxehex/russia-mobile-internet-whitelist	Service/mobile candidate	DIRECT	Host IP list	ipwhitelist.txt companion	Experiment candidate	MIT; mobile-operator group	Host routes only; candidate-only
+hxehex-domains	hxehex/russia-mobile-internet-whitelist	Domain/service candidate	DIRECT	Domains	whitelist.txt	Discovered	MIT; mobile-operator group	Geosite/domain analysis
+w1zardz-direct	w1zardz/amnezia-vpn-russia-split-tunneling	Service catalog candidate	DIRECT	IPv4 CIDR	2026-11-11 manifest: 66 services, 1159 domains, 946 compact CIDRs	Already in v37 candidate-only	MIT	W1ZARDZ importer/ASN-filter method useful; no auto import
+escapingworm-operator	escapingworm/russia-whitelist	Service/mobile candidate	DIRECT	CIDR	Aggregated mobile operator CIDRs	Experiment candidate	MIT; mobile-operator group	Correlate with HXEHEX; carrier scope review
+kyoresuas-lite	kyoresuas/ru-direct	Service catalog candidate	DIRECT	IPv4+IPv6 CIDR	2026-11-11 manifest: 356 IPv4, 25 IPv6; 29 services; 481 domains	Experiment candidate	MIT; Kyoresuas group	New pinned source; not independent from its other tiers
+kyoresuas-standard	kyoresuas/ru-direct	Service catalog candidate	DIRECT	IPv4+IPv6 CIDR	2026-11-11 manifest: 630 IPv4, 74 IPv6; 90 services; 1683 domains	Experiment candidate	MIT; Kyoresuas group	New pinned source; service-focused
+kyoresuas-full	kyoresuas/ru-direct	GeoIP+service composite	DIRECT	IPv4+IPv6 CIDR	2026-11-11 manifest: 8683 IPv4, 2168 IPv6	Experiment candidate	MIT; ipdeny+Kyoresuas correlated	Composite country zone; not independent source vote
+whisper-country	WhisperOfTheSteppe/ru-rules-dat	Geographic benchmark	DIRECT	IPv4 CIDR + domains	ipdeny country zone; has GeoIP and sing-box outputs	Metrics-only	License undeclared; ipdeny group	No CIDR redistribution until license clarified
+lib4u-amnezia	lib4u/amnezia-tunneling-ru	Service/domain candidate	DIRECT	Amnezia JSON: domain→IP	Daily domain/IP snapshot; 1900+ domains claimed	Metrics-only	License undeclared; service-domain group	Do not redistribute candidate CIDRs; correlate with geosite
+jirnobruh-amnezia	jirnobruh/Split-Tunneling-Amnezia-for-Russia	Service/domain candidate	DIRECT	Amnezia JSON: domain→IP	Hostname plus ip/ips arrays	Metrics-only	License undeclared; service-domain group	Do not redistribute candidate CIDRs
+pvd-dog-service	pvd-dog/russia-no-vpn-list	Service candidate	DIRECT	Amnezia JSON: service IP/CIDR	Service /24 and host candidates	Metrics-only	License undeclared; service-domain group	Do not redistribute candidate CIDRs
+pincetgore-service	pincetgore/amnezia-app-ru-list	Service candidate	DIRECT	Release asset / JSON	IP and domain records	Discovered	License/release asset review	Inspect pinned asset + digest before ingestion
+egkodin-service	egkodin/ru-split-amneziavpn	Service/domain candidate	DIRECT	Amnezia JSON + domains	Large service catalog	Discovered	License review	Do not bulk import; inspect exact data lineage
+opencck-service	iplist.opencck.org	Service candidate	DIRECT	IP/CIDR	DNS-resolved service CIDRs	Discovered	License and snapshot review	Known foreign CDN/cloud contamination; ASN filter required
+rockblack-service	RockBlack-VPN/ip-address	Service catalog candidate	DIRECT	Per-service route scripts	Service route CIDRs and domains	Discovered	License/source review	Per-service extraction; filter owner/ASN
+itdog-domains	itdoginfo/allow-domains	Domain/service catalog	DIRECT	Domains	Russia/outside-raw.lst	Discovered	domain-data terms	Domain layer only; verify opposite inside list polarity
+unrkn-domains	UnRKN/ru-blocklist	Reverse route evidence	PROXY	Domains	VPN-restricted service candidates	Discovered	License review	Negative-polarity route evidence only
+jutsu-rkn-routes	jutsu-dev/ru-route-lists	Reverse route evidence	PROXY	Domains + optional IP sets	3-hour rolling update; RussiaFancyLists-derived	Discovered	MIT + upstream notice	Separate PROXY set; prefer domains, review shared CDN IPs
+jutsu-foreign-geoblock	jutsu-dev/ru-route-lists	Foreign geoblock evidence	FOREIGN_EXIT	Domains + optional IP sets	Foreign services geo-blocking RU exits	Discovered	MIT + upstream notice	Separate foreign-exit list, not RU GeoIP
+v2fly-domain-list-community	v2fly/domain-list-community	Domain/service catalog	DIRECT/PROXY by category	Domain categories	category-ru, bank, gov, retail, media, travel	Existing geosite ecosystem	Upstream license	Use for domains; no IP ownership inference
+wlunlocker-nodes	wlunlocker/vpn-configs	VPN node subscription	N/A	VLESS/VMess/Trojan/Shadowsocks	Proxy endpoints grouped by exit country	Excluded	Third-party mixed sources	Not destination routing; no GeoIP ingestion
+slimmi-amnezia	slimmi/amnezia-split-tunneling	Geographic benchmark	DIRECT	GeoLite2 + ipdeny	MaxMind primary, ipdeny fallback	Reference only	MaxMind/repo license review	Benchmark only pending redistribution permission
+antifilter-blocked	antifilter.download	Reverse route evidence	PROXY	Host IP/CIDR	RKN-derived blocked destination inputs	Production carve-out + review-only	Third-party feed	Exact-host/bounded-subnet block policy only
+runetfreedom-blocked	runetfreedom/russia-blocked-geoip	Reverse route evidence	PROXY	CIDR	Selected Telegram blocked IP prefixes	Static curated carve-out	Source review	Blocked-destination exception; never RU inclusion
+refilter-blocked	1andrevich/Re-filter-lists	Reverse route evidence	PROXY	IP/CIDR	Blocked destination candidates	Review-only	Source review	Not RU DIRECT input
