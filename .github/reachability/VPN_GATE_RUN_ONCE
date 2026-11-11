@@ -1,1 +1,1 @@
-One-shot retry request: obtain one verified RU VPN Gate exit; try at most three candidates selected across distinct origin ASNs. After a confirmed RU egress, run the bounded RU target catalogue and upload diagnostics.
+Third one-shot pilot: require one verified Russian VPN exit; try up to three candidate relays from distinct origin ASNs. Use pinned DoH for all DNS-dependent metadata and target checks after the tunnel is verified. Upload diagnostic artifacts even if no verified exit is established.
