@@ -626,6 +626,86 @@ class VPNObratnoFetchSafetyTests(unittest.TestCase):
                         request, None, 302, "Found", {}, target
                     )
 
+
+    def test_listing_interleaves_preferred_variant_across_hosts(self):
+        host_a = "vpn100000001.opengw.net"
+        host_b = "vpn100000002.opengw.net"
+        links = [
+            f"/servers/{host_a}/{host_a}_ddns_udp.ovpn",
+            f"/servers/{host_b}/{host_b}_ddns_udp.ovpn",
+            f"/servers/{host_a}/{host_a}_ip_tcp.ovpn",
+            f"/servers/{host_b}/{host_b}_ip_udp.ovpn",
+            f"/servers/{host_a}/{host_a}_ip_udp.ovpn",
+        ]
+        profiles = vpn_gate.parse_vpnobratno_listing(self.listing(links))
+        self.assertEqual(
+            [(item["hostname"], item["profile_variant"]) for item in profiles],
+            [
+                (host_a, "ip_udp"),
+                (host_b, "ip_udp"),
+                (host_a, "ddns_udp"),
+                (host_b, "ddns_udp"),
+                (host_a, "ip_tcp"),
+            ],
+        )
+
+    def test_discovery_limits_profile_downloads_and_reports_omitted_links(self):
+        hostnames = [
+            "vpn100000001.opengw.net",
+            "vpn100000002.opengw.net",
+            "vpn100000003.opengw.net",
+            "vpn100000004.opengw.net",
+        ]
+        entries = [
+            {
+                "hostname": hostname,
+                "address_mode": "ip",
+                "transport": "tcp",
+                "profile_variant": "ip_tcp",
+                "profile_url": f"https://vpnobratno.info/servers/{hostname}/{hostname}_ip_tcp.ovpn",
+            }
+            for hostname in hostnames
+        ]
+        addresses = {
+            hostname: f"8.8.8.{index}"
+            for index, hostname in enumerate(hostnames, start=1)
+        }
+
+        def resolver(hostname, *_args):
+            return [(socket.AF_INET, socket.SOCK_STREAM, 6, "", (addresses[hostname], 1194))]
+
+        calls = []
+        def fetcher(url, timeout):
+            calls.append(url)
+            if url == vpn_gate.VPNOBRATNO_LIST_URL:
+                return b"<html>synthetic listing</html>"
+            hostname = next(item["hostname"] for item in entries if item["profile_url"] == url)
+            config = SAMPLE_CONFIG.replace(
+                "remote old-volunteer-host.opengw.net 443",
+                f"remote {addresses[hostname]} 1194",
+            )
+            return config.encode()
+
+        with patch.object(vpn_gate, "parse_vpnobratno_listing", return_value=entries):
+            servers, metadata = vpn_gate.discover_vpnobratno_servers(
+                fetcher=fetcher, resolver=resolver, max_profiles=2
+            )
+        self.assertEqual(len(servers), 2)
+        self.assertEqual(len(calls), 3)  # Listing plus two profile downloads.
+        self.assertEqual(metadata["profile_links_found"], 4)
+        self.assertEqual(metadata["profiles_considered_for_download"], 2)
+        self.assertEqual(metadata["profiles_not_downloaded_due_to_limit"], 2)
+        self.assertTrue(metadata["profile_download_limit_reached"])
+
+    def test_discovery_profile_download_limit_is_hard_capped(self):
+        for value in (0, vpn_gate.VPNOBRATNO_PROFILE_DOWNLOAD_LIMIT + 1):
+            with self.subTest(value=value):
+                with self.assertRaisesRegex(ValueError, "max_profiles"):
+                    vpn_gate.discover_vpnobratno_servers(
+                        fetcher=lambda *_args, **_kwargs: b"",
+                        max_profiles=value,
+                    )
+
     def test_redirect_handler_accepts_same_https_origin_only(self):
         handler = vpn_gate.VPNObratnoSameOriginRedirect()
         request = urllib.request.Request(
