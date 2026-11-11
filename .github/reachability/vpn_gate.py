@@ -883,8 +883,10 @@ def select_diverse_servers(
     candidates = servers[:min(len(servers), max(candidate_limit, attempt_limit, max_servers))]
     groups: dict[str, list[dict[str, Any]]] = {}
     asn_lookups = 0
+    candidate_servers_inspected = 0
     origin_cache: dict[str, dict[str, Any]] = {}
     for candidate_index, server in enumerate(candidates, start=1):
+        candidate_servers_inspected += 1
         server_ip = server["server_ip"]
         print(
             f"[vpn-gate] origin_asn_lookup={candidate_index}/{len(candidates)} "
@@ -945,7 +947,7 @@ def select_diverse_servers(
         if server["_selection_asn"] > 0
     })
     return selected, {
-        "candidate_servers_inspected": len(candidates),
+        "candidate_servers_inspected": candidate_servers_inspected,
         "server_asn_lookups": asn_lookups,
         "distinct_candidate_asns": len([group for group in groups if group != "ASN_UNVERIFIED"]),
         "attempt_candidates_selected": len(selected),
