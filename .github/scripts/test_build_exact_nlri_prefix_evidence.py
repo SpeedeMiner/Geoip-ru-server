@@ -74,6 +74,7 @@ class ExactNlriCaptureTests(unittest.TestCase):
             },
         }
         summary = summarize(record)
+        self.assertTrue(summary["prefix_key_present"])
         self.assertEqual(summary["snapshot_timestamp"], "2026-11-11T08:00:00+00:00")
         self.assertEqual(summary["origin_states"], {"215013": "invalid", "219109": "notfound"})
 
@@ -98,6 +99,53 @@ class ExactNlriCaptureTests(unittest.TestCase):
         self.assertEqual(summary["api_status"], "ok")
         self.assertEqual(summary["exact_origins"], [{"origin": 215013, "route_objects": ["RIPE"]}])
         self.assertEqual(summary["more_specific_count"], 1)
+
+    def test_ripestat_looking_glass_parses_rrc_peer_arrays(self):
+        record = {
+            "prefix": "94.131.190.0/24",
+            "source": "ripestat_looking_glass_24h",
+            "transport_status": "HTTP_OK",
+            "http_status": 200,
+            "response_received_utc": "2026-11-11T10:00:00Z",
+            "response_json": {
+                "status": "ok",
+                "data": {
+                    "query_time": "2026-11-11T09:59:00",
+                    "latest_time": "2026-11-11T09:58:00",
+                    "rrcs": [
+                        {
+                            "rrc": "rrc00",
+                            "location": "Amsterdam",
+                            "peers": [
+                                {
+                                    "asn_origin": "215013",
+                                    "prefix": "94.131.190.0/24",
+                                    "peer": "192.0.2.1",
+                                    "as_path": "64500 215013",
+                                    "last_updated": "2026-11-10T20:00:00",
+                                    "latest_time": "2026-11-11T09:58:00",
+                                },
+                                {
+                                    "asn_origin": "219109",
+                                    "prefix": "94.131.190.0/24",
+                                    "peer": "192.0.2.2",
+                                    "as_path": "64501 219109",
+                                    "last_updated": "2026-11-10T20:01:00",
+                                    "latest_time": "2026-11-11T09:57:00",
+                                },
+                            ],
+                        }
+                    ],
+                },
+            },
+        }
+        summary = summarize(record)
+        self.assertEqual(summary["api_status"], "ok")
+        self.assertEqual(summary["rrc_count"], 1)
+        self.assertEqual(summary["peer_observation_count"], 2)
+        self.assertEqual(summary["origins"], ["215013", "219109"])
+        self.assertEqual(summary["latest_time"], "2026-11-11T09:58:00")
+        self.assertEqual(summary["peer_observations"][0]["rrc"], "rrc00")
 
     def test_transport_error_is_preserved_not_interpreted_as_absence(self):
         record = {
