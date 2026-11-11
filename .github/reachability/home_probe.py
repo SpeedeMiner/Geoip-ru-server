@@ -16,6 +16,7 @@ import ipaddress
 import json
 import os
 import pathlib
+import re
 import socket
 import ssl
 import sys
@@ -27,6 +28,7 @@ from typing import Any
 import runner
 
 USER_AGENT = "Geoip-ru-server-home-probe/1.0"
+DEFAULT_TARGETS = pathlib.Path(__file__).resolve().parent / "targets.json"
 PROXY_ENV_NAMES = (
     "HTTP_PROXY", "HTTPS_PROXY", "ALL_PROXY",
     "http_proxy", "https_proxy", "all_proxy",
@@ -90,8 +92,8 @@ def source_metadata(timeout: int) -> dict[str, Any]:
                 raise ProbeError("reported address is not globally routable")
             connection = payload.get("connection") or {}
             country = str(payload.get("country_code") or payload.get("country") or "").upper()
-            if len(country) != 2:
-                raise ProbeError("response has no two-letter country code")
+            if not re.fullmatch(r"[A-Z]{2}", country):
+                raise ProbeError("response has no valid two-letter country code")
             asn = parse_asn(
                 connection.get("asn")
                 or payload.get("asn")
@@ -287,10 +289,10 @@ def run_probe(args: argparse.Namespace) -> int:
     if not args.consent:
         raise ProbeError("explicit consent is required; pass --consent after reading the notice")
     proxy_vars = proxy_environment()
-    if proxy_vars and not args.allow_proxy:
+    if proxy_vars:
         raise ProbeError(
             "proxy environment variables are set (" + ", ".join(proxy_vars)
-            + "); disable the proxy/VPN for a home-ISP test, or use --allow-proxy only if intentional"
+            + "); disable VPN/proxy software and remove these variables before a direct-ISP test"
         )
 
     targets = [
@@ -303,15 +305,24 @@ def run_probe(args: argparse.Namespace) -> int:
         raise ProbeError("no targets are selected for this country")
 
     output = pathlib.Path(args.output_dir)
+    if output.exists() and any(output.iterdir()):
+        raise ProbeError(
+            f"output directory is not empty: {output}; choose a new directory to preserve earlier reports"
+        )
     output.mkdir(parents=True, exist_ok=True)
 
     attribution = source_metadata(args.timeout)
     attribution["required_country"] = args.required_country
+    attribution["required_country_matches"] = (
+        attribution["verified"] and attribution["country"] == args.required_country
+    )
+    write_json(output / "home_probe_source.json", attribution)
     if attribution["verified"] and attribution["country"] != args.required_country:
         attribution["status"] = "SOURCE_COUNTRY_MISMATCH"
-    else:
-        attribution["required_country_matches"] = (
-            attribution["verified"] and attribution["country"] == args.required_country
+        write_json(output / "home_probe_source.json", attribution)
+        raise ProbeError(
+            f"verified source country {attribution['country']} does not match "
+            f"--required-country {args.required_country}; no target requests were sent"
         )
 
     rows = [measure_target(target, args.timeout) for target in targets]
@@ -326,7 +337,7 @@ def run_probe(args: argparse.Namespace) -> int:
         "source_asn_candidates": attribution["asn_candidates"],
         "source_organizations": attribution["organizations"],
         "proxy_environment_variables": proxy_vars,
-        "proxy_allowed_by_user": bool(args.allow_proxy),
+        "proxy_environment_clear": not proxy_vars,
         "target_count": len(targets),
         "service_targets": sum(target["role"] == "service" for target in targets),
         "control_targets": sum(target["role"] == "control" for target in targets),
@@ -354,13 +365,12 @@ def run_probe(args: argparse.Namespace) -> int:
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--targets", default=".github/reachability/targets.json")
+    parser.add_argument("--targets", default=str(DEFAULT_TARGETS))
     parser.add_argument("--output-dir", default="home-probe-output")
     parser.add_argument("--required-country", choices=("RU", "KZ", "BY"), default="RU")
     parser.add_argument("--max-targets", type=int, default=None)
     parser.add_argument("--timeout", type=int, default=10)
     parser.add_argument("--consent", action="store_true", help="confirm authorization to test this network and the listed public endpoints")
-    parser.add_argument("--allow-proxy", action="store_true", help="explicitly allow configured HTTP(S)_PROXY variables; not recommended for home-ISP attribution")
     args = parser.parse_args()
     if args.max_targets is not None and args.max_targets < 1:
         parser.error("--max-targets must be positive")
