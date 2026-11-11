@@ -9,7 +9,7 @@
 - Working branch: `feature/reachability-full-ru-kz-by`
 - PR #5 must remain **OPEN / DRAFT**. Do not mark ready, merge, or rebase without explicit owner approval.
 - Do not modify `main`, `release`, production GeoIP builder/data, `geoip_RU.dat`, release assets, DIRECT policy, ASN allowlists, PR #6 or other PR branches.
-- Do not launch overlapping VPN runs. Run #21 is not dispatched.
+- Do not launch overlapping VPN runs. **Run #21 is currently in progress**; monitor it to a terminal state before any further VPN dispatch.
 - A RU VPN exit does not prove that the relay is a residential/household ISP line. Never label it residential without independent evidence.
 - DNS/HTTPS timeouts, TLS failures, missing probes, runner failures and missing artifacts are not evidence of target blocking.
 
@@ -17,7 +17,7 @@
 
 1. Read this file.
 2. Read the last dated entry at the end of `.github/reachability/WORKLOG.md` (append-only).
-3. Parse `.github/reachability/CHECKPOINT.json`; use `current_phase`, `next_steps`, `runner_timeout_preflight` and `run20_result` as the state summary.
+3. Parse `.github/reachability/CHECKPOINT.json`; use `current_phase`, `next_steps`, `runner_timeout_preflight`, `run21_result` and `run20_result` as the state summary.
 4. Query the live PR #5 head and latest Actions runs. Never use a remembered SHA as the current branch head.
 5. Continue only from the first pending item. Do not repeat a finished VPN/CI phase.
 
@@ -25,6 +25,22 @@ The first “Current repository state” section near the top of WORKLOG is hist
 
 ## Current measurement state
 
+### Run #21 — IN PROGRESS / sixth profile fetch started
+
+- Run: [#21 / 43065501624](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43065501624), job [130679257182](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43065501624/job/130679257182).
+- Manual dispatch actor: `SpeedeMiner`; branch `feature/reachability-full-ru-kz-by`; checked-out commit: `5a1badef9e19a71c44cd4b1fa42748f4d688e90f`.
+- Started 2026-11-11 17:10:12 UTC; measurement step started 17:10:40 UTC; runner `ubuntu-24.04`.
+- Setup/install, Go setup, exact published GeoIP download/checksum and RU/PRIVATE inventory export all completed successfully.
+- VPNObratto listing: 22,381 bytes; 32 profile links, download cap 24, six-host target. Five IP_UDP profiles fetched, validated and resolved to five distinct server IPs. Sixth profile fetch started with pinned-DoH HTTPS and a 20-second wall deadline.
+- Latest owner-visible marker (sent 17:11:10 UTC): `profile_fetch_started=6/24 wall_timeout=20s transport=pinned_doh_https`.
+- Confirmed addresses from profiles 1–5: `185.112.224.250`, `94.159.74.210`, `92.124.94.110`, `2.61.109.142`, `93.157.20.218`.
+- Last GitHub REST snapshot: job and measurement step 7 `in_progress`; report upload step pending; no artifacts. Job log archive endpoint returned `BlobNotFound` while job active. No OpenVPN process start, installed tunnel route, verified RU exit or target row is confirmed by current evidence.
+- Workflow limits on the checked-out commit: 7-minute GNU process watchdog + 5-second KILL grace, 9-minute measurement step, 12-minute job; 5-second OpenVPN route wait per candidate.
+- Workflow default inputs are one verified RU exit and six profile attempts. GitHub's run metadata does not echo submitted form inputs; distinguish configured defaults from a confirmed input payload.
+- Do not cancel or overlap this run. Re-query status and retrieve full logs/artifacts after terminal state. The absence of an active log archive is not evidence of measurement failure.
+- Current PR branch head may advance through documentation-only updates while the active run continues. The running job remains pinned to checkout SHA `5a1bade...`; always distinguish run SHA from current PR head.
+
+### Run #20 — cancelled, no usable result
 ### Run #20 — cancelled, no usable result
 
 - Run: [#20](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43053531258), job `130636812894`.
@@ -69,11 +85,13 @@ Workflow integration: `.github/workflows/reachability-validation.yml` now runs o
 - Normal-path cleanup calls terminate → wait(8s) → kill → wait(5s). If Python is forcibly killed, GNU timeout's validated process-group KILL is expected to include OpenVPN and its inherited descendants.
 - Thus the demonstrated process-tree cleanup gap is now addressed for the exact sudo/GNU-timeout group topology used by the workflow. The independent GitHub runner/controller state-overrun question remains an observability/runner-platform limitation.
 
-## Next steps and current blocker
+## Next steps
 
-- The one-shot VPNObratto pilot is technically ready after the green hosted-runner preflight, but **Run #21 has not been dispatched**.
-- One browser-dispatch attempt was refused before the browser session started because the automation service wallet was insufficient. GitHub's workflow form was never opened or submitted; no GitHub run or VPN job was created. This is a tool/billing blocker, not an Actions or VPN failure. Do not retry that browser action while the refusal remains.
-- When a supported GitHub Actions `workflow_dispatch` capability is available (or the user resolves the browser-service wallet blocker), query the live branch head and confirm again that no VPN run is queued/in progress. Then send exactly one run with branch `feature/reachability-full-ru-kz-by`, `source=vpnobratno`, `max_vpn_gate_servers=1`, and `max_vpn_gate_attempts=6`.
+- **Run #21 is already in progress.** Continue monitoring only this run; do not dispatch or queue another VPN workflow while it is active, and do not cancel it merely because live log retrieval is unavailable.
+- The earlier attempt by this assistant to open the GitHub dispatch form was refused before browser start due to insufficient browser-automation service wallet. That historical refusal did not create a GitHub run. The owner subsequently started Run #21 manually; do not describe the pilot as blocked or undispatched now.
+- On terminal state, retrieve the complete job logs and artifact, verify artifact SHA/digest, and reconcile the summary, provider rows, measurement rows and raw diagnostics. If no verified RU exit was established, no target verdict is supported.
+- For Run #21, record profile fetch/download results; discovery completion/selection; OpenVPN process start/exit; route installed; two-source public exit IP/country agreement; exit ASN/prefix; each target DNS A/AAAA and HTTPS result; artifact presence/digest.
+- After the terminal inspection, append the full evidence and limitations to WORKLOG and update CHECKPOINT. Do not overwrite historical run records.
 - For that pilot, separately record: profile discovery/download results; OpenVPN process start/exit; route installed; two-source public exit IP/country agreement; exit ASN/prefix; each target DNS A/AAAA and HTTPS result; artifact presence and digest. No verified RU exit means no target verdict.
 - After the pilot reaches terminal state, append the full evidence and limitations to WORKLOG and update CHECKPOINT. Do not overwrite historical run records.
 
