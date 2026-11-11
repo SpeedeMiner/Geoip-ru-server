@@ -1,14 +1,14 @@
 {
   "schema_version": 1,
-  "updated_at_utc": "2026-11-11T17:21:23Z",
+  "updated_at_utc": "2026-11-11T17:22:52Z",
   "repository": "SpeedeMiner/Geoip-ru-server",
   "pull_request": 5,
   "pull_request_url": "https://github.com/SpeedeMiner/Geoip-ru-server/pull/5",
   "branch": "feature/reachability-full-ru-kz-by",
   "recorded_pr_head_before_checkpoint_commit": "beba9f75a0bfc08703e79555635698b130ed47a8",
   "base_sha": "a68e5d6589361814cb1cfedd2af7857e4af806fa",
-  "state": "RUN21_GITHUB_JOB_STILL_IN_PROGRESS_AFTER_GNU_AND_STEP_TIMEOUTS; LOGS_BLOB_NOT_FOUND; NO_ARTIFACT; RUN20_CANCELLED_NO_ARTIFACT",
-  "current_phase": "RUN21_ACTIONS_STATUS_OVERRUN; PROFILE_6_FETCH_LAST_VISIBLE_ONLY; NO_CONFIRMED_OPENVPN_RU_EXIT_OR_TARGET_ROWS",
+  "state": "RUN21_GITHUB_JOB_STILL_IN_PROGRESS_AFTER_12M_JOB_TIMEOUT; LOGS_BLOB_NOT_FOUND; NO_ARTIFACT; NO_VERIFIED_RU_EXIT",
+  "current_phase": "RUN21_ACTIONS_JOB_TIMEOUT_OVERRUN; RUNNER_STATUS_UNRESOLVED; NO_TERMINAL_EVIDENCE",
   "completed": [
     "repository_reconnaissance",
     "protobuf_inventory_exporter",
@@ -2094,7 +2094,7 @@
     "logs_api_while_active": "BlobNotFound",
     "interpretation": "Pinned-DoH profile fetches 1–5 completed and sixth began, indicating discovery is progressing past the previous Run #20 marker. Do not infer OpenVPN, RU exit or target results from the current excerpt.",
     "last_rest_snapshot": {
-      "observed_at_utc": "2026-11-11T17:21:23Z",
+      "observed_at_utc": "2026-11-11T17:22:52Z",
       "run_status": "in_progress",
       "job_status": "in_progress",
       "measurement_step_status": "in_progress",
@@ -2105,14 +2105,14 @@
       "expected_gnu_term_approx_utc": "2026-11-11T17:17:40Z",
       "expected_gnu_kill_after_grace_approx_utc": "2026-11-11T17:17:45Z",
       "measurement_step_timeout_utc": "2026-11-11T17:19:40Z",
-      "measurement_step_timeout_overrun_seconds": 103,
       "job_timeout_utc": "2026-11-11T17:22:16Z",
+      "job_timeout_overrun_seconds": 36,
       "confirmed_profile_fetch_completion_index": 5,
       "profile_6_fetch_started": true,
       "confirmed_openvpn_attempts": 0,
       "confirmed_verified_ru_exits": 0,
       "confirmed_target_measurement_rows": 0,
-      "interpretation": "Repeated snapshot 1m43s beyond the nominal step timeout; GitHub job API remains in_progress but process liveness and runner/controller state cannot be established without terminal logs."
+      "interpretation": "GitHub reports a non-terminal job beyond all configured limits; no terminal logs or artifact. Do not infer runner process liveness or later measurement phases."
     },
     "expected_timeout_milestones_utc": {
       "process_term_approx": "2026-11-11T17:17:40Z",
@@ -2172,7 +2172,39 @@
         "confirmed_verified_ru_exits": 0,
         "confirmed_target_measurement_rows": 0,
         "interpretation": "Repeated snapshot 1m43s beyond the nominal step timeout; GitHub job API remains in_progress but process liveness and runner/controller state cannot be established without terminal logs."
+      },
+      {
+        "observed_at_utc": "2026-11-11T17:22:52Z",
+        "run_status": "in_progress",
+        "job_status": "in_progress",
+        "measurement_step_status": "in_progress",
+        "upload_step_status": "pending",
+        "artifacts": [],
+        "logs_api": "BlobNotFound",
+        "logs_url": null,
+        "expected_gnu_term_approx_utc": "2026-11-11T17:17:40Z",
+        "expected_gnu_kill_after_grace_approx_utc": "2026-11-11T17:17:45Z",
+        "measurement_step_timeout_utc": "2026-11-11T17:19:40Z",
+        "job_timeout_utc": "2026-11-11T17:22:16Z",
+        "job_timeout_overrun_seconds": 36,
+        "confirmed_profile_fetch_completion_index": 5,
+        "profile_6_fetch_started": true,
+        "confirmed_openvpn_attempts": 0,
+        "confirmed_verified_ru_exits": 0,
+        "confirmed_target_measurement_rows": 0,
+        "interpretation": "GitHub reports a non-terminal job beyond all configured limits; no terminal logs or artifact. Do not infer runner process liveness or later measurement phases."
       }
-    ]
+    ],
+    "job_timeout_overrun": {
+      "expected_job_timeout_utc": "2026-11-11T17:22:16Z",
+      "observed_at_utc": "2026-11-11T17:22:52Z",
+      "overrun_seconds": 36,
+      "github_job_status": "in_progress",
+      "measurement_step_status": "in_progress",
+      "upload_step_status": "pending",
+      "artifacts": [],
+      "logs_api": "BlobNotFound",
+      "interpretation": "Job remains in progress 36 seconds beyond configured 12-minute timeout. Runner/controller stale state is plausible; process liveness cannot be established."
+    }
   }
 }
