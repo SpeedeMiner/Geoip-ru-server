@@ -38,9 +38,11 @@ the exact `vpnobratno.info` origin and recognises these variants:
 The profile variants are **connection alternatives for one server**, not
 independent providers. Discovery interleaves variants across the listed
 hostnames: IP UDP for each server first, then DDNS UDP, IP TCP and DDNS TCP.
-Provider diversity is measured by the server IP's independently looked-up
-origin ASN; another profile for the same server cannot increase the
-distinct-provider count.
+Before OpenVPN, the collector does not make external origin-ASN lookups:
+those requests proved capable of stalling the tunnel pilot. It instead selects
+one profile per distinct listed server hostname before trying another variant
+for the same host. Origin ASN is explicitly unverified at selection time; this
+does not weaken the separate two-source RU exit-country check after a tunnel.
 
 The listing and profile downloader disables configured HTTP proxies and
 accepts only HTTPS URLs on the exact `vpnobratno.info` origin. HTTP,
@@ -80,10 +82,13 @@ to **six profile attempts** (hard cap six). This allows alternate IP UDP/UDP/
 IP TCP/TCP profiles to be tried without requiring three separate exits. Failed
 TLS or authentication handshakes are detected from the live OpenVPN log and
 stop that attempt early.
-The collector prefers one candidate per distinct origin ASN before trying
-another profile from an already represented ASN. It stops as soon as the
-requested number of verified RU exits succeeds. The manual job timeout is
-120 minutes. A and AAAA answers are collected in one resolver call per target.
+The collector prefers one candidate per distinct server hostname before
+trying a second profile variant for the same host; no RIPEstat/DNS lookup is
+performed before OpenVPN starts. Origin ASN is recorded as unverified in this
+preflight. The selector stops once the hostname diversity reaches the configured
+attempt budget. The measurement command has an outer 9-minute process-group
+timeout, a 10-minute step timeout and a 20-minute job timeout. A and AAAA
+answers are collected in one resolver call per target.
 The workflow file was placed on the default branch `main` in a
 single-file commit (`580a25a7a65d957d46d83e827ccbd9308969713e`) so manual
 dispatch is now available. When launching from the GitHub Actions page, choose
@@ -142,10 +147,11 @@ from IP metadata and RIPEstat are recorded in separate columns; a mismatch is
 flagged for review rather than silently choosing one. A returned RIPEstat prefix
 is retained only if it contains the queried IP address.
 
-The collector inspects up to 24 profile candidates for origin ASN and
-prefers one candidate per distinct observed ASN before selecting another
-profile from the same ASN. If RIPEstat cannot establish an ASN, the candidate is marked
-ASN-unverified and is not counted as provider diversity.
+Discovery may download up to 24 profile variants, but pre-tunnel selection
+groups them by server hostname and chooses one profile per distinct hostname
+before trying another variant for an already represented server. No network
+lookup is performed in this phase; origin ASN fields remain explicitly
+unverified until they can be enriched without delaying VPN establishment.
 
 After the tunnel is up, system DNS/NSS failures are handled with a fallback
 DNS-over-HTTPS client pinned to public resolver IPs (Cloudflare 1.1.1.1 and
@@ -408,8 +414,8 @@ critical API endpoints. Until then, \`NO_MATCHED_ENDPOINT\` means only
 
 - The manual VPN pilot now uses a **5-second per-profile tunnel-route timeout** (`--connect-timeout 5`), with the accepted CLI range starting at 5 seconds. It still allows at most six connection profiles and requests one independently verified RU exit.
 - The 12-second DNS/HTTPS request timeout is unchanged; it is separate from the OpenVPN tunnel establishment timeout.
-- The collector now emits flushed progress markers for profile listing, every profile download, each origin-ASN lookup, candidate selection and each OpenVPN attempt. This makes slow discovery/metadata phases visible in GitHub Actions instead of appearing idle until the final JSON summary.
+- The collector emits flushed progress markers for profile listing, every profile download, per-host candidate selection, the hostname-diversity early-stop decision, selection completion and each OpenVPN attempt. No pre-tunnel RIPEstat/DNS request is performed.
 - The 5-second setting deliberately favors a short pilot. Slow but potentially viable volunteer endpoints may be classified as no tunnel within the short budget; this is a candidate-availability diagnostic, not evidence that target websites are blocked.
 - Existing run #42996316782 was dispatched before this change and continues with its original `--connect-timeout 60` command. Changes apply only to later runs on the updated feature branch.
-- For the live tunnel attempt, the collector now reuses the RIPEstat origin ASN/prefix cached during candidate selection and skips per-server IP-organization and reverse-PTR lookups before OpenVPN. Those enrichments are optional and were removed from the connection critical path; `SERVER_ORG` and `SERVER_PTR` can therefore be empty. Actual VPN exit IP/country verification still requires agreement from two independent metadata services after a tunnel is established.
+- The collector no longer performs any origin-ASN network lookup before OpenVPN. It selects up to six distinct server hostnames, and leaves server ASN/prefix/org fields unverified rather than blocking tunnel attempts. Actual VPN exit IP/country verification still requires agreement from two independent metadata services after a tunnel is established; exit ASN enrichment remains separate from that country consensus.
 - The measurement step has a hard 10-minute timeout and the enclosing job a 20-minute timeout. The workflow still attempts to upload diagnostics after a measurement-step failure or timeout.
