@@ -12,20 +12,19 @@ Append-only recovery log for the Geoip-ru-server audit work. Keep each completed
 
 ## Current state / resume from — 2026-11-11
 
-- **Active workstream:** full source inventory and improvement of actual Russian prefix inputs. Plan: docs/GEOIP_RU_SOURCE_IMPROVEMENT_PLAN.md; audit journal: .github/audits/geoip_ru_repository_audit_2026-11.md; resume: .github/audits/GEOIP_RU_AUDIT_RESUME.md.
-- **Baseline:** main d6fa94a691a9635b72be4e6b941c87d29c802dfa; production tag latest-geoip-client-v37; run #34 success; release branch d613c5f0ef482f2051cbc37a303b2ac30076d313.
-- **Current production artifact:** geoip_RU.dat, 951,531 bytes; SHA-256 c70310071f7611d5c7ae54d409ae7c8d7b4598bbbbb706cbb44e9f0ca9303904. RU legacy category: 76,292 CIDRs, 52,618,729 IPv4 addresses and 1,192,441,882,017,908,537,250,295,700,258,816 IPv6 addresses.
-- **Semantics guard:** RU category is legacy DIRECT RU+BY+KZ plus company/affiliate origins, not strict geographic RU. Preserve this contract; strict RU must be developed as a separate parallel output.
-- **PR #7:** open Draft on branch docs/source-improvement-plan-2026-11. It contains source improvement plan, full audit/resume documentation and fixes to the review-only priority audit's stale hard-coded scope/date validation. Production builder, production prefix inputs, company allowlist, geoip_RU.dat, release and tags were not changed.
-- **CI run #159:** https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/42978866087 — 18/18 success on head 6c0fb4ef2b4f67c8c621365931f289ebf4aefb47. Artifact v37-prefix-audit-7, ID 13836209176, 645,109 bytes, SHA-256 2052fbe9284356b7202c2eb2fb55a9bfdb6fcda1f94fe83780b3312ed4801f96.
-- **Scope drift fixed:** the selected-origin queue now yields 57 review candidates (53 exact MOAS + 4 company-only); collector/triage/worklist and validators derive expected scope from exact input selection. All 57 rows are REVIEW. Run #159 collected 171 RDAP samples (all OK), 111 exact prefix/origin RPKI checks (66 valid, 20 invalid_asn, 25 unknown) and 57 IRR queries; no candidate was auto-approved.
-- **New exact MOAS candidate:** 5.255.192.0/18, origins AS13238 + AS208398. RIPE allocation is RU-YANDEX-20120914 / YANDEX LLC; RDAP first/middle/last found three RU Yandex child resources but are samples only. Both exact origin ROAs valid (maxLength /24). Exact RIPE/GRS route object found for AS13238 only; no AS208398 exact object among the eight queried sources. AS208398 is a Serbian origin ASN. This is a cross-border MOAS/IRR mismatch, not evidence that the resource is foreign or that ownership changed. It remains REVIEW.
-- **External spot checks:** 23 rows; the 22 previous rows remain dated 2026-11-10. Added 5.255.192.0/18 as CHECKED_2026-11-11, scope EXACT_AND_MORE_SPECIFIC. It remains REVIEW and is not a production ADD/EXCLUDE.
+- **Active workstream:** repository-wide source inventory and improvement of actual Russian prefix inputs. Plan: docs/GEOIP_RU_SOURCE_IMPROVEMENT_PLAN.md; audit journal: .github/audits/geoip_ru_repository_audit_2026-11.md; resume: .github/audits/GEOIP_RU_AUDIT_RESUME.md.
+- **Baseline:** main d6fa94a691a9635b72be4e6b941c87d29c802dfa; production tag latest-geoip-client-v37; production run #34 success; release branch d613c5f0ef482f2051cbc37a303b2ac30076d313.
+- **Production semantics guard:** current RU category is legacy DIRECT RU+BY+KZ plus company/affiliate origins, not strict geographic RU. Preserve this contract; strict RU should be a separate parallel output.
+- **PR #7:** open Draft on branch docs/source-improvement-plan-2026-11. It contains source plan/full audit/resume docs and audit-only fixes for dynamic priority scope plus dated external spot-check validation. Production builder/prefix inputs/company allowlist/geoip_RU.dat/release/tag remain unchanged.
+- **Latest fully green validation before journal update:** run #168, 18/18 SUCCESS, https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/42980741689, HEAD 75ab08369ab70a4f37743912651f4e96aa0f1dc2. Artifact v37-prefix-audit-7, ID 13836819042, 646,543 bytes, SHA-256 da7a57562822236851d5f715a7dffd57ec4548d7d681803a2295fb247e6d1a0c.
+- **Priority inventory:** 57 exact prefixes = 53 MOAS + 4 company-only; 57 priority, triage and worklist rows all REVIEW. RDAP 171/171 samples OK; RPKI 111 origin-prefix checks (66 valid, 20 invalid_asn, 25 unknown); IRR 57 queries (55 OK, one NO_EXACT_ROUTE_OBJECT_IN_QUERY_RESULTS, one NO_OBJECTS_IN_QUERIED_SOURCES).
+- **External spot checks:** 23 entries. The prior 22 are CHECKED_2026-11-10; 5.255.192.0/18 is CHECKED_2026-11-11. Worklist scope: 5 EXACT_ONLY, 17 EXACT_AND_MORE_SPECIFIC, 1 MORE_SPECIFIC_ONLY. New dated spot-check validator requires a valid ISO calendar date.
+- **New MOAS candidate:** 5.255.192.0/18, exact origins AS13238 + AS208398. RIPE allocation is RU-YANDEX-20120914/YANDEX LLC; three RDAP samples point to RU/Yandex child objects, not an exhaustive holder map. Both exact ROAs are valid (maxLength /24); exact RIPE/GRS route object only AS13238; AS208398 is a Serbian origin ASN. Treat as cross-border MOAS/IRR discrepancy, not proof that the resource is foreign or transferred. Status remains REVIEW; no production action.
 - **Archived-invalid reconciliation:** 19 rows, all REVIEW; classes 16 EXACT_ORIGIN_SET_CHANGED, 1 EXACT_MOAS_RPKI_STATUS_CHANGED, 1 MORE_SPECIFIC_ONLY_NO_EXACT_VERDICT, 1 EXACT_MOAS_INVALID_ORIGIN_REMAINS_UNCONFIRMED.
-- **PR #6:** independent, open Draft; do not retarget or merge as part of PR #7.
-- **PR #5 / feature/reachability-full-ru-kz-by:** untouched; do not inspect/edit or run CI/measurements for it.
-- **Resume from:** run full PR #7 CI on current head; verify 57 priority/worklist entries all REVIEW, 23 spot checks with 22 old + one new date, and exact scope relations (5 exact-only, 17 exact+more-specific, 1 more-specific-only). Then update PR body with run/artifact. Next technical work: versioned source catalog + immutable snapshots, then canonical all-source exact-prefix inventory and full address-space diff vs v37. Do not change production data until candidate-level evidence review.
-- **Production caution:** any merge to main triggers build/publish and force-updates release, even for docs-only changes. Consider before merge.
+- **PR #6:** independent, open Draft; do not retarget or merge in this workstream.
+- **PR #5 / feature/reachability-full-ru-kz-by:** untouched; do not inspect/edit or run new CI/measurements for it.
+- **Resume from:** verify the new CI after journal update (run #168 validates the previous head), then update PR #7 body with the latest run/artifact. Next substantial work is versioned source catalog + immutable raw snapshots, then full canonical exact-prefix inventory and address-space diff vs v37. Keep all new candidates REVIEW.
+- **Production caution:** any merge to main triggers production build/publish and force-updates release, even for docs-only changes. Consider this before merge.
 
 
 
@@ -150,4 +149,16 @@ Use one concise record per completed stage:
 - Added the 23rd curated external spot-check row, CHECKED_2026-11-11; updated worklist date validation to accept real ISO dates and added unit tests. Updated workflow gates for 23 spot checks and 17 EXACT_AND_MORE_SPECIFIC scope relations.
 - Updated improvement plan, audit journal and resume checkpoint. All modifications remain audit-only. Production prefix inputs, company allowlist, builder policy, DIRECT, geoip_RU.dat, release/tag are untouched.
 - Resume from: full PR #7 CI on the post-spot-check branch head; verify 57 REVIEW / 23 dated spot checks / 19 REVIEW reconciliation; then update PR #7 body and proceed to immutable source catalog + canonical inventory/diff. PR #5/#6 remain untouched.
+
+
+
+### 2026-11-11 — External spot-check 5.255.192.0/18 and run #168 — DONE / CHECKPOINT REVALIDATION PENDING
+
+- Added the 23rd external spot-check entry for 5.255.192.0/18, dated CHECKED_2026-11-11, scope exact + more-specific. The 22 earlier checks remain unchanged and retain CHECKED_2026-11-10.
+- Worklist builder now accepts any real CHECKED_YYYY-MM-DD date; unit tests cover a later-date entry and invalid calendar date. Workflow gate expects exactly the curated 23-prefix set, verifies each check date and scope relation counts 5/17/1.
+- [Run #168](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/42980741689) passed 18/18 on HEAD 75ab08369ab70a4f37743912651f4e96aa0f1dc2.
+- Artifact v37-prefix-audit-7, ID 13836819042, 646,543 bytes, SHA-256 da7a57562822236851d5f715a7dffd57ec4548d7d681803a2295fb247e6d1a0c; downloaded and independently verified.
+- Run #168 proves: 57 priority rows (53 MOAS + 4 company-only) all REVIEW; 23 external spot-checks; 57 worklist rows; 19 archived-invalid reconciliation rows all REVIEW. New candidate 5.255.192.0/18 remains REVIEW with MOAS AS13238/AS208398, both ROAs valid, Yandex RU resource evidence, and an IRR exact-origin gap for AS208398 in RIPE/GRS sources queried.
+- No production prefix input, company allowlist, Go builder, DIRECT policy, geoip_RU.dat, release tag or release branch changed. PR #5/#6 untouched.
+- Resume from: validate this checkpoint commit via push-trigger CI; then update PR #7 body with the new run/artifact and continue to source catalog + canonical full inventory/diff.
 
