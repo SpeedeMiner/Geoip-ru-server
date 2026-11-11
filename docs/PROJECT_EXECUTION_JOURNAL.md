@@ -2,8 +2,8 @@
 
 **Purpose:** durable cross-chat recovery record. Read this file before continuing project work. Append dated entries; do not rewrite or discard earlier checkpoints.
 **Repository:** `SpeedeMiner/Geoip-ru-server`
-**Last reviewed:** 2026-11-11 17:15 UTC (Asia/Almaty UTC+5)
-**Journal branch:** `experiment/vpn-route-candidate-build-2026-11` (PR #8; review-only source research branch).
+**Last reviewed:** 2026-11-11 17:18 UTC (Asia/Almaty UTC+5)
+**Journal branch:** `experiment/vpn-route-candidate-build-2026-11` (PR #8; review-only source research branch). Journal file commit: `426808bfea6d88d4b09e7f7d71a33ca1ebea0a30`.
 
 ## 0. Hard safety boundaries
 
@@ -23,8 +23,8 @@
 |---|---|---|---|---|
 | #6 | OPEN / DRAFT | `audit/exact-origin-followup-2026-11` | `9014b18a2f7bf4de9d4493d19b50f399b57b0e3e` | Exact-NLRI / RPKI evidence, review-only |
 | #7 | OPEN / DRAFT | `docs/source-improvement-plan-2026-11` | `3f3dbb51c999b0de833ebda233e7b02f8c082b35` | Source inventory and prefix-audit plan, audit-only |
-| #8 | OPEN / DRAFT | `experiment/vpn-route-candidate-build-2026-11` | `f9d6ec1f36199bae6c9de9502ec43ee91eb99d9a` | Pinned VPN source comparison and v38 hostname/IP review |
-| #9 | OPEN / DRAFT | `feature/geoip-direct-rukzby-v38` | `926185d897eea8a370cf939144da3d32641943c1` | v38 candidate plus Antifilter BGP direct-block evidence procedure |
+| #8 | OPEN / DRAFT | `experiment/vpn-route-candidate-build-2026-11` | `426808bfea6d88d4b09e7f7d71a33ca1ebea0a30` | Pinned VPN source comparison and v38 hostname/IP review |
+| #9 | OPEN / DRAFT | `feature/geoip-direct-rukzby-v38` | `b73c9de3be254b1074eff160f5b697ac2762b421` | v38 candidate plus Antifilter BGP direct-block evidence procedure |
 
 Latest metadata check confirms all four PRs are open, draft=true, merged=false, base=main. All four branch names are present. PR #6 and #7 HEADs were unchanged; PR #8 and #9 HEADs above include the work in this journal.
 
@@ -130,7 +130,7 @@ Current BGP registration page was freshly checked on 2026-11-11:
 - Local ASN to set at the service: `64999`.
 - Recommended BGP hold timer: 240 seconds.
 - The current page displays 100,367 prefixes / 196,363 addresses for the combined community selection `65444:200, 65444:210`. This is the combined bundle count, not the count of community 210 alone.
-- The current FAQ says lists update hourly.
+- The current FAQ says lists update hourly. Current page also lists IPv6 peer `2001:41d0:701:1100::1db1`. The legacy IPv4 peer in the FAQ's RouterOS example differs and must not override the current BGP registration page.
 
 Community semantics from the current FAQ:
 - `65444:200`: individual IP addresses as listed by RKN without summarization.
@@ -196,3 +196,13 @@ Before doing anything:
 ### Next checkpoint placeholder
 
 Append the next dated continuation here. Record exactly what was read, what was changed, GitHub commit SHA, Actions run/artifact, raw-data hashes, and any blocker. Do not overwrite prior evidence.
+### 2026-11-11 — journal commit and current BGP page refresh
+
+- Created this cross-chat project journal in PR #8: commit `426808bfea6d88d4b09e7f7d71a33ca1ebea0a30`. The commit is documentation-only and the workflow path filter does not run a new candidate build for this journal file.
+- Added a cross-link from PR #9 `docs/GEOIP_RU_V38_BGP_65444_210_CHECKPOINT.md` to this journal. PR #9 BGP checkpoint update commit: `b73c9de3be254b1074eff160f5b697ac2762b421`.
+- Fresh Antifilter BGP page fetch at 2026-11-11 shows current combined selection `65444:200,65444:210` at 100,367 prefixes / 196,363 addresses; this is not the isolated 210 count. FAQ says feeds update hourly.
+- Current BGP page additionally lists IPv6 peer `2001:41d0:701:1100::1db1`; IPv4 peer remains `45.148.244.55`; local ASN `64999`; remote ASN `65444`; hold timer 240 seconds.
+- Do not use the legacy IPv4 address in the FAQ's MikroTik example in place of the current BGP page peer.
+- PR #8 run #19 `43065567757` remains `in_progress` at last recheck: unit tests SUCCESS, pinned source build SUCCESS, enrichment step IN PROGRESS, no uploaded artifact. It runs the exact code at parent commit `f9d6ec1...`; the later journal commit is documentation-only and excluded from the workflow path filters. PR #8 current HEAD is `426808b...`.
+- Latest PR metadata: #6/#7 unchanged; #8 HEAD `426808b...`; #9 HEAD `b73c9de...`; all four remain OPEN/DRAFT/merged=false. `main` stays `580a25a...`; `release` stays `d780450...`.
+- Actual BGP registration and snapshot remain NOT VERIFIED / NOT MEASURED. No BGP route count may be reported as zero.
