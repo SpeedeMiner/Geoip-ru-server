@@ -195,3 +195,18 @@ The additional priority row is `5.255.192.0/18`:
 ### Next step
 
 Run full PR #7 CI after the spot-check/worklist changes; inspect the new worklist row and verify all 57 remain REVIEW and all 23 external spot checks have correct dates/scope. Then update resume/checkpoint/PR body with the verified run and artifact. Continue to the wider source catalog + canonical full exact-prefix inventory only after this validation. Do not add or remove `5.255.192.0/18` from production based solely on MOAS, countryCode or RPKI.
+
+
+## 2026-11-11 — External spot-check ledger expanded and fully validated (run #168)
+
+- PR #7 validation run #168: https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/42980741689; **18/18 success** on HEAD `75ab08369ab70a4f37743912651f4e96aa0f1dc2`.
+- Artifact `v37-prefix-audit-7`, ID `13836819042`, 646,543 bytes; SHA-256 `da7a57562822236851d5f715a7dffd57ec4548d7d681803a2295fb247e6d1a0c`. Downloaded and independently verified.
+- Unit tests, exact dynamic selection, v37 queue reproduction, 57-prefix RDAP/RPKI/IRR evidence, triage, worklist, archived-invalid reconciliation, checkpoint and YAML all passed.
+- Priority/triage/worklist: 57 rows, 53 MOAS + 4 company-only; all 57 remain REVIEW.
+- Curated external spot-check ledger: 23 rows. 22 existing rows remain CHECKED_2026-11-10; 5.255.192.0/18 is CHECKED_2026-11-11. Worklist scope: 5 EXACT_ONLY, 17 EXACT_AND_MORE_SPECIFIC, 1 MORE_SPECIFIC_ONLY.
+- Worklist confirms 5.255.192.0/18 as review order 4 / P2 / IRR_BGP_ORIGIN_RECONCILIATION; its external spot check is joined correctly, status REVIEW. New date validation accepts valid ISO dates and rejects invalid calendar dates.
+- Archived-invalid reconciliation unchanged: 19 rows all REVIEW; classes 16 EXACT_ORIGIN_SET_CHANGED, 1 EXACT_MOAS_RPKI_STATUS_CHANGED, 1 MORE_SPECIFIC_ONLY_NO_EXACT_VERDICT, 1 EXACT_MOAS_INVALID_ORIGIN_REMAINS_UNCONFIRMED.
+- The new external evidence does not change the candidate decision: 5.255.192.0/18 is a RU/Yandex resource with a cross-border MOAS (AS13238 + Serbian AS208398), both exact ROAs valid, exact RIPE/GRS route object only AS13238. Keep REVIEW; no production ADD/EXCLUDE.
+- Only audit TSV, review scripts/tests, validation workflow and documentation were changed. No production prefix inputs, company allowlist, Go builder policy, geoip_RU.dat, release/tag changed; PR #5/#6 untouched.
+- Resume from: update PR #7 body and checkpoint with run #168/artifact, validate the final checkpoint head via push CI, then begin source catalog + immutable snapshot bundle and full canonical exact-prefix inventory/diff. No production data action until evidence-based review.
+
