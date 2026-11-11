@@ -396,5 +396,36 @@ class OpenVPNProfileSafetyTests(unittest.TestCase):
         self.assertEqual(restore_commands, ["iptables-restore", "ip6tables-restore"])
 
 
+class VPNGateResolverSafetyTests(unittest.TestCase):
+    def test_resolver_guard_never_reads_or_writes_global_resolv_conf(self):
+        failure = AssertionError("global resolver config must remain untouched")
+        with patch.object(pathlib.Path, "read_bytes", side_effect=failure), \
+             patch.object(pathlib.Path, "write_text", side_effect=failure), \
+             patch.object(pathlib.Path, "write_bytes", side_effect=failure):
+            with vpn_gate.ResolverGuard():
+                self.assertTrue(True)
+
+    def test_metadata_https_fallback_does_not_try_ipv6_only_host(self):
+        with patch.object(vpn_gate, "doh_query", return_value=[]) as doh:
+            with patch.object(vpn_gate, "PinnedHTTPSConnection") as connection:
+                with self.assertRaisesRegex(vpn_gate.ProbeError, "IPv6 HTTPS is not enabled"):
+                    vpn_gate.fetch_https_pinned("https://ipv6-only.example/", 5)
+        doh.assert_called_once_with("ipv6-only.example", "A", timeout=5)
+        connection.assert_not_called()
+
+    def test_target_https_fallback_does_not_try_aaaa_for_ipv6_only_host(self):
+        opener = type("Opener", (), {
+            "open": lambda self, request, timeout: (_ for _ in ()).throw(
+                urllib.error.URLError("temporary DNS failure")
+            )
+        })()
+        with patch.object(vpn_gate.urllib.request, "build_opener", return_value=opener):
+            with patch.object(vpn_gate, "doh_query", return_value=[]) as doh:
+                result = vpn_gate.https_head("ipv6-only.example", 443, "/", 5)
+        self.assertEqual(result[0:2], ("INCONCLUSIVE", None))
+        self.assertIn("IPv6 HTTPS is not enabled", result[2])
+        doh.assert_called_once_with("ipv6-only.example", "A", timeout=5)
+
+
 if __name__ == "__main__":
     unittest.main()
