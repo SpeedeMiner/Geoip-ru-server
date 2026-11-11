@@ -926,7 +926,7 @@ jobs:
       - name: Upload prefix review queues as a CI artifact
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
         with:
-          name: v37-prefix-audit-${{ github.event.pull_request.number }}
+          name: v37-prefix-audit-${{ github.event.pull_request.number || 'pr6-audit' }}
           path: prefix-audit/
           if-no-files-found: error
           retention-days: 30
