@@ -59,9 +59,10 @@ jobs:
 
       - name: Compile and test audit parsers and RPKI normalization
         run: |
-          python3 -m py_compile .github/scripts/collect_v38_postrelease_prefix_audit.py .github/scripts/test_v38_postrelease_prefix_audit.py .github/scripts/normalize_v38_postrelease_prefix_audit.py .github/scripts/test_normalize_v38_postrelease_prefix_audit.py
+          python3 -m py_compile .github/scripts/collect_v38_postrelease_prefix_audit.py .github/scripts/test_v38_postrelease_prefix_audit.py .github/scripts/normalize_v38_postrelease_prefix_audit.py .github/scripts/test_normalize_v38_postrelease_prefix_audit.py .github/scripts/collect_v38_ripestat_rpki_validation.py .github/scripts/test_v38_ripestat_rpki_validation.py
           python3 -m unittest discover -s .github/scripts -p 'test_v38_postrelease_prefix_audit.py' -v
           python3 -m unittest discover -s .github/scripts -p 'test_normalize_v38_postrelease_prefix_audit.py' -v
+          python3 -m unittest discover -s .github/scripts -p 'test_v38_ripestat_rpki_validation.py' -v
 
       - name: Capture current exact-NLRI and same-source RPKI evidence for 56 priority prefixes
         run: |
@@ -71,6 +72,15 @@ jobs:
             --timeout 18 \
             --routeviews-interval 1.1 \
             --ripe-workers 4
+
+      - name: Capture independent RIPEstat RPKI validation for exact prefix-origin pairs
+        run: |
+          python3 .github/scripts/collect_v38_ripestat_rpki_validation.py \
+            --input-dir v38-postrelease-audit \
+            --output-dir v38-postrelease-audit \
+            --timeout 18 \
+            --workers 4 \
+            --retries 2
 
       - name: Normalize RPKI status aliases and preserve real conflicts
         run: |
@@ -98,7 +108,13 @@ jobs:
           if capture['release_geoip_sha256'] != 'e757c1b7b8ca5b47c11117784eb78ab25c59fbadc0f6ab55229827560db76800':
               raise SystemExit('Unexpected release GeoIP hash')
           if capture['request_count'] != 224 or len(capture['summary']) != 224:
-              raise SystemExit('Expected four evidence requests for each of 56 prefixes')
+              raise SystemExit('Expected four base evidence requests for each of 56 prefixes')
+          rpki = manifest.get('ripestat_rpki_validation', {})
+          rpki_rows = list(csv.DictReader((root / 'ripestat_rpki_validation.tsv').open(encoding='utf-8', newline=''), delimiter='\\t'))
+          with (root / 'ripestat_rpki_validation.jsonl').open(encoding='utf-8') as stream:
+              rpki_raw_count = sum(1 for line in stream if line.strip())
+          if rpki.get('request_count', 0) < 56 or len(rpki_rows) != rpki.get('request_count') or rpki_raw_count != rpki.get('request_count'):
+              raise SystemExit('RIPEstat RPKI validation pair inventory is incomplete')
           for path in root.iterdir():
               if path.is_file():
                   print(f'{path.name}\t{path.stat().st_size}\t{hashlib.sha256(path.read_bytes()).hexdigest()}')
