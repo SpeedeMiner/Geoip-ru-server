@@ -1,14 +1,14 @@
 {
   "schema_version": 1,
-  "updated_at_utc": "2026-11-11T17:29:10Z",
+  "updated_at_utc": "2026-11-11T17:46:10Z",
   "repository": "SpeedeMiner/Geoip-ru-server",
   "pull_request": 5,
   "pull_request_url": "https://github.com/SpeedeMiner/Geoip-ru-server/pull/5",
   "branch": "feature/reachability-full-ru-kz-by",
-  "recorded_pr_head_before_checkpoint_commit": "23a276bf2c5be6c00d4dcc8510457a1c9e0f6e0f",
+  "recorded_pr_head_before_checkpoint_commit": "b3ed33fd06b88b23b0625170c0bdd8d252754f34",
   "base_sha": "a68e5d6589361814cb1cfedd2af7857e4af806fa",
-  "state": "RUN21_COMPLETED_CANCELLED_BY_GITHUB_MAX_12M_EXECUTION_TIME; NO_TERMINAL_LOGS; NO_ARTIFACT; NO_VERIFIED_RU_EXIT",
-  "current_phase": "RUN21_TERMINAL_TIMEOUT_CONFIRMED; INNER_STALL_ROOT_CAUSE_UNRESOLVED; NO_OPENVPN_OR_TARGET_EVIDENCE",
+  "state": "RUN21_COMPLETED_CANCELLED_BY_GITHUB_MAX_12M_EXECUTION_TIME; VPNOBRATTO_ISOLATED_FETCH_WORKER_IMPLEMENTED_AND_CI_GREEN; NO_NEW_VPN_RUN",
+  "current_phase": "VPNOBRATTO_FETCH_WORKER_ISOLATION_AND_PROGRESS_MANIFEST_VALIDATED_ON_UBUNTU_24_04; RUN21_INNER_CAUSE_UNPROVEN",
   "completed": [
     "repository_reconnaissance",
     "protobuf_inventory_exporter",
@@ -261,17 +261,32 @@
     "single_run21_dispatch_attempt_refused_before_browser_start_due_insufficient_tinyfish_wallet",
     "run21_manual_vpnobratto_dispatch_started_by_owner",
     "run21_setup_geoproto_inventory_steps_success",
-    "run21_vpnobratto_listing_32_links_five_profiles_usable_and_sixth_fetch_started"
+    "run21_vpnobratto_listing_32_links_five_profiles_usable_and_sixth_fetch_started",
+    "vpnobratto_profile_fetch_isolated_in_fork_worker_with_parent_wall_deadline",
+    "vpnobratto_fetch_worker_term_kill_reap_and_manifest_tests",
+    "vpnobratto_early_worker_exit_classified_separately_from_timeout",
+    "vpnobratto_doh_tcp_tls_http_body_close_phase_markers",
+    "vpnobratto_atomic_per_profile_progress_manifest",
+    "vpnobratto_progress_manifest_included_in_existing_artifact_glob",
+    "vpnobratto_worker_validation_127_python_tests_go_and_watchdog_green_run_43071264599",
+    "vpnobratto_readme_runtime_limits_and_worker_manifest_documented"
   ],
-  "latest_successful_validation_run": 43062327051,
-  "latest_successful_validation_commit": "212e11f2f33a07a3c1630bbc51f5cb2b3d80b9a5",
+  "latest_successful_validation_run": 43071264599,
+  "latest_successful_validation_commit": "c49dece293541d46b6af14282b382459164315d7",
   "test_counts": {
-    "python_unit_tests": 123,
+    "python_unit_tests": 127,
     "python_unit_tests_status": "PASS",
+    "isolated_fetch_worker_success_manifest_test": "PASS",
+    "isolated_fetch_worker_term_kill_reap_test": "PASS",
+    "isolated_fetch_worker_early_exit_classification_test": "PASS",
+    "default_fetcher_worker_routing_test": "PASS",
     "watchdog_process_group_preflight": "PASS_ON_GITHUB_HOSTED_UBUNTU_24_04",
     "gofmt_status": "PASS",
     "go_tests_status": "PASS",
-    "go_build_status": "PASS"
+    "go_build_status": "PASS",
+    "validation_run_id": 43071264599,
+    "validation_job_id": 130699445722,
+    "validation_conclusion": "success"
   },
   "latest_successful_full_run": 42877815872,
   "latest_full_run_commit": "401830a0bdcef35f20fe67e90fbaef7e72129ca6",
@@ -440,10 +455,11 @@
     "production_release_artifact_byte_delta_verified": false
   },
   "next_steps": [
-    "Run #21 is terminal due to the GitHub max 12-minute execution-time annotation; run/job API says completed/cancelled. No artifact or terminal job log is available.",
-    "Post-mortem of execution SHA 5a1badef9e19a71c44cd4b1fa42748f4d688e90f did not identify a proven unbounded Python retry loop: profile fetch has a 20s SIGALRM wrapper, monotonic deadlines and bounded sockets; normal expiry should emit a skipped/error marker. The precise inner stall or lost log state remains unproven.",
-    "Before another dispatch, supervise each profile fetch in a child worker process with a parent-side total wall-clock wait/kill; add flushed subphase markers for DoH, TCP, TLS, headers, response reads and close; persist a per-profile progress manifest. Add tests that prove the worker and descendants stop when the deadline expires.",
-    "Keep changes isolated to the manual VPN measurement workflow; preserve review-only behavior. Do not rerun automatically; after changes, run validation CI first, then one capped manual pilot.",
+    "Latest code HEAD c49dece293541d46b6af14282b382459164315d7 passed GitHub validation Run #209 (127 Python tests, hosted ubuntu-24.04 watchdog preflight, Go formatting/tests/build). Documentation-only README/WORKLOG/CHECKPOINT/RESUME commits do not change the validated code.",
+    "Run #21 remains terminal completed/cancelled by GitHub's max 12-minute execution time. It has no terminal job logs or artifacts; five profiles were usable, profile 6 fetch only started, and no OpenVPN/verified RU exit/target result is confirmed. Inner stall causality remains unknown.",
+    "New production VPNObratto fetches are isolated in a fork worker with a parent monotonic 20-second wall deadline; network fetch budgets remain 15 seconds listing / 12 seconds per profile. The parent does TERM→KILL→join/reap and records worker_timeout separately from early worker exit.",
+    "Each network phase and worker lifecycle emits flushed markers. An atomic per-profile manifest is written to reachability-output/vpn_gate_vpnobratto_progress.json and matches the existing reachability-output/vpn_gate_* artifact glob.",
+    "No new VPN run was dispatched. Before a next manual pilot, verify no active/queued VPN workflow; use source=vpnobratno, request one independently verified RU exit and maximum six profile attempts. Inspect full logs and uploaded manifest/artifact after terminal state. Do not treat RU exit/ASN as proof of residential household access.",
     "Keep PR #5 OPEN/DRAFT and all production GeoIP, DIRECT policy, ASN allowlist, main/release and PR #6 boundaries unchanged."
   ],
   "ci_policy": {
@@ -1999,7 +2015,10 @@
     "checkpoint_written_after_worklog_commit": "01085045a9e224a9abe9a4b7dd36d3f32f67da69",
     "resume_guide_active_run21_commit": "e971a8f62c213bee068e3595b67def86d609b348",
     "run21_monitoring_snapshot_worklog_commit": "c7d6ffdf2866df22ac1b5ad466b534b2def40d99",
-    "resume_guide_live_status_refresh_commit": "beba9f75a0bfc08703e79555635698b130ed47a8"
+    "resume_guide_live_status_refresh_commit": "beba9f75a0bfc08703e79555635698b130ed47a8",
+    "README_worker_runtime_commit": "863f0c5251cbab17a85ac150735dff7f37fcdd30",
+    "WORKLOG_worker_validation_commit": "b3ed33fd06b88b23b0625170c0bdd8d252754f34",
+    "documentation_note": "README/WORKLOG/CHECKPOINT/RESUME updates do not dispatch VPN workflows. Latest code-tested commit remains c49dece..."
   },
   "run21_result": {
     "run_id": 43065501624,
@@ -2279,5 +2298,71 @@
       "code_changed": false,
       "vpn_rerun_dispatched": false
     }
+  },
+  "vpnobratto_fetch_worker_isolation": {
+    "implementation_commits": [
+      "204894acbb159f8ceb4ca00114e50caf6d704161",
+      "4836d4af7ed773f262852ff4056d938e1852f0e0",
+      "f50f32c3338526a3aaec20d71f8daefdff1454b3",
+      "196cf4c3dbdf713b750bfd4f73b75a26e4fc7a4b",
+      "3fec3a4b9794e9a8cd35d45546fd48b0048425b1",
+      "e9c2977fb9dd183e8600c62b785fa3154879da03",
+      "c49dece293541d46b6af14282b382459164315d7"
+    ],
+    "execution_model": "Production VPNObratto listing/profile fetches run in an isolated Linux fork worker. Parent enforces a monotonic 20-second wall deadline and controls TERM→KILL→join/reap. The worker returns only bytes or a bounded typed error envelope over a one-way pipe.",
+    "nested_budgets_seconds": {
+      "listing_parent_wall": 20,
+      "listing_fetcher_network": 15,
+      "profile_parent_wall": 20,
+      "profile_fetcher_network": 12
+    },
+    "failure_states": [
+      "worker_timeout",
+      "worker_failed_without_result",
+      "worker_error_received",
+      "worker_completed"
+    ],
+    "worker_timeout_escalation": {
+      "term_wait_seconds": 0.5,
+      "kill_wait_seconds": 1.5,
+      "process_reaped_before_reporting": true
+    },
+    "progress_markers": [
+      "worker start/completed/error/timeout",
+      "DoH start/completed",
+      "pinned TCP connect start/completed",
+      "TLS handshake start/completed",
+      "HTTPS request start",
+      "response headers wait/completed",
+      "each response-body chunk start/completed",
+      "connection close start/completed"
+    ],
+    "manifest_path": "reachability-output/vpn_gate_vpnobratto_progress.json",
+    "manifest_upload_glob": "reachability-output/vpn_gate_*",
+    "manifest_contents": "GitHub run ID/attempt/execution SHA, profile hostname/variant/address mode, last phase, timestamps, elapsed time and bounded event history. Does not store downloaded .ovpn contents or key material.",
+    "tests": {
+      "success_result_and_manifest": true,
+      "term_resistant_worker_killed_and_reaped": true,
+      "early_exit_without_message_distinguished_from_timeout": true,
+      "default_production_fetcher_uses_worker": true
+    },
+    "validation": {
+      "latest_run_id": 43071264599,
+      "latest_run_number": 209,
+      "latest_job_id": 130699445722,
+      "latest_run_url": "https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43071264599",
+      "checked_out_code_commit": "c49dece293541d46b6af14282b382459164315d7",
+      "python_tests": 127,
+      "conclusion": "success",
+      "runner_image": "ubuntu-24.04",
+      "gofmt": "passed",
+      "go_test": "passed",
+      "go_build": "passed"
+    },
+    "limitations": [
+      "No new live VPNObratto pilot has been run against the new worker implementation.",
+      "Run #21's exact inner stall remains unproven because its terminal log archive and artifact were unavailable.",
+      "A child in uninterruptible kernel D-state cannot be killed by SIGKILL until the kernel call returns; parent records cleanup unconfirmed rather than masking the diagnosis."
+    ]
   }
 }
