@@ -1895,6 +1895,8 @@
     "go_build": "passed",
     "implementation": "doh_query now shares one monotonic absolute deadline across pinned resolvers, reads the bounded response in read1 chunks, and refreshes the remaining socket timeout before each chunk. Slow-drip responses cannot extend the DoH query indefinitely.",
     "test": "Regression test advances a fake monotonic clock during chunked reads and verifies that the deadline expires before a second resolver attempt.",
-    "interpretation": "This closes a discovered unbounded slow-drip DoH read path. It is not evidence that this defect caused Run #20's timeout overrun."
+    "interpretation": "This closes a discovered unbounded slow-drip DoH read path. It is not evidence that this defect caused Run #20's timeout overrun.",
+    "validation_workflow_conclusion": "success",
+    "workflow_duration_seconds": 10
   }
 }
