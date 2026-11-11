@@ -23,7 +23,7 @@
 |---|---|---|---|---|
 | #6 | OPEN / DRAFT | `audit/exact-origin-followup-2026-11` | `9014b18a2f7bf4de9d4493d19b50f399b57b0e3e` | Exact-NLRI / RPKI evidence, review-only |
 | #7 | OPEN / DRAFT | `docs/source-improvement-plan-2026-11` | `3f3dbb51c999b0de833ebda233e7b02f8c082b35` | Source inventory and prefix-audit plan, audit-only |
-| #8 | OPEN / DRAFT | `experiment/vpn-route-candidate-build-2026-11` | `3de2dd1051623afed3212bc39c1af45858fb85f4` (workflow change; this append-only journal update follows) | Pinned VPN source comparison and v38 hostname/IP review |
+| #8 | OPEN / DRAFT | `experiment/vpn-route-candidate-build-2026-11` | `39a44d2474f9938eb58df2adea91935783b79b74` (last branch head before this append-only journal update) | Pinned VPN source comparison and v38 hostname/IP review |
 | #9 | OPEN / DRAFT | `feature/geoip-direct-rukzby-v38` | `b73c9de3be254b1074eff160f5b697ac2762b421` | v38 candidate plus Antifilter BGP direct-block evidence procedure |
 
 Latest metadata check confirms all four PRs are open, draft=true, merged=false, base=main. All four branch names are present. PR #6 and #7 HEADs were unchanged; PR #8 and #9 HEADs above include the work in this journal.
@@ -223,3 +223,12 @@ Append the next dated continuation here. Record exactly what was read, what was 
 - Workflow change commit: `3de2dd1051623afed3212bc39c1af45858fb85f4`. PR #8 remains OPEN / DRAFT.
 - GitHub triggered new candidate-only run #23: `43067107469`, workflow `VPN route source candidate build`, head `3de2dd1...`; at last check status `pending`, no job or artifact yet.
 - No production/v38 build workflow was dispatched. PR #9 and production refs untouched.
+
+### 2026-11-11 — replacement candidate run #23 started
+
+- New run #23 `43067107469` is active on PR #8, branch `experiment/vpn-route-candidate-build-2026-11`, workflow head `3de2dd1051623afed3212bc39c1af45858fb85f4`.
+- Run status at 2026-11-11 17:20:10 UTC: `in_progress`, attempt 1. Job ID `130684951212`.
+- Step status: Set up job SUCCESS; Checkout SUCCESS; Set up Python SUCCESS; Run unit tests SUCCESS; Build pinned VPN route candidates IN PROGRESS; enrichment pending; artifact upload pending; no artifact yet.
+- PR #8 branch has since advanced to `39a44d2474f9938eb58df2adea91935783b79b74` only because the journal was appended; journal path is not in workflow path filters. Run #23 contains the same candidate code and workflow concurrency change from commit `3de2dd1...`.
+- `cancel-in-progress` is now false in PR #8 candidate workflow. Observe run #23 to completion before starting any further run in the same PR concurrency group.
+- PR #6/#7 remain at their recorded heads; PR #8/#9 are OPEN/DRAFT. `main` and `release` remain unchanged. BGP registration/session/snapshot remain unverified/not measured.
