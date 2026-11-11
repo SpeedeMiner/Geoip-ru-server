@@ -95,6 +95,70 @@ class VPNGateCSVTests(unittest.TestCase):
         self.assertEqual(vpn_gate.parse_vpngate_csv(text), [])
 
 
+class VPNExitVerificationTests(unittest.TestCase):
+    def test_exit_ip_requires_two_independent_matching_sources(self):
+        responses = [
+            {
+                "ip": "203.0.113.7", "country_code": "RU",
+                "connection": {"asn": "AS12345", "org": "Example ISP"},
+            },
+            {
+                "ip": "203.0.113.7", "country_code": "RU",
+                "asn": "AS12345", "org": "Example ISP",
+            },
+        ]
+        with patch.object(vpn_gate, "fetch_json", side_effect=responses):
+            info = vpn_gate.ip_metadata()
+        self.assertEqual(info["ip"], "203.0.113.7")
+        self.assertEqual(info["country"], "RU")
+        self.assertEqual(info["asn"], 12345)
+        self.assertEqual(info["verified_by_sources"], 2)
+        self.assertIn("|", info["source"])
+
+    def test_exit_ip_rejects_country_or_address_disagreement(self):
+        responses = [
+            {"ip": "203.0.113.7", "country_code": "RU", "connection": {}},
+            {"ip": "203.0.113.8", "country_code": "RU", "connection": {}},
+        ]
+        with patch.object(vpn_gate, "fetch_json", side_effect=responses):
+            with self.assertRaisesRegex(vpn_gate.ProbeError, "disagree"):
+                vpn_gate.ip_metadata()
+
+    def test_exit_ip_requires_two_working_metadata_services(self):
+        first = {"ip": "203.0.113.7", "country_code": "RU", "connection": {}}
+        with patch.object(vpn_gate, "fetch_json", side_effect=[
+            first, vpn_gate.ProbeError("offline"), vpn_gate.ProbeError("offline")
+        ]):
+            with self.assertRaisesRegex(vpn_gate.ProbeError, "two independent"):
+                vpn_gate.ip_metadata()
+
+    def test_server_selection_prefers_distinct_origin_asns(self):
+        servers = [
+            {"hostname": "a", "server_ip": "8.8.8.1", "score": 100},
+            {"hostname": "b", "server_ip": "8.8.8.2", "score": 90},
+            {"hostname": "c", "server_ip": "8.8.8.3", "score": 80},
+            {"hostname": "d", "server_ip": "8.8.8.4", "score": 70},
+        ]
+        asns = {"8.8.8.1": 12345, "8.8.8.2": 12345, "8.8.8.3": 54321, "8.8.8.4": 65001}
+        with patch.object(vpn_gate, "network_info", side_effect=lambda ip: {"asn": asns[ip], "prefix": ""}):
+            selected, metadata = vpn_gate.select_diverse_servers(servers, 3)
+        self.assertEqual([server["hostname"] for server in selected], ["a", "c", "d"])
+        self.assertEqual(metadata["selected_distinct_asns"], 3)
+        self.assertEqual(metadata["selected_asns"], [12345, 54321, 65001])
+
+    def test_server_selection_fills_budget_after_each_asn_has_a_chance(self):
+        servers = [
+            {"hostname": "a", "server_ip": "8.8.8.1", "score": 100},
+            {"hostname": "b", "server_ip": "8.8.8.2", "score": 90},
+            {"hostname": "c", "server_ip": "8.8.8.3", "score": 80},
+        ]
+        asns = {"8.8.8.1": 12345, "8.8.8.2": 12345, "8.8.8.3": 65001}
+        with patch.object(vpn_gate, "network_info", side_effect=lambda ip: {"asn": asns[ip], "prefix": ""}):
+            selected, metadata = vpn_gate.select_diverse_servers(servers, 3)
+        self.assertEqual([server["hostname"] for server in selected], ["a", "c", "b"])
+        self.assertEqual(metadata["selected_distinct_asns"], 2)
+
+
 class OpenVPNProfileSafetyTests(unittest.TestCase):
     def test_profile_is_rebuilt_with_advertised_ip_and_no_untrusted_scripts(self):
         parsed = vpn_gate.inspect_openvpn_profile(SAMPLE_CONFIG)
