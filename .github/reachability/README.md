@@ -62,7 +62,10 @@ the main builder, release artifacts, DIRECT policy, or ASN allowlists.
 Before sending any service request through a volunteer node, the runner now requires
 two independent public IP-metadata services to agree on the exact exit IPv4 address
 and country. A disagreement or fewer than two usable responses rejects that node.
-The actual exit ASN/prefix is then enriched separately from RIPEstat.
+The actual exit ASN/prefix is then enriched separately from RIPEstat. ASN values
+from IP metadata and RIPEstat are recorded in separate columns; a mismatch is
+flagged for review rather than silently choosing one. A returned RIPEstat prefix
+is retained only if it contains the queried IP address.
 
 The initial server sample is no longer simply the three highest-scoring VPN Gate
 rows. The collector inspects up to 24 top-ranked candidates for origin ASN and
