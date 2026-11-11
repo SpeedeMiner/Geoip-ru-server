@@ -63,6 +63,12 @@ It additionally downloads Antifilter Download ipsum.lst for a separate review-on
 
 Community Antifilter and Re-filter candidate lists remain review-only. They are not automatically subtracted from DIRECT. Privacy/telemetry classification does not move traffic to VPN; only membership in the approved RKN-derived blocked set does.
 
+### Direct IP-block evidence versus DNS-resolved destinations
+
+The exact-host feeds `ip.lst` and `ipresolve.lst` are not sufficient to prove that every listed address is directly blocked at the IP layer: resolver-derived addresses can be shared by unrelated domains. Antifilter.network documents a BGP community distinction: `65444:200` marks its unsummarized host-IP list, while `65444:210` marks the subset it classifies as directly blocked by Roskomnadzor; `65444:210` is carried together with `65444:200`. Its `65444:300` community is a `/24` summary and is explicitly not recommended for ordinary use. The current BGP subscription page advertises peer `45.148.244.55`, remote AS65444, local AS64999, and a 240-second hold timer. The older FAQ contains a different peer address, so the registration page's current peer details must be followed.
+
+The `65444:210` feed is a third-party classification, not a direct official RKN API. It is nevertheless the strongest currently documented machine-readable signal for separating direct IP-layer blocks from DNS-resolved host candidates. Until a timestamped BGP snapshot is captured and validated, v38 keeps its existing approved block set unchanged. Capture routes into an isolated BIRD table with an import filter accepting only `(65444,210)`; do not install them into the operating-system FIB or advertise them to another peer. Compare the captured exact prefixes to the current blocked set and service provenance before proposing any changes. Absence from the feed is a review signal, not proof that the address is safe to make DIRECT.
+
 Domain-only blocked rules should be handled separately. A future client-compatible domain sidecar can use RKN domain feeds (for example the domain output from jutsu-dev/ru-route-lists), but it must not be flattened into broad GeoIP CIDRs where shared IPs would be overblocked.
 
 ## 5. Final precedence
