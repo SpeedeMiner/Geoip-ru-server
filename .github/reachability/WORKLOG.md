@@ -331,3 +331,20 @@ Durable resume point for PR #5. After any conversation/network interruption, rea
 - Validation is pending for the 56-test code head. The last confirmed green validation (Run #103, 48 Python tests) predates the DoH fallback and this resolver/IPv4-only hardening; do not reuse it as validation for the latest code.
 - Next: verify the new 56-test CI result; only then trigger the guarded one-shot pilot (one verified RU exit, at most three candidates), inspect the report/log and firewall restoration, then remove VPN_GATE_RUN_ONCE and the temporary feature-branch push trigger. Keep PR #5 Draft and preserve all production data/policy.
 - No changes to geoip_RU.dat, production builder, release assets, DIRECT policy, ASN allowlists, main/release, or PR #6.
+
+
+### 2026-11-11 — Review third pilot; preserve safe TLS profile compatibility fields — IMPLEMENTED / CI PENDING
+
+- Third VPN Gate run #42964869207 completed with **failure** as intended by the strict workflow gate; it uploaded artifact 13830503498 (288,200 bytes; SHA-256 95569ff6f48cb9a1acb6a6fc5c9ce989e8be8402b5d8b6a452ae5a340a4710e3).
+- It found 12 usable RU profiles across six origin ASNs and attempted three independent candidates:
+  1. 188.242.100.160, AS35807 / SkyNet Ltd., prefix 188.242.96.0/19: TCP connection established on 1439, but no TUN route within 60 seconds.
+  2. 178.185.24.224, AS12389 / OJSC Sibirtelecom, prefix 178.185.0.0/18: TCP connection established on 1529, but no TUN route within 60 seconds.
+  3. 94.253.101.177, AS21453 / Flex broadband users, prefix 94.253.96.0/19: UDP remote selected, but no TUN route within 60 seconds.
+- All three server endpoint IPs are already mapped as RU in the published inventory. No confirmed RU VPN egress, no target DNS/HTTPS requests, zero target measurements and no candidate exit IPs. Pinned DoH fallback was not exercised in this run because no VPN tunnel was established. The intended strict gate worked: diagnostic artifact uploaded, final workflow step failed.
+- Inspected profile reconstruction. The runner previously copied CA/TLS key material, cipher, auth, and key-direction, but could drop other benign TLS compatibility directives from VPN Gate profiles. Extended the strict allowlist to preserve TLS min/max, TLS cipher/ciphersuites, TLS certificate profile, remote certificate EKU/KU, optional verify-x509-name, and inline tls-crypt-v2. remote-cert-eku and X509 name values are quoted safely.
+- External TLS key file directives are now rejected rather than silently dropped. Arbitrary script/plugin/route directives remain excluded. Sanitized profile feature flags (block presence and selected TLS settings only, no key material) are recorded in raw diagnostics.
+- OpenVPN verbosity raised to 4, and TLS failure detection now recognizes TLS Error: and VERIFY ERROR: in addition to the previous fatal markers. This gives better diagnostics on the next candidate set.
+- Latest validation-triggering code/test commits: safe TLS options b89e4d3ab719a3216a52288317094869198b6b78, profile feature metadata 02dc6f65bf117338b55dae44f6af9f75c92bdbfb, quoting/verbosity fix f9636ff56d4e5fc47e8ad80b102651fc4aa6e7a6, external-key/TLS log detection 700d31cd548505d259e38af07366a3ef6eb46231, external-key regression test fed2a525ad80f22a50415766b6b32bbb0af8b3b6, README e02f7adfb17c84f7cf5f747a61a79453d27dea7e.
+- VPN Gate test module now contains 29 tests; existing reachability test module contains 29; expected combined Python suite is 58. CI is pending for the latest TLS compatibility changes.
+- Next: confirm CI; if green, consider one final bounded six-candidate run across six origin ASNs because the current dynamic CSV list has 12 profiles / 6 ASNs and three attempts have produced no stable TUN. Do not increase beyond six. If none connects, stop using VPN Gate as the sole measurement transport and add a locally supplied residential probe or another provider with documented exit availability.
+- No production GeoIP changes, builder/release/main changes, DIRECT/ASN allowlist changes or PR #6 changes.
