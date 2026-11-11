@@ -482,3 +482,13 @@ Durable resume point for PR #5. After any conversation/network interruption, rea
 - Validation run #42986373320 (https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/42986373320) succeeded on code commit 7dd4eb483e6fba9143c5664210625b1e7dfdd23c. Full job logs confirm Ran 104 tests, OK; gofmt, go test ./... and go build passed.
 - This hardens transfer-size/resource bounds only. No VPN connection was attempted, no target was tested through a VPNObratno exit, and no residential/home-network status was established.
 - PR #5 remains OPEN / DRAFT. Production GeoIP builder/data, release assets, DIRECT policy, ASN allowlists, main/release and PR #6 remain untouched.
+
+
+### 2026-11-11 — VPNObratno live-run preflight blocked by default-branch workflow gate
+
+- The owner requested a live VPN connection and continuation. Rechecked PR #5 head (8c950350bca4f85309c9dd36e6e5cc6ad5e5a403), current Draft/open state and the default branch.
+- Confirmed the workflow file .github/workflows/reachability-vpn-gate.yml exists on feature/reachability-full-ru-kz-by but is absent from main. The current main workflow tree contains only .github/workflows/blank.yml and .github/workflows/prefix-audit-validation.yml.
+- The VPN workflow remains strictly workflow_dispatch only. GitHub requires the manually dispatched workflow file to exist on the default branch before it can run against a selected branch (official docs: https://docs.github.com/en/actions/how-tos/manage-workflow-runs/manually-run-a-workflow). The available GitHub integration exposes repository/Actions reads and reruns, but no workflow-dispatch action.
+- No VPN job was started; there is no run ID or artifact for this request. This is a dispatch gate, not a VPN connection failure and not evidence about RU site access.
+- Did not merge PR #5, modify main, add a push/schedule/repository-dispatch workaround, or touch PR #6 / production files. PR #5 remains OPEN / DRAFT.
+- To execute the requested live test, the owner must explicitly authorize placing the workflow on main (through PR approval/integration or a separately scoped workflow-only change) and provide a supported manual dispatch path. Preserve the pilot defaults: one independently verified RU exit, up to six profile attempts, 24-profile discovery cap; require two-source public-IP/country consensus before sending target requests.

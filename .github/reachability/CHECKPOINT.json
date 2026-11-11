@@ -1,14 +1,14 @@
 {
   "schema_version": 1,
-  "updated_at_utc": "2026-11-11T08:22:00Z",
+  "updated_at_utc": "2026-11-11T08:40:00Z",
   "repository": "SpeedeMiner/Geoip-ru-server",
   "pull_request": 5,
   "pull_request_url": "https://github.com/SpeedeMiner/Geoip-ru-server/pull/5",
   "branch": "feature/reachability-full-ru-kz-by",
-  "recorded_pr_head_before_checkpoint_commit": "7dd4eb483e6fba9143c5664210625b1e7dfdd23c",
+  "recorded_pr_head_before_checkpoint_commit": "8c950350bca4f85309c9dd36e6e5cc6ad5e5a403",
   "base_sha": "a68e5d6589361814cb1cfedd2af7857e4af806fa",
-  "state": "VPNOBRATNO_RESPONSE_READS_BOUNDED",
-  "current_phase": "AWAIT_DEFAULT_BRANCH_AUTHORIZATION_FOR_MANUAL_PILOT",
+  "state": "VPNOBRATNO_MANUAL_RUN_BLOCKED_WORKFLOW_NOT_ON_DEFAULT_BRANCH",
+  "current_phase": "AWAIT_OWNER_AUTHORIZATION_TO_PUBLISH_WORKFLOW_ON_DEFAULT_BRANCH",
   "completed": [
     "repository_reconnaissance",
     "protobuf_inventory_exporter",
@@ -180,7 +180,8 @@
     "vpnobratno_read_limit_plus_one_enforcement",
     "vpnobratno_bounded_response_read_regression_tests",
     "vpnobratno_response_read_limits_ci_104_python_tests_go_success_run_42986373320",
-    "vpnobratno_response_read_limits_readme_worklog_checkpoint"
+    "vpnobratno_response_read_limits_readme_worklog_checkpoint",
+    "vpnobratno_manual_dispatch_preflight_default_branch_checked_2026_11_11"
   ],
   "latest_successful_validation_run": 42986373320,
   "latest_successful_validation_commit": "7dd4eb483e6fba9143c5664210625b1e7dfdd23c",
@@ -335,7 +336,8 @@
     "VPNObratno profile discovery now downloads at most 24 profiles per run and interleaves preferred variants across hostnames. Links beyond the cap are reported as omitted; a truncated discovery sample is not complete server/provider coverage.",
     "The current page snapshot showed approximately ten server entries and up to four OpenVPN profile links per entry; the live listing changes over time, so this count is illustrative and each discovery report carries its own actual counts.",
     "The 104-test CI verifies bounded profile downloads and response reads, not live VPN tunnel availability or household/residential access.",
-    "VPNObratno discovery response bodies are bounded during streaming: at most 2,000,000 bytes for the listing and 64,000 bytes for each profile; the fetch helper rejects caller limits above 8,000,000 bytes and reads only one byte beyond the resource limit."
+    "VPNObratno discovery response bodies are bounded during streaming: at most 2,000,000 bytes for the listing and 64,000 bytes for each profile; the fetch helper rejects caller limits above 8,000,000 bytes and reads only one byte beyond the resource limit.",
+    "Manual VPNObratno dispatch preflight on 2026-11-11 confirmed that .github/workflows/reachability-vpn-gate.yml is present only on feature/reachability-full-ru-kz-by, not on default branch main. The main workflow tree currently contains only blank.yml and prefix-audit-validation.yml. GitHub workflow_dispatch requires the workflow file on the default branch before manual dispatch is available; no VPN run was started."
   ],
   "policy_invariants": {
     "geoip_RU_dat_mutated": false,
@@ -356,12 +358,12 @@
     "vpnobratno_response_reads_bounded": true
   },
   "next_steps": [
-    "Keep PR #5 OPEN / DRAFT; do not merge, rebase or change base. The VPNObratno workflow is manual-only and workflow_dispatch is unavailable until the workflow exists on the default branch; do not restore a branch push trigger or schedule to bypass this.",
-    "When the owner authorizes making the workflow available on the default branch, run source=vpnobratno with the default one successful RU exit and up to six profile attempts. Discovery is capped at 24 profile downloads and reports how many links were omitted; do not claim complete listing coverage if the cap is reached.",
-    "For any successful tunnel, require two independent IP metadata services to agree on the actual public exit IPv4 and RU country, then record origin ASN/prefix and only afterward run DNS/HTTPS tests against the RU target catalogue.",
+    "Owner must explicitly authorize placing .github/workflows/reachability-vpn-gate.yml on default branch main. This may be done by approving integration of PR #5 or by a separately scoped workflow-only change. Do not merge PR #5 or modify main without explicit authorization.",
+    "Once the workflow exists on main and a supported dispatch path is available, run source=vpnobratno with one requested verified RU exit and maximum six profile attempts. Discovery downloads at most 24 profiles and reports truncation.",
+    "For any successful tunnel, require two independent IP metadata services to agree on actual public IPv4 and RU country, then record origin ASN/prefix and only afterward run DNS/HTTPS tests against the RU target catalogue.",
     "Inspect SOURCE, PROFILE_VARIANT and PROFILE_URL in the artifact. Variants from one hostname/IP do not increase provider diversity; compare origin ASNs and independently validate the actual access-network operator/type.",
-    "Consider SSTP only after obtaining and validating the site's actual copy-button hostname/port metadata and implementing pppd interface, route cleanup and fail-closed firewall tests. Consider L2TP/IPsec only after equivalent server discovery plus IPsec/XFRM and PPP lifecycle validation; do not guess either protocol's endpoints.",
-    "Keep the direct home_probe as optional corroborating evidence for an actual household line; a volunteer-run direct probe is not a prerequisite for attempting VPNObratno profiles.",
+    "Consider SSTP only after exact machine-readable hostname/port discovery and tested PPP/firewall/route cleanup; consider L2TP/IPsec only after verified endpoint discovery and tested IPsec/XFRM/PPP lifecycle. Do not guess endpoints.",
+    "Keep direct home_probe optional corroboration, not a prerequisite for VPNObratno remote profile exploration.",
     "Keep production builder, release/geoip_RU.dat, release assets, DIRECT policy, ASN allowlists, main/release and PR #6 untouched."
   ],
   "ci_policy": {
@@ -712,6 +714,22 @@
       "exclusion_reason": "The site’s copy-button endpoint/port metadata is not validated as a machine-readable source; PPP/IPsec tunnel, route and firewall lifecycle has not yet been implemented and tested.",
       "guess_sstp_port": false,
       "guessed_l2tp_endpoints": false
+    },
+    "manual_dispatch_preflight": {
+      "checked_at_utc": "2026-11-11T08:39:27Z",
+      "default_branch": "main",
+      "workflow_path": ".github/workflows/reachability-vpn-gate.yml",
+      "workflow_present_on_default_branch": false,
+      "default_branch_workflow_files": [
+        ".github/workflows/blank.yml",
+        ".github/workflows/prefix-audit-validation.yml"
+      ],
+      "workflow_trigger": "workflow_dispatch",
+      "manual_run_started": false,
+      "run_id": null,
+      "reason": "workflow_dispatch workflow file is not on default branch; available GitHub integration has read operations and no workflow-dispatch action",
+      "no_push_trigger_added": true,
+      "no_default_branch_changes_made": true
     }
   },
   "home_probe": {
