@@ -3083,7 +3083,7 @@ jobs:
           sha256sum "$BLOCKED_IP_INPUT" > "$BLOCKED_IP_SHA_FILE"
 
           # Assemble v38 from the v37 trusted base plus regional RIR resources and
-          # named service-direct routes, then carve the explicit RKN-derived /24 set.
+          # named service-direct routes, then apply only the already approved exact/bounded RKN set.
           python3 .github/scripts/build_v38_overlay.py \
             --base "$OUTPUT_FILE" \
             --rir "$RIR_RUKZBY_PREFIX_INPUT" \
@@ -3413,6 +3413,8 @@ jobs:
               raise SystemExit("v38 manifest says geolocation was used as an admission gate")
           if safety.get("private_precedence_applied") is not True or safety.get("rkn_blocklist_applied") is not True:
               raise SystemExit("v38 policy safety flags are missing")
+          if safety.get("ipsum_24_auto_carved") is not False or manifest.get("blocked", {}).get("ipsum_auto_carved") is not False:
+              raise SystemExit("v38 must keep coarse ipsum /24s review-only")
           if safety.get("this_builder_modifies_production_main") is not False or safety.get("this_builder_publishes_release") is not False or safety.get("release_workflow_is_main_only") is not True:
               raise SystemExit("v38 overlay safety/production-publish boundary flags are invalid")
           countries = set()
@@ -3422,7 +3424,7 @@ jobs:
           if countries != {"RU", "BY", "KZ"}:
               raise SystemExit(f"v38 RIR resources missing regional country rows: {countries}")
           quality = quality_path.read_text(encoding="utf-8")
-          for marker in ("New IPv4 addresses vs v37", "New IPv6 addresses vs v37", "Antifilter ipsum unique IPv4 /24 prefixes"):
+          for marker in ("New IPv4 addresses vs v37", "New IPv6 addresses vs v37", "Antifilter ipsum REVIEW-ONLY IPv4 /24 prefixes"):
               if marker not in quality:
                   raise SystemExit(f"v38 quality report is missing marker: {marker}")
           print(f"Validated v38 final GeoIP: {output.stat().st_size} bytes; RU CIDRs={len(decoded['RU'])}; PRIVATE CIDRs={len(decoded['PRIVATE'])}")
@@ -3559,8 +3561,8 @@ jobs:
 
             ## RKN blocked destinations
             - Existing exact-host Antifilter `ip.lst` and `ipresolve.lst`, bounded `subnet.lst`, and curated Telegram prefixes remain active.
-            - v38 adds Antifilter Download `ipsum.lst`, which summarizes individual blocked IPs into IPv4 /24 networks. This is a third-party RKN-derived feed, not a direct official RKN API.
-            - A /24 carve affects all 256 addresses and can send unrelated co-hosted services through VPN on shared hosting/CDN ranges; the per-prefix overlap and incremental carved address space are published in `geoip_RU_v38_blocked_provenance.tsv`.
+            - v38 downloads Antifilter Download `ipsum.lst` as a review-only /24 summary of individual blocked IPs; it is not automatically carved because each /24 may route unrelated shared-hosting/CDN addresses through VPN.
+            - The report publishes the potential DIRECT address-space impact of these /24 candidates in `geoip_RU_v38_blocked_provenance.tsv`; only exact-host and bounded subnet exclusions already approved by the v37 policy are automatically applied.
             - Community Antifilter and Re-filter suggestions remain review-only; privacy/telemetry labels do not change DIRECT.
             - GeoIP cannot distinguish unrelated domains on the same IP; domain-only RKN rules remain a separate client geosite layer.
 
