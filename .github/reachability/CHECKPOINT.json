@@ -1,14 +1,14 @@
 {
   "schema_version": 1,
-  "updated_at_utc": "2026-11-11T15:12:30Z",
+  "updated_at_utc": "2026-11-11T15:48:00Z",
   "repository": "SpeedeMiner/Geoip-ru-server",
   "pull_request": 5,
   "pull_request_url": "https://github.com/SpeedeMiner/Geoip-ru-server/pull/5",
   "branch": "feature/reachability-full-ru-kz-by",
-  "recorded_pr_head_before_checkpoint_commit": "5874b6a5c1b8a679c47ffa3261132575909a67cd",
+  "recorded_pr_head_before_checkpoint_commit": "a9967f52b4bd3d7a50638ad9ce63d685d57b84a9",
   "base_sha": "a68e5d6589361814cb1cfedd2af7857e4af806fa",
-  "state": "RUN17_APT_DOH_AND_INVENTORY_SUCCESS_PYTHON_CACHE_FIX_CI_GREEN_120_TESTS_READY_FOR_RUN18",
-  "current_phase": "READY_FOR_MANUAL_RUN18_AFTER_PYTHON_BYTECODE_CACHE_FIX",
+  "state": "RUN19_HTTPS_SOCKET_OWNERSHIP_FIX_CI_GREEN_121_TESTS_READY_FOR_RUN20",
+  "current_phase": "READY_FOR_MANUAL_RUN20_AFTER_HTTPS_SOCKET_OWNERSHIP_FIX",
   "completed": [
     "repository_reconnaissance",
     "protobuf_inventory_exporter",
@@ -412,10 +412,10 @@
     "production_release_artifact_byte_delta_verified": false
   },
   "next_steps": [
-    "Owner manually dispatches the next Russian ISP VPN Gate reachability run on feature/reachability-full-ru-kz-by with source=vpnobratno, max_vpn_gate_servers=1 and max_vpn_gate_attempts=6.",
-    "Confirm live apt DNS bootstrap again (three pinned-DoH lookups, hosts override, all getent checks, apt update and apt install) and ensure py_compile now passes without Permission denied.",
-    "Then inspect profile discovery and selection, all bounded OpenVPN attempts, two-source RU exit consensus and uploaded target DNS/HTTPS measurement rows.",
-    "Keep PR #5 OPEN / DRAFT. Do not merge, mark ready, rebase or alter production GeoIP files, DIRECT policy, or PR #6."
+    "Owner manually dispatches Run #20 on feature/reachability-full-ru-kz-by with source=vpnobratno, max_vpn_gate_servers=1 and max_vpn_gate_attempts=6.",
+    "Verify the live pinned-DoH VPNObratno listing fetch and profile downloads complete within their wall-clock caps.",
+    "Inspect server selection, bounded OpenVPN attempts, two-source RU exit IP/country agreement, and only then target DNS/HTTPS report rows.",
+    "Keep PR #5 OPEN / DRAFT; do not merge, mark ready, rebase, or alter production GeoIP files, DIRECT policy, or PR #6."
   ],
   "ci_policy": {
     "push_validation_paths": [
@@ -1081,7 +1081,7 @@
     "validation_result": "SUCCESS: 108 Python tests, py_compile/JSON validation, gofmt, go test ./..., go build."
   },
   "current_manual_dispatch": {
-    "next_run_number": 18,
+    "next_run_number": 20,
     "state": "ready_for_owner_manual_dispatch_after_ci_green",
     "parameters": {
       "branch": "feature/reachability-full-ru-kz-by",
@@ -1184,12 +1184,12 @@
     "interpretation": "No verified RU tunnel and no target requests. The two 5-second failures are VPN relay connection outcomes, not target-site blocking evidence."
   },
   "latest_validation": {
-    "run_id": 43045941300,
-    "job_id": 130609765536,
-    "tested_commit": "5874b6a5c1b8a679c47ffa3261132575909a67cd",
+    "run_id": 43051897730,
+    "job_id": 130630977611,
+    "tested_commit": "a9967f52b4bd3d7a50638ad9ce63d685d57b84a9",
     "workflow_conclusion": "success",
     "job_conclusion": "success",
-    "python_tests": 120,
+    "python_tests": 121,
     "python_result": "OK",
     "gofmt": "success",
     "go_test": "success",
@@ -1426,12 +1426,12 @@
     "post_tunnel_exit_ip_country_consensus_unchanged": true
   },
   "workflow_timeout_guard": {
-    "measurement_step_timeout_minutes": 10,
-    "job_timeout_minutes": 20,
-    "inner_process_timeout": "9m",
+    "measurement_step_timeout_minutes": 9,
+    "job_timeout_minutes": 12,
+    "inner_process_timeout": "7m",
     "inner_kill_after": "5s",
-    "command": "timeout --signal=TERM --kill-after=5s 9m sudo python3 .github/reachability/vpn_gate.py",
-    "purpose": "Kill the measurement process group before the GitHub step timeout, leaving time for always() artifact upload."
+    "command": "sudo timeout --verbose --signal=TERM --kill-after=5s 7m python3 .github/reachability/vpn_gate.py",
+    "purpose": "Stop measurement process before the step/job deadline, leaving time for diagnostic artifact upload and cleanup."
   },
   "run13_result": {
     "run_id": 43024357603,
@@ -1565,25 +1565,16 @@
     "available_alternative": "GitHub REST read-only API remains usable. No connected GitHub cancel-workflow action is exposed."
   },
   "per_profile_wall_clock_fix": {
-    "code_commit": "390d43bd22ba42e4fa9cd352e74fcac49e80e7ed",
-    "test_commit": "e1d41236b2dcf48176ea29c49ea946d8175edf3d",
+    "code_commit": "a9967f52b4bd3d7a50638ad9ce63d685d57b84a9",
     "helper": "call_with_wall_clock_timeout",
     "listing_wall_timeout_seconds": 20,
-    "profile_http_wall_timeout_seconds": 15,
+    "profile_http_wall_timeout_seconds": 20,
     "profile_http_socket_timeout_seconds": 12,
-    "new_progress_markers": [
-      "profile_listing_fetch_started",
-      "profile_listing_fetch_completed",
-      "profile_fetch_started=i/n",
-      "profile_fetch_completed=i/n bytes=n",
-      "profile_validation_completed=i/n",
-      "profile_server_ip_resolution_started=i/n",
-      "profile_server_ip_resolution_completed=i/n server_ip=x"
-    ],
-    "tests_added": 2,
-    "validation_run_id": 43033708075,
+    "transport": "Pinned DoH A lookup then direct HTTPS to pinned public IPv4 with SNI/certificate validation; no system DNS.",
+    "redirect_policy": "same HTTPS origin only",
+    "validation_run_id": 43051897730,
     "validation_status": "SUCCESS",
-    "python_test_count": 116
+    "python_test_count": 121
   },
   "run15_runner_failure": {
     "run_id": 43035301161,
@@ -1707,5 +1698,53 @@
       "python_tests": 120,
       "dedicated_regression_test": "passed"
     }
+  },
+  "run18_result": {
+    "run_id": 43046237142,
+    "job_id": 130610810591,
+    "commit": "0708194fb6966e31222b149ba1bf609bf3ec6454",
+    "result": "cancelled_after_measurement_step_exceeded_expected_timeout",
+    "last_observed_phase": "profile_download=6/24 started; no completion marker",
+    "setup": "success",
+    "inventory": {
+      "RU": 76293,
+      "PRIVATE": 151,
+      "total": 76444
+    },
+    "openvpn_attempts": 0,
+    "verified_ru_exits": 0,
+    "target_measurement_rows": 0,
+    "artifacts": 0
+  },
+  "run19_result": {
+    "run_id": 43051544044,
+    "job_id": 130629735896,
+    "commit": "4c251f1fc710f082a97d02038a070893d195ddbf",
+    "result": "failure_before_profile_listing_completed",
+    "apt_dns_bootstrap": "success",
+    "apt_update": "success",
+    "apt_install": "success_openvpn_2_6_19",
+    "geoip_checksum": "success",
+    "inventory": {
+      "RU": 76293,
+      "PRIVATE": 151,
+      "total": 76444
+    },
+    "phase": "profile_listing",
+    "failure": "Pinned HTTPS reader checked connection.sock after getresponse(); Python had transferred the socket to HTTPResponse and set connection.sock to None.",
+    "artifact_id": 13870180568,
+    "artifact_size_bytes": 284687,
+    "artifact_sha256": "d1b1dd4a63bf01b82529c4c26cb226b243156a319c753f20472db7a54a52aa28",
+    "openvpn_attempts": 0,
+    "verified_ru_exits": 0,
+    "target_measurement_rows": 0
+  },
+  "vpnobratno_https_socket_ownership_fix": {
+    "commit": "a9967f52b4bd3d7a50638ad9ce63d685d57b84a9",
+    "implementation": "Set socket timeout before HTTPConnection.getresponse transfers socket ownership to HTTPResponse. Read through HTTPResponse after transfer; preserve total SIGALRM wall-clock bound.",
+    "test": "Fake connection now sets connection.sock=None inside getresponse to emulate http.client ownership transfer.",
+    "validation_run_id": 43051897730,
+    "validation_status": "SUCCESS",
+    "python_tests": 121
   }
 }
