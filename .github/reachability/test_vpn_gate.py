@@ -342,6 +342,36 @@ class VPNGateDNSResolutionTests(unittest.TestCase):
 
 
 class OpenVPNProfileSafetyTests(unittest.TestCase):
+    def test_safe_tls_compatibility_directives_and_inline_tls_crypt_v2_are_preserved(self):
+        config = SAMPLE_CONFIG.replace(
+            "up /tmp/untrusted-up.sh",
+            'tls-version-min 1.0\ntls-version-max 1.2\n'
+            'tls-cipher DEFAULT:@SECLEVEL=0\n'
+            'tls-ciphersuites TLS_AES_128_GCM_SHA256\n'
+            'tls-cert-profile legacy\n'
+            'verify-x509-name "vpn.example" name\n'
+            'remote-cert-eku "TLS Web Server Authentication"\n'
+            'remote-cert-ku 0x00 0x01\n'
+            '<tls-crypt-v2>\n-----BEGIN OpenVPN tls-crypt-v2 client key-----\nVEVTVA==\n-----END OpenVPN tls-crypt-v2 client key-----\n</tls-crypt-v2>\n'
+            'up /tmp/untrusted-up.sh'
+        )
+        profile = vpn_gate.inspect_openvpn_profile(config)
+        server = {"server_ip": "8.8.8.8", "profile": profile}
+        with tempfile.TemporaryDirectory() as directory:
+            auth = pathlib.Path(directory) / "auth.txt"
+            safe = vpn_gate.build_safe_openvpn_config(server, auth)
+        self.assertIn("tls-version-min 1.0", safe)
+        self.assertIn("tls-version-max 1.2", safe)
+        self.assertIn("tls-cipher DEFAULT:@SECLEVEL=0", safe)
+        self.assertIn("tls-ciphersuites TLS_AES_128_GCM_SHA256", safe)
+        self.assertIn("tls-cert-profile legacy", safe)
+        self.assertIn("verify-x509-name vpn.example name", safe)
+        self.assertIn("remote-cert-eku 'TLS Web Server Authentication'", safe)
+        self.assertIn("remote-cert-ku 0x00 0x01", safe)
+        self.assertIn("<tls-crypt-v2>", safe)
+        self.assertNotIn("up /tmp", safe)
+        self.assertNotIn("plugin ", safe)
+
     def test_profile_is_rebuilt_with_advertised_ip_and_no_untrusted_scripts(self):
         parsed = vpn_gate.inspect_openvpn_profile(SAMPLE_CONFIG)
         server = {"server_ip": "8.8.8.8", "profile": parsed}
