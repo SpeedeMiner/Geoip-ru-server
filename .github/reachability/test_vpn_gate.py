@@ -159,6 +159,22 @@ class VPNExitVerificationTests(unittest.TestCase):
         self.assertEqual(metadata["selected_distinct_asns"], 2)
 
 
+class RIPEstatNetworkInfoTests(unittest.TestCase):
+    def test_network_prefix_is_kept_only_when_it_contains_the_query_ip(self):
+        with patch.object(vpn_gate, "fetch_json", return_value={
+            "data": {"prefix": "8.8.8.0/24", "asns": ["AS15169"]}
+        }):
+            result = vpn_gate.network_info("8.8.8.8")
+        self.assertEqual(result, {"prefix": "8.8.8.0/24", "asn": 15169})
+
+    def test_network_prefix_mismatch_is_discarded_but_asn_is_preserved(self):
+        with patch.object(vpn_gate, "fetch_json", return_value={
+            "data": {"prefix": "1.1.1.0/24", "asns": ["AS15169"]}
+        }):
+            result = vpn_gate.network_info("8.8.8.8")
+        self.assertEqual(result, {"prefix": "", "asn": 15169})
+
+
 class OpenVPNProfileSafetyTests(unittest.TestCase):
     def test_profile_is_rebuilt_with_advertised_ip_and_no_untrusted_scripts(self):
         parsed = vpn_gate.inspect_openvpn_profile(SAMPLE_CONFIG)
