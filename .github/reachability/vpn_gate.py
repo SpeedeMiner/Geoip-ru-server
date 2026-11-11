@@ -1474,15 +1474,15 @@ def main() -> int:
     )
     parser.add_argument("--max-servers", type=int, default=1, help="Number of successful RU VPN exits to measure")
     parser.add_argument("--max-attempts", type=int, default=6, help="Maximum VPN profile connection attempts (hard cap 6)")
-    parser.add_argument("--connect-timeout", type=int, default=60)
+    parser.add_argument("--connect-timeout", type=int, default=5, help="Seconds to wait for an IPv4 tunnel route per profile attempt")
     parser.add_argument("--request-timeout", type=int, default=12)
     args = parser.parse_args()
     if not 1 <= args.max_servers <= 6:
         parser.error("--max-servers must be between 1 and 6")
     if not args.max_servers <= args.max_attempts <= 6:
         parser.error("--max-attempts must be >= --max-servers and <=6")
-    if not 10 <= args.connect_timeout <= 180:
-        parser.error("--connect-timeout must be between 10 and 180 seconds")
+    if not 5 <= args.connect_timeout <= 180:
+        parser.error("--connect-timeout must be between 5 and 180 seconds")
     if not 3 <= args.request_timeout <= 30:
         parser.error("--request-timeout must be between 3 and 30 seconds")
     missing = [name for name in ("openvpn", "ip", "iptables", "ip6tables",
