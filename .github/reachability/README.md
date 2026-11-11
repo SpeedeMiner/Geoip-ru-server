@@ -28,14 +28,16 @@ Russian VPN Gate volunteer exits. `vpnobratno.info` describes its Russian server
 as VPN Gate volunteer servers using Russian ISP connections; the implementation
 uses the official VPN Gate CSV API rather than scraping the directory page.
 
-The workflow asks for a number of successful RU exits (default one for
-the feature-branch one-shot pilot; manual dispatch defaults to three) and a
-separate candidate-attempt limit (default six for the feature-branch one-shot pilot; manual dispatch defaults to three, hard cap six). Failed TLS or
-authentication handshakes are detected from the live OpenVPN log and stop that
-candidate early; the collector then tries the next candidate from a different
-origin ASN before reusing an ASN. It stops as soon as the requested number of
-verified RU exits succeeds. The manual job timeout is 120 minutes. A and AAAA
-answers are collected in one resolver call per target. It:
+The workflow is **manual-only** (workflow_dispatch); no daily schedule or
+feature-branch push trigger is enabled. It asks for a number of successful RU
+exits (manual default three) and a separate candidate-attempt limit (manual
+default three, hard cap six). Failed TLS or authentication handshakes are
+detected from the live OpenVPN log and stop that candidate early; the collector
+then tries the next candidate from a different origin ASN before reusing an ASN.
+It stops as soon as the requested number of verified RU exits succeeds. The
+manual job timeout is 120 minutes. A and AAAA answers are collected in one
+resolver call per target. The manual dispatch becomes available after this
+workflow is integrated into the repository default branch. It:
 
 - selects only VPN Gate records with country code RU, a public IPv4 address and a usable OpenVPN profile;
 - validates the profile structure, then builds a minimal client configuration from an allowlist; untrusted script, plugin, route and external-file directives are never executed or copied;
@@ -63,6 +65,25 @@ credentials or user data to the measured services.
 
 This workflow is a measurement backend only. It does not alter `geoip_RU.dat`,
 the main builder, release artifacts, DIRECT policy, or ASN allowlists.
+
+#### Observed VPN Gate pilot limitation (2026-11-11)
+
+Four live pilots were executed. Across them, no run produced a completed service
+measurement row. The final bounded run found only three usable RU profiles from
+two origin ASNs; none established a verified RU exit. The first run had a TCP
+connection and TLS negotiation timeout; a later run reached OpenVPN
+`Initialization Sequence Completed` on one node but failed exit-IP metadata
+resolution; subsequent candidates did not establish a TUN route. The final run
+ended with zero verified RU exits, zero target measurements and zero GeoIP
+candidates, and the workflow correctly failed after uploading diagnostics.
+
+This means VPN Gate is not currently reliable enough to be the primary source of
+Russian household-ISP measurements. It does not indicate that any target service
+is blocked or that the GeoIP list is missing ranges. For true household coverage,
+use explicitly consented, user-controlled probes on actual ISP connections and
+independently validate the operator/ASN. Keep VPN Gate and Globalping as
+supplementary evidence only. The one-shot feature-branch trigger and marker were
+removed after the pilot; no automatic VPN measurements remain enabled.
 
 ### VPN Gate exit verification and provider diversity
 
