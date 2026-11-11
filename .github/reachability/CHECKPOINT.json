@@ -1,14 +1,14 @@
 {
   "schema_version": 1,
-  "updated_at_utc": "2026-11-11T08:50:00Z",
+  "updated_at_utc": "2026-11-11T09:22:46Z",
   "repository": "SpeedeMiner/Geoip-ru-server",
   "pull_request": 5,
   "pull_request_url": "https://github.com/SpeedeMiner/Geoip-ru-server/pull/5",
   "branch": "feature/reachability-full-ru-kz-by",
   "recorded_pr_head_before_checkpoint_commit": "f267e14228ed6ef179784c5b7285ada40f78cca3",
   "base_sha": "a68e5d6589361814cb1cfedd2af7857e4af806fa",
-  "state": "VPNOBRATNO_WORKFLOW_ON_DEFAULT_BRANCH_AWAITING_MANUAL_DISPATCH",
-  "current_phase": "AWAIT_MANUAL_DISPATCH_AND_LIVE_TUNNEL",
+  "state": "VPNOBRATNO_MANUAL_DISPATCH_CANCELLED_NO_ARTIFACTS",
+  "current_phase": "MANUAL_DISPATCH_CANCELLED_AWAITING_OWNER_DECISION",
   "completed": [
     "repository_reconnaissance",
     "protobuf_inventory_exporter",
@@ -185,7 +185,8 @@
     "vpnobratno_manual_workflow_added_to_main_single_file_commit_580a25a7a65d957d46d83e827ccbd9308969713e",
     "vpnobratno_default_branch_dispatch_visibility_enabled",
     "vpnobratno_main_push_side_effect_build_v37_run_42989906746_reviewed",
-    "vpnobratno_no_manual_dispatch_action_available_no_live_run_started"
+    "vpnobratno_no_manual_dispatch_action_available_no_live_run_started",
+    "vpnobratno_manual_dispatch_run_42993670031_cancelled_before_artifacts"
   ],
   "latest_successful_validation_run": 42986373320,
   "latest_successful_validation_commit": "7dd4eb483e6fba9143c5664210625b1e7dfdd23c",
@@ -364,12 +365,11 @@
     "production_release_artifact_byte_delta_verified": false
   },
   "next_steps": [
-    "Use the GitHub Actions page to manually run .github/workflows/reachability-vpn-gate.yml. In 'Use workflow from', select feature/reachability-full-ru-kz-by, not main; enter source=vpnobratno, max_vpn_gate_servers=1 and max_vpn_gate_attempts=6.",
-    "After a run begins, retrieve its run ID and artifact. Confirm the workflow checked out the feature branch and inspect profile links found, the 24-profile download cap/truncation metrics, profile variant distribution, selected origin ASNs, and the exact connection attempts.",
-    "For any successful tunnel, require two independent IP metadata services to agree on actual public IPv4 and RU country, then record origin ASN/prefix; only afterward run target DNS/HTTPS tests. A failed tunnel produces diagnostics only and is not evidence of target blocking.",
-    "Inspect SOURCE, PROFILE_VARIANT and PROFILE_URL. Variants from one hostname/IP do not count as distinct providers; do not label access as residential without independent operator/access-type confirmation.",
-    "Do not change or roll back release branch/assets, production GeoIP builder/data, DIRECT policy, ASN allowlists, main/release or PR #6 without separate authorization. The main push triggered build run 42989906746 and refreshed release assets; exact geoip_RU.dat byte delta was not verified.",
-    "Keep PR #5 OPEN / DRAFT. Direct home_probe remains optional corroboration, not a prerequisite."
+    "Manual workflow_dispatch #42993670031 was started on feature/reachability-full-ru-kz-by with source=vpnobratno, max_vpn_gate_servers=1 and max_vpn_gate_attempts=6. Setup and GeoIP inventory export passed; the measurement step entered in_progress, but the run was cancelled before report upload. No artifact or final tunnel result exists.",
+    "Do not dispatch a replacement automatically after the cancelled run. Establish whether the cancellation was intentional or obtain explicit owner authorization before another live attempt.",
+    "If another attempt is authorized, keep the same one-successful-RU-exit / six-profile-attempt budget, inspect the uploaded diagnostics, and require agreement by two independent metadata providers on the same public IPv4 and RU country before any target DNS/HTTPS request.",
+    "A cancelled attempt is not a VPN failure, not a service-blocking result and not evidence that any RU target is reachable or unreachable.",
+    "Keep PR #5 OPEN / DRAFT. Do not merge it, touch PR #6, or change production builder/data, release branch/assets, DIRECT policy or ASN allowlists without separate authorization."
   ],
   "ci_policy": {
     "push_validation_paths": [
@@ -730,8 +730,8 @@
         ".github/workflows/reachability-vpn-gate.yml"
       ],
       "workflow_trigger": "workflow_dispatch",
-      "actual_run_started": false,
-      "run_id": null,
+      "actual_run_started": true,
+      "run_id": 42993670031,
       "integration_dispatch_action_available": false,
       "runtime_github_cli_available": false,
       "manual_run_page": "https://github.com/SpeedeMiner/Geoip-ru-server/actions/workflows/reachability-vpn-gate.yml",
@@ -740,7 +740,11 @@
         "source": "vpnobratno",
         "max_vpn_gate_servers": "1",
         "max_vpn_gate_attempts": "6"
-      }
+      },
+      "run_url": "https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/42993670031",
+      "run_status": "CANCELLED",
+      "run_created_at_utc": "2026-11-11T09:15:39Z",
+      "run_updated_at_utc": "2026-11-11T09:22:46Z"
     },
     "main_push_side_effect": {
       "workflow": ".github/workflows/blank.yml",
@@ -761,6 +765,37 @@
       "previous_geoip_RU_dat_byte_comparison": "NOT_VERIFIED",
       "rollback_performed": false,
       "interpretation": "Main push automatically executed the existing production publisher. No production source changes were authored by this task; release outputs were refreshed as an indirect side effect. Do not rollback without explicit authorization."
+    },
+    "latest_manual_dispatch": {
+      "run_id": 42993670031,
+      "run_url": "https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/42993670031",
+      "run_number": 5,
+      "event": "workflow_dispatch",
+      "branch": "feature/reachability-full-ru-kz-by",
+      "commit": "70f7108f0916b2a2d0a671810e9da5d2526548d6",
+      "source": "vpnobratno",
+      "max_vpn_gate_servers": 1,
+      "max_vpn_gate_attempts": 6,
+      "created_at_utc": "2026-11-11T09:15:39Z",
+      "completed_at_utc": "2026-11-11T09:22:46Z",
+      "conclusion": "cancelled",
+      "setup_steps_successful": [
+        "runner setup",
+        "checkout",
+        "install OpenVPN and iptables",
+        "set up Go",
+        "download and verify published GeoIP protobuf",
+        "export RU and PRIVATE prefixes"
+      ],
+      "measurement_step_status_at_cancellation": "in_progress",
+      "live_log_observation": "Only shell prologue 'Run set -euo pipefail' was visible; no candidate or tunnel result was emitted before cancellation.",
+      "report_upload_started": false,
+      "artifacts": [],
+      "successful_ru_exits": null,
+      "target_measurements": null,
+      "tunnel_result": "NOT_MEASURED_CANCELLED",
+      "interpretation": "No conclusion about VPNObratno tunnel availability or target reachability can be drawn from this cancelled run.",
+      "cancellation_attribution_note": "Live browser UI labelled cancellation as manually cancelled by @SpeedeMiner. GitHub REST actor fields identify the triggering account, not independently the actor issuing cancellation."
     }
   },
   "home_probe": {
