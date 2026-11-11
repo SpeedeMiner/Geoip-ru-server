@@ -638,12 +638,25 @@ def main():
         "final_v38_address_space":final_counts,
         "new_after_policy":{"ipv4":delta_v4,"ipv6":delta_v6},
         "safety":{
-            "production_main_modified":False,
-            "production_release_published":False,
+            "this_builder_modifies_production_main":False,
+            "this_builder_publishes_release":False,
+            "release_workflow_is_main_only":True,
             "geolocation_used_as_admission_gate":False,
             "private_precedence_applied":True,
             "rkn_blocklist_applied":True,
             "candidate_status":"REVIEW",
+        },
+        "input_sha256":{
+            "base_v37_geoip":sha256(args.base.read_bytes()),
+            "regional_rir_inventory":sha256(args.rir.read_bytes()),
+            "kyoresuas_standard_ipv4":sha256(args.kyoresuas_v4.read_bytes()),
+            "kyoresuas_standard_ipv6":sha256(args.kyoresuas_v6.read_bytes()),
+            "kyoresuas_services_json":sha256(args.kyoresuas_services.read_bytes()),
+            "w1zardz_direct":sha256(args.w1zardz.read_bytes()),
+            "hxehex_ipwhitelist":sha256(args.hxehex_ip.read_bytes()),
+            "escapingworm_operator_whitelist":sha256(args.escapingworm.read_bytes()),
+            "v37_blocked_base":sha256(args.blocked_base.read_bytes()),
+            "antifilter_ipsum":sha256(args.ipsum.read_bytes()),
         },
     }
     args.manifest.write_text(json.dumps(manifest,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
