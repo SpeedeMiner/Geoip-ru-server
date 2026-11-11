@@ -1103,3 +1103,50 @@ Durable resume point for PR #5. After any conversation/network interruption, rea
 - Run #22's last visible marker and source order put manifest persistence immediately after the trace print; this is a hypothesis, not proven, because the paste may be incomplete and no manifest artifact has been uploaded. The newly validated no-fsync change applies only to future runs, not this pinned checkout.
 - No confirmed OpenVPN attempt, tunnel route, Russian public exit or target measurement rows.
 - PR #5 remains OPEN / DRAFT; no changes to production GeoIP data, DIRECT/ASN policy, PR #6 or other branches.
+
+
+### 2026-11-11 — Run #22 terminal timeout confirmed; manifest fsync identified as leading code-level hypothesis
+
+#### Terminal GitHub evidence
+
+- Owner supplied the GitHub Actions annotation at 2026-11-11T18:09:45Z: **“The job has exceeded the maximum execution time of 12m0s.”**
+- Re-fetched Run #22 after the annotation. Run `43072239130`: `status=completed`, `conclusion=cancelled`, `updated_at=2026-11-11T18:08:59Z`, checkout SHA `447bdf6083b3d69b0fbdcf0e126cc27a0ee3db71`.
+- Job `130702892228`: `status=completed`, `conclusion=cancelled`, `started_at=17:51:58Z`, `completed_at=18:08:58Z`. The 12-minute ceiling was nominally reached at `18:03:58Z`; GitHub completed the job approximately five minutes later. Treat the `cancelled` conclusion together with the explicit max-execution annotation as GitHub-enforced timeout, not owner/manual cancellation.
+- Step summary remains internally inconsistent after terminal completion: measurement step 7 is still reported `in_progress`; report upload step 8 and failure gate step 9 remain `pending`. Artifact list is empty. A fresh post-terminal job-log fetch at `18:10:06Z` returned Azure `BlobNotFound`. No terminal archive or artifact is available.
+- The run was pinned to the pre-mitigation source SHA `447bdf...`; subsequent code changes did not affect this execution.
+
+#### What the supplied log proves
+
+- VPNObratto listing: HTTP 200, 23,641 bytes; 35 profile links discovered.
+- Profiles 1–5 fully downloaded and validated; worker elapsed times were approximately 0.57–0.63 seconds:
+  1. `vpn712640336.opengw.net` → server IP `92.124.94.110`, 10,006 bytes.
+  2. `vpn847521830.opengw.net` → `2.61.109.142`, 10,005 bytes.
+  3. `vpn856084155.opengw.net` → `93.157.20.218`, 10,006 bytes.
+  4. `vpn144814701.opengw.net` → `94.31.243.156`, 10,006 bytes.
+  5. `vpn953719594.opengw.net` → `5.143.32.148`, 10,005 bytes.
+- Profile 6 (`vpn950792227.opengw.net`, worker PID 3220) successfully completed DoH, pinned TCP connect, TLS handshake and HTTP response headers (HTTP 200). The supplied excerpt shows body bytes through 3,830; it does **not** show fetch completion, profile validation, server-IP resolution or a usable-profile result.
+- No confirmed OpenVPN attempt, tunnel route, verified RU exit or target measurement row. Do not interpret these missing results as a site-blocking verdict.
+
+#### Leading root-cause hypothesis: synchronous manifest fsync
+
+- Reviewed the exact Run #22 source at `447bdf...`. In `vpnobratno_fetch_trace()`, the `profile_fetch_trace ... phase=body_read_completed ... total_bytes=3830` line is printed with `flush=True` **before** the call to `record_vpnobratno_progress()`.
+- The old manifest writer then read/updated JSON, wrote a temporary file, called `stream.flush()`, called synchronous `os.fsync(stream.fileno())`, and finally `os.replace()`.
+- Therefore, if the supplied 314-line paste ends at the actual last emitted line, the next source operation was manifest persistence for that body-read event, not the next HTTPS body read. A blocking `fsync` is now the leading code-level hypothesis for the last visible marker.
+- This hypothesis also fits why a worker hard deadline might not produce its expected marker: if the worker is stuck in an uninterruptible kernel I/O state, SIGKILL may be pending until the kernel operation returns. The parent timeout handler itself also wrote a manifest event through the same old writer and could encounter the same synchronous I/O path. This remains a mechanism-level inference, not proof that either process was actually in D-state.
+- Alternatives remain: the pasted log may be truncated while more output existed; the active/terminal Actions log archive is unavailable; a separate runner/controller status problem may have hidden output or delayed teardown. Do not claim a proven filesystem/kernel root cause.
+
+#### Mitigation already implemented and validated
+
+- Code commit `d15de0f6c879e5b3f692bbdbb15d725f12c0785b`: removed per-phase synchronous `os.fsync()`; retained temp-file `flush()` and same-directory atomic `os.replace()`. Added explicit `progress_manifest_*` markers for parent mkdir, manifest read, temp write and atomic replace.
+- Regression test commit `d9f2fff136fdc919730b99bf43c810f0ff23d96d`: `test_progress_manifest_uses_atomic_replace_without_per_event_fsync` verifies the JSON is readable/atomically replaced and that a phase update does not call `os.fsync`.
+- Validation [Run #211](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43074433130), job `130710450443`, checkout SHA `d9f2fff...`, completed **SUCCESS** at `18:05:58Z`. Python: **128 tests passed** in 0.883s. Hosted ubuntu-24.04 GNU timeout process-tree preflight passed; Go formatting, `go test ./...` and `go build` passed.
+- README was updated in commit `66cb1cdcce634c05de5eec13abc2e98c42c47d96` with the manifest I/O sequence and rationale.
+- This is a focused mitigation based on source ordering and test evidence. It has not yet been proven by a fresh live VPNObratto pilot.
+
+#### Next state
+
+- Run #22 is terminal; no overlapping live VPN run remains from this job. Do not use Run #22 as a result of target reachability.
+- Next pilot must use the current PR #5 branch containing `d15de0f...` and `d9f2fff...`; verify the checked-out SHA in its first logs.
+- In the next run, inspect `progress_manifest_*` markers around profile 6. Expected sequence: parent mkdir started/completed; read started/completed; temporary write started/completed; atomic replace started/completed. This will separate manifest I/O from HTTPS body reads.
+- On terminal state, retrieve the artifact promptly and inspect `reachability-output/vpn_gate_vpnobratto_progress.json` even if the job's step summary is stale.
+- PR #5 remains OPEN / DRAFT; no production GeoIP/DIRECT/ASN policy, `main`, `release` or PR #6 was modified.
