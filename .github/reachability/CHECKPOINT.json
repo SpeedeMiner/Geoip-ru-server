@@ -1,14 +1,14 @@
 {
   "schema_version": 1,
-  "updated_at_utc": "2026-11-11T11:00:31Z",
+  "updated_at_utc": "2026-11-11T11:15:19Z",
   "repository": "SpeedeMiner/Geoip-ru-server",
   "pull_request": 5,
   "pull_request_url": "https://github.com/SpeedeMiner/Geoip-ru-server/pull/5",
   "branch": "feature/reachability-full-ru-kz-by",
   "recorded_pr_head_before_checkpoint_commit": "f267e14228ed6ef179784c5b7285ada40f78cca3",
   "base_sha": "a68e5d6589361814cb1cfedd2af7857e4af806fa",
-  "state": "VPNOBRATTO_RUN_9_IN_PROGRESS_AFTER_REMOVING_OPTIONAL_PRELIGHT_METADATA",
-  "current_phase": "RUN_9_MEASUREMENT_STEP_RUNNING; VERIFY_OPENVPN_START_AND_5S_ROUTE_WAIT",
+  "state": "VPNOBRATTO_RUN_9_TUNNEL_AND_RU_EXIT_VERIFIED_BUT_REPORTING_NAMEERROR_FIXED_CI_PENDING",
+  "current_phase": "WAIT_FOR_VALIDATION_THEN_RUN_10_TO_CAPTURE_FULL_DIAGNOSTICS",
   "completed": [
     "repository_reconnaissance",
     "protobuf_inventory_exporter",
@@ -210,7 +210,11 @@
     "vpnobratto_cached_origin_metadata_and_nonblocking_fallback_tests_added",
     "vpnobratto_workflow_step_timeout_10m_job_timeout_20m",
     "vpnobratto_ci_108_tests_go_checks_pass_after_preflight_shortening",
-    "vpnobratto_run9_dispatched_latest_branch_24fd242"
+    "vpnobratto_run9_dispatched_latest_branch_24fd242",
+    "vpnobratto_run9_openvpn_tunnel_and_ru_country_consensus_reached",
+    "vpnobratto_run9_first_control_example_com_test_invoked_but_report_not_persisted",
+    "vpnobratto_run9_server_meta_nameerror_root_caused_and_fixed",
+    "vpnobratto_server_measurement_report_metadata_helper_and_regression_test_added"
   ],
   "latest_successful_validation_run": 42999166787,
   "latest_successful_validation_commit": "26b12ab8b83f766391168f179837ff44aee6681a",
@@ -389,9 +393,11 @@
     "production_release_artifact_byte_delta_verified": false
   },
   "next_steps": [
-    "Dispatch the manual VPNObratto workflow once from current feature branch tip after confirming no active run.",
-    "Inspect whether OpenVPN process starts immediately after cached origin metadata; preserve 5-second route wait and 10-minute measurement-step limit.",
-    "Download and reconcile VPN reports after run terminal state; make no target blocking claims without verified RU exit and actual target rows."
+    "Wait for CI 43010330356 and 43010335180; require success on latest test commit 7557204f751735cc71e3e1b8d2aa46131960ae611e.",
+    "Confirm no active VPN reachability workflow run.",
+    "Dispatch one manual VPNObratto pilot from current feature branch tip with 1 successful RU exit target, max six profiles, 5s route timeout, 10m step timeout.",
+    "Inspect full log and download complete artifact; verify persisted exit IP/country consensus and per-target DNS/HTTPS rows.",
+    "Do not infer household/residential ISP classification from a VPNObratto volunteer exit."
   ],
   "ci_policy": {
     "push_validation_paths": [
@@ -1068,15 +1074,22 @@
     "dns_https_request_timeout_seconds": 12,
     "created_at_utc": "2026-11-11T10:59:16Z",
     "last_checked_at_utc": "2026-11-11T11:00:31Z",
-    "last_checked_status": "in_progress",
+    "last_checked_status": "completed",
     "last_checked_step": "Run capped VPNObratto / VPN Gate Russian-exit measurements",
     "setup_steps_status": "ALL_SUCCESS",
     "measurement_step_status": "in_progress",
     "report_upload_status": "pending",
     "artifacts": [],
-    "successful_ru_exits": null,
-    "target_measurements": null,
-    "interpretation": "Latest branch includes cached ASN/prefix only before OpenVPN, skips server IP metadata/PTR in per-attempt preflight, and has 10-minute measurement-step/20-minute job hard limits. No tunnel or target outcome confirmed yet."
+    "successful_ru_exits": 1,
+    "target_measurements": 0,
+    "interpretation": "Latest branch includes cached ASN/prefix only before OpenVPN, skips server IP metadata/PTR in per-attempt preflight, and has 10-minute measurement-step/20-minute job hard limits. No tunnel or target outcome confirmed yet.",
+    "last_checked_conclusion": "failure",
+    "exact_measurement_rows_persisted": 0,
+    "artifact_id": 13849950456,
+    "artifact_files": [
+      "reachability_inventory.tsv"
+    ],
+    "next_failure": "NameError server_meta at measurement row field"
   },
   "latest_manual_dispatch": {
     "run_id": 43008159447,
@@ -1092,15 +1105,22 @@
     "dns_https_request_timeout_seconds": 12,
     "created_at_utc": "2026-11-11T10:59:16Z",
     "last_checked_at_utc": "2026-11-11T11:00:31Z",
-    "last_checked_status": "in_progress",
+    "last_checked_status": "completed",
     "last_checked_step": "Run capped VPNObratto / VPN Gate Russian-exit measurements",
     "setup_steps_status": "ALL_SUCCESS",
     "measurement_step_status": "in_progress",
     "report_upload_status": "pending",
     "artifacts": [],
-    "successful_ru_exits": null,
-    "target_measurements": null,
-    "interpretation": "Latest branch includes cached ASN/prefix only before OpenVPN, skips server IP metadata/PTR in per-attempt preflight, and has 10-minute measurement-step/20-minute job hard limits. No tunnel or target outcome confirmed yet."
+    "successful_ru_exits": 1,
+    "target_measurements": 0,
+    "interpretation": "Latest branch includes cached ASN/prefix only before OpenVPN, skips server IP metadata/PTR in per-attempt preflight, and has 10-minute measurement-step/20-minute job hard limits. No tunnel or target outcome confirmed yet.",
+    "last_checked_conclusion": "failure",
+    "exact_measurement_rows_persisted": 0,
+    "artifact_id": 13849950456,
+    "artifact_files": [
+      "reachability_inventory.tsv"
+    ],
+    "next_failure": "NameError server_meta at measurement row field"
   },
   "cancellation_investigation": {
     "run7_cancel_request": {
@@ -1165,6 +1185,76 @@
       "server_metadata_and_PTR_removed_from_openvpn_attempt_critical_path",
       "vpn_measurement_step_timeout_10_minutes",
       "vpn_job_timeout_20_minutes"
+    ]
+  },
+  "run9_result": {
+    "run_id": 43008159447,
+    "run_url": "https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43008159447",
+    "run_number": 9,
+    "commit": "24fd242b0dce540132b0346df17030b5b00e6d3c",
+    "final_status": "completed",
+    "final_conclusion": "failure",
+    "updated_at_utc": "2026-11-11T11:02:19Z",
+    "profile": {
+      "hostname": "vpn175354437.opengw.net",
+      "variant": "IP_UDP",
+      "server_ip": "95.26.213.75"
+    },
+    "tunnel_route_installed": true,
+    "connect_timeout_seconds": 5,
+    "exit_verification": {
+      "country": "RU",
+      "independent_metadata_sources_required": 2,
+      "successful_consensus_inferred_from_control_flow": true,
+      "exact_exit_ipv4": "NOT_PERSISTED_DUE_TO_NAMEERROR",
+      "ASN_and_prefix": "NOT_PERSISTED"
+    },
+    "target_requests": {
+      "first_target_id": "control-example",
+      "first_target_domain": "example.com",
+      "test_target_function_completed_before_nameerror": true,
+      "DNS_and_HTTPS_HEAD_results": "NOT_PERSISTED"
+    },
+    "failure": {
+      "type": "NameError",
+      "message": "name 'server_meta' is not defined",
+      "source_line": 1432,
+      "cause": "Per-server enrichment was intentionally removed from preflight but one remaining measurement-row field still referenced the deleted server_meta local."
+    },
+    "artifact": {
+      "artifact_id": 13849950456,
+      "name": "geoip-ru-vpn-gate-43008159447",
+      "size_bytes": 284687,
+      "sha256": "d5c65ba51d9b29264fe520b5e2346f07d455b5d3b2f65422b1629b400d95b490",
+      "contents": [
+        "reachability_inventory.tsv"
+      ],
+      "missing": [
+        "vpn_gate_providers.tsv",
+        "vpn_gate_measurements.jsonl",
+        "vpn_gate_geoip_candidates.tsv",
+        "vpn_gate_raw.jsonl",
+        "vpn_gate_summary.json"
+      ]
+    },
+    "interpretation": "A real OpenVPN tunnel route was installed and two independent metadata providers returned matching RU exit country; first target control example.com was invoked. Reporting crashed on first measurement-row metadata update, so exit IPv4 and DNS/HTTPS results are not recoverable and no usable VPN report rows were written."
+  },
+  "measurement_reporting_fix": {
+    "code_commit": "fdf3b14ad48f3d060d43fdd843d068fd8d7b6b5d",
+    "test_commit": "7557204f751735cc71e3b8d2aa46131960ae611e",
+    "fix": "New server_measurement_report_fields helper sets SERVER_ORG empty and preserves cached ASN metadata; removes the stale server_meta reference.",
+    "regression_test": "test_measurement_report_fields_do_not_require_skipped_server_enrichment",
+    "validation_runs": [
+      {
+        "run_id": 43010330356,
+        "sha": "fdf3b14ad48f3d060d43fdd843d068fd8d7b6b5d",
+        "status": "in_progress"
+      },
+      {
+        "run_id": 43010335180,
+        "sha": "7557204f751735cc71e3b8d2aa46131960ae611e",
+        "status": "pending"
+      }
     ]
   }
 }
