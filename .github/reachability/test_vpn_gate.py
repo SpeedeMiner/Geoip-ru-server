@@ -624,6 +624,44 @@ class VPNGateDefaultArgumentsTests(unittest.TestCase):
         self.assertEqual(args.connect_timeout, 5)
 
 
+class VPNServerPTRTests(unittest.TestCase):
+    def test_reverse_dns_uses_bounded_getent_lookup(self):
+        completed = subprocess.CompletedProcess(
+            ["getent", "hosts", "217.144.174.117"],
+            0,
+            stdout="217.144.174.117 vpn.example.net alias.example.net\\n",
+            stderr="",
+        )
+        with patch.object(vpn_gate.shutil, "which", return_value="/usr/bin/getent"), \
+             patch.object(vpn_gate.subprocess, "run", return_value=completed) as run:
+            self.assertEqual(
+                vpn_gate.resolve_ptr("217.144.174.117"), "vpn.example.net"
+            )
+        self.assertEqual(
+            run.call_args.args[0],
+            ["getent", "hosts", "217.144.174.117"],
+        )
+        self.assertEqual(
+            run.call_args.kwargs["timeout"],
+            vpn_gate.PTR_LOOKUP_TIMEOUT_SECONDS,
+        )
+
+    def test_reverse_dns_timeout_is_non_fatal(self):
+        with patch.object(vpn_gate.shutil, "which", return_value="/usr/bin/getent"), \
+             patch.object(
+                 vpn_gate.subprocess,
+                 "run",
+                 side_effect=subprocess.TimeoutExpired("getent", 3),
+             ):
+            self.assertEqual(vpn_gate.resolve_ptr("217.144.174.117"), "")
+
+    def test_reverse_dns_without_getent_is_skipped(self):
+        with patch.object(vpn_gate.shutil, "which", return_value=None), \
+             patch.object(vpn_gate.subprocess, "run") as run:
+            self.assertEqual(vpn_gate.resolve_ptr("217.144.174.117"), "")
+        run.assert_not_called()
+
+
 class VPNObrattoFetchSafetyTests(unittest.TestCase):
     def test_redirect_handler_rejects_cross_origin_and_insecure_redirects(self):
         handler = vpn_gate.VPNObratnoSameOriginRedirect()
