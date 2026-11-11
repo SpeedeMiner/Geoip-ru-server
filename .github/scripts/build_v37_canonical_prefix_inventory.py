@@ -307,6 +307,9 @@ def build_inventory(args: argparse.Namespace) -> dict[str, object]:
             flags = {name: prefix in values for name, values in sets.items()}
             metadata = additional_rows.get(prefix, {})
             groups = metadata.get("GROUPS_WITH_OVERLAP", "")
+            covered_addresses = _covered_addresses(
+                network, ru_starts[network.version], ru_ends[network.version]
+            )
             writer.writerow({
                 "PREFIX": prefix,
                 "FAMILY": f"IPv{network.version}",
@@ -321,12 +324,10 @@ def build_inventory(args: argparse.Namespace) -> dict[str, object]:
                 "ADDITIONAL_LOGICAL_GROUPS": groups,
                 "IN_APPROVED_BLOCKED_EXCLUSIONS": "yes" if flags["blocked_approved"] else "no",
                 "IN_BLOCKED_REVIEW_ONLY_CANDIDATES": "yes" if flags["blocked_review_only"] else "no",
-                "RU_OUTPUT_COVERED_ADDRESSES": covered := _covered_addresses(
-                    network, ru_starts[network.version], ru_ends[network.version]
-                ),
+                "RU_OUTPUT_COVERED_ADDRESSES": covered_addresses,
                 "RU_OUTPUT_ADDRESS_COVERAGE": (
-                    "NONE" if covered == 0 else
-                    "FULL" if covered == network.num_addresses else
+                    "NONE" if covered_addresses == 0 else
+                    "FULL" if covered_addresses == network.num_addresses else
                     "PARTIAL"
                 ),
                 "EXACT_PREFIX_INTERPRETATION": (
