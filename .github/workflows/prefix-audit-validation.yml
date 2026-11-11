@@ -522,11 +522,11 @@ jobs:
         run: |
           set -euo pipefail
           inventory="prefix-audit/v37-canonical-inventory"
-          python3 .github/scripts/build_rir_residual_bgp_origin_evidence.py \\
-            --residual "$inventory/rir_ru_resource_residual_review.tsv" \\
-            --inventory "$inventory/canonical_prefix_inventory.tsv" \\
-            --bgp-archive as-ip-blocks.tar.gz \\
-            --output "$inventory/rir_residual_bgp_origin_evidence.tsv" \\
+          python3 .github/scripts/build_rir_residual_bgp_origin_evidence.py \
+            --residual "$inventory/rir_ru_resource_residual_review.tsv" \
+            --inventory "$inventory/canonical_prefix_inventory.tsv" \
+            --bgp-archive as-ip-blocks.tar.gz \
+            --output "$inventory/rir_residual_bgp_origin_evidence.tsv" \
             --stats "$inventory/rir_residual_bgp_origin_evidence_stats.txt"
 
           python3 - "$inventory" <<'PY'
