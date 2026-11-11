@@ -1,14 +1,14 @@
 {
   "schema_version": 1,
-  "updated_at_utc": "2026-11-11T13:57:46Z",
+  "updated_at_utc": "2026-11-11T14:19:58Z",
   "repository": "SpeedeMiner/Geoip-ru-server",
   "pull_request": 5,
   "pull_request_url": "https://github.com/SpeedeMiner/Geoip-ru-server/pull/5",
   "branch": "feature/reachability-full-ru-kz-by",
   "recorded_pr_head_before_checkpoint_commit": "44876fada938368cf6211ec6fc3a0572cd259479",
   "base_sha": "a68e5d6589361814cb1cfedd2af7857e4af806fa",
-  "state": "VPNOBRATTO_RUN_14_STALLED_DURING_PROFILE_DOWNLOAD_LATEST_HEAD_HAS_15S_WALL_CLOCK_FETCH_GUARD_CI_SUCCESS_116",
-  "current_phase": "RUN14_STILL_ACTIVE_NO_ARTIFACT_BROWSER_MONITORING_WALLET_BLOCKED",
+  "state": "RUN15_FAILED_AT_APT_DNS; VPN_WORKFLOW_PINNED_UBUNTU_24_04_WITH_BOUNDED_APT_RETRIES; VALIDATION_PENDING",
+  "current_phase": "RUN15_TERMINAL_APT_DNS_FAILURE_WORKFLOW_FIX_COMMITTED_VALIDATION_PENDING",
   "completed": [
     "repository_reconnaissance",
     "protobuf_inventory_exporter",
@@ -407,11 +407,11 @@
     "production_release_artifact_byte_delta_verified": false
   },
   "next_steps": [
-    "Do not dispatch another VPN workflow while run #14 is still in_progress.",
-    "To retrieve live DOM logs and cancel run #14 if it remains wedged, the authenticated TinyFish browser requires wallet top-up; no GitHub connector cancel-run action is available.",
-    "Continue checking run #14 status through GitHub REST. If it becomes terminal, inspect artifact list and job conclusion; zero evidence until report rows are recovered.",
-    "Once run #14 is terminal and browser access is available, dispatch one run #15 from latest branch HEAD 44876fada938368cf6211ec6fc3a0572cd259479, which includes per-request wall-clock guards and 116-test CI validation.",
-    "Do not make home/residential claims from volunteer VPN exits. Keep PR #5 OPEN / DRAFT; do not touch PR #6 or production GeoIP/releases."
+    "Check the Reachability validation workflow triggered by commit 05c0d0431990e97851628f7b87ef0b29b0f8763c; do not claim the workflow-only change passed until that run is green.",
+    "After validation passes, manually dispatch the next VPNObratto run from feature/reachability-full-ru-kz-by with max_vpn_gate_servers=1 and max_vpn_gate_attempts=6.",
+    "Do not start overlapping VPN runs. In the next run, verify apt_update_started/completed and apt_install_completed before expecting Go/GeoIP/inventory/VPN steps.",
+    "Only count a reachability measurement after two independent sources agree on the exact RU exit IPv4 and persisted target DNS/HTTPS rows are present in the artifact.",
+    "Keep PR #5 OPEN / DRAFT; do not merge or change its base. Do not touch PR #6, the production GeoIP builder, release assets/branch, DIRECT policy or ASN allowlists."
   ],
   "ci_policy": {
     "push_validation_paths": [
@@ -1077,84 +1077,64 @@
     "validation_result": "SUCCESS: 108 Python tests, py_compile/JSON validation, gofmt, go test ./..., go build."
   },
   "current_manual_dispatch": {
-    "run_id": 43030660328,
-    "run_url": "https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43030660328",
-    "run_number": 14,
+    "run_id": 43035301161,
+    "run_url": "https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43035301161",
+    "run_number": 15,
     "branch": "feature/reachability-full-ru-kz-by",
-    "commit": "20e6db7e6035c6af705b81bd4c8776a7cf9417f3",
-    "created_at_utc": "2026-11-11T13:36:31Z",
-    "last_rest_check_at_utc": "2026-11-11T13:55:57Z",
-    "status": "in_progress",
-    "conclusion": null,
-    "job_id": 130556541550,
-    "job_status": "in_progress",
-    "current_step": "Run capped VPNObratto / VPN Gate Russian-exit measurements",
-    "upload_step_status": "pending",
-    "artifacts": [],
-    "live_log_snapshot_at_utc": "2026-11-11T13:40:14Z",
-    "latest_confirmed_log_markers": [
-      "runner_guard_timeout=8m kill_after=5s running_as_root=true",
-      "phase=profile_listing completed links=32 download_cap=24 host_target=6",
-      "profile_download_result=1/24 result=usable unique_hosts=1",
-      "profile_download_result=2/24 result=usable unique_hosts=2",
-      "profile_download_result=3/24 result=usable unique_hosts=3",
-      "profile_download_result=4/24 result=usable unique_hosts=4",
-      "profile_download_result=5/24 result=usable unique_hosts=5",
-      "profile_download=6/24 host=vpn689600419.opengw.net variant=ip_udp"
+    "commit": "6992b4cb337e447f1d14d27fd37a99ee655b8a23",
+    "created_at_utc": "2026-11-11T14:06:34Z",
+    "completed_at_utc": "2026-11-11T14:12:09Z",
+    "status": "completed",
+    "conclusion": "failure",
+    "job_id": 130572433962,
+    "failed_step": "Install isolated VPN measurement tools",
+    "cause": "apt-get update/install failed because DNS lookups for azure.archive.ubuntu.com, archive.ubuntu.com and security.ubuntu.com failed on Ubuntu 26.04 runner; apt-get install exited 100.",
+    "next_steps_reached": [
+      "Set up job",
+      "Checkout repository",
+      "Upload VPN Gate reports"
     ],
-    "latest_confirmed_live_state": "Five profile variants completed successfully; sixth profile fetch started, result not visible.",
-    "profile_links_found": 32,
-    "profile_download_cap": 24,
-    "target_unique_hosts": 6,
-    "confirmed_usable_profiles": 5,
-    "sixth_profile_fetch_started": true,
-    "early_stop_seen": false,
-    "discovery_completed_seen": false,
-    "host_selection_completed_seen": false,
-    "openvpn_attempts_confirmed": 0,
-    "verified_ru_exits_confirmed": 0,
-    "target_measurements_confirmed": 0,
-    "interpretation": "Latest live screenshot at 13:40:14Z ended at start of profile 6. REST at 13:55:57Z still showed step 7 in progress and step 8 upload pending. No post-snapshot phases can be asserted; do not interpret as target blocking."
+    "skipped_steps": [
+      "Set up Go",
+      "Download the exact published GeoIP protobuf",
+      "Export every RU and PRIVATE prefix",
+      "Run capped VPNObratno / VPN Gate Russian-exit measurements"
+    ],
+    "artifacts": [],
+    "openvpn_attempts": 0,
+    "verified_ru_exits": 0,
+    "target_dns_https_measurements": 0,
+    "interpretation": "Runner package-install DNS failure only. No evidence about VPNObratno profiles, RU exit connectivity or target access."
   },
   "latest_manual_dispatch": {
-    "run_id": 43030660328,
-    "run_url": "https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43030660328",
-    "run_number": 14,
+    "run_id": 43035301161,
+    "run_url": "https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43035301161",
+    "run_number": 15,
     "branch": "feature/reachability-full-ru-kz-by",
-    "commit": "20e6db7e6035c6af705b81bd4c8776a7cf9417f3",
-    "created_at_utc": "2026-11-11T13:36:31Z",
-    "last_rest_check_at_utc": "2026-11-11T13:55:57Z",
-    "status": "in_progress",
-    "conclusion": null,
-    "job_id": 130556541550,
-    "job_status": "in_progress",
-    "current_step": "Run capped VPNObratto / VPN Gate Russian-exit measurements",
-    "upload_step_status": "pending",
-    "artifacts": [],
-    "live_log_snapshot_at_utc": "2026-11-11T13:40:14Z",
-    "latest_confirmed_log_markers": [
-      "runner_guard_timeout=8m kill_after=5s running_as_root=true",
-      "phase=profile_listing completed links=32 download_cap=24 host_target=6",
-      "profile_download_result=1/24 result=usable unique_hosts=1",
-      "profile_download_result=2/24 result=usable unique_hosts=2",
-      "profile_download_result=3/24 result=usable unique_hosts=3",
-      "profile_download_result=4/24 result=usable unique_hosts=4",
-      "profile_download_result=5/24 result=usable unique_hosts=5",
-      "profile_download=6/24 host=vpn689600419.opengw.net variant=ip_udp"
+    "commit": "6992b4cb337e447f1d14d27fd37a99ee655b8a23",
+    "created_at_utc": "2026-11-11T14:06:34Z",
+    "completed_at_utc": "2026-11-11T14:12:09Z",
+    "status": "completed",
+    "conclusion": "failure",
+    "job_id": 130572433962,
+    "failed_step": "Install isolated VPN measurement tools",
+    "cause": "apt-get update/install failed because DNS lookups for azure.archive.ubuntu.com, archive.ubuntu.com and security.ubuntu.com failed on Ubuntu 26.04 runner; apt-get install exited 100.",
+    "next_steps_reached": [
+      "Set up job",
+      "Checkout repository",
+      "Upload VPN Gate reports"
     ],
-    "latest_confirmed_live_state": "Five profile variants completed successfully; sixth profile fetch started, result not visible.",
-    "profile_links_found": 32,
-    "profile_download_cap": 24,
-    "target_unique_hosts": 6,
-    "confirmed_usable_profiles": 5,
-    "sixth_profile_fetch_started": true,
-    "early_stop_seen": false,
-    "discovery_completed_seen": false,
-    "host_selection_completed_seen": false,
-    "openvpn_attempts_confirmed": 0,
-    "verified_ru_exits_confirmed": 0,
-    "target_measurements_confirmed": 0,
-    "interpretation": "Latest live screenshot at 13:40:14Z ended at start of profile 6. REST at 13:55:57Z still showed step 7 in progress and step 8 upload pending. No post-snapshot phases can be asserted; do not interpret as target blocking."
+    "skipped_steps": [
+      "Set up Go",
+      "Download the exact published GeoIP protobuf",
+      "Export every RU and PRIVATE prefix",
+      "Run capped VPNObratno / VPN Gate Russian-exit measurements"
+    ],
+    "artifacts": [],
+    "openvpn_attempts": 0,
+    "verified_ru_exits": 0,
+    "target_dns_https_measurements": 0,
+    "interpretation": "Runner package-install DNS failure only. No evidence about VPNObratno profiles, RU exit connectivity or target access."
   },
   "cancellation_investigation": {
     "run7_cancel_request": {
@@ -1561,11 +1541,12 @@
     }
   ],
   "current_next_run": {
-    "expected_run_number": 14,
+    "expected_run_number": 16,
     "branch": "feature/reachability-full-ru-kz-by",
-    "source": "vpnobratto",
+    "source": "vpnobratno",
     "max_vpn_gate_servers": 1,
     "max_vpn_gate_attempts": 6,
+    "precondition": "Reachability validation for commit 05c0d0431990e97851628f7b87ef0b29b0f8763c passes and no VPN workflow is active.",
     "not_yet_dispatched": true
   },
   "run14_result": {
@@ -1636,5 +1617,33 @@
     "validation_run_id": 43033708075,
     "validation_status": "SUCCESS",
     "python_test_count": 116
+  },
+  "run15_runner_failure": {
+    "run_id": 43035301161,
+    "observed_runner_os": "Ubuntu 26.04 (resolute)",
+    "failed_stage": "apt-get update/install openvpn iptables",
+    "failure_log": [
+      "Temporary failure resolving azure.archive.ubuntu.com",
+      "Temporary failure resolving archive.ubuntu.com",
+      "Temporary failure resolving security.ubuntu.com",
+      "E: Unable to fetch some archives",
+      "Error: Process completed with exit code 100"
+    ],
+    "artifact_count": 0,
+    "confirmed_openvpn_attempts": 0,
+    "confirmed_verified_ru_exits": 0,
+    "confirmed_target_measurements": 0
+  },
+  "workflow_runner_fix": {
+    "commit": "05c0d0431990e97851628f7b87ef0b29b0f8763c",
+    "committed_at_utc": "2026-11-11T14:19:58Z",
+    "file": ".github/workflows/reachability-vpn-gate.yml",
+    "runner": "ubuntu-24.04",
+    "install_step_timeout_minutes": 5,
+    "apt_http_https_timeout_seconds": 20,
+    "apt_retries": 3,
+    "strict_partial_update_error": "APT::Update::Error-Mode=any",
+    "preinstalled_openvpn_check": true,
+    "validation": "PENDING"
   }
 }
