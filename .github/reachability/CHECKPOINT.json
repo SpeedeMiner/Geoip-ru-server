@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "updated_at_utc": "2026-11-11T17:46:10Z",
+  "updated_at_utc": "2026-11-11T17:46:30Z",
   "repository": "SpeedeMiner/Geoip-ru-server",
   "pull_request": 5,
   "pull_request_url": "https://github.com/SpeedeMiner/Geoip-ru-server/pull/5",
   "branch": "feature/reachability-full-ru-kz-by",
-  "recorded_pr_head_before_checkpoint_commit": "797ddcf3af72c785cf8de9feff883f263edae9fa",
+  "recorded_pr_head_before_checkpoint_commit": "0f2afc6cf627156ae5bdf6e553f6c7db0ee96254",
   "base_sha": "a68e5d6589361814cb1cfedd2af7857e4af806fa",
   "state": "RUN21_TERMINAL_TIMEOUT_CONFIRMED; VPNOBRATTO_ISOLATED_FETCH_WORKER_IMPLEMENTED_AND_CI_GREEN_RUN209; NO_NEW_VPN_RUN",
   "current_phase": "PROFILE_FETCH_WORKER_ISOLATION_AND_DURABLE_PHASE_MANIFEST_VALIDATED; READY_FOR_ONE_BOUNDED_MANUAL_PILOT_AFTER_LIVE_RUN_CHECK",
@@ -2017,7 +2017,7 @@
     "note": "Documentation-only changes after code-tested HEAD c49dece do not affect the code validated in Run #209.",
     "read_first_resume_guide_initial_commit": "ee7ee866692fc2bbc487e837a1da78124d60fcf4",
     "read_first_resume_guide_blocker_update_commit": "8761626e83c08bbe6a0a98a38b8fccd0b2bff505",
-    "final_worklog_entry_commit": "01085045a9e224a9abe9a4b7dd36d3f32f67da69",
+    "final_worklog_entry_commit": "0f2afc6cf627156ae5bdf6e553f6c7db0ee96254",
     "checkpoint_written_after_worklog_commit": "01085045a9e224a9abe9a4b7dd36d3f32f67da69",
     "resume_guide_active_run21_commit": "e971a8f62c213bee068e3595b67def86d609b348",
     "run21_monitoring_snapshot_worklog_commit": "c7d6ffdf2866df22ac1b5ad466b534b2def40d99",
@@ -2027,7 +2027,8 @@
     "documentation_note": "README/WORKLOG/CHECKPOINT/RESUME updates do not dispatch VPN workflows. Latest code-tested commit remains c49dece...",
     "vpn_worker_readme_commit": "863f0c5251cbab17a85ac150735dff7f37fcdd30",
     "vpn_worker_worklog_commit": "b3ed33fd06b88b23b0625170c0bdd8d252754f34",
-    "vpn_worker_resume_commit": "797ddcf3af72c785cf8de9feff883f263edae9fa"
+    "vpn_worker_resume_commit": "797ddcf3af72c785cf8de9feff883f263edae9fa",
+    "checkpoint_written_after_final_worklog_commit": "0f2afc6cf627156ae5bdf6e553f6c7db0ee96254"
   },
   "run21_result": {
     "run_id": 43065501624,
