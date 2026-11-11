@@ -1,7 +1,17 @@
-name: Build Unified GeoIP DIRECT RU+BY+KZ CLIENT v37
+name: Build Unified GeoIP DIRECT RU+BY+KZ CLIENT v38
 
 on:
   workflow_dispatch:
+  pull_request:
+    branches: [main]
+    paths:
+      - ".github/workflows/blank.yml"
+      - ".github/scripts/build_rir_rukzby_prefixes.py"
+      - ".github/scripts/build_v38_overlay.py"
+      - ".github/scripts/test_*.py"
+      - "docs/GEOIP_RU_V38_POLICY.md"
+      - "docs/GEOIP_RU_V38_SOURCE_REGISTRY.tsv"
+      - "docs/V38_PUBLIC_RKN_SOURCE_CROSSCHECK.md"
   schedule:
     # Daily refresh; one unified DIRECT set covers RU+BY+KZ, with bounded blocked-destination carve-outs.
     - cron: "45 3 * * *"
@@ -10,8 +20,8 @@ on:
       - main
 
 concurrency:
-  group: geoip-direct-ru-by-kz-v37-build
-  cancel-in-progress: false
+  group: geoip-direct-ru-by-kz-v38-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   build:
@@ -33,6 +43,11 @@ jobs:
       LOYALSOLDIER_PRIVATE_INPUT: loyalsoldier-private.dat
       HXEHEX_INPUT: hxehex-cidrwhitelist.txt
       W1ZARDZ_INPUT: w1zardz-ru-ipv4.txt
+      KY_STANDARD_V4_INPUT: kyoresuas-ru-standard-ipv4.txt
+      KY_STANDARD_V6_INPUT: kyoresuas-ru-standard-ipv6.txt
+      KY_SERVICES_INPUT: kyoresuas-services.json
+      HXEHEX_IP_INPUT: hxehex-ipwhitelist.txt
+      ESCAPINGWORM_OPERATOR_INPUT: escapingworm-operator-cidr.txt
       RU_ASN_REGISTRY: geoip_RU_registered_asns.txt
       BY_KZ_ASN_REGISTRY: geoip_BY_KZ_registered_asns.txt
       COMPANY_ASN_REGISTRY: geoip_RU_company_asns.txt
@@ -45,19 +60,29 @@ jobs:
       RU_PREFIX_INPUT: geoip_RU_BY_KZ_asn_bgp_prefixes.txt
       RIR_PREFIX_INPUT: geoip_RU_rir_registered_prefixes.txt
       RIR_STATS: geoip_RU_rir_stats.txt
+      RIR_RUKZBY_PREFIX_INPUT: geoip_RU_BY_KZ_rir_registered_prefixes.tsv
+      RIR_RUKZBY_STATS: geoip_RU_BY_KZ_rir_stats.txt
       GLOBAL_BGP_PREFIX_INPUT: geoip_RU_global_bgp_prefixes.txt
       IANA_V4_CSV: iana-ipv4-special-registry.csv
       IANA_V6_CSV: iana-ipv6-special-registry.csv
       IANA_PRIVATE_PREFIX_INPUT: geoip_RU_iana_non_global_prefixes.txt
       IANA_REACHABLE_PREFIX_INPUT: geoip_RU_iana_global_exceptions.txt
-      QUALITY_REPORT: geoip_RU_quality_report.txt
-      PROVENANCE_FILE: geoip_RU_additional_provenance.tsv
+      QUALITY_REPORT: geoip_RU_v37_base_quality_report.txt
+      V38_QUALITY_REPORT: geoip_RU_quality_report.txt
+      V38_METRICS: geoip_RU_v38_source_metrics.tsv
+      V38_PREFIX_PROVENANCE: geoip_RU_v38_prefix_provenance.tsv
+      V38_BLOCKED_PROVENANCE: geoip_RU_v38_blocked_provenance.tsv
+      V38_BLOCKED_FILE: geoip_RU_v38_blocked_ip_exclusions.txt
+      V38_BLOCKED_SHA: geoip_RU_v38_blocked_ip_exclusions.txt.sha256sum
+      V38_MANIFEST: geoip_RU_v38_manifest.json
+      PROVENANCE_FILE: geoip_RU_v37_additional_provenance.tsv
       ASN_MANIFEST: geoip_RU_BY_KZ_asn_manifest.txt
       COMPANY_ASN_MANIFEST: geoip_RU_company_asn_manifest.tsv
       ASN_STATS: geoip_RU_BY_KZ_asn_stats.txt
       SOURCE_COUNTS: geoip_RU_source_counts.txt
       CATEGORY_AUDIT: geoip_RU_category_audit.tsv
-      OUTPUT_FILE: geoip_RU.dat
+      OUTPUT_FILE: geoip_RU_v37_base.dat
+      V38_OUTPUT_FILE: geoip_RU.dat
       CATEGORY_FILE: geoip_RU_categories.txt
       SOURCE_FILE: geoip_RU_sources.txt
       OUTPUT_SHA_FILE: geoip_RU.dat.sha256sum
@@ -68,6 +93,7 @@ jobs:
       BLOCKED_SUBNET_INPUT: antifilter-subnet.lst
       BLOCKED_COMMUNITY_INPUT: antifilter-community.lst
       BLOCKED_REFILTER_INPUT: refilter-ipsum.lst
+      BLOCKED_IPSUM_INPUT: antifilter-ipsum.lst
       BLOCKED_REVIEW_INPUT: geoip_RU_blocked_review_candidates.tsv
       BLOCKED_STATS_INPUT: geoip_RU_blocked_source_stats.txt
       BLOCKED_CHECKSUMS_INPUT: geoip_RU_blocked_sources.sha256
@@ -438,9 +464,21 @@ jobs:
             "https://raw.githubusercontent.com/hxehex/russia-mobile-internet-whitelist/main/cidrwhitelist.txt" \
             "https://cdn.jsdelivr.net/gh/hxehex/russia-mobile-internet-whitelist@main/cidrwhitelist.txt"
 
+          # Pin VPN service-direct candidates to immutable source commits.
           download_file "W1ZARDZ RU DIRECT IPV4" "$W1ZARDZ_INPUT" \
-            "https://raw.githubusercontent.com/w1zardz/amnezia-vpn-russia-split-tunneling/master/dist/ru-direct-ipv4.txt" \
-            "https://cdn.jsdelivr.net/gh/w1zardz/amnezia-vpn-russia-split-tunneling@master/dist/ru-direct-ipv4.txt"
+            "https://raw.githubusercontent.com/w1zardz/amnezia-vpn-russia-split-tunneling/6157cdfb55f1748c98cab121cde008b5f69d325d/dist/ru-direct-ipv4.txt"
+
+          download_file "KY ORESUAS RU STANDARD IPV4" "$KY_STANDARD_V4_INPUT" \
+            "https://raw.githubusercontent.com/kyoresuas/ru-direct/0781793a159f9a53c5e68da2f46b0a64855f8cb6/ru-standard.ipv4.txt"
+          download_file "KY ORESUAS RU STANDARD IPV6" "$KY_STANDARD_V6_INPUT" \
+            "https://raw.githubusercontent.com/kyoresuas/ru-direct/0781793a159f9a53c5e68da2f46b0a64855f8cb6/ru-standard.ipv6.txt"
+          download_file "KY ORESUAS SERVICE CATALOG" "$KY_SERVICES_INPUT" \
+            "https://raw.githubusercontent.com/kyoresuas/ru-direct/0781793a159f9a53c5e68da2f46b0a64855f8cb6/services.json"
+
+          download_file "HXEHEX MOBILE WHITELIST HOST IPS" "$HXEHEX_IP_INPUT" \
+            "https://raw.githubusercontent.com/hxehex/russia-mobile-internet-whitelist/fad3653ebd4b212643774a4d10af3eb33838e4ff/ipwhitelist.txt"
+          download_file "ESCAPINGWORM OPERATOR WHITELIST CIDRS" "$ESCAPINGWORM_OPERATOR_INPUT" \
+            "https://raw.githubusercontent.com/escapingworm/russia-whitelist/2bb6c0788f21986b7928d986ea2577c6ebc11b36/ru-whitelist-cidr.txt"
 
           echo "==============================================="
           echo "Downloading additive RU ASN/BGP data"
@@ -706,6 +744,13 @@ jobs:
           print("Unique RU-registered address prefixes:", len(rir_prefixes))
           PY
 
+          # v38 separately inventories the full RU+BY+KZ public address-resource
+          # set. Registration is DIRECT evidence here, not a physical-geolocation claim.
+          python3 .github/scripts/build_rir_rukzby_prefixes.py \
+            --afrinic "$AFRINIC_STATS" --apnic "$APNIC_STATS" --arin "$ARIN_STATS" \
+            --lacnic "$LACNIC_STATS" --ripencc "$RIPENCC_STATS" \
+            --output "$RIR_RUKZBY_PREFIX_INPUT" --stats "$RIR_RUKZBY_STATS"
+
           # Convert the official IANA registries into exact non-globally-reachable
           # prefixes and explicit globally-reachable exceptions.
           python3 - "$IANA_V4_CSV" "$IANA_V6_CSV" \
@@ -777,6 +822,11 @@ jobs:
             "https://antifilter.download/list/ipresolve.lst"
           download_file "ANTIFILTER SUBNET LIST" "$BLOCKED_SUBNET_INPUT" \
             "https://antifilter.download/list/subnet.lst"
+          # Officially described by the aggregator as /24 summarization of individual
+          # RKN-derived IPs. The v38 builder applies it separately and reports its
+          # wider shared-hosting/CDN collateral risk instead of hiding it in subnet.lst.
+          download_file "ANTIFILTER IPSUM IPV4 /24 SUMMARY" "$BLOCKED_IPSUM_INPUT" \
+            "https://antifilter.download/list/ipsum.lst"
 
           # Community and Re-filter are intentionally review-only. They must never
           # be silently promoted into automatic DIRECT exclusions.
@@ -804,8 +854,10 @@ jobs:
                       "$GOLUKON_INPUT" "$V2FLY_INPUT" "$V2FLY_SHA_INPUT" \
                       "$LOYALSOLDIER_RU_INPUT" "$LOYALSOLDIER_BY_INPUT" "$LOYALSOLDIER_PRIVATE_INPUT" \
                       "$BY_KZ_ASN_REGISTRY" "$BLOCKED_IP_INPUT" "$BLOCKED_IP_RAW_INPUT" \
-                      "$BLOCKED_IPRESOLVE_INPUT" "$BLOCKED_SUBNET_INPUT" "$BLOCKED_REVIEW_INPUT" \
-                      "$BLOCKED_STATS_INPUT" "$BLOCKED_CHECKSUMS_INPUT" "$HXEHEX_INPUT" "$W1ZARDZ_INPUT" "$AFRINIC_STATS" "$APNIC_STATS" \
+                      "$BLOCKED_IPRESOLVE_INPUT" "$BLOCKED_SUBNET_INPUT" "$BLOCKED_IPSUM_INPUT" "$BLOCKED_REVIEW_INPUT" \
+                      "$BLOCKED_STATS_INPUT" "$BLOCKED_CHECKSUMS_INPUT" "$HXEHEX_INPUT" "$W1ZARDZ_INPUT" \
+                      "$KY_STANDARD_V4_INPUT" "$KY_STANDARD_V6_INPUT" "$KY_SERVICES_INPUT" "$HXEHEX_IP_INPUT" "$ESCAPINGWORM_OPERATOR_INPUT" \
+                      "$RIR_RUKZBY_PREFIX_INPUT" "$RIR_RUKZBY_STATS" "$AFRINIC_STATS" "$APNIC_STATS" \
                       "$ARIN_STATS" "$LACNIC_STATS" "$RIPENCC_STATS" "$RU_ASN_REGISTRY" \
                       "$IPVERSE_BGP_ARCHIVE" "$IANA_V4_CSV" "$IANA_V6_CSV"; do
             test -s "$file" || { echo "::error::Missing or empty required input: $file"; exit 1; }
@@ -1837,14 +1889,46 @@ jobs:
           	return new(big.Int).Lsh(big.NewInt(1), uint(prefix.Addr().BitLen()-prefix.Bits()))
           }
           
+          // countCoveredTrieAddresses sums the address space covered below one trie node.
+          // The caller provides the prefix depth represented by that node.
+          func countCoveredTrieAddresses(node *trieNode, depth, bitLen int) *big.Int {
+          	if node == nil {
+          		return new(big.Int)
+          	}
+          	if node.covered {
+          		return new(big.Int).Lsh(big.NewInt(1), uint(bitLen-depth))
+          	}
+          	total := new(big.Int)
+          	if node.child[0] != nil {
+          		total.Add(total, countCoveredTrieAddresses(node.child[0], depth+1, bitLen))
+          	}
+          	if node.child[1] != nil {
+          		total.Add(total, countCoveredTrieAddresses(node.child[1], depth+1, bitLen))
+          	}
+          	return total
+          }
+
           // prefixOverlapAddressCount counts addresses from one prefix covered by a set.
-          // Trie intersection handles both covering aggregate routes and more-specific routes.
+          // Walk the requested path once, then sum only the matching descendant subtree.
+          // This avoids allocating and intersecting a temporary trie for every output CIDR.
           func prefixOverlapAddressCount(prefix netip.Prefix, coverage *ipTrie) *big.Int {
-          	one := newIPTrie()
-          	one.insert(prefix)
-          	one.intersect(coverage)
-          	bits := prefix.Addr().BitLen()
-          	return countAddressSpace(one.toPrefixes(), bits)
+          	prefix = prefix.Masked()
+          	addr, bits := prefix.Addr(), prefix.Bits()
+          	root := coverage.v6
+          	if addr.Is4() {
+          		root = coverage.v4
+          	}
+          	node := root
+          	for depth := 0; depth < bits; depth++ {
+          		if node == nil {
+          			return new(big.Int)
+          		}
+          		if node.covered {
+          			return prefixAddressCount(prefix)
+          		}
+          		node = node.child[getBit(addr, depth)]
+          	}
+          	return countCoveredTrieAddresses(node, bits, addr.BitLen())
           }
           
           type familyBGPReachability struct {
@@ -3031,19 +3115,41 @@ jobs:
           } >> "$QUALITY_REPORT"
           sha256sum "$BLOCKED_IP_INPUT" > "$BLOCKED_IP_SHA_FILE"
 
-          # Generate the protobuf checksum BEFORE the build-artifact gate below.
-          # The Go builder writes geoip_RU.dat but intentionally does not write a sidecar.
-          test -s "$OUTPUT_FILE" || { echo "::error::GeoIP protobuf was not created: $OUTPUT_FILE"; exit 1; }
-          rm -f "$OUTPUT_SHA_FILE"
-          sha256sum "$OUTPUT_FILE" > "$OUTPUT_SHA_FILE"
-          test -s "$OUTPUT_SHA_FILE" || { echo "::error::Failed to create protobuf SHA256 file: $OUTPUT_SHA_FILE"; exit 1; }
-          sha256sum -c "$OUTPUT_SHA_FILE"
+          # Assemble v38 from the v37 trusted base plus regional RIR resources and
+          # named service-direct routes, then apply only the already approved exact/bounded RKN set.
+          python3 .github/scripts/build_v38_overlay.py \
+            --base "$OUTPUT_FILE" \
+            --rir "$RIR_RUKZBY_PREFIX_INPUT" \
+            --kyoresuas-v4 "$KY_STANDARD_V4_INPUT" \
+            --kyoresuas-v6 "$KY_STANDARD_V6_INPUT" \
+            --kyoresuas-services "$KY_SERVICES_INPUT" \
+            --w1zardz "$W1ZARDZ_INPUT" \
+            --hxehex-ip "$HXEHEX_IP_INPUT" \
+            --escapingworm "$ESCAPINGWORM_OPERATOR_INPUT" \
+            --blocked-base "$BLOCKED_IP_INPUT" \
+            --ipsum "$BLOCKED_IPSUM_INPUT" \
+            --output "$V38_OUTPUT_FILE" \
+            --categories "$CATEGORY_FILE" \
+            --quality "$V38_QUALITY_REPORT" \
+            --metrics "$V38_METRICS" \
+            --prefix-provenance "$V38_PREFIX_PROVENANCE" \
+            --blocked-provenance "$V38_BLOCKED_PROVENANCE" \
+            --blocked-output "$V38_BLOCKED_FILE" \
+            --manifest "$V38_MANIFEST"
 
-          for file in "$OUTPUT_FILE" "$OUTPUT_SHA_FILE" "$BLOCKED_IP_SHA_FILE" "$CATEGORY_FILE" "$SOURCE_FILE" "$SOURCE_COUNTS" "$CATEGORY_AUDIT" "$QUALITY_REPORT" "$PROVENANCE_FILE" "$ASN_MANIFEST" "$COMPANY_ASN_MANIFEST" "$ASN_STATS" "$BY_KZ_ASN_REGISTRY" "$BLOCKED_IP_INPUT" "$BLOCKED_REVIEW_INPUT" "$BLOCKED_STATS_INPUT" "$BLOCKED_CHECKSUMS_INPUT" "$BLOCKED_IP_RAW_INPUT" "$BLOCKED_IPRESOLVE_INPUT" "$BLOCKED_SUBNET_INPUT" "$INPUT_PROVENANCE" "$INPUT_PROVENANCE_SHA"; do
-            test -s "$file" || { echo "::error::Missing or empty build artifact: $file"; exit 1; }
+          test -s "$OUTPUT_FILE" || { echo "::error::v37 base GeoIP protobuf was not created: $OUTPUT_FILE"; exit 1; }
+          test -s "$V38_OUTPUT_FILE" || { echo "::error::v38 GeoIP protobuf was not created: $V38_OUTPUT_FILE"; exit 1; }
+          rm -f "$OUTPUT_SHA_FILE" "$V38_BLOCKED_SHA"
+          sha256sum "$V38_OUTPUT_FILE" > "$OUTPUT_SHA_FILE"
+          sha256sum "$V38_BLOCKED_FILE" > "$V38_BLOCKED_SHA"
+          sha256sum -c "$OUTPUT_SHA_FILE"
+          sha256sum -c "$V38_BLOCKED_SHA"
+
+          for file in "$OUTPUT_FILE" "$V38_OUTPUT_FILE" "$OUTPUT_SHA_FILE" "$V38_BLOCKED_SHA" "$BLOCKED_IP_SHA_FILE" "$CATEGORY_FILE" "$SOURCE_FILE" "$SOURCE_COUNTS" "$CATEGORY_AUDIT" "$QUALITY_REPORT" "$V38_QUALITY_REPORT" "$V38_METRICS" "$V38_PREFIX_PROVENANCE" "$V38_BLOCKED_PROVENANCE" "$V38_BLOCKED_FILE" "$V38_MANIFEST" "$PROVENANCE_FILE" "$ASN_MANIFEST" "$COMPANY_ASN_MANIFEST" "$ASN_STATS" "$BY_KZ_ASN_REGISTRY" "$BLOCKED_IP_INPUT" "$BLOCKED_IPSUM_INPUT" "$BLOCKED_REVIEW_INPUT" "$BLOCKED_STATS_INPUT" "$BLOCKED_CHECKSUMS_INPUT" "$BLOCKED_IP_RAW_INPUT" "$BLOCKED_IPRESOLVE_INPUT" "$BLOCKED_SUBNET_INPUT" "$INPUT_PROVENANCE" "$INPUT_PROVENANCE_SHA" "$RIR_RUKZBY_PREFIX_INPUT" "$RIR_RUKZBY_STATS" "$KY_STANDARD_V4_INPUT" "$KY_STANDARD_V6_INPUT" "$KY_SERVICES_INPUT" "$HXEHEX_IP_INPUT" "$ESCAPINGWORM_OPERATOR_INPUT"; do
+            test -s "$file" || { echo "::error::Missing or empty v38 build artifact: $file"; exit 1; }
           done
 
-      - name: Validate v37 protobuf, RU+BY+KZ coverage and blocked-IP exclusions
+      - name: Validate v37 base and final v38 RU+BY+KZ DIRECT protobuf
         shell: bash
         run: |
           set -euo pipefail
@@ -3095,10 +3201,12 @@ jobs:
               "kirill-geoip.dat", "golukon-geoip.dat", "v2fly-geoip.dat", "v2fly-geoip.dat.sha256sum",
               "loyalsoldier-ru.dat", "loyalsoldier-by.dat", "loyalsoldier-private.dat",
               "hxehex-cidrwhitelist.txt", "w1zardz-ru-ipv4.txt",
+              "kyoresuas-ru-standard-ipv4.txt", "kyoresuas-ru-standard-ipv6.txt", "kyoresuas-services.json",
+              "hxehex-ipwhitelist.txt", "escapingworm-operator-cidr.txt",
               "delegated-afrinic-latest", "delegated-apnic-latest", "delegated-arin-extended-latest",
               "delegated-lacnic-latest", "delegated-ripencc-latest", "iana-ipv4-special-registry.csv",
               "iana-ipv6-special-registry.csv", "as-ip-blocks.tar.gz",
-              "antifilter-ip.lst", "antifilter-ipresolve.lst", "antifilter-subnet.lst",
+              "antifilter-ip.lst", "antifilter-ipresolve.lst", "antifilter-subnet.lst", "antifilter-ipsum.lst",
               "antifilter-community.lst", "refilter-ipsum.lst",
           }
           missing_input_files = sorted(expected_input_files - seen_input_files)
@@ -3306,6 +3414,63 @@ jobs:
           print("Raw source categories reconcile with assigned builder roles, including ignored categories.")
           PY
 
+          # Independent v38 validation: the final GeoIP must contain exactly RU and PRIVATE,
+          # with PRIVATE and the combined RKN set excluded from RU.
+          test -s "$V38_OUTPUT_FILE"
+          test -s "$V38_QUALITY_REPORT"
+          test -s "$V38_MANIFEST"
+          test -s "$V38_METRICS"
+          test -s "$V38_PREFIX_PROVENANCE"
+          test -s "$V38_BLOCKED_PROVENANCE"
+          test -s "$RIR_RUKZBY_PREFIX_INPUT"
+          test -s "$RIR_RUKZBY_STATS"
+          python3 - "$V38_OUTPUT_FILE" "$V38_BLOCKED_FILE" "$V38_MANIFEST" "$V38_QUALITY_REPORT" "$RIR_RUKZBY_PREFIX_INPUT" <<'PY'
+          import csv, json, sys
+          from pathlib import Path
+          sys.path.insert(0, ".github/scripts")
+          import build_v38_overlay as v38
+
+          output, blocked_path, manifest_path, quality_path, rir_path = map(Path, sys.argv[1:])
+          decoded = v38.parse_geoip_dat(output)
+          if set(decoded) != {"RU", "PRIVATE"}:
+              raise SystemExit(f"v38 must contain exactly RU and PRIVATE, got {sorted(decoded)}")
+          blocked = v38.parse_cidr_file(blocked_path)[0]
+          for version in (4, 6):
+              if v38.intersect(v38.intervals(decoded["RU"], version), v38.intervals(decoded["PRIVATE"], version)):
+                  raise SystemExit(f"v38 PRIVATE overlap in IPv{version}")
+              if v38.intersect(v38.intervals(decoded["RU"], version), v38.intervals(blocked, version)):
+                  raise SystemExit(f"v38 RKN-block overlap in IPv{version}")
+          manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+          safety = manifest.get("safety", {})
+          if safety.get("geolocation_used_as_admission_gate") is not False:
+              raise SystemExit("v38 manifest says geolocation was used as an admission gate")
+          if safety.get("private_precedence_applied") is not True or safety.get("rkn_blocklist_applied") is not True:
+              raise SystemExit("v38 policy safety flags are missing")
+          if safety.get("ipsum_24_auto_carved") is not False or manifest.get("blocked", {}).get("ipsum_auto_carved") is not False:
+              raise SystemExit("v38 must keep coarse ipsum /24s review-only")
+          if safety.get("this_builder_modifies_production_main") is not False or safety.get("this_builder_publishes_release") is not False or safety.get("release_workflow_is_main_only") is not True:
+              raise SystemExit("v38 overlay safety/production-publish boundary flags are invalid")
+          countries = set()
+          with rir_path.open(encoding="utf-8", newline="") as stream:
+              for row in csv.DictReader(stream, delimiter=chr(9)):
+                  countries.add(row["country"])
+          if countries != {"RU", "BY", "KZ"}:
+              raise SystemExit(f"v38 RIR resources missing regional country rows: {countries}")
+          quality = quality_path.read_text(encoding="utf-8")
+          for marker in ("New IPv4 addresses vs v37", "New IPv6 addresses vs v37", "Antifilter ipsum REVIEW-ONLY IPv4 /24 prefixes"):
+              if marker not in quality:
+                  raise SystemExit(f"v38 quality report is missing marker: {marker}")
+          print(f"Validated v38 final GeoIP: {output.stat().st_size} bytes; RU CIDRs={len(decoded['RU'])}; PRIVATE CIDRs={len(decoded['PRIVATE'])}")
+          PY
+
+          echo "=== v38 RU+BY+KZ RIR resource inventory ==="
+          cat "$RIR_RUKZBY_STATS"
+          echo "=== v38 service source coverage ==="
+          cat "$V38_METRICS"
+          echo "=== v38 quality report ==="
+          cat "$V38_QUALITY_REPORT"
+          echo "=== v38 output SHA256 ==="
+          sha256sum -c "$OUTPUT_SHA_FILE"
 
           echo "=== RIR registered RU address resources (BY/KZ ASN resources are separate) ==="
           cat "$RIR_STATS"
@@ -3325,12 +3490,51 @@ jobs:
           sha256sum -c "$OUTPUT_SHA_FILE"
           cat "$OUTPUT_SHA_FILE"
 
+      - name: Upload v38 candidate build artifact
+        if: github.ref != 'refs/heads/main'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: geoip-direct-rukzby-v38-candidate
+          path: |
+            geoip_RU.dat
+            geoip_RU.dat.sha256sum
+            geoip_RU_categories.txt
+            geoip_RU_quality_report.txt
+            geoip_RU_v38_manifest.json
+            geoip_RU_v38_source_metrics.tsv
+            geoip_RU_v38_prefix_provenance.tsv
+            geoip_RU_v38_blocked_provenance.tsv
+            geoip_RU_v38_blocked_ip_exclusions.txt
+            geoip_RU_v38_blocked_ip_exclusions.txt.sha256sum
+            geoip_RU_BY_KZ_rir_registered_prefixes.tsv
+            geoip_RU_BY_KZ_rir_stats.txt
+            geoip_RU_v37_base.dat
+            geoip_RU_v37_base_quality_report.txt
+            geoip_RU_v37_additional_provenance.tsv
+            kyoresuas-ru-standard-ipv4.txt
+            kyoresuas-ru-standard-ipv6.txt
+            kyoresuas-services.json
+            w1zardz-ru-ipv4.txt
+            hxehex-ipwhitelist.txt
+            escapingworm-operator-cidr.txt
+            antifilter-ip.lst
+            antifilter-ipresolve.lst
+            antifilter-subnet.lst
+            antifilter-ipsum.lst
+            geoip_RU_blocked_ip_exclusions.txt
+            geoip_RU_blocked_ip_exclusions.txt.sha256sum
+            geoip_RU_input_provenance.tsv
+            geoip_RU_input_provenance.tsv.sha256sum
+          if-no-files-found: error
+          retention-days: 30
+
       - name: Publish GitHub Release
+        if: github.ref == 'refs/heads/main'
         # v3.0.3; pin the action implementation to an immutable commit.
         uses: softprops/action-gh-release@efb35369e0ad2afab669f228072c1b0d510eae64
         with:
-          tag_name: latest-geoip-client-v37
-          name: "GeoIP DIRECT RU+BY+KZ CLIENT v37"
+          tag_name: latest-geoip-client-v38
+          name: "GeoIP DIRECT RU+BY+KZ CLIENT v38"
           make_latest: false
           files: |
             geoip_RU.dat
@@ -3340,7 +3544,16 @@ jobs:
             geoip_RU_source_counts.txt
             geoip_RU_category_audit.tsv
             geoip_RU_quality_report.txt
-            geoip_RU_additional_provenance.tsv
+            geoip_RU_v38_manifest.json
+            geoip_RU_v38_source_metrics.tsv
+            geoip_RU_v38_prefix_provenance.tsv
+            geoip_RU_v38_blocked_provenance.tsv
+            geoip_RU_v38_blocked_ip_exclusions.txt
+            geoip_RU_v38_blocked_ip_exclusions.txt.sha256sum
+            geoip_RU_v37_base_quality_report.txt
+            geoip_RU_v37_additional_provenance.tsv
+            geoip_RU_BY_KZ_rir_registered_prefixes.tsv
+            geoip_RU_BY_KZ_rir_stats.txt
             geoip_RU_asn_manifest.txt
             geoip_RU_company_asn_manifest.tsv
             geoip_RU_company_asns.txt
@@ -3358,80 +3571,61 @@ jobs:
             antifilter-ip.lst
             antifilter-ipresolve.lst
             antifilter-subnet.lst
+            antifilter-ipsum.lst
             antifilter-community.lst
             refilter-ipsum.lst
+            kyoresuas-ru-standard-ipv4.txt
+            kyoresuas-ru-standard-ipv6.txt
+            kyoresuas-services.json
+            w1zardz-ru-ipv4.txt
+            hxehex-ipwhitelist.txt
+            escapingworm-operator-cidr.txt
             geoip_RU_rir_registered_prefixes.txt
             geoip_RU_rir_stats.txt
             geoip_RU_global_bgp_prefixes.txt
           body: |
-            # GeoIP DIRECT RU+BY+KZ CLIENT v37 — Quality Edition
+            # GeoIP DIRECT RU+BY+KZ CLIENT v38 — Regional and Service DIRECT
 
-            ## One-file routing output
-            - Exactly one client GeoIP file: `geoip_RU.dat`.
-            - Exactly two output categories: `RU` and `PRIVATE`.
-            - `RU` means the unified DIRECT region RU+BY+KZ plus confirmed company-affiliate origin ASN networks; it is not a claim that every included IP is physically in Russia.
+            ## Routing policy
+            - Exactly two GeoIP categories are emitted: `RU` and `PRIVATE`.
+            - `RU` is the unified DIRECT bucket for RU+BY+KZ regional address resources, regional GeoIP/BGP layers, and named service-direct destinations. Physical GeoIP location is not an admission gate.
+            - `PRIVATE` always wins over DIRECT.
+            - The only automatic carve-outs from DIRECT are the approved RKN-derived blocked-destination sources documented below.
 
-            ## Geographic DIRECT layers
-            - Loyalsoldier `geoip:ru` and `geoip:by`.
-            - v2fly `geoip.dat` categories `ru`, `by`, and `kz`.
-            - BY/KZ origin prefixes from ASNs registered in those countries are also included from current BGP observations.
-            - The resulting ranges are merged into the existing single `RU` category; no separate BY/KZ client files are produced.
-            - Trusted RU layers are retained except for higher-priority PRIVATE and approved blocked-destination exclusions.
-            - v24 is not downloaded or used as a baseline.
+            ## Regional resource and BGP layers
+            - v37 geographic/ASN sources remain the trusted starting point.
+            - v38 additionally imports allocated/assigned/legacy RU, BY and KZ address resources from the five RIR delegated-stat snapshots.
+            - RIR country is resource-registration evidence, not physical geolocation or proof of current BGP reachability; route observation remains separately reported.
+            - All selected-origin RU/BY/KZ and curated company ASN prefixes remain included regardless of ipverse countryCode.
 
-            ## Additional geographic sources
-            - Grimbird, Digne, Davoyan and Golukon are additional RU GeoIP feeds.
-            - Hydra `direct` and `whitelist` are diagnostic candidates only; its upstream project does not publish a strict `ru` category and these sets include RU/BY, CDN and foreign infrastructure.
-            - Additional-feed address space is admitted when covered by at least two distinct logical evidence groups, or corroborated by RIR-RU/BY/KZ or company-allowlisted ASN BGP, or by an RIR-RU registered address resource.
-            - Grimbird and Digne are combined into one correlated group and cannot self-confirm.
-            - Per-prefix source and confirmation overlaps are published in geoip_RU_additional_provenance.tsv; overlap columns are independent and may overlap.
+            ## Service DIRECT outside geolocation
+            - Kyoresuas `ru-standard` service prefixes are imported with per-service category/name/ASN/domain provenance.
+            - W1ZARDZ service-direct, HXEHEX exact host-IP whitelist, and Escapingworm operator whitelist prefixes are separately attributed.
+            - These feeds are treated as service/availability intent, not geographic proof. Their prefixes are still subject to PRIVATE and RKN exclusions.
+            - Service-source coverage and exact address-space deltas are published in `geoip_RU_v38_source_metrics.tsv` and `geoip_RU_v38_prefix_provenance.tsv`.
 
-            ## ASN, RIR and routing audit
-            - The company ASN allowlist has an embedded default. If geoip_RU_company_asns.txt is absent at repository root, the workflow creates it automatically; a committed root-level file overrides the default.
-            - All observed prefixes originated by RU-registered ASNs, BY/KZ-registered ASNs, and curated Russian-company/affiliate ASNs are added regardless of ipverse countryCode.
-            - The curated company manifest explicitly tracks Yandex ASNs AS13238, AS200350, AS202611, AS215013, AS207304, AS208795, AS212066, AS44534, AS210656, AS207207, AS213952 and AS215109. RU/BY/KZ-registered Yandex ASNs are included by regional-zone membership; the company manifest also preserves their Yandex attribution.
-            - AS208795 is registered to Cloud Services Kazakhstan LLP. Yandex Cloud documents AS208795 as its public-connectivity ASN in Kazakhstan; the build does not imply common shareholding or use affiliate status as an inclusion gate.
-            - Yandex Turkey AS212066 DIRECT overrides pin `45.148.65.0/24` and `2a14:48c6::/48` independently of the rolling 90-day ipverse window. The prefix list marks these entries `[STATIC-DIRECT]`; the build report separately records whether each was also seen in the current feed.
-            - AS208398 is an upstream/transit ASN and is not imported wholesale.
-            - RIR-registered RU IPv4/IPv6 resources are used as corroboration, not as proof of physical hosting location. Company ownership is tracked separately in geoip_RU_company_asn_manifest.tsv.
-            - Only prefixes originated by allowlisted ASNs are included; their peers and upstream providers are not recursively included. Global route observation is derived from the ipverse aggregated dataset. Its AS dataset covers announcements observed within the preceding 90 days, not a real-time global RIB.
-            - Prefixes absent from that aggregate are labelled not observed, not globally unroutable.
-            - Global-BGP coverage is classified per final output CIDR as fully observed, partially observed, or not observed. Exact same-prefix announcements are reported separately from address-space overlap through covering and more-specific routes.
-            - RIR audit reports raw delegated resource records, IPv4-to-CIDR expansion components, per-registry counts, and de-duplicated global prefix counts; conversion expansion is not misattributed to another registry.
-            - Loyalsoldier/v2fly overlap is calculated using exact shared address space and union address space, separately for IPv4 and IPv6; CIDR-count subtraction is not used as an overlap estimate.
-            - geoip_RU_category_audit.tsv maps each raw GeoIP category to the role assigned by the builder and includes ignored categories for traceability.
+            ## RKN blocked destinations
+            - Existing exact-host Antifilter `ip.lst` and `ipresolve.lst`, bounded `subnet.lst`, and curated Telegram prefixes remain active.
+            - v38 downloads Antifilter Download `ipsum.lst` as a review-only /24 summary of individual blocked IPs; it is not automatically carved because each /24 may route unrelated shared-hosting/CDN addresses through VPN.
+            - The report publishes the potential DIRECT address-space impact of these /24 candidates in `geoip_RU_v38_blocked_provenance.tsv`; only exact-host and bounded subnet exclusions already approved by the v37 policy are automatically applied.
+            - Community Antifilter and Re-filter suggestions remain review-only; privacy/telemetry labels do not change DIRECT.
+            - The no-BGP public-source fallback cross-checks pinned bol-van/rulist ipban4 vs resolved4 and correlated prebuilt datasets; it does not claim or infer Antifilter community 65444:210 membership.
+            - BGP registration is not a v38 release gate. All 360 new Lib4u/Jirnobruh host-IP candidates remain review-only; shared CIDR matches are not bulk-carved or promoted.
+            - Full pinned refs, candidate-match counts, enrichment limitations and source lineage are documented in [V38 public-source cross-check](https://github.com/SpeedeMiner/Geoip-ru-server/blob/main/docs/V38_PUBLIC_RKN_SOURCE_CROSSCHECK.md).
+            - GeoIP cannot distinguish unrelated domains on the same IP; domain-only RKN rules remain a separate client geosite layer.
 
-            ## Blocked destinations and privacy policy
-            - Automatic DIRECT exclusions use exact host IPs from Antifilter `ip.lst` and `ipresolve.lst`, bounded explicit networks from `subnet.lst`, and the exact Telegram prefixes explicitly configured by RunetFreedom.
-            - `subnet.lst` auto-carves only IPv4 prefixes /16 or narrower (more-specific) and IPv6 /112 or narrower (at most 65,536 addresses); broader entries are preserved in a review-only report.
-            - RunetFreedom `community.lst` and Re-filter `ipsum.lst` are review-only candidate sources and are never automatically subtracted from DIRECT.
-            - Raw source snapshots, SHA256 values, per-source counts, and review candidates are published for audit/reproducibility.
-            - These are third-party RKN-derived/community snapshots, not an official RKN API. Coverage is not a comprehensive blocklist for BY/KZ.
-            - Confirmed telemetry/analytics destinations remain DIRECT unless their exact IP independently appears in an approved blocked source. Privacy-risk labels never trigger VPN routing or exclusion.
-            - A GeoIP IP list cannot distinguish different domains/apps on a shared IP; domain-aware policies must be handled by the client routing configuration separately.
+            ## Audit outputs
+            - `geoip_RU_quality_report.txt` records final v38 address coverage and the exact new-vs-v37 delta after PRIVATE and RKN policy.
+            - `geoip_RU_v38_manifest.json` records immutable source refs, source hashes and output SHA-256.
+            - `geoip_RU_BY_KZ_rir_registered_prefixes.tsv` retains country, RIR and resource-status provenance.
+            - The final client file remains `geoip_RU.dat` with `geoip:RU` and `geoip:PRIVATE` only.
 
-            ## Direct/whitelist
-            - Direct/whitelist inputs are diagnostic signals only.
-            - They never subtract address space from RU.
-            - Candidate-only ranges are not independently admitted.
-
-            ## PRIVATE
-            - PRIVATE has absolute precedence over all RU layers.
-            - Sources: built-in local/reserved entries, IANA Special-Purpose `Globally Reachable=False`, and Loyalsoldier `private.dat`.
-            - IANA `Globally Reachable=True` exceptions are carved out from broad special-purpose blocks.
-
-            ## Output
-            - Only `geoip:RU` and `geoip:PRIVATE` are emitted. `geoip:RU` is the unified DIRECT bucket for RU+BY+KZ, plus confirmed company-affiliate networks.
-            - IPv4 and IPv6 exact address coverage are reported in `geoip_RU_quality_report.txt`.
-
-            ## Attribution
-            - v2fly/geoip is licensed CC-BY-SA-4.0; upstream README also identifies DB-IP data under CC-BY-4.0. Preserve applicable upstream notices.
-
-            ## Input-source provenance
-            - geoip_RU_input_provenance.tsv records the exact URL selected for each downloaded input, SHA-256, byte size, and download status; its sidecar checksum is published alongside it.
-            - The manifest makes the exact bytes consumed by a build auditable, but it does not pin mutable upstream branches/releases or independently archive every source payload.
+            ## Attribution and limitations
+            - Preserve v2fly/geoip CC-BY-SA-4.0 and DB-IP CC-BY-4.0 notices, plus upstream licenses/attributions for service feeds.
+            - RIR registration, BGP announcements, service association and RKN block evidence are distinct signals and are reported separately.
 
       - name: Publish release branch
+        if: github.ref == 'refs/heads/main'
         shell: bash
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -3440,10 +3634,10 @@ jobs:
           rm -rf /tmp/geoip-client-release
           mkdir -p /tmp/geoip-client-release
           for file in \
-            "$OUTPUT_FILE" "$OUTPUT_SHA_FILE" "$CATEGORY_FILE" "$SOURCE_FILE" \
-            "$SOURCE_COUNTS" "$CATEGORY_AUDIT" "$QUALITY_REPORT" "$PROVENANCE_FILE" "$ASN_MANIFEST" "$COMPANY_ASN_MANIFEST" "$COMPANY_ASN_REGISTRY" "$ASN_STATS" \
-            "$RU_PREFIX_INPUT" "$RU_ASN_REGISTRY" "$BY_KZ_ASN_REGISTRY" "$RIR_PREFIX_INPUT" "$RIR_STATS" "$GLOBAL_BGP_PREFIX_INPUT" \
-            "$BLOCKED_IP_INPUT" "$BLOCKED_IP_SHA_FILE" "$BLOCKED_REVIEW_INPUT" "$BLOCKED_STATS_INPUT" "$BLOCKED_CHECKSUMS_INPUT" "$INPUT_PROVENANCE" "$INPUT_PROVENANCE_SHA"; do
+            "$V38_OUTPUT_FILE" "$OUTPUT_SHA_FILE" "$CATEGORY_FILE" "$SOURCE_FILE" \
+            "$SOURCE_COUNTS" "$CATEGORY_AUDIT" "$V38_QUALITY_REPORT" "$QUALITY_REPORT" "$V38_METRICS" "$V38_PREFIX_PROVENANCE" "$V38_BLOCKED_PROVENANCE" "$V38_BLOCKED_FILE" "$V38_BLOCKED_SHA" "$V38_MANIFEST" "$PROVENANCE_FILE" "$ASN_MANIFEST" "$COMPANY_ASN_MANIFEST" "$COMPANY_ASN_REGISTRY" "$ASN_STATS" \
+            "$RU_PREFIX_INPUT" "$RU_ASN_REGISTRY" "$BY_KZ_ASN_REGISTRY" "$RIR_PREFIX_INPUT" "$RIR_STATS" "$RIR_RUKZBY_PREFIX_INPUT" "$RIR_RUKZBY_STATS" "$GLOBAL_BGP_PREFIX_INPUT" \
+            "$BLOCKED_IP_INPUT" "$BLOCKED_IP_SHA_FILE" "$BLOCKED_REVIEW_INPUT" "$BLOCKED_STATS_INPUT" "$BLOCKED_CHECKSUMS_INPUT" "$INPUT_PROVENANCE" "$INPUT_PROVENANCE_SHA" "$KY_STANDARD_V4_INPUT" "$KY_STANDARD_V6_INPUT" "$KY_SERVICES_INPUT" "$W1ZARDZ_INPUT" "$HXEHEX_IP_INPUT" "$ESCAPINGWORM_OPERATOR_INPUT" "$BLOCKED_IPSUM_INPUT"; do
             cp "$file" /tmp/geoip-client-release/"$(basename "$file")"
           done
           cd /tmp/geoip-client-release
@@ -3452,7 +3646,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add .
-          git commit -m "Publish GeoIP DIRECT RU+BY+KZ CLIENT v37"
+          git commit -m "Publish GeoIP DIRECT RU+BY+KZ CLIENT v38"
           git remote add origin "https://github.com/${{ github.repository }}.git"
           AUTH_B64="$(printf 'x-access-token:%s' "$GITHUB_TOKEN" | base64 -w0)"
           GIT_CONFIG_COUNT=1 \
@@ -3472,26 +3666,35 @@ jobs:
           purge_jsdelivr "geoip_RU.dat"
           purge_jsdelivr "geoip_RU.dat.sha256sum"
           purge_jsdelivr "geoip_RU_quality_report.txt"
-          purge_jsdelivr "geoip_RU_additional_provenance.tsv"
+          purge_jsdelivr "geoip_RU_v37_additional_provenance.tsv"
+          purge_jsdelivr "geoip_RU_v38_prefix_provenance.tsv"
+          purge_jsdelivr "geoip_RU_v38_blocked_provenance.tsv"
+          purge_jsdelivr "geoip_RU_v38_manifest.json"
           purge_jsdelivr "geoip_RU_input_provenance.tsv"
           purge_jsdelivr "geoip_RU_input_provenance.tsv.sha256sum"
           purge_jsdelivr "geoip_RU_blocked_ip_exclusions.txt"
 
       - name: Print download and audit URLs
+        if: github.ref == 'refs/heads/main'
         shell: bash
         run: |
-          echo "GitHub Release: https://${{ github.server_url }}/${{ github.repository }}/releases/download/latest-geoip-client-v37/geoip_RU.dat"
+          echo "GitHub Release: https://${{ github.server_url }}/${{ github.repository }}/releases/download/latest-geoip-client-v38/geoip_RU.dat"
           echo "Raw release branch: https://raw.githubusercontent.com/${{ github.repository }}/release/geoip_RU.dat"
           echo "jsDelivr: https://cdn.jsdelivr.net/gh/${{ github.repository }}@release/geoip_RU.dat"
           echo "Quality report: https://raw.githubusercontent.com/${{ github.repository }}/release/geoip_RU_quality_report.txt"
-          echo "Additional prefix provenance: https://raw.githubusercontent.com/${{ github.repository }}/release/geoip_RU_additional_provenance.tsv"
+          echo "v37 baseline prefix provenance: https://raw.githubusercontent.com/${{ github.repository }}/release/geoip_RU_v37_additional_provenance.tsv"
+          echo "v38 service/resource prefix provenance: https://raw.githubusercontent.com/${{ github.repository }}/release/geoip_RU_v38_prefix_provenance.tsv"
+          echo "v38 blocked-prefix provenance: https://raw.githubusercontent.com/${{ github.repository }}/release/geoip_RU_v38_blocked_provenance.tsv"
+          echo "v38 source manifest: https://raw.githubusercontent.com/${{ github.repository }}/release/geoip_RU_v38_manifest.json"
           echo "Input source hashes: https://raw.githubusercontent.com/${{ github.repository }}/release/geoip_RU_input_provenance.tsv"
           echo "Source contribution report: https://raw.githubusercontent.com/${{ github.repository }}/release/geoip_RU_source_counts.txt"
           echo "ASN manifest: https://raw.githubusercontent.com/${{ github.repository }}/release/geoip_RU_asn_manifest.txt"
           echo "Company ASN manifest: https://raw.githubusercontent.com/${{ github.repository }}/release/geoip_RU_company_asn_manifest.tsv"
-          echo "RIR RU resources: https://raw.githubusercontent.com/${{ github.repository }}/release/geoip_RU_rir_registered_prefixes.txt"
+          echo "RIR RU+BY+KZ resource inventory: https://raw.githubusercontent.com/${{ github.repository }}/release/geoip_RU_BY_KZ_rir_registered_prefixes.tsv"
+          echo "RIR RU-only legacy corroboration list: https://raw.githubusercontent.com/${{ github.repository }}/release/geoip_RU_rir_registered_prefixes.txt"
           echo "Global BGP observation set: https://raw.githubusercontent.com/${{ github.repository }}/release/geoip_RU_global_bgp_prefixes.txt"
           echo "BY/KZ RIR ASN inventory: https://raw.githubusercontent.com/${{ github.repository }}/release/geoip_BY_KZ_registered_asns.txt"
-          echo "Approved blocked prefixes: https://raw.githubusercontent.com/${{ github.repository }}/release/geoip_RU_blocked_ip_exclusions.txt"
+          echo "v37 approved blocked prefixes: https://raw.githubusercontent.com/${{ github.repository }}/release/geoip_RU_blocked_ip_exclusions.txt"
+          echo "v38 expanded RKN exclusions: https://raw.githubusercontent.com/${{ github.repository }}/release/geoip_RU_v38_blocked_ip_exclusions.txt"
           echo "Blocked feed stats: https://raw.githubusercontent.com/${{ github.repository }}/release/geoip_RU_blocked_source_stats.txt"
           echo "Blocked source review candidates: https://raw.githubusercontent.com/${{ github.repository }}/release/geoip_RU_blocked_review_candidates.tsv"
