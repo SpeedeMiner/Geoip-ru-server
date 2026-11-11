@@ -1802,13 +1802,13 @@ class VPNObrattoFetchSafetyTests(unittest.TestCase):
 
             def __init__(self, payload):
                 super().__init__(payload)
-                self.read_limit = None
+                self.read_limits = []
 
             def getheader(self, name):
                 return None
 
             def read1(self, size=-1):
-                self.read_limit = size
+                self.read_limits.append(size)
                 return super().read(size)
 
         class FakeConnection:
