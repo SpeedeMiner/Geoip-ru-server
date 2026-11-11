@@ -625,6 +625,21 @@ class VPNGateDefaultArgumentsTests(unittest.TestCase):
 
 
 class VPNServerOriginCacheTests(unittest.TestCase):
+    def test_measurement_report_fields_do_not_require_skipped_server_enrichment(self):
+        fields = vpn_gate.server_measurement_report_fields(
+            server_asn=12345,
+            server_asn_ip_metadata=0,
+            server_asn_ripestat=12345,
+            server_asn_conflict=False,
+        )
+        self.assertEqual(fields, {
+            "SERVER_ASN": 12345,
+            "SERVER_ASN_IP_METADATA": 0,
+            "SERVER_ASN_RIPESTAT": 12345,
+            "SERVER_ASN_CONFLICT": False,
+            "SERVER_ORG": "",
+        })
+
     def test_selected_server_origin_uses_cached_asn_and_prefix_without_network(self):
         server = {
             "server_ip": "217.144.174.117",
