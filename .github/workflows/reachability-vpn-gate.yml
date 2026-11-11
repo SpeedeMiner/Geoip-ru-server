@@ -88,6 +88,8 @@ jobs:
           test -s reachability_inventory.tsv
 
       - name: Run capped VPN Gate Russian-exit measurements
+        id: vpn_measurement
+        continue-on-error: true
         shell: bash
         run: |
           set -euo pipefail
@@ -102,11 +104,19 @@ jobs:
             --request-timeout 12
 
       - name: Upload VPN Gate reports
+        if: always()
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
         with:
           name: geoip-ru-vpn-gate-${{ github.run_id }}
           path: |
             reachability_inventory.tsv
             reachability-output/vpn_gate_*
-          if-no-files-found: error
+          if-no-files-found: warn
           retention-days: 30
+
+      - name: Fail when the requested number of verified RU exits was not reached
+        if: steps.vpn_measurement.outcome == 'failure'
+        shell: bash
+        run: |
+          echo "No complete verified RU VPN Gate measurement was achieved; diagnostic artifacts were uploaded."
+          exit 1
