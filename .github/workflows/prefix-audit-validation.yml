@@ -23,6 +23,7 @@ on:
       - ".github/scripts/build_rir_residual_bgp_origin_evidence.py"
       - ".github/scripts/test_build_rir_residual_bgp_origin_evidence.py"
       - "docs/GEOIP_RU_SOURCE_CATALOG_v1.tsv"
+      - ".github/audits/rir_ru_residual_external_assessments_v37.tsv"
       - ".github/workflows/prefix-audit-validation.yml"
       - "docs/GEOIP_RU_SOURCE_CATALOG_v1.md"
       - ".github/audits/priority_prefix_rpki_invalid_assessment_v37.tsv"
@@ -73,6 +74,37 @@ jobs:
 
       - name: Validate versioned production GeoIP source catalog
         run: python3 .github/scripts/validate_geoip_source_catalog.py
+
+      - name: Validate RIR residual external assessment ledger
+        run: |
+          python3 - <<'PY'
+          import csv
+          import ipaddress
+          from pathlib import Path
+
+          path = Path(".github/audits/rir_ru_residual_external_assessments_v37.tsv")
+          with path.open(encoding="utf-8", newline="") as stream:
+              rows = list(csv.DictReader((line for line in stream if not line.startswith("#")), delimiter="\\t"))
+          required = {
+              "PREFIX", "IPVERSE_EXACT_ORIGIN_ASNS", "IPVERSE_ORIGIN_COUNTRY_CODES",
+              "RIR_PARENT_COUNTRY", "RESOURCE_REGISTRATION_DETAILS",
+              "EXACT_ROUTE_OBJECT_DETAILS", "RPKI_EVIDENCE", "ASSESSMENT_STATUS",
+              "PRODUCTION_ACTION", "EVIDENCE_URLS", "NEXT_CHECKS",
+          }
+          if not rows or not required.issubset(rows[0]):
+              raise SystemExit("RIR residual assessment ledger is empty or missing columns")
+          seen = set()
+          for row in rows:
+              prefix = ipaddress.ip_network(row["PREFIX"], strict=True).with_prefixlen
+              if prefix in seen:
+                  raise SystemExit(f"Duplicate residual assessment: {prefix}")
+              seen.add(prefix)
+              if row["ASSESSMENT_STATUS"] != "REVIEW" or row["PRODUCTION_ACTION"] != "NO_CHANGE":
+                  raise SystemExit(f"Residual assessment must remain REVIEW/NO_CHANGE: {prefix}")
+              if "https://" not in row["EVIDENCE_URLS"] or not row["NEXT_CHECKS"].strip():
+                  raise SystemExit(f"Missing evidence URLs or next checks: {prefix}")
+          print(f"Validated {len(rows)} residual external assessments; all REVIEW/NO_CHANGE")
+          PY
 
       - name: Validate v37 legal-evidence additions TSV
         run: |
@@ -399,41 +431,59 @@ jobs:
           inventory="prefix-audit/v37-canonical-inventory"
           mkdir -p "$inventory"
 
-          # Pin every v37 input, including the binary output, to the immutable release Git commit.
-          release_commit="d613c5f0ef482f2051cbc37a303b2ac30076d313"
-          raw_base="https://raw.githubusercontent.com/${{ github.repository }}/$release_commit"
-          geoip_url="$raw_base/geoip_RU.dat"
-          curl --fail --location --silent --show-error \
-            --retry 3 --retry-all-errors --connect-timeout 20 --max-time 180 \
-            "$geoip_url" -o "$inventory/geoip_RU.dat"
-          geoip_sha="$(sha256sum "$inventory/geoip_RU.dat" | awk '{print $1}')"
-          if [[ "$geoip_sha" != "c70310071f7611d5c7ae54d409ae7c8d7b4598bbbbb706cbb44e9f0ca9303904" ]]; then
-            echo "::error::Immutable v37 geoip_RU.dat SHA-256 mismatch: $geoip_sha"
+          # Use one immutable release-branch commit for every canonical input.
+          release_commit="${{ steps.v37-inputs.outputs.release_sha }}"
+          recorded_release_commit="$(cat v37-release-commit.txt)"
+          if [[ ! "$release_commit" =~ ^[0-9a-f]{40}$ || "$release_commit" != "$recorded_release_commit" ]]; then
+            echo "::error::Canonical inventory release commit differs from captured v37 inputs"
             exit 1
           fi
-          declare -A expected_sha=(
-            ["geoip_RU_BY_KZ_asn_bgp_prefixes.txt"]="92e48d87414e4bbfb3ede304ba725436f2c174c6909499f68c2f18c93f8423b4"
-            ["geoip_RU_rir_registered_prefixes.txt"]="ad12b823e7b768b38d8b92406b2863ce9a6ccb1c07575d5aa0eddd4b680dff24"
-            ["geoip_RU_global_bgp_prefixes.txt"]="b591dd870391498161902a76b23fc748056bb4009089e6e23b7bf5df3ac723f0"
-            ["geoip_RU_additional_provenance.tsv"]="b616197bfdccbcad2655f7c81906da6cc66a1a7ba2558ccbb9e62ae2e27e1f4f"
-            ["geoip_RU_blocked_ip_exclusions.txt"]="6135c202ed520b8d6338575afc092156430233486be24e430fd507a1381dd8ec"
-            ["geoip_RU_blocked_review_candidates.tsv"]="523afb87ed1289390aea4a0072885f253d2593e32b27884acf8c6044412c0413"
-            ["geoip_RU_input_provenance.tsv"]="c06a8256ffb47d1851d0359728f26aee8b929776c74873b1135f1115b9279cc0"
-            ["geoip_RU_source_counts.txt"]="84d97989ae9386fb1c5e61a7b3920389554b8d9957d313780d4a9c688585fc53"
-            ["geoip_RU_category_audit.tsv"]="22a4000450193afa108f3739dc8f2b1a6303296175375c588f171601d4489faa"
-            ["geoip_RU_quality_report.txt"]="89474b94d7f6316ea32c93273114316b12c6bbd7691219ae77525e3d6bfb910b"
-            ["geoip_RU_sources.txt"]="7e493c946d1e815ff8de48919b0eb118446fd8a5a955a69e58485ee343019a35"
+          raw_base="https://raw.githubusercontent.com/${{ github.repository }}/$release_commit"
+
+          release_files=(
+            geoip_RU.dat
+            geoip_RU.dat.sha256sum
+            geoip_RU_input_provenance.tsv
+            geoip_RU_input_provenance.tsv.sha256sum
+            geoip_RU_BY_KZ_asn_bgp_prefixes.txt
+            geoip_RU_rir_registered_prefixes.txt
+            geoip_RU_global_bgp_prefixes.txt
+            geoip_RU_additional_provenance.tsv
+            geoip_RU_blocked_ip_exclusions.txt
+            geoip_RU_blocked_review_candidates.tsv
+            geoip_RU_source_counts.txt
+            geoip_RU_category_audit.tsv
+            geoip_RU_quality_report.txt
+            geoip_RU_sources.txt
+            geoip_RU_rir_stats.txt
+            geoip_RU_BY_KZ_asn_stats.txt
           )
-          for file in "${!expected_sha[@]}"; do
+          for file in "${release_files[@]}"; do
             curl --fail --location --silent --show-error \
               --retry 3 --retry-all-errors --connect-timeout 20 --max-time 240 \
               "$raw_base/$file" -o "$inventory/$file"
-            actual="$(sha256sum "$inventory/$file" | awk '{print $1}')"
-            if [[ "$actual" != "${expected_sha[$file]}" ]]; then
-              echo "::error::Immutable v37 file SHA-256 mismatch for $file: $actual"
+            if [[ ! -s "$inventory/$file" ]]; then
+              echo "::error::Pinned release input is empty: $file"
               exit 1
             fi
           done
+
+          expected_geoip_sha="$(awk 'NF > 0 {print $1; exit}' "$inventory/geoip_RU.dat.sha256sum")"
+          actual_geoip_sha="$(sha256sum "$inventory/geoip_RU.dat" | awk '{print $1}')"
+          if [[ ! "$expected_geoip_sha" =~ ^[0-9a-f]{64}$ || "$actual_geoip_sha" != "$expected_geoip_sha" ]]; then
+            echo "::error::Pinned geoip_RU.dat does not match its release sidecar"
+            exit 1
+          fi
+          expected_provenance_sha="$(awk 'NF > 0 {print $1; exit}' "$inventory/geoip_RU_input_provenance.tsv.sha256sum")"
+          actual_provenance_sha="$(sha256sum "$inventory/geoip_RU_input_provenance.tsv" | awk '{print $1}')"
+          if [[ ! "$expected_provenance_sha" =~ ^[0-9a-f]{64}$ || "$actual_provenance_sha" != "$expected_provenance_sha" ]]; then
+            echo "::error::Pinned input provenance does not match its release sidecar"
+            exit 1
+          fi
+          (
+            cd "$inventory"
+            sha256sum "${release_files[@]}" > v37-canonical-inputs.sha256
+          )
 
           python3 .github/scripts/build_v37_canonical_prefix_inventory.py \
             --geoip-dat "$inventory/geoip_RU.dat" \
@@ -450,6 +500,8 @@ jobs:
             --geoip-sha256 "$geoip_sha"
 
           python3 - "$inventory" <<'PY'
+          import csv
+          import io
           import re
           import sys
           from pathlib import Path
@@ -457,30 +509,49 @@ jobs:
           root = Path(sys.argv[1])
           report = (root / "geoip_RU_quality_report.txt").read_text(encoding="utf-8")
           stats = (root / "canonical_prefix_inventory_stats.txt").read_text(encoding="utf-8")
-          expected = {
-              "RU": (76292, 52618729, 1192441882017908537250295700258816),
-              "PRIVATE": (151, 592708862, 4325545831231176725068219651071148031),
-          }
-          for category, (cidrs, ipv4, ipv6) in expected.items():
+          release_commit = Path("v37-release-commit.txt").read_text(encoding="utf-8").strip()
+          if not re.fullmatch(r"[0-9a-f]{40}", release_commit):
+              raise SystemExit("Invalid captured release commit")
+          if f"Release commit: {release_commit}" not in stats:
+              raise SystemExit("Canonical inventory was not built from the captured release commit")
+
+          header = "SOURCE_ID\\tUNIQUE_EXACT_PREFIXES\\tIPV4_PREFIXES\\tIPV6_PREFIXES\\tIPV4_ADDRESS_UNION\\tIPV6_ADDRESS_UNION\\tEXACT_MATCH_IN_RU_OUTPUT"
+          lines = stats.splitlines()
+          try:
+              start = lines.index(header)
+          except ValueError:
+              raise SystemExit("Canonical inventory stats are missing the source-count table")
+          end = next((i for i in range(start + 1, len(lines)) if not lines[i].strip()), len(lines))
+          rows = list(csv.DictReader(io.StringIO("\\n".join(lines[start:end])), delimiter="\\t"))
+          by_source = {row["SOURCE_ID"]: row for row in rows}
+
+          for category, source_id in (("RU", "output_ru"), ("PRIVATE", "output_private")):
               match = re.search(
                   rf"^{category}: CIDR=([0-9]+) IPv4=([0-9]+) IPv6=([0-9]+)$",
                   report, re.MULTILINE,
               )
-              if not match or tuple(map(int, match.groups())) != (cidrs, ipv4, ipv6):
-                  raise SystemExit(f"Unexpected frozen v37 {category} quality baseline")
-              if f"{category} output" in stats:
-                  pass
+              if not match:
+                  raise SystemExit(f"Quality report is missing final {category} counters")
+              expected = tuple(map(int, match.groups()))
+              row = by_source.get(source_id)
+              if row is None:
+                  raise SystemExit(f"Canonical inventory is missing {source_id}")
+              actual = (
+                  int(row["UNIQUE_EXACT_PREFIXES"]),
+                  int(row["IPV4_ADDRESS_UNION"]),
+                  int(row["IPV6_ADDRESS_UNION"]),
+              )
+              if actual != expected:
+                  raise SystemExit(
+                      f"{category} quality report / canonical inventory mismatch: "
+                      f"quality={expected}, inventory={actual}"
+                  )
+
+          size_match = re.search(r"^Final protobuf bytes: ([0-9]+)$", report, re.MULTILINE)
+          if not size_match or int(size_match.group(1)) != (root / "geoip_RU.dat").stat().st_size:
+              raise SystemExit("Quality report protobuf byte count differs from pinned geoip_RU.dat")
+
           for required in (
-              f"output_ru\t76292\t",
-              f"output_private\t151\t",
-              "selected_origin_bgp IPv4: address_union=49138688; covered_by_RU_output=49130030; coverage=99.982380%",
-              "selected_origin_bgp IPv6: address_union=216861075172383058498599363018752; covered_by_RU_output=216861075172383058498599363018752; coverage=100.000000%",
-              "additional_geoip_accepted IPv4: address_union=18258; covered_by_RU_output=18258; coverage=100.000000%",
-              "additional_geoip_accepted IPv6: address_union=713060716183296726116943790080; covered_by_RU_output=713060716183296726116943790080; coverage=100.000000%",
-              "selected_origin_bgp IPv4: address_union=49138688; covered_by_RU_output=49130030; outside_RU_output=8658; covered_outside_RU_by_PRIVATE_or_approved_BLOCKED=8658; unexplained_outside_RU_PRIVATE_BLOCKED=0",
-              "selected_origin_bgp IPv6: address_union=216861075172383058498599363018752; covered_by_RU_output=216861075172383058498599363018752; outside_RU_output=0; covered_outside_RU_by_PRIVATE_or_approved_BLOCKED=0; unexplained_outside_RU_PRIVATE_BLOCKED=0",
-              "RIR RU resource unique IPv4 address residual outside RU+PRIVATE+approved BLOCKED: 329324",
-              "RIR RU resource unique IPv6 address residual outside RU+PRIVATE+approved BLOCKED: 11532730404012516821114946584576",
               "all STATUS=REVIEW",
               "Approved blocked exclusions overlapping RU output IPv4 addresses: 0",
               "Approved blocked exclusions overlapping RU output IPv6 addresses: 0",
@@ -488,7 +559,10 @@ jobs:
               "Raw GeoIP .dat inputs are not retained in the v37 release",
           ):
               if required not in stats:
-                  raise SystemExit(f"Canonical inventory report missing: {required}")
+                  raise SystemExit(f"Canonical inventory report missing invariant: {required}")
+          if not (root / "v37-canonical-inputs.sha256").is_file():
+              raise SystemExit("Pinned canonical input checksum manifest was not created")
+          print(f"Validated canonical inventory against release commit {release_commit}")
           print(stats)
           PY
 
