@@ -741,8 +741,9 @@ def fetch_vpnobratno_bytes(
                         "Connection": "close",
                     },
                 )
-                if connection.sock is not None:
-                    connection.sock.settimeout(max(0.1, deadline - time.monotonic()))
+                if connection.sock is None:
+                    raise ProbeError("VPNObratto HTTPS socket was not created for the request")
+                connection.sock.settimeout(max(0.1, deadline - time.monotonic()))
                 response = connection.getresponse()
                 if response.status in redirect_codes:
                     location = response.getheader("Location") or ""
@@ -771,9 +772,10 @@ def fetch_vpnobratno_bytes(
                         raise TimeoutError(
                             "VPNObratto response body exceeded its wall-clock deadline"
                         )
-                    if connection.sock is None:
-                        raise ProbeError("VPNObratto HTTPS socket closed before response completed")
-                    connection.sock.settimeout(max(0.1, remaining))
+                    # getresponse() transfers the socket to HTTPResponse and
+                    # clears connection.sock. The socket retains the absolute
+                    # read timeout configured before that ownership transfer;
+                    # call_with_wall_clock_timeout() bounds slow-drip bodies.
                     read_size = min(4096, max_bytes + 1 - len(payload))
                     chunk = response.read1(read_size)
                     if not chunk:

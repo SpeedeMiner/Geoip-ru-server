@@ -1826,6 +1826,8 @@ class VPNObrattoFetchSafetyTests(unittest.TestCase):
                 self.request_args = (method, path, headers)
 
             def getresponse(self):
+                self.timeout_set_before_response = bool(self.sock.timeouts)
+                self.sock = None  # http.client transfers ownership to HTTPResponse
                 return self.response
 
             def close(self):
@@ -1853,7 +1855,8 @@ class VPNObrattoFetchSafetyTests(unittest.TestCase):
         )
         self.assertEqual(connection.request_args[0:2], ("GET", "/test"))
         self.assertTrue(connection.closed)
-        self.assertTrue(connection.sock.timeouts)
+        self.assertTrue(connection.timeout_set_before_response)
+        self.assertIsNone(connection.sock)
 
         oversized_response = FakeResponse(b"12345")
         with patch.object(vpn_gate, "doh_query", return_value=["8.8.8.8"]), patch.object(
