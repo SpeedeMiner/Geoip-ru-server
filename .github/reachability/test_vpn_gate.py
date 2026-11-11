@@ -294,6 +294,20 @@ class VPNGateMeasurementStatusTests(unittest.TestCase):
         self.assertEqual(vpn_gate.measurement_exit_code(1, 1), 0)
         self.assertEqual(vpn_gate.measurement_exit_code(2, 1), 0)
 
+    def test_partial_target_scan_is_not_a_successful_measurement(self):
+        self.assertNotEqual(
+            vpn_gate.measurement_exit_code(1, 1, "PARTIAL"),
+            0,
+        )
+        self.assertNotEqual(
+            vpn_gate.measurement_exit_code(1, 1, "NOT_STARTED_NO_VERIFIED_RU_EXIT"),
+            0,
+        )
+        self.assertEqual(
+            vpn_gate.measurement_exit_code(1, 1, "COMPLETE"),
+            0,
+        )
+
 
 class VPNGateHandshakeFailureTests(unittest.TestCase):
     def test_tls_handshake_failure_stops_wait_early(self):

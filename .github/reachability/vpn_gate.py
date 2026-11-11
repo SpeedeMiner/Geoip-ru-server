@@ -2231,9 +2231,17 @@ def summarize_target_scans(target_scans: list[dict[str, Any]]) -> dict[str, Any]
     }
 
 
-def measurement_exit_code(successful_ru_exits: int, requested_ru_exits: int) -> int:
-    """A diagnostic artifact without the requested verified RU exits is not a pass."""
-    return 0 if successful_ru_exits >= requested_ru_exits else 2
+def measurement_exit_code(
+    successful_ru_exits: int,
+    requested_ru_exits: int,
+    target_scan_status: str = "COMPLETE",
+) -> int:
+    """Pass only after the requested RU exits and the full target list were scanned."""
+    return (
+        0
+        if successful_ru_exits >= requested_ru_exits and target_scan_status == "COMPLETE"
+        else 2
+    )
 
 
 def persist_vpn_gate_reports(
@@ -2798,12 +2806,15 @@ def run(args: argparse.Namespace) -> int:
         print(json.dumps(summary, ensure_ascii=False, indent=2, sort_keys=True), flush=True)
 
     exit_code = measurement_exit_code(
-        connection_counts["connected_ru_exit"], args.max_servers
+        connection_counts["connected_ru_exit"],
+        args.max_servers,
+        target_scan_summary["target_scan_status"],
     )
     if exit_code:
         print(
             f"measurement incomplete: verified {connection_counts['connected_ru_exit']} "
-            f"of {args.max_servers} requested RU VPN exits",
+            f"of {args.max_servers} requested RU VPN exits; "
+            f"target_scan_status={target_scan_summary['target_scan_status']}",
             file=sys.stderr,
         )
     return exit_code
