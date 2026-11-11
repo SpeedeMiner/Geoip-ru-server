@@ -181,6 +181,7 @@ def summarize(record: dict[str, Any]) -> dict[str, Any]:
             if isinstance(row, dict):
                 states.update({str(k): v for k, v in row.items()})
         result.update({
+            "prefix_key_present": isinstance(payload, dict) and record["prefix"] in payload,
             "snapshot_timestamp": item.get("timestamp") if isinstance(item, dict) else None,
             "origin_states": states,
         })
@@ -202,25 +203,41 @@ def summarize(record: dict[str, Any]) -> dict[str, Any]:
         })
     elif record["source"] == "ripestat_looking_glass_24h":
         data = payload.get("data", {}) if isinstance(payload, dict) else {}
-        rrcs = data.get("rrcs", {}) if isinstance(data, dict) else {}
+        rrcs = data.get("rrcs", []) if isinstance(data, dict) else []
         peers = []
-        if isinstance(rrcs, dict):
-            for rrc, rrc_data in rrcs.items():
-                for entry in rrc_data.get("entries", []) if isinstance(rrc_data, dict) else []:
-                    if isinstance(entry, dict):
-                        peers.append({
-                            "rrc": rrc,
-                            "origin": entry.get("asn_origin"),
-                            "prefix": entry.get("prefix"),
-                            "peer": entry.get("peer"),
-                            "as_path": entry.get("as_path"),
-                            "last_updated": entry.get("last_updated"),
-                            "latest_time": entry.get("latest_time"),
-                        })
+        rrc_entries = []
+        if isinstance(rrcs, list):
+            rrc_entries = [
+                (str(rrc.get("rrc", index)), rrc)
+                for index, rrc in enumerate(rrcs)
+                if isinstance(rrc, dict)
+            ]
+        elif isinstance(rrcs, dict):
+            rrc_entries = [
+                (str(rrc), value)
+                for rrc, value in rrcs.items()
+                if isinstance(value, dict)
+            ]
+        for rrc, rrc_data in rrc_entries:
+            peer_rows = rrc_data.get("peers", rrc_data.get("entries", []))
+            for entry in peer_rows if isinstance(peer_rows, list) else []:
+                if isinstance(entry, dict):
+                    peers.append({
+                        "rrc": rrc,
+                        "origin": entry.get("asn_origin"),
+                        "prefix": entry.get("prefix"),
+                        "peer": entry.get("peer"),
+                        "as_path": entry.get("as_path"),
+                        "last_updated": entry.get("last_updated"),
+                        "latest_time": entry.get("latest_time"),
+                    })
         result.update({
             "api_status": payload.get("status") if isinstance(payload, dict) else None,
             "query_time": data.get("query_time") if isinstance(data, dict) else None,
+            "latest_time": data.get("latest_time") if isinstance(data, dict) else None,
+            "rrc_count": len(rrc_entries),
             "peer_observation_count": len(peers),
+            "origins": sorted({str(x["origin"]) for x in peers if x.get("origin") is not None}),
             "peer_observations": peers,
         })
     return result
