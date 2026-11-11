@@ -2,6 +2,7 @@ import base64
 import csv
 import io
 import pathlib
+import socket
 import subprocess
 import tempfile
 import unittest
@@ -173,6 +174,27 @@ class RIPEstatNetworkInfoTests(unittest.TestCase):
         }):
             result = vpn_gate.network_info("8.8.8.8")
         self.assertEqual(result, {"prefix": "", "asn": 15169})
+
+
+class VPNGateDNSResolutionTests(unittest.TestCase):
+    def test_a_and_aaaa_are_collected_in_one_resolver_call(self):
+        infos = [
+            (socket.AF_INET, socket.SOCK_STREAM, 6, "", ("8.8.8.8", 443)),
+            (socket.AF_INET6, socket.SOCK_STREAM, 6, "", ("2001:4860:4860::8888", 443, 0, 0)),
+            (socket.AF_INET, socket.SOCK_STREAM, 6, "", ("8.8.4.4", 443)),
+        ]
+        with patch.object(vpn_gate.socket, "getaddrinfo", return_value=infos) as resolver:
+            ipv4, ipv6 = vpn_gate.resolve_domain_families("example.com", 6)
+        resolver.assert_called_once_with("example.com", 443, socket.AF_UNSPEC, socket.SOCK_STREAM)
+        self.assertEqual(ipv4, ("DNS_ANSWER", ["8.8.4.4", "8.8.8.8"], ""))
+        self.assertEqual(ipv6, ("DNS_ANSWER", ["2001:4860:4860::8888"], ""))
+
+    def test_dns_failure_is_reported_for_both_families(self):
+        with patch.object(vpn_gate.socket, "getaddrinfo", side_effect=socket.gaierror(-2, "not found")):
+            ipv4, ipv6 = vpn_gate.resolve_domain_families("missing.example", 6)
+        self.assertEqual(ipv4[0], "DNS_ERROR")
+        self.assertEqual(ipv6[0], "DNS_ERROR")
+        self.assertIn("not found", ipv4[2])
 
 
 class OpenVPNProfileSafetyTests(unittest.TestCase):
