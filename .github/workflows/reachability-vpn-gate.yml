@@ -44,23 +44,38 @@ jobs:
           persist-credentials: false
 
       - name: Install isolated VPN measurement tools
-        timeout-minutes: 5
+        timeout-minutes: 6
         shell: bash
         run: |
           set -euo pipefail
           if ! command -v openvpn >/dev/null 2>&1; then
-            echo "[vpn-gate-setup] apt_update_started retries=3 timeout=20s"
-            sudo apt-get \
-              -o Acquire::Retries=3 \
-              -o Acquire::http::Timeout=20 \
-              -o Acquire::https::Timeout=20 \
+            echo "[vpn-gate-setup] apt_dns_bootstrap_started method=pinned_https_doh"
+            sudo timeout --signal=TERM --kill-after=2s 45s python3 - <<'PY'
+          import pathlib
+          import sys
+          sys.path.insert(0, ".github/reachability")
+          import vpn_gate
+
+          vpn_gate.install_ubuntu_apt_host_overrides(pathlib.Path("/etc/hosts"))
+          PY
+            echo "[vpn-gate-setup] apt_dns_bootstrap_completed"
+            for host in azure.archive.ubuntu.com archive.ubuntu.com security.ubuntu.com; do
+              resolved_ip="$(getent ahostsv4 "$host" | awk 'NR == 1 {print $1}')"
+              test -n "$resolved_ip"
+              echo "[vpn-gate-setup] mirror_getent_verified host=$host ipv4=$resolved_ip"
+            done
+            echo "[vpn-gate-setup] apt_update_started retries=1 timeout=12s wall_clock=120s"
+            sudo timeout --signal=TERM --kill-after=5s 120s apt-get \
+              -o Acquire::Retries=1 \
+              -o Acquire::http::Timeout=12 \
+              -o Acquire::https::Timeout=12 \
               -o APT::Update::Error-Mode=any update
             echo "[vpn-gate-setup] apt_update_completed"
-            echo "[vpn-gate-setup] apt_install_started packages=openvpn,iptables"
-            sudo apt-get \
-              -o Acquire::Retries=3 \
-              -o Acquire::http::Timeout=20 \
-              -o Acquire::https::Timeout=20 \
+            echo "[vpn-gate-setup] apt_install_started packages=openvpn,iptables wall_clock=90s"
+            sudo timeout --signal=TERM --kill-after=5s 90s apt-get \
+              -o Acquire::Retries=1 \
+              -o Acquire::http::Timeout=12 \
+              -o Acquire::https::Timeout=12 \
               install --yes --no-install-recommends openvpn iptables
             echo "[vpn-gate-setup] apt_install_completed"
           else
