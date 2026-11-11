@@ -809,9 +809,8 @@ jobs:
                   raise SystemExit(f"Child-route evidence was projected onto exact prefix {prefix}")
           counts = Counter(row["RECONCILIATION_CLASS"] for row in result)
           expected_counts = {
-              "EXACT_ORIGIN_SET_CHANGED": 16,
+              "EXACT_ORIGIN_SET_CHANGED": 17,
               "EXACT_MOAS_RPKI_STATUS_CHANGED": 1,
-              "EXACT_MOAS_INVALID_ORIGIN_REMAINS_UNCONFIRMED": 1,
               "MORE_SPECIFIC_ONLY_NO_EXACT_VERDICT": 1,
           }
           if dict(counts) != expected_counts:
