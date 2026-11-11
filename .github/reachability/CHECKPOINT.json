@@ -1,14 +1,14 @@
 {
   "schema_version": 1,
-  "updated_at_utc": "2026-11-11T05:16:00Z",
+  "updated_at_utc": "2026-11-11T05:25:00Z",
   "repository": "SpeedeMiner/Geoip-ru-server",
   "pull_request": 5,
   "pull_request_url": "https://github.com/SpeedeMiner/Geoip-ru-server/pull/5",
   "branch": "feature/reachability-full-ru-kz-by",
-  "recorded_pr_head_before_checkpoint_commit": "ca1ee6466f77288f6648ba84c3ed2832e5f1213d",
+  "recorded_pr_head_before_checkpoint_commit": "727b5b178b6686ca67f3a91c5429bcfd857c7bd0",
   "base_sha": "a68e5d6589361814cb1cfedd2af7857e4af806fa",
-  "state": "VPN_GATE_DOH_RETRY_READY",
-  "current_phase": "VPN_GATE_RETRY_WITH_PINNED_DOH",
+  "state": "VPN_GATE_TLS_COMPATIBILITY_VALIDATION_PENDING",
+  "current_phase": "VPN_GATE_SAFE_TLS_PROFILE_RECONSTRUCTION",
   "completed": [
     "repository_reconnaissance",
     "protobuf_inventory_exporter",
@@ -112,16 +112,22 @@
     "vpn_gate_pinned_https_fallback_for_target_head",
     "vpn_gate_measurement_exit_status_requires_requested_ru_exit",
     "vpn_gate_diagnostic_upload_runs_even_on_measurement_failure",
-    "vpn_gate_ci_53_python_tests_plus_go_success_run_42964285730"
+    "vpn_gate_ci_53_python_tests_plus_go_success_run_42964285730",
+    "vpn_gate_third_pilot_artifact_reviewed",
+    "vpn_gate_failure_gating_verified_on_zero_success",
+    "vpn_gate_safe_tls_compatibility_settings_preservation",
+    "vpn_gate_external_tls_key_file_profiles_rejected",
+    "vpn_gate_profile_feature_flags_recorded_without_key_material",
+    "vpn_gate_tls_diagnostic_verbosity_and_error_markers_expanded"
   ],
   "latest_successful_validation_run": 42964285730,
   "latest_successful_validation_commit": "515863b7029274ba6c65c683e9fc863066a8fefc",
   "test_counts": {
-    "python_unit_tests": 53,
-    "python_unit_tests_status": "PASS",
-    "gofmt_status": "PASS",
-    "go_tests_status": "PASS",
-    "go_build_status": "PASS"
+    "python_unit_tests": 58,
+    "python_unit_tests_status": "PENDING",
+    "gofmt_status": "PENDING",
+    "go_tests_status": "PENDING",
+    "go_build_status": "PENDING"
   },
   "latest_successful_full_run": 42877815872,
   "latest_full_run_commit": "401830a0bdcef35f20fe67e90fbaef7e72129ca6",
@@ -246,7 +252,9 @@
     "First VPN Gate pilot had a TCP connection but no TLS tunnel; it produced zero RU egress verification and zero service measurements. Its successful Actions conclusion means diagnostic artifacts were uploaded, not that VPN or target reachability succeeded.",
     "AS35807/SkyNet server IP was already mapped as RU by existing prefix 188.242.64.0/18; the server's routed /19 did not produce a new missing-RU IP candidate.",
     "Second pilot #42962715822 had three provider attempts and zero target measurements. The first tunnel reached Initialization Sequence Completed but metadata DNS failed; the other two TCP-connected but did not install the tunnel route. No service access conclusion can be drawn.",
-    "Pinned DoH fallback is used only after the VPN tunnel is established; its resolver endpoints are pinned by IP with TLS SNI/certificate validation, avoiding fallback to the host's pre-VPN resolver."
+    "Pinned DoH fallback is used only after the VPN tunnel is established; its resolver endpoints are pinned by IP with TLS SNI/certificate validation, avoiding fallback to the host's pre-VPN resolver.",
+    "Third pilot run #42964869207 had three TCP/UDP relay attempts without any TUN route; DNS-over-HTTPS was not exercised. The three server IPs were already mapped to RU; no targets were tested.",
+    "OpenVPN safe TLS compatibility allowlist is not a broad pass-through: only selected TLS settings and inline trust material are retained; scripts, plugins, external key files and route directives remain excluded."
   ],
   "policy_invariants": {
     "geoip_RU_dat_mutated": false,
@@ -263,10 +271,10 @@
     "automatic_geoip_mutation": false
   },
   "next_steps": [
-    "Trigger a new one-shot run by changing .github/reachability/VPN_GATE_RUN_ONCE with a [vpn-gate-once] commit. It requests one successful verified RU exit and tries at most three candidates.",
-    "Inspect the result; if one tunnel is established, ensure two-source IP/country consensus succeeds through pinned DoH and 30 RU-scoped endpoint DNS/HTTPS checks run. If no tunnel/metadata consensus, artifact must upload and Actions job must conclude failure.",
-    "Do not widen retries beyond three candidates until the third run artifact has been reviewed. If it succeeds, map exact DNS destination addresses against the full GeoIP inventory.",
-    "After the run, remove the marker file and disable the temporary push path trigger; leave only workflow_dispatch for when workflow is on main. Keep PR #5 Draft, no merge/rebase. Do not touch GeoIP production builder, release, DIRECT, ASN allowlist or PR #6."
+    "Confirm Reachability validation on code/test commit fed2a525ad80f22a50415766b6b32bbb0af8b3b6 and latest code commit 700d31cd548505d259e38af07366a3ef6eb46231; expect 58 Python tests and Go checks.",
+    "If CI is green, run one final bounded pilot with one successful RU exit and at most six candidate relays across six distinct ASNs. This is the hard cap; do not continue increasing attempts if all six fail.",
+    "Inspect the next artifact's safe TLS profile feature flags and expanded OpenVPN logs. If a tunnel succeeds, check that pinned DoH verifies exit IP/country and target A/AAAA/HTTPS is measured; otherwise stop and recommend a locally provided residential probe / another provider instead of relying on unstable VPN Gate relays.",
+    "After the final test, remove the one-shot marker and disable feature-branch push triggering, retaining manual dispatch for after integration. Keep PR #5 Draft, don't merge/rebase, don't modify production builder, geoip_RU.dat, release assets, DIRECT, ASN allowlists, main/release or PR #6."
   ],
   "ci_policy": {
     "push_validation_paths": [
@@ -303,18 +311,18 @@
     "vpn_gate_push_once_daily_schedule_enabled": false
   },
   "pending_validation": {
-    "commit": "515863b7029274ba6c65c683e9fc863066a8fefc",
+    "commit": "fed2a525ad80f22a50415766b6b32bbb0af8b3b6",
+    "latest_code_commit": "700d31cd548505d259e38af07366a3ef6eb46231",
+    "documentation_commit": "e02f7adfb17c84f7cf5f747a61a79453d27dea7e",
     "workflow": "Reachability validation",
-    "run_id": 42964285730,
-    "run_url": "https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/42964285730",
-    "status": "SUCCESS",
-    "verified_python_test_count": 53,
-    "go_checks": [
+    "expected_python_unit_tests": 58,
+    "expected_go_checks": [
       "gofmt",
       "go test ./...",
       "go build"
     ],
-    "note": "Run #106 logs show 53 Python tests OK and successful Go formatting/tests/build. Earlier run #104 failed due a commit-order race before measurement_exit_code was added; run #106 validates the complete code/test tree."
+    "status": "NOT_CONFIRMED",
+    "note": "The latest VPN Gate profile compatibility changes and external TLS key rejection test were committed after the previous 53-test green run. CI must validate the current 58-test suite before another live VPN run."
   },
   "vpn_gate_measurement": {
     "source": "VPN Gate official CSV API",
@@ -420,6 +428,46 @@
       "planned": "Use pinned Cloudflare/Google DoH for post-tunnel metadata/target resolution; require new failure semantics and preserve artifacts.",
       "run_status": "NOT_STARTED"
     },
-    "measurement_success_semantics": "Non-zero runner exit when fewer than requested verified RU exits succeed; always upload artifact and then fail GitHub Actions job."
+    "measurement_success_semantics": "Non-zero runner exit when fewer than requested verified RU exits succeed; always upload artifact and then fail GitHub Actions job.",
+    "third_run": {
+      "run_id": 42964869207,
+      "run_url": "https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/42964869207",
+      "status": "FAILED_NO_RU_TUNNEL",
+      "artifact_id": 13830503498,
+      "artifact_sha256": "95569ff6f48cb9a1acb6a6fc5c9ce989e8be8402b5d8b6a452ae5a340a4710e3",
+      "discovered_profiles": 12,
+      "distinct_candidate_asns": 6,
+      "attempted_candidates": 3,
+      "successful_ru_exits": 0,
+      "target_measurements": 0,
+      "targets_in_ru_scope": 30,
+      "candidates": [
+        {
+          "ip": "188.242.100.160",
+          "asn": 35807,
+          "org": "SkyNet Ltd.",
+          "port": 1439,
+          "transport": "tcp",
+          "result": "TCP_CONNECTED_NO_TUNNEL"
+        },
+        {
+          "ip": "178.185.24.224",
+          "asn": 12389,
+          "org": "OJSC Sibirtelecom",
+          "port": 1529,
+          "transport": "tcp",
+          "result": "TCP_CONNECTED_NO_TUNNEL"
+        },
+        {
+          "ip": "94.253.101.177",
+          "asn": 21453,
+          "org": "Flex broadband users",
+          "port": 21823,
+          "transport": "udp",
+          "result": "NO_TUNNEL"
+        }
+      ],
+      "measurement_interpretation": "No verified exit IP, so pinned DoH and target reachability were not exercised. The strict measurement gate correctly made GitHub Actions fail after uploading diagnostics."
+    }
   }
 }
