@@ -72,9 +72,13 @@ class HomeProbeIngestTests(unittest.TestCase):
             "source_ip_verified_by_two_services": True,
             "source_public_ip": source_ip,
             "source_country": country,
+            "source_asn_candidates": [12389],
+            "source_organizations": ["Example ISP"],
             "proxy_environment_variables": [],
             "proxy_environment_clear": True,
             "target_count": 1,
+            "service_targets": 1,
+            "control_targets": 0,
             "automatic_upload": False,
             "geoip_mutation": False,
         }
@@ -240,6 +244,30 @@ class HomeProbeIngestTests(unittest.TestCase):
         row["https_ipv4_tested_address"] = "8.8.8.8"
         (self.report / "home_probe_measurements.jsonl").write_text(json.dumps(row) + "\\n", encoding="utf-8")
         with self.assertRaisesRegex(home_probe_ingest.ImportError, "HTTPS must be NOT_TESTED"):
+            home_probe_ingest.ingest_report(self.args())
+
+    def test_source_asn_candidates_must_match_metadata_observations(self):
+        source = json.loads((self.report / "home_probe_source.json").read_text(encoding="utf-8"))
+        source["asn_candidates"] = [13335]
+        (self.report / "home_probe_source.json").write_text(json.dumps(source), encoding="utf-8")
+        summary = json.loads((self.report / "home_probe_summary.json").read_text(encoding="utf-8"))
+        summary["source_asn_candidates"] = [13335]
+        (self.report / "home_probe_summary.json").write_text(json.dumps(summary), encoding="utf-8")
+        with self.assertRaisesRegex(home_probe_ingest.ImportError, "do not match provider observations"):
+            home_probe_ingest.ingest_report(self.args())
+
+    def test_summary_target_role_counts_must_match_measurements(self):
+        summary = json.loads((self.report / "home_probe_summary.json").read_text(encoding="utf-8"))
+        summary["service_targets"] = 0
+        (self.report / "home_probe_summary.json").write_text(json.dumps(summary), encoding="utf-8")
+        with self.assertRaisesRegex(home_probe_ingest.ImportError, "service target count"):
+            home_probe_ingest.ingest_report(self.args())
+
+    def test_summary_source_metadata_must_match_source_report(self):
+        summary = json.loads((self.report / "home_probe_summary.json").read_text(encoding="utf-8"))
+        summary["source_attribution_status"] = "SOURCE_METADATA_UNVERIFIED"
+        (self.report / "home_probe_summary.json").write_text(json.dumps(summary), encoding="utf-8")
+        with self.assertRaisesRegex(home_probe_ingest.ImportError, "source-attribution status"):
             home_probe_ingest.ingest_report(self.args())
 
     def test_existing_output_directory_is_never_overwritten(self):
