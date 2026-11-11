@@ -325,11 +325,15 @@ class UbuntuAptDNSBootstrapTests(unittest.TestCase):
                 restored.append(exc_type)
                 return False
 
-        with Guard():
-            with self.assertRaises(SystemExit) as raised:
+        try:
+            with Guard():
                 vpn_gate.handle_termination_signal(signal.SIGTERM, None)
+        except SystemExit as exc:
+            raised = exc
+        else:
+            self.fail("SIGTERM handler must terminate through SystemExit")
 
-        self.assertEqual(raised.exception.code, 128 + signal.SIGTERM)
+        self.assertEqual(raised.code, 128 + signal.SIGTERM)
         self.assertEqual(restored, [SystemExit])
 
 
