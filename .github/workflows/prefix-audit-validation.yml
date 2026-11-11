@@ -470,7 +470,13 @@ jobs:
           for required in (
               f"output_ru\t76292\t",
               f"output_private\t151\t",
-              "All joins are exact-prefix equality only.",
+              "selected_origin_bgp IPv4: address_union=49138688; covered_by_RU_output=49130030; coverage=99.982380%",
+              "selected_origin_bgp IPv6: address_union=216861075172383058498599363018752; covered_by_RU_output=216861075172383058498599363018752; coverage=100.000000%",
+              "additional_geoip_accepted IPv4: address_union=18258; covered_by_RU_output=18258; coverage=100.000000%",
+              "additional_geoip_accepted IPv6: address_union=713060716183296726116943790080; covered_by_RU_output=713060716183296726116943790080; coverage=100.000000%",
+              "Approved blocked exclusions overlapping RU output IPv4 addresses: 0",
+              "Approved blocked exclusions overlapping RU output IPv6 addresses: 0",
+              "Exact-prefix flags use canonical CIDR string equality only",
               "Raw GeoIP .dat inputs are not retained in the v37 release",
           ):
               if required not in stats:
