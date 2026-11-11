@@ -460,3 +460,15 @@ Durable resume point for PR #5. After any conversation/network interruption, rea
 - Reviewed the remaining VPNObratno protocol documentation. SSTP is offered on some nodes; the site documents L2TP/IPsec for selected nodes. Neither has yet been wired into the collector: the copy-button endpoint metadata/port is not yet verified as a machine-readable source, and a PPP/IPsec tunnel requires explicit interface, route and firewall lifecycle checks. Do not guess the SSTP port or invent an L2TP endpoint. Continue with the four validated OpenVPN variants until those prerequisites are proven.
 - No live tunnel using the newly supported VPNObratno OpenVPN profiles has yet been run. The 100-test CI result verifies deterministic discovery, validation and the fetch safety policy, not live tunnel connectivity or target reachability.
 - PR #5 remains OPEN / DRAFT. No production builder, release database/assets, DIRECT policy, ASN allowlists, main/release or PR #6 were touched.
+
+
+### 2026-11-11 — Bound and diversify VPNObratno profile discovery — CI PASS
+
+- Reviewed the current VPNObratno Russia listing (the live page showed approximately ten server entries and up to four OpenVPN profile links per entry). A single run previously downloaded every linked profile before the separate six-connection-attempt limit was applied.
+- Added a hard cap of 24 VPNObratno profile downloads per discovery run. The summary reports total links found, download limit, profiles considered, links omitted by the cap and whether the cap was reached. The cap is separate from the six actual VPN connection attempts.
+- Changed profile ordering to interleave variants across hostnames: preferred IP UDP profiles from all listed servers first, then DDNS UDP, IP TCP and DDNS TCP. A bounded discovery sample therefore covers more distinct server hostnames before downloading alternate profiles for the first hosts.
+- Added three tests for cross-host variant interleaving, bounded profile downloads/omitted-link accounting, and rejection of an invalid or over-hard-cap discovery limit.
+- The first validation attempt #42983239336 caught a fixture method being called from a test class without that helper. The corrected attempt #42983387247 exposed the same call at its second occurrence; the fixture was then made self-contained. Final run #42983494770 (https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/42983494770) succeeded on test commit 6e408c3852d3fbfe8b9ebd4f5689533f08e51fbe: full logs confirm Ran 103 tests, OK, plus successful gofmt, go test ./... and go build.
+- The live page snapshot is time-varying. The 24-link cap and metadata prevent excessive downloads and make truncation visible; no inference is made about servers beyond the fetched sample. A run with a truncated sample cannot claim complete server/provider discovery.
+- No VPN connection was attempted. CI verifies selection order and bounded downloads, not actual tunnel availability or household/residential status.
+- PR #5 remains OPEN / DRAFT. No production builder, release database/assets, DIRECT policy, ASN allowlists, main/release or PR #6 were touched.
