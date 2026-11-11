@@ -331,11 +331,21 @@ def select_diverse_servers(
     servers: list[dict[str, Any]],
     max_servers: int,
     candidate_limit: int = 24,
+    max_attempts: int | None = None,
 ) -> tuple[list[dict[str, Any]], dict[str, Any]]:
-    """Prefer one VPN exit per observed origin ASN before choosing a second from one ASN."""
+    """Order a bounded fallback list: one candidate per origin ASN before repeats.
+
+    max_servers is the number of successful RU exits requested. max_attempts
+    controls how many candidates may be tried to reach that count.
+    """
     if max_servers < 1:
         raise ValueError("max_servers must be positive")
-    candidates = servers[:min(len(servers), max(candidate_limit, max_servers))]
+    attempt_limit = max_servers if max_attempts is None else max_attempts
+    if attempt_limit < max_servers:
+        raise ValueError("max_attempts must be >= max_servers")
+    if attempt_limit > 6:
+        raise ValueError("max_attempts must be <= 6")
+    candidates = servers[:min(len(servers), max(candidate_limit, attempt_limit, max_servers))]
     groups: dict[str, list[dict[str, Any]]] = {}
     asn_lookups = 0
     for server in candidates:
@@ -347,7 +357,6 @@ def select_diverse_servers(
         groups.setdefault(group, []).append(server)
         asn_lookups += 1
 
-    selected: list[dict[str, Any]] = []
     group_order = sorted(
         groups,
         key=lambda group: (
@@ -356,26 +365,27 @@ def select_diverse_servers(
             groups[group][0]["hostname"],
         ),
     )
-    # Pass 1: one best-scoring server per observed ASN.
+    ordered: list[dict[str, Any]] = []
+    # First pass: one best-scoring candidate per observed ASN.
     for group in group_order:
-        if len(selected) >= max_servers:
-            break
-        selected.append(groups[group][0])
-    # Pass 2: only use additional nodes after every observed ASN had a chance.
-    if len(selected) < max_servers:
-        selected_ids = {server["hostname"] for server in selected}
-        for server in candidates:
-            if len(selected) >= max_servers:
-                break
-            if server["hostname"] not in selected_ids:
-                selected.append(server)
-                selected_ids.add(server["hostname"])
-
-    selected_asns = sorted({server["_selection_asn"] for server in selected if server["_selection_asn"] > 0})
+        ordered.append(groups[group][0])
+    # Subsequent passes: one fallback per ASN per round, rather than exhausting
+    # all servers from the highest-ranked provider first.
+    for index in range(1, max((len(value) for value in groups.values()), default=0)):
+        for group in group_order:
+            if index < len(groups[group]):
+                ordered.append(groups[group][index])
+    selected = ordered[:attempt_limit]
+    selected_asns = sorted({
+        server["_selection_asn"] for server in selected
+        if server["_selection_asn"] > 0
+    })
     return selected, {
         "candidate_servers_inspected": len(candidates),
         "server_asn_lookups": asn_lookups,
         "distinct_candidate_asns": len([group for group in groups if group != "ASN_UNVERIFIED"]),
+        "attempt_candidates_selected": len(selected),
+        "max_connection_attempts": attempt_limit,
         "selected_distinct_asns": len(selected_asns),
         "selected_asns": selected_asns,
         "unverified_asn_candidates": len(groups.get("ASN_UNVERIFIED", [])),
@@ -497,18 +507,37 @@ class NoRedirect(urllib.request.HTTPRedirectHandler):
         return None
 
 
-def wait_for_tunnel(process: subprocess.Popen, timeout: int) -> str:
+def wait_for_tunnel(
+    process: subprocess.Popen,
+    timeout: int,
+    log_path: pathlib.Path | None = None,
+) -> str:
+    """Wait for a tunnel, but stop early on explicit TLS/authentication failures."""
     deadline = time.monotonic() + timeout
+    fatal_markers = (
+        "TLS key negotiation failed to occur",
+        "TLS handshake failed",
+        "AUTH_FAILED",
+        "Exiting due to fatal error",
+    )
     while time.monotonic() < deadline:
         if process.poll() is not None:
             raise ProbeError(f"OpenVPN exited early with code {process.returncode}")
+        if log_path and log_path.exists():
+            try:
+                tail = "\\n".join(log_path.read_text(encoding="utf-8", errors="replace").splitlines()[-30:])
+            except OSError:
+                tail = ""
+            for marker in fatal_markers:
+                if marker in tail:
+                    raise ProbeError(f"OpenVPN reported {marker}")
         result = run_command(["ip", "-4", "route", "get", "1.1.1.1"], check=False)
         if result.returncode == 0:
             match = re.search(r"\bdev\s+(tun\S*)", result.stdout)
             if match:
                 return match.group(1)
         time.sleep(1)
-    raise ProbeError("OpenVPN tunnel did not install an IPv4 default route before timeout")
+    raise ProbeError(f"OpenVPN tunnel did not install an IPv4 default route within {timeout}s")
 
 
 def resolve_domain_families(
@@ -593,7 +622,9 @@ def run(args: argparse.Namespace) -> int:
 
     csv_text = fetch_bytes(VPN_GATE_API, timeout=40).decode("utf-8", "replace")
     servers = parse_vpngate_csv(csv_text)
-    selected, selection_meta = select_diverse_servers(servers, args.max_servers)
+    selected, selection_meta = select_diverse_servers(
+        servers, args.max_servers, max_attempts=args.max_attempts
+    )
     raw_rows: list[dict[str, Any]] = [{
         "source": "vpn_gate_official_api",
         "url": VPN_GATE_API,
@@ -610,6 +641,8 @@ def run(args: argparse.Namespace) -> int:
     connection_counts: collections.Counter[str] = collections.Counter()
 
     for server in selected:
+        if connection_counts["connected_ru_exit"] >= args.max_servers:
+            break
         server_ip = server["server_ip"]
         server_category, server_prefix = runner.map_address(server_ip, networks)
         try:
@@ -678,7 +711,7 @@ def run(args: argparse.Namespace) -> int:
                                 stdout=log_stream, stderr=subprocess.STDOUT,
                             )
                             try:
-                                wait_for_tunnel(process, args.connect_timeout)
+                                wait_for_tunnel(process, args.connect_timeout, log_path)
                                 exit_info = ip_metadata()
                                 if exit_info["country"] != "RU":
                                     provider["CONNECTION_RESULT"] = "REJECTED_EXIT_NOT_RU"
@@ -805,6 +838,10 @@ def run(args: argparse.Namespace) -> int:
         "generated_at": utc_now(),
         "source": "VPN Gate official CSV API; vpnobratno.info is a public directory of VPN Gate Russian volunteer nodes",
         "selected_vpn_gate_ru_servers": len(selected),
+        "requested_successful_ru_exits": args.max_servers,
+        "max_connection_attempts": args.max_attempts,
+        "connection_attempts": connection_counts["selected"],
+        "successful_ru_exits": connection_counts["connected_ru_exit"],
         "usable_ru_openvpn_servers_discovered": len(servers),
         "provider_diversity_selection": selection_meta,
         "connection_counts": dict(connection_counts),
@@ -848,12 +885,15 @@ def main() -> int:
     parser.add_argument("--inventory", required=True, help="GeoIP RU/PRIVATE inventory TSV")
     parser.add_argument("--targets", default=".github/reachability/targets.json")
     parser.add_argument("--output-dir", default="reachability-output")
-    parser.add_argument("--max-servers", type=int, default=3)
+    parser.add_argument("--max-servers", type=int, default=3, help="Number of successful RU VPN exits to measure")
+    parser.add_argument("--max-attempts", type=int, default=3, help="Maximum distinct VPN Gate candidates to try (hard cap 6)")
     parser.add_argument("--connect-timeout", type=int, default=60)
     parser.add_argument("--request-timeout", type=int, default=12)
     args = parser.parse_args()
     if not 1 <= args.max_servers <= 6:
         parser.error("--max-servers must be between 1 and 6")
+    if not args.max_servers <= args.max_attempts <= 6:
+        parser.error("--max-attempts must be >= --max-servers and <=6")
     if not 10 <= args.connect_timeout <= 180:
         parser.error("--connect-timeout must be between 10 and 180 seconds")
     if not 3 <= args.request_timeout <= 30:
