@@ -45,7 +45,7 @@ answers are collected in one resolver call per target. It:
 - records the actual exit IP, country, ASN/prefix/organization metadata, and whether the source exit IP maps to a RU or PRIVATE prefix in the published GeoIP inventory;
 - tests only the catalogue's RU-scope hostnames using low-volume DNS A/AAAA lookups and HTTPS HEAD requests.
 
-Run it manually from the Actions tab, choosing the PR #5 feature branch and a limit of 1–3 servers for the first pilot. It is intentionally not part of the daily schedule. Each server is tested sequentially; a non-RU exit is rejected and no service requests are sent through it.
+While PR #5 remains Draft, GitHub's `workflow_dispatch` button is not available for this workflow because the workflow file is not on the repository default branch. A guarded one-shot push trigger is used for a bounded pilot: it only fires when `.github/reachability/VPN_GATE_RUN_ONCE` changes on the PR #5 feature branch and the commit message begins with `[vpn-gate-once]`. That trigger defaults to one successful RU exit and at most three candidate attempts. Once the workflow exists on the default branch, it can also be started through Actions with explicit limits. It is intentionally not part of the daily schedule. Each server is tested sequentially; a non-RU exit is rejected and no service requests are sent through it.
 
 Artifacts include `vpn_gate_providers.tsv`, `vpn_gate_measurements.jsonl`,
 `vpn_gate_geoip_candidates.tsv` and `vpn_gate_summary.json`. A candidate means
@@ -86,7 +86,12 @@ Google 8.8.8.8). The DoH request keeps TLS SNI/certificate verification for the
 resolver hostname; metadata HTTPS and target HEAD requests can also use
 DoH-resolved, IP-pinned connections while preserving the original hostname for
 TLS validation. These requests therefore remain on the VPN tunnel and do not
-fall back to the runner's direct DNS path.
+fall back to the runner's direct DNS path. The runner does not rewrite
+`/etc/resolv.conf` or any other host resolver configuration: system NSS is
+left untouched, and the pinned DoH path handles resolver failures. HTTPS
+fallback is IPv4-only because the VPN tunnel and kill-switch intentionally
+block host IPv6 egress; AAAA answers are still collected and reported as DNS
+evidence, but no IPv6 HTTPS attempt is made.
 
 A run that cannot establish its requested number of verified RU exits returns a
 non-zero measurement status. The workflow still uploads diagnostic artifacts
