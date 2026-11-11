@@ -236,3 +236,16 @@ Durable resume point for PR #5. After any conversation/network interruption, rea
 - Updated README with the dual-stack one-call behavior and workflow timeout.
 - Latest validation-triggering Python code/test commit: `09a61810013effee87fc5fdb6d304a3b132a7ba5`; workflow timeout commit: `a3098c15351de5dabc5f286f05024678fe4707fa`; README commit: `ba1371566bd12965940fb5bd05c78813b6b176fd`.
 - Validation is still pending; no confirmed CI run or visible check is returned by the GitHub connector. No VPN Gate workflow has been dispatched.
+
+
+### 2026-11-11 — Confirm VPN Gate CI and launch guarded one-exit pilot — CI PASS / MEASUREMENT RUNNING
+
+- Retrieved the full Actions history through the GitHub REST run collection. Reachability validation Run #99, `42959843669`, completed successfully on `a3098c15351de5dabc5f286f05024678fe4707fa`.
+- Inspected job `130323524196` and its logs: `python3 -m unittest discover` reports `Ran 45 tests` and `OK`; the Go step ran `gofmt` (no diff), `go test ./...` and `go build`, all successful. The compare from tested commit to the prior PR head contained only CHECKPOINT.json, README.md and WORKLOG.md, so all measurement code/tests were identical.
+- A further `Reachability validation` Run #100, `42960889187`, passed after adding the gated one-shot workflow trigger.
+- Found and corrected a GitHub platform constraint: `workflow_dispatch` only receives events while the workflow file exists on the repository default branch. This file is new to draft PR #5, so manual dispatch from the feature branch would not work before merge. To avoid merging or changing main, the workflow now also accepts a push on the feature branch only when the path `.github/reachability/VPN_GATE_RUN_ONCE` changes and the commit message starts with `[vpn-gate-once]`.
+- Push-triggered pilot defaults to exactly one server; explicit manual dispatch input continues to default to three (hard cap six). The path filter is only the marker file and there is no schedule. Ordinary pushes cannot enter the measurement job.
+- Created the one-shot marker in commit `31be54066923d83e598571e6e29ae5841a98fa49`, commit message `[vpn-gate-once] Run first single-exit Russian ISP pilot`.
+- First VPN Gate measurement run: `42960930985`, currently `in_progress`; tool snapshot shows installation of OpenVPN/iptables, Go setup, exact release protobuf download and complete RU/PRIVATE inventory export succeeded. Measurement step (candidate ASN selection, VPN connection, two-source exit verification and endpoint tests) is running; artifact not available yet.
+- No production data, main/release, DIRECT policy, ASN allowlists or PR #6 changed. PR #5 remains Draft.
+- Resume from: inspect run `42960930985` until complete, review artifact and logs, remove the marker file after the run, then disable the one-shot push path (retain workflow_dispatch for after default-branch integration). Do not launch a second VPN run without reviewing the first artifact.
