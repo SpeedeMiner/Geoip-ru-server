@@ -57,6 +57,19 @@ credentials or user data to the measured services.
 This workflow is a measurement backend only. It does not alter `geoip_RU.dat`,
 the main builder, release artifacts, DIRECT policy, or ASN allowlists.
 
+### VPN Gate exit verification and provider diversity
+
+Before sending any service request through a volunteer node, the runner now requires
+two independent public IP-metadata services to agree on the exact exit IPv4 address
+and country. A disagreement or fewer than two usable responses rejects that node.
+The actual exit ASN/prefix is then enriched separately from RIPEstat.
+
+The initial server sample is no longer simply the three highest-scoring VPN Gate
+rows. The collector inspects up to 24 top-ranked candidates for origin ASN and
+prefers one candidate per distinct observed ASN before selecting a second node
+from the same ASN. If RIPEstat cannot establish an ASN, the candidate is marked
+ASN-unverified and is not counted as provider diversity.
+
 ## What “full” means
 
 The inventory exporter reads the actual published \`release/geoip_RU.dat\`
