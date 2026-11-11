@@ -405,7 +405,7 @@ def build_inventory(args: argparse.Namespace) -> dict[str, object]:
         "UNEXPLAINED_OUTSIDE_RU_PRIVATE_BLOCKED_ADDRESSES", "STATUS", "DECISION_NOTE",
     ]
     with args.rir_residual_output.open("w", encoding="utf-8", newline="") as stream:
-        writer = csv.DictWriter(stream, fieldnames=residual_fields, delimiter="\\t", lineterminator="\\n")
+        writer = csv.DictWriter(stream, fieldnames=residual_fields, delimiter="\t", lineterminator="\n")
         writer.writeheader()
         writer.writerows(rir_residual_rows)
 
