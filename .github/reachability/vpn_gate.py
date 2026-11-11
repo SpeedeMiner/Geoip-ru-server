@@ -52,7 +52,6 @@ VPNOBRATNO_PROFILE_DOWNLOAD_LIMIT = 24
 VPNOBRATNO_LISTING_MAX_BYTES = 2_000_000
 VPNOBRATNO_PROFILE_MAX_BYTES = 64_000
 VPNOBRATNO_FETCH_HARD_MAX_BYTES = 8_000_000
-PTR_LOOKUP_TIMEOUT_SECONDS = 3
 IP_INFO_URLS = (
     "https://ipwho.is/",
     "https://ipapi.co/json/",
@@ -928,31 +927,19 @@ def ip_metadata(url: str | None = None) -> dict[str, Any]:
     return merged
 
 
-def resolve_ptr(address: str) -> str:
-    """Resolve a server PTR without allowing reverse DNS to stall the VPN pilot."""
-    if not shutil.which("getent"):
-        return ""
+def cached_server_origin(server: dict[str, Any]) -> dict[str, Any]:
+    """Use origin metadata already collected during ASN selection; never block a tunnel attempt."""
+    origin = server.pop("_network_info", None)
+    if not isinstance(origin, dict):
+        origin = {}
+    prefix = str(origin.get("prefix") or "").strip()
     try:
-        result = subprocess.run(
-            ["getent", "hosts", address],
-            text=True,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-            check=False,
-            timeout=PTR_LOOKUP_TIMEOUT_SECONDS,
-        )
-    except (OSError, subprocess.SubprocessError):
-        return ""
-    if result.returncode != 0:
-        return ""
-    fields = result.stdout.strip().split()
-    if len(fields) < 2:
-        return ""
-    try:
-        returned_ip = str(ipaddress.ip_address(fields[0]))
-    except ValueError:
-        return ""
-    return fields[1] if returned_ip == address else ""
+        network = ipaddress.ip_network(prefix, strict=False)
+        if ipaddress.ip_address(server["server_ip"]) not in network:
+            prefix = ""
+    except (KeyError, TypeError, ValueError):
+        prefix = ""
+    return {"prefix": prefix, "asn": parse_int(origin.get("asn"))}
 
 
 def run_command(args: list[str], *, input_text: str | None = None, check: bool = True) -> subprocess.CompletedProcess:
@@ -1256,40 +1243,17 @@ def run(args: argparse.Namespace) -> int:
             flush=True,
         )
         server_category, server_prefix = runner.map_address(server_ip, networks)
-        print(
-            f"[vpn-gate] server_ip_metadata=started host={server['hostname']} ip={server_ip}",
-            flush=True,
-        )
-        try:
-            server_meta = ip_metadata(f"https://ipwho.is/{server_ip}")
-        except ProbeError as exc:
-            server_meta = {"asn": 0, "org": ""}
-            print(
-                f"[vpn-gate] server_ip_metadata=result_unavailable host={server['hostname']} "
-                f"reason={str(exc)[:160]}",
-                flush=True,
-            )
-        else:
-            print(
-                f"[vpn-gate] server_ip_metadata=completed host={server['hostname']}",
-                flush=True,
-            )
-        server_origin = server.pop("_network_info", None) or network_info(server_ip)
-        server_asn_ip_meta = parse_int(server_meta.get("asn"))
+        # Selection already captured RIPEstat origin ASN/prefix for each candidate.
+        # IP metadata enrichment and reverse DNS are optional and must not delay OpenVPN.
+        server_origin = cached_server_origin(server)
+        server_asn_ip_meta = 0
         server_asn_ripestat = parse_int(server_origin.get("asn"))
-        server_asn_conflict = bool(
-            server_asn_ip_meta and server_asn_ripestat
-            and server_asn_ip_meta != server_asn_ripestat
-        )
-        server_asn = server_asn_ripestat or server_asn_ip_meta
-        server_meta["asn"] = server_asn
-
-        server_meta["network_prefix"] = server_origin["prefix"]
-        print(f"[vpn-gate] server_ptr_lookup=started host={server['hostname']}", flush=True)
-        ptr = resolve_ptr(server_ip)
+        server_asn_conflict = False
+        server_asn = server_asn_ripestat
+        ptr = ""
         print(
-            f"[vpn-gate] server_ptr_lookup=completed host={server['hostname']} "
-            f"result={'found' if ptr else 'not_found_or_timeout'}",
+            f"[vpn-gate] server_metadata_enrichment=skipped host={server['hostname']} "
+            "reason=noncritical_preflight",
             flush=True,
         )
         provider = {
@@ -1304,7 +1268,7 @@ def run(args: argparse.Namespace) -> int:
             "SERVER_ASN_RIPESTAT": server_asn_ripestat,
             "SERVER_ASN_CONFLICT": server_asn_conflict,
             "SERVER_PREFIX": server_origin["prefix"],
-            "SERVER_ORG": server_meta["org"],
+            "SERVER_ORG": "",
             "SERVER_PTR": ptr,
             "SERVER_GEOIP_CATEGORY": server_category,
             "SERVER_GEOIP_RU_PREFIX": server_prefix,
