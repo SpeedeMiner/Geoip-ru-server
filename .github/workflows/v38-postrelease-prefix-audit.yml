@@ -57,10 +57,11 @@ jobs:
           print("Patched runtime collector MANIFEST_SHA256 to the independently measured release digest.")
           PY
 
-      - name: Compile and test audit parser
+      - name: Compile and test audit parsers and RPKI normalization
         run: |
-          python3 -m py_compile .github/scripts/collect_v38_postrelease_prefix_audit.py .github/scripts/test_v38_postrelease_prefix_audit.py
+          python3 -m py_compile .github/scripts/collect_v38_postrelease_prefix_audit.py .github/scripts/test_v38_postrelease_prefix_audit.py .github/scripts/normalize_v38_postrelease_prefix_audit.py .github/scripts/test_normalize_v38_postrelease_prefix_audit.py
           python3 -m unittest discover -s .github/scripts -p 'test_v38_postrelease_prefix_audit.py' -v
+          python3 -m unittest discover -s .github/scripts -p 'test_normalize_v38_postrelease_prefix_audit.py' -v
 
       - name: Capture current exact-NLRI and same-source RPKI evidence for 56 priority prefixes
         run: |
@@ -71,100 +72,9 @@ jobs:
             --routeviews-interval 1.1 \
             --ripe-workers 4
 
-      - name: Separate empty origin sets and compare RPKI snapshot views
+      - name: Normalize RPKI status aliases and preserve real conflicts
         run: |
-          python3 - <<'PY'
-          import csv, json
-          from collections import Counter
-          from pathlib import Path
-          root = Path("v38-postrelease-audit")
-          tsv = root / "v38_postrelease_prefix_review.tsv"
-          with tsv.open(encoding="utf-8", newline="") as fh:
-              reader = csv.DictReader(fh, delimiter="\t")
-              fields = list(reader.fieldnames)
-              rows = list(reader)
-          new_fields = [
-              "RPKI_VIEW_COMPARISON",
-              "ROUTE_LEVEL_RPKI_ONLY_ORIGINS",
-              "TIMESTAMPED_VRP_ONLY_ORIGINS",
-              "RPKI_STATUS_CONFLICTS",
-          ]
-          for name in new_fields:
-              if name not in fields:
-                  fields.append(name)
-          origin_counts = Counter()
-          empty_prefixes = []
-          rpki_view_counts = Counter()
-          rpki_conflicts = []
-          for row in rows:
-              sources = [
-                  set(json.loads(row["ROUTEVIEWS_EXACT_ORIGINS"])),
-                  set(json.loads(row["RIPESTAT_EXACT_ORIGINS"])),
-                  set(json.loads(row["RIPESTAT_LG_ORIGINS"])),
-              ]
-              current = row["EXACT_ORIGIN_CROSS_SOURCE"]
-              if current not in {"PARTIAL_OR_FAILED_EVIDENCE", "UNUSABLE_RESPONSE_SHAPE"}:
-                  if not any(sources):
-                      current = "NO_EXACT_NLRI_IN_ANY_SOURCE"
-                      empty_prefixes.append(row["PREFIX"])
-                  elif all(sources[0] and item == sources[0] for item in sources[1:]):
-                      current = "ALL_THREE_SOURCE_SETS_AGREE"
-                  else:
-                      current = "EXACT_ORIGIN_SET_DISAGREEMENT"
-                  row["EXACT_ORIGIN_CROSS_SOURCE"] = current
-              origin_counts[current] += 1
-
-              route_level = json.loads(row["ROUTEVIEWS_ROUTE_LEVEL_RPKI"])
-              vrp_snapshot = json.loads(row["ROUTEVIEWS_VRP_ORIGIN_STATES"])
-              conflicts = {
-                  asn: {"near_realtime_route_level": route_level[asn], "two_hour_aggregate_snapshot": vrp_snapshot[asn]}
-                  for asn in sorted(set(route_level) & set(vrp_snapshot))
-                  if route_level[asn] != vrp_snapshot[asn]
-              }
-              route_only = sorted(set(route_level) - set(vrp_snapshot))
-              vrp_only = sorted(set(vrp_snapshot) - set(route_level))
-              if not route_level:
-                  comparison = "NO_EXACT_ROUTE"
-              elif not vrp_snapshot:
-                  comparison = "NO_TIMESTAMPED_VRP_STATE"
-              elif conflicts:
-                  comparison = "SAME_ORIGIN_STATUS_DIFFERS"
-              elif route_only or vrp_only:
-                  comparison = "ORIGIN_SET_DIFFERS"
-              else:
-                  comparison = "ORIGIN_SETS_AND_STATES_MATCH"
-              row["RPKI_VIEW_COMPARISON"] = comparison
-              row["ROUTE_LEVEL_RPKI_ONLY_ORIGINS"] = json.dumps(route_only, separators=(",", ":"))
-              row["TIMESTAMPED_VRP_ONLY_ORIGINS"] = json.dumps(vrp_only, separators=(",", ":"))
-              row["RPKI_STATUS_CONFLICTS"] = json.dumps(conflicts, sort_keys=True, separators=(",", ":"))
-              rpki_view_counts[comparison] += 1
-              if conflicts:
-                  rpki_conflicts.append({"prefix": row["PREFIX"], "conflicts": conflicts})
-
-          with tsv.open("w", encoding="utf-8", newline="") as fh:
-              writer = csv.DictWriter(fh, fieldnames=fields, delimiter="\t", lineterminator="\n")
-              writer.writeheader()
-              writer.writerows(rows)
-
-          manifest_path = root / "manifest.json"
-          manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
-          manifest["exact_origin_agreement_counts"] = dict(sorted(origin_counts.items()))
-          manifest["empty_exact_origin_prefixes"] = sorted(empty_prefixes)
-          manifest["route_level_vs_vrp_snapshot_counts"] = dict(sorted(rpki_view_counts.items()))
-          manifest["route_level_vs_vrp_status_conflicts"] = rpki_conflicts
-          manifest["rpki_view_semantics"] = {
-              "near_realtime_route_level": "RouteViews /prefix exact-NLRI response; includes rpki_state and rpki_roas for each observed origin",
-              "two_hour_aggregate": "RouteViews /rpki prefix snapshot from frr.routeviews.org full-table view; refreshed every two hours",
-              "interpretation": "These are separate collection views and snapshots. Preserve their timestamps and report differences rather than collapsing them into one state."
-          }
-          manifest_path.write_text(json.dumps(manifest, indent=2, sort_keys=True) + "\n", encoding="utf-8")
-          print("Exact-origin comparison counts:", json.dumps(manifest["exact_origin_agreement_counts"], sort_keys=True))
-          print("Empty exact-NLRI prefixes:", json.dumps(manifest["empty_exact_origin_prefixes"]))
-          print("Route-level vs two-hour VRP comparison:", json.dumps(manifest["route_level_vs_vrp_snapshot_counts"], sort_keys=True))
-          print("Same-origin RPKI status conflicts:", json.dumps(rpki_conflicts, sort_keys=True))
-          if len(rows) != 56 or any(row["STATUS"] != "REVIEW" for row in rows):
-              raise SystemExit("Review-only row invariant failed during post-processing")
-          PY
+          python3 .github/scripts/normalize_v38_postrelease_prefix_audit.py --input-dir v38-postrelease-audit
 
       - name: Validate review-only output and immutable release binding
         run: |
