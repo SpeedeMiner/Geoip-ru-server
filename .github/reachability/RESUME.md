@@ -9,7 +9,7 @@
 - Working branch: `feature/reachability-full-ru-kz-by`
 - PR #5 must remain **OPEN / DRAFT**. Do not mark ready, merge, or rebase without explicit owner approval.
 - Do not modify `main`, `release`, production GeoIP builder/data, `geoip_RU.dat`, release assets, DIRECT policy, ASN allowlists, PR #6 or other PR branches.
-- Do not launch overlapping VPN runs. **Run #21 is currently in progress**; monitor it to a terminal state before any further VPN dispatch.
+- Do not launch overlapping VPN runs. **Run #21 is terminal** (`completed / cancelled` by GitHub's maximum 12-minute execution-time limit). No replacement VPN run has been dispatched.
 - A RU VPN exit does not prove that the relay is a residential/household ISP line. Never label it residential without independent evidence.
 - DNS/HTTPS timeouts, TLS failures, missing probes, runner failures and missing artifacts are not evidence of target blocking.
 
@@ -22,6 +22,18 @@
 5. Continue only from the first pending item. Do not repeat a finished VPN/CI phase.
 
 The first “Current repository state” section near the top of WORKLOG is historical and may be stale; prefer its newest dated entries plus CHECKPOINT.
+
+## Current branch engineering state — FETCH WORKER ISOLATION VALIDATED
+
+- Latest code-tested commit: `c49dece293541d46b6af14282b382459164315d7`.
+- Latest validation: [Run #209](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43071264599), job `130699445722`, SUCCESS on `ubuntu-24.04`.
+- Full result: **127 Python tests passed**; hosted runner process-group watchdog preflight passed; `gofmt`, `go test ./...` and `go build` passed.
+- Production VPNObratto listing/profile fetches now execute in a forked worker. The parent enforces a monotonic 20-second wall deadline independently of 15-second listing / 12-second profile network budgets; it sends TERM, waits 0.5s, sends KILL if necessary, then joins/reaps.
+- The worker emits flushed phase markers for DoH, TCP, TLS, HTTP request/headers, each response-body read and connection close. It atomically updates `reachability-output/vpn_gate_vpnobratto_progress.json`, which matches the existing `reachability-output/vpn_gate_*` artifact upload glob. The manifest stores run/commit identifiers and phase/timing metadata, not profile contents or keys.
+- Tests cover successful result+manifest, a TERM-resistant worker killed/reaped by the parent, early worker exit classified separately from timeout, and default production discovery using the worker.
+- README runtime documentation was updated in commit `863f0c5251cbab17a85ac150735dff7f37fcdd30`. Latest subsequent commits are documentation-only.
+- Run #207's one failing test was a test helper signature mismatch (the worker correctly passed named `timeout`/`max_bytes` arguments); fixed before Run #208/#209. Run #208 passed 127 tests; Run #209 passed the final code after cleanup-finalizer hardening.
+- No new VPN measurement was run. Run #21 remains the last live pilot; its exact inner stall is unproven because GitHub provided neither terminal logs nor an artifact.
 
 ## Current measurement state
 
@@ -42,7 +54,6 @@ The first “Current repository state” section near the top of WORKLOG is hist
 - **No automatic rerun or replacement VPN run was started.** Before another attempt, inspect and improve the VPN measurement workflow's per-stage bounded execution and durable diagnostic persistence so that a stalled profile-fetch phase cannot leave the run without an inspectable terminal result.
 - PR #5 remains OPEN / DRAFT; no production GeoIP builder/data, DIRECT policy, ASN allowlists, `main`, `release`, PR #6 or other branches were changed.
 
-### Run #20 — cancelled, no usable result
 ### Run #20 — cancelled, no usable result
 
 - Run: [#20](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43053531258), job `130636812894`.
@@ -89,10 +100,11 @@ Workflow integration: `.github/workflows/reachability-validation.yml` now runs o
 
 ## Next steps
 
-- Run #21 is terminal. GitHub confirmed that its job exceeded the maximum execution time of 12 minutes; the run/job API reports `completed / cancelled`. This is a platform-enforced timeout, not evidence of a manual owner cancellation.
-- No terminal log archive or artifact is available. The last confirmed measurement marker remains the start of profile 6 fetch. Do not infer an OpenVPN attempt, a verified RU exit, or target reachability.
-- Diagnose the inner stall using the source at the run's pinned SHA `5a1badef9e19a71c44cd4b1fa42748f4d688e90f`. Review each operation after the profile-fetch boundary for a hard total wall-clock bound, and ensure phase progress and diagnostic output survive a killed measurement step. The 7-minute GNU guard, 9-minute step timeout and successful synthetic watchdog preflight did not prevent this run reaching the outer 12-minute job ceiling.
-- Do not automatically rerun VPNObratno. A replacement pilot should follow only after the next bounded-stage/diagnostic changes are validated; use one exit and a small profile cap, then inspect the run to terminal state. No overlapping VPN run exists now.
+- Run #21 is terminal because GitHub enforced its maximum 12-minute job execution time. The run/job API reports `completed / cancelled`; the last visible marker is profile 6 fetch started, and there are no terminal logs or artifacts.
+- The profile-fetch hard boundary and durable diagnostics have now been implemented and validated on current code HEAD `c49dece...` (Run #209, 127 Python tests plus hosted-runner watchdog, Go format/test/build). No new VPN pilot has been dispatched.
+- Before a new pilot, re-query the live PR head and make sure no VPN workflow run is queued/in progress. Then, when authorized, run only one manual VPNObratno pilot: request one independently verified RU exit and cap profile attempts at six. Inspect logs, progress manifest and artifact through terminal state.
+- The manifest expected in the artifact is `reachability-output/vpn_gate_vpnobratto_progress.json`. Check its last per-profile event to distinguish a wall deadline, worker crash, DNS/TCP/TLS/header/body/close stall, and successful payload.
+- Do not infer target blocking from a timeout or missing artifact. A RU exit/ASN/organization alone is not proof of residential household access.
 - Keep PR #5 OPEN / DRAFT. Do not modify production GeoIP data/builders, DIRECT policy, ASN allowlists, `main`, `release`, PR #6 or other branches.
 
 ## Continuity rules
