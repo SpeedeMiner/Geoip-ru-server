@@ -1,14 +1,14 @@
 {
   "schema_version": 1,
-  "updated_at_utc": "2026-11-11T16:36:30Z",
+  "updated_at_utc": "2026-11-11T16:55:00Z",
   "repository": "SpeedeMiner/Geoip-ru-server",
   "pull_request": 5,
   "pull_request_url": "https://github.com/SpeedeMiner/Geoip-ru-server/pull/5",
   "branch": "feature/reachability-full-ru-kz-by",
-  "recorded_pr_head_before_checkpoint_commit": "9e2df8920fab45f293bd0faeb47f4459530a9e1d",
+  "recorded_pr_head_before_checkpoint_commit": "212e11f2f33a07a3c1630bbc51f5cb2b3d80b9a5",
   "base_sha": "a68e5d6589361814cb1cfedd2af7857e4af806fa",
-  "state": "RUN20_CANCELLED_NO_ARTIFACT; PINNED_DOH_ABSOLUTE_DEADLINE_IMPLEMENTED_AND_CI_JOB_GREEN; RUN21_NOT_DISPATCHED",
-  "current_phase": "INVESTIGATE_RUNNER_TIMEOUT_OVERRUN; DOH_SOURCE_TIMEOUT_GAP_FIXED_AND_VALIDATED; KEEP_LIVE_RUN_BLOCKED",
+  "state": "RUN20_CANCELLED_NO_ARTIFACT; RUNNER_TIMEOUT_PROCESS_GROUP_VERIFIED_ON_UBUNTU_24_04; RUN21_READY_FOR_ONE_BOUNDED_PILOT",
+  "current_phase": "RUNNER_WATCHDOG_PRECHECK_GREEN_ON_UBUNTU_24_04; OPENVPN_INHERITS_SUPERVISED_PROCESS_GROUP; READY_FOR_ONE_MANUAL_VPNOBRATNO_PILOT",
   "completed": [
     "repository_reconnaissance",
     "protobuf_inventory_exporter",
@@ -252,13 +252,17 @@
     "vpnobratto_slow_drip_doh_deadline_regression_test",
     "vpnobratto_validation_122_python_tests_go_success_run_43059474634",
     "vpnobratto_outer_sigalrm_swallowed_by_oserror_fallback_regression_test",
-    "vpnobratto_validation_123_python_tests_go_success_run_43059875117"
+    "vpnobratto_validation_123_python_tests_go_success_run_43059875117",
+    "runner_watchdog_process_group_preflight_added",
+    "runner_watchdog_process_group_preflight_passed_on_ubuntu_24_04_run_43062327051",
+    "openvpn_inherits_supervised_process_group_and_safe_config_has_no_daemon_directive"
   ],
-  "latest_successful_validation_run": 43059875117,
-  "latest_successful_validation_commit": "9e2df8920fab45f293bd0faeb47f4459530a9e1d",
+  "latest_successful_validation_run": 43062327051,
+  "latest_successful_validation_commit": "212e11f2f33a07a3c1630bbc51f5cb2b3d80b9a5",
   "test_counts": {
     "python_unit_tests": 123,
     "python_unit_tests_status": "PASS",
+    "watchdog_process_group_preflight": "PASS_ON_GITHUB_HOSTED_UBUNTU_24_04",
     "gofmt_status": "PASS",
     "go_tests_status": "PASS",
     "go_build_status": "PASS"
@@ -430,11 +434,12 @@
     "production_release_artifact_byte_delta_verified": false
   },
   "next_steps": [
-    "Keep Run #21 undispatched. The DoH response reader now enforces an absolute deadline, but Run #20's exact stall/runner failure remains unproven because its terminal logs and artifacts are unavailable.",
-    "Investigate GitHub Actions runner/job timeout behavior separately from application-level network deadlines; do not infer that the DoH defect caused the 13-minute Run #20 overrun.",
-    "If source-level review finds another unbounded operation or a demonstrable process-group cleanup gap, add a narrow regression test and validate it before any live dispatch.",
-    "After runner/watchdog termination is independently addressed and CI is green, run one manually dispatched VPNObratto pilot: source=vpnobratto, one verified RU exit requested, max six profile attempts.",
-    "Keep PR #5 OPEN / DRAFT; do not merge, mark ready, rebase, or change production GeoIP outputs, DIRECT policy, ASN allowlists, or PR #6."
+    "The ubuntu-24.04 runner process-group watchdog preflight is green (Run #200). Re-query the live feature branch head and confirm again that no VPN workflow run is queued or in progress.",
+    "Dispatch exactly one short VPNObratto pilot from feature/reachability-full-ru-kz-by: source=vpnobratno, request one verified RU exit, max six profile attempts. Do not overlap runs.",
+    "Monitor short phase checkpoints: profile listing/download results; host selection; OpenVPN process start; tunnel route; two-source exit IPv4/country consensus; target DNS A/AAAA and HTTPS; artifact upload. Stop interpreting at the last actual marker; do not infer later phases.",
+    "After terminal state, retrieve the full job log and artifact, verify artifact digest and reconcile summary/provider/measurement rows. No verified RU exit means no target measurement verdict.",
+    "Record whether exit network is demonstrably residential separately; a RU country/ASN/organization alone is not proof of household access.",
+    "Append the new run evidence to WORKLOG.md and update CHECKPOINT.json. Keep PR #5 OPEN/DRAFT and preserve main, production GeoIP, DIRECT policy, ASN allowlists and PR #6."
   ],
   "ci_policy": {
     "push_validation_paths": [
@@ -1902,5 +1907,60 @@
     "workflow_duration_seconds": 10,
     "outer_sigalrm_regression_test": "passed; simulates TimeoutError during read1, advances monotonic time beyond deadline, and verifies that doh_query does not try the next resolver.",
     "run20_relevance": "fetch_vpnobratto_bytes calls doh_query with a maximum four-second resolver timeout. Before this fix, doh_query used one inactivity-timeout response.read and caught the outer 20-second SIGALRM TimeoutError through its OSError fallback, potentially proceeding to another resolver without an absolute deadline. This is a plausible explanation for a profile fetch stalling at the last visible marker, but not proven because Run #20 terminal logs are unavailable; it does not explain the separate 7-minute GNU timeout and GitHub step/job timeout overrun."
+  },
+  "runner_timeout_preflight": {
+    "helper_path": ".github/reachability/runner_watchdog_preflight.py",
+    "helper_commit": "3ae66f2616b0154b804a46fa345a0e72b4af6307",
+    "workflow_path": ".github/workflows/reachability-validation.yml",
+    "workflow_update_commits": [
+      "8e06142cc6f7db34774daebc9a9ad6b3c9579a16",
+      "212e11f2f33a07a3c1630bbc51f5cb2b3d80b9a5"
+    ],
+    "runner_image": "ubuntu-24.04",
+    "run_id": 43062327051,
+    "job_id": 130667948305,
+    "tested_commit": "212e11f2f33a07a3c1630bbc51f5cb2b3d80b9a5",
+    "run_url": "https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43062327051",
+    "conclusion": "success",
+    "duration_seconds": 24,
+    "coreutils_version": "9.4",
+    "timeout_budget_seconds": 2,
+    "kill_after_seconds": 1,
+    "term_log_observed": true,
+    "kill_log_observed": true,
+    "timeout_return_code": -9,
+    "parent_pid": 2388,
+    "child_pid": 2389,
+    "process_group_id": 2387,
+    "parent_state_after": "absent",
+    "child_state_after": "absent",
+    "descendants_terminated": true,
+    "python_tests": 123,
+    "gofmt": "passed",
+    "go_test": "passed",
+    "go_build": "passed",
+    "interpretation": "A TERM-resistant parent and child in the same inherited process group were killed after TERM and KILL escalation on the same ubuntu-24.04 hosted image used by the VPN workflow. This verifies the GNU timeout process-tree cleanup mechanism for the tested topology.",
+    "limitations": [
+      "Synthetic process tree, not a live OpenVPN session.",
+      "Does not prove GitHub Actions controller/runner status updates or job-timeout cancellation cannot become stale.",
+      "Run #20 cause remains unknown because terminal logs and artifacts were unavailable.",
+      "The DoH slow-drip fix is plausible Run #20 relevance, not proven causality."
+    ],
+    "source_review": {
+      "openvpn_spawn": "subprocess.Popen without start_new_session, setsid or detached session; inherits Python supervisor process group",
+      "safe_config": "minimal allowlisted config; no daemon directive or arbitrary scripts/plugins",
+      "normal_cleanup": "terminate; wait 8s; kill; wait 5s",
+      "conclusion": "The child OpenVPN path is not intentionally detached from the timeout-supervised process group."
+    }
+  },
+  "active_vpn_workflow_check": {
+    "checked_at_utc": "2026-11-11T16:54:00Z",
+    "workflow": "Russian ISP VPN Gate reachability",
+    "workflow_url": "https://github.com/SpeedeMiner/Geoip-ru-server/actions/workflows/reachability-vpn-gate.yml",
+    "visible_runs": 20,
+    "latest_run_id": 43053531258,
+    "latest_run_conclusion": "cancelled",
+    "queued_or_in_progress_runs_visible": 0,
+    "interpretation": "No active or queued VPN workflow run was visible before the next pilot."
   }
 }
