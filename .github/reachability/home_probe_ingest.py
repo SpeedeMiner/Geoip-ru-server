@@ -77,6 +77,8 @@ def read_measurements(path: pathlib.Path) -> list[dict[str, Any]]:
 def validate_source(
     source: dict[str, Any], summary: dict[str, Any], required_country: str
 ) -> str:
+    if source.get("schema_version") != 1 or summary.get("schema_version") != 1:
+        raise ImportError("unsupported home-probe report schema version")
     observations = source.get("observations")
     if not isinstance(observations, list):
         raise ImportError("source metadata has no observations list")
@@ -93,8 +95,8 @@ def validate_source(
         raise ImportError("summary does not confirm two-source source-IP verification")
     if summary.get("automatic_upload") is not False or summary.get("geoip_mutation") is not False:
         raise ImportError("report does not carry the expected local-only/review-only policy")
-    if summary.get("proxy_environment_variables") not in ([], None):
-        raise ImportError("report indicates proxy environment variables were present")
+    if summary.get("proxy_environment_variables") != [] or summary.get("proxy_environment_clear") is not True:
+        raise ImportError("report does not prove that proxy environment variables were absent")
     if source.get("required_country") != required_country:
         raise ImportError("source report was collected for a different required country")
     if source.get("required_country_matches") is not True:
@@ -312,7 +314,7 @@ def ingest_report(args: argparse.Namespace) -> dict[str, Any]:
     dns_addresses = [item for item in observations if item["DNS_ADDRESS"]]
     result = {
         "generated_at": utc_now(),
-        "input_report_dir": str(report_dir),
+        "input_report_label": report_dir.name,
         "required_country": args.required_country,
         "source_public_ip": source_ip,
         "source_geoip_category": source_category,
