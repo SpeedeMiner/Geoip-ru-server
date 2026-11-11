@@ -544,3 +544,18 @@ Durable resume point for PR #5. After any conversation/network interruption, rea
 - At the latest live-log snapshot, the first connection attempt had not yet reported a TUN route. Independent exit IP/country verification had not started and no target DNS/HTTPS request had been sent. This is an in-progress attempt, not a negative reachability result.
 - Validation on the same feature-branch code commit #42999166787 passed 105 Python tests, Python compilation/JSON validation, `gofmt`, `go test ./...` and `go build`.
 - Keep PR #5 OPEN / DRAFT. No production builder, GeoIP data, release branch/assets, DIRECT policy, ASN allowlists or PR #6 were modified.
+
+
+### 2026-11-11 — Root cause analysis for the apparently stalled run #7
+
+- At 10:27 UTC the owner reported that run #7's live log had not advanced beyond:
+  `phase=origin_asn_selection completed selected_profiles=6 distinct_asns=6`
+  `openvpn_attempt=1/6 ... connect_timeout=5s`
+- The exact source at the run's checkout commit `12d0f98f9b5e5d18518e3a517d8858f69f6f426c` shows `openvpn_attempt` is emitted **before** server IP metadata, origin metadata fallback and reverse-DNS PTR lookup. OpenVPN is spawned only after those preflight operations. Therefore the 5-second `wait_for_tunnel` limit had not necessarily started when that log line appeared.
+- Critically, the old `resolve_ptr()` used `socket.gethostbyaddr()` without any timeout. This call can block in the system resolver indefinitely. That is the strongest code-supported explanation for the unchanged attempt marker, although the old run does not have intermediate preflight log markers and its exact blocked syscall cannot be proven from the available live log.
+- Also, the old run's server metadata and RIPEstat calls occur before OpenVPN is spawned (metadata calls are bounded individually but can add latency); the attempt marker did not distinguish any of those phases. The prior progress reporting treated that marker as proof that the OpenVPN 5-second timer had begun; this interpretation was wrong.
+- Fixed on the feature branch after run #7 was dispatched: `resolve_ptr()` now uses `getent hosts` with a hard 3-second subprocess timeout and fails open to an empty PTR string. Added flushed phase messages for server IP metadata, PTR lookup, OpenVPN process starting/started, tunnel route wait started, per-attempt failure and completion. This makes the preflight and actual tunnel wait independently visible.
+- Added three PTR tests: successful lookup uses the configured 3-second timeout, resolver timeout is non-fatal, and absence of `getent` skips the lookup. Latest validation run #43002007469 (https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43002007469) passed **108 Python tests**, Python compilation and JSON validation, `gofmt`, Go tests and Go build.
+- Current run #43000272971 (#7) remains `in_progress` on its original checkout commit `12d0f98`, not the fixed commit `b58a9ef`. Its last REST update was 10:02:55 UTC; the measurement step is still `in_progress`, report upload is pending and no artifacts exist. The code fixes do not retroactively alter a running job.
+- I did not send a GitHub cancel request: the connected GitHub API actions do not expose a cancel-run operation, and clicking Cancel in the saved browser session would act under the repository owner's GitHub identity, making attribution ambiguous. Given the owner previously disputed a cancellation attribution, I should have immediately explained this blocker and requested explicit approval rather than continuing passive polling.
+- Do not interpret lack of progress as a target reachability result. No confirmed RU tunnel, independent exit IP/country verification or target probe has been recorded for run #7.
