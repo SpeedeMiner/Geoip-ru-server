@@ -80,7 +80,7 @@ jobs:
           root = Path("v38-postrelease-audit")
           tsv = root / "v38_postrelease_prefix_review.tsv"
           with tsv.open(encoding="utf-8", newline="") as fh:
-              reader = csv.DictReader(fh, delimiter="\\t")
+              reader = csv.DictReader(fh, delimiter="\t")
               fields = list(reader.fieldnames)
               rows = list(reader)
           new_fields = [
@@ -142,7 +142,7 @@ jobs:
                   rpki_conflicts.append({"prefix": row["PREFIX"], "conflicts": conflicts})
 
           with tsv.open("w", encoding="utf-8", newline="") as fh:
-              writer = csv.DictWriter(fh, fieldnames=fields, delimiter="\\t", lineterminator="\\n")
+              writer = csv.DictWriter(fh, fieldnames=fields, delimiter="\t", lineterminator="\n")
               writer.writeheader()
               writer.writerows(rows)
 
@@ -157,7 +157,7 @@ jobs:
               "two_hour_aggregate": "RouteViews /rpki prefix snapshot from frr.routeviews.org full-table view; refreshed every two hours",
               "interpretation": "These are separate collection views and snapshots. Preserve their timestamps and report differences rather than collapsing them into one state."
           }
-          manifest_path.write_text(json.dumps(manifest, indent=2, sort_keys=True) + "\\n", encoding="utf-8")
+          manifest_path.write_text(json.dumps(manifest, indent=2, sort_keys=True) + "\n", encoding="utf-8")
           print("Exact-origin comparison counts:", json.dumps(manifest["exact_origin_agreement_counts"], sort_keys=True))
           print("Empty exact-NLRI prefixes:", json.dumps(manifest["empty_exact_origin_prefixes"]))
           print("Route-level vs two-hour VRP comparison:", json.dumps(manifest["route_level_vs_vrp_snapshot_counts"], sort_keys=True))
