@@ -23,17 +23,24 @@
 
 The first “Current repository state” section near the top of WORKLOG is historical and may be stale; prefer its newest dated entries plus CHECKPOINT.
 
-## Latest live pilot — Run #22 (IN PROGRESS / step deadline exceeded)
+## Latest live pilot — Run #22 (GITHUB JOB NON-TERMINAL AFTER 12-MINUTE CEILING)
 
 - Run [#22 / 43072239130](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43072239130); job [130702892228](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43072239130/job/130702892228).
 - Started 2026-11-11 17:51:55 UTC; job 17:51:58 UTC; measurement step 7 started 17:52:18 UTC. Branch `feature/reachability-full-ru-kz-by`, checkout SHA `447bdf6083b3d69b0fbdcf0e126cc27a0ee3db71`.
-- The checkout differs from code-tested SHA `c49dece293541d46b6af14282b382459164315d7` by nine documentation-only commits; `.github/reachability/vpn_gate.py` includes the same tested isolated worker and manifest code.
-- Setup steps 1–6 all succeeded. Listing HTTP 200 / 23,641 bytes / 35 profile links; five profiles downloaded and validated: `vpn712640336.opengw.net` → `92.124.94.110`; `vpn847521830.opengw.net` → `2.61.109.142`; `vpn856084155.opengw.net` → `93.157.20.218`; `vpn144814701.opengw.net` → `94.31.243.156`; `vpn953719594.opengw.net` → `5.143.32.148`.
-- Sixth profile `vpn950792227.opengw.net`, worker PID `3220`, completed DoH, pinned TCP/TLS to `93.127.223.115`, HTTP 200, and the supplied log shows body reads to 3,830 bytes. Last supplied trace is `body_read_completed ... chunk_bytes=1369 total_bytes=3830`; no later fetch-completed, profile-validation, server-IP-resolution or usable/skipped marker was supplied.
-- At 18:05:40 UTC GitHub still reported run/job/measurement step `in_progress`; upload step 8 `pending`; no artifact; live job log endpoint `BlobNotFound`. Measurement-step deadline 18:01:18 UTC and 12-minute job deadline 18:03:58 UTC have both passed; overrun was 102 seconds. Run `updated_at` stayed stale at 17:51:59 UTC.
-- High-priority but **unproven** next code location: `vpnobratno_fetch_trace()` prints/flushes the body-read marker, then synchronously updates the manifest using read/JSON/write/flush/`os.fsync`/`os.replace`. If the supplied log excerpt is complete, inspect this persistence call after the last marker; do not assume the HTTP read itself is stuck. The excerpt may be partial and GitHub live logs are inaccessible. New mitigation on current branch (not Run #22 checkout): commit `d15de0f6c879e5b3f692bbdbb15d725f12c0785b` removes per-phase `os.fsync`, keeps flush + atomic same-directory replace, and emits mkdir/read/temp-write/replace markers. Test commit `d9f2fff136fdc919730b99bf43c810f0ff23d96d` adds a no-fsync regression test; validation Run #211 (`43074433130`) was running at 18:05:40 UTC.
-- No OpenVPN attempt, installed tunnel route, verified RU exit or target measurement is confirmed. Do not attribute the stall to VPNObratno/DoH/targets.
-- Do not cancel Run #22 or start a parallel VPN workflow. On terminal state, retrieve logs and uploaded `reachability-output/vpn_gate_vpnobratto_progress.json` to identify the last persisted event.
+- The checkout differs from validated code SHA `c49dece293541d46b6af14282b382459164315d7` only by documentation changes; it has the same isolated worker before the new manifest-fsync mitigation.
+- Setup steps 1–6 all succeeded. Listing HTTP 200 / 23,641 bytes / 35 links. Five profiles downloaded and validated:
+  - `vpn712640336.opengw.net` → `92.124.94.110`
+  - `vpn847521830.opengw.net` → `2.61.109.142`
+  - `vpn856084155.opengw.net` → `93.157.20.218`
+  - `vpn144814701.opengw.net` → `94.31.243.156`
+  - `vpn953719594.opengw.net` → `5.143.32.148`
+- Sixth profile `vpn950792227.opengw.net`, worker PID `3220`, completed DoH, pinned TCP/TLS to `93.127.223.115`, HTTP 200; supplied log shows body reads to 3,830 bytes. Last supplied trace is `body_read_completed ... chunk_bytes=1369 total_bytes=3830`; no later profile fetch-completed / validation / server-IP resolution result is available.
+- GitHub REST snapshot at 18:07:30 UTC: run/job/step 7 still `in_progress`; report upload step 8 `pending`; no artifact; job log endpoint `BlobNotFound`; run `updated_at` stale at 17:51:59 UTC. This is 3m32s beyond the 12-minute job limit (18:03:58 UTC); measurement step deadline (18:01:18 UTC) and GNU watchdog + 5s grace (~17:59:23 UTC) also passed.
+- The supplied log ends at a trace marker that is printed before `record_vpnobratno_progress()`. The previous implementation then read/rewrote the JSON manifest, flushed and called `os.fsync()` before `os.replace()`. This is a high-priority but unproven suspect if the pasted log is complete; the paste may be partial and GitHub live logs are unavailable.
+- Follow-up source commit `d15de0f6c879e5b3f692bbdbb15d725f12c0785b` now removes per-phase `fsync` (keeps temp-file flush + same-directory atomic replace) and emits manifest stages for mkdir/read/temp-write/replace. Regression commit `d9f2fff136fdc919730b99bf43c810f0ff23d96d` verifies that phase writes never call `os.fsync`.
+- Validation [Run #211](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43074433130), job `130710450443`, commit `d9f2fff...`: **SUCCESS**, 128 Python tests, watchdog process-tree preflight, Go formatting/tests/build all passed. These commits do not affect Run #22's pinned checkout.
+- No confirmed OpenVPN attempt, route installed, RU public exit or target measurements. Do not attribute target blocks or a VPNObratno service fault.
+- Do not cancel or overlap Run #22. After terminal state, retrieve complete logs and `reachability-output/vpn_gate_vpnobratto_progress.json`.
 
 ## Current branch engineering state — FETCH WORKER ISOLATION VALIDATED
 
@@ -112,10 +119,10 @@ Workflow integration: `.github/workflows/reachability-validation.yml` now runs o
 
 ## Next steps
 
-- **Run #22 (43072239130) remains non-terminal in GitHub**, 102 seconds beyond its configured 12-minute job deadline as of 18:05:40 UTC. Step 7 remains in_progress, upload pending, no artifact and live logs BlobNotFound. Do not start another VPN run.
-- Inspect validation [Run #211](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43074433130) for commit `d9f2fff...`; it validates removal of per-phase manifest fsync and the new atomic-manifest-write regression test.
-- Continue polling Run #22 only. On terminal state, fetch complete logs/artifacts and inspect `reachability-output/vpn_gate_vpnobratto_progress.json`; no OpenVPN attempt, route, verified RU exit or target result is confirmed.
-- The likely next operation after the last profile-6 log marker is manifest persistence, but this remains a hypothesis until logs/manifest confirm it. Current branch mitigation does not affect Run #22's already pinned checkout.
+- **Run #22 (43072239130) is still non-terminal in GitHub**; the last snapshot at 18:07:30 UTC showed it 212 seconds beyond its 12-minute job limit, step 7 in_progress, upload pending, no artifact and logs BlobNotFound. Do not launch another VPN workflow.
+- Inspect the terminal status and artifact/logs for Run #22. Five profiles are complete; profile 6 only has DoH/TCP/TLS/HTTP 200 and partial response-body evidence. No OpenVPN attempt, tunnel route, verified RU exit or target rows have been confirmed.
+- New manifest-fsync mitigation has passed [Run #211](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43074433130): 128 Python tests, hosted runner watchdog preflight, Go checks all green. Code commit `d15de0f...`; regression test commit `d9f2fff...`. Run #22 uses the prior checkout and is unaffected.
+- On the next pilot after Run #22 is terminal, use this updated code; inspect the new `progress_manifest_*operation=...` markers to distinguish mkdir/read/temp-write/atomic-replace stalls, and inspect the uploaded per-profile manifest.
 - Keep PR #5 OPEN / DRAFT and preserve production GeoIP/DIRECT/ASN policy, `main`, `release` and PR #6.
 
 
