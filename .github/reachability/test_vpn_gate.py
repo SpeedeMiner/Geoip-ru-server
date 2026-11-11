@@ -275,7 +275,7 @@ class UbuntuAptDNSBootstrapTests(unittest.TestCase):
 
         with tempfile.TemporaryDirectory() as directory:
             hosts_file = pathlib.Path(directory) / "hosts"
-            hosts_file.write_text("127.0.0.1 localhost\\n", encoding="utf-8")
+            hosts_file.write_text("127.0.0.1 localhost\n", encoding="utf-8")
             resolved = vpn_gate.install_ubuntu_apt_host_overrides(hosts_file, resolver)
 
             self.assertEqual(resolved, {
@@ -301,7 +301,7 @@ class UbuntuAptDNSBootstrapTests(unittest.TestCase):
     def test_doh_failure_does_not_write_a_partial_hosts_override(self):
         with tempfile.TemporaryDirectory() as directory:
             hosts_file = pathlib.Path(directory) / "hosts"
-            original = "127.0.0.1 localhost\\n"
+            original = "127.0.0.1 localhost\n"
             hosts_file.write_text(original, encoding="utf-8")
 
             def resolver(hostname, record_type, timeout):
@@ -317,7 +317,7 @@ class UbuntuAptDNSBootstrapTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             hosts_file = pathlib.Path(directory) / "hosts"
             hosts_file.write_text(
-                "127.0.0.1 localhost\\n" + vpn_gate.APT_HOSTS_BLOCK_START + "\\n",
+                "127.0.0.1 localhost\n" + vpn_gate.APT_HOSTS_BLOCK_START + "\n",
                 encoding="utf-8",
             )
             with self.assertRaisesRegex(vpn_gate.ProbeError, "inconsistent"):
