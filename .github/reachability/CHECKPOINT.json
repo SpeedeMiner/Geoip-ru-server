@@ -1,14 +1,14 @@
 {
   "schema_version": 1,
-  "updated_at_utc": "2026-11-11T06:19:00Z",
+  "updated_at_utc": "2026-11-11T06:42:00Z",
   "repository": "SpeedeMiner/Geoip-ru-server",
   "pull_request": 5,
   "pull_request_url": "https://github.com/SpeedeMiner/Geoip-ru-server/pull/5",
   "branch": "feature/reachability-full-ru-kz-by",
-  "recorded_pr_head_before_checkpoint_commit": "30da4c3192a5157ecf0f16b2764772996fb79d4d",
+  "recorded_pr_head_before_checkpoint_commit": "6416b24db269701fc1ad87bf21290b6d720f2f61",
   "base_sha": "a68e5d6589361814cb1cfedd2af7857e4af806fa",
-  "state": "HOME_PROBE_IMPORTER_READY_FOR_CONSENTED_PILOT",
-  "current_phase": "VOLUNTEER_HOME_PROBE_AND_LOCAL_GEOIP_REVIEW",
+  "state": "HOME_PROBE_IMPORTER_CONSISTENCY_VALIDATED",
+  "current_phase": "AWAIT_CONSENTED_RU_HOME_REPORT",
   "completed": [
     "repository_reconnaissance",
     "protobuf_inventory_exporter",
@@ -137,12 +137,21 @@
     "home_probe_source_candidate_exact_ip_only",
     "home_probe_report_target_dns_and_https_validation",
     "home_probe_regression_tests_26_total_home_probe",
-    "home_probe_ci_84_python_tests_plus_go_success_run_42971505831"
+    "home_probe_ci_84_python_tests_plus_go_success_run_42971505831",
+    "home_probe_importer_dns_https_consistency_gate",
+    "home_probe_importer_ru_only_source_candidate_policy",
+    "home_probe_importer_asn_org_provenance_reconciliation",
+    "home_probe_importer_summary_target_role_reconciliation",
+    "home_probe_kz_source_non_candidate_regression_test",
+    "home_probe_dns_https_consistency_regression_tests",
+    "home_probe_asn_org_consistency_regression_tests",
+    "home_probe_ci_90_python_tests_plus_go_success_run_42974036482",
+    "home_probe_importer_readme_ru_candidate_policy_clarified"
   ],
-  "latest_successful_validation_run": 42971505831,
-  "latest_successful_validation_commit": "e729971d11c39389015bfeca43cc6e39ff90fed5",
+  "latest_successful_validation_run": 42974036482,
+  "latest_successful_validation_commit": "4879ac5e3a513c75c79cb3e19178a53fa9e7242a",
   "test_counts": {
-    "python_unit_tests": 84,
+    "python_unit_tests": 90,
     "python_unit_tests_status": "PASS",
     "gofmt_status": "PASS",
     "go_tests_status": "PASS",
@@ -296,11 +305,11 @@
     "automatic_geoip_mutation": false
   },
   "next_steps": [
-    "Obtain one or more explicitly consented home-probe reports from actual Russian household ISP connections. Begin with --max-targets 3; then optionally run all RU-scoped targets on the same connection after the smoke test.",
-    "For each report, generate the exact complete inventory from release/geoip_RU.dat, then run home_probe_ingest.py. Review source IP mapping, observed ASN/operator, route visibility and DNS/HTTPS observations.",
-    "Treat HOME_PROBE_SOURCE_IP rows as exact-IP review leads only. Confirm origin ASN and household/access-network status independently before making any CIDR proposal; never infer a prefix from one IP.",
-    "Once several distinct operators/regions submit reports, aggregate repeat observations by source ASN/prefix and review the actual RU range list. Globalping/VPN Gate remain supplementary.",
-    "Keep PR #5 Draft. No merge/rebase; do not modify production builder, geoip_RU.dat, release assets, DIRECT policy, ASN allowlists, main/release or PR #6."
+    "Obtain one or more explicitly consented reports from actual Russian household ISP connections. Run the local probe on the direct connection with VPN/proxy disabled; start with --max-targets 3. No live home-network probe has yet been performed.",
+    "Generate the full RU/PRIVATE inventory from the exact published release/geoip_RU.dat and run home_probe_ingest.py on the volunteer's reviewed local report.",
+    "Review any HOME_PROBE_SOURCE_IP exact-IP lead against RIPEstat/BGP origin ASN, provider/operator and known access-network classification; do not infer a prefix from one IP.",
+    "Collect reports from multiple independently operated ISPs and regions, then aggregate repeated source-IP observations by validated ASN/prefix and compare them with the RU prefix inventory. DNS destination IPs are a separate category and are not source ISP addresses.",
+    "Keep PR #5 OPEN / DRAFT. No merge/rebase; do not modify production builder, geoip_RU.dat, release assets, DIRECT policy, ASN allowlists, main/release or PR #6."
   ],
   "ci_policy": {
     "push_validation_paths": [
@@ -337,18 +346,18 @@
     "vpn_gate_push_once_daily_schedule_enabled": false
   },
   "pending_validation": {
-    "commit": "e729971d11c39389015bfeca43cc6e39ff90fed5",
+    "commit": "4879ac5e3a513c75c79cb3e19178a53fa9e7242a",
     "workflow": "Reachability validation",
-    "run_id": 42971505831,
-    "run_url": "https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/42971505831",
+    "run_id": 42974036482,
+    "run_url": "https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/42974036482",
     "status": "SUCCESS",
-    "verified_python_test_count": 84,
+    "verified_python_test_count": 90,
     "go_checks": [
       "gofmt",
       "go test ./...",
       "go build"
     ],
-    "note": "Run #131 logs report Ran 84 tests and successful Go formatting/tests/build. All executable files and the validation workflow at the tested head were included."
+    "note": "Run #136 logs report Ran 90 tests, OK, and successful Go format/test/build. The only later changes before this checkpoint are WORKLOG/README documentation; validation path filters do not execute on those documentation-only changes."
   },
   "vpn_gate_measurement": {
     "source": "VPN Gate official CSV API",
@@ -603,6 +612,17 @@
     ],
     "pilot_status": "READY_FOR_EXPLICITLY_CONSENTED_VOLUNTEER_RUN",
     "live_home_probe_performed": false,
-    "next_run_instructions": "Start with --max-targets 3 on an actual Russian household ISP connection with VPN/proxy disabled; inspect local reports; run the importer against the complete inventory generated from the exact published release/geoip_RU.dat."
+    "next_run_instructions": "Start with --max-targets 3 on an actual Russian household ISP connection with VPN/proxy disabled; inspect local reports; run the importer against the complete inventory generated from the exact published release/geoip_RU.dat.",
+    "importer_consistency": {
+      "requires_https_attempt_when_dns_has_answer": true,
+      "forbids_https_response_when_dns_has_no_answer": true,
+      "requires_https_tested_address_to_match_first_dns_address": true,
+      "summary_source_attribution_must_match_source": true,
+      "summary_asn_orgs_must_match_provider_observations": true,
+      "summary_target_role_counts_must_match_measurements": true,
+      "ru_source_candidate_created_only_for_required_country_ru": true,
+      "kz_by_source_candidate_creation": false,
+      "tests_in_importer": 18
+    }
   }
 }
