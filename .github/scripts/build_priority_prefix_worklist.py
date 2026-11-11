@@ -7,7 +7,7 @@ import ipaddress
 from collections import Counter
 from pathlib import Path
 
-EXPECTED = (56, 52, 4)
+EXPECTED: tuple[int, int, int] | None = None  # exact scope is derived from the validated triage input
 HEADER = (
     "REVIEW_ORDER", "REVIEW_PRIORITY", "PRIMARY_REVIEW_TRACK", "PREFIX", "FAMILY",
     "GLOBAL_BGP_ORIGIN_ASNS", "RPKI_INVALID_ORIGINS", "RPKI_UNKNOWN_ORIGINS",
