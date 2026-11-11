@@ -437,7 +437,7 @@ Durable resume point for PR #5. After any conversation/network interruption, rea
 - PR #5 remains OPEN / DRAFT. Changes are limited to .github/reachability/ and .github/workflows/reachability-*; no production builder, release/geoip_RU.dat, release assets, DIRECT policy, ASN allowlists, main/release or PR #6 were touched.
 
 
-### 2026-11-11 — Tune the first VPNObratno pilot to exercise bounded profile fallback — validation pending
+### 2026-11-11 — Tune the first VPNObratno pilot to exercise bounded profile fallback — CI PASS
 
 - Reviewed the current VPNObratno listing and confirmed the published OpenVPN links include per-node UDP and IP UDP variants, with TCP and IP TCP on some nodes; several nodes expose fewer variants than others.
 - Found a configuration issue in the first manual pilot defaults: it requested three successful RU exits while allowing only three profile attempts. That left no practical retry budget for alternative profile variants.
@@ -446,5 +446,5 @@ Durable resume point for PR #5. After any conversation/network interruption, rea
 - Added a regression test that invokes the CLI with only the required inventory path and verifies source=vpnobratno, max_servers=1, max_attempts=6.
 - Updated README to explain the one-exit/six-profile pilot budget.
 - This is a configuration and deterministic-test improvement only. It does not establish a working tunnel or any target accessibility result. Do not infer a residential line from VPNObratno's listing.
-- Validation is pending for the code/workflow changes; update this entry and CHECKPOINT only after inspecting the full GitHub Actions logs.
+- Latest validation: GitHub Actions run #42979907101 (https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/42979907101) passed on code/workflow commit 0961e543b723dd90c14a4c3c5ed5cad931d0cc88. Full logs confirm Ran 96 tests, OK; gofmt, go test ./... and go build also passed. A concurrent earlier attempt #42979881032 was cancelled by the newer validation run; it is not the final result.
 - PR #5 remains OPEN / DRAFT. No production builder, release database/assets, DIRECT policy, ASN allowlists, main/release or PR #6 were touched.
