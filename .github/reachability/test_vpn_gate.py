@@ -355,20 +355,24 @@ class VPNGateDoHTests(unittest.TestCase):
 
         class FakeResponse:
             status = 200
-            fp = None
             def __init__(self, sock):
                 self.fp = type("FakeFP", (), {
                     "raw": type("FakeRaw", (), {"_sock": sock})()
                 })()
-            def read1(self, limit):
-                return json.dumps({
+                self.payload = json.dumps({
                     "Status": 0,
                     "Answer": [
                         {"type": 1, "data": "8.8.8.8"},
                         {"type": 28, "data": "2001:4860:4860::8888"},
                         {"type": 1, "data": "10.0.0.1"},
                     ],
-                }).encode()[:limit]
+                }).encode()
+                self.read = False
+            def read1(self, limit):
+                if self.read:
+                    return b""
+                self.read = True
+                return self.payload[:limit]
 
         class FakeConnection:
             def __init__(self, host, address, timeout):
