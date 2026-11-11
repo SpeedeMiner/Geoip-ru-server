@@ -90,8 +90,8 @@ def compare_status(route_state: str, ripe_state: str) -> str:
     ripe = normalize_ripestat_status(ripe_state)
     if "unusable" in {route, ripe}:
         return "UNUSABLE_OR_MISSING_STATE"
-    if "unknown" in {route, ripe}:
-        return "NO_DECISIVE_ROA_STATE"
+    if route == "unknown" and ripe == "unknown":
+        return "BOTH_UNKNOWN_NO_ROA"
     return "MATCH" if route == ripe else "STATUS_DISAGREEMENT"
 
 
