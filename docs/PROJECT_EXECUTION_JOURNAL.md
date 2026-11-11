@@ -23,7 +23,7 @@
 |---|---|---|---|---|
 | #6 | OPEN / DRAFT | `audit/exact-origin-followup-2026-11` | `9014b18a2f7bf4de9d4493d19b50f399b57b0e3e` | Exact-NLRI / RPKI evidence, review-only |
 | #7 | OPEN / DRAFT | `docs/source-improvement-plan-2026-11` | `3f3dbb51c999b0de833ebda233e7b02f8c082b35` | Source inventory and prefix-audit plan, audit-only |
-| #8 | OPEN / DRAFT | `experiment/vpn-route-candidate-build-2026-11` | `453bf1f69c28fa2f956a7616b3b35af3bcbd1b22` (last branch head before this append-only journal update) | Pinned VPN source comparison and v38 hostname/IP review |
+| #8 | OPEN / DRAFT | `experiment/vpn-route-candidate-build-2026-11` | `3de2dd1051623afed3212bc39c1af45858fb85f4` (workflow change; this append-only journal update follows) | Pinned VPN source comparison and v38 hostname/IP review |
 | #9 | OPEN / DRAFT | `feature/geoip-direct-rukzby-v38` | `b73c9de3be254b1074eff160f5b697ac2762b421` | v38 candidate plus Antifilter BGP direct-block evidence procedure |
 
 Latest metadata check confirms all four PRs are open, draft=true, merged=false, base=main. All four branch names are present. PR #6 and #7 HEADs were unchanged; PR #8 and #9 HEADs above include the work in this journal.
@@ -118,7 +118,7 @@ Important limitations:
 ### CI history
 
 - Run #18 `43064874646` on commit `160987d...` completed `cancelled` after the enrichment step was cancelled when a later commit landed on the same branch (`cancel-in-progress`). `Run unit tests` and `Build pinned VPN route candidates` succeeded. Enrichment did not produce a complete artifact. This is not a test failure or evidence of no results.
-- Run #19 `43065567757` on branch head `f9d6ec1...` is the current replacement run. At last check it was `in_progress`: unit tests SUCCESS; pinned candidate build SUCCESS; v38 exact-host enrichment IN PROGRESS; artifact upload pending; no artifact yet. Do not claim enrichment success until run completes and artifact/manifest are inspected.
+- Run #19 `43065567757` on branch head `f9d6ec1...` was cancelled in attempt 1; attempt 2 was also cancelled without a new artifact. In both observed attempts, the source build and unit-test steps had succeeded in attempt 1, while enrichment did not produce a final artifact. Cancellation cause is UNKNOWN. Do not claim enrichment success.
 - PR #8 remains Draft. Workflow is candidate-only; no production branches/assets affected.
 
 ## 5. PR #9 Antifilter `65444:210` BGP task
@@ -171,7 +171,7 @@ Before doing anything:
 1. Read this journal from the latest HEAD of `experiment/vpn-route-candidate-build-2026-11`.
 2. Re-check PRs #6–#9 metadata/draft/head SHA and only the four named branches. Do not query or inspect PR #5 or its branch.
 3. Re-check `main` and `release` SHAs; stop if either unexpectedly changed and do not attempt to update them.
-4. Check Actions run #19 `43065567757`. If still running, inspect exact current step. If completed, download its artifact, verify ZIP SHA-256, inspect `manifest.json`, `v38_pr8_host_ip_live_enrichment.tsv`, and `raw_lookup_responses.jsonl.gz`. Reconcile all 360 rows; report missing/error rows distinctly. No row may be auto-promoted.
+4. Check the newest PR #8 candidate workflow run. As of this checkpoint run #23 `43067107469` is pending on commit `3de2dd1...`. If completed, download its artifact, verify ZIP SHA-256, inspect `manifest.json`, `v38_pr8_host_ip_live_enrichment.tsv`, and `raw_lookup_responses.jsonl.gz`. Reconcile all 360 rows; report missing/error rows distinctly. No row may be auto-promoted.
 5. Append a new dated entry below with run ID, head SHA, status, artifact ID/name/bytes/hash, input/output hashes, counts, failures and decision. Update the concise current-state table above only after a completed verified result.
 6. Continue BGP task only after the owner supplies evidence that the CAPTCHA-protected VPS registration was completed and its session is available. Do not infer registration from chat or use public collectors as a substitute.
 7. Keep PR #6–#9 Draft. No merge, Ready, production publish, release, tag or CDN action.
@@ -215,3 +215,11 @@ Append the next dated continuation here. Record exactly what was read, what was 
 - Immediate follow-up showed run #19 `run_attempt=2`, status `pending`, on original workflow head `f9d6ec1f36199bae6c9de9502ec43ee91eb99d9a`; no attempt-2 jobs or artifacts had appeared yet.
 - The run's candidate-build code is unchanged from the verified branch content; docs-only journal commits are not in the workflow's path filters. Wait for attempt 2 to finish before declaring the 360-IP enrichment result.
 - Safety recheck: PRs #6–#9 OPEN/DRAFT; `main` `580a25a...`; `release` `d780450...`; no production changes.
+
+### 2026-11-11 — disable automatic cancellation for long candidate review
+
+- Rechecked run #19 `43065567757`: attempt 1 and attempt 2 both concluded `cancelled`; no artifact produced. GitHub's available job-step metadata does not identify a reliable cancel actor/reason. Cause remains UNKNOWN.
+- To protect the long-running 360-IP enrichment from future same-PR events, changed only PR #8 `.github/workflows/vpn-route-candidate-build.yml` `concurrency.cancel-in-progress` from `true` to `false`. This means newer events queue rather than cancel the active candidate review.
+- Workflow change commit: `3de2dd1051623afed3212bc39c1af45858fb85f4`. PR #8 remains OPEN / DRAFT.
+- GitHub triggered new candidate-only run #23: `43067107469`, workflow `VPN route source candidate build`, head `3de2dd1...`; at last check status `pending`, no job or artifact yet.
+- No production/v38 build workflow was dispatched. PR #9 and production refs untouched.
