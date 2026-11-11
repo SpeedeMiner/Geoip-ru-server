@@ -1,6 +1,6 @@
 # Capturing direct RKN IP-block evidence from Antifilter.network BGP
 
-**Purpose:** create an independent, timestamped evidence snapshot for deciding which current `ip.lst` / `ipresolve.lst` entries are genuine IP-layer blocks and which are only DNS-resolved addresses. This document does not authorize any immediate change to the v38 block set.
+**Purpose:** optional future capture of an independent, timestamped snapshot to distinguish community `65444:210` direct-block records from the wider host-IP list. BGP registration is not a v38 release prerequisite. The current no-BGP public-list fallback is documented in `docs/V38_PUBLIC_RKN_SOURCE_CROSSCHECK.md`. This document does not authorize any immediate change to the v38 block set.
 
 ## Community semantics
 

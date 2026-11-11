@@ -11,6 +11,7 @@ on:
       - ".github/scripts/test_*.py"
       - "docs/GEOIP_RU_V38_POLICY.md"
       - "docs/GEOIP_RU_V38_SOURCE_REGISTRY.tsv"
+      - "docs/V38_PUBLIC_RKN_SOURCE_CROSSCHECK.md"
   schedule:
     # Daily refresh; one unified DIRECT set covers RU+BY+KZ, with bounded blocked-destination carve-outs.
     - cron: "45 3 * * *"
@@ -3608,6 +3609,9 @@ jobs:
             - v38 downloads Antifilter Download `ipsum.lst` as a review-only /24 summary of individual blocked IPs; it is not automatically carved because each /24 may route unrelated shared-hosting/CDN addresses through VPN.
             - The report publishes the potential DIRECT address-space impact of these /24 candidates in `geoip_RU_v38_blocked_provenance.tsv`; only exact-host and bounded subnet exclusions already approved by the v37 policy are automatically applied.
             - Community Antifilter and Re-filter suggestions remain review-only; privacy/telemetry labels do not change DIRECT.
+            - The no-BGP public-source fallback cross-checks pinned bol-van/rulist ipban4 vs resolved4 and correlated prebuilt datasets; it does not claim or infer Antifilter community 65444:210 membership.
+            - BGP registration is not a v38 release gate. All 360 new Lib4u/Jirnobruh host-IP candidates remain review-only; shared CIDR matches are not bulk-carved or promoted.
+            - Full pinned refs, candidate-match counts, enrichment limitations and source lineage are documented in [V38 public-source cross-check](https://github.com/\${{ github.repository }}/blob/main/docs/V38_PUBLIC_RKN_SOURCE_CROSSCHECK.md).
             - GeoIP cannot distinguish unrelated domains on the same IP; domain-only RKN rules remain a separate client geosite layer.
 
             ## Audit outputs

@@ -8,9 +8,9 @@
 
 ## 1. Resume point and objective
 
-Resume at acquisition of a timestamped Antifilter.network BGP RIB snapshot filtered to standard community `65444:210`.
+Continue the v38 source audit without registering a BGP session. The alternative is a pinned public-list cross-check using existing Antifilter inputs, the separate `bol-van/rulist` `reestr_ipban4.txt` and `reestr_resolved4.txt` snapshots, and prebuilt secondary GeoIP lists.
 
-The objective is to distinguish the provider's classification of directly blocked IP addresses from the wider unsummarized host-IP list. This snapshot is review evidence only. It does not authorize changing the v38 blocked set, DIRECT output, production builder, release assets, or policy.
+The BGP route snapshot would provide stronger community-level evidence, but registration is not required to build or release v38. No membership in community `65444:210` is claimed or inferred. Current approved blocked inputs remain unchanged unless a separate exact-prefix review authorizes a change.
 
 ## 2. Confirmed community semantics
 
@@ -91,16 +91,19 @@ Absence from one snapshot is not proof that a prefix is safe for DIRECT. Preserv
 - Checked public AS65444 visibility and confirmed its private-use ASN status; public collectors cannot substitute for the actual 65444 customer session.
 - No v38 build was rerun. No production branch, release, tag, GeoIP binary, DIRECT policy, blocked set, or other PR was changed.
 
-## 7. Next action / blocker
+## 7. No-BGP fallback and current release decision
 
-**Next action:** complete the manual CAPTCHA-protected registration for the stable VPS, using local ASN `64999`, and record the registration confirmation and current peer details. Then establish the isolated BIRD session and capture the complete timestamped IPv4/IPv6 RIB.
+BGP registration is **not a blocker**. The public fallback and exact comparison are maintained in `docs/V38_PUBLIC_RKN_SOURCE_CROSSCHECK.md`.
 
-No snapshot can honestly be reported until the registered BGP session has been observed as established and the route tables have been exported and hashed. If registration is not yet complete, the next operator input required is the registered VPS/public-IP confirmation and the peer details shown after registration.
+Pinned `bol-van/rulist` commit `f9ea9704544590bf0aff817acc73b7e00261a849` (2026-11-08T07:21:01Z) separates `reestr_ipban4.txt` from `reestr_resolved4.txt`. In the 360 Lib4u/Jirnobruh residual candidates, 17 IPs are contained by 11 ipban4 CIDRs (none is an exact /32 source row); 9 are in resolved4, with 8 overlapping ipban4. All 360 stay REVIEW because matches include shared cloud/CDN prefixes and do not reproduce community 65444:210.
 
-## 8. Non-negotiable safety boundary
+PR #8 run #23 (43067107469) completed unit tests, candidate build, all 360 RIPE enrichment rows and artifact upload successfully. All 360 candidates have a route observed; 318 have RPKI valid and 42 unknown. RDAP did not provide usable holder results. Full hashes and source caveats are in the public cross-check document.
 
-This checkpoint is evidence acquisition only. Do not change `geoip_RU.dat`, the production builder, blocked inputs, v38 manifest, `main`, `release`, tags, CDN assets, or the release workflow as part of capture. Keep PR #9 Draft. Keep PRs #5–#8 separate and untouched. No merge or production publish is requested.
+**Release position:** v38 uses the existing approved exact-host and bounded-subnet inputs; no BGP registration or snapshot is required for release. Do not expand /24, /22 or cloud/CDN ranges from an aggregate. Keep unresolved host-IP candidates outside DIRECT until a distinct exact-prefix decision is supported.
 
+## 8. Safety boundary
+
+The user has now explicitly requested that v38 be brought to release. This supersedes the earlier hold on PR #9 only. Do not modify PR #5 or branch `feature/reachability-full-ru-kz-by`; do not change, ready or merge PRs #6–#8. Do not include their changes in PR #9. The only production publication permitted by this updated instruction is the v38 release resulting from PR #9, after its current candidate build succeeds and the resulting artifact is verified. The release workflow must publish from `main` only.
 
 ## 9. Cross-chat recovery journal
 
