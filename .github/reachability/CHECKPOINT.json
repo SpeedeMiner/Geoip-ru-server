@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_at_utc": "2026-11-11T17:05:00Z",
+  "updated_at_utc": "2026-11-11T17:08:00Z",
   "repository": "SpeedeMiner/Geoip-ru-server",
   "pull_request": 5,
   "pull_request_url": "https://github.com/SpeedeMiner/Geoip-ru-server/pull/5",
@@ -1990,6 +1990,10 @@
     "read_first_resume_guide_commit": "ee7ee866692fc2bbc487e837a1da78124d60fcf4",
     "hosted_runner_watchdog_worklog_commit": "67c6cddfdbbae177fe40d50adaf0e0a34ba82fd4",
     "blocked_dispatch_worklog_commit": "30179eb3f92b0f1400ccf0d19e1ede2130ef9f9e",
-    "note": "Documentation and checkpoint commits intentionally do not trigger another VPN measurement or code-validation workflow."
+    "note": "Documentation and checkpoint commits intentionally do not trigger another VPN measurement or code-validation workflow.",
+    "read_first_resume_guide_initial_commit": "ee7ee866692fc2bbc487e837a1da78124d60fcf4",
+    "read_first_resume_guide_blocker_update_commit": "8761626e83c08bbe6a0a98a38b8fccd0b2bff505",
+    "final_worklog_entry_commit": "01085045a9e224a9abe9a4b7dd36d3f32f67da69",
+    "checkpoint_commit_pending": "this commit"
   }
 }
