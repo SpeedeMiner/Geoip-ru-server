@@ -733,6 +733,13 @@ jobs:
           print("Unique RU-registered address prefixes:", len(rir_prefixes))
           PY
 
+          # v38 separately inventories the full RU+BY+KZ public address-resource
+          # set. Registration is DIRECT evidence here, not a physical-geolocation claim.
+          python3 .github/scripts/build_rir_rukzby_prefixes.py \
+            --afrinic "$AFRINIC_STATS" --apnic "$APNIC_STATS" --arin "$ARIN_STATS" \
+            --lacnic "$LACNIC_STATS" --ripencc "$RIPENCC_STATS" \
+            --output "$RIR_RUKZBY_PREFIX_INPUT" --stats "$RIR_RUKZBY_STATS"
+
           # Convert the official IANA registries into exact non-globally-reachable
           # prefixes and explicit globally-reachable exceptions.
           python3 - "$IANA_V4_CSV" "$IANA_V6_CSV" \
@@ -836,8 +843,10 @@ jobs:
                       "$GOLUKON_INPUT" "$V2FLY_INPUT" "$V2FLY_SHA_INPUT" \
                       "$LOYALSOLDIER_RU_INPUT" "$LOYALSOLDIER_BY_INPUT" "$LOYALSOLDIER_PRIVATE_INPUT" \
                       "$BY_KZ_ASN_REGISTRY" "$BLOCKED_IP_INPUT" "$BLOCKED_IP_RAW_INPUT" \
-                      "$BLOCKED_IPRESOLVE_INPUT" "$BLOCKED_SUBNET_INPUT" "$BLOCKED_REVIEW_INPUT" \
-                      "$BLOCKED_STATS_INPUT" "$BLOCKED_CHECKSUMS_INPUT" "$HXEHEX_INPUT" "$W1ZARDZ_INPUT" "$AFRINIC_STATS" "$APNIC_STATS" \
+                      "$BLOCKED_IPRESOLVE_INPUT" "$BLOCKED_SUBNET_INPUT" "$BLOCKED_IPSUM_INPUT" "$BLOCKED_REVIEW_INPUT" \
+                      "$BLOCKED_STATS_INPUT" "$BLOCKED_CHECKSUMS_INPUT" "$HXEHEX_INPUT" "$W1ZARDZ_INPUT" \
+                      "$KY_STANDARD_V4_INPUT" "$KY_STANDARD_V6_INPUT" "$KY_SERVICES_INPUT" "$HXEHEX_IP_INPUT" "$ESCAPINGWORM_OPERATOR_INPUT" \
+                      "$RIR_RUKZBY_PREFIX_INPUT" "$RIR_RUKZBY_STATS" "$AFRINIC_STATS" "$APNIC_STATS" \
                       "$ARIN_STATS" "$LACNIC_STATS" "$RIPENCC_STATS" "$RU_ASN_REGISTRY" \
                       "$IPVERSE_BGP_ARCHIVE" "$IANA_V4_CSV" "$IANA_V6_CSV"; do
             test -s "$file" || { echo "::error::Missing or empty required input: $file"; exit 1; }
