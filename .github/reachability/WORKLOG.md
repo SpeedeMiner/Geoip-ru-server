@@ -200,3 +200,16 @@ Durable resume point for PR #5. After any conversation/network interruption, rea
 - Added the manual VPN Gate workflow file to the validation workflow's path filters, so edits to that workflow also trigger the reachability checks.
 - Latest code commit requiring validation: `37ab30a8d8c588c02318071130a162dda8e1ae61`. The workflow path-filter commit is `a2f85a43cf9e295035724190ad5f6b20a73a0926`; the final CI target must include both.
 - Expected Python discovery count remains 36; Go formatting/tests/build are also required. No visible green status has been confirmed.
+
+
+### 2026-11-11 — Strengthen VPN exit verification and diversify ISP sample — IMPLEMENTED / CI PENDING
+
+- Re-reviewed the VPN Gate backend before its first live run. The original exit-IP check accepted the first responding geolocation endpoint; changed it to require two independent IP-metadata services to agree on both exact public IPv4 and country. Fewer than two successful sources or any disagreement rejects that VPN exit before service tests.
+- Added origin-ASN diversification: the selector inspects up to 24 of the best-ranked RU VPN Gate candidates via RIPEstat, then selects one candidate per distinct observed origin ASN before selecting a second node from an already-covered ASN. Unknown ASNs are explicitly counted as unverified and do not inflate distinct-ASN coverage.
+- Avoids repeating RIPEstat lookups for selected servers by carrying their already inspected origin metadata into the run.
+- Added five deterministic tests for two-source IP/country consensus, IP/country disagreement, insufficient metadata sources, one-per-ASN selection, and filling the remaining budget after each ASN has been offered a node. VPN Gate test module now has 12 tests; existing reachability test module has 29; expected full discovery is 41 Python tests.
+- README now documents the two-source exit check and ASN-diverse initial sample.
+- Latest VPN Gate code/test commit requiring validation: `3b9f9d1dc4d1c7e7558e35fdf184e089991cb907`. README update commit: `4f7560a5b5f0519aa661e3bed856f6c78916b8fa`.
+- Current GitHub combined status for the VPN Gate code head returned no checks, and the available workflow-run lookup returned no runs. Do not mark validation successful; no full validation result is visible yet.
+- The manual VPN Gate workflow remains unlaunched. No volunteer exit has been connected, no user traffic or credentials were sent, and no production GeoIP files were changed.
+- Continue from: obtain a visible successful validation for the 41 Python tests and Go checks; then use the manual-only workflow with one or two exits first, inspect exact exit IP/country/ASN/PTR and firewall/resolver restoration, and only then expand to three. Keep PR #5 Draft and do not touch PR #6.
