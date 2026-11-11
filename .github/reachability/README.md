@@ -84,9 +84,14 @@ The collector prefers one candidate per distinct origin ASN before trying
 another profile from an already represented ASN. It stops as soon as the
 requested number of verified RU exits succeeds. The manual job timeout is
 120 minutes. A and AAAA answers are collected in one resolver call per target.
-Manual dispatch becomes available after this workflow is integrated into the
-repository default branch. It remains manual-only: no daily schedule or
-feature-branch push trigger is enabled.
+The workflow file was placed on the default branch `main` in a
+single-file commit (`580a25a7a65d957d46d83e827ccbd9308969713e`) so manual
+dispatch is now available. When launching from the GitHub Actions page, choose
+`feature/reachability-full-ru-kz-by` under "Use workflow from": the reachability
+runner and its supporting code remain on that Draft PR branch and are not part
+of `main`. Keep the inputs at source `vpnobratno`, one verified RU exit and
+six maximum profile attempts. The workflow remains manual-only, without a
+schedule or push trigger.
 
 The artifacts include `vpn_gate_providers.tsv`,
 `vpn_gate_measurements.jsonl`, `vpn_gate_geoip_candidates.tsv`,

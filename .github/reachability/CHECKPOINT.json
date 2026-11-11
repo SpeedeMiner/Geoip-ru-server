@@ -1,14 +1,14 @@
 {
   "schema_version": 1,
-  "updated_at_utc": "2026-11-11T08:40:00Z",
+  "updated_at_utc": "2026-11-11T08:50:00Z",
   "repository": "SpeedeMiner/Geoip-ru-server",
   "pull_request": 5,
   "pull_request_url": "https://github.com/SpeedeMiner/Geoip-ru-server/pull/5",
   "branch": "feature/reachability-full-ru-kz-by",
-  "recorded_pr_head_before_checkpoint_commit": "8c950350bca4f85309c9dd36e6e5cc6ad5e5a403",
+  "recorded_pr_head_before_checkpoint_commit": "f267e14228ed6ef179784c5b7285ada40f78cca3",
   "base_sha": "a68e5d6589361814cb1cfedd2af7857e4af806fa",
-  "state": "VPNOBRATNO_MANUAL_RUN_BLOCKED_WORKFLOW_NOT_ON_DEFAULT_BRANCH",
-  "current_phase": "AWAIT_OWNER_AUTHORIZATION_TO_PUBLISH_WORKFLOW_ON_DEFAULT_BRANCH",
+  "state": "VPNOBRATNO_WORKFLOW_ON_DEFAULT_BRANCH_AWAITING_MANUAL_DISPATCH",
+  "current_phase": "AWAIT_MANUAL_DISPATCH_AND_LIVE_TUNNEL",
   "completed": [
     "repository_reconnaissance",
     "protobuf_inventory_exporter",
@@ -181,7 +181,11 @@
     "vpnobratno_bounded_response_read_regression_tests",
     "vpnobratno_response_read_limits_ci_104_python_tests_go_success_run_42986373320",
     "vpnobratno_response_read_limits_readme_worklog_checkpoint",
-    "vpnobratno_manual_dispatch_preflight_default_branch_checked_2026_11_11"
+    "vpnobratno_manual_dispatch_preflight_default_branch_checked_2026_11_11",
+    "vpnobratno_manual_workflow_added_to_main_single_file_commit_580a25a7a65d957d46d83e827ccbd9308969713e",
+    "vpnobratno_default_branch_dispatch_visibility_enabled",
+    "vpnobratno_main_push_side_effect_build_v37_run_42989906746_reviewed",
+    "vpnobratno_no_manual_dispatch_action_available_no_live_run_started"
   ],
   "latest_successful_validation_run": 42986373320,
   "latest_successful_validation_commit": "7dd4eb483e6fba9143c5664210625b1e7dfdd23c",
@@ -355,16 +359,17 @@
     "vpnobratno_listing_proves_residential": false,
     "vpnobratno_profiles_executed_directly": false,
     "vpnobratno_is_default_discovery_source": true,
-    "vpnobratno_response_reads_bounded": true
+    "vpnobratno_response_reads_bounded": true,
+    "production_release_workflow_triggered_by_main_push": true,
+    "production_release_artifact_byte_delta_verified": false
   },
   "next_steps": [
-    "Owner must explicitly authorize placing .github/workflows/reachability-vpn-gate.yml on default branch main. This may be done by approving integration of PR #5 or by a separately scoped workflow-only change. Do not merge PR #5 or modify main without explicit authorization.",
-    "Once the workflow exists on main and a supported dispatch path is available, run source=vpnobratno with one requested verified RU exit and maximum six profile attempts. Discovery downloads at most 24 profiles and reports truncation.",
-    "For any successful tunnel, require two independent IP metadata services to agree on actual public IPv4 and RU country, then record origin ASN/prefix and only afterward run DNS/HTTPS tests against the RU target catalogue.",
-    "Inspect SOURCE, PROFILE_VARIANT and PROFILE_URL in the artifact. Variants from one hostname/IP do not increase provider diversity; compare origin ASNs and independently validate the actual access-network operator/type.",
-    "Consider SSTP only after exact machine-readable hostname/port discovery and tested PPP/firewall/route cleanup; consider L2TP/IPsec only after verified endpoint discovery and tested IPsec/XFRM/PPP lifecycle. Do not guess endpoints.",
-    "Keep direct home_probe optional corroboration, not a prerequisite for VPNObratno remote profile exploration.",
-    "Keep production builder, release/geoip_RU.dat, release assets, DIRECT policy, ASN allowlists, main/release and PR #6 untouched."
+    "Use the GitHub Actions page to manually run .github/workflows/reachability-vpn-gate.yml. In 'Use workflow from', select feature/reachability-full-ru-kz-by, not main; enter source=vpnobratno, max_vpn_gate_servers=1 and max_vpn_gate_attempts=6.",
+    "After a run begins, retrieve its run ID and artifact. Confirm the workflow checked out the feature branch and inspect profile links found, the 24-profile download cap/truncation metrics, profile variant distribution, selected origin ASNs, and the exact connection attempts.",
+    "For any successful tunnel, require two independent IP metadata services to agree on actual public IPv4 and RU country, then record origin ASN/prefix; only afterward run target DNS/HTTPS tests. A failed tunnel produces diagnostics only and is not evidence of target blocking.",
+    "Inspect SOURCE, PROFILE_VARIANT and PROFILE_URL. Variants from one hostname/IP do not count as distinct providers; do not label access as residential without independent operator/access-type confirmation.",
+    "Do not change or roll back release branch/assets, production GeoIP builder/data, DIRECT policy, ASN allowlists, main/release or PR #6 without separate authorization. The main push triggered build run 42989906746 and refreshed release assets; exact geoip_RU.dat byte delta was not verified.",
+    "Keep PR #5 OPEN / DRAFT. Direct home_probe remains optional corroboration, not a prerequisite."
   ],
   "ci_policy": {
     "push_validation_paths": [
@@ -716,20 +721,46 @@
       "guessed_l2tp_endpoints": false
     },
     "manual_dispatch_preflight": {
-      "checked_at_utc": "2026-11-11T08:39:27Z",
+      "checked_at_utc": "2026-11-11T08:49:40Z",
       "default_branch": "main",
       "workflow_path": ".github/workflows/reachability-vpn-gate.yml",
-      "workflow_present_on_default_branch": false,
-      "default_branch_workflow_files": [
-        ".github/workflows/blank.yml",
-        ".github/workflows/prefix-audit-validation.yml"
+      "workflow_present_on_default_branch": true,
+      "workflow_default_branch_commit": "580a25a7a65d957d46d83e827ccbd9308969713e",
+      "workflow_default_branch_commit_files": [
+        ".github/workflows/reachability-vpn-gate.yml"
       ],
       "workflow_trigger": "workflow_dispatch",
-      "manual_run_started": false,
+      "actual_run_started": false,
       "run_id": null,
-      "reason": "workflow_dispatch workflow file is not on default branch; available GitHub integration has read operations and no workflow-dispatch action",
-      "no_push_trigger_added": true,
-      "no_default_branch_changes_made": true
+      "integration_dispatch_action_available": false,
+      "runtime_github_cli_available": false,
+      "manual_run_page": "https://github.com/SpeedeMiner/Geoip-ru-server/actions/workflows/reachability-vpn-gate.yml",
+      "required_branch_selection": "feature/reachability-full-ru-kz-by",
+      "required_inputs": {
+        "source": "vpnobratno",
+        "max_vpn_gate_servers": "1",
+        "max_vpn_gate_attempts": "6"
+      }
+    },
+    "main_push_side_effect": {
+      "workflow": ".github/workflows/blank.yml",
+      "workflow_name": "Build Unified GeoIP DIRECT RU+BY+KZ CLIENT v37",
+      "event": "push",
+      "head_sha": "580a25a7a65d957d46d83e827ccbd9308969713e",
+      "run_id": 42989906746,
+      "run_url": "https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/42989906746",
+      "conclusion": "success",
+      "steps_included": [
+        "Publish GitHub Release",
+        "Publish release branch"
+      ],
+      "release_branch_previous_abbreviated_sha": "d613c5f",
+      "release_branch_new_sha": "ac2e9a4322c0b7efe293983c88cf5b304771e4c5",
+      "v37_asset_refresh_observed": true,
+      "geoip_RU_dat_asset_bytes": 951553,
+      "previous_geoip_RU_dat_byte_comparison": "NOT_VERIFIED",
+      "rollback_performed": false,
+      "interpretation": "Main push automatically executed the existing production publisher. No production source changes were authored by this task; release outputs were refreshed as an indirect side effect. Do not rollback without explicit authorization."
     }
   },
   "home_probe": {
