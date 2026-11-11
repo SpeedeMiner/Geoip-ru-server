@@ -77,7 +77,7 @@ class PriorityPrefixTriageTests(unittest.TestCase):
             self.assertEqual(result["rows"], 2)
             with output.open(encoding="utf-8", newline="") as stream:
                 rows = list(csv.DictReader(
-                    (line for line in stream if not line.startswith("#")), delimiter="\\t"
+                    (line for line in stream if not line.startswith("#")), delimiter="\t"
                 ))
             self.assertEqual(len(rows), 2)
             self.assertTrue(all(row["STATUS"] == "REVIEW" for row in rows))
