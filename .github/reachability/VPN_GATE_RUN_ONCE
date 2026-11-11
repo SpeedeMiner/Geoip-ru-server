@@ -1,1 +1,1 @@
-One-shot pilot request: connect to one public RU VPN Gate volunteer exit, verify the actual egress, and perform low-volume DNS/HTTPS HEAD checks against the RU-scoped target catalogue. Remove this marker after the run.
+One-shot retry request: obtain one verified RU VPN Gate exit; try at most three candidates selected across distinct origin ASNs. After a confirmed RU egress, run the bounded RU target catalogue and upload diagnostics.
