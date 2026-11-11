@@ -25,7 +25,7 @@ SOURCE_REFS = {
         "repository": "kyoresuas/ru-direct",
         "commit": "0781793a159f9a53c5e68da2f46b0a64855f8cb6",
         "files": ["ru-standard.ipv4.txt", "ru-standard.ipv6.txt", "services.json"],
-        "license": "MIT (repository); preserve upstream country-zone and database attributions",
+        "license": "No LICENSE file surfaced in the pinned repository tree; redistribution review required; preserve all upstream data attributions",
     },
     "w1zardz-service-direct": {
         "repository": "w1zardz/amnezia-vpn-russia-split-tunneling",
