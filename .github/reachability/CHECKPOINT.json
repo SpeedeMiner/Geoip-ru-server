@@ -1,14 +1,14 @@
 {
   "schema_version": 1,
-  "updated_at_utc": "2026-11-11T18:05:40Z",
+  "updated_at_utc": "2026-11-11T18:07:30Z",
   "repository": "SpeedeMiner/Geoip-ru-server",
   "pull_request": 5,
   "pull_request_url": "https://github.com/SpeedeMiner/Geoip-ru-server/pull/5",
   "branch": "feature/reachability-full-ru-kz-by",
-  "recorded_pr_head_before_checkpoint_commit": "763135f81a46e559cdf5dfcbc3dc70160f03781a",
+  "recorded_pr_head_before_checkpoint_commit": "77dc41587d70f5ff5cb0f347ec91796394ab600f",
   "base_sha": "a68e5d6589361814cb1cfedd2af7857e4af806fa",
-  "state": "RUN22_GITHUB_JOB_STILL_IN_PROGRESS_102S_AFTER_12M_JOB_TIMEOUT; NO_ARTIFACT; MANIFEST_FSYNC_REMOVED_ON_BRANCH; VALIDATION_RUN211_IN_PROGRESS",
-  "current_phase": "RUN22_RUNNER_STATUS_NONTERMINAL_AFTER_MAX_JOB_LIMIT; PROFILE6_TRACE_STOPS_AT_BODY_READ_COMPLETED_3830; NEXT_RUN_NEEDS_MANIFEST_SUBPHASE_EVIDENCE",
+  "state": "RUN22_GITHUB_JOB_STILL_IN_PROGRESS_212S_AFTER_12M_JOB_TIMEOUT; NO_ARTIFACT; NOFSYNC_MANIFEST_CHANGE_VALIDATED_RUN211_SUCCESS",
+  "current_phase": "RUN22_RUNNER_STATUS_NONTERMINAL; PROFILE6_LAST_TRACE_BODY_READ_COMPLETED_3830; NEW_MANIFEST_IO_MITIGATION_CI_GREEN",
   "completed": [
     "repository_reconnaissance",
     "protobuf_inventory_exporter",
@@ -274,24 +274,31 @@
     "vpnobratto_early_worker_exit_classification_test_passed",
     "vpnobratto_worker_finalizer_does_not_close_live_process",
     "vpnobratto_progress_manifest_artifact_glob_matched",
-    "vpnobratto_readme_resume_worklog_checkpoint_updated"
+    "vpnobratto_readme_resume_worklog_checkpoint_updated",
+    "progress_manifest_per_phase_fsync_removed",
+    "progress_manifest_read_write_replace_markers_added",
+    "progress_manifest_no_fsync_regression_test_passed",
+    "manifest_no_fsync_validation_run211_green_128_tests"
   ],
-  "latest_successful_validation_run": 43071264599,
-  "latest_successful_validation_commit": "c49dece293541d46b6af14282b382459164315d7",
+  "latest_successful_validation_run": 43074433130,
+  "latest_successful_validation_commit": "d9f2fff136fdc919730b99bf43c810f0ff23d96d",
   "test_counts": {
-    "python_unit_tests": 127,
+    "python_unit_tests": 128,
     "python_unit_tests_status": "PASS",
-    "worker_success_and_manifest": "PASS",
-    "term_resistant_worker_kill_and_reap": "PASS",
-    "early_worker_exit_separate_from_timeout": "PASS",
-    "production_discovery_uses_worker": "PASS",
-    "runner_watchdog_process_group_preflight": "PASS_ON_GITHUB_HOSTED_UBUNTU_24_04",
+    "no_per_phase_fsync_manifest_test": "PASS",
+    "isolated_worker_success_manifest": "PASS",
+    "term_resistant_worker_kill_reap": "PASS",
+    "early_exit_classification": "PASS",
+    "default_discovery_worker_routing": "PASS",
+    "hosted_gnu_timeout_process_tree_preflight": "PASS",
     "gofmt_status": "PASS",
     "go_tests_status": "PASS",
     "go_build_status": "PASS",
-    "validation_run_id": 43071264599,
-    "validation_job_id": 130699445722,
-    "validation_conclusion": "success"
+    "validation_run_id": 43074433130,
+    "validation_job_id": 130710450443,
+    "validation_run_number": 211,
+    "validation_conclusion": "success",
+    "python_test_runtime": "0.883s"
   },
   "latest_successful_full_run": 42877815872,
   "latest_full_run_commit": "401830a0bdcef35f20fe67e90fbaef7e72129ca6",
@@ -460,13 +467,13 @@
     "production_release_artifact_byte_delta_verified": false
   },
   "next_steps": [
-    "Run #22 remains in_progress despite exceeding the 12-minute job ceiling by 102 seconds at 18:05:40Z. Measurement step 7 in_progress, upload pending, no artifact, logs BlobNotFound. Do not dispatch another VPN workflow or attempt an overlapping run.",
-    "Its last supplied profile-6 trace remains body_read_completed at 3,830 bytes. Profiles 1–5 completed real worker fetches/validation; profile 6 did DoH, pinned TCP/TLS and HTTP 200 but no fetch-completed/profile-validation result is confirmed.",
-    "The last trace prints before record_vpnobratno_progress. That function previously did a read/JSON rewrite/flush/fsync/os.replace per phase. This is a high-priority but unproven stall hypothesis; the supplied paste may be incomplete and no manifest artifact exists to confirm.",
-    "The branch now contains a preventive manifest-I/O hardening change: commit d15de0f6c879e5b3f692bbdbb15d725f12c0785b removes per-phase fsync and adds explicit mkdir/read/temp-write/atomic-replace markers. Test commit d9f2fff136fdc919730b99bf43c810f0ff23d96d adds a regression test ensuring per-event fsync is not called. Validation Run #211 (43074433130) was in_progress at 18:05:40Z; check its result before further source change.",
-    "On Run #22 terminal state, immediately fetch complete logs and uploaded artifact. If no artifact/log and API remains non-terminal well beyond job limit, record controller/runner observability failure separately from VPN/target results.",
-    "No OpenVPN attempt, tunnel route, verified RU exit or target measurement is confirmed. Do not label target sites blocked.",
-    "Keep PR #5 OPEN/DRAFT. Preserve production GeoIP/DIRECT/ASN policy, main/release and PR #6."
+    "Run #22 remains in_progress at 18:07:30Z, 212 seconds beyond the 12-minute job ceiling. Step 7 in_progress; report upload pending; no artifacts; job logs BlobNotFound. Do not launch another VPN workflow.",
+    "The available owner log shows five complete real VPNObratno profile downloads and profile 6 DoH/TCP/TLS/HTTP 200 plus body bytes to 3,830. Last supplied trace is body_read_completed; profile 6 completion, OpenVPN, tunnel route, RU exit and target measurement are not confirmed.",
+    "The high-priority possible hang is the manifest persistence immediately after the last trace marker; it was implemented as per-phase read/write/flush/fsync/replace. New branch code commit d15de0f6c879e5b3f692bbdbb15d725f12c0785b removes per-event fsync, retains temp-file flush + same-directory atomic replace, and adds mkdir/read/temp-write/replace markers. Regression test commit d9f2fff136fdc919730b99bf43c810f0ff23d96d validates the new behavior.",
+    "CI Run #211 (43074433130) is SUCCESS: 128 Python tests, no-fsync test and all worker tests passed; hosted-runner GNU timeout process-tree preflight, Go formatting/tests/build passed.",
+    "Run #22 uses the old pinned checkout 447bdf... and is unaffected by later source fixes. Continue monitoring it through its terminal transition; on completion retrieve full logs and artifact/progress manifest. If it remains non-terminal beyond max timeout, document a separate GitHub runner/controller non-terminal failure.",
+    "Do not infer target blocking from timeout/missing output. No verified RU exit or target measurements exist yet.",
+    "Keep PR #5 OPEN/DRAFT and preserve production GeoIP/DIRECT/ASN policy, main/release and PR #6."
   ],
   "ci_policy": {
     "push_validation_paths": [
@@ -2030,7 +2037,9 @@
     "vpn_worker_resume_commit": "797ddcf3af72c785cf8de9feff883f263edae9fa",
     "checkpoint_written_after_final_worklog_commit": "0f2afc6cf627156ae5bdf6e553f6c7db0ee96254",
     "final_recovery_worklog_commit": "135276198abe03d05e435616b6a3b8e9ba1e89ba",
-    "checkpoint_written_after_final_recovery_worklog_commit": "135276198abe03d05e435616b6a3b8e9ba1e89ba"
+    "checkpoint_written_after_final_recovery_worklog_commit": "135276198abe03d05e435616b6a3b8e9ba1e89ba",
+    "README_manifest_no_fsync_commit": "66cb1cdcce634c05de5eec13abc2e98c42c47d96",
+    "WORKLOG_run211_and_run22_commit": "77dc41587d70f5ff5cb0f347ec91796394ab600f"
   },
   "run21_result": {
     "run_id": 43065501624,
@@ -2504,7 +2513,7 @@
       "job_timeout": "2026-11-11T18:03:58Z"
     },
     "last_rest_snapshot": {
-      "observed_at_utc": "2026-11-11T18:05:40Z",
+      "observed_at_utc": "2026-11-11T18:07:30Z",
       "run_status": "in_progress",
       "run_updated_at_utc": "2026-11-11T17:51:59Z",
       "job_status": "in_progress",
@@ -2515,10 +2524,10 @@
       "upload_step_status": "pending",
       "artifacts": [],
       "logs_api": "BlobNotFound",
-      "logs_error_at_utc": "2026-11-11T18:01:21.931Z",
+      "logs_error_at_utc": "2026-11-11T18:07:30.522Z",
       "failure_gate_step_status": "pending",
-      "job_timeout_overrun_seconds": 102,
-      "interpretation": "GitHub API still non-terminal 1m42s beyond the configured 12m job deadline. Runner/controller stale or unresponsive state remains possible; no terminal process evidence is available."
+      "job_timeout_overrun_seconds": 212,
+      "interpretation": "Run/job/measurement step remain non-terminal 3m32s beyond the configured job deadline. No terminal logs or artifact. Runner/controller status is likely stale or unresponsive; no process/target diagnosis is yet confirmed."
     },
     "manifest_persistence_hypothesis": {
       "priority": "high_but_unconfirmed",
@@ -2534,7 +2543,14 @@
       "next_operation_after_last_marker": "record_vpnobratno_progress for the body_read_completed event",
       "source_order": "vpnobratno_fetch_trace prints and flushes the body_read_completed marker before calling record_vpnobratno_progress; that function performs read/JSON rewrite/flush/fsync/os.replace.",
       "mitigration_commit": "d15de0f6c879e5b3f692bbdbb15d725f12c0785b",
-      "mitigation": "Removed os.fsync from every progress-phase write, retained flush and same-directory atomic os.replace, and added progress_manifest stage markers before mkdir/read/write/replace. This does not affect Run #22's pinned checkout."
+      "mitigation": "Per-phase manifest updates now flush and atomically replace, without synchronous fsync. New progress_manifest_* markers expose mkdir/read/temp-write/replace boundaries. This does not affect Run #22's checkout.",
+      "mitigation_commit": "d15de0f6c879e5b3f692bbdbb15d725f12c0785b",
+      "test_commit": "d9f2fff136fdc919730b99bf43c810f0ff23d96d",
+      "validation_run_id": 43074433130,
+      "validation_run_number": 211,
+      "validation_conclusion": "success",
+      "validation_python_tests": 128,
+      "validated_at_utc": "2026-11-11T18:05:58Z"
     },
     "latest_api_log_fetch": "BlobNotFound",
     "notes": [
