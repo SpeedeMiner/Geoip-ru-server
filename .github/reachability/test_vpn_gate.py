@@ -431,7 +431,7 @@ class VPNGateDoHTests(unittest.TestCase):
             def close(self):
                 pass
 
-        with patch.object(vpn_gate.time, "monotonic", side_effect=lambda: clock[0]), \\
+        with patch.object(vpn_gate.time, "monotonic", side_effect=lambda: clock[0]), \
              patch.object(vpn_gate, "PinnedHTTPSConnection", side_effect=FakeConnection):
             with self.assertRaisesRegex(vpn_gate.ProbeError, "all pinned DNS-over-HTTPS resolvers failed"):
                 vpn_gate.doh_query("example.com", "A", timeout=1)
