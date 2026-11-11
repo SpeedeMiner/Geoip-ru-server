@@ -91,3 +91,57 @@ Input provenance хранит URL/hash/bytes/status, но не все raw inputs
 План: docs/GEOIP_RU_SOURCE_IMPROVEMENT_PLAN.md.
 Resume: .github/audits/GEOIP_RU_AUDIT_RESUME.md.
 Следующий технический этап: versioned source catalog + immutable raw snapshot bundle; далее canonical exact-prefix inventory и полный diff против v37. Только после этого — data PR с доказанными ADD/EXCLUDE.
+
+
+## Новое наблюдение после CI PR #7 — 2026-11-11
+
+### Validation run #148
+
+- PR: [#7](https://github.com/SpeedeMiner/Geoip-ru-server/pull/7), Draft.
+- Workflow run: [#148 / 42975245329](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/42975245329).
+- Head: \`c49c8474ca0a35fb436c2a10cb81d897456e9e83\`.
+- Итог: failure в шаге **Collect RDAP resource-holder samples and per-origin RPKI status for priority prefixes**.
+- Важно: это **не сетевой/API failure**. Шаг завершился до RDAP/RPKI запросов из-за локальной проверки ожидаемой численности.
+
+### Что успешно прошло перед блокировкой
+
+1. Compile audit scripts — success.
+2. Все audit unit tests — success.
+3. Validate v37 legal-evidence additions TSV — success.
+4. Validate consolidated v37 legal-evidence TSV — success.
+5. Fetch immutable v37 production inputs — success; release snapshot commit \`d613c5f0ef482f2051cbc37a303b2ac30076d313\`.
+6. Generate company-origin and full selected-origin review queues — success.
+7. Validate generated queues against v37 quality report — success.
+
+В логах этой сборки зафиксировано:
+
+- ipverse URL: \`https://codeload.github.com/ipverse/as-ip-blocks/tar.gz/refs/heads/master\`;
+- archive SHA-256: \`fadde6a3997e55556c94509032b675dde06684f131e596b88c2910ab907b0f79\`;
+- archive bytes: 16,268,123;
+- company-origin review prefixes: 3,169;
+- full selected-origin review prefixes: 23,564;
+- company-origin prefixes in selected queue: 3,169;
+- all generated queue rows remain \`STATUS=REVIEW\`.
+
+### Точный блокер
+
+\`.github/scripts/build_priority_prefix_evidence.py\` всё ещё требует:
+
+- всего 56 priority prefixes;
+- 52 exact MOAS;
+- 4 company-only.
+
+Но текущий snapshot дал 53 MOAS; при 4 company-only скрипт сообщил:
+
+\`ERROR: expected 56 company MOAS/company-only priority prefixes, got 57\`.
+
+Ошибка возникает до записи \`priority_prefixes.tsv\` и до любых live RDAP/RPKI запросов. Остальные последующие шаги CI были skipped. Поэтому artifact текущего run #148 не создан, а exact CIDR нового/изменившегося MOAS в этом проходе ещё не установлен.
+
+### Интерпретация и необходимые действия
+
+- Это рассинхронизация hard-coded scope в audit workflow/скриптах с более новым production IPVerse snapshot. Это не доказательство того, что новый prefix географически российский, не подтверждение владельца и не основание менять production output.
+- Не менять ожидаемые counts просто с 56 на 57, пока не получен exact CIDR и не проверены origin-set, source snapshot и точная причина изменения MOAS.
+- Следующий шаг: воспроизвести priority selection на том же архиве и pinned release inputs, найти точный prefix, сравнить его с предыдущим 56-row audit inventory; затем обновить expected scope/tests только после review конкретной строки.
+- До этого priority evidence stage остаётся заблокирован; все новые/неясные строки REVIEW.
+- PR #7 остаётся Draft. PR #5 / feature branch не затрагивались. Production builder, prefix inputs, allowlists, release и \`geoip_RU.dat\` не менялись.
+
