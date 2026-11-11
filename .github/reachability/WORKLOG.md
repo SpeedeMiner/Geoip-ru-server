@@ -1082,3 +1082,24 @@ Durable resume point for PR #5. After any conversation/network interruption, rea
 - Added regression test commit `d9f2fff136fdc919730b99bf43c810f0ff23d96d`: manifest phase writes must be atomic/readable and must not call `os.fsync`.
 - Validation Run #210 (`43074388086`) was cancelled/superseded when the follow-up commit arrived; latest validation Run #211 (`43074433130`) for commit `d9f2fff...` was `in_progress` at the 18:05:40Z snapshot. Its result is not yet known.
 - Do not dispatch another VPN measurement. Run #22 must be allowed to reach a terminal state (or remain explicitly documented as GitHub runner/controller non-terminal after maximum execution time); no overlapping run.
+
+
+### 2026-11-11 — Run #211 validates manifest no-fsync change; Run #22 remains non-terminal beyond job ceiling
+
+#### Manifest persistence change validated
+
+- Code commit `d15de0f6c879e5b3f692bbdbb15d725f12c0785b`: added explicit progress-manifest stages for parent mkdir, manifest read, temporary write and atomic replace. Removed `os.fsync()` from every phase update; temporary file is still flushed, and same-directory `os.replace()` preserves atomic visibility. Rationale is to avoid potentially uninterruptible synchronous I/O on each network phase, which could defeat worker and outer wall-clock guards.
+- Test commit `d9f2fff136fdc919730b99bf43c810f0ff23d96d`: added `test_progress_manifest_uses_atomic_replace_without_per_event_fsync`, asserting the progress JSON is readable and `os.fsync` is not called for a per-phase update.
+- Validation [Run #211](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43074433130), job `130710450443`, commit `d9f2fff...`, completed **SUCCESS** at `18:05:58Z`.
+- The Python log says **128 tests passed** in `0.883s`; the new no-fsync test passed alongside production discovery worker routing, successful worker/manifest, TERM-resistant KILL/reap and early worker-exit classification tests. Hosted-runner GNU timeout process-tree preflight passed. Go formatting, `go test ./...` and `go build` passed.
+- Updated operator README in commit `66cb1cdcce634c05de5eec13abc2e98c42c47d96` to explain the manifest stages and why phase writes do not call fsync.
+- The code changes and CI runs do not change or restart the already-running Run #22; it remains pinned to checkout SHA `447bdf...`.
+
+#### Run #22 latest snapshot — 2026-11-11T18:07:30Z
+
+- GitHub REST still says Run #22 / job `130702892228` is `in_progress`; measurement step 7 `in_progress`; upload step 8 `pending`; no artifact. Run object's `updated_at` remains `17:51:59Z`.
+- This is 3m32s beyond the configured 12-minute job ceiling of `18:03:58Z`; the 9-minute step limit was due at `18:01:18Z`. The job log endpoint again returns `BlobNotFound` (latest response time `18:07:30.522Z`).
+- No terminal conclusion/annotation is available yet. Do not call this a site/VPN failure and do not dispatch another VPN run. The available owner log still ends at profile 6 body-read completion at 3,830 bytes.
+- Run #22's last visible marker and source order put manifest persistence immediately after the trace print; this is a hypothesis, not proven, because the paste may be incomplete and no manifest artifact has been uploaded. The newly validated no-fsync change applies only to future runs, not this pinned checkout.
+- No confirmed OpenVPN attempt, tunnel route, Russian public exit or target measurement rows.
+- PR #5 remains OPEN / DRAFT; no changes to production GeoIP data, DIRECT/ASN policy, PR #6 or other branches.
