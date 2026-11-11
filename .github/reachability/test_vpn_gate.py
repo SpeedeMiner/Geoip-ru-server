@@ -1207,6 +1207,7 @@ class VPNGateDoHTests(unittest.TestCase):
             def __init__(self, host, address, timeout):
                 self.host, self.address, self.timeout = host, address, timeout
                 self.request_args = None
+                self.sock = FakeSocket()
             def request(self, method, path, headers):
                 self.request_args = (method, path, headers)
             def getresponse(self):
