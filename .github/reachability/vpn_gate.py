@@ -486,6 +486,17 @@ def _is_timeout_error(exc: BaseException) -> bool:
     return "timed out" in str(exc).lower()
 
 
+def _integer_timeout_ceiling(remaining: float, maximum: int) -> int:
+    """Round a socket timeout up to whole seconds while respecting its parent cap.
+
+    Higher-level wall-clock alarms use the exact fractional remaining value, so
+    this avoids zero/one-second truncation without extending the operation deadline.
+    """
+    if remaining <= 0:
+        return 0
+    return min(maximum, max(1, int(remaining + 0.999999)))
+
+
 def fetch_bytes(url: str, timeout: int = 25) -> bytes:
     deadline = time.monotonic() + timeout
     request = urllib.request.Request(
@@ -511,8 +522,9 @@ def fetch_bytes(url: str, timeout: int = 25) -> bytes:
             ) from exc
         # Only non-timeout resolver/NSS failures get an IPv4 pinned-HTTPS fallback.
         try:
+            fallback_timeout = _integer_timeout_ceiling(remaining, timeout)
             return call_with_wall_clock_timeout(
-                lambda: fetch_https_pinned(url, remaining),
+                lambda: fetch_https_pinned(url, fallback_timeout),
                 remaining,
             )
         except (ProbeError, OSError) as fallback_error:
@@ -2069,14 +2081,15 @@ def https_head(domain: str, port: int, path: str, timeout: int) -> tuple[str, in
         # not that the service is healthy or that content is unfiltered.
         return "HTTP_RESPONSE", int(exc.code), ""
     except (urllib.error.URLError, TimeoutError, OSError) as exc:
-        remaining = int(deadline - time.monotonic())
-        if _is_timeout_error(exc) or remaining < 2:
+        remaining_exact = deadline - time.monotonic()
+        if _is_timeout_error(exc) or remaining_exact < 2:
             return "INCONCLUSIVE", None, f"system HTTPS timed out: {str(exc)[:200]}"
         # A system resolver/NSS error is not a service failure. Retry with a
         # pinned DoH-resolved IP, preserving Host, SNI and certificate checks.
         try:
             # Only IPv4 HTTPS is in scope. AAAA answers are still recorded
             # by resolve_domain_families, but IPv6 transport is firewall-blocked.
+            remaining = _integer_timeout_ceiling(remaining_exact, timeout)
             addresses = doh_query(domain, "A", timeout=min(remaining, 8))
             if not addresses:
                 return "INCONCLUSIVE", None, (
@@ -2085,7 +2098,7 @@ def https_head(domain: str, port: int, path: str, timeout: int) -> tuple[str, in
                 )
             errors = []
             for address in addresses[:3]:
-                step_timeout = int(deadline - time.monotonic())
+                step_timeout = _integer_timeout_ceiling(deadline - time.monotonic(), timeout)
                 if step_timeout < 1:
                     break
                 connection = None

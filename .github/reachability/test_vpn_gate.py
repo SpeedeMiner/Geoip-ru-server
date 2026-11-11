@@ -861,7 +861,7 @@ class VPNNetnsWrapperSignalTests(unittest.TestCase):
             config_root = root / "netns-config"
             report_path = root / "child-report.txt"
 
-            (fakebin / "id").write_text("#!/bin/sh\\necho 0\\n", encoding="utf-8")
+            (fakebin / "id").write_text("\\n".join(["#!/bin/sh", "echo 0", ""]), encoding="utf-8")
             ip_stub = """#!/bin/bash
 if [[ "$1" == "-4" && "$2" == "route" && "$3" == "get" ]]; then
   echo "1.1.1.1 dev eth0"
@@ -874,7 +874,7 @@ exit 0
 """
             (fakebin / "ip").write_text(ip_stub, encoding="utf-8")
             for name in ("iptables", "iptables-save", "iptables-restore"):
-                (fakebin / name).write_text("#!/bin/sh\\nexit 0\\n", encoding="utf-8")
+                (fakebin / name).write_text("\\n".join(["#!/bin/sh", "exit 0", ""]), encoding="utf-8")
             sysctl_stub = """#!/bin/sh
 if [ "$1" = "-n" ]; then echo 0; fi
 exit 0
