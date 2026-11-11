@@ -817,7 +817,8 @@ def _vpnobratno_fetch_worker_entry(
     send_connection: Any,
     fetcher: Any,
     url: str,
-    timeout: int,
+    wall_timeout: float,
+    fetch_timeout: int,
     max_bytes: int,
     context: dict[str, Any],
     progress_path: str | None,
@@ -837,14 +838,16 @@ def _vpnobratno_fetch_worker_entry(
         _VPNOBRATNO_FETCH_STARTED_MONOTONIC = time.monotonic()
         record_vpnobratno_progress(
             progress_path, context, "worker_started", worker_pid=os.getpid(),
-            requested_timeout_seconds=timeout,
+            requested_timeout_seconds=fetch_timeout,
+            supervisor_wall_timeout_seconds=wall_timeout,
         )
         print(
             f"[vpn-gate] profile_fetch_worker_started pid={os.getpid()} "
-            f"timeout={timeout}s max_bytes={max_bytes}",
+            f"fetch_timeout={fetch_timeout}s wall_timeout={wall_timeout:g}s "
+            f"max_bytes={max_bytes}",
             flush=True,
         )
-        payload = fetcher(url, timeout=timeout, max_bytes=max_bytes)
+        payload = fetcher(url, timeout=fetch_timeout, max_bytes=max_bytes)
         if not isinstance(payload, bytes):
             raise TypeError("VPNObratno fetch worker returned a non-bytes payload")
         vpnobratno_fetch_trace("worker", "payload_ready", bytes=len(payload))
@@ -857,6 +860,11 @@ def _vpnobratno_fetch_worker_entry(
             worker_pid=os.getpid(),
             error_type=type(exc).__name__,
             error_message=str(exc)[:240],
+        )
+        print(
+            f"[vpn-gate] profile_fetch_worker_error pid={os.getpid()} "
+            f"error_type={type(exc).__name__} message={str(exc)[:180].replace(' ', '_')}",
+            flush=True,
         )
         try:
             send_connection.send(("error", type(exc).__name__, str(exc)[:1000]))
@@ -871,6 +879,7 @@ def fetch_vpnobratno_in_worker(
     url: str,
     *,
     timeout: float,
+    fetch_timeout: int,
     max_bytes: int,
     context: dict[str, Any],
     progress_path: pathlib.Path | str | None = None,
@@ -890,6 +899,7 @@ def fetch_vpnobratno_in_worker(
             fetcher,
             url,
             timeout,
+            fetch_timeout,
             max_bytes,
             context,
             str(progress_path) if progress_path is not None else None,
@@ -900,21 +910,21 @@ def fetch_vpnobratno_in_worker(
     deadline = started + timeout
     started_worker = False
     message: tuple[Any, ...] | None = None
+    record_vpnobratno_progress(
+        progress_path,
+        context,
+        "supervisor_starting",
+        wall_timeout_seconds=timeout,
+        fetch_timeout_seconds=fetch_timeout,
+    )
     try:
         worker.start()
         started_worker = True
         send_connection.close()
         print(
             f"[vpn-gate] profile_fetch_supervisor_started worker_pid={worker.pid} "
-            f"wall_timeout={timeout:g}s",
+            f"wall_timeout={timeout:g}s fetch_timeout={fetch_timeout}s",
             flush=True,
-        )
-        record_vpnobratno_progress(
-            progress_path,
-            context,
-            "supervisor_waiting",
-            worker_pid=worker.pid or 0,
-            wall_timeout_seconds=timeout,
         )
         while message is None:
             remaining = deadline - time.monotonic()
@@ -1388,7 +1398,8 @@ def fetch_vpnobratno_payload_with_deadline(
     fetcher: Any,
     url: str,
     *,
-    timeout: int,
+    timeout: float,
+    fetch_timeout: int,
     max_bytes: int,
     context: dict[str, Any],
     progress_path: pathlib.Path | str | None = None,
@@ -1399,14 +1410,18 @@ def fetch_vpnobratno_payload_with_deadline(
             fetcher,
             url,
             timeout=timeout,
+            fetch_timeout=fetch_timeout,
             max_bytes=max_bytes,
             context=context,
             progress_path=progress_path,
         )
-    record_vpnobratno_progress(progress_path, context, "fetch_started", timeout_seconds=timeout)
+    record_vpnobratno_progress(
+        progress_path, context, "fetch_started",
+        wall_timeout_seconds=timeout, fetch_timeout_seconds=fetch_timeout,
+    )
     try:
         payload = call_with_wall_clock_timeout(
-            lambda: fetcher(url, timeout=min(timeout, 15), max_bytes=max_bytes),
+            lambda: fetcher(url, timeout=fetch_timeout, max_bytes=max_bytes),
             timeout,
         )
     except BaseException as exc:
@@ -1454,6 +1469,7 @@ def discover_vpnobratno_servers(
         fetcher,
         VPNOBRATNO_LIST_URL,
         timeout=20,
+        fetch_timeout=15,
         max_bytes=VPNOBRATNO_LISTING_MAX_BYTES,
         context=listing_context,
         progress_path=progress_path,
@@ -1508,6 +1524,7 @@ def discover_vpnobratno_servers(
                 fetcher,
                 entry["profile_url"],
                 timeout=20,
+                fetch_timeout=12,
                 max_bytes=VPNOBRATNO_PROFILE_MAX_BYTES,
                 context=profile_context,
                 progress_path=progress_path,
