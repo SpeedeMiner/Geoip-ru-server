@@ -1,14 +1,14 @@
 {
   "schema_version": 1,
-  "updated_at_utc": "2026-11-11T15:02:30Z",
+  "updated_at_utc": "2026-11-11T15:10:30Z",
   "repository": "SpeedeMiner/Geoip-ru-server",
   "pull_request": 5,
   "pull_request_url": "https://github.com/SpeedeMiner/Geoip-ru-server/pull/5",
   "branch": "feature/reachability-full-ru-kz-by",
   "recorded_pr_head_before_checkpoint_commit": "4712e1a538e102214c9c6e590970b0d946c88676",
   "base_sha": "a68e5d6589361814cb1cfedd2af7857e4af806fa",
-  "state": "APT_DOH_BOOTSTRAP_CI_VALIDATED_119_TESTS_READY_FOR_MANUAL_RUN17",
-  "current_phase": "READY_FOR_MANUAL_RUN17_LIVE_DOH_AND_APT_VALIDATION",
+  "state": "RUN17_APT_DOH_SUCCESS_GEOIP_INVENTORY_EXPORTED_PYTHON_CACHE_PERMISSION_FAILURE_FIXED_VALIDATION_PENDING",
+  "current_phase": "VALIDATE_PYTHON_BYTECODE_CACHE_PREVENTION_BEFORE_NEXT_MANUAL_RUN",
   "completed": [
     "repository_reconnaissance",
     "protobuf_inventory_exporter",
@@ -412,10 +412,10 @@
     "production_release_artifact_byte_delta_verified": false
   },
   "next_steps": [
-    "Owner manually dispatches Russian ISP VPN Gate reachability on feature/reachability-full-ru-kz-by with source=vpnobratno, max_vpn_gate_servers=1, max_vpn_gate_attempts=6.",
-    "Verify pinned DoH lookup completion for azure.archive.ubuntu.com, archive.ubuntu.com and security.ubuntu.com, mirror_hosts_override_installed, apt_dns_bootstrap_completed, all 3 mirror_getent_verified markers, apt_update_completed and apt_install_completed.",
-    "Only after setup succeeds, inspect profile discovery, server selection, OpenVPN attempts, two-source RU exit consensus and persisted DNS/HTTPS target rows.",
-    "Keep PR #5 OPEN / DRAFT; do not merge, mark ready, rebase or alter production GeoIP files, DIRECT policy, or PR #6."
+    "Confirm Reachability validation CI passes after the workflow now invokes the privileged bootstrap as python3 -B.",
+    "Manually dispatch another run on feature/reachability-full-ru-kz-by with source=vpnobratno, one verified RU exit and six max profile attempts.",
+    "Confirm apt bootstrap and package installation remain successful, then verify discovery, OpenVPN attempts, RU exit consensus and persisted target DNS/HTTPS reports.",
+    "Keep PR #5 OPEN / DRAFT. Do not merge, mark ready, rebase or alter production GeoIP files, DIRECT policy, or PR #6."
   ],
   "ci_policy": {
     "push_validation_paths": [
@@ -1665,6 +1665,38 @@
       "latest_tested_commit": "b6d5ffcd20dd8e488d6e9c2563f7fda781a5c20d",
       "latest_job_id": 130603794526,
       "go_checks": "gofmt, go test ./..., go build passed"
-    }
+    },
+    "live_doh_from_westus2": "proved_successful_on_run17_runner_centralus"
+  },
+  "run17_result": {
+    "run_id": 43045491865,
+    "job_id": 130608225246,
+    "commit": "5080c99a1738bdfce151a12b6ee62caa60593a16",
+    "runner": "Ubuntu 24.04.5 / centralus",
+    "result": "failure_before_vpn_measurement",
+    "apt_dns_bootstrap": "success",
+    "apt_update": "success_13_1_MB",
+    "apt_install": "success_openvpn_2_6_19_iptables",
+    "geoip_checksum": "success",
+    "inventory": {
+      "RU": 76293,
+      "PRIVATE": 151,
+      "total": 76444
+    },
+    "failure": "Permission denied writing .github/reachability/__pycache__/runner.cpython-312.pyc because privileged bootstrap import created root-owned __pycache__",
+    "artifact_id": 13865929395,
+    "artifact_size_bytes": 284687,
+    "artifact_sha256": "56192f146a354011e8ca4a22cf50fb9c51ef4d2efba36959f307d11fc4505b2c",
+    "artifact_contents": [
+      "reachability_inventory.tsv"
+    ],
+    "openvpn_attempts": 0,
+    "verified_ru_exits": 0,
+    "target_measurement_rows": 0
+  },
+  "python_bytecode_cache_fix": {
+    "implementation": "Run privileged apt bootstrap as python3 -B so importing vpn_gate does not write root-owned .pyc files under .github/reachability/__pycache__.",
+    "workflow_file": ".github/workflows/reachability-vpn-gate.yml",
+    "validation": "pending"
   }
 }
