@@ -281,3 +281,20 @@ Durable resume point for PR #5. After any conversation/network interruption, rea
 - CI validation Run #103 `42962158410` succeeded on `f8ecc2c894a2ea290b95bb2c1ab242a2a62ec5ce`; logs report `Ran 48 tests`, `OK`, plus gofmt, go test and go build all successful.
 - Retry is ready; no second measurement has yet been launched. Next one-shot marker commit must carry `[vpn-gate-once]` and will try up to three candidates to achieve one successful RU exit.
 - No production GeoIP mutation, main/release change, DIRECT/ASN allowlist change or PR #6 change.
+
+
+### 2026-11-11 — Review second VPN Gate pilot; add pinned DoH fallback and truthful run status — IMPLEMENTED / CI PENDING
+
+- Second VPN Gate run #42962715822 completed and uploaded artifact 13830405759 (288,476 bytes; SHA-256 `6b85e2788c5690925d7b9355f610a39e9d32f1b9c0818ad427b03069aa3806aa`).
+- It discovered 9 usable RU OpenVPN profiles across 6 origin ASNs, inspected 9, and attempted the top 3 across distinct ASNs:
+  1. `5.143.110.119`, AS12389 / PJSC Rostelecom Far East Region, prefix `5.143.108.0/22`: OpenVPN log reached `Initialization Sequence Completed` (tunnel established), but subsequent two-source exit metadata verification failed because system resolver lookups for `ipapi.co` and `ipinfo.io` returned temporary DNS failures. No service target requests followed.
+  2. `94.31.243.156`, AS12668 / LLC KOMTEHCENTR FTTB Customers, prefix `94.31.243.0/24`: TCP connected; no IPv4 VPN route/tunnel established within 60 seconds.
+  3. `176.194.228.49`, AS12714 / Net By Net Holding LLC, prefix `176.194.224.0/19`: TCP connected; no IPv4 VPN route/tunnel established within 60 seconds.
+- All three VPN Gate server IPs already map to RU in the published GeoIP inventory. No exit IP was verified and `target_measurements=0`. The workflow incorrectly concluded success because it treated report upload as job success; a successful GitHub run did not mean successful VPN reachability.
+- Implemented a pinned DNS-over-HTTPS fallback for post-tunnel metadata and target resolution. It queries Cloudflare at pinned IP 1.1.1.1 and Google at pinned IP 8.8.8.8, preserving DoH hostname SNI/certificate validation. If system DNS fails, HTTPS metadata and target HEAD requests retry with DNS-resolved pinned destination IPs while preserving original hostname SNI/cert checks; DNS and HTTPS remain routed through the VPN firewall's tun interface.
+- Added two code safety/operational improvements: OpenVPN auth file is chmod 0600 (removes the observed permissive-file warning), and failed connection diagnostic tails retain up to 60 lines rather than only 12, so TLS failure reasons are not truncated away.
+- Measurement semantics are now strict: the Python runner returns exit code 2 unless it reaches the requested count of independently verified RU exits. The workflow uses `continue-on-error` only to preserve diagnostic artifact upload with `if: always()`, then a final gate step marks the job failed if the measurement step failed. Artifact upload itself is warning-only if measurement failed before creating files.
+- Added tests for DoH record filtering, system DNS fallback for A/AAAA, pinned HTTPS fallback for IP metadata, pinned SNI HEAD fallback for targets, and strict zero-exit measurement status. VPN Gate test module now has 24 tests; existing reachability module has 29; expected total 53.
+- Latest validation-triggering code/test commit: `515863b7029274ba6c65c683e9fc863066a8fefc`; workflow failure-status enforcement commit: `24dded8bc779c30b3bdaa908d1c9574eebb25e34`; latest test commit: `2bcf42cd017db678da21604d89a5c6e57403e346`; README doc commit: `b03d1a365234b354eea5098cb0cd341b1a081a81`.
+- No new VPN run is launched until CI validates these changes. The previous two pilot reports remain diagnostic only and show zero completed target measurements.
+- No production GeoIP mutation, builder/release/main changes, DIRECT/ASN allowlist changes or PR #6 changes.
