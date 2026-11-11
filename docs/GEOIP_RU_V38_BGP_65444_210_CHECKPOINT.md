@@ -31,21 +31,21 @@ Source pages (checked 2026-11-11):
 
 The feed is a third-party classification, not a direct official RKN API. The repository policy and source registry already express this limitation.
 
-## 3. Current peer and registration facts
+## 3. Optional BGP path (not a release dependency)
 
-The current registration page advertises:
+The Antifilter registration page previously checked advertised:
 - Neighbor: `45.148.244.55`
 - Remote ASN: `65444`
-- Local ASN requested by the service: `64999`
+- Suggested local ASN: `64999`
 - Recommended BGP hold time: `240` seconds
 
-The registration form is CAPTCHA-protected. A stable VPS public IPv4 and local ASN `64999` must be registered manually, selecting the exact-host announcement that includes communities 200 and 210. Do not select the /24 summary. Use the peer details shown by the registration page at the time of registration; do not copy stale peer data from older examples.
+These are reference facts only. The CAPTCHA-protected registration flow requires a stable public endpoint; this project will **not** depend on the user obtaining a VPS or public IP for v38. Public BGP collectors cannot reconstruct private-AS community attributes. The no-BGP replacement is the pinned public-list cross-check in `docs/V38_PUBLIC_RKN_SOURCE_CROSSCHECK.md`.
 
-**Registration state:** NOT VERIFIED in this checkpoint.  
+**Registration state:** NOT VERIFIED / NOT REQUIRED FOR V38 RELEASE.  
 **BGP session state:** NOT ESTABLISHED / NOT OBSERVED.  
-**Route count for community 210:** NOT MEASURED.  
-**Raw route snapshot:** NOT CAPTURED.  
-These are unknown/unavailable states, not zero routes.
+**Community 65444:210 route count:** NOT MEASURED.  
+**Raw BGP route snapshot:** NOT CAPTURED.  
+These are unknown/unavailable states, not zero routes. No exact community membership is inferred from public list overlap.
 
 ## 4. Safe capture design
 
@@ -84,12 +84,12 @@ Absence from one snapshot is not proof that a prefix is safe for DIRECT. Preserv
 ## 6. Work performed in this checkpoint
 
 - Re-read `docs/GEOIP_RU_V38_POLICY.md` and `docs/GEOIP_RU_V38_SOURCE_REGISTRY.tsv` on the v38 feature branch.
-- Confirmed the v38 policy already specifies isolated BIRD capture and explicitly freezes the approved blocked set until a timestamped snapshot is captured and validated.
+- Confirmed that isolated BIRD capture remains documented as an optional future evidence path; the no-BGP public-list cross-check is the active v38 fallback and BGP is not a release gate.
 - Confirmed PR #9 branch HEAD before this checkpoint: `a19e4de1d7a550f15fbc6960a81e924225fc1437`.
 - Confirmed that commit's PR workflow run #71 (`43050025980`) completed successfully.
 - Verified current Antifilter.network page/FAQ community semantics and current peer details.
 - Checked public AS65444 visibility and confirmed its private-use ASN status; public collectors cannot substitute for the actual 65444 customer session.
-- No v38 build was rerun. No production branch, release, tag, GeoIP binary, DIRECT policy, blocked set, or other PR was changed.
+- The user explicitly requested v38 be brought to release. No production branch, release, tag, GeoIP binary or CDN asset has been changed by this feature-branch work.
 
 ## 7. No-BGP fallback and current release decision
 
