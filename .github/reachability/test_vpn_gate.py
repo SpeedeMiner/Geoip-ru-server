@@ -28,6 +28,10 @@ def _vpnobratto_worker_test_hang(pid_path, timeout, max_bytes):
         time.sleep(0.05)
 
 
+def _vpnobratto_worker_test_crash(_url, _timeout, _max_bytes):
+    os._exit(17)
+
+
 SAMPLE_CONFIG = """client
 dev tun
 proto tcp
@@ -1635,6 +1639,39 @@ class VPNObrattoWallClockTimeoutTests(unittest.TestCase):
             self.assertIn("worker.payload_ready", event_names)
             self.assertIn("worker_completed", event_names)
             self.assertEqual(data["execution_sha"], os.environ.get("GITHUB_SHA", ""))
+
+    def test_isolated_fetch_worker_reports_early_child_exit_separately_from_timeout(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            manifest = pathlib.Path(tmp) / "vpnobratto_progress.json"
+            context = {
+                "profile_index": 4,
+                "profile_count": 6,
+                "hostname": "vpn555555555.opengw.net",
+                "variant": "ip_udp",
+                "address_mode": "ip",
+            }
+            with self.assertRaisesRegex(
+                vpn_gate.ProbeError, "ended without a result"
+            ):
+                vpn_gate.fetch_vpnobratno_in_worker(
+                    _vpnobratto_worker_test_crash,
+                    "synthetic-crash",
+                    timeout=2,
+                    fetch_timeout=12,
+                    max_bytes=64000,
+                    context=context,
+                    progress_path=manifest,
+                )
+            data = json.loads(manifest.read_text(encoding="utf-8"))
+            record = data["profiles"]["4"]
+            self.assertEqual(record["state"], "worker_failed_without_result")
+            failure_event = record["events"][-1]
+            self.assertIn(
+                failure_event["reason"],
+                {"pipe_eof", "pipe_eof_after_worker_exit", "worker_exited_without_message"},
+            )
+            self.assertEqual(failure_event["worker_exitcode"], 17)
+            self.assertNotEqual(failure_event["reason"], "worker_deadline_expired")
 
     def test_isolated_fetch_worker_kills_term_resistant_child_at_deadline(self):
         with tempfile.TemporaryDirectory() as tmp:
