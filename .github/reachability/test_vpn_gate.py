@@ -583,11 +583,10 @@ class VPNObratnoDiscoveryTests(unittest.TestCase):
         def fetcher(url, timeout):
             return listing if url == vpn_gate.VPNOBRATNO_LIST_URL else config.encode()
 
-        servers, metadata = vpn_gate.discover_vpnobratno_servers(
-            fetcher=fetcher, resolver=self.resolver
-        )
-        self.assertEqual(servers, [])
-        self.assertEqual(metadata, {}) if False else None
+        with self.assertRaisesRegex(vpn_gate.ProbeError, "none passed validation"):
+            vpn_gate.discover_vpnobratno_servers(
+                fetcher=fetcher, resolver=self.resolver
+            )
 
 
 if __name__ == "__main__":
