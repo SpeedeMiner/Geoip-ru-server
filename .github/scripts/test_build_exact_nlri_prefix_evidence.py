@@ -164,6 +164,60 @@ class ExactNlriCaptureTests(unittest.TestCase):
         self.assertEqual(summary["latest_time"], "2026-11-11T09:58:00")
         self.assertEqual(summary["peer_observations"][0]["rrc"], "rrc00")
 
+    def test_ripestat_api_error_is_not_an_empty_origin_list(self):
+        record = {
+            "prefix": "94.131.190.0/23",
+            "source": "ripestat_routing_status",
+            "transport_status": "HTTP_OK",
+            "http_status": 200,
+            "response_received_utc": "2026-11-11T10:00:00Z",
+            "response_json": {
+                "status": "error",
+                "messages": ["upstream service unavailable"],
+                "data": {},
+            },
+        }
+        summary = summarize(record)
+        self.assertEqual(summary["api_status"], "error")
+        self.assertEqual(summary["api_messages"], ["upstream service unavailable"])
+        self.assertIn("response_shape_error", summary)
+        self.assertNotIn("exact_origins", summary)
+        self.assertNotIn("more_specific_count", summary)
+
+    def test_ripestat_looking_glass_api_error_is_not_zero_peer_evidence(self):
+        record = {
+            "prefix": "94.131.190.0/23",
+            "source": "ripestat_looking_glass_24h",
+            "transport_status": "HTTP_OK",
+            "http_status": 200,
+            "response_received_utc": "2026-11-11T10:00:00Z",
+            "response_json": {
+                "status": "error",
+                "messages": ["collector query failed"],
+                "data": {},
+            },
+        }
+        summary = summarize(record)
+        self.assertEqual(summary["api_status"], "error")
+        self.assertEqual(summary["api_messages"], ["collector query failed"])
+        self.assertIn("response_shape_error", summary)
+        self.assertNotIn("rrc_count", summary)
+        self.assertNotIn("peer_observation_count", summary)
+
+    def test_routeviews_unexpected_json_shape_is_not_an_empty_exact_rib(self):
+        record = {
+            "prefix": "94.131.190.0/23",
+            "source": "routeviews_exact_rib",
+            "transport_status": "HTTP_OK",
+            "http_status": 200,
+            "response_received_utc": "2026-11-11T10:00:00Z",
+            "response_json": {"error": "backend unavailable"},
+        }
+        summary = summarize(record)
+        self.assertIn("response_shape_error", summary)
+        self.assertNotIn("exact_entries_returned", summary)
+        self.assertNotIn("origins", summary)
+
     def test_transport_error_is_preserved_not_interpreted_as_absence(self):
         record = {
             "prefix": "94.131.190.0/23",
