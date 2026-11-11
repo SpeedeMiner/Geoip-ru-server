@@ -506,51 +506,6 @@ def network_info(address: str) -> dict[str, Any]:
     except ProbeError:
         return {"prefix": "", "asn": 0}
 
-def selection_network_info(address: str) -> dict[str, Any]:
-    """Use a hard-bounded direct RIPEstat request for pre-tunnel ASN diversity.
-
-    Candidate selection is optional metadata. It must never block the whole VPN
-    pilot on system DNS/NSS resolution or the longer post-tunnel DoH fallback.
-    If RIPEstat is slow/unavailable, keep the candidate with an unverified ASN.
-    """
-    url = RIPESTAT_NETWORK_INFO + "?" + urllib.parse.urlencode({"resource": address})
-    try:
-        completed = subprocess.run(
-            [
-                "curl", "--fail", "--location", "--silent", "--show-error",
-                "--noproxy", "*", "--ipv4",
-                "--connect-timeout", "2", "--max-time", "5",
-                "--max-filesize", "1000000",
-                "--user-agent", USER_AGENT, url,
-            ],
-            capture_output=True,
-            text=True,
-            encoding="utf-8",
-            errors="replace",
-            check=False,
-            timeout=7,
-        )
-        if completed.returncode != 0:
-            return {"prefix": "", "asn": 0}
-        payload = json.loads(completed.stdout)
-    except (OSError, subprocess.TimeoutExpired, json.JSONDecodeError):
-        return {"prefix": "", "asn": 0}
-
-    if not isinstance(payload, dict):
-        return {"prefix": "", "asn": 0}
-    data = payload.get("data") or {}
-    asns = data.get("asns") or []
-    asn = parse_asn(asns[0]) if asns else 0
-    prefix = str(data.get("prefix") or "").strip()
-    try:
-        network = ipaddress.ip_network(prefix, strict=False)
-        if ipaddress.ip_address(address) not in network:
-            prefix = ""
-    except ValueError:
-        prefix = ""
-    return {"prefix": prefix, "asn": asn}
-
-
 def _parse_ip_metadata(endpoint: str) -> dict[str, Any]:
     payload = fetch_json(endpoint, timeout=15)
     connection = payload.get("connection") or {}
@@ -862,16 +817,18 @@ def discover_vpnobratno_servers(
     return servers, meta
 
 
-def select_diverse_servers(
+def select_server_host_diverse_candidates(
     servers: list[dict[str, Any]],
     max_servers: int,
     candidate_limit: int = 24,
     max_attempts: int | None = None,
 ) -> tuple[list[dict[str, Any]], dict[str, Any]]:
-    """Order a bounded fallback list: one candidate per origin ASN before repeats.
+    """Build a bounded fallback list using distinct server hostnames, not network lookups.
 
-    max_servers is the number of successful RU exits requested. max_attempts
-    controls how many candidates may be tried to reach that count.
+    ASN metadata is deliberately left unverified during pre-tunnel selection:
+    a third-party ASN lookup must never block OpenVPN startup. VPNObratno
+    variants that share one hostname are grouped as one server, and one best
+    candidate per hostname is selected before a second variant for that host.
     """
     if max_servers < 1:
         raise ValueError("max_servers must be positive")
@@ -880,45 +837,28 @@ def select_diverse_servers(
         raise ValueError("max_attempts must be >= max_servers")
     if attempt_limit > 6:
         raise ValueError("max_attempts must be <= 6")
+
     candidates = servers[:min(len(servers), max(candidate_limit, attempt_limit, max_servers))]
     groups: dict[str, list[dict[str, Any]]] = {}
-    asn_lookups = 0
     candidate_servers_inspected = 0
-    origin_cache: dict[str, dict[str, Any]] = {}
     for candidate_index, server in enumerate(candidates, start=1):
         candidate_servers_inspected += 1
-        server_ip = server["server_ip"]
-        print(
-            f"[vpn-gate] origin_asn_lookup={candidate_index}/{len(candidates)} "
-            f"host={server['hostname']}",
-            flush=True,
-        )
-        if server_ip not in origin_cache:
-            origin_cache[server_ip] = selection_network_info(server_ip)
-        origin = dict(origin_cache[server_ip])
-        asn = parse_int(origin.get("asn"))
-        server["_network_info"] = origin
-        server["_selection_asn"] = asn
-        group = f"AS{asn}" if asn > 0 else "ASN_UNVERIFIED"
+        hostname = str(server.get("hostname") or "").strip().lower()
+        group = hostname or f"SERVER_IP:{server.get('server_ip', '')}"
+        server["_network_info"] = {"prefix": "", "asn": 0}
+        server["_selection_asn"] = 0
         groups.setdefault(group, []).append(server)
-        asn_lookups += 1
         print(
-            f"[vpn-gate] origin_asn_lookup_result={candidate_index}/{len(candidates)} "
-            f"host={server['hostname']} asn={asn} "
-            f"status={'ok' if asn > 0 else 'unavailable'}",
+            f"[vpn-gate] server_host_candidate_result={candidate_index}/{len(candidates)} "
+            f"host={hostname or 'unverified'} distinct_hosts={len(groups)} status=usable",
             flush=True,
         )
-        distinct_verified_asns = sum(
-            1 for candidate_group in groups
-            if candidate_group != "ASN_UNVERIFIED"
-        )
-        if distinct_verified_asns >= attempt_limit:
+        if len(groups) >= attempt_limit:
             print(
-                f"[vpn-gate] origin_asn_selection_early_stop "
-                f"reason=distinct_asn_budget_reached "
-                f"lookups={candidate_index}/{len(candidates)} "
-                f"distinct_asns={distinct_verified_asns} "
-                f"attempt_budget={attempt_limit}",
+                f"[vpn-gate] server_host_selection_early_stop "
+                f"reason=distinct_server_host_budget_reached "
+                f"inspected={candidate_index}/{len(candidates)} "
+                f"distinct_server_hosts={len(groups)} attempt_budget={attempt_limit}",
                 flush=True,
             )
             break
@@ -926,36 +866,41 @@ def select_diverse_servers(
     group_order = sorted(
         groups,
         key=lambda group: (
-            group == "ASN_UNVERIFIED",
             -groups[group][0]["score"],
             groups[group][0]["hostname"],
         ),
     )
     ordered: list[dict[str, Any]] = []
-    # First pass: one best-scoring candidate per observed ASN.
+    # First pass: one best-scoring profile per server hostname.
     for group in group_order:
         ordered.append(groups[group][0])
-    # Subsequent passes: one fallback per ASN per round, rather than exhausting
-    # all servers from the highest-ranked provider first.
+    # If fewer than max_attempts hostnames exist, use another profile variant
+    # from each hostname in score order before repeating any one server.
     for index in range(1, max((len(value) for value in groups.values()), default=0)):
         for group in group_order:
             if index < len(groups[group]):
                 ordered.append(groups[group][index])
+
     selected = ordered[:attempt_limit]
-    selected_asns = sorted({
-        server["_selection_asn"] for server in selected
-        if server["_selection_asn"] > 0
-    })
+    selected_hosts = list(dict.fromkeys(
+        str(server.get("hostname") or "").strip().lower()
+        for server in selected
+    ))
     return selected, {
         "candidate_servers_inspected": candidate_servers_inspected,
-        "server_asn_lookups": asn_lookups,
-        "distinct_candidate_asns": len([group for group in groups if group != "ASN_UNVERIFIED"]),
+        "server_asn_lookups": 0,
+        "distinct_candidate_asns": 0,
+        "distinct_candidate_server_hosts": len(groups),
         "attempt_candidates_selected": len(selected),
         "max_connection_attempts": attempt_limit,
-        "selected_distinct_asns": len(selected_asns),
-        "selected_asns": selected_asns,
-        "unverified_asn_candidates": len(groups.get("ASN_UNVERIFIED", [])),
-        "selection_policy": "one_best_candidate_per_observed_asn_before_second_server_from_same_asn",
+        "selected_distinct_asns": 0,
+        "selected_asns": [],
+        "selected_server_hosts": selected_hosts,
+        "unverified_asn_candidates": len(selected),
+        "selection_policy": (
+            "one_best_profile_per_distinct_server_hostname_before_repeating_hostname; "
+            "origin_ASN_not_queried_before_OpenVPN"
+        ),
     }
 
 
@@ -1294,16 +1239,18 @@ def run(args: argparse.Namespace) -> int:
         flush=True,
     )
     print(
-        f"[vpn-gate] phase=origin_asn_selection candidates={len(servers)} "
-        f"max_attempts={args.max_attempts} started",
+        f"[vpn-gate] phase=server_host_selection candidates={len(servers)} "
+        f"max_attempts={args.max_attempts} started asn_enrichment=deferred",
         flush=True,
     )
-    selected, selection_meta = select_diverse_servers(
+    selected, selection_meta = select_server_host_diverse_candidates(
         servers, args.max_servers, max_attempts=args.max_attempts
     )
     print(
-        f"[vpn-gate] phase=origin_asn_selection completed "
-        f"selected_profiles={len(selected)} distinct_asns={selection_meta['selected_distinct_asns']}",
+        f"[vpn-gate] phase=server_host_selection completed "
+        f"selected_profiles={len(selected)} "
+        f"distinct_server_hosts={selection_meta['distinct_candidate_server_hosts']} "
+        "selected_distinct_asns=0 asn_status=UNVERIFIED",
         flush=True,
     )
     raw_rows[0]["selected_servers"] = len(selected)
@@ -1325,8 +1272,8 @@ def run(args: argparse.Namespace) -> int:
             flush=True,
         )
         server_category, server_prefix = runner.map_address(server_ip, networks)
-        # Selection already captured RIPEstat origin ASN/prefix for each candidate.
-        # IP metadata enrichment and reverse DNS are optional and must not delay OpenVPN.
+        # Origin ASN enrichment is deliberately deferred; it is not required to start
+        # OpenVPN or to verify the public exit country and target reachability.
         server_origin = cached_server_origin(server)
         server_asn_ip_meta = 0
         server_asn_ripestat = parse_int(server_origin.get("asn"))
@@ -1335,7 +1282,7 @@ def run(args: argparse.Namespace) -> int:
         ptr = ""
         print(
             f"[vpn-gate] server_metadata_enrichment=skipped host={server['hostname']} "
-            "reason=noncritical_preflight",
+            "reason=pre_tunnel_network_lookup_removed",
             flush=True,
         )
         provider = {
