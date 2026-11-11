@@ -1994,6 +1994,6 @@
     "read_first_resume_guide_initial_commit": "ee7ee866692fc2bbc487e837a1da78124d60fcf4",
     "read_first_resume_guide_blocker_update_commit": "8761626e83c08bbe6a0a98a38b8fccd0b2bff505",
     "final_worklog_entry_commit": "01085045a9e224a9abe9a4b7dd36d3f32f67da69",
-    "checkpoint_commit_pending": "this commit"
+    "checkpoint_written_after_worklog_commit": "01085045a9e224a9abe9a4b7dd36d3f32f67da69"
   }
 }
