@@ -1,14 +1,14 @@
 {
   "schema_version": 1,
-  "updated_at_utc": "2026-11-11T05:05:00Z",
+  "updated_at_utc": "2026-11-11T04:35:53Z",
   "repository": "SpeedeMiner/Geoip-ru-server",
   "pull_request": 5,
   "pull_request_url": "https://github.com/SpeedeMiner/Geoip-ru-server/pull/5",
   "branch": "feature/reachability-full-ru-kz-by",
-  "recorded_pr_head_before_checkpoint_commit": "bc4df2b9b6f9829e0e84a4fe2c127c32cfa89bc4",
+  "recorded_pr_head_before_checkpoint_commit": "4253ee86eca2a21fa3a2b3bc57a9056de081b76b",
   "base_sha": "a68e5d6589361814cb1cfedd2af7857e4af806fa",
-  "state": "VALIDATION_PENDING",
-  "current_phase": "VPN_GATE_VALIDATION_CI_AND_MANUAL_PILOT",
+  "state": "VPN_GATE_PILOT_READY_AFTER_CI",
+  "current_phase": "VPN_GATE_ONE_SHOT_WORKFLOW_AND_FIRST_PILOT",
   "completed": [
     "repository_reconnaissance",
     "protobuf_inventory_exporter",
@@ -97,16 +97,17 @@
     "vpn_gate_ripestat_prefix_containment_tests",
     "vpn_gate_single_dual_stack_dns_resolver_call",
     "vpn_gate_dual_stack_dns_regression_tests",
-    "vpn_gate_manual_workflow_timeout_extended_for_bounded_multi_exit_run"
+    "vpn_gate_manual_workflow_timeout_extended_for_bounded_multi_exit_run",
+    "vpn_gate_validation_ci_45_python_tests_and_go_checks_success_run_42959843669"
   ],
-  "latest_successful_validation_run": 42877605801,
-  "latest_successful_validation_commit": "c6b86d8b92bac5777c73634d921835fee687573b",
+  "latest_successful_validation_run": 42959843669,
+  "latest_successful_validation_commit": "a3098c15351de5dabc5f286f05024678fe4707fa",
   "test_counts": {
-    "python_unit_tests": 28,
+    "python_unit_tests": 45,
     "python_unit_tests_status": "PASS",
+    "gofmt_status": "PASS",
     "go_tests_status": "PASS",
-    "go_build_status": "PASS",
-    "gofmt_status": "PASS"
+    "go_build_status": "PASS"
   },
   "latest_successful_full_run": 42877815872,
   "latest_full_run_commit": "401830a0bdcef35f20fe67e90fbaef7e72129ca6",
@@ -243,10 +244,10 @@
     "automatic_geoip_mutation": false
   },
   "next_steps": [
-    "Confirm Reachability validation on Python code/test commit 09a61810013effee87fc5fdb6d304a3b132a7ba5; Go formatting, tests and build must also pass. README and manual-workflow timeout changes follow in ba1371566bd12965940fb5bd05c78813b6b176fd and a3098c15351de5dabc5f286f05024678fe4707fa.",
-    "After visible green CI, manually dispatch the VPN Gate workflow on PR #5 with 1–2 RU exits first; review actual exit IP/country consensus, ASN provenance/conflicts, valid prefix containment, PTR/organization, A/AAAA/HTTPS results, and firewall/resolver restoration.",
-    "Only widen to three or more nodes after first artifacts show stable, correctly attributed exits. VPN Gate volunteers remain unverified access-network type, not confirmed household subscriptions.",
-    "Keep PR #5 Draft; no merge/rebase; do not modify production builder, geoip_RU.dat, release assets, DIRECT policy, ASN allowlists, main/release, or PR #6."
+    "Fix the feature-branch execution path for the VPN Gate workflow. GitHub workflow_dispatch only receives events when the workflow file is on the default branch; do not ask the owner to merge PR #5 just to enable testing.",
+    "Use a narrowly guarded one-shot push trigger on feature/reachability-full-ru-kz-by, activated only by a dedicated [vpn-gate-once] commit marker and defaulting that path to a single RU VPN exit. Do not add a daily schedule.",
+    "Inspect and verify the first pilot artifact, including exact exit IP/country consensus, origin ASN/prefix and provider attribution, firewall/resolver restoration, and all target results.",
+    "After a successful first node, remove the temporary trigger marker or return the workflow to its manual-only form. Keep PR #5 Draft; do not merge/rebase or modify production builder, geoip_RU.dat, release assets, DIRECT, ASN allowlists, main/release or PR #6."
   ],
   "ci_policy": {
     "push_validation_paths": [
@@ -279,20 +280,18 @@
     "vpn_gate_daily_schedule_enabled": false
   },
   "pending_validation": {
-    "commit": "09a61810013effee87fc5fdb6d304a3b132a7ba5",
-    "implementation_commit": "1c70a5e616aa191870b6368b6ee3dad9435da0c1",
-    "workflow_timeout_commit": "a3098c15351de5dabc5f286f05024678fe4707fa",
-    "documentation_commit": "ba1371566bd12965940fb5bd05c78813b6b176fd",
-    "workflow_path_filter_commit": "a2f85a43cf9e295035724190ad5f6b20a73a0926",
+    "commit": "a3098c15351de5dabc5f286f05024678fe4707fa",
     "workflow": "Reachability validation",
-    "expected_python_unit_tests": 45,
-    "expected_go_checks": [
+    "run_id": 42959843669,
+    "run_url": "https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/42959843669",
+    "status": "SUCCESS",
+    "verified_python_test_count": 45,
+    "go_checks": [
       "gofmt",
       "go test ./...",
       "go build"
     ],
-    "status": "NOT_CONFIRMED",
-    "note": "Dual-stack DNS consolidation and the new tests are newer than all previous successful CI. The available GitHub connector has not returned visible checks or workflow runs for the current code head."
+    "note": "Run #99 completed successfully. It is the exact implementation/test tree of current PR HEAD; comparison from the tested commit to the current branch head contains only CHECKPOINT.json, README.md and WORKLOG.md."
   },
   "vpn_gate_measurement": {
     "source": "VPN Gate official CSV API",
@@ -302,7 +301,7 @@
     "default_max_servers": 3,
     "hard_max_servers": 6,
     "actual_run_performed": false,
-    "validation_status": "PENDING",
+    "validation_status": "SUCCESS",
     "output_files": [
       "vpn_gate_providers.tsv",
       "vpn_gate_measurements.jsonl",
@@ -319,6 +318,7 @@
       "asn_candidate_inspection_limit": 24
     },
     "expected_python_tests": 45,
-    "timeout_minutes": 120
+    "timeout_minutes": 120,
+    "validation_run_id": 42959843669
   }
 }
