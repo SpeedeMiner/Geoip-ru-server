@@ -18,11 +18,13 @@ import datetime as dt
 import ipaddress
 import io
 import json
+import http.client
 import pathlib
 import re
 import shlex
 import shutil
 import socket
+import ssl
 import subprocess
 import sys
 import tempfile
@@ -79,6 +81,108 @@ def utc_now() -> str:
     return dt.datetime.now(dt.timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z")
 
 
+DOH_RESOLVERS = (
+    ("cloudflare-dns.com", "1.1.1.1", "cloudflare"),
+    ("dns.google", "8.8.8.8", "google"),
+)
+
+
+class PinnedHTTPSConnection(http.client.HTTPSConnection):
+    """HTTPS connection pinned to an IP while retaining hostname SNI/cert checks."""
+    def __init__(self, host: str, address: str, port: int = 443, timeout: int = 15):
+        super().__init__(host, port=port, timeout=timeout, context=ssl.create_default_context())
+        self.pinned_address = address
+
+    def connect(self):
+        sock = self._create_connection(
+            (self.pinned_address, self.port), self.timeout, self.source_address
+        )
+        self.sock = self._context.wrap_socket(sock, server_hostname=self.host)
+
+
+def doh_query(domain: str, record_type: str, timeout: int = 10) -> list[str]:
+    """Resolve one RR type over HTTPS to a pinned public DoH resolver, without system DNS."""
+    qtype = record_type.upper()
+    if qtype not in {"A", "AAAA"}:
+        raise ValueError("DoH record type must be A or AAAA")
+    errors: list[str] = []
+    for host, address, provider in DOH_RESOLVERS:
+        connection = None
+        try:
+            connection = PinnedHTTPSConnection(host, address, timeout=timeout)
+            if provider == "cloudflare":
+                path = "/dns-query?" + urllib.parse.urlencode({"name": domain, "type": qtype})
+                headers = {"Accept": "application/dns-json", "User-Agent": USER_AGENT}
+            else:
+                path = "/resolve?" + urllib.parse.urlencode({"name": domain, "type": qtype})
+                headers = {"Accept": "application/dns-json", "User-Agent": USER_AGENT}
+            connection.request("GET", path, headers=headers)
+            response = connection.getresponse()
+            payload = response.read(1_000_000)
+            if response.status != 200:
+                raise ProbeError(f"{provider} DoH returned HTTP {response.status}")
+            result = json.loads(payload.decode("utf-8"))
+            if parse_int(result.get("Status"), -1) != 0:
+                raise ProbeError(f"{provider} DoH DNS status {result.get('Status')}")
+            expected_version = 4 if qtype == "A" else 6
+            values = []
+            for answer in result.get("Answer") or []:
+                if parse_int(answer.get("type")) != (1 if qtype == "A" else 28):
+                    continue
+                value = str(answer.get("data") or "").strip()
+                try:
+                    parsed = ipaddress.ip_address(value)
+                except ValueError:
+                    continue
+                if parsed.version == expected_version and parsed.is_global:
+                    values.append(str(parsed))
+            if values:
+                return sorted(set(values))
+            return []
+        except (OSError, http.client.HTTPException, ssl.SSLError, ValueError, ProbeError) as exc:
+            errors.append(f"{provider}: {exc}")
+        finally:
+            if connection is not None:
+                connection.close()
+    raise ProbeError("all pinned DNS-over-HTTPS resolvers failed: " + "; ".join(errors))
+
+
+def fetch_https_pinned(url: str, timeout: int) -> bytes:
+    """Retry an HTTPS API request with a DoH-resolved IP and certificate-checked SNI."""
+    parts = urllib.parse.urlsplit(url)
+    if parts.scheme != "https" or not parts.hostname:
+        raise ProbeError("pinned fallback supports HTTPS URLs only")
+    host = parts.hostname
+    addresses = doh_query(host, "A", timeout=min(timeout, 12))
+    if not addresses:
+        addresses = doh_query(host, "AAAA", timeout=min(timeout, 12))
+    if not addresses:
+        raise ProbeError(f"DoH returned no global address for {host}")
+    path = urllib.parse.urlunsplit(("", "", parts.path or "/", parts.query, ""))
+    errors: list[str] = []
+    for address in addresses[:3]:
+        connection = None
+        try:
+            connection = PinnedHTTPSConnection(
+                host, address, port=parts.port or 443, timeout=timeout
+            )
+            connection.request(
+                "GET", path,
+                headers={"User-Agent": USER_AGENT, "Accept": "*/*", "Connection": "close"},
+            )
+            response = connection.getresponse()
+            payload = response.read(8_000_000)
+            if response.status < 200 or response.status >= 300:
+                raise ProbeError(f"HTTP {response.status} from {host}")
+            return payload
+        except (OSError, http.client.HTTPException, ssl.SSLError, ProbeError) as exc:
+            errors.append(f"{address}: {exc}")
+        finally:
+            if connection is not None:
+                connection.close()
+    raise ProbeError(f"pinned HTTPS request failed for {host}: " + "; ".join(errors))
+
+
 def fetch_bytes(url: str, timeout: int = 25) -> bytes:
     request = urllib.request.Request(
         url, headers={"User-Agent": USER_AGENT, "Accept": "*/*"}
@@ -88,7 +192,16 @@ def fetch_bytes(url: str, timeout: int = 25) -> bytes:
         with opener.open(request, timeout=timeout) as response:
             return response.read(8_000_000)
     except (urllib.error.URLError, TimeoutError, OSError) as exc:
-        raise ProbeError(f"request failed for {urllib.parse.urlparse(url).netloc}: {exc}") from exc
+        # A resolver/NSS failure must not prevent metadata verification after
+        # the VPN route is established. The fallback queries DoH via a pinned
+        # resolver IP, then pins the API's address while preserving TLS SNI.
+        try:
+            return fetch_https_pinned(url, timeout)
+        except ProbeError as fallback_error:
+            raise ProbeError(
+                f"request failed for {urllib.parse.urlparse(url).netloc}: {exc}; "
+                f"pinned DoH fallback: {fallback_error}"
+            ) from fallback_error
 
 
 def fetch_json(url: str, timeout: int = 20) -> dict[str, Any]:
@@ -543,7 +656,8 @@ def wait_for_tunnel(
 def resolve_domain_families(
     domain: str, timeout: int
 ) -> tuple[tuple[str, list[str], str], tuple[str, list[str], str]]:
-    """Resolve A and AAAA in one system resolver call routed through the VPN tunnel."""
+    """Resolve A and AAAA through the tunnel; use pinned DoH if system NSS fails."""
+    system_error = ""
     try:
         socket.setdefaulttimeout(timeout)
         infos = socket.getaddrinfo(domain, 443, socket.AF_UNSPEC, socket.SOCK_STREAM)
@@ -554,7 +668,17 @@ def resolve_domain_families(
             ("DNS_ANSWER" if ipv6 else "DNS_NO_ANSWER", ipv6, ""),
         )
     except (socket.gaierror, OSError) as exc:
-        error = str(exc)[:300]
+        system_error = str(exc)[:200]
+
+    try:
+        ipv4 = doh_query(domain, "A", timeout)
+        ipv6 = doh_query(domain, "AAAA", timeout)
+        return (
+            ("DNS_ANSWER" if ipv4 else "DNS_NO_ANSWER", ipv4, ""),
+            ("DNS_ANSWER" if ipv6 else "DNS_NO_ANSWER", ipv6, ""),
+        )
+    except ProbeError as exc:
+        error = f"system resolver: {system_error}; pinned DoH: {str(exc)[:200]}"[:400]
         return ("DNS_ERROR", [], error), ("DNS_ERROR", [], error)
 
 
