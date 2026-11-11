@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "updated_at_utc": "2026-11-11T07:12:05Z",
+  "updated_at_utc": "2026-11-11T07:12:19Z",
   "repository": "SpeedeMiner/Geoip-ru-server",
   "pull_request": 5,
   "pull_request_url": "https://github.com/SpeedeMiner/Geoip-ru-server/pull/5",
   "branch": "feature/reachability-full-ru-kz-by",
-  "recorded_pr_head_before_checkpoint_commit": "09593a90250ac61a5395447e3568c25581dcd7a4",
+  "recorded_pr_head_before_checkpoint_commit": "c3abf071765f057087bb75453a3dbb3d265444a9",
   "base_sha": "a68e5d6589361814cb1cfedd2af7857e4af806fa",
   "state": "VPNOBRATNO_PROFILE_DISCOVERY_AND_VALIDATION_CI_PASS",
   "current_phase": "AWAIT_AUTHORIZED_MANUAL_VPNOBRATTO_PILOT",
