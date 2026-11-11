@@ -366,7 +366,7 @@ class OpenVPNProfileSafetyTests(unittest.TestCase):
         self.assertIn("tls-ciphersuites TLS_AES_128_GCM_SHA256", safe)
         self.assertIn("tls-cert-profile legacy", safe)
         self.assertIn("verify-x509-name vpn.example name", safe)
-        self.assertIn("remote-cert-eku 'TLS Web Server Authentication'", safe)
+        self.assertIn('remote-cert-eku "TLS Web Server Authentication"', safe)
         self.assertIn("remote-cert-ku 0x00 0x01", safe)
         self.assertIn("<tls-crypt-v2>", safe)
         self.assertNotIn("up /tmp", safe)
