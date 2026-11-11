@@ -1,4 +1,4 @@
-name: Build Unified GeoIP DIRECT RU+BY+KZ CLIENT v37
+name: Build Unified GeoIP DIRECT RU+BY+KZ CLIENT v38
 
 on:
   workflow_dispatch:
@@ -10,7 +10,7 @@ on:
       - main
 
 concurrency:
-  group: geoip-direct-ru-by-kz-v37-build
+  group: geoip-direct-ru-by-kz-v38-build
   cancel-in-progress: false
 
 jobs:
@@ -45,19 +45,28 @@ jobs:
       RU_PREFIX_INPUT: geoip_RU_BY_KZ_asn_bgp_prefixes.txt
       RIR_PREFIX_INPUT: geoip_RU_rir_registered_prefixes.txt
       RIR_STATS: geoip_RU_rir_stats.txt
+      RIR_RUKZBY_PREFIX_INPUT: geoip_RU_BY_KZ_rir_registered_prefixes.tsv
+      RIR_RUKZBY_STATS: geoip_RU_BY_KZ_rir_stats.txt
       GLOBAL_BGP_PREFIX_INPUT: geoip_RU_global_bgp_prefixes.txt
       IANA_V4_CSV: iana-ipv4-special-registry.csv
       IANA_V6_CSV: iana-ipv6-special-registry.csv
       IANA_PRIVATE_PREFIX_INPUT: geoip_RU_iana_non_global_prefixes.txt
       IANA_REACHABLE_PREFIX_INPUT: geoip_RU_iana_global_exceptions.txt
-      QUALITY_REPORT: geoip_RU_quality_report.txt
-      PROVENANCE_FILE: geoip_RU_additional_provenance.tsv
+      QUALITY_REPORT: geoip_RU_v37_base_quality_report.txt
+      V38_QUALITY_REPORT: geoip_RU_quality_report.txt
+      V38_METRICS: geoip_RU_v38_source_metrics.tsv
+      V38_PREFIX_PROVENANCE: geoip_RU_v38_prefix_provenance.tsv
+      V38_BLOCKED_PROVENANCE: geoip_RU_v38_blocked_provenance.tsv
+      V38_BLOCKED_FILE: geoip_RU_v38_blocked_ip_exclusions.txt
+      V38_MANIFEST: geoip_RU_v38_manifest.json
+      PROVENANCE_FILE: geoip_RU_v37_additional_provenance.tsv
       ASN_MANIFEST: geoip_RU_BY_KZ_asn_manifest.txt
       COMPANY_ASN_MANIFEST: geoip_RU_company_asn_manifest.tsv
       ASN_STATS: geoip_RU_BY_KZ_asn_stats.txt
       SOURCE_COUNTS: geoip_RU_source_counts.txt
       CATEGORY_AUDIT: geoip_RU_category_audit.tsv
-      OUTPUT_FILE: geoip_RU.dat
+      OUTPUT_FILE: geoip_RU_v37_base.dat
+      V38_OUTPUT_FILE: geoip_RU.dat
       CATEGORY_FILE: geoip_RU_categories.txt
       SOURCE_FILE: geoip_RU_sources.txt
       OUTPUT_SHA_FILE: geoip_RU.dat.sha256sum
@@ -68,6 +77,7 @@ jobs:
       BLOCKED_SUBNET_INPUT: antifilter-subnet.lst
       BLOCKED_COMMUNITY_INPUT: antifilter-community.lst
       BLOCKED_REFILTER_INPUT: refilter-ipsum.lst
+      BLOCKED_IPSUM_INPUT: antifilter-ipsum.lst
       BLOCKED_REVIEW_INPUT: geoip_RU_blocked_review_candidates.tsv
       BLOCKED_STATS_INPUT: geoip_RU_blocked_source_stats.txt
       BLOCKED_CHECKSUMS_INPUT: geoip_RU_blocked_sources.sha256
