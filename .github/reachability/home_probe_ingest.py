@@ -116,6 +116,8 @@ def validate_source(
     if summary.get("source_public_ip") != address:
         raise ImportError("source public IP differs between source and summary reports")
 
+    observed_asns: set[int] = set()
+    observed_organizations: set[str] = set()
     for item in observations:
         if not isinstance(item, dict):
             raise ImportError("source metadata observation is not an object")
@@ -125,6 +127,34 @@ def validate_source(
             raise ImportError("source metadata provider has an invalid IP") from exc
         if item_ip != address or item.get("country") != required_country:
             raise ImportError("source metadata provider observations do not agree")
+        item_asn = item.get("asn", 0)
+        if isinstance(item_asn, bool) or not isinstance(item_asn, int) or item_asn < 0:
+            raise ImportError("source metadata provider has an invalid ASN")
+        if item_asn:
+            observed_asns.add(item_asn)
+        organization = str(item.get("organization") or "").strip()
+        if organization:
+            observed_organizations.add(organization)
+
+    source_asns = source.get("asn_candidates")
+    source_orgs = source.get("organizations")
+    if not isinstance(source_asns, list) or any(
+        isinstance(value, bool) or not isinstance(value, int) or value <= 0
+        for value in source_asns
+    ):
+        raise ImportError("source ASN candidate list is invalid")
+    if source_asns != sorted(set(source_asns)) or source_asns != sorted(observed_asns):
+        raise ImportError("source ASN candidates do not match provider observations")
+    if not isinstance(source_orgs, list) or any(
+        not isinstance(value, str) or not value.strip() for value in source_orgs
+    ):
+        raise ImportError("source organization list is invalid")
+    if source_orgs != sorted(set(source_orgs)) or source_orgs != sorted(observed_organizations):
+        raise ImportError("source organizations do not match provider observations")
+    if summary.get("source_asn_candidates") != source_asns:
+        raise ImportError("summary ASN candidates do not match source metadata")
+    if summary.get("source_organizations") != source_orgs:
+        raise ImportError("summary organizations do not match source metadata")
     return address
 
 
@@ -221,6 +251,16 @@ def validate_report(
             raise ImportError(f"missing observation timestamp for target {target_id}")
         validate_family(row, "IPv4")
         validate_family(row, "IPv6")
+    service_count = sum(row["target_role"] == "service" for row in measurements)
+    control_count = sum(row["target_role"] == "control" for row in measurements)
+    if summary.get("service_targets") != service_count:
+        raise ImportError("service target count does not match measurements")
+    if summary.get("control_targets") != control_count:
+        raise ImportError("control target count does not match measurements")
+    if summary.get("source_asn_candidates") != source.get("asn_candidates"):
+        raise ImportError("summary ASN candidates do not match source metadata")
+    if summary.get("source_organizations") != source.get("organizations"):
+        raise ImportError("summary organizations do not match source metadata")
     return source, summary, measurements, {"source_ip": source_ip, "targets": expected}
 
 
