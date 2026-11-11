@@ -136,29 +136,72 @@ to that ISP.
 The local-only script is `.github/reachability/home_probe.py`. It:
 
 - requires an explicit `--consent` flag before any endpoint checks;
-- refuses configured HTTP(S) proxy environment variables by default; do not run it behind a VPN or proxy;
-- checks the public egress IP through two independent metadata services and records ASN/organization when available;
+- refuses to run when HTTP(S)/ALL proxy environment variables are configured; disable VPN/proxy software as well (the script does not try to change system routing);
+- obtains the public egress IP from two independent metadata services and records ASN/organization when available;
+- stops before target requests when both metadata sources confirm a country different from `--required-country`; if metadata is unavailable, observations can still be saved but remain unattributed;
 - uses the host's normal DNS resolver for A/AAAA so DNS behavior remains part of the ISP measurement;
-- sends at most one HTTPS HEAD request per observed IPv4 address and one per observed IPv6 address for each catalogue hostname, preserving TLS SNI and certificate validation;
-- saves `home_probe_source.json`, `home_probe_measurements.jsonl` and `home_probe_summary.json` locally; it never uploads data automatically.
+- sends at most one HTTPS HEAD request per family (IPv4 and IPv6), to the first observed address in that family, preserving TLS SNI and certificate validation; the exact tested address is recorded;
+- writes a versioned `home_probe_source.json`, `home_probe_measurements.jsonl` and `home_probe_summary.json` locally; it never uploads data automatically;
+- refuses to overwrite a non-empty output directory.
 
 From the repository root, on the actual home connection:
 
 ```bash
-python3 .github/reachability/home_probe.py --required-country RU --consent --output-dir home-probe-output
+python3 .github/reachability/home_probe.py --required-country RU --consent --max-targets 3 --output-dir home-probe-output
 ```
 
-On Windows, use `py -3` instead of `python3`. For a small smoke test, add
-`--max-targets 3`.
+On Windows, use `py -3` instead of `python3`. Remove `--max-targets 3`
+to measure all RU-scoped catalogue targets (currently up to 30 hostnames).
+Use a new output-directory name for every run so earlier evidence is preserved.
 
 The report contains the public egress IP and DNS answers; review it before
 sharing it. It intentionally does not collect local/private IPs, MAC addresses,
 hostnames, browsing history, cookies or credentials. A two-source country/IP
 match is supporting attribution, not proof of a household subscription:
 combine it with operator/ASN validation and the fact that the owner ran the
-probe directly on that ISP. A report with unavailable metadata is still useful
-as raw endpoint evidence but must not be labelled as confirmed RU household
-coverage.
+probe directly on that ISP. A report with unavailable metadata is retained as
+raw endpoint evidence but cannot be imported as a confirmed RU source-network
+observation. The source egress IP is personal network metadata; share the report
+only with the network owner's approval.
+
+### Importing a volunteer report for GeoIP review
+
+The separate `.github/reachability/home_probe_ingest.py` tool maps the
+volunteer's source IP and every observed DNS answer against a complete RU and
+PRIVATE prefix inventory. First generate the inventory from the exact
+published protobuf in this checkout:
+
+```bash
+cd .github/reachability/inventory
+GOTOOLCHAIN=local go run . ../../../release/geoip_RU.dat ../../../reachability_inventory.tsv
+cd ../../..
+```
+
+Then validate and import the locally reviewed report:
+
+```bash
+python3 .github/reachability/home_probe_ingest.py \
+  --report-dir home-probe-output \
+  --inventory reachability_inventory.tsv \
+  --required-country RU \
+  --output-dir home-probe-ingest-output
+```
+
+The importer requires a versioned report, two distinct metadata providers
+agreeing on one public egress IP and RU country, no proxy environment, and
+matching target IDs/domains from the current catalogue. It rejects malformed,
+private, wrong-family, duplicate or unverified DNS addresses and checks that
+the recorded HTTPS-tested address is the first DNS answer actually selected.
+It writes `home_probe_provider.tsv`, `home_probe_observations.tsv`,
+`home_probe_candidates.tsv` and `home_probe_ingest_summary.json` locally;
+it does not upload data or edit `geoip_RU.dat`.
+
+Only an exact source IP outside RU inventory becomes a
+`HOME_PROBE_SOURCE_IP` review candidate. The importer does not infer a CIDR
+from a single IP. DNS destination addresses are reported separately and must
+not be confused with the volunteer's source ISP range. The access-network
+class remains `RESIDENTIAL_OR_OTHER_ACCESS_NETWORK_UNVERIFIED` until the
+operator, origin ASN and access type are independently confirmed.
 
 A useful pilot needs consenting volunteers on several different Russian
 operators and, ideally, regions. One machine measures only its own current
