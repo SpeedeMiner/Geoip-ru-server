@@ -78,23 +78,29 @@ jobs:
       - name: Validate RIR residual external assessment ledger
         run: |
           python3 - <<'PY'
-          import csv
           import ipaddress
           from pathlib import Path
 
           path = Path(".github/audits/rir_ru_residual_external_assessments_v37.tsv")
-          with path.open(encoding="utf-8", newline="") as stream:
-              rows = list(csv.DictReader((line for line in stream if not line.startswith("#")), delimiter="\\t"))
+          lines = [line for line in path.read_text(encoding="utf-8").splitlines()
+                   if line.strip() and not line.startswith("#")]
+          if len(lines) < 2:
+              raise SystemExit("RIR residual assessment ledger is empty")
+          columns = lines[0].split(chr(9))
           required = {
               "PREFIX", "IPVERSE_EXACT_ORIGIN_ASNS", "IPVERSE_ORIGIN_COUNTRY_CODES",
               "RIR_PARENT_COUNTRY", "RESOURCE_REGISTRATION_DETAILS",
               "EXACT_ROUTE_OBJECT_DETAILS", "RPKI_EVIDENCE", "ASSESSMENT_STATUS",
               "PRODUCTION_ACTION", "EVIDENCE_URLS", "NEXT_CHECKS",
           }
-          if not rows or not required.issubset(rows[0]):
-              raise SystemExit("RIR residual assessment ledger is empty or missing columns")
+          if not required.issubset(columns):
+              raise SystemExit("RIR residual assessment ledger is missing required columns")
           seen = set()
-          for row in rows:
+          for line in lines[1:]:
+              values = line.split(chr(9))
+              if len(values) != len(columns):
+                  raise SystemExit("Malformed row in RIR residual assessment ledger")
+              row = dict(zip(columns, values))
               prefix = ipaddress.ip_network(row["PREFIX"], strict=True).with_prefixlen
               if prefix in seen:
                   raise SystemExit(f"Duplicate residual assessment: {prefix}")
@@ -103,9 +109,8 @@ jobs:
                   raise SystemExit(f"Residual assessment must remain REVIEW/NO_CHANGE: {prefix}")
               if "https://" not in row["EVIDENCE_URLS"] or not row["NEXT_CHECKS"].strip():
                   raise SystemExit(f"Missing evidence URLs or next checks: {prefix}")
-          print(f"Validated {len(rows)} residual external assessments; all REVIEW/NO_CHANGE")
+          print(f"Validated {len(seen)} residual external assessments; all REVIEW/NO_CHANGE")
           PY
-
       - name: Validate v37 legal-evidence additions TSV
         run: |
           python3 - <<'PY'
@@ -500,8 +505,6 @@ jobs:
             --geoip-sha256 "$geoip_sha"
 
           python3 - "$inventory" <<'PY'
-          import csv
-          import io
           import re
           import sys
           from pathlib import Path
@@ -515,15 +518,23 @@ jobs:
           if f"Release commit: {release_commit}" not in stats:
               raise SystemExit("Canonical inventory was not built from the captured release commit")
 
-          header = "SOURCE_ID\\tUNIQUE_EXACT_PREFIXES\\tIPV4_PREFIXES\\tIPV6_PREFIXES\\tIPV4_ADDRESS_UNION\\tIPV6_ADDRESS_UNION\\tEXACT_MATCH_IN_RU_OUTPUT"
+          header_fields = [
+              "SOURCE_ID", "UNIQUE_EXACT_PREFIXES", "IPV4_PREFIXES", "IPV6_PREFIXES",
+              "IPV4_ADDRESS_UNION", "IPV6_ADDRESS_UNION", "EXACT_MATCH_IN_RU_OUTPUT",
+          ]
           lines = stats.splitlines()
+          header = chr(9).join(header_fields)
           try:
               start = lines.index(header)
           except ValueError:
               raise SystemExit("Canonical inventory stats are missing the source-count table")
           end = next((i for i in range(start + 1, len(lines)) if not lines[i].strip()), len(lines))
-          rows = list(csv.DictReader(io.StringIO("\\n".join(lines[start:end])), delimiter="\\t"))
-          by_source = {row["SOURCE_ID"]: row for row in rows}
+          by_source = {}
+          for line in lines[start + 1:end]:
+              fields = line.split(chr(9))
+              if len(fields) != len(header_fields):
+                  raise SystemExit("Malformed canonical source-count row")
+              by_source[fields[0]] = dict(zip(header_fields, fields))
 
           for category, source_id in (("RU", "output_ru"), ("PRIVATE", "output_private")):
               match = re.search(
