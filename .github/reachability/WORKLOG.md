@@ -1159,3 +1159,43 @@ Durable resume point for PR #5. After any conversation/network interruption, rea
 - Operator `README.md` already records the no-fsync manifest write sequence and new progress-manifest operation markers (commit `66cb1cdcce634c05de5eec13abc2e98c42c47d96`).
 - Final verified code validation remains Run #211 / job `130710450443`, commit `d9f2fff136fdc919730b99bf43c810f0ff23d96d`: 128 Python tests passed in 0.883s; no-fsync test explicitly passed; hosted watchdog preflight and Go format/test/build passed.
 - PR #5 remained OPEN / DRAFT at the final state check. No new VPN workflow was dispatched after Run #22; no production GeoIP/DIRECT/ASN policy or PR #6 changes.
+
+## 2026-11-11 20:00 UTC — Apply termination-safe VPN measurement patch; Run #23 postmortem; Run #216 green
+
+### Run #23 postmortem — terminal, no measurement result
+
+- Manual workflow [Run #23 / 43076269266](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43076269266), job 130716786396, finished completed / cancelled. Checkout SHA: 72bbb1f423986593d29213418ec177579fafac4b.
+- Job setup, OpenVPN/iptables install, setup-go, published protobuf download/checksum and RU/PRIVATE inventory export all show success. The VPN measurement step summary remains in_progress; artifact upload and final failure gate remain pending.
+- GitHub reports no artifacts. A post-terminal job-log request returns Azure BlobNotFound. Therefore there is no recoverable final trace for the last active operation.
+- Source at checkout 72bbb1f ran FirewallGuard directly in the runner's current network namespace; that code saves and replaces the current namespace's IPv4/IPv6 OUTPUT chains and sets DROP policies. The namespace wrapper vpn_netns_exec.sh did not yet exist in that checkout. This is a code-proven host-network isolation hazard in the Run #23 version, but the precise cancellation cause is unknown because terminal logs/artifacts are missing. Do not claim it is the proven root cause.
+- Run #23 provides no confirmed OpenVPN route, independently verified RU egress, or target DNS/HTTPS rows. It is not a reachability result and does not establish target blocking.
+
+### User-supplied patch integrated and tightened
+
+- Applied the uploaded patch_diff.txt changes to .github/reachability/vpn_gate.py and vpn_netns_exec.sh.
+- _is_timeout_error now prevents a socket/urllib timeout from launching a second DoH + pinned-HTTPS retry chain. The normal fetch_bytes path and DNS fallback are protected by process-level wall-clock deadlines; non-timeout resolver failures may use only the remaining budget.
+- ip_metadata() stops after the first two endpoint failures when no usable observation exists; it still continues to a third service when one source worked and a second independent observation is still needed.
+- Added a 360-second collector budget and 90-second per-profile attempt budget. A shared remaining-time helper refuses to inflate a phase past its parent deadline; timeout rounding is only for integer socket APIs and remains inside the exact outer alarm deadline.
+- The report structures are initialized before discovery/measurement. The five main reports (providers TSV, measurements JSONL, GeoIP candidates TSV, raw JSONL, summary JSON) are written independently to temporary files and atomically replaced from finally. A SystemExit/SIGTERM observed during one report is deferred until the remaining report writes have been attempted; failures are listed in report_write_errors.
+- This is best-effort under SIGTERM, not an absolute guarantee against SIGKILL, runner destruction, filesystem failure or an uninterruptible kernel I/O stall. Such conditions can still prevent one or more files from being persisted.
+- The fetch worker resets SIGTERM/SIGINT to their default disposition and handles normal exceptions without swallowing process-termination signals. vpn_netns_exec.sh forwards SIGTERM/SIGINT to its child and waits for the child's exit before namespace cleanup.
+- The isolated namespace installs explicit REJECT rules after allowed VPN/tunnel traffic, so denied egress fails promptly instead of silently black-holing inside OUTPUT. Host OUTPUT rules and the host default route are not replaced by FirewallGuard in the new wrapper path.
+- Regression coverage was added for socket-timeout no-retry, remaining-budget fallback, early stop after two failed metadata services, one-failed/second-and-third-success consensus, strictly decreasing attempt deadlines, explicit firewall REJECT ordering, independent atomic report writes after SystemExit, and child-report-before-namespace-cleanup signal ordering.
+
+### Commits and validation
+
+- Runtime patch commit: 3d399a1fa21f9b15a5df9c7f5b215f2e4748957c.
+- Timeout-contract follow-up: c9e0ab862cb1f6e4be2c07a8ed4696040c0a9d72. This preserves the existing integer socket-timeout API while the parent alarm keeps the fractional wall-clock deadline strict.
+- Test-fixture follow-up: 9eec7e142e81ad287b0c20ae89ba094ee08aa51a. Fake executable scripts now use real newline characters in their shebangs.
+- First validation Run #214 / 43092019602 checked the runtime patch but exposed four test failures: three old expectations compared fractional remaining time to exact integer 5, and the shell mock fixture wrote a literal backslash-n into shebangs. Run #215 / 43092179184 verified the timeout expectation correction; only the mock shebang fixture remained. Those were test/contract compatibility failures, not live VPN observations.
+- Final validation [Run #216 / 43092300671](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43092300671), job 130772224969, checkout SHA 9eec7e142e81ad287b0c20ae89ba094ee08aa51a, completed SUCCESS at 20:00:04Z.
+- Python validation: 139 tests passed in 2.198s. GNU timeout process-tree preflight passed. Go formatting, go test ./... and go build passed.
+- Run #216 is hermetic CI validation only. It did not connect OpenVPN, verify a RU exit, or measure target services.
+
+### Next state
+
+- Latest PR #5 head at this checkpoint: 9eec7e142e81ad287b0c20ae89ba094ee08aa51a; PR remains OPEN / DRAFT, base main.
+- No VPN workflow newer than Run #23 exists, and no new live VPN run was dispatched in this session.
+- Next live step remains one manual source=vpnobratno pilot, max_vpn_gate_servers=1, max_vpn_gate_attempts=6, selected on the current feature branch. Confirm first log checkout SHA and inspect the five reports plus vpn_gate_vpnobratto_progress.json.
+- Do not call a VPN Gate volunteer exit a residential/home ISP without independent access-network evidence. Do not infer blocking from timeouts or missing artifacts. Keep all candidate CIDRs review-only.
+- No production GeoIP builder/data, geoip_RU.dat, release assets, DIRECT policy, ASN allowlists, main, release or PR #6 was modified.

@@ -1,14 +1,14 @@
 {
   "schema_version": 1,
-  "updated_at_utc": "2026-11-11T18:10:30Z",
+  "updated_at_utc": "2026-11-11T20:00:04Z",
   "repository": "SpeedeMiner/Geoip-ru-server",
   "pull_request": 5,
   "pull_request_url": "https://github.com/SpeedeMiner/Geoip-ru-server/pull/5",
   "branch": "feature/reachability-full-ru-kz-by",
-  "recorded_pr_head_before_checkpoint_commit": "7d040d697387b16afbb9d15db75698f8f50d1f05",
+  "recorded_pr_head_before_checkpoint_commit": "9eec7e142e81ad287b0c20ae89ba094ee08aa51a",
   "base_sha": "a68e5d6589361814cb1cfedd2af7857e4af806fa",
-  "state": "RUN22_TERMINAL_COMPLETED_CANCELLED_BY_GITHUB_MAX_12M; TERMINAL_LOGS_AND_ARTIFACT_MISSING; MANIFEST_FSYNC_HYPOTHESIS_MITIGATED_AND_RUN211_CI_GREEN",
-  "current_phase": "RUN22_POSTMORTEM_RECORDED; NO_PER_EVENT_FSYNC_FIX_VALIDATED; READY_FOR_NEXT_BOUNDED_MANUAL_LIVE_PILOT",
+  "state": "RUN23_TERMINAL_CANCELLED_NO_ARTIFACT; USER_PATCH_INTEGRATED; RUN216_CI_SUCCESS_139_PYTHON_TESTS_GO_GREEN; READY_FOR_BOUNDED_MANUAL_LIVE_PILOT",
+  "current_phase": "RUN23_POSTMORTEM_RECORDED; RUN_BUDGET_AND_SIGTERM_REPORT_PERSISTENCE_PATCH_VALIDATED_IN_RUN216; READY_FOR_NEXT_MANUAL_VPNOBRATTO_PILOT",
   "completed": [
     "repository_reconnaissance",
     "protobuf_inventory_exporter",
@@ -280,8 +280,8 @@
     "progress_manifest_no_fsync_regression_test_passed",
     "manifest_no_fsync_validation_run211_green_128_tests"
   ],
-  "latest_successful_validation_run": 43074433130,
-  "latest_successful_validation_commit": "d9f2fff136fdc919730b99bf43c810f0ff23d96d",
+  "latest_successful_validation_run": 43092300671,
+  "latest_successful_validation_commit": "9eec7e142e81ad287b0c20ae89ba094ee08aa51a",
   "test_counts": {
     "python_unit_tests": 128,
     "python_unit_tests_status": "PASS",
@@ -467,14 +467,13 @@
     "production_release_artifact_byte_delta_verified": false
   },
   "next_steps": [
-    "Run #22 (43072239130 / job 130702892228) is terminal completed/cancelled; owner annotation confirms GitHub max execution time 12m0s. Job completed at 18:08:58Z; run updated 18:08:59Z. Post-terminal log fetch returned BlobNotFound; no artifacts. Step summaries still incorrectly show measurement step 7 in_progress and upload/failure steps pending.",
-    "Evidence from supplied log: listing HTTP 200 / 23,641 bytes / 35 links; profiles 1–5 fully downloaded and validated; profile 6 completed DoH, TCP, TLS and HTTP 200 but only partial response-body evidence to 3,830 bytes. No OpenVPN attempt, route, verified RU exit or target measurements confirmed.",
-    "Leading but unproven source-level hypothesis: the last body_read_completed marker is printed/flushed before record_vpnobratno_progress; in Run #22 checkout that manifest write then called stream.flush, os.fsync and os.replace. Per-event fsync could have blocked the worker and possibly the parent's timeout-manifest write. No terminal logs/artifact exist, so do not claim root cause proven.",
-    "Mitigation code d15de0f6c879e5b3f692bbdbb15d725f12c0785b removes per-phase fsync but retains temporary-file flush and same-directory atomic os.replace; it adds progress_manifest markers around parent mkdir, manifest read, temporary write and atomic replace.",
-    "Regression test d9f2fff136fdc919730b99bf43c810f0ff23d96d passed in CI Run #211 / job 130710450443: 128 Python tests in 0.883 seconds including test_progress_manifest_uses_atomic_replace_without_per_event_fsync; hosted ubuntu-24.04 GNU timeout process-tree preflight, Go formatting, go test ./... and go build also passed.",
-    "Run #22 used the old checkout 447bdf... and did not contain the no-fsync mitigation. It is not evidence that the updated code failed.",
-    "Next: after confirming latest PR #5 head and no active/queued VPN workflow, execute one bounded manual VPNObratto live pilot on the current branch, requesting one independently verified RU exit and capping profile attempts at six. Confirm the first log line's checkout SHA; inspect all progress_manifest markers and the artifact manifest after terminal state. No such new run has been dispatched yet.",
-    "Do not infer target blocking from timeout or missing artifact. Keep PR #5 OPEN/DRAFT and do not change production GeoIP/DIRECT/ASN policy, main/release or PR #6."
+    "Run #23 (43076269266 / job 130716786396) is terminal completed/cancelled. Checkout 72bbb1f had no network namespace wrapper and FirewallGuard changed OUTPUT in the runner's current namespace; this is a confirmed code hazard, not a proven cause of cancellation. No artifacts; job logs BlobNotFound; no confirmed OpenVPN route, RU exit or target rows.",
+    "Current PR #5 head at this checkpoint is 9eec7e142e81ad287b0c20ae89ba094ee08aa51a. PR #5 remains OPEN/DRAFT, base main.",
+    "CI Run #216 (43092300671 / job 130772224969) passed 139 Python tests, hosted GNU timeout process-tree preflight, Go formatting, go test ./... and go build.",
+    "The user patch adds no-timeout-retry behavior, early metadata exit after two failures with zero observations, 360-second run budget, 90-second attempt budget, independent atomic finally report writes and wrapper signal-forward/wait ordering. Report writes are best-effort under SIGTERM; SIGKILL/filesystem failures can still prevent them.",
+    "Before the next manual live pilot, verify no active/queued VPN workflow and dispatch only one run from the current feature branch with source=vpnobratno, one successful RU exit requested and max attempts=6. Confirm checkout SHA in logs and inspect the progress manifest plus five main reports.",
+    "No new VPN run was dispatched in this session. Do not infer target blocking from timeouts or missing artifacts; do not call a VPN Gate volunteer exit residential without independent access-network evidence.",
+    "Do not change production GeoIP builder/data, geoip_RU.dat, release assets, DIRECT policy, ASN allowlists, main, release or PR #6. Keep PR #5 OPEN/DRAFT."
   ],
   "ci_policy": {
     "push_validation_paths": [
@@ -1252,16 +1251,21 @@
     "interpretation": "No verified RU tunnel and no target requests. The two 5-second failures are VPN relay connection outcomes, not target-site blocking evidence."
   },
   "latest_validation": {
-    "run_id": 43051897730,
-    "job_id": 130630977611,
-    "tested_commit": "a9967f52b4bd3d7a50638ad9ce63d685d57b84a9",
+    "run_id": 43092300671,
+    "run_number": 216,
+    "job_id": 130772224969,
+    "tested_commit": "9eec7e142e81ad287b0c20ae89ba094ee08aa51a",
     "workflow_conclusion": "success",
     "job_conclusion": "success",
-    "python_tests": 121,
+    "python_tests": 139,
     "python_result": "OK",
+    "python_elapsed_seconds": 2.198,
+    "watchdog_process_tree_preflight": "success",
     "gofmt": "success",
     "go_test": "success",
-    "go_build": "success"
+    "go_build": "success",
+    "observed_at_utc": "2026-11-11T20:00:04Z",
+    "validation_scope": "Hermetic CI only; no VPN tunnel, RU exit or target reachability measurement"
   },
   "run9_result": {
     "run_id": 43008159447,
@@ -2617,5 +2621,85 @@
       "timeout_annotation": "The job has exceeded the maximum execution time of 12m0s",
       "interpretation": "Terminal job-level timeout confirmed by owner-provided annotation; step summary remains stale/inconsistent; no log archive or artifact."
     }
+  },
+  "previous_latest_successful_validation_run": 43074433130,
+  "previous_latest_successful_validation_commit": "d9f2fff136fdc919730b99bf43c810f0ff23d96d",
+  "previous_latest_validation": {
+    "run_id": 43051897730,
+    "job_id": 130630977611,
+    "tested_commit": "a9967f52b4bd3d7a50638ad9ce63d685d57b84a9",
+    "workflow_conclusion": "success",
+    "job_conclusion": "success",
+    "python_tests": 121,
+    "python_result": "OK",
+    "gofmt": "success",
+    "go_test": "success",
+    "go_build": "success"
+  },
+  "run23_result": {
+    "run_id": 43076269266,
+    "run_number": 23,
+    "workflow_id": 414188018,
+    "job_id": 130716786396,
+    "checkout_sha": "72bbb1f423986593d29213418ec177579fafac4b",
+    "started_at_utc": "2026-11-11T18:16:57Z",
+    "updated_at_utc": "2026-11-11T18:34:02Z",
+    "run_status": "completed",
+    "run_conclusion": "cancelled",
+    "job_status": "completed",
+    "job_conclusion": "cancelled",
+    "steps": {
+      "setup": "success",
+      "install_vpn_tools": "success",
+      "setup_go": "success",
+      "download_published_geoip": "success",
+      "export_ru_private_inventory": "success",
+      "vpn_measurement": "in_progress_in_terminal_step_summary",
+      "upload_artifact": "pending_in_terminal_step_summary"
+    },
+    "artifacts": [],
+    "log_archive": "BlobNotFound",
+    "source_diagnosis": {
+      "host_firewall_isolation_hazard_confirmed": true,
+      "checkout_had_vpn_netns_exec_wrapper": false,
+      "firewall_guard_changed_current_namespace_output_policy": true,
+      "exact_cancellation_root_cause": "UNKNOWN",
+      "confidence": "source-level hazard confirmed; cancellation attribution not proven"
+    },
+    "measurement_evidence": {
+      "openvpn_route_confirmed": false,
+      "independently_verified_ru_exit": false,
+      "target_measurement_rows": false
+    },
+    "interpretation": "No usable live VPN measurement can be recovered from this run; do not infer target blocking."
+  },
+  "run216_validation": {
+    "run_id": 43092300671,
+    "run_number": 216,
+    "job_id": 130772224969,
+    "commit": "9eec7e142e81ad287b0c20ae89ba094ee08aa51a",
+    "conclusion": "success",
+    "python_tests": 139,
+    "python_seconds": 2.198,
+    "watchdog_preflight": "success",
+    "gofmt": "success",
+    "go_test": "success",
+    "go_build": "success",
+    "completed_at_utc": "2026-11-11T20:00:04Z",
+    "live_vpn_measurement": false
+  },
+  "vpn_gate_termination_patch": {
+    "user_patch_file": "patch_diff.txt",
+    "runtime_commit": "3d399a1fa21f9b15a5df9c7f5b215f2e4748957c",
+    "timeout_contract_commit": "c9e0ab862cb1f6e4be2c07a8ed4696040c0a9d72",
+    "executable_stub_test_commit": "9eec7e142e81ad287b0c20ae89ba094ee08aa51a",
+    "run_wall_clock_budget_seconds": 360,
+    "attempt_wall_clock_budget_seconds": 90,
+    "timeout_retry_policy": "Do not invoke DoH/pinned HTTPS fallback after a socket/urllib timeout; resolver/NSS fallback is bounded by exact remaining wall-clock time.",
+    "metadata_policy": "Require two independent agreeing sources; skip the third endpoint only after the first two both fail with zero observations.",
+    "report_persistence": "Five main reports written independently with temporary files and atomic replace in finally; SystemExit/SIGTERM is re-raised only after remaining reports are attempted.",
+    "hard_limit": "SIGKILL, runner destruction and filesystem failure can still prevent persistence.",
+    "namespace_signal_order": "Forward SIGTERM/SIGINT to child, wait for child report handling, then namespace cleanup.",
+    "ci_run": 43092300671
   }
 }

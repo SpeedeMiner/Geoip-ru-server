@@ -9,7 +9,7 @@
 - Working branch: `feature/reachability-full-ru-kz-by`
 - PR #5 must remain **OPEN / DRAFT**. Do not mark ready, merge, or rebase without explicit owner approval.
 - Do not modify `main`, `release`, production GeoIP builder/data, `geoip_RU.dat`, release assets, DIRECT policy, ASN allowlists, PR #6 or other PR branches.
-- Do not launch overlapping VPN runs. Run #21 and Run #22 are both terminal `completed / cancelled` after GitHub's 12-minute maximum job-execution limit. No VPN run from these attempts remains active.
+- Do not launch overlapping VPN runs. Run #21, #22 and #23 are all terminal `completed / cancelled`; there is no active VPN run from these attempts. Run #23 has no artifact or recoverable terminal log archive.
 - A RU VPN exit does not prove that the relay is a residential/household ISP line. Never label it residential without independent evidence.
 - DNS/HTTPS timeouts, TLS failures, missing probes, runner failures and missing artifacts are not evidence of target blocking.
 
@@ -17,13 +17,13 @@
 
 1. Read this file.
 2. Read the last dated entry at the end of `.github/reachability/WORKLOG.md` (append-only).
-3. Parse `.github/reachability/CHECKPOINT.json`; use `current_phase`, `next_steps`, `runner_timeout_preflight`, `run21_result` and `run20_result` as the state summary.
+3. Parse `.github/reachability/CHECKPOINT.json`; use `current_phase`, `next_steps`, `latest_validation_run216` and `run23_result` as the current state summary.
 4. Query the live PR #5 head and latest Actions runs. Never use a remembered SHA as the current branch head.
 5. Continue only from the first pending item. Do not repeat a finished VPN/CI phase.
 
 The first “Current repository state” section near the top of WORKLOG is historical and may be stale; prefer its newest dated entries plus CHECKPOINT.
 
-## Latest live pilot — Run #22 (TERMINAL: 12-MINUTE JOB LIMIT EXCEEDED)
+## Historical live pilot — Run #22 (TERMINAL: 12-MINUTE JOB LIMIT EXCEEDED)
 
 - Run [#22 / 43072239130](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43072239130); job [130702892228](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43072239130/job/130702892228).
 - Started 2026-11-11 17:51:55 UTC; job 17:51:58 UTC; measurement step 7 started 17:52:18 UTC. Checkout SHA `447bdf6083b3d69b0fbdcf0e126cc27a0ee3db71`.
@@ -118,14 +118,31 @@ Workflow integration: `.github/workflows/reachability-validation.yml` now runs o
 - Normal-path cleanup calls terminate → wait(8s) → kill → wait(5s). If Python is forcibly killed, GNU timeout's validated process-group KILL is expected to include OpenVPN and its inherited descendants.
 - Thus the demonstrated process-tree cleanup gap is now addressed for the exact sudo/GNU-timeout group topology used by the workflow. The independent GitHub runner/controller state-overrun question remains an observability/runner-platform limitation.
 
-## Next steps
 
-- Run #22 is terminal `completed / cancelled` due to GitHub's max 12-minute job-execution annotation. There are no terminal job logs or artifact; the step summary remains inconsistent.
-- The leading but unproven code-level hypothesis for its last marker is synchronous per-event manifest `fsync`. This has been removed in code commit `d15de0f...`, with atomic replace retained and explicit manifest operation markers added. Regression validation passed in Run #211 (128 Python tests and all Go/watchdog checks).
-- Before the next live pilot, re-query the current PR #5 head and verify no active/queued VPN workflow. Use the current branch containing `d15de0f...` and `d9f2fff...`; confirm the checked-out SHA in the first log lines.
-- In the next manual pilot, use source `vpnobratno`, request one independently verified RU exit, cap profile attempts at six, then inspect all `progress_manifest_*` markers and the uploaded `reachability-output/vpn_gate_vpnobratto_progress.json` after terminal state.
-- Distinguish manifest mkdir/read/temp-write/atomic-replace stalls from HTTPS body reads. If the next run reaches OpenVPN, separately verify tunnel route, actual exit IP/country, then target DNS/HTTPS requests. Do not infer target blocking from timeout or absent artifact.
-- No new VPN run has been dispatched in this session. PR #5 stays OPEN / DRAFT; preserve production GeoIP data/builders, DIRECT policy, ASN allowlists, `main`, `release` and PR #6.
+## Latest state — 2026-11-11 20:00 UTC
+
+### Latest VPN workflow — Run #23 (TERMINAL / NO EVIDENCE)
+
+- Run [#23 / 43076269266](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43076269266), job 130716786396, checked out 72bbb1f423986593d29213418ec177579fafac4b and ended completed / cancelled.
+- Setup, Go, protobuf download/checksum and RU/PRIVATE export succeeded. Measurement step summary remained in_progress; upload and final gate remained pending.
+- No artifact exists. Post-terminal log retrieval returns BlobNotFound.
+- The Run #23 checkout did not yet use vpn_netns_exec.sh; its FirewallGuard edited OUTPUT rules in the runner's current namespace. This is a confirmed old-code isolation hazard, not a proven explanation for cancellation. The exact cause remains unknown.
+- No OpenVPN route, verified RU egress or target measurements were recovered. Do not infer target blocking.
+
+### Latest code validation — Run #216 (SUCCESS)
+
+- [Run #216 / 43092300671](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43092300671), job 130772224969, validated commit 9eec7e142e81ad287b0c20ae89ba094ee08aa51a.
+- Python 139/139 passed; GNU timeout process-tree preflight passed; Go formatting, go test ./... and go build passed.
+- The uploaded timeout/report patch is in commits 3d399a1, c9e0ab8, 9eec7e1. It adds a 360-second run budget, 90-second per-profile budget, timeout-aware no-retry behavior, early metadata stop after two failures with no observations, SIGTERM-safe independent atomic report writes, and wrapper child-wait ordering.
+- Run #216 is CI-only, not a live VPN measurement.
+
+### Next steps
+
+- Before a new pilot, re-query PR #5 head and ensure no active/queued VPN run.
+- Manually dispatch the VPN workflow from feature/reachability-full-ru-kz-by with source vpnobratno, one independently verified RU exit requested, and six profile attempts maximum. No such workflow was dispatched in this session.
+- Confirm the checkout SHA in the first logs. Inspect vpn_gate_vpnobratto_progress.json and all five report files. If SIGTERM occurs, verify report_persisted markers precede wrapper cleanup_started.
+- A VPN Gate RU exit does not prove a residential/home ISP connection. A timeout, TLS error, missing report or unverified exit is not target-blocking evidence.
+- Keep PR #5 OPEN / DRAFT. Preserve production GeoIP data/builders, DIRECT policy, ASN allowlists, main, release and PR #6.
 
 ## Continuity rules
 
