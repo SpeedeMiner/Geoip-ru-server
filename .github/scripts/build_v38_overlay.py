@@ -306,6 +306,24 @@ def union_networks(*groups):
 def addr_counts(networks):
     return {f"ipv{v}": interval_size(intervals(networks, v)) for v in (4, 6)}
 
+def networks_from_intervals(values, version: int):
+    """Convert disjoint integer address intervals back to minimal CIDRs."""
+    output = set()
+    address_type = ipaddress.IPv4Address if version == 4 else ipaddress.IPv6Address
+    for start, end in values:
+        output.update(ipaddress.summarize_address_range(address_type(start), address_type(end)))
+    return output
+
+def subtract_networks(source, *masks):
+    """Subtract masks by exact address space, not by CIDR-object equality."""
+    output = set()
+    for version in (4, 6):
+        remaining = intervals(source, version)
+        for mask in masks:
+            remaining = subtract(remaining, intervals(mask, version))
+        output.update(networks_from_intervals(remaining, version))
+    return output
+
 def parse_blocked_base(path: Path):
     return parse_cidr_file(path, allow_hosts=True)[0]
 
@@ -436,7 +454,10 @@ def main():
     blocked_iv = {v: intervals(blocked, v) for v in (4, 6)}
     private_overlap = {v: interval_size(intersect(intervals(additions, v), private_iv[v])) for v in (4, 6)}
     block_overlap = {v: interval_size(intersect(preblock_iv[v], blocked_iv[v])) for v in (4, 6)}
-    final = preblock - private - blocked
+    # CIDR set difference is not address-space subtraction: e.g. removing
+    # 203.0.113.128/25 from a covering 203.0.113.0/24 must retain only the /25.
+    # Convert to exact intervals before subtracting PRIVATE and RKN block prefixes.
+    final = subtract_networks(preblock, private, blocked)
     final = set(collapse(final))
     final_iv = {v: intervals(final, v) for v in (4, 6)}
     final_private = set(collapse(private))
@@ -496,8 +517,12 @@ def main():
     delta_v4 = interval_size(new_vs_base[4])
     delta_v6 = interval_size(new_vs_base[6])
     base_blocked_iv = {v: intervals(blocked_base, v) for v in (4,6)}
-    ipsum_only = ipsum - blocked_base
-    ipsum_only_iv = {v: intervals(ipsum_only,v) for v in (4,6)}
+    ipsum_iv = {v: intervals(ipsum, v) for v in (4,6)}
+    # Count only block space not already covered by the v37 approved set,
+    # including containment by a broader v37 CIDR (not just exact CIDR equality).
+    ipsum_only_iv = {
+        v: subtract(ipsum_iv[v], base_blocked_iv[v]) for v in (4,6)
+    }
     ipsum_overlap_direct = {
         v: interval_size(intersect(preblock_iv[v], ipsum_only_iv[v])) for v in (4,6)
     }
@@ -505,8 +530,10 @@ def main():
     for source_id, networks in (("v37-approved-rkn",blocked_base),("antifilter-ipsum-24",ipsum)):
         for net in sorted(networks,key=lambda n:(n.version,int(n.network_address),n.prefixlen)):
             v=net.version
-            overlap=interval_size(intersect([(int(net.network_address),int(net.broadcast_address))],preblock_iv[v]))
-            already=interval_size(intersect([(int(net.network_address),int(net.broadcast_address))],base_blocked_iv[v]))
+            one_prefix = [(int(net.network_address),int(net.broadcast_address))]
+            direct_overlap = intersect(one_prefix, preblock_iv[v])
+            overlap = interval_size(direct_overlap)
+            already = interval_size(intersect(direct_overlap, base_blocked_iv[v]))
             blocked_rows.append({
                 "source_id":source_id,
                 "prefix":str(net),
