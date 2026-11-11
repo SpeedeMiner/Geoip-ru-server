@@ -348,3 +348,13 @@ Durable resume point for PR #5. After any conversation/network interruption, rea
 - VPN Gate test module now contains 29 tests; existing reachability test module contains 29; expected combined Python suite is 58. CI is pending for the latest TLS compatibility changes.
 - Next: confirm CI; if green, consider one final bounded six-candidate run across six origin ASNs because the current dynamic CSV list has 12 profiles / 6 ASNs and three attempts have produced no stable TUN. Do not increase beyond six. If none connects, stop using VPN Gate as the sole measurement transport and add a locally supplied residential probe or another provider with documented exit availability.
 - No production GeoIP changes, builder/release/main changes, DIRECT/ASN allowlist changes or PR #6 changes.
+
+
+### 2026-11-11 — Final six-candidate pilot launched — RUNNING
+
+- CI Run #? (Actions run `42966905885`, commit `11f5f74242feeee1a8d460fba243a91afb95b8be`) passed; job log shows `Ran 58 tests`, `OK`, plus successful gofmt, go test and go build.
+- Feature-branch one-shot workflow fallback now allows up to six connection candidates for the final pilot (manual workflow_dispatch keeps its explicit default of three). Requested successful RU exit count remains one; hard cap six.
+- One-shot marker commit: `74e855a830a1498302465d442e469d94af7e6471`, commit message `[vpn-gate-once] Final bounded six-ASN Russian VPN Gate pilot`.
+- Final pilot Actions run: `42967015227`, URL https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/42967015227.
+- At checkpoint update, the runner setup, Go install, exact release protobuf download/checksum and full inventory export are all complete. Measurement step started at `2026-11-11T05:38:41Z` and is still in progress. No artifact or completion result has been observed yet.
+- Do not start another VPN run. After run completion, inspect the uploaded artifact, then remove the marker and disable the temporary feature-branch push trigger.
