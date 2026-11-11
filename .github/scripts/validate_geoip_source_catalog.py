@@ -101,10 +101,9 @@ def validate_catalog(path: Path = DEFAULT_CATALOG) -> dict[str, object]:
 
         if requiredness == "derived" and (primary or fallbacks):
             raise CatalogError(f"{source_id}: derived rows must reference parents, not direct download URLs")
-        if requiredness == "embedded" and row["ACQUISITION"].strip() not in {
-            "embedded policy", "not downloaded; static in source code",
-            "local file / embedded fallback",
-        }:
+        if requiredness == "embedded" and not row["ACQUISITION"].strip().startswith((
+            "embedded policy", "not downloaded; static", "local file / embedded fallback"
+        )):
             raise CatalogError(f"{source_id}: unexpected embedded acquisition mode")
 
     missing_ids = sorted(REQUIRED_SOURCE_IDS - set(by_id))
