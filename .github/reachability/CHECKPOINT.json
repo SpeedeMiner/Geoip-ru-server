@@ -1,14 +1,14 @@
 {
   "schema_version": 1,
-  "updated_at_utc": "2026-11-11T14:19:58Z",
+  "updated_at_utc": "2026-11-11T14:20:14Z",
   "repository": "SpeedeMiner/Geoip-ru-server",
   "pull_request": 5,
   "pull_request_url": "https://github.com/SpeedeMiner/Geoip-ru-server/pull/5",
   "branch": "feature/reachability-full-ru-kz-by",
-  "recorded_pr_head_before_checkpoint_commit": "44876fada938368cf6211ec6fc3a0572cd259479",
+  "recorded_pr_head_before_checkpoint_commit": "bf3bbd6bb3af4b1f527a081af62aafde0eff8b55",
   "base_sha": "a68e5d6589361814cb1cfedd2af7857e4af806fa",
-  "state": "RUN15_FAILED_AT_APT_DNS; VPN_WORKFLOW_PINNED_UBUNTU_24_04_WITH_BOUNDED_APT_RETRIES; VALIDATION_PENDING",
-  "current_phase": "RUN15_TERMINAL_APT_DNS_FAILURE_WORKFLOW_FIX_COMMITTED_VALIDATION_PENDING",
+  "state": "RUN15_APT_DNS_FAILURE_DOCUMENTED_RUNNER_FIX_COMMITTED_AND_CI_VALIDATED_116_TESTS",
+  "current_phase": "READY_FOR_MANUAL_RUN16_AFTER_UBUNTU2404_RUNNER_FIX_CI_PASS",
   "completed": [
     "repository_reconnaissance",
     "protobuf_inventory_exporter",
@@ -230,8 +230,8 @@
     "vpnobratto_outer_gnu_timeout_9m_kill_after_5s_added",
     "vpnobratto_validation_111_python_tests_and_go_checks_success_43023729793"
   ],
-  "latest_successful_validation_run": 42999166787,
-  "latest_successful_validation_commit": "26b12ab8b83f766391168f179837ff44aee6681a",
+  "latest_successful_validation_run": 43037445995,
+  "latest_successful_validation_commit": "05c0d0431990e97851628f7b87ef0b29b0f8763c",
   "test_counts": {
     "python_unit_tests": 105,
     "python_unit_tests_status": "PASS",
@@ -449,18 +449,18 @@
     "vpn_gate_manual_dispatch_requires_default_branch_workflow": true
   },
   "pending_validation": {
-    "commit": "99d22570e8b299b9b98755f3eb8304d94c1a7d8c",
+    "commit": "05c0d0431990e97851628f7b87ef0b29b0f8763c",
     "workflow": "Reachability validation",
-    "run_id": 43023729793,
-    "run_url": "https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43023729793",
+    "run_id": 43037445995,
+    "run_url": "https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43037445995",
     "status": "SUCCESS",
-    "verified_python_test_count": 111,
+    "verified_python_test_count": 116,
     "go_checks": [
       "gofmt",
       "go test ./...",
       "go build"
     ],
-    "note": "Full job log confirms 111 Python tests, py_compile/JSON validation, gofmt, Go tests and build. Subsequent README/WORKLOG/CHECKPOINT commits are documentation-only."
+    "note": "Validation is complete; no code failures."
   },
   "vpn_gate_measurement": {
     "source": "VPNObratno linked OpenVPN profiles (default); official VPN Gate CSV API remains selectable fallback",
@@ -1221,17 +1221,20 @@
     "interpretation": "No verified RU tunnel and no target requests. The two 5-second failures are VPN relay connection outcomes, not target-site blocking evidence."
   },
   "latest_validation": {
-    "run_id": 43033708075,
-    "run_url": "https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43033708075",
-    "commit": "e1d41236b2dcf48176ea29c49ea946d8175edf3d",
+    "run_id": 43037445995,
+    "run_url": "https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43037445995",
+    "commit": "05c0d0431990e97851628f7b87ef0b29b0f8763c",
     "status": "SUCCESS",
+    "completed_at_utc": "2026-11-11T14:20:14Z",
+    "job_id": 130579946393,
     "python_tests": 116,
     "python_status": "PASS",
     "python_compile_and_json": "PASS",
     "gofmt": "PASS",
     "go_test": "PASS",
     "go_build": "PASS",
-    "details": "Full job log: Ran 116 tests in 0.129s; OK; py_compile/JSON, gofmt, go test ./... and go build successful."
+    "workflow_file_change_accepted": true,
+    "note": "Full job log confirms Ran 116 tests / OK, then gofmt, go test ./... and go build. This is validation only; apt mirror DNS and actual VPN connectivity still require manual workflow execution."
   },
   "run9_result": {
     "run_id": 43008159447,
@@ -1543,10 +1546,11 @@
   "current_next_run": {
     "expected_run_number": 16,
     "branch": "feature/reachability-full-ru-kz-by",
+    "latest_branch_head_before_checkpoint": "bf3bbd6bb3af4b1f527a081af62aafde0eff8b55",
     "source": "vpnobratno",
     "max_vpn_gate_servers": 1,
     "max_vpn_gate_attempts": 6,
-    "precondition": "Reachability validation for commit 05c0d0431990e97851628f7b87ef0b29b0f8763c passes and no VPN workflow is active.",
+    "precondition": "Reachability validation run 43037445995 passed; ensure there is no active VPN workflow before dispatch.",
     "not_yet_dispatched": true
   },
   "run14_result": {
@@ -1556,9 +1560,9 @@
     "branch": "feature/reachability-full-ru-kz-by",
     "commit": "20e6db7e6035c6af705b81bd4c8776a7cf9417f3",
     "created_at_utc": "2026-11-11T13:36:31Z",
-    "last_rest_check_at_utc": "2026-11-11T13:57:46Z",
-    "status": "in_progress",
-    "conclusion": null,
+    "last_rest_check_at_utc": "2026-11-11T14:00:25Z",
+    "status": "completed",
+    "conclusion": "cancelled",
     "job_id": 130556541550,
     "job_status": "in_progress",
     "current_step": "Run capped VPNObratto / VPN Gate Russian-exit measurements",
@@ -1587,8 +1591,12 @@
     "openvpn_attempts_confirmed": 0,
     "verified_ru_exits_confirmed": 0,
     "target_measurements_confirmed": 0,
-    "interpretation": "Latest live screenshot at 13:40:14Z ended at start of profile 6. REST at 13:55:57Z still showed step 7 in progress and step 8 upload pending. No post-snapshot phases can be asserted; do not interpret as target blocking.",
-    "note": "A second REST check at 13:57:46Z still showed step 7 active, even after the 20-minute configured job ceiling should have elapsed. This run is on the older 20e6db7 code, before per-profile SIGALRM deadlines; live browser refresh and cancellation are blocked by TinyFish wallet negative balance."
+    "interpretation": "Run became terminal / cancelled after the previous checkpoint. No artifact, verified RU exit or target measurement. Exact cancellation actor/cause unknown.",
+    "note": "A second REST check at 13:57:46Z still showed step 7 active, even after the 20-minute configured job ceiling should have elapsed. This run is on the older 20e6db7 code, before per-profile SIGALRM deadlines; live browser refresh and cancellation are blocked by TinyFish wallet negative balance.",
+    "completed_at_utc": "2026-11-11T14:00:25Z",
+    "openvpn_attempts": 0,
+    "verified_ru_exits": 0,
+    "target_measurements": 0
   },
   "run14_monitoring_blocker": {
     "provider": "TinyFish authenticated browser",
