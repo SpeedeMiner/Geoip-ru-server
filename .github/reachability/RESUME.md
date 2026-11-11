@@ -120,32 +120,34 @@ Workflow integration: `.github/workflows/reachability-validation.yml` now runs o
 
 
 
-## Latest state — 2026-11-11 20:04 UTC
 
-### Latest VPN workflow — Run #23 (TERMINAL / NO EVIDENCE)
+## Latest state — Run #24 live result and follow-up fixes (2026-11-11 20:12 UTC)
 
-- Run [#23 / 43076269266](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43076269266), job 130716786396, checked out 72bbb1f423986593d29213418ec177579fafac4b and ended completed / cancelled.
-- Setup, Go, protobuf download/checksum and RU/PRIVATE export succeeded. Measurement step summary remained in_progress; upload and final gate remained pending.
-- No artifact exists. Post-terminal log retrieval returns BlobNotFound.
-- The Run #23 checkout did not yet use vpn_netns_exec.sh; its FirewallGuard edited OUTPUT rules in the runner's current namespace. This is a confirmed old-code isolation hazard, not a proven explanation for cancellation. The exact cause remains unknown.
-- No OpenVPN route, verified RU egress or target measurements were recovered. Do not infer target blocking.
+### Live VPN evidence — Run #24 (SUCCESS, but partial target scan)
 
-### Latest code validation — Run #217 (SUCCESS)
+- [Run #24 / 43093976146](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43093976146), job 130777962108, checkout `bb8620877ce40af49127b17f1a901e8e289af78e`, completed success. Artifact ID 13890192682 is available [here](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43093976146/artifacts/13890192682).
+- One VPNObratno IP_UDP profile connected: `vpn350936845.opengw.net`, public exit `217.25.228.130`, RU, ASN 6856, organisation AO IK Informsvyaz-Chernozemye. Route installed and exit metadata verified. Exit matches existing GeoIP RU prefix 217.25.224.0/21; no candidate.
+- 28/30 target rows; all 28 resolved A records. 25 HTTPS HTTP_RESPONSE and 3 INCONCLUSIVE. Statuses: 200×11, 301×2, 302×3, 307×3, 308×2, 403×1, 418×1, 503×2. Inconclusive: government.ru timeout (28s), gov.kz certificate hostname mismatch, belarusbank.by timeout (~19.5s).
+- Targets not attempted due the 90-second attempt deadline: by-kufar / kufar.by and by-nbrb / nbrb.by.
+- Run #24 was marked green only because one requested RU exit was obtained; the old exit code did not require all targets to be attempted. Interpret it as successful tunnel + RU exit with partial target measurements, not as a complete target scan.
+- All five reports were persisted, upload succeeded (657,579 bytes), namespace cleanup had cleanup_failed=0. The progress manifest had blank workflow identity fields because sudo stripped GITHUB_SHA/GITHUB_RUN_ID/GITHUB_RUN_ATTEMPT.
+- Volunteer VPN/ASN data do not establish a residential/home ISP. HTTP 403/418/503 are transport responses, not proof of blocking.
 
-- [Run #217 / 43093034260](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43093034260), job 130774717136, validated commit 6e497c5642a5c5ac5a25cb2d7e7594443378c3ee.
-- Python 139/139 passed in 1.539s; the real-SIGTERM report-persistence test passed. GNU timeout process-tree preflight, Go formatting, go test ./... and go build passed.
-- Report persistence now defers SIGTERM/SIGINT for the entire five-file sequence, then restores the previous handlers and raises SystemExit with the signal exit code. The test verifies all five reports exist before SIGTERM is re-raised.
-- The preceding Run #216 / 43092300671 also passed 139 tests, but Run #217 is the latest and includes this additional signal-deferral regression.
-- The patch commits are 3d399a1 (runtime patch), c9e0ab8 (integer timeout compatibility), 9eec7e1 (executable test fixtures), and 6e497c5 (whole-sequence signal deferral).
+### Latest code changes after Run #24
+
+- Current code head before this documentation commit: `ef84c890a79f93d006d98ddf833d3c9261c1553f`.
+- `73bd2cb`: attempt budget 120 seconds, structured target-scan summary including untested IDs, run identity passed through sudo and recorded in summary.
+- `dab7399`: unit test updated for sudo env.
+- `ef84c89`: partial target scan no longer returns success; artifacts upload first, then final gate fails if target_scan_status is PARTIAL. Per-target INCONCLUSIVE remains a recorded observation and does not by itself make the scan incomplete.
+- CI runs #218, #219 and #220 are queued for the intermediate/current commits. Do not claim these changes are validated until a run completes successfully.
 
 ### Next steps
 
-- Current code head at this checkpoint is 6e497c5642a5c5ac5a25cb2d7e7594443378c3ee. PR #5 remains OPEN / DRAFT, base main.
-- Before a new pilot, re-query PR #5 head and ensure no active/queued VPN run.
-- Manually dispatch the VPN workflow from feature/reachability-full-ru-kz-by with source vpnobratno, one independently verified RU exit requested, and six profile attempts maximum. No such workflow was dispatched in this session.
-- Confirm the checkout SHA in the first logs. Inspect vpn_gate_vpnobratto_progress.json and all five report files. If SIGTERM occurs, verify report_persisted markers precede wrapper cleanup_started.
-- A VPN Gate RU exit does not prove a residential/home ISP connection. A timeout, TLS error, missing report or unverified exit is not target-blocking evidence.
-- Keep PR #5 OPEN / DRAFT. Preserve production GeoIP data/builders, DIRECT policy, ASN allowlists, main, release and PR #6.
+- Validate latest code commit `ef84c890a79f93d006d98ddf833d3c9261c1553f`; fix any test failure.
+- Only after validation passes, run one manual VPNObratno pilot with one RU exit requested and six profile attempts. Confirm that progress manifest includes workflow_run_id, workflow_run_attempt and execution_sha.
+- Check `target_scan_status=COMPLETE`, `targets_not_tested_count=0`, and ensure rows exist for all declared targets, including by-kufar and by-nbrb. If partial, artifact must still upload but the workflow must fail.
+- Keep conclusions conservative: timeout, TLS mismatch, 403/418/503 or unattempted targets are not block verdicts; VPN Gate does not attest residential access.
+- PR #5 remains OPEN / DRAFT, base main. Preserve production GeoIP builder/data, DIRECT policy, ASN allowlists, main, release and PR #6.
 
 ## Continuity rules
 

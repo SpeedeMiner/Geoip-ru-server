@@ -1210,3 +1210,46 @@ Durable resume point for PR #5. After any conversation/network interruption, rea
 - Python: 139 tests passed in 1.539s; the new real-SIGTERM report-persistence test passed. GNU timeout process-tree preflight, Go formatting, go test ./... and go build all passed.
 - Run #217 is CI-only. No VPN workflow was dispatched; there is still no live tunnel, verified RU exit or new target measurement.
 - Checkpoint/readme/resume need to treat the report guarantee as best-effort only under SIGTERM/SIGINT; SIGKILL, runner termination and filesystem failure can still prevent report persistence.
+
+
+## 2026-11-11 20:12 UTC — First live VPNObratno measurement completed (Run #24); partial target scan diagnosed
+
+### Run #24 — successful RU tunnel, partial 28/30 target scan
+
+- Manual workflow [Run #24 / 43093976146](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43093976146), job 130777962108, checked out `bb8620877ce40af49127b17f1a901e8e289af78e`; started 2026-11-11 20:10:20Z and completed SUCCESS at 20:12:39Z.
+- Inputs/defaults resolved by the summary: source `vpnobratno`, requested successful RU exits 1, max profile attempts 6, request timeout 12 seconds. Only one OpenVPN profile was attempted because the requested one successful RU exit was reached.
+- Discovery read 30 profile links, inspected/downloaded six IP_UDP profiles, obtained six usable profiles and six distinct server hostnames. It stopped on the six-host diversity budget. The other 24 links were not downloaded; DDNS/TCP variants were not tried.
+- Selected and connected profile: `vpn350936845.opengw.net`, variant `IP_UDP`, server IP `217.25.228.130`. The log confirms `tunnel_result=route_installed`, then successful RU exit metadata verification.
+- Public exit: `217.25.228.130`, country RU, ASN 6856, organisation `AO IK Informsvyaz-Chernozemye`, prefix `217.25.224.0/20`; published inventory matches RU prefix `217.25.224.0/21`. IP metadata ASN and RIPEstat ASN agreed; no ASN conflict and no GeoIP candidate was produced. The endpoint IP and public exit IP are the same address in this run.
+- Access-network/residential classification remains unverified. The source is a volunteer-operated VPNObratno-listed VPN Gate node; a Russian exit IP and ASN do not prove a home ISP or a household subscriber line. Server-origin ASN diversity was not checked before tunnel setup (`server_asn_lookups=0`), so the six selected hostnames are not confirmed as six distinct ISPs.
+
+### Target observations
+
+- 28 of 30 target rows were written. All 28 had an IPv4 DNS A answer; eight also had AAAA answers and 20 had no AAAA answer.
+- HTTPS results: 25 `HTTP_RESPONSE`, 3 `INCONCLUSIVE`.
+- HTTP status counts among the 25 responses: 200 ×11, 301 ×2, 302 ×3, 307 ×3, 308 ×2, 403 ×1, 418 ×1, 503 ×2. The code intentionally treats every HTTP status, including 403/418/503, as transport response evidence only, not as a target-blocking verdict.
+- Three inconclusive results: `government.ru` wall-clock timeout at 28 seconds; `gov.kz` TLS certificate hostname mismatch for the requested host; `belarusbank.by` wall-clock timeout at about 19.5 seconds. None is proof of ISP blocking.
+- The attempt-level 90-second budget was exhausted after target 28. Targets not attempted: `by-kufar` (`kufar.by`) and `by-nbrb` (`nbrb.by`). The log contains `target_loop_budget_exhausted ... tested=28/30`.
+- The workflow was green because the old exit criterion only required one verified RU exit; the separate “fail when requested number of RU exits was not reached” step was skipped. Thus Run #24 is a successful tunnel/exit test but an incomplete target scan, not a completed 30-target measurement.
+
+### Artifact and cleanup evidence
+
+- Artifact [geoip-ru-vpn-gate-43093976146 / ID 13890192682](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43093976146/artifacts/13890192682), size 657,579 bytes, SHA-256 `285b33e3862d4f6281f5c7c1e39097b4c88be84ecc562527ff6da7e5cfec2953`. It contains inventory TSV, four data reports, summary JSON and VPNObratno progress manifest.
+- All five main reports emitted `report_persisted`; summary has `report_write_errors=[]`.
+- Namespace cleanup completed with `host_firewall_restored=true` and `cleanup_failed=0`. Artifact upload succeeded.
+- The progress manifest had empty `workflow_run_id`, `workflow_run_attempt` and `execution_sha`. The workflow invokes the namespace wrapper through `sudo bash`, which strips these GitHub environment variables. This was confirmed by the artifact itself.
+
+### Follow-up fixes committed; CI pending
+
+- `73bd2cb62b638113f25309f20069c514bcef14c1`: increase `ATTEMPT_WALL_CLOCK_BUDGET_SECONDS` from 90 to 120; track each verified-exit target scan and list IDs not tested; add explicit `target_scan_status`, counts and scan details to summary; pass `GITHUB_SHA`, `GITHUB_RUN_ID`, `GITHUB_RUN_ATTEMPT` through `sudo env`; include run identity in summary.
+- `dab7399c08f3d8c41460b9598f9d280e9693d519`: update workflow unit assertions for the new `sudo env` invocation.
+- `ef84c890a79f93d006d98ddf833d3c9261c1553f`: measurement now succeeds only if the requested verified RU exits are reached **and** the target scan status is COMPLETE. An incomplete scan will still upload diagnostic artifacts, then fail the final gate rather than appear green.
+- New tests cover partial/complete/not-started target-scan summaries, progress-manifest run identity, workflow environment preservation, 120-second attempt budget and failure on partial scans.
+- Validation runs #218 / 43095995983, #219 / 43096100580 and #220 / 43096310463 were created for intermediate/current commits and remain queued at this checkpoint; no successful CI result is claimed yet for commits 73bd2cb, dab7399 or ef84c89.
+
+### Next actions
+
+- Wait for validation of the latest code commit `ef84c890a79f93d006d98ddf833d3c9261c1553f`; inspect failures before another live workflow.
+- After CI passes, dispatch one bounded live pilot from the latest feature branch with source `vpnobratno`, one verified RU exit and six max attempts. Expect summary to carry real run ID/attempt/SHA and `target_scan_status=COMPLETE` only if every declared target received a row.
+- Any HTTP response including 403/418/503 remains a transport observation; certificate mismatch, timeouts and skipped targets are not block verdicts. Residential/home ISP status remains independently unverified.
+- Keep PR #5 OPEN / DRAFT. No production GeoIP mutation, automatic CIDR additions, DIRECT policy, ASN allowlists, `main`, `release` or PR #6 changes.

@@ -1,14 +1,14 @@
 {
   "schema_version": 1,
-  "updated_at_utc": "2026-11-11T20:04:38Z",
+  "updated_at_utc": "2026-11-11T20:12:39Z",
   "repository": "SpeedeMiner/Geoip-ru-server",
   "pull_request": 5,
   "pull_request_url": "https://github.com/SpeedeMiner/Geoip-ru-server/pull/5",
   "branch": "feature/reachability-full-ru-kz-by",
-  "recorded_pr_head_before_checkpoint_commit": "6e497c5642a5c5ac5a25cb2d7e7594443378c3ee",
+  "recorded_pr_head_before_checkpoint_commit": "ef84c890a79f93d006d98ddf833d3c9261c1553f",
   "base_sha": "a68e5d6589361814cb1cfedd2af7857e4af806fa",
-  "state": "RUN23_TERMINAL_CANCELLED_NO_ARTIFACT; USER_PATCH_INTEGRATED; RUN217_CI_SUCCESS_139_PYTHON_TESTS_GO_GREEN; READY_FOR_BOUNDED_MANUAL_LIVE_PILOT",
-  "current_phase": "RUN23_POSTMORTEM_RECORDED; WHOLE_REPORT_SEQUENCE_SIGNAL_DEFERRAL_VALIDATED_IN_RUN217; READY_FOR_NEXT_MANUAL_VPNOBRATTO_PILOT",
+  "state": "RUN24_LIVE_RU_EXIT_SUCCESS_PARTIAL_28_OF_30; ATTEMPT_120S_AND_RUN_IDENTITY_FIXES_COMMITTED; TARGET_SCAN_COMPLETENESS_REQUIRED_FOR_SUCCESS; CI_QUEUED",
+  "current_phase": "RUN24_ANALYZED; RUN_BUDGET_AND_PROGRESS_ID_FIXES_COMMITTED; AWAITING_RUN220_VALIDATION_BEFORE_NEXT_LIVE_PILOT",
   "completed": [
     "repository_reconnaissance",
     "protobuf_inventory_exporter",
@@ -467,13 +467,14 @@
     "production_release_artifact_byte_delta_verified": false
   },
   "next_steps": [
-    "Run #23 is terminal completed/cancelled on checkout 72bbb1f. It predates network namespace isolation; the old FirewallGuard could change host OUTPUT policy. This is a confirmed old-code hazard, not a proven cancellation cause. No artifacts or terminal logs; no OpenVPN route/RU exit/target rows.",
-    "Current PR #5 code head at this checkpoint is 6e497c5642a5c5ac5a25cb2d7e7594443378c3ee. PR #5 remains OPEN/DRAFT, base main.",
-    "CI Run #217 / job 130774717136 passed 139 Python tests, including real-SIGTERM whole-sequence report persistence, GNU timeout process-tree preflight, Go formatting, go test ./... and go build.",
-    "The five reports are attempted independently and atomically. SIGTERM/SIGINT are deferred across the complete write sequence and re-raised afterward. SIGKILL, runner destruction and filesystem failure can still prevent persistence.",
-    "Before the next manual live pilot, verify no active/queued VPN workflow and dispatch only one run from the current feature branch with source=vpnobratno, one successful RU exit requested and max attempts=6. Confirm checkout SHA and inspect the progress manifest plus five reports.",
-    "No new VPN workflow was dispatched in this session. Do not infer target blocking from timeout/missing artifacts or claim a VPN Gate volunteer exit is residential without independent access-network evidence.",
-    "Do not change production GeoIP builder/data, geoip_RU.dat, release assets, DIRECT policy, ASN allowlists, main, release or PR #6. Keep PR #5 OPEN/DRAFT."
+    "Run #24 / 43093976146 / job 130777962108 is a real successful VPNObratno tunnel + RU exit. Connected host vpn350936845.opengw.net, public exit 217.25.228.130, AS6856 AO IK Informsvyaz-Chernozemye, mapped to existing RU prefix 217.25.224.0/21. Access network is not proven residential.",
+    "Run #24 measured 28/30 targets: all 28 had A DNS answers; 25 HTTPS HTTP_RESPONSE and 3 INCONCLUSIVE. Statuses 200×11, 301×2, 302×3, 307×3, 308×2, 403×1, 418×1, 503×2. Inconclusive: government.ru timeout, gov.kz certificate hostname mismatch, belarusbank.by timeout. Not attempted: by-kufar and by-nbrb due the old 90-second attempt budget.",
+    "All five reports persisted and artifact 13890192682 uploaded; namespace cleanup completed with cleanup_failed=0. Progress manifest run identity fields were empty because sudo stripped GITHUB_* environment variables.",
+    "Current code head before checkpoint docs commit is ef84c890a79f93d006d98ddf833d3c9261c1553f. It raises attempt budget to 120s, explicitly records partial target scans and remaining IDs, passes GITHUB_SHA/GITHUB_RUN_ID/GITHUB_RUN_ATTEMPT through sudo env, and makes partial scans fail the final gate after artifact upload.",
+    "Validation runs #218 (43095995983), #219 (43096100580), #220 (43096310463) are queued. Do not claim the follow-up patch validated until latest run completes successfully.",
+    "After CI passes, dispatch one manual VPNObratno pilot with one RU exit requested and six max attempts. Confirm manifest carries run ID/attempt/SHA; confirm target_scan_status=COMPLETE and targets_not_tested_count=0. Artifact upload must happen before a failure gate if the scan is partial.",
+    "No target blocking inference from timeouts, certificate mismatch, unattempted sites, or HTTP 403/418/503. VPN Gate volunteer exits are not residential attestations.",
+    "PR #5 remains OPEN/DRAFT. Do not change production GeoIP builder/data, geoip_RU.dat, release assets, DIRECT policy, ASN allowlists, main, release or PR #6."
   ],
   "ci_policy": {
     "push_validation_paths": [
@@ -511,18 +512,21 @@
     "vpn_gate_manual_dispatch_requires_default_branch_workflow": true
   },
   "pending_validation": {
-    "commit": "05c0d0431990e97851628f7b87ef0b29b0f8763c",
-    "workflow": "Reachability validation",
-    "run_id": 43037445995,
-    "run_url": "https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43037445995",
-    "status": "SUCCESS",
-    "verified_python_test_count": 116,
-    "go_checks": [
-      "gofmt",
+    "run_ids": [
+      43095995983,
+      43096100580,
+      43096310463
+    ],
+    "latest_run_id": 43096310463,
+    "latest_commit": "ef84c890a79f93d006d98ddf833d3c9261c1553f",
+    "status": "queued",
+    "expected_checks": [
+      "Python unit tests",
+      "GNU timeout process-tree preflight",
+      "Go formatting",
       "go test ./...",
       "go build"
-    ],
-    "note": "Validation is complete; no code failures."
+    ]
   },
   "vpn_gate_measurement": {
     "source": "VPNObratno linked OpenVPN profiles (default); official VPN Gate CSV API remains selectable fallback",
@@ -2725,5 +2729,147 @@
     "go_build": "success",
     "completed_at_utc": "2026-11-11T20:04:38Z",
     "live_vpn_measurement": false
+  },
+  "previous_current_phase": "RUN24_ANALYZED; RUN_BUDGET_AND_PROGRESS_ID_FIXES_COMMITTED; AWAITING_RUN220_VALIDATION_BEFORE_NEXT_LIVE_PILOT",
+  "run24_result": {
+    "run_id": 43093976146,
+    "run_number": 24,
+    "job_id": 130777962108,
+    "checkout_sha": "bb8620877ce40af49127b17f1a901e8e289af78e",
+    "event": "workflow_dispatch",
+    "run_conclusion": "success",
+    "job_conclusion": "success",
+    "started_at_utc": "2026-11-11T20:10:20Z",
+    "completed_at_utc": "2026-11-11T20:12:39Z",
+    "selected_source": "vpnobratno",
+    "requested_successful_ru_exits": 1,
+    "max_connection_attempts": 6,
+    "discovery": {
+      "profile_links_found": 30,
+      "profiles_considered_for_download": 6,
+      "usable_profiles": 6,
+      "unique_server_hostnames": 6,
+      "profile_variant": "IP_UDP",
+      "selected_server_hosts": [
+        "vpn350936845.opengw.net",
+        "vpn364802490.opengw.net",
+        "vpn605858216.opengw.net",
+        "vpn712640336.opengw.net",
+        "vpn856084155.opengw.net",
+        "vpn902826727.opengw.net"
+      ],
+      "download_limit": 24,
+      "profile_download_limit_reached": false
+    },
+    "tunnel": {
+      "connection_attempts": 1,
+      "successful_ru_exits": 1,
+      "server_hostname": "vpn350936845.opengw.net",
+      "profile_variant": "IP_UDP",
+      "server_ip": "217.25.228.130",
+      "route_installed": true,
+      "exit_ip": "217.25.228.130",
+      "exit_country": "RU",
+      "exit_asn": 6856,
+      "exit_org": "AO IK Informsvyaz-Chernozemye",
+      "exit_prefix": "217.25.224.0/20",
+      "matched_ru_geoip_prefix": "217.25.224.0/21",
+      "server_ip_equals_exit_ip": true,
+      "asn_conflict": false,
+      "geoip_candidates": 0,
+      "access_network_class": "RESIDENTIAL_OR_OTHER_ACCESS_NETWORK_UNVERIFIED"
+    },
+    "target_scan": {
+      "targets_requested": 30,
+      "targets_tested": 28,
+      "targets_not_tested": [
+        "by-kufar",
+        "by-nbrb"
+      ],
+      "scan_status_at_run_time": "PARTIAL",
+      "dns_a_answers": 28,
+      "dns_aaaa_answers": 8,
+      "dns_aaaa_no_answer": 20,
+      "https_http_response": 25,
+      "https_inconclusive": 3,
+      "http_status_counts": {
+        "200": 11,
+        "301": 2,
+        "302": 3,
+        "307": 3,
+        "308": 2,
+        "403": 1,
+        "418": 1,
+        "503": 2
+      },
+      "inconclusive": [
+        {
+          "target": "ru-government",
+          "domain": "government.ru",
+          "reason": "28-second wall-clock timeout"
+        },
+        {
+          "target": "kz-gov",
+          "domain": "gov.kz",
+          "reason": "TLS certificate hostname mismatch"
+        },
+        {
+          "target": "by-belarusbank",
+          "domain": "belarusbank.by",
+          "reason": "19.4967-second wall-clock timeout"
+        }
+      ],
+      "untested_reason": "90-second ATTEMPT_WALL_CLOCK_BUDGET_SECONDS exhausted after target 28",
+      "interpretation": "25 HTTP responses prove transport exchange only; HTTP status codes 403/418/503 are not target-block verdicts. Inconclusive and unattempted targets provide no block evidence."
+    },
+    "cleanup": {
+      "namespace_cleanup_completed": true,
+      "host_firewall_restored": true,
+      "cleanup_failed": 0
+    },
+    "reports": {
+      "report_write_errors": [],
+      "all_five_reports_persisted": true,
+      "artifact_id": 13890192682,
+      "artifact_name": "geoip-ru-vpn-gate-43093976146",
+      "artifact_bytes": 657579,
+      "artifact_sha256": "285b33e3862d4f6281f5c7c1e39097b4c88be84ecc562527ff6da7e5cfec2953"
+    },
+    "progress_manifest_identity": {
+      "workflow_run_id": "",
+      "workflow_run_attempt": "",
+      "execution_sha": "",
+      "cause": "sudo sanitized the GitHub Actions environment before Python ran"
+    },
+    "interpretation": "A real VPNObratno tunnel and RU exit were verified, but only 28/30 declared targets were attempted. The workflow was green because the old exit criterion only required one successful RU exit. The exit network is not proven residential/home ISP."
+  },
+  "run24_artifact": {
+    "id": 13890192682,
+    "url": "https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43093976146/artifacts/13890192682",
+    "size_bytes": 657579,
+    "sha256": "285b33e3862d4f6281f5c7c1e39097b4c88be84ecc562527ff6da7e5cfec2953"
+  },
+  "target_scan_followup": {
+    "budget_seconds": 120,
+    "summary_fields": [
+      "target_scan_status",
+      "target_scans",
+      "target_scans_completed",
+      "target_scans_incomplete",
+      "targets_not_tested",
+      "targets_not_tested_count"
+    ],
+    "progress_identity_fields": [
+      "workflow_run_id",
+      "workflow_run_attempt",
+      "execution_sha"
+    ],
+    "commits": {
+      "attempt_budget_and_target_status": "73bd2cb62b638113f25309f20069c514bcef14c1",
+      "workflow_test_adjustment": "dab7399c08f3d8c41460b9598f9d280e9693d519",
+      "fail_incomplete_scan": "ef84c890a79f93d006d98ddf833d3c9261c1553f"
+    },
+    "success_criteria": "A run succeeds only when the requested number of verified RU exits is reached and target_scan_status is COMPLETE. A target whose probe was run and returned INCONCLUSIVE still counts as attempted; unattempted target IDs make the scan PARTIAL.",
+    "current_validation_state": "Runs #218, #219 and #220 queued; no passing validation yet for the above commits."
   }
 }
