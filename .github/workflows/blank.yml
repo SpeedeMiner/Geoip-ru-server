@@ -19,7 +19,7 @@ on:
       - main
 
 concurrency:
-  group: geoip-direct-ru-by-kz-v38-build
+  group: geoip-direct-ru-by-kz-v38-${{ github.ref }}
   cancel-in-progress: false
 
 jobs:
