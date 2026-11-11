@@ -960,3 +960,34 @@ Durable resume point for PR #5. After any conversation/network interruption, rea
 - Therefore the source review does **not** reveal a proven unbounded Python retry loop at the profile-6 boundary. With normal Python signal delivery and socket semantics, the 20-second wrapper should unwind to a logged result. Because no terminal log archive exists, we cannot tell whether the signal was delayed in a lower-level blocking call/cleanup, the process/runner stopped delivering output, or GitHub's step summary was stale.
 - The Run #200 synthetic watchdog preflight tested a TERM-resistant Python parent/child process group and showed TERM→KILL cleanup on ubuntu-24.04. It does not simulate an uninterruptible kernel task (D-state), a real HTTPS/TLS read, or the full action-runner teardown path. It is not proof the exact live VPN measurement process was terminated.
 - Recommended next engineering step before another dispatch: replace the profile-fetch-only reliance on in-process SIGALRM with a separately supervised worker process using an explicit parent-side wall-clock wait/kill; add flushed markers around pinned DoH, TCP connect, TLS handshake, HTTP headers, each body read and connection close; and persist a small per-profile progress manifest so the phase reached is recoverable even if the outer step is terminated. Keep this design isolated to the manual VPN measurement path and regression-test worker termination. No code change or new VPN run was made in this post-mortem.
+
+
+### 2026-11-11 — Isolate VPNObratto profile fetches in killable worker processes — IMPLEMENTED / VALIDATED
+
+#### Implementation
+
+- The Run #21 terminal job annotation confirmed the GitHub 12-minute job ceiling, but the precise inner profile-6 stall remains unknown because the terminal log archive and artifact are unavailable. The previous per-profile SIGALRM wrapper ran in the network-owning Python process; that alone is not a sufficient hard isolation boundary for a call stuck below normal Python signal delivery.
+- Replaced the production VPNObratto listing/profile fetch path with a dedicated Linux multiprocessing.get_context("fork") worker and a parent-side wall-clock deadline. The worker returns only fetched bytes or a small typed error envelope over a one-way pipe; profile data is never placed in the progress manifest.
+- The parent waits with Connection.poll() against a monotonic deadline. On expiry it sends TERM, waits 0.5 seconds, sends KILL if needed, joins/reaps the worker, records elapsed time, PID, signal actions and exit code, and raises a timeout to the existing discovery skip/error handling. The network worker does not spawn subprocesses; it remains in the enclosing workflow process group so the outer GNU process-group timeout also reaches it.
+- Separated the budgets: the parent worker deadline is 20 seconds for each listing/profile fetch; the existing network fetcher budgets remain 15 seconds for listing and 12 seconds per profile. The worker itself also keeps pinned DoH/HTTPS monotonic deadlines, socket timeouts and bounded reads.
+- Added flushed markers around worker start/exit/error/timeout and each network subphase: DoH start/completion; pinned TCP connect; TLS handshake; HTTPS request; response-header wait/completion; each response-body read/chunk; and connection close. Each marker includes profile/host/variant context and elapsed milliseconds.
+- Added atomic per-profile progress manifest writes (write temp file, flush/fsync, os.replace). The manifest records GitHub run ID/attempt/checkout SHA, current phase and a bounded event history per profile, but does not store VPN profile contents. It is written inside reachability-output/.
+- Named the manifest reachability-output/vpn_gate_vpnobratto_progress.json, which matches the existing upload-artifact glob reachability-output/vpn_gate_*; no workflow permissions or upload actions were broadened.
+- Injected test fetchers remain in-process so existing deterministic discovery tests retain their shared call counters; production default fetch_vpnobratno_bytes always takes the isolated worker path.
+
+#### Regression tests and CI evidence
+
+- Added tests that:
+  1. return bytes from a successful forked worker and verify manifest context/events;
+  2. run a worker that deliberately ignores SIGTERM, verify the parent escalates to SIGKILL, reaps it (PID no longer exists), and persists worker_timeout including TERM/KILL and exit-code evidence;
+  3. verify default production discovery routes the listing fetch through the isolated worker.
+- Validation run [#204](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43070544887), job 130696904710, commit f50f32c3338526a3aaec20d71f8daefdff1454b3, completed SUCCESS on ubuntu-24.04.
+- Exact Python test result: 126 tests passed in 0.908 seconds, including all three new worker tests. The separate runner watchdog preflight passed; Go formatting, go test ./... and go build also passed.
+- Follow-up commit 196cf4c3dbdf713b750bfd4f73b75a26e4fc7a4b changes only the manifest filename to match the existing artifact upload glob. A fresh validation run for this latest HEAD is being checked; until that run is green, the latest branch tip is not considered fully validated.
+
+#### State / safety
+
+- No VPN workflow was dispatched in this session. Run #21 remains the last measured pilot and ended completed/cancelled after the maximum 12-minute job-execution annotation, with no artifact or terminal log archive.
+- No verified VPN exit, OpenVPN connection, or target measurement was produced by Run #21; do not infer target blocking.
+- PR #5 remains OPEN / DRAFT. No production GeoIP builder/data, DIRECT policy, ASN allowlists, main, release, PR #6 or other branches were modified.
+- Next: verify CI for the manifest-name follow-up commit 196cf4c...; inspect the full diff and workflow status; only after green validation should a single bounded manual pilot be considered. Do not auto-rerun or overlap VPN workflows.
