@@ -28,6 +28,8 @@ PREFIXES = (
 )
 USER_AGENT = "Geoip-ru-server-exact-nlri-audit/1.0"
 MAX_BODY_BYTES = 4 * 1024 * 1024
+MAX_FETCH_ATTEMPTS = 2
+RETRY_DELAY_SECONDS = 1.1
 
 
 def utc_now() -> str:
@@ -89,24 +91,43 @@ def fetch_one(item: dict[str, str], timeout: float) -> dict[str, Any]:
     raw = b""
     transport_status = "NETWORK_ERROR"
     error: str | None = None
+    prior_attempt_errors: list[str] = []
+    attempt_count = 0
 
-    try:
-        with urllib.request.urlopen(request, timeout=timeout) as response:
-            status = getattr(response, "status", None)
-            raw = response.read(MAX_BODY_BYTES + 1)
-            transport_status = "HTTP_OK"
-    except urllib.error.HTTPError as exc:
-        status = exc.code
+    for attempt in range(MAX_FETCH_ATTEMPTS):
+        attempt_count = attempt + 1
         try:
-            raw = exc.read(MAX_BODY_BYTES + 1)
-        except OSError:
-            raw = b""
-        transport_status = "HTTP_ERROR"
-        error = f"HTTPError: {exc.code} {exc.reason}"
-    except (urllib.error.URLError, TimeoutError, OSError) as exc:
-        error = f"{type(exc).__name__}: {exc}"
-    except Exception as exc:  # preserve unexpected transport/runtime faults as data
-        error = f"{type(exc).__name__}: {exc}"
+            with urllib.request.urlopen(request, timeout=timeout) as response:
+                status = getattr(response, "status", None)
+                raw = response.read(MAX_BODY_BYTES + 1)
+                transport_status = "HTTP_OK"
+                error = None
+                break
+        except urllib.error.HTTPError as exc:
+            status = exc.code
+            try:
+                raw = exc.read(MAX_BODY_BYTES + 1)
+            except OSError:
+                raw = b""
+            transport_status = "HTTP_ERROR"
+            error = f"HTTPError: {exc.code} {exc.reason}"
+            if exc.code >= 500 and attempt + 1 < MAX_FETCH_ATTEMPTS:
+                prior_attempt_errors.append(error)
+                time.sleep(RETRY_DELAY_SECONDS)
+                continue
+            break
+        except (urllib.error.URLError, TimeoutError, OSError) as exc:
+            error = f"{type(exc).__name__}: {exc}"
+            transport_status = "NETWORK_ERROR"
+            if attempt + 1 < MAX_FETCH_ATTEMPTS:
+                prior_attempt_errors.append(error)
+                time.sleep(RETRY_DELAY_SECONDS)
+                continue
+            break
+        except Exception as exc:  # preserve unexpected transport/runtime faults as data
+            error = f"{type(exc).__name__}: {exc}"
+            transport_status = "NETWORK_ERROR"
+            break
 
     finished = utc_now()
     elapsed_ms = round((time.monotonic() - before) * 1000, 1)
@@ -135,6 +156,8 @@ def fetch_one(item: dict[str, str], timeout: float) -> dict[str, Any]:
         "response_received_utc": finished,
         "elapsed_ms": elapsed_ms,
         "timeout_seconds": timeout,
+        "attempt_count": attempt_count,
+        "prior_attempt_errors": prior_attempt_errors,
         "http_status": status,
         "transport_status": transport_status,
         "body_bytes": len(raw),
@@ -154,6 +177,8 @@ def summarize(record: dict[str, Any]) -> dict[str, Any]:
         "transport_status": record["transport_status"],
         "http_status": record.get("http_status"),
         "response_received_utc": record["response_received_utc"],
+        "request_attempts": record.get("attempt_count", 1),
+        "prior_attempt_errors": record.get("prior_attempt_errors", []),
         "error": record.get("error"),
     }
     # Never render empty route counts for transport/HTTP/JSON errors: no usable
