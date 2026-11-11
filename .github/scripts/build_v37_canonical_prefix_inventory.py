@@ -168,7 +168,9 @@ def read_prefix_lines(path: Path, *, parse_origin_comments: bool = False) -> tup
     return prefixes, origins
 
 
-def read_tsv_prefixes(path: Path, column: str) -> tuple[set[str], dict[str, dict[str, str]]]:
+def read_tsv_prefixes(
+    path: Path, column: str, *, allow_duplicate_prefixes: bool = False
+) -> tuple[set[str], dict[str, dict[str, str]]]:
     try:
         with path.open("r", encoding="utf-8", newline="") as stream:
             rows = list(csv.DictReader((line for line in stream if not line.startswith("#")), delimiter="\t"))
@@ -182,8 +184,7 @@ def read_tsv_prefixes(path: Path, column: str) -> tuple[set[str], dict[str, dict
         prefix = _canonical_prefix(row[column], f"{path}:{line_no}")
         prefixes.add(prefix)
         if prefix in metadata:
-            # A repeated row is acceptable only if its source metadata is identical.
-            if metadata[prefix] != row:
+            if not allow_duplicate_prefixes and metadata[prefix] != row:
                 raise InventoryError(f"{path}: duplicate prefix with conflicting metadata: {prefix}")
         else:
             metadata[prefix] = row
@@ -209,7 +210,12 @@ def build_inventory(args: argparse.Namespace) -> dict[str, object]:
     blocked_approved, _ = read_prefix_lines(args.blocked_approved)
 
     additional, additional_rows = read_tsv_prefixes(args.additional_provenance, "PREFIX")
-    blocked_review, _ = read_tsv_prefixes(args.blocked_review, "PREFIX")
+    # The same blocked candidate may be suggested independently by multiple sources.
+    # This inventory records one exact CIDR flag; the original multi-source rows remain
+    # available in the untouched TSV and must not be collapsed there.
+    blocked_review, _ = read_tsv_prefixes(
+        args.blocked_review, "PREFIX", allow_duplicate_prefixes=True
+    )
 
     sets = {
         "output_ru": ru_output,
