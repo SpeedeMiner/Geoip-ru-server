@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "updated_at_utc": "2026-11-11T16:34:00Z",
+  "updated_at_utc": "2026-11-11T16:36:30Z",
   "repository": "SpeedeMiner/Geoip-ru-server",
   "pull_request": 5,
   "pull_request_url": "https://github.com/SpeedeMiner/Geoip-ru-server/pull/5",
   "branch": "feature/reachability-full-ru-kz-by",
-  "recorded_pr_head_before_checkpoint_commit": "7d075bda9a5c06e5ad9283f825f8c90e61cbc622",
+  "recorded_pr_head_before_checkpoint_commit": "9e2df8920fab45f293bd0faeb47f4459530a9e1d",
   "base_sha": "a68e5d6589361814cb1cfedd2af7857e4af806fa",
   "state": "RUN20_CANCELLED_NO_ARTIFACT; PINNED_DOH_ABSOLUTE_DEADLINE_IMPLEMENTED_AND_CI_JOB_GREEN; RUN21_NOT_DISPATCHED",
   "current_phase": "INVESTIGATE_RUNNER_TIMEOUT_OVERRUN; DOH_SOURCE_TIMEOUT_GAP_FIXED_AND_VALIDATED; KEEP_LIVE_RUN_BLOCKED",
@@ -250,12 +250,14 @@
     "vpnobratto_run20_timeout_overrun_recorded_terminal",
     "vpnobratto_pinned_doh_absolute_deadline_read1_loop",
     "vpnobratto_slow_drip_doh_deadline_regression_test",
-    "vpnobratto_validation_122_python_tests_go_success_run_43059474634"
+    "vpnobratto_validation_122_python_tests_go_success_run_43059474634",
+    "vpnobratto_outer_sigalrm_swallowed_by_oserror_fallback_regression_test",
+    "vpnobratto_validation_123_python_tests_go_success_run_43059875117"
   ],
-  "latest_successful_validation_run": 43059474634,
-  "latest_successful_validation_commit": "7d075bda9a5c06e5ad9283f825f8c90e61cbc622",
+  "latest_successful_validation_run": 43059875117,
+  "latest_successful_validation_commit": "9e2df8920fab45f293bd0faeb47f4459530a9e1d",
   "test_counts": {
-    "python_unit_tests": 122,
+    "python_unit_tests": 123,
     "python_unit_tests_status": "PASS",
     "gofmt_status": "PASS",
     "go_tests_status": "PASS",
@@ -1884,12 +1886,12 @@
   "pinned_doh_absolute_deadline_fix": {
     "code_commit": "562fb02e568443a0a1aab629c8762ca41d9980b9",
     "test_commit": "4f7b76fac3f1a22b6cac0b365fcfcfb92e0abb91",
-    "final_test_fixture_commit": "24c6bbad70cc5f1168affaaeb1ae15eda65743f4",
-    "active_duplicate_test_class_sync_commit": "7d075bda9a5c06e5ad9283f825f8c90e61cbc622",
-    "validation_run_id": 43059474634,
-    "validation_job_id": 130657776704,
+    "final_test_fixture_commit": "9e2df8920fab45f293bd0faeb47f4459530a9e1d",
+    "active_duplicate_test_class_sync_commit": "9e2df8920fab45f293bd0faeb47f4459530a9e1d",
+    "validation_run_id": 43059875117,
+    "validation_job_id": 130659190333,
     "validation_job_conclusion": "success",
-    "python_tests": 122,
+    "python_tests": 123,
     "gofmt": "passed",
     "go_test": "passed",
     "go_build": "passed",
@@ -1897,6 +1899,7 @@
     "test": "Regression test advances a fake monotonic clock during chunked reads and verifies that the deadline expires before a second resolver attempt.",
     "interpretation": "This closes a discovered unbounded slow-drip DoH read path. It is not evidence that this defect caused Run #20's timeout overrun. Source-level review also found that the previous broad OSError fallback could catch the outer SIGALRM TimeoutError and continue to the next resolver. The new absolute deadline closes that specific timeout-propagation hole. The independent 7-minute process-guard / 9-minute step / 12-minute job overrun in Run #20 remains unexplained.",
     "validation_workflow_conclusion": "success",
-    "workflow_duration_seconds": 10
+    "workflow_duration_seconds": 10,
+    "outer_sigalrm_regression_test": "passed; simulates TimeoutError during read1, advances monotonic time beyond deadline, and verifies that doh_query does not try the next resolver."
   }
 }
