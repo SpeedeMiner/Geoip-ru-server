@@ -141,7 +141,7 @@ Artifact: vpn-route-candidates-5, run #43017072072, SHA-256 999389acc931cfceca2f
 8. Keep exact CIDR and address-space diffs. A /23 replacing two /24 entries may change CIDR count without changing addresses; review both. Every proposed change includes prefix-level provenance and reason.
 9. Build all candidates in parallel first. Publish isolated artifact and compare to production baseline. Only reviewed exact-prefix decisions can be promoted via separate production change.
 
-## 7. Safety and branch boundaries
+## 8. Safety and branch boundaries
 
 This experiment does not edit .github/workflows/blank.yml; production inputs; company ASN allowlist; DIRECT or PRIVATE policy; production geoip_RU.dat; production tags/releases; main; PR #5, PR #6 or PR #7. It does not auto-promote any candidate CIDR.
 
