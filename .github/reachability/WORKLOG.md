@@ -715,3 +715,13 @@ Durable resume point for PR #5. After any conversation/network interruption, rea
 - A follow-up test-only commit b6d5ffcd20dd8e488d6e9c2563f7fda781a5c20d corrected newline literals in the new hosts-file tests so they exercise real line boundaries. Its validation run 43043473870 was created but remained pending with no job listed at the latest check (2026-11-11 14:57:17 UTC).
 - The apt DNS bootstrap code and workflow have deterministic CI coverage, but the live pinned-DoH access from GitHub's westus2 runner is not yet verified. The next manual run must show mirror_doh_lookup_completed for all three Ubuntu hostnames, mirror_hosts_override_installed, all three mirror_getent_verified markers, apt_update_completed and apt_install_completed before proceeding to VPN discovery.
 - No new VPN workflow was dispatched. Run #16 (43038105495) ended before measurement with no artifact. PR #5 remains OPEN / DRAFT and current branch head is b6d5ffcd20dd8e488d6e9c2563f7fda781a5c20d.
+
+
+### 2026-11-11 — Pinned-DoH apt bootstrap CI on latest code — DONE
+
+- Latest-head validation: [run 43043473870](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43043473870), job 130603794526, commit tested b6d5ffcd20dd8e488d6e9c2563f7fda781a5c20d. Workflow and job conclusions are SUCCESS.
+- Decoded job log: 119 Python tests ran in 0.120s; unittest result OK. The combined validation step succeeded, including Python compilation/JSON validation and Go formatting, go test ./... and go build.
+- The 3 new apt DNS bootstrap regression tests all pass: public IPv4 host mapping/idempotence, no partial /etc/hosts write after lookup failure, and malformed marker rejection.
+- Documentation/checkpoint-only commits 230b795316989647548df33cb7a50bf0a481b513 and 4712e1a538e102214c9c6e590970b0d946c88676 follow the validated code commit. They do not change code/workflow paths used by the validation workflow.
+- PR #5 current head before this checkpoint update: 4712e1a538e102214c9c6e590970b0d946c88676; PR remains OPEN / DRAFT / not merged.
+- Important limitation: CI tests mock DoH responses. They do not prove live pinned-DoH connectivity from runner region westus2. Next manual run #17 must prove mirror_doh_lookup_completed for all three mirror hosts, mirror_hosts_override_installed, apt_dns_bootstrap_completed, three mirror_getent_verified markers, apt_update_completed, and apt_install_completed before VPN setup can be counted.
