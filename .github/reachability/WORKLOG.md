@@ -798,3 +798,10 @@ Durable resume point for PR #5. After any conversation/network interruption, rea
 - The new absolute monotonic deadline is checked before each resolver and each response chunk, so even if a socket timeout or outer SIGALRM is caught by the fallback handler, the expired budget prevents another resolver attempt. This closes the discovered slow-drip and swallowed-SIGALRM fallback path.
 - This is a verified application-level timeout improvement, but it does **not** prove that it caused or fully explains Run #20's 13-minute overrun. Run #20's terminal logs/artifacts remain unavailable, so whether the runner lost contact, the process survived termination, or the GitHub status was stale is still unknown.
 - No VPN measurement was dispatched. Run #21 remains blocked pending separate runner/watchdog termination analysis. PR #5 remains OPEN / DRAFT; no production GeoIP, DIRECT policy, ASN allowlist, main/release or PR #6 changes were made.
+
+### 2026-11-11 — Explicit outer-SIGALRM fallback regression — VALIDATED
+
+- Added a second regression test for the exact exception interaction: simulate a `TimeoutError("wall-clock deadline")` during a DoH response read, advance the monotonic clock beyond the query deadline, and assert that the resolver fallback does not start a second connection.
+- The test file has duplicate historical `VPNGateDoHTests` definitions; both definitions were synchronized so the active later class includes the test. The test is included in the executed suite.
+- Latest validation [run #198](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43059875117), job `130659190333`, tested commit `9e2df8920fab45f293bd0faeb47f4459530a9e1d` and completed **SUCCESS** in 13 seconds: **123 Python tests passed**, gofmt passed, `go test ./...` passed and `go build` passed.
+- Run #21 remains undispatched. The new test validates the application-level timeout propagation hole, but does not prove that the independent GNU timeout / GitHub Runner / job-timeout overrun seen in Run #20 is resolved.
