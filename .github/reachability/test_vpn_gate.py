@@ -260,6 +260,73 @@ class VPNGateHandshakeFailureTests(unittest.TestCase):
                 vpn_gate.wait_for_tunnel(RunningProcess(), 60, log_path)
 
 
+class UbuntuAptDNSBootstrapTests(unittest.TestCase):
+    def test_pinned_doh_answers_create_public_ipv4_hosts_overrides(self):
+        answers = {
+            "azure.archive.ubuntu.com": ["8.8.8.8", "10.0.0.1", "2001:4860:4860::8888"],
+            "archive.ubuntu.com": ["1.1.1.1"],
+            "security.ubuntu.com": ["9.9.9.9", "127.0.0.1"],
+        }
+        calls = []
+
+        def resolver(hostname, record_type, timeout):
+            calls.append((hostname, record_type, timeout))
+            return answers[hostname]
+
+        with tempfile.TemporaryDirectory() as directory:
+            hosts_file = pathlib.Path(directory) / "hosts"
+            hosts_file.write_text("127.0.0.1 localhost\\n", encoding="utf-8")
+            resolved = vpn_gate.install_ubuntu_apt_host_overrides(hosts_file, resolver)
+
+            self.assertEqual(resolved, {
+                "azure.archive.ubuntu.com": ["8.8.8.8"],
+                "archive.ubuntu.com": ["1.1.1.1"],
+                "security.ubuntu.com": ["9.9.9.9"],
+            })
+            contents = hosts_file.read_text(encoding="utf-8")
+            self.assertIn("8.8.8.8 azure.archive.ubuntu.com", contents)
+            self.assertIn("1.1.1.1 archive.ubuntu.com", contents)
+            self.assertIn("9.9.9.9 security.ubuntu.com", contents)
+            self.assertEqual(calls, [
+                (hostname, "A", 5)
+                for hostname in vpn_gate.UBUNTU_APT_MIRROR_HOSTS
+            ])
+
+            vpn_gate.install_ubuntu_apt_host_overrides(hosts_file, resolver)
+            self.assertEqual(
+                hosts_file.read_text(encoding="utf-8").count(vpn_gate.APT_HOSTS_BLOCK_START),
+                1,
+            )
+
+    def test_doh_failure_does_not_write_a_partial_hosts_override(self):
+        with tempfile.TemporaryDirectory() as directory:
+            hosts_file = pathlib.Path(directory) / "hosts"
+            original = "127.0.0.1 localhost\\n"
+            hosts_file.write_text(original, encoding="utf-8")
+
+            def resolver(hostname, record_type, timeout):
+                if hostname == "security.ubuntu.com":
+                    raise vpn_gate.ProbeError("resolver unavailable")
+                return ["8.8.8.8"]
+
+            with self.assertRaisesRegex(vpn_gate.ProbeError, "security.ubuntu.com"):
+                vpn_gate.install_ubuntu_apt_host_overrides(hosts_file, resolver)
+            self.assertEqual(hosts_file.read_text(encoding="utf-8"), original)
+
+    def test_invalid_hosts_file_markers_are_rejected(self):
+        with tempfile.TemporaryDirectory() as directory:
+            hosts_file = pathlib.Path(directory) / "hosts"
+            hosts_file.write_text(
+                "127.0.0.1 localhost\\n" + vpn_gate.APT_HOSTS_BLOCK_START + "\\n",
+                encoding="utf-8",
+            )
+            with self.assertRaisesRegex(vpn_gate.ProbeError, "inconsistent"):
+                vpn_gate.install_ubuntu_apt_host_overrides(
+                    hosts_file,
+                    lambda hostname, record_type, timeout: ["8.8.8.8"],
+                )
+
+
 class VPNGateDoHTests(unittest.TestCase):
     def test_doh_query_uses_pinned_resolver_and_filters_requested_type(self):
         class FakeResponse:
