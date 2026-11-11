@@ -1,14 +1,14 @@
 {
   "schema_version": 1,
-  "updated_at_utc": "2026-11-11T10:44:43Z",
+  "updated_at_utc": "2026-11-11T10:58:04Z",
   "repository": "SpeedeMiner/Geoip-ru-server",
   "pull_request": 5,
   "pull_request_url": "https://github.com/SpeedeMiner/Geoip-ru-server/pull/5",
   "branch": "feature/reachability-full-ru-kz-by",
   "recorded_pr_head_before_checkpoint_commit": "f267e14228ed6ef179784c5b7285ada40f78cca3",
   "base_sha": "a68e5d6589361814cb1cfedd2af7857e4af806fa",
-  "state": "VPNOBRATTO_RUN_8_IN_PROGRESS_AFTER_PTR_STALL_FIX",
-  "current_phase": "RUN_8_MEASUREMENT_STEP_RUNNING; WAIT_FOR_TUNNEL_AND_DIAGNOSTIC_ARTIFACTS",
+  "state": "VPNOBRATTO_RUN_8_CANCELLED; PER_ATTEMPT_ENRICHMENT_REMOVED; RUN_9_READY",
+  "current_phase": "DISPATCH_RUN_9_ON_LATEST_BRANCH_AFTER_SUCCESSFUL_CI",
   "completed": [
     "repository_reconnaissance",
     "protobuf_inventory_exporter",
@@ -203,7 +203,13 @@
     "vpnobratto_run7_cancelled_after_explicit_owner_authorization",
     "vpnobratto_unbounded_ptr_reverse_dns_root_cause_reviewed",
     "vpnobratto_getent_ptr_timeout_3s_and_stage_logs_validated_108_tests",
-    "vpnobratto_run8_dispatched_from_latest_feature_branch_revision"
+    "vpnobratto_run8_dispatched_from_latest_feature_branch_revision",
+    "vpnobratto_run8_cancelled_after_no_progress_with_owner_authorization",
+    "vpnobratto_two_openvpn_attempts_failed_no_ipv4_route_within_5s",
+    "vpnobratto_optional_server_ip_and_ptr_enrichment_removed_from_attempt_critical_path",
+    "vpnobratto_cached_origin_metadata_and_nonblocking_fallback_tests_added",
+    "vpnobratto_workflow_step_timeout_10m_job_timeout_20m",
+    "vpnobratto_ci_108_tests_go_checks_pass_after_preflight_shortening"
   ],
   "latest_successful_validation_run": 42999166787,
   "latest_successful_validation_commit": "26b12ab8b83f766391168f179837ff44aee6681a",
@@ -382,13 +388,9 @@
     "production_release_artifact_byte_delta_verified": false
   },
   "next_steps": [
-    "Run #43000272971 (#7) remains in_progress on old checkout commit 12d0f98f9b5e5d18518e3a517d8858f69f6f426c. The line openvpn_attempt=1/6 was emitted before IP metadata, RIPEstat fallback and reverse DNS; the five-second tunnel wait might not yet have started. The old resolve_ptr used socket.gethostbyaddr() without timeout, so an unbounded resolver call is the strongest identified stall candidate. Exact blocked call is not conclusively observable because this old run lacks phase markers.",
-    "The current feature branch at commit b58a9ef02acfe90a2210b7a055a113db97bbf33d fixes PTR with getent bounded to three seconds and logs server IP metadata, PTR start/result, OpenVPN process start, tunnel route wait start, per-attempt result and completion. Validation run #43002007469 passed 108 Python tests, py_compile/JSON, gofmt, Go tests and build.",
-    "Do not claim run #7 uses the PTR timeout fix: it remains on pre-fix commit 12d0f98 and has not produced an artifact. Its last REST updated_at was 10:02:55 UTC; measurement still in_progress; report-upload pending; artifacts empty.",
-    "The connected GitHub API tool exposes no cancel-run action. Canceling through the authenticated browser would be performed under the owner's SpeedeMiner identity. Do not trigger such a cancellation without explicit owner authorization; explain this limitation and ask whether the owner wants run #7 cancelled rather than silently polling.",
-    "After #7 reaches a terminal state or is explicitly cancelled with owner approval, inspect resulting artifacts/logs and dispatch one fresh run on current feature branch so it uses bounded PTR and the new preflight progress messages. Keep one successful RU exit target, six max attempts, 5-second tunnel route timeout, 12-second DNS/HTTPS request timeout and two-provider IP/country consensus gate.",
-    "No confirmed RU VPN exit, independent exit IP/country verification or target request has been recorded for #7. Do not call this evidence of target blocking.",
-    "Keep PR #5 OPEN / DRAFT. Do not touch PR #6, production builder/data, release branch/assets, DIRECT policy or ASN allowlists."
+    "Dispatch the manual VPNObratto workflow once from current feature branch tip after confirming no active run.",
+    "Inspect whether OpenVPN process starts immediately after cached origin metadata; preserve 5-second route wait and 10-minute measurement-step limit.",
+    "Download and reconcile VPN reports after run terminal state; make no target blocking claims without verified RU exit and actual target rows."
   ],
   "ci_policy": {
     "push_validation_paths": [
@@ -1055,51 +1057,45 @@
     "run_id": 43005642411,
     "run_url": "https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43005642411",
     "run_number": 8,
-    "event": "workflow_dispatch",
     "branch": "feature/reachability-full-ru-kz-by",
     "commit": "b05db19acec8ba622041606b55fa41f79c771848",
     "source": "vpnobratno",
     "max_vpn_gate_servers": 1,
     "max_vpn_gate_attempts": 6,
     "connect_timeout_seconds": 5,
-    "dns_https_request_timeout_seconds": 12,
     "created_at_utc": "2026-11-11T10:40:53Z",
-    "last_checked_at_utc": "2026-11-11T10:44:43Z",
-    "last_checked_status": "in_progress",
-    "last_checked_step": "Run capped VPNObratto / VPN Gate Russian-exit measurements",
+    "last_checked_at_utc": "2026-11-11T10:58:04Z",
+    "last_checked_status": "completed",
+    "last_checked_conclusion": "cancelled",
     "setup_steps_status": "ALL_SUCCESS",
-    "measurement_step_status": "in_progress",
-    "report_upload_status": "pending",
-    "successful_ru_exits": null,
-    "target_measurements": null,
+    "measurement_step_status": "cancelled",
+    "report_upload_status": "pending_skipped",
     "artifacts": [],
-    "branch_head_relation": "Commit b05db19 is two documentation/checkpoint commits after b58a9ef; vpn_gate.py retains the validated three-second PTR lookup and progress markers.",
-    "interpretation": "Current run is executing the fixed revision. No verified RU tunnel, exit-IP consensus or target measurement has been confirmed yet."
+    "successful_ru_exits": 0,
+    "target_measurements": 0,
+    "interpretation": "Two OpenVPN tunnel attempts failed to install IPv4 default route within 5 seconds. Third candidate was cancelled during optional PTR enrichment. No verified RU exit or target measurement."
   },
   "latest_manual_dispatch": {
     "run_id": 43005642411,
     "run_url": "https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43005642411",
     "run_number": 8,
-    "event": "workflow_dispatch",
     "branch": "feature/reachability-full-ru-kz-by",
     "commit": "b05db19acec8ba622041606b55fa41f79c771848",
     "source": "vpnobratno",
     "max_vpn_gate_servers": 1,
     "max_vpn_gate_attempts": 6,
     "connect_timeout_seconds": 5,
-    "dns_https_request_timeout_seconds": 12,
     "created_at_utc": "2026-11-11T10:40:53Z",
-    "last_checked_at_utc": "2026-11-11T10:44:43Z",
-    "last_checked_status": "in_progress",
-    "last_checked_step": "Run capped VPNObratto / VPN Gate Russian-exit measurements",
+    "last_checked_at_utc": "2026-11-11T10:58:04Z",
+    "last_checked_status": "completed",
+    "last_checked_conclusion": "cancelled",
     "setup_steps_status": "ALL_SUCCESS",
-    "measurement_step_status": "in_progress",
-    "report_upload_status": "pending",
-    "successful_ru_exits": null,
-    "target_measurements": null,
+    "measurement_step_status": "cancelled",
+    "report_upload_status": "pending_skipped",
     "artifacts": [],
-    "branch_head_relation": "Commit b05db19 is two documentation/checkpoint commits after b58a9ef; vpn_gate.py retains the validated three-second PTR lookup and progress markers.",
-    "interpretation": "Current run is executing the fixed revision. No verified RU tunnel, exit-IP consensus or target measurement has been confirmed yet."
+    "successful_ru_exits": 0,
+    "target_measurements": 0,
+    "interpretation": "Two OpenVPN tunnel attempts failed to install IPv4 default route within 5 seconds. Third candidate was cancelled during optional PTR enrichment. No verified RU exit or target measurement."
   },
   "cancellation_investigation": {
     "run7_cancel_request": {
@@ -1112,5 +1108,58 @@
       "final_conclusion": "cancelled",
       "final_updated_at_utc": "2026-11-11T10:38:43Z"
     }
+  },
+  "run8_result": {
+    "run_id": 43005642411,
+    "run_url": "https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43005642411",
+    "run_number": 8,
+    "commit": "b05db19acec8ba622041606b55fa41f79c771848",
+    "final_status": "completed",
+    "final_conclusion": "cancelled",
+    "updated_at_utc": "2026-11-11T10:54:28Z",
+    "user_authorized_cancel": true,
+    "attempted_profiles": 2,
+    "results": [
+      {
+        "attempt": 1,
+        "hostname": "vpn135458679.opengw.net",
+        "result": "CONNECT_OR_VERIFY_FAILED",
+        "reason": "OpenVPN tunnel did not install an IPv4 default route within 5s"
+      },
+      {
+        "attempt": 2,
+        "hostname": "vpn175354437.opengw.net",
+        "result": "CONNECT_OR_VERIFY_FAILED",
+        "reason": "OpenVPN tunnel did not install an IPv4 default route within 5s"
+      },
+      {
+        "attempt": 3,
+        "hostname": "vpn213212697.opengw.net",
+        "result": "CANCELLED_DURING_SERVER_PTR_PREFLIGHT",
+        "openvpn_started": false
+      }
+    ],
+    "verified_ru_exits": 0,
+    "target_measurements": 0,
+    "artifacts": [],
+    "interpretation": "No verified RU tunnel and no target requests. The two 5-second failures are VPN relay connection outcomes, not target-site blocking evidence."
+  },
+  "latest_validation": {
+    "run_id": 43007678277,
+    "run_url": "https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43007678277",
+    "commit": "0946a77171bcd7c69ecf62ab5ec3907e3e1f19d7",
+    "status": "SUCCESS",
+    "python_tests": 108,
+    "python_status": "PASS",
+    "python_compile_and_json": "PASS",
+    "gofmt": "PASS",
+    "go_test": "PASS",
+    "go_build": "PASS",
+    "features_validated": [
+      "cached_server_origin_without_preflight_network_requests",
+      "server_metadata_and_PTR_removed_from_openvpn_attempt_critical_path",
+      "vpn_measurement_step_timeout_10_minutes",
+      "vpn_job_timeout_20_minutes"
+    ]
   }
 }
