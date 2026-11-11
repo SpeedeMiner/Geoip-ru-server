@@ -1184,7 +1184,7 @@ def fetch_vpnobratno_bytes(
                     # getresponse() transfers the socket to HTTPResponse and
                     # clears connection.sock. The socket retains the absolute
                     # read timeout configured before that ownership transfer;
-                    # call_with_wall_clock_timeout() bounds slow-drip bodies.
+                    # The parent worker deadline is the final kill boundary for slow-drip bodies.
                     read_size = min(4096, max_bytes + 1 - len(payload))
                     vpnobratno_fetch_trace(
                         "profile_https", "body_read_started",
@@ -1474,6 +1474,9 @@ def discover_vpnobratno_servers(
         context=listing_context,
         progress_path=progress_path,
     )
+    record_vpnobratno_progress(
+        progress_path, listing_context, "listing_fetch_completed", bytes=len(page_bytes)
+    )
     print(
         f"[vpn-gate] profile_listing_fetch_completed bytes={len(page_bytes)}",
         flush=True,
@@ -1528,6 +1531,12 @@ def discover_vpnobratno_servers(
                 max_bytes=VPNOBRATNO_PROFILE_MAX_BYTES,
                 context=profile_context,
                 progress_path=progress_path,
+            )
+            record_vpnobratno_progress(
+                progress_path,
+                profile_context,
+                "fetch_completed",
+                bytes=len(payload),
             )
             print(
                 f"[vpn-gate] profile_fetch_completed={profile_index}/{len(selected_profiles)} "
