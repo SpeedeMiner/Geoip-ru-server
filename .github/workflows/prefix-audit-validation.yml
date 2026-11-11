@@ -20,6 +20,8 @@ on:
       - ".github/scripts/test_build_geoip_source_prefix_catalog.py"
       - ".github/scripts/build_v37_canonical_prefix_inventory.py"
       - ".github/scripts/test_build_v37_canonical_prefix_inventory.py"
+      - ".github/scripts/build_rir_residual_bgp_origin_evidence.py"
+      - ".github/scripts/test_build_rir_residual_bgp_origin_evidence.py"
       - "docs/GEOIP_RU_SOURCE_CATALOG_v1.tsv"
       - ".github/workflows/prefix-audit-validation.yml"
       - "docs/GEOIP_RU_SOURCE_CATALOG_v1.md"
@@ -63,9 +65,11 @@ jobs:
           .github/scripts/test_build_geoip_source_prefix_catalog.py
           .github/scripts/build_v37_canonical_prefix_inventory.py
           .github/scripts/test_build_v37_canonical_prefix_inventory.py
+          .github/scripts/build_rir_residual_bgp_origin_evidence.py
+          .github/scripts/test_build_rir_residual_bgp_origin_evidence.py
 
       - name: Run audit unit tests
-        run: python3 -m unittest discover -s .github/scripts -p 'test_build_*prefix*.py' -v
+        run: python3 -m unittest discover -s .github/scripts -p 'test_build_*.py' -v
 
       - name: Validate versioned production GeoIP source catalog
         run: python3 .github/scripts/validate_geoip_source_catalog.py
@@ -511,6 +515,61 @@ jobs:
               if unexplained <= 0 or unexplained + policy != net.num_addresses:
                   raise SystemExit(f"RIR residual accounting mismatch: {row['PREFIX']}")
           print(f"Validated {len(rows)} RIR-registered resource residual candidates; all REVIEW")
+          PY
+
+      - name: Build exact BGP-origin evidence for RU-registered residual prefixes
+        shell: bash
+        run: |
+          set -euo pipefail
+          inventory="prefix-audit/v37-canonical-inventory"
+          python3 .github/scripts/build_rir_residual_bgp_origin_evidence.py \\
+            --residual "$inventory/rir_ru_resource_residual_review.tsv" \\
+            --inventory "$inventory/canonical_prefix_inventory.tsv" \\
+            --bgp-archive as-ip-blocks.tar.gz \\
+            --output "$inventory/rir_residual_bgp_origin_evidence.tsv" \\
+            --stats "$inventory/rir_residual_bgp_origin_evidence_stats.txt"
+
+          python3 - "$inventory" <<'PY'
+          import csv
+          import ipaddress
+          import sys
+          from pathlib import Path
+
+          root = Path(sys.argv[1])
+          def read_tsv(path):
+              with path.open(encoding="utf-8", newline="") as stream:
+                  return list(csv.DictReader(stream, dialect="excel-tab"))
+
+          residual = read_tsv(root / "rir_ru_resource_residual_review.tsv")
+          evidence = read_tsv(root / "rir_residual_bgp_origin_evidence.tsv")
+          if not residual or len(evidence) != len(residual):
+              raise SystemExit("Exact BGP evidence row count differs from the RIR residual queue")
+          residual_prefixes = {row["PREFIX"] for row in residual}
+          evidence_prefixes = {row["PREFIX"] for row in evidence}
+          if len(evidence_prefixes) != len(evidence) or evidence_prefixes != residual_prefixes:
+              raise SystemExit("Exact BGP evidence prefix set differs from the RIR residual queue")
+          for row in evidence:
+              if row["STATUS"] != "REVIEW":
+                  raise SystemExit(f"Non-REVIEW BGP evidence row: {row['PREFIX']}")
+              net = ipaddress.ip_network(row["PREFIX"], strict=True)
+              if row["FAMILY"] != f"IPv{net.version}" or int(row["PREFIX_ADDRESSES"]) != net.num_addresses:
+                  raise SystemExit(f"Exact BGP evidence metadata mismatch: {row['PREFIX']}")
+              origins = [value for value in row["GLOBAL_BGP_90D_EXACT_ORIGIN_ASNS"].split(",") if value]
+              observed = row["GLOBAL_BGP_90D_EXACT_OBSERVATION"] == "OBSERVED"
+              if observed != bool(origins):
+                  raise SystemExit(f"Exact BGP observation/origin mismatch: {row['PREFIX']}")
+              if row["GLOBAL_BGP_90D_EXACT_MOAS"] != ("yes" if len(origins) > 1 else "no"):
+                  raise SystemExit(f"Exact MOAS flag mismatch: {row['PREFIX']}")
+          stats = (root / "rir_residual_bgp_origin_evidence_stats.txt").read_text(encoding="utf-8")
+          for required in (
+              f"RIR residual exact prefixes: {len(residual)}",
+              "All rows remain STATUS=REVIEW.",
+              "A missing exact route in this rolling 90-day snapshot is not proof of route withdrawal",
+              "Covering and more-specific routes are not used as exact-prefix origin evidence.",
+          ):
+              if required not in stats:
+                  raise SystemExit(f"RIR residual exact-origin stats missing: {required}")
+          print(stats)
           PY
 
       - name: Collect RDAP resource-holder samples and per-origin RPKI status for priority prefixes
