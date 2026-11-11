@@ -511,16 +511,22 @@ def wait_for_tunnel(process: subprocess.Popen, timeout: int) -> str:
     raise ProbeError("OpenVPN tunnel did not install an IPv4 default route before timeout")
 
 
-def resolve_domain(domain: str, family: int, timeout: int) -> tuple[str, list[str], str]:
+def resolve_domain_families(
+    domain: str, timeout: int
+) -> tuple[tuple[str, list[str], str], tuple[str, list[str], str]]:
+    """Resolve A and AAAA in one system resolver call routed through the VPN tunnel."""
     try:
         socket.setdefaulttimeout(timeout)
-        infos = socket.getaddrinfo(domain, 443, family, socket.SOCK_STREAM)
-        addresses = sorted({item[4][0] for item in infos})
-        return ("DNS_ANSWER" if addresses else "DNS_NO_ANSWER", addresses, "")
-    except socket.gaierror as exc:
-        return "DNS_ERROR", [], str(exc)
-    except OSError as exc:
-        return "DNS_ERROR", [], str(exc)
+        infos = socket.getaddrinfo(domain, 443, socket.AF_UNSPEC, socket.SOCK_STREAM)
+        ipv4 = sorted({item[4][0] for item in infos if item[0] == socket.AF_INET})
+        ipv6 = sorted({item[4][0] for item in infos if item[0] == socket.AF_INET6})
+        return (
+            ("DNS_ANSWER" if ipv4 else "DNS_NO_ANSWER", ipv4, ""),
+            ("DNS_ANSWER" if ipv6 else "DNS_NO_ANSWER", ipv6, ""),
+        )
+    except (socket.gaierror, OSError) as exc:
+        error = str(exc)[:300]
+        return ("DNS_ERROR", [], error), ("DNS_ERROR", [], error)
 
 
 def https_head(domain: str, port: int, path: str, timeout: int) -> tuple[str, int | None, str]:
@@ -542,8 +548,9 @@ def https_head(domain: str, port: int, path: str, timeout: int) -> tuple[str, in
 
 
 def test_target(target: dict[str, Any], exit_info: dict[str, Any], networks: dict[str, Any], timeout: int) -> dict[str, Any]:
-    a_result, a_addresses, a_error = resolve_domain(target["domain"], socket.AF_INET, timeout)
-    aaaa_result, aaaa_addresses, aaaa_error = resolve_domain(target["domain"], socket.AF_INET6, timeout)
+    (a_result, a_addresses, a_error), (aaaa_result, aaaa_addresses, aaaa_error) = resolve_domain_families(
+        target["domain"], timeout
+    )
     https_result, http_status, https_error = https_head(
         target["domain"], int(target["port"]), target["path"], timeout
     )
