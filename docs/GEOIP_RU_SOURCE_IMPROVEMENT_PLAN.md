@@ -255,3 +255,22 @@ PREFIX, ACTION (ADD/EXCLUDE/REVIEW), SCOPE (STRICT_RU/LEGACY_DIRECT), RESOURCE_H
 ## 9. Текущий следующий шаг
 
 После этого документационного этапа собрать source catalog и immutable snapshot bundle, затем построить canonical exact-prefix inventory для всех production GeoIP feeds, RIR RU resources и независимых BGP sources. Сравнить с v37 release по exact CIDR и адресу. Только затем готовить data PR с доказанными ADD/EXCLUDE.
+
+
+## 10. Пример кандидата из свежего priority snapshot: 5.255.192.0/18
+
+На production input snapshot, использованном audit run #159, priority selection обнаружил 57 строк: 53 exact-MOAS и 4 company-only. Новый относительно прежнего hard-coded audit scope кандидат — `5.255.192.0/18`.
+
+Факты, установленные на 2026-11-11:
+
+- RIPE allocation: `5.255.192.0 - 5.255.255.255`, `RU-YANDEX-20120914`, статус ALLOCATED PA, organisation ORG-YA1 / YANDEX LLC, country RU. Это свидетельство регистрации ресурса, не утверждение о физическом местоположении каждого устройства.
+- Exact BGP MOAS: AS13238 (Yandex) и AS208398 (Edge Technology Plus / Teletech, Serbia). IPCTL сообщает оба origins, last seen 2026-11-11; независимые RIPE RIS-derived данные WorldIP показывают ту же пару в наблюдениях 2026-11-06. Эти данные подтверждают существование cross-border origin announcement, но не передачу владения адресным ресурсом.
+- Для exact пары `5.255.192.0/18 + AS13238` и `5.255.192.0/18 + AS208398` RIPEstat validation в run #159 вернул HTTP 200 / valid. Публичная route/RPKI сводка показывает два ROA на /18, оба maxLength /24. RPKI valid подтверждает authorization origin-prefix, но не legal ownership.
+- В проверенных RIPE + семи GRS источниках найден один exact route-object identity, origin AS13238, maintainer YANDEX-MNT, created/last-modified 2012-10-31. Exact object для AS208398 не найден в этих queried sources. Это IRR/BGP origin-set discrepancy; отсутствие объекта в queried registry set не доказывает отсутствие во всех независимых IRR.
+- RDAP samples first/middle/last (3/3 successful) указывают на три более специфичных assigned resource: `5.255.192.0/25`, `5.255.223.248/29`, `5.255.255.0/24`, все с RU/Yandex registry data. Это sample-based evidence, не полное дерево suballocation всего /18.
+- Внешняя route summary также перечисляет more-specific /24 announcements (в том числе AS13238/AS208398 на части дочерних NLRI и AS44534 на других). Они являются отдельными NLRI и не должны автоматически схлопываться в parent или менять его origin verdict.
+
+**Текущий вывод:** это подтверждённый российский RIPE resource с двумя наблюдаемыми exact origins и двумя валидными ROAs, один из которых принадлежит ASN с регистрацией в Сербии. На имеющихся данных нет основания исключать весь /18 как иностранный. Но и нельзя считать ownership/role AS208398 установленным: его route role, отношения с Yandex, exact IRR gap и синхронные peer/AS-path observations требуют отдельного review. Кандидат внесён в external spot-check ledger как `CHECKED_2026-11-11`, worklist track `IRR_BGP_ORIGIN_RECONCILIATION`, но остаётся `REVIEW`. Он не добавлен/удалён в production input.
+
+Использованные внешние reference pages: [IPCTL exact prefix](https://ipctl.io/prefix/5.255.192.0/18), [Cloudflare AS208398](https://radar.cloudflare.com/routing/as208398), [RIPE WHOIS/RDAP view](https://www.browserscan.net/ip-range/AS208398/5.255.192.0/18), [WorldIP AS13238 RIPE RIS observations](https://worldip.io/asn/13238), [WorldIP AS208398 RIPE RIS observations](https://worldip.io/asn/208398).
+
