@@ -541,6 +541,54 @@ class VPNObratnoLinkParser(HTMLParser):
             self.hrefs.append(href)
 
 
+class VPNObratnoSameOriginRedirect(urllib.request.HTTPRedirectHandler):
+    """Permit redirects only to the exact HTTPS origin serving the VPN listing."""
+
+    def redirect_request(self, req, fp, code, msg, headers, newurl):
+        parts = urllib.parse.urlsplit(newurl)
+        if (
+            parts.scheme.lower() != "https"
+            or (parts.hostname or "").lower() != VPNOBRATNO_HOST
+            or parts.port not in (None, 443)
+            or parts.username is not None
+            or parts.password is not None
+        ):
+            raise ProbeError("VPNObratno download attempted a cross-origin or insecure redirect")
+        return super().redirect_request(req, fp, code, msg, headers, newurl)
+
+
+def fetch_vpnobratno_bytes(url: str, timeout: int = 25) -> bytes:
+    """Fetch a VPNObratno listing/profile without proxies or cross-origin redirects."""
+    parts = urllib.parse.urlsplit(url)
+    if (
+        parts.scheme.lower() != "https"
+        or (parts.hostname or "").lower() != VPNOBRATNO_HOST
+        or parts.port not in (None, 443)
+        or parts.username is not None
+        or parts.password is not None
+    ):
+        raise ProbeError("VPNObratno fetch URL is not on the trusted HTTPS origin")
+    request = urllib.request.Request(
+        url, headers={"User-Agent": USER_AGENT, "Accept": "*/*"}
+    )
+    opener = urllib.request.build_opener(
+        urllib.request.ProxyHandler({}),
+        VPNObratnoSameOriginRedirect(),
+    )
+    try:
+        with opener.open(request, timeout=timeout) as response:
+            final_parts = urllib.parse.urlsplit(response.geturl())
+            if (
+                final_parts.scheme.lower() != "https"
+                or (final_parts.hostname or "").lower() != VPNOBRATNO_HOST
+                or final_parts.port not in (None, 443)
+            ):
+                raise ProbeError("VPNObratno response escaped the trusted HTTPS origin")
+            return response.read(8_000_000)
+    except (urllib.error.URLError, TimeoutError, OSError) as exc:
+        raise ProbeError(f"VPNObratno same-origin fetch failed: {exc}") from exc
+
+
 def parse_vpnobratno_listing(html: str) -> list[dict[str, str]]:
     """Return supported same-origin OpenVPN profile links from the public RU list."""
     parser = VPNObratnoLinkParser()
@@ -643,7 +691,7 @@ def resolve_vpnobratno_server_ip(
 
 
 def discover_vpnobratno_servers(
-    fetcher: Any = fetch_bytes,
+    fetcher: Any = fetch_vpnobratno_bytes,
     resolver: Any = socket.getaddrinfo,
 ) -> tuple[list[dict[str, Any]], dict[str, Any]]:
     """Download and validate listed profiles without executing supplied directives."""
