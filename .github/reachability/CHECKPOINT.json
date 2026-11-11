@@ -1,13 +1,13 @@
 {
   "schema_version": 1,
-  "updated_at_utc": "2026-11-11T07:47:11Z",
+  "updated_at_utc": "2026-11-11T08:01:57Z",
   "repository": "SpeedeMiner/Geoip-ru-server",
   "pull_request": 5,
   "pull_request_url": "https://github.com/SpeedeMiner/Geoip-ru-server/pull/5",
   "branch": "feature/reachability-full-ru-kz-by",
-  "recorded_pr_head_before_checkpoint_commit": "7f4d965ae1968c91bf0a1febb3eb02ebdbc631d2",
+  "recorded_pr_head_before_checkpoint_commit": "84edb09aded7c90821ba42c905d2f1423938d487",
   "base_sha": "a68e5d6589361814cb1cfedd2af7857e4af806fa",
-  "state": "VPNOBRATNO_FETCH_SECURITY_VALIDATED",
+  "state": "VPNOBRATNO_DISCOVERY_BOUNDED_AND_DIVERSIFIED",
   "current_phase": "AWAIT_DEFAULT_BRANCH_AUTHORIZATION_FOR_MANUAL_PILOT",
   "completed": [
     "repository_reconnaissance",
@@ -169,12 +169,18 @@
     "vpnobratno_final_response_origin_verification",
     "vpnobratno_four_fetch_security_regression_tests",
     "vpnobratno_fetch_security_ci_100_python_tests_go_success_run_42981728009",
-    "vpnobratno_readme_worklog_sstp_l2tp_scope_documented"
+    "vpnobratno_readme_worklog_sstp_l2tp_scope_documented",
+    "vpnobratno_profile_download_hard_cap_24",
+    "vpnobratno_cross_host_variant_interleaving",
+    "vpnobratno_discovery_omitted_link_and_truncation_metrics",
+    "vpnobratno_bounded_discovery_three_regression_tests",
+    "vpnobratno_bounded_discovery_ci_103_python_tests_go_success_run_42983494770",
+    "vpnobratno_bounded_discovery_readme_worklog_checkpoint"
   ],
-  "latest_successful_validation_run": 42981728009,
-  "latest_successful_validation_commit": "5b2d74a8b2653d16248e965abfaa0a05f0d3d344",
+  "latest_successful_validation_run": 42983494770,
+  "latest_successful_validation_commit": "6e408c3852d3fbfe8b9ebd4f5689533f08e51fbe",
   "test_counts": {
-    "python_unit_tests": 100,
+    "python_unit_tests": 103,
     "python_unit_tests_status": "PASS",
     "gofmt_status": "PASS",
     "go_tests_status": "PASS",
@@ -320,7 +326,10 @@
     "The profile retry budget is bounded across variants and servers. A successful artifact upload is not success unless a confirmed RU exit and target measurement rows are present.",
     "VPNObratno listing/profile downloads are restricted to the exact HTTPS origin; configured proxies and cross-origin redirects are rejected.",
     "VPNObratno documents SSTP and L2TP/IPsec for selected servers, but automated support is not implemented. Do not guess the SSTP port or L2TP endpoint; add them only after machine-readable endpoint discovery and transport-specific fail-closed firewall/route lifecycle validation.",
-    "The latest 100-test CI verifies VPNObratno discovery, profile validation and download redirect policy. It does not verify a live VPN tunnel or any target reachability result."
+    "The latest 100-test CI verifies VPNObratno discovery, profile validation and download redirect policy. It does not verify a live VPN tunnel or any target reachability result.",
+    "VPNObratno profile discovery now downloads at most 24 profiles per run and interleaves preferred variants across hostnames. Links beyond the cap are reported as omitted; a truncated discovery sample is not complete server/provider coverage.",
+    "The current page snapshot showed approximately ten server entries and up to four OpenVPN profile links per entry; the live listing changes over time, so this count is illustrative and each discovery report carries its own actual counts.",
+    "The 103-test CI verifies bounded profile download behavior, not live VPN tunnel availability or household/residential access."
   ],
   "policy_invariants": {
     "geoip_RU_dat_mutated": false,
@@ -340,8 +349,8 @@
     "vpnobratno_is_default_discovery_source": true
   },
   "next_steps": [
-    "Keep PR #5 OPEN / DRAFT; do not merge, rebase or change base. The VPNObratno workflow is manual-only and workflow_dispatch is unavailable until the workflow exists on the default branch; do not restore a branch push trigger or schedule to bypass this.",
-    "When the owner authorizes making the workflow available on the default branch, run source=vpnobratno with the default one successful RU exit and up to six profile attempts. Treat only a verified RU egress plus actual target rows as a successful measurement.",
+    "Keep PR #5 OPEN / DRAFT; do not merge, rebase or change base. The VPNObratto workflow is manual-only and workflow_dispatch is unavailable until the workflow exists on the default branch; do not restore a branch push trigger or schedule to bypass this.",
+    "When the owner authorizes making the workflow available on the default branch, run source=vpnobratno with the default one successful RU exit and up to six profile attempts. Discovery is capped at 24 profile downloads and reports how many links were omitted; do not claim complete listing coverage if the cap is reached.",
     "For any successful tunnel, require two independent IP metadata services to agree on the actual public exit IPv4 and RU country, then record origin ASN/prefix and only afterward run DNS/HTTPS tests against the RU target catalogue.",
     "Inspect SOURCE, PROFILE_VARIANT and PROFILE_URL in the artifact. Variants from one hostname/IP do not increase provider diversity; compare origin ASNs and independently validate the actual access-network operator/type.",
     "Consider SSTP only after obtaining and validating the site's actual copy-button hostname/port metadata and implementing pppd interface, route cleanup and fail-closed firewall tests. Consider L2TP/IPsec only after equivalent server discovery plus IPsec/XFRM and PPP lifecycle validation; do not guess either protocol's endpoints.",
@@ -384,18 +393,18 @@
     "vpn_gate_manual_dispatch_requires_default_branch_workflow": true
   },
   "pending_validation": {
-    "commit": "5b2d74a8b2653d16248e965abfaa0a05f0d3d344",
+    "commit": "6e408c3852d3fbfe8b9ebd4f5689533f08e51fbe",
     "workflow": "Reachability validation",
-    "run_id": 42981728009,
-    "run_url": "https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/42981728009",
+    "run_id": 42983494770,
+    "run_url": "https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/42983494770",
     "status": "SUCCESS",
-    "verified_python_test_count": 100,
+    "verified_python_test_count": 103,
     "go_checks": [
       "gofmt",
       "go test ./...",
       "go build"
     ],
-    "note": "Full job logs confirm Ran 100 tests, OK, plus successful Go formatting, tests and build. Subsequent README/WORKLOG/CHECKPOINT commits are documentation/state-only."
+    "note": "Full job logs confirm Ran 103 tests, OK, plus Go formatting, tests and build. Subsequent README/WORKLOG/CHECKPOINT commits are documentation/state-only."
   },
   "vpn_gate_measurement": {
     "source": "VPNObratno linked OpenVPN profiles (default); official VPN Gate CSV API remains selectable fallback",
@@ -657,6 +666,20 @@
         "same_origin_redirects_only": true,
         "final_response_origin_rechecked": true,
         "security_regression_tests": 4
+      },
+      "discovery_sampling": {
+        "hard_max_profile_downloads": 24,
+        "variant_ordering": "interleave across hostnames: IP_UDP, DDNS_UDP, IP_TCP, DDNS_TCP",
+        "summary_fields": [
+          "profile_links_found",
+          "profile_download_limit",
+          "profiles_considered_for_download",
+          "profiles_not_downloaded_due_to_limit",
+          "profile_download_limit_reached"
+        ],
+        "report_truncation_visible": true,
+        "links_beyond_limit_not_tested": true,
+        "discovery_tests": 3
       }
     },
     "live_vpnobratno_tunnel_performed": false,
