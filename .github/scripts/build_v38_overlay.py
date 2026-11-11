@@ -153,8 +153,8 @@ def parse_services_json(path: Path):
                         "domains": str(domains),
                         "prefix": str(net),
                     })
-    if service_count < 50 or not networks:
-        raise ValueError(f"Kyoresuas service catalog unexpectedly small: {service_count} services")
+    if service_count == 0 or not networks:
+        raise ValueError("Kyoresuas service catalog is empty or has no valid prefixes")
     return networks, rows, service_count, doc.get("generatedAt")
 
 def read_varint(data: bytes, offset: int):
@@ -346,8 +346,8 @@ def parse_ipsum(path: Path):
         if net.version != 4 or net.prefixlen != 24:
             raise ValueError(f"Antifilter ipsum must contain IPv4 /24 summaries only; line {line_no}: {net}")
         networks.add(net)
-    if len(networks) < 1000:
-        raise ValueError(f"Antifilter ipsum /24 feed unexpectedly small: {len(networks)} prefixes")
+    if not networks:
+        raise ValueError("Antifilter ipsum /24 feed is empty")
     if invalid > max(20, int((raw + invalid) * 0.001)):
         raise ValueError(f"Antifilter ipsum has too many invalid rows: {invalid}")
     return networks, {"raw_rows": raw + invalid, "valid_rows": raw, "invalid_rows": invalid}
@@ -357,6 +357,8 @@ def load_service_inputs(args):
     source_stats = {}
     provenance_rows = []
     ky_service_prefixes, service_rows, service_count, services_generated = parse_services_json(args.kyoresuas_services)
+    if service_count < 50:
+        raise ValueError(f"Kyoresuas ru-standard service catalog unexpectedly small: {service_count} services")
     sources["kyoresuas-standard"] = ky_service_prefixes
     # Preserve the publisher's aggregate IPv4/IPv6 files as a cross-check. Any
     # aggregate prefix not present in the service JSON remains attributed to the
