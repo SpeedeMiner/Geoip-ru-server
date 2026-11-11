@@ -2,6 +2,8 @@ import base64
 import csv
 import io
 import json
+import os
+import signal
 import urllib.error
 import urllib.request
 import pathlib
@@ -13,6 +15,17 @@ import unittest
 from unittest.mock import patch
 
 import vpn_gate
+
+
+def _vpnobratto_worker_test_success(url, timeout, max_bytes):
+    return f"{url}|{timeout}|{max_bytes}".encode("ascii")
+
+
+def _vpnobratto_worker_test_hang(pid_path, timeout, max_bytes):
+    pathlib.Path(pid_path).write_text(str(os.getpid()), encoding="ascii")
+    signal.signal(signal.SIGTERM, signal.SIG_IGN)
+    while True:
+        time.sleep(0.05)
 
 
 SAMPLE_CONFIG = """client
@@ -1589,6 +1602,76 @@ class VPNObrattoWallClockTimeoutTests(unittest.TestCase):
         self.assertLess(time.monotonic() - started, 0.15)
 
 
+    def test_isolated_fetch_worker_returns_payload_and_writes_manifest(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            manifest = pathlib.Path(tmp) / "vpnobratto_progress.json"
+            context = {
+                "profile_index": 3,
+                "profile_count": 6,
+                "hostname": "vpn123456789.opengw.net",
+                "variant": "ip_udp",
+                "address_mode": "ip",
+            }
+            payload = vpn_gate.fetch_vpnobratno_in_worker(
+                _vpnobratto_worker_test_success,
+                "https://vpnobratno.info/profile.ovpn",
+                timeout=2,
+                fetch_timeout=12,
+                max_bytes=64000,
+                context=context,
+                progress_path=manifest,
+            )
+            self.assertEqual(
+                payload,
+                b"https://vpnobratno.info/profile.ovpn|12|64000",
+            )
+            data = json.loads(manifest.read_text(encoding="utf-8"))
+            profile = data["profiles"]["3"]
+            self.assertEqual(profile["state"], "worker_completed")
+            self.assertEqual(profile["hostname"], context["hostname"])
+            event_names = [item["event"] for item in profile["events"]]
+            self.assertIn("supervisor_starting", event_names)
+            self.assertIn("worker_started", event_names)
+            self.assertIn("worker.payload_ready", event_names)
+            self.assertIn("worker_completed", event_names)
+            self.assertEqual(data["execution_sha"], os.environ.get("GITHUB_SHA", ""))
+
+    def test_isolated_fetch_worker_kills_term_resistant_child_at_deadline(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            pid_file = pathlib.Path(tmp) / "worker.pid"
+            manifest = pathlib.Path(tmp) / "vpnobratto_progress.json"
+            context = {
+                "profile_index": 6,
+                "profile_count": 24,
+                "hostname": "vpn987654321.opengw.net",
+                "variant": "ip_udp",
+                "address_mode": "ip",
+            }
+            started = time.monotonic()
+            with self.assertRaisesRegex(TimeoutError, "isolated fetch exceeded"):
+                vpn_gate.fetch_vpnobratno_in_worker(
+                    _vpnobratto_worker_test_hang,
+                    str(pid_file),
+                    timeout=0.25,
+                    fetch_timeout=12,
+                    max_bytes=64000,
+                    context=context,
+                    progress_path=manifest,
+                )
+            self.assertLess(time.monotonic() - started, 2.0)
+            self.assertTrue(pid_file.exists())
+            worker_pid = int(pid_file.read_text(encoding="ascii"))
+            with self.assertRaises(ProcessLookupError):
+                os.kill(worker_pid, 0)
+            data = json.loads(manifest.read_text(encoding="utf-8"))
+            profile = data["profiles"]["6"]
+            self.assertEqual(profile["state"], "worker_timeout")
+            timeout_event = profile["events"][-1]
+            self.assertTrue(timeout_event["term_sent"])
+            self.assertTrue(timeout_event["kill_sent"])
+            self.assertEqual(timeout_event["worker_exitcode"], -signal.SIGKILL)
+
+
 class VPNObratnoDiscoveryTests(unittest.TestCase):
     HOST = "vpn123456789.opengw.net"
 
@@ -1673,6 +1756,29 @@ class VPNObratnoDiscoveryTests(unittest.TestCase):
                 )
         self.assertEqual(run.call_args.kwargs["timeout"], 3.0)
         self.assertEqual(run.call_args.args[0][:2], ["getent", "ahostsv4"])
+
+    def test_default_fetcher_is_run_in_a_separate_worker(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            manifest = pathlib.Path(tmp) / "vpnobratto_progress.json"
+            with patch.object(
+                vpn_gate,
+                "fetch_vpnobratno_in_worker",
+                return_value=b"<html><body></body></html>",
+            ) as worker:
+                with self.assertRaisesRegex(
+                    vpn_gate.ProbeError, "contains no supported OpenVPN profile links"
+                ):
+                    vpn_gate.discover_vpnobratno_servers(
+                        max_profiles=1,
+                        progress_path=manifest,
+                    )
+            worker.assert_called_once()
+            args, kwargs = worker.call_args
+            self.assertIs(args[0], vpn_gate.fetch_vpnobratno_bytes)
+            self.assertEqual(kwargs["timeout"], 20)
+            self.assertEqual(kwargs["fetch_timeout"], 15)
+            self.assertEqual(kwargs["context"]["variant"], "listing")
+            self.assertEqual(kwargs["progress_path"], manifest)
 
     def test_discovery_downloads_and_validates_profiles_without_running_them(self):
         ip_udp_url = (
