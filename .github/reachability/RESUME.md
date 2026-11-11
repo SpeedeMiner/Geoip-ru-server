@@ -25,7 +25,7 @@ The first “Current repository state” section near the top of WORKLOG is hist
 
 ## Current measurement state
 
-### Run #21 — IN PROGRESS / sixth profile fetch started
+### Run #21 — GITHUB JOB STILL IN PROGRESS AFTER WATCHDOG / STEP DEADLINES; LOGS UNAVAILABLE
 
 - Run: [#21 / 43065501624](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43065501624), job [130679257182](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43065501624/job/130679257182).
 - Manual dispatch actor: `SpeedeMiner`; branch `feature/reachability-full-ru-kz-by`; checked-out commit: `5a1badef9e19a71c44cd4b1fa42748f4d688e90f`.
