@@ -1,14 +1,14 @@
 {
   "schema_version": 1,
-  "updated_at_utc": "2026-11-11T15:48:00Z",
+  "updated_at_utc": "2026-11-11T16:01:18Z",
   "repository": "SpeedeMiner/Geoip-ru-server",
   "pull_request": 5,
   "pull_request_url": "https://github.com/SpeedeMiner/Geoip-ru-server/pull/5",
   "branch": "feature/reachability-full-ru-kz-by",
-  "recorded_pr_head_before_checkpoint_commit": "a9967f52b4bd3d7a50638ad9ce63d685d57b84a9",
+  "recorded_pr_head_before_checkpoint_commit": "e339340436f6d17a31494c16f2a7c0f22a82e165",
   "base_sha": "a68e5d6589361814cb1cfedd2af7857e4af806fa",
-  "state": "RUN19_HTTPS_SOCKET_OWNERSHIP_FIX_CI_GREEN_121_TESTS_READY_FOR_RUN20",
-  "current_phase": "READY_FOR_MANUAL_RUN20_AFTER_HTTPS_SOCKET_OWNERSHIP_FIX",
+  "state": "RUN20_IN_PROGRESS_VPNOBRATTO_DISCOVERY_FIVE_USABLE_PROFILES_SIXTH_FETCH_STARTED",
+  "current_phase": "RUN20_IN_PROGRESS_AWAIT_TERMINAL_LOGS_AND_ARTIFACT",
   "completed": [
     "repository_reconnaissance",
     "protobuf_inventory_exporter",
@@ -233,12 +233,18 @@
     "apt_mirror_dns_bootstrap_implementation",
     "apt_mirror_dns_bootstrap_regression_tests",
     "run16_apt_dns_failure_durable_record",
-    "apt_mirror_dns_bootstrap_ci_validation_119_tests"
+    "apt_mirror_dns_bootstrap_ci_validation_119_tests",
+    "vpnobratto_https_socket_ownership_fix_ci_121_tests_success_43051897730",
+    "vpnobratto_run20_manual_dispatch_confirmed",
+    "vpnobratto_run20_listing_fetch_success_29_links",
+    "vpnobratto_run20_five_usable_profiles_confirmed",
+    "vpnobratto_run20_profile_six_fetch_started",
+    "vpnobratto_run20_in_progress_snapshot_recorded"
   ],
-  "latest_successful_validation_run": 43037445995,
-  "latest_successful_validation_commit": "05c0d0431990e97851628f7b87ef0b29b0f8763c",
+  "latest_successful_validation_run": 43051897730,
+  "latest_successful_validation_commit": "a9967f52b4bd3d7a50638ad9ce63d685d57b84a9",
   "test_counts": {
-    "python_unit_tests": 105,
+    "python_unit_tests": 121,
     "python_unit_tests_status": "PASS",
     "gofmt_status": "PASS",
     "go_tests_status": "PASS",
@@ -356,13 +362,11 @@
     "Latest full run uses current published v37 inventory: 76,231 RU CIDRs plus 151 PRIVATE CIDRs.",
     "The PR branch is behind current main by 29 commits but has 11 isolated reachability files and GitHub currently reports mergeable=true; do not force-rewrite history without a clear reason.",
     "VPN Gate manual workflow measures through volunteer-operated Russian exits; RU egress and ISP/ASN metadata do not attest that a node is a household connection.",
-    "VPN Gate tests are manual-only, default 3 servers and hard-capped at 6; no live VPN connection or measurement has yet been run.",
     "VPN Gate tunnel pilot blocks host IPv6 egress and records AAAA DNS answers only; it does not claim IPv6 HTTPS reachability through the tunnel.",
     "VPN Gate exit is accepted only when two independent public IP metadata services agree on exact public IPv4 and country; no consensus is a rejected measurement, not a block result.",
     "Initial VPN Gate sampling inspects up to 24 candidates for RIPEstat origin ASN and prefers distinct ASNs; unknown origin ASN does not count toward distinct-provider coverage.",
     "IP metadata ASN and RIPEstat origin ASN are retained separately; disagreement is an explicit review candidate, not an automatically resolved operator identity.",
     "RIPEstat prefix evidence is accepted only when the CIDR contains the exact IP queried.",
-    "VPN Gate manual job has a 120-minute limit; each target's A and AAAA records are fetched by one resolver call, but no IPv6 transport test is claimed.",
     "GitHub workflow_dispatch cannot run from this new feature-branch workflow until the workflow exists on the default branch; a narrow path-and-commit-message-gated one-shot push is used for this draft-branch pilot.",
     "First VPN Gate pilot had a TCP connection but no TLS tunnel; it produced zero RU egress verification and zero service measurements. Its successful Actions conclusion means diagnostic artifacts were uploaded, not that VPN or target reachability succeeded.",
     "AS35807/SkyNet server IP was already mapped as RU by existing prefix 188.242.64.0/18; the server's routed /19 did not produce a new missing-RU IP candidate.",
@@ -384,12 +388,13 @@
     "The profile retry budget is bounded across variants and servers. A successful artifact upload is not success unless a confirmed RU exit and target measurement rows are present.",
     "VPNObratno listing/profile downloads are restricted to the exact HTTPS origin; configured proxies and cross-origin redirects are rejected.",
     "VPNObratno documents SSTP and L2TP/IPsec for selected servers, but automated support is not implemented. Do not guess the SSTP port or L2TP endpoint; add them only after machine-readable endpoint discovery and transport-specific fail-closed firewall/route lifecycle validation.",
-    "The latest 100-test CI verifies VPNObratno discovery, profile validation and download redirect policy. It does not verify a live VPN tunnel or any target reachability result.",
     "VPNObratno profile discovery now downloads at most 24 profiles per run and interleaves preferred variants across hostnames. Links beyond the cap are reported as omitted; a truncated discovery sample is not complete server/provider coverage.",
     "The current page snapshot showed approximately ten server entries and up to four OpenVPN profile links per entry; the live listing changes over time, so this count is illustrative and each discovery report carries its own actual counts.",
     "The 104-test CI verifies bounded profile downloads and response reads, not live VPN tunnel availability or household/residential access.",
     "VPNObratno discovery response bodies are bounded during streaming: at most 2,000,000 bytes for the listing and 64,000 bytes for each profile; the fetch helper rejects caller limits above 8,000,000 bytes and reads only one byte beyond the resource limit.",
-    "Manual VPNObratno dispatch preflight on 2026-11-11 confirmed that .github/workflows/reachability-vpn-gate.yml is present only on feature/reachability-full-ru-kz-by, not on default branch main. The main workflow tree currently contains only blank.yml and prefix-audit-validation.yml. GitHub workflow_dispatch requires the workflow file on the default branch before manual dispatch is available; no VPN run was started."
+    "Manual VPNObratno dispatch preflight on 2026-11-11 confirmed that .github/workflows/reachability-vpn-gate.yml is present only on feature/reachability-full-ru-kz-by, not on default branch main. The main workflow tree currently contains only blank.yml and prefix-audit-validation.yml. GitHub workflow_dispatch requires the workflow file on the default branch before manual dispatch is available; no VPN run was started.",
+    "Run #20 is currently in progress; the latest supplied log snapshot confirms five usable VPNObratto profiles and the sixth profile fetch starting. Subsequent phases are unknown until terminal logs/artifacts are available.",
+    "The current VPNObratto workflow has a 7-minute collector watchdog, 9-minute measurement-step timeout and 12-minute job timeout; do not reuse historical 10/20-minute or 120-minute limits from older revisions."
   ],
   "policy_invariants": {
     "geoip_RU_dat_mutated": false,
@@ -412,10 +417,11 @@
     "production_release_artifact_byte_delta_verified": false
   },
   "next_steps": [
-    "Owner manually dispatches Run #20 on feature/reachability-full-ru-kz-by with source=vpnobratno, max_vpn_gate_servers=1 and max_vpn_gate_attempts=6.",
-    "Verify the live pinned-DoH VPNObratno listing fetch and profile downloads complete within their wall-clock caps.",
-    "Inspect server selection, bounded OpenVPN attempts, two-source RU exit IP/country agreement, and only then target DNS/HTTPS report rows.",
-    "Keep PR #5 OPEN / DRAFT; do not merge, mark ready, rebase, or alter production GeoIP files, DIRECT policy, or PR #6."
+    "Do not dispatch an overlapping VPN workflow while run #20 remains active.",
+    "After run #20 becomes terminal, retrieve full job logs and the uploaded diagnostic artifact; reconcile discovery, OpenVPN attempts, tunnel route, two-source RU exit consensus and target DNS/HTTPS rows.",
+    "If the run ends without a verified RU exit, classify the exact failure stage; do not infer target blocking from VPN/setup failures.",
+    "Only after run #20 is terminal and reviewed, decide whether run #21 is needed; retain source=vpnobratto, one requested verified RU exit and six maximum attempts unless evidence justifies changing the pilot.",
+    "Keep PR #5 OPEN / DRAFT; do not merge, mark ready, rebase, or alter production GeoIP files, DIRECT policy, ASN allowlists, or PR #6."
   ],
   "ci_policy": {
     "push_validation_paths": [
@@ -1082,22 +1088,28 @@
   },
   "current_manual_dispatch": {
     "next_run_number": 20,
-    "state": "ready_for_owner_manual_dispatch_after_ci_green",
+    "state": "dispatched_in_progress",
+    "run_id": 43053531258,
+    "job_id": 130636812894,
+    "run_url": "https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43053531258",
+    "execution_commit": "e339340436f6d17a31494c16f2a7c0f22a82e165",
+    "observed_at_utc": "2026-11-11T16:01:18Z",
     "parameters": {
       "branch": "feature/reachability-full-ru-kz-by",
-      "source": "vpnobratno",
+      "source": "vpnobratto",
       "max_vpn_gate_servers": "1",
       "max_vpn_gate_attempts": "6"
     }
   },
   "latest_manual_dispatch": {
-    "run_id": 43038105495,
+    "run_id": 43053531258,
+    "run_number": 20,
+    "job_id": 130636812894,
     "branch": "feature/reachability-full-ru-kz-by",
-    "commit": "7723e818a94e8fc22706bdc37474b3f04c640435",
-    "result": "failure",
-    "failure_stage": "Install isolated VPN measurement tools",
-    "artifact_count": 0,
-    "interpretation": "No VPN endpoint or target was measured."
+    "commit": "e339340436f6d17a31494c16f2a7c0f22a82e165",
+    "status": "in_progress",
+    "conclusion": null,
+    "observed_at_utc": "2026-11-11T16:01:18Z"
   },
   "cancellation_investigation": {
     "run7_cancel_request": {
@@ -1503,13 +1515,12 @@
     }
   ],
   "current_next_run": {
-    "expected_run_number": 16,
+    "expected_run_number": 21,
     "branch": "feature/reachability-full-ru-kz-by",
-    "latest_branch_head_before_checkpoint": "bf3bbd6bb3af4b1f527a081af62aafde0eff8b55",
-    "source": "vpnobratno",
+    "source": "vpnobratto",
     "max_vpn_gate_servers": 1,
     "max_vpn_gate_attempts": 6,
-    "precondition": "Reachability validation run 43037445995 passed; ensure there is no active VPN workflow before dispatch.",
+    "precondition": "Run #20 must be terminal, with logs/artifact reviewed; do not overlap VPN workflows.",
     "not_yet_dispatched": true
   },
   "run14_result": {
@@ -1746,5 +1757,40 @@
     "validation_run_id": 43051897730,
     "validation_status": "SUCCESS",
     "python_tests": 121
+  },
+  "run20_current_snapshot": {
+    "run_id": 43053531258,
+    "run_url": "https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43053531258",
+    "run_number": 20,
+    "job_id": 130636812894,
+    "branch": "feature/reachability-full-ru-kz-by",
+    "commit": "e339340436f6d17a31494c16f2a7c0f22a82e165",
+    "created_at_utc": "2026-11-11T15:57:47Z",
+    "measurement_step_started_at_utc": "2026-11-11T15:58:36Z",
+    "observed_at_utc": "2026-11-11T16:01:18Z",
+    "status": "in_progress",
+    "job_status": "in_progress",
+    "measurement_step_status": "in_progress",
+    "artifact_upload_step_status": "pending",
+    "artifacts": [],
+    "listing_bytes": 21587,
+    "profile_links_found": 29,
+    "profile_download_cap": 24,
+    "distinct_server_host_target": 6,
+    "confirmed_usable_profiles": 5,
+    "confirmed_unique_server_hosts": 5,
+    "sixth_profile_fetch_started": true,
+    "sixth_profile_result": "not_visible_in_supplied_log_excerpt",
+    "confirmed_later_phase_markers": [],
+    "later_phase_state": "unknown_after_last_supplied_log_excerpt",
+    "verified_ru_exits_confirmed_by_snapshot": 0,
+    "target_measurement_rows_confirmed_by_snapshot": 0,
+    "log_download_api": "BlobNotFound_while_job_active",
+    "process_guard_timeout_minutes": 7,
+    "process_guard_kill_after_seconds": 5,
+    "measurement_step_timeout_minutes": 9,
+    "job_timeout_minutes": 12,
+    "nominal_process_guard_point_utc": "2026-11-11T16:05:36Z",
+    "interpretation": "Five profile downloads validated successfully and a sixth fetch had started. The supplied log excerpt does not confirm an OpenVPN attempt, verified RU exit or target row. Later phases are unknown while the job is active; this is not evidence of target blocking or a VPN failure."
   }
 }
