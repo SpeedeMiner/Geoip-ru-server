@@ -27,17 +27,23 @@
 - Любой merge в main запускает текущий production build/publish workflow, даже для docs-only PR.
 
 
-## CI blocker — run #148
+## Последняя завершённая проверка — run #159
 
 - PR #7: https://github.com/SpeedeMiner/Geoip-ru-server/pull/7 (open, Draft).
-- Validation: https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/42975245329 — failure at the priority-evidence collector.
-- Compile, unit tests, legal-evidence checks, immutable v37 input fetch, generation of company/full selected-origin queues and their quality-report validation all passed.
-- Queue counts: 3,169 company-origin prefixes and 23,564 selected-origin prefixes; all REVIEW.
-- ipverse snapshot SHA-256: fadde6a3997e55556c94509032b675dde06684f131e596b88c2910ab907b0f79 (16,268,123 bytes); release input commit d613c5f0ef482f2051cbc37a303b2ac30076d313.
-- Blocker: the audit script expects 56 priority prefixes (52 MOAS + 4 company-only), but the current snapshot yields 57 (53 MOAS + 4 company-only). Failure occurs before RDAP/RPKI queries; this is not an API/network failure.
-- The exact additional MOAS CIDR is not yet recovered from this failed run. Do not guess it or mechanically change the count to 57. No artifact was uploaded because the workflow failed before upload.
+- Validation run #159: https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/42978866087 — 18/18 success, head 6c0fb4ef2b4f67c8c621365931f289ebf4aefb47.
+- Artifact v37-prefix-audit-7, ID 13836209176, SHA-256 2052fbe9284356b7202c2eb2fb55a9bfdb6fcda1f94fe83780b3312ed4801f96, 645,109 bytes.
+- Current priority selection: 57 exact CIDRs = 53 MOAS + 4 company-only. Dynamic expected scope is derived from the source review queue; no hard-coded 56/52/4 remains in production audit components/workflow validators.
+- RDAP: 171/171 successful first/middle/last samples; RPKI: 111 exact prefix/origin queries (66 valid, 20 invalid_asn, 25 unknown); IRR: 55 OK, one NO_EXACT_ROUTE_OBJECT_IN_QUERY_RESULTS, one NO_OBJECTS_IN_QUERIED_SOURCES.
+- All 57 priority, triage and worklist rows remain REVIEW. Archived-invalid reconciliation has 19 REVIEW rows (16 EXACT_ORIGIN_SET_CHANGED, 1 EXACT_MOAS_RPKI_STATUS_CHANGED, 1 MORE_SPECIFIC_ONLY_NO_EXACT_VERDICT, 1 EXACT_MOAS_INVALID_ORIGIN_REMAINS_UNCONFIRMED).
+- New exact MOAS candidate: 5.255.192.0/18, origins AS13238 + AS208398. Both exact prefix/origin RPKI validations are valid. RIPE resource allocation is RU-YANDEX-20120914 / YANDEX LLC. Exact RIPE route object is AS13238 only; AS208398 has no exact object among the eight RIPE/GRS sources queried. AS208398 is a Serbian ASN. This is a cross-border origin/IRR discrepancy, not proof that the /18 is foreign. Keep REVIEW and do not change production.
+- New spot-check ledger row 5.255.192.0/18 is CHECKED_2026-11-11; exact + more-specific scope. External spot-check total 23 (22 older rows + this candidate). New row remains REVIEW.
+- Changed files in the current validation fix: builder/test/workflow dynamic scope from earlier commit; external spot-check TSV, worklist date validator/test, workflow 23-row spot-check gate, plan and audit journal. Production inputs/builder/release unchanged.
+- Run #159 validated the earlier dynamic-scope fix. The new worklist/spot-check updates and document/journal updates still need a fresh full CI run.
 
-## Resume from
+## Следующий шаг
 
-Reproduce priority selection using the exact release inputs and the SHA-256-verified ipverse snapshot above. Identify the extra exact prefix, compare it with the previous 56-row audit inventory, inspect each exact origin independently, and only then update scope constants/tests and any curated evidence expectations. Keep all new rows REVIEW. No production prefix, builder, company allowlist, DIRECT output or release change. Do not touch PR #5 or its branch.
+1. Проверить текущий HEAD/PR7 and latest run.
+2. Full CI must pass with 57 priority rows and 23 spot-checks; check candidate worklist row remains NOT_APPROVED/REVIEW and external scope EXACT_AND_MORE_SPECIFIC.
+3. Update .github/PROJECT_CHECKPOINTS.md with the new validation run and artifact; update PR body after validation.
+4. Continue the main user goal: source catalog + immutable raw snapshots, then the complete canonical exact-prefix inventory and address-space diff against v37. Only after evidence review create data PRs.
 
