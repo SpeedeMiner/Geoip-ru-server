@@ -298,3 +298,15 @@ Durable resume point for PR #5. After any conversation/network interruption, rea
 - Latest validation-triggering code/test commit: `515863b7029274ba6c65c683e9fc863066a8fefc`; workflow failure-status enforcement commit: `24dded8bc779c30b3bdaa908d1c9574eebb25e34`; latest test commit: `2bcf42cd017db678da21604d89a5c6e57403e346`; README doc commit: `b03d1a365234b354eea5098cb0cd341b1a081a81`.
 - No new VPN run is launched until CI validates these changes. The previous two pilot reports remain diagnostic only and show zero completed target measurements.
 - No production GeoIP mutation, builder/release/main changes, DIRECT/ASN allowlist changes or PR #6 changes.
+
+
+### 2026-11-11 — Pinned DoH fallback and strict measurement-status CI — VALIDATED
+
+- Reachability validation Run #106 `42964285730` passed on `515863b7029274ba6c65c683e9fc863066a8fefc`. Full job log confirms `Ran 53 tests`, `OK`, followed by successful gofmt, go test and go build.
+- A preceding test-triggered run #104 `42964242183` failed because the new measurement-status test was committed just before its helper function. The next code commit `515863b...` added the helper and run #106 validates the complete 53-test tree. This transient failure is resolved; do not report run #104 as the final status.
+- Workflow enforcement change `24dded8bc779c30b3bdaa908d1c9574eebb25e34` also passed CI run #105 `42964127601`: measurement step is continue-on-error only to allow artifact upload; upload runs always; a final gate fails the job when the requested verified RU exit count was not reached.
+- DoH implementation commit `3fb0617a4ea7c03ff0f1f2b6832b543213cea13b`, tests `723a0cf43d8d849c6d4902f9ce3046dce85c7215`, test/status commit `2bcf42cd017db678da21604d89a5c6e57403e346`, helper implementation `515863b7029274ba6c65c683e9fc863066a8fefc`, workflow `24dded8bc779c30b3bdaa908d1c9574eebb25e34`.
+- Latest VPN Gate test module count is 24; existing reachability module count 29; total 53.
+- New validation covers: pinned Cloudflare/Google DoH JSON parsing, A/AAAA fallback after NSS errors, pinned metadata HTTPS fallback, pinned target HTTPS HEAD with SNI/certificate verification, and non-zero exit status if no requested RU exit is verified.
+- Auth file permissions are now 0600, OpenVPN diagnostic tail is 60 lines, and DNS fallback does not route requests via the runner's pre-VPN resolver.
+- The next pilot may now be retried. If no RU exit succeeds, expected workflow conclusion is **failure**, with diagnostics still uploaded. A failed measurement must not be called a successful reachability test.
