@@ -326,9 +326,10 @@ class UbuntuAptDNSBootstrapTests(unittest.TestCase):
         self.assertIn("    timeout-minutes: 12\n", workflow)
         self.assertIn("        timeout-minutes: 9\n", workflow)
         self.assertIn(
-            "sudo bash .github/reachability/vpn_netns_exec.sh -- \\",
+            "bash .github/reachability/vpn_netns_exec.sh -- \\",
             workflow,
         )
+        self.assertIn("sudo env \\", workflow)
         self.assertIn("GITHUB_SHA=\"${GITHUB_SHA}\"", workflow)
         self.assertIn("GITHUB_RUN_ID=\"${GITHUB_RUN_ID}\"", workflow)
         self.assertIn("GITHUB_RUN_ATTEMPT=\"${GITHUB_RUN_ATTEMPT}\"", workflow)
