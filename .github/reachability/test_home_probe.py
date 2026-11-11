@@ -157,6 +157,8 @@ class HomeHTTPSProbeTests(unittest.TestCase):
         self.assertEqual(row["https_ipv4_status"], 200)
         self.assertEqual(row["https_ipv6_result"], "INCONCLUSIVE")
         self.assertEqual(row["dns_ipv4_addresses"], ["8.8.8.8", "8.8.4.4"])
+        self.assertEqual(row["https_ipv4_tested_address"], "8.8.8.8")
+        self.assertEqual(row["https_ipv6_tested_address"], "2001:4860:4860::8888")
 
 
 class HomeProbeSafetyTests(unittest.TestCase):
