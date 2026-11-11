@@ -293,31 +293,60 @@ def network_info(address: str) -> dict[str, Any]:
         return {"prefix": "", "asn": 0}
 
 
+def _parse_ip_metadata(endpoint: str) -> dict[str, Any]:
+    payload = fetch_json(endpoint, timeout=15)
+    connection = payload.get("connection") or {}
+    address = str(payload.get("ip") or "").strip()
+    parsed = ipaddress.ip_address(address)
+    if not parsed.is_global:
+        raise ProbeError("reported IP address is not globally routable")
+    country = str(payload.get("country_code") or payload.get("country") or "").upper()
+    if not re.fullmatch(r"[A-Z]{2}", country):
+        raise ProbeError("IP metadata response has no valid country code")
+    org = str(connection.get("org") or connection.get("isp") or payload.get("org") or "").strip()
+    asn = parse_asn(connection.get("asn") or payload.get("asn") or org)
+    return {
+        "ip": address,
+        "country": country,
+        "asn": asn,
+        "org": org,
+        "network_prefix": "",
+        "source": urllib.parse.urlparse(endpoint).netloc,
+    }
+
+
 def ip_metadata(url: str | None = None) -> dict[str, Any]:
-    """Identify the actual egress using two common public IP metadata responses."""
+    """Get metadata for a known server IP or require two-source egress consensus."""
+    endpoints = (url,) if url else IP_INFO_URLS
+    observations: list[dict[str, Any]] = []
     errors: list[str] = []
-    for endpoint in ((url,) if url else IP_INFO_URLS):
+    for endpoint in endpoints:
         try:
-            payload = fetch_json(endpoint, timeout=15)
-            connection = payload.get("connection") or {}
-            address = str(payload.get("ip") or "").strip()
-            parsed = ipaddress.ip_address(address)
-            if not parsed.is_global:
-                raise ProbeError("egress address is not globally routable")
-            country = str(payload.get("country_code") or payload.get("country") or "").upper()
-            org = str(connection.get("org") or connection.get("isp") or payload.get("org") or "").strip()
-            asn = parse_asn(connection.get("asn") or payload.get("asn") or org)
-            return {
-                "ip": address,
-                "country": country,
-                "asn": asn,
-                "org": org,
-                "network_prefix": "",
-                "source": urllib.parse.urlparse(endpoint).netloc,
-            }
-        except (ProbeError, ValueError) as exc:
-            errors.append(str(exc))
-    raise ProbeError("unable to verify VPN exit IP/country: " + "; ".join(errors[:2]))
+            observation = _parse_ip_metadata(endpoint)
+            if url:
+                return observation
+            observations.append(observation)
+        except (ProbeError, ValueError, urllib.error.URLError, TimeoutError, OSError) as exc:
+            errors.append(f"{urllib.parse.urlparse(endpoint).netloc}: {exc}")
+        if len(observations) >= 2:
+            break
+
+    if url:
+        raise ProbeError("unable to identify VPN server IP metadata: " + "; ".join(errors[:2]))
+    if len(observations) < 2:
+        raise ProbeError(
+            "VPN exit verification requires two independent IP metadata services; "
+            + "; ".join(errors[:2])
+        )
+    first = observations[0]
+    if any(item["ip"] != first["ip"] or item["country"] != first["country"] for item in observations[1:]):
+        raise ProbeError("independent IP metadata services disagree on exit IP or country")
+    merged = dict(first)
+    merged["asn"] = next((item["asn"] for item in observations if item["asn"]), 0)
+    merged["org"] = next((item["org"] for item in observations if item["org"]), "")
+    merged["source"] = "|".join(item["source"] for item in observations)
+    merged["verified_by_sources"] = len(observations)
+    return merged
 
 
 def resolve_ptr(address: str) -> str:
