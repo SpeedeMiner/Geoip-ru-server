@@ -1,14 +1,14 @@
 {
   "schema_version": 1,
-  "updated_at_utc": "2026-11-11T04:35:53Z",
+  "updated_at_utc": "2026-11-11T04:43:00Z",
   "repository": "SpeedeMiner/Geoip-ru-server",
   "pull_request": 5,
   "pull_request_url": "https://github.com/SpeedeMiner/Geoip-ru-server/pull/5",
   "branch": "feature/reachability-full-ru-kz-by",
-  "recorded_pr_head_before_checkpoint_commit": "4253ee86eca2a21fa3a2b3bc57a9056de081b76b",
+  "recorded_pr_head_before_checkpoint_commit": "fcef94c6351c0e143aa3ba589ffc584ba74ac217",
   "base_sha": "a68e5d6589361814cb1cfedd2af7857e4af806fa",
-  "state": "VPN_GATE_PILOT_READY_AFTER_CI",
-  "current_phase": "VPN_GATE_ONE_SHOT_WORKFLOW_AND_FIRST_PILOT",
+  "state": "VPN_GATE_PILOT_RUNNING",
+  "current_phase": "VPN_GATE_ONE_EXIT_LIVE_MEASUREMENT",
   "completed": [
     "repository_reconnaissance",
     "protobuf_inventory_exporter",
@@ -98,10 +98,13 @@
     "vpn_gate_single_dual_stack_dns_resolver_call",
     "vpn_gate_dual_stack_dns_regression_tests",
     "vpn_gate_manual_workflow_timeout_extended_for_bounded_multi_exit_run",
-    "vpn_gate_validation_ci_45_python_tests_and_go_checks_success_run_42959843669"
+    "vpn_gate_validation_ci_45_python_tests_and_go_checks_success_run_42959843669",
+    "vpn_gate_github_workflow_dispatch_default_branch_constraint_identified",
+    "vpn_gate_guarded_one_shot_feature_branch_push_trigger",
+    "vpn_gate_one_exit_pilot_started"
   ],
-  "latest_successful_validation_run": 42959843669,
-  "latest_successful_validation_commit": "a3098c15351de5dabc5f286f05024678fe4707fa",
+  "latest_successful_validation_run": 42960889187,
+  "latest_successful_validation_commit": "1ea2e44b72840deaeecb1b81efb635273f16fc91",
   "test_counts": {
     "python_unit_tests": 45,
     "python_unit_tests_status": "PASS",
@@ -227,7 +230,8 @@
     "Initial VPN Gate sampling inspects up to 24 candidates for RIPEstat origin ASN and prefers distinct ASNs; unknown origin ASN does not count toward distinct-provider coverage.",
     "IP metadata ASN and RIPEstat origin ASN are retained separately; disagreement is an explicit review candidate, not an automatically resolved operator identity.",
     "RIPEstat prefix evidence is accepted only when the CIDR contains the exact IP queried.",
-    "VPN Gate manual job has a 120-minute limit; each target's A and AAAA records are fetched by one resolver call, but no IPv6 transport test is claimed."
+    "VPN Gate manual job has a 120-minute limit; each target's A and AAAA records are fetched by one resolver call, but no IPv6 transport test is claimed.",
+    "GitHub workflow_dispatch cannot run from this new feature-branch workflow until the workflow exists on the default branch; a narrow path-and-commit-message-gated one-shot push is used for this draft-branch pilot."
   ],
   "policy_invariants": {
     "geoip_RU_dat_mutated": false,
@@ -244,10 +248,10 @@
     "automatic_geoip_mutation": false
   },
   "next_steps": [
-    "Fix the feature-branch execution path for the VPN Gate workflow. GitHub workflow_dispatch only receives events when the workflow file is on the default branch; do not ask the owner to merge PR #5 just to enable testing.",
-    "Use a narrowly guarded one-shot push trigger on feature/reachability-full-ru-kz-by, activated only by a dedicated [vpn-gate-once] commit marker and defaulting that path to a single RU VPN exit. Do not add a daily schedule.",
-    "Inspect and verify the first pilot artifact, including exact exit IP/country consensus, origin ASN/prefix and provider attribution, firewall/resolver restoration, and all target results.",
-    "After a successful first node, remove the temporary trigger marker or return the workflow to its manual-only form. Keep PR #5 Draft; do not merge/rebase or modify production builder, geoip_RU.dat, release assets, DIRECT, ASN allowlists, main/release or PR #6."
+    "Inspect VPN Gate run 42960930985 until it completes. The setup, Go toolchain, exact release protobuf download and complete RU/PRIVATE inventory export have passed; the VPN/measurement step is currently running.",
+    "After completion, fetch and inspect artifact contents and logs: chosen VPN Gate server, actual exit IP/country consensus, server/exit ASN sources and conflict status, RIPEstat prefix containment, PTR/organization, firewall/resolver cleanup, per-target DNS A/AAAA and HTTPS results.",
+    "Remove .github/reachability/VPN_GATE_RUN_ONCE after the first run and disable the temporary push trigger in reachability-vpn-gate.yml after pilot review. Keep workflow_dispatch for after default-branch integration.",
+    "Do not repeat or widen the VPN pilot until the first artifact is reviewed. Keep PR #5 Draft; do not modify main/release, production builder, geoip_RU.dat, DIRECT, ASN allowlists or PR #6."
   ],
   "ci_policy": {
     "push_validation_paths": [
@@ -277,7 +281,11 @@
     "vpn_gate_workflow_triggers": [
       "workflow_dispatch"
     ],
-    "vpn_gate_daily_schedule_enabled": false
+    "vpn_gate_daily_schedule_enabled": false,
+    "vpn_gate_push_once_marker": ".github/reachability/VPN_GATE_RUN_ONCE",
+    "vpn_gate_push_once_commit_prefix": "[vpn-gate-once]",
+    "vpn_gate_push_once_default_servers": 1,
+    "vpn_gate_push_once_daily_schedule_enabled": false
   },
   "pending_validation": {
     "commit": "a3098c15351de5dabc5f286f05024678fe4707fa",
@@ -291,16 +299,16 @@
       "go test ./...",
       "go build"
     ],
-    "note": "Run #99 completed successfully. It is the exact implementation/test tree of current PR HEAD; comparison from the tested commit to the current branch head contains only CHECKPOINT.json, README.md and WORKLOG.md."
+    "note": "Run #99 passed. Current PR differs from tested commit only by docs/checkpoint; another validation run #100 also passed after one-shot workflow change."
   },
   "vpn_gate_measurement": {
     "source": "VPN Gate official CSV API",
     "directory_reference": "https://vpnobratno.info/",
     "workflow": ".github/workflows/reachability-vpn-gate.yml",
-    "mode": "manual_only",
-    "default_max_servers": 3,
+    "mode": "one_shot_push_in_progress",
+    "default_max_servers": 1,
     "hard_max_servers": 6,
-    "actual_run_performed": false,
+    "actual_run_performed": true,
     "validation_status": "SUCCESS",
     "output_files": [
       "vpn_gate_providers.tsv",
@@ -319,6 +327,14 @@
     },
     "expected_python_tests": 45,
     "timeout_minutes": 120,
-    "validation_run_id": 42959843669
+    "validation_run_id": 42959843669,
+    "manual_dispatch_default_max_servers": 3,
+    "run_id": 42960930985,
+    "run_url": "https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/42960930985",
+    "run_status": "IN_PROGRESS",
+    "marker_commit": "31be54066923d83e598571e6e29ae5841a98fa49",
+    "marker_commit_message": "[vpn-gate-once] Run first single-exit Russian ISP pilot",
+    "github_dispatch_constraint": "workflow_dispatch requires workflow file on default branch; feature-branch pilot uses guarded one-shot push marker instead",
+    "marker_path": ".github/reachability/VPN_GATE_RUN_ONCE"
   }
 }
