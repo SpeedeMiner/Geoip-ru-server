@@ -468,8 +468,8 @@ jobs:
               if f"{category} output" in stats:
                   pass
           for required in (
-              f"output_ru\\t76292\\t",
-              f"output_private\\t151\\t",
+              f"output_ru\t76292\t",
+              f"output_private\t151\t",
               "All joins are exact-prefix equality only.",
               "Raw GeoIP .dat inputs are not retained in the v37 release",
           ):
