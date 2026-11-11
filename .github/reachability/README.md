@@ -80,6 +80,20 @@ prefers one candidate per distinct observed ASN before selecting a second node
 from the same ASN. If RIPEstat cannot establish an ASN, the candidate is marked
 ASN-unverified and is not counted as provider diversity.
 
+After the tunnel is up, system DNS/NSS failures are handled with a fallback
+DNS-over-HTTPS client pinned to public resolver IPs (Cloudflare 1.1.1.1 and
+Google 8.8.8.8). The DoH request keeps TLS SNI/certificate verification for the
+resolver hostname; metadata HTTPS and target HEAD requests can also use
+DoH-resolved, IP-pinned connections while preserving the original hostname for
+TLS validation. These requests therefore remain on the VPN tunnel and do not
+fall back to the runner's direct DNS path.
+
+A run that cannot establish its requested number of verified RU exits returns a
+non-zero measurement status. The workflow still uploads diagnostic artifacts
+using an always-run upload step, then marks the job failed. A green job therefore
+requires the requested count of confirmed RU egresses, not just successful
+artifact upload.
+
 ## What “full” means
 
 The inventory exporter reads the actual published \`release/geoip_RU.dat\`
