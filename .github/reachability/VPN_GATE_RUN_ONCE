@@ -1,1 +1,1 @@
-Third one-shot pilot: require one verified Russian VPN exit; try up to three candidate relays from distinct origin ASNs. Use pinned DoH for all DNS-dependent metadata and target checks after the tunnel is verified. Upload diagnostic artifacts even if no verified exit is established.
+Final bounded VPN Gate pilot: request one verified RU egress and try at most six candidate servers selected across distinct origin ASNs. Preserve diagnostics and fail the workflow if no verified RU exit is established.
