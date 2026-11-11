@@ -47,24 +47,20 @@ workflow is integrated into the repository default branch. It:
 - records the actual exit IP, country, ASN/prefix/organization metadata, and whether the source exit IP maps to a RU or PRIVATE prefix in the published GeoIP inventory;
 - tests only the catalogue's RU-scope hostnames using low-volume DNS A/AAAA lookups and HTTPS HEAD requests.
 
-While PR #5 remains Draft, GitHub's `workflow_dispatch` button is not available for this workflow because the workflow file is not on the repository default branch. A guarded one-shot push trigger is used for a bounded pilot: it only fires when `.github/reachability/VPN_GATE_RUN_ONCE` changes on the PR #5 feature branch and the commit message begins with `[vpn-gate-once]`. That trigger defaults to one successful RU exit and at most three candidate attempts. Once the workflow exists on the default branch, it can also be started through Actions with explicit limits. It is intentionally not part of the daily schedule. Each server is tested sequentially; a non-RU exit is rejected and no service requests are sent through it.
+The VPN Gate workflow is manual-only (`workflow_dispatch`), with no daily
+schedule or feature-branch push trigger. Manual dispatch becomes available
+after this workflow is integrated into the repository default branch. Its
+artifacts include `vpn_gate_providers.tsv`, `vpn_gate_measurements.jsonl`,
+`vpn_gate_geoip_candidates.tsv`, `vpn_gate_raw.jsonl` and
+`vpn_gate_summary.json`.
 
-Artifacts include `vpn_gate_providers.tsv`, `vpn_gate_measurements.jsonl`,
-`vpn_gate_geoip_candidates.tsv` and `vpn_gate_summary.json`. A candidate means
-only that IP metadata reports a Russian exit while the current GeoIP inventory
-does not map it to RU. It is a review lead, not an automatic CIDR addition.
-
-**Important limits:** VPN Gate nodes are volunteer-operated. A Russian egress
-address or ISP/ASN label does not attest that the host is a household subscriber;
-it may be a different access or enterprise network. Validate the operator,
-origin ASN, route visibility and access-network type before changing the RU list.
-The IPv6 host path is blocked during these IPv4 tunnel tests; AAAA DNS answers are
-recorded, but IPv6 HTTPS reachability is not claimed. Public VPN relays may retain
-connection logs, so the runner sends only minimal public requests and never sends
-credentials or user data to the measured services.
-
-This workflow is a measurement backend only. It does not alter `geoip_RU.dat`,
-the main builder, release artifacts, DIRECT policy, or ASN allowlists.
+**Observed limitation:** four live VPN Gate pilots produced zero completed
+service measurement rows. The final bounded run found only three usable RU
+profiles from two origin ASNs; none established a verified RU exit. VPN Gate
+is not reliable enough here to be the primary source of home-ISP measurements.
+The failed runs do not indicate that target services are blocked or that GeoIP
+ranges are missing. Their endpoint IPs were already covered by RU prefixes.
+The one-shot feature-branch trigger and marker were removed after the pilot.
 
 #### Observed VPN Gate pilot limitation (2026-11-11)
 
@@ -129,6 +125,44 @@ are retained. Profiles that refer to external TLS key files are rejected.
 Scripts, plugins, external config files and route directives are never copied.
 Sanitized profile-feature flags (not key material) are included in the raw
 diagnostic report to help compare failed volunteer relays.
+
+## Opt-in home ISP probe
+
+VPN Gate did not provide a stable tunnel in the live pilots. For the original
+goal—testing from a genuine Russian household ISP—the alternative is a small
+probe that the network owner runs locally on a PC or router connected directly
+to that ISP.
+
+The local-only script is `.github/reachability/home_probe.py`. It:
+
+- requires an explicit `--consent` flag before any endpoint checks;
+- refuses configured HTTP(S) proxy environment variables by default; do not run it behind a VPN or proxy;
+- checks the public egress IP through two independent metadata services and records ASN/organization when available;
+- uses the host's normal DNS resolver for A/AAAA so DNS behavior remains part of the ISP measurement;
+- sends at most one HTTPS HEAD request per observed IPv4 address and one per observed IPv6 address for each catalogue hostname, preserving TLS SNI and certificate validation;
+- saves `home_probe_source.json`, `home_probe_measurements.jsonl` and `home_probe_summary.json` locally; it never uploads data automatically.
+
+From the repository root, on the actual home connection:
+
+```bash
+python3 .github/reachability/home_probe.py --required-country RU --consent --output-dir home-probe-output
+```
+
+On Windows, use `py -3` instead of `python3`. For a small smoke test, add
+`--max-targets 3`.
+
+The report contains the public egress IP and DNS answers; review it before
+sharing it. It intentionally does not collect local/private IPs, MAC addresses,
+hostnames, browsing history, cookies or credentials. A two-source country/IP
+match is supporting attribution, not proof of a household subscription:
+combine it with operator/ASN validation and the fact that the owner ran the
+probe directly on that ISP. A report with unavailable metadata is still useful
+as raw endpoint evidence but must not be labelled as confirmed RU household
+coverage.
+
+A useful pilot needs consenting volunteers on several different Russian
+operators and, ideally, regions. One machine measures only its own current
+connection; it does not represent every customer of an ISP.
 
 ## What “full” means
 
