@@ -3478,6 +3478,18 @@ jobs:
             geoip_RU_v37_base.dat
             geoip_RU_v37_base_quality_report.txt
             geoip_RU_v37_additional_provenance.tsv
+            kyoresuas-ru-standard-ipv4.txt
+            kyoresuas-ru-standard-ipv6.txt
+            kyoresuas-services.json
+            w1zardz-ru-ipv4.txt
+            hxehex-ipwhitelist.txt
+            escapingworm-operator-cidr.txt
+            antifilter-ip.lst
+            antifilter-ipresolve.lst
+            antifilter-subnet.lst
+            antifilter-ipsum.lst
+            geoip_RU_blocked_ip_exclusions.txt
+            geoip_RU_blocked_ip_exclusions.txt.sha256sum
             geoip_RU_input_provenance.tsv
             geoip_RU_input_provenance.tsv.sha256sum
           if-no-files-found: error
