@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_at_utc": "2026-11-11T17:28:39Z",
+  "updated_at_utc": "2026-11-11T17:29:10Z",
   "repository": "SpeedeMiner/Geoip-ru-server",
   "pull_request": 5,
   "pull_request_url": "https://github.com/SpeedeMiner/Geoip-ru-server/pull/5",
@@ -440,10 +440,10 @@
     "production_release_artifact_byte_delta_verified": false
   },
   "next_steps": [
-    "Run #21 (43065501624) is terminal: GitHub run status=completed, conclusion=cancelled; the owner-provided annotation explicitly says the job exceeded the maximum execution time of 12m0s. Do not describe this as a manual owner cancellation.",
-    "The terminal job API reports completed/cancelled, but the step-summary API remains stale (measurement step 7 in_progress, upload step 8 pending, failure-gate step 9 pending). Artifact list is empty and the decoded job-log endpoint returns BlobNotFound after completion.",
-    "Inner stall/root cause remains unresolved. Last confirmed owner-visible marker is profile_fetch_started=6/24; five profiles were usable, sixth fetch completion is unknown. No confirmed OpenVPN attempt, verified RU exit or target measurement rows exist.",
-    "Before any new VPN run, inspect and improve the measurement workflow's per-stage bounded execution and diagnostic persistence so the profile-fetch phase cannot leave the run without a terminal log/artifact. Do not rerun automatically or start an overlapping run.",
+    "Run #21 is terminal due to the GitHub max 12-minute execution-time annotation; run/job API says completed/cancelled. No artifact or terminal job log is available.",
+    "Post-mortem of execution SHA 5a1badef9e19a71c44cd4b1fa42748f4d688e90f did not identify a proven unbounded Python retry loop: profile fetch has a 20s SIGALRM wrapper, monotonic deadlines and bounded sockets; normal expiry should emit a skipped/error marker. The precise inner stall or lost log state remains unproven.",
+    "Before another dispatch, supervise each profile fetch in a child worker process with a parent-side total wall-clock wait/kill; add flushed subphase markers for DoH, TCP, TLS, headers, response reads and close; persist a per-profile progress manifest. Add tests that prove the worker and descendants stop when the deadline expires.",
+    "Keep changes isolated to the manual VPN measurement workflow; preserve review-only behavior. Do not rerun automatically; after changes, run validation CI first, then one capped manual pilot.",
     "Keep PR #5 OPEN/DRAFT and all production GeoIP, DIRECT policy, ASN allowlist, main/release and PR #6 boundaries unchanged."
   ],
   "ci_policy": {
@@ -2260,6 +2260,24 @@
       "confirmed_verified_ru_exits": 0,
       "confirmed_target_measurement_rows": 0,
       "interpretation": "Job-level timeout is confirmed by owner-provided GitHub annotation. Terminal job conclusion is cancelled. Inner hang location remains unknown; step-summary status is stale; no terminal logs or artifact exist."
+    },
+    "postmortem_source_review": {
+      "reviewed_execution_sha": "5a1badef9e19a71c44cd4b1fa42748f4d688e90f",
+      "reviewed_at_utc": "2026-11-11T17:29:10Z",
+      "findings": [
+        "per-profile SIGALRM/setitimer wall-clock wrapper=20s",
+        "VPNObratto fetcher has monotonic total deadline, DoH deadline, finite pinned addresses, socket timeouts and bounded response-read loop",
+        "discovery catches expected fetch errors and should log skipped result on normal expiry",
+        "no obvious unbounded Python retry loop proven by static review"
+      ],
+      "limits": [
+        "no terminal log archive or artifact",
+        "cannot distinguish a lower-level blocking call/cleanup stall from runner/logging/status issue",
+        "synthetic runner preflight does not simulate uninterruptible kernel task, real TLS/HTTPS read or full action-runner teardown"
+      ],
+      "recommended_next_engineering_step": "run each profile fetch in a separately supervised child process with parent-side hard wall-clock wait/kill; add flushed per-network-phase markers and durable per-profile progress manifest; regression-test child/descendant termination",
+      "code_changed": false,
+      "vpn_rerun_dispatched": false
     }
   }
 }
