@@ -24,6 +24,7 @@ import pathlib
 import re
 import shlex
 import shutil
+import signal
 import socket
 import ssl
 import subprocess
@@ -754,6 +755,34 @@ def resolve_vpnobratno_server_ip(
     raise ValueError("unsupported VPNObratto address mode")
 
 
+def call_with_wall_clock_timeout(callback: Any, timeout: float) -> Any:
+    """Call a blocking operation with a process-level wall-clock deadline.
+
+    urllib's socket timeout is an inactivity timeout; a slow-drip response can
+    keep read() alive indefinitely. SIGALRM bounds the total operation time.
+    The VPN workflow runs this collector in its main thread on Linux.
+    """
+    if timeout <= 0:
+        raise ValueError("wall-clock timeout must be positive")
+    previous_handler = signal.getsignal(signal.SIGALRM)
+    previous_delay, previous_interval = signal.getitimer(signal.ITIMER_REAL)
+    started = time.monotonic()
+
+    def expired(_signum: int, _frame: Any) -> None:
+        raise TimeoutError(f"operation exceeded {timeout:g}s wall-clock deadline")
+
+    signal.signal(signal.SIGALRM, expired)
+    signal.setitimer(signal.ITIMER_REAL, timeout)
+    try:
+        return callback()
+    finally:
+        signal.setitimer(signal.ITIMER_REAL, 0)
+        signal.signal(signal.SIGALRM, previous_handler)
+        if previous_delay > 0:
+            remaining = max(0.001, previous_delay - (time.monotonic() - started))
+            signal.setitimer(signal.ITIMER_REAL, remaining, previous_interval)
+
+
 def discover_vpnobratno_servers(
     fetcher: Any = fetch_vpnobratno_bytes,
     resolver: Any | None = None,
@@ -768,9 +797,20 @@ def discover_vpnobratno_servers(
     if not 1 <= max_unique_hosts <= 6:
         raise ValueError("max_unique_hosts must be between 1 and 6")
     print("[vpn-gate] phase=profile_listing started", flush=True)
-    page = fetcher(
-        VPNOBRATNO_LIST_URL, timeout=40, max_bytes=VPNOBRATNO_LISTING_MAX_BYTES
-    ).decode("utf-8", "replace")
+    print("[vpn-gate] profile_listing_fetch_started wall_timeout=20s", flush=True)
+    page_bytes = call_with_wall_clock_timeout(
+        lambda: fetcher(
+            VPNOBRATNO_LIST_URL,
+            timeout=15,
+            max_bytes=VPNOBRATNO_LISTING_MAX_BYTES,
+        ),
+        20,
+    )
+    print(
+        f"[vpn-gate] profile_listing_fetch_completed bytes={len(page_bytes)}",
+        flush=True,
+    )
+    page = page_bytes.decode("utf-8", "replace")
     listed = parse_vpnobratno_listing(page)
     print(
         f"[vpn-gate] phase=profile_listing completed links={len(listed)} "
@@ -793,8 +833,23 @@ def discover_vpnobratno_servers(
             flush=True,
         )
         try:
-            payload = fetcher(
-                entry["profile_url"], timeout=25, max_bytes=VPNOBRATNO_PROFILE_MAX_BYTES
+            print(
+                f"[vpn-gate] profile_fetch_started={profile_index}/{len(selected_profiles)} "
+                "wall_timeout=15s",
+                flush=True,
+            )
+            payload = call_with_wall_clock_timeout(
+                lambda: fetcher(
+                    entry["profile_url"],
+                    timeout=12,
+                    max_bytes=VPNOBRATNO_PROFILE_MAX_BYTES,
+                ),
+                15,
+            )
+            print(
+                f"[vpn-gate] profile_fetch_completed={profile_index}/{len(selected_profiles)} "
+                f"bytes={len(payload)}",
+                flush=True,
             )
             if not payload or len(payload) > VPNOBRATNO_PROFILE_MAX_BYTES:
                 raise ValueError("profile is empty or exceeds 64 KiB")
@@ -803,8 +858,23 @@ def discover_vpnobratno_servers(
             expected_proto = "udp" if entry["transport"] == "udp" else "tcp-client"
             if profile["proto"] != expected_proto:
                 raise ValueError("profile transport does not match the listed variant")
+            print(
+                f"[vpn-gate] profile_validation_completed={profile_index}/{len(selected_profiles)} "
+                f"remote={profile['remote_host']} transport={profile['proto']}",
+                flush=True,
+            )
+            print(
+                f"[vpn-gate] profile_server_ip_resolution_started={profile_index}/{len(selected_profiles)} "
+                f"mode={entry['address_mode']}",
+                flush=True,
+            )
             server_ip = resolve_vpnobratno_server_ip(
                 entry["hostname"], profile["remote_host"], entry["address_mode"], resolver
+            )
+            print(
+                f"[vpn-gate] profile_server_ip_resolution_completed={profile_index}/{len(selected_profiles)} "
+                f"server_ip={server_ip}",
+                flush=True,
             )
             servers.append({
                 "hostname": entry["hostname"],
