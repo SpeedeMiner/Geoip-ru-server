@@ -144,7 +144,7 @@ class VPNExitVerificationTests(unittest.TestCase):
             {"hostname": "d", "server_ip": "8.8.8.4", "score": 70},
         ]
         asns = {"8.8.8.1": 12345, "8.8.8.2": 12345, "8.8.8.3": 54321, "8.8.8.4": 65001}
-        with patch.object(vpn_gate, "network_info", side_effect=lambda ip: {"asn": asns[ip], "prefix": ""}):
+        with patch.object(vpn_gate, "selection_network_info", side_effect=lambda ip: {"asn": asns[ip], "prefix": ""}):
             selected, metadata = vpn_gate.select_diverse_servers(servers, 3)
         self.assertEqual([server["hostname"] for server in selected], ["a", "c", "d"])
         self.assertEqual(metadata["selected_distinct_asns"], 3)
@@ -157,7 +157,7 @@ class VPNExitVerificationTests(unittest.TestCase):
             {"hostname": "c", "server_ip": "8.8.8.3", "score": 80},
         ]
         asns = {"8.8.8.1": 12345, "8.8.8.2": 12345, "8.8.8.3": 65001}
-        with patch.object(vpn_gate, "network_info", side_effect=lambda ip: {"asn": asns[ip], "prefix": ""}):
+        with patch.object(vpn_gate, "selection_network_info", side_effect=lambda ip: {"asn": asns[ip], "prefix": ""}):
             selected, metadata = vpn_gate.select_diverse_servers(servers, 3)
         self.assertEqual([server["hostname"] for server in selected], ["a", "c", "b"])
         self.assertEqual(metadata["selected_distinct_asns"], 2)
@@ -171,7 +171,7 @@ class VPNExitVerificationTests(unittest.TestCase):
             {"hostname": "d", "server_ip": "8.8.8.4", "score": 70},
         ]
         asns = {"8.8.8.1": 12345, "8.8.8.2": 12345, "8.8.8.3": 54321, "8.8.8.4": 65001}
-        with patch.object(vpn_gate, "network_info", side_effect=lambda ip: {"asn": asns[ip], "prefix": ""}):
+        with patch.object(vpn_gate, "selection_network_info", side_effect=lambda ip: {"asn": asns[ip], "prefix": ""}):
             selected, metadata = vpn_gate.select_diverse_servers(
                 servers, max_servers=1, max_attempts=3
             )
@@ -182,6 +182,42 @@ class VPNExitVerificationTests(unittest.TestCase):
     def test_max_attempts_cannot_be_lower_than_successful_exit_target(self):
         with self.assertRaisesRegex(ValueError, "max_attempts"):
             vpn_gate.select_diverse_servers([], max_servers=2, max_attempts=1)
+
+class RIPEstatSelectionNetworkInfoTests(unittest.TestCase):
+    def test_selection_lookup_uses_bounded_ipv4_curl(self):
+        payload = {"data": {"prefix": "8.8.8.0/24", "asns": ["AS15169"]}}
+        completed = subprocess.CompletedProcess(
+            ["curl"], 0, stdout=json.dumps(payload), stderr=""
+        )
+        with patch.object(
+            vpn_gate.subprocess, "run", return_value=completed
+        ) as run:
+            result = vpn_gate.selection_network_info("8.8.8.8")
+
+        self.assertEqual(result, {"prefix": "8.8.8.0/24", "asn": 15169})
+        args, kwargs = run.call_args
+        self.assertIn("--ipv4", args[0])
+        self.assertEqual(args[0][args[0].index("--max-time") + 1], "5")
+        self.assertEqual(kwargs["timeout"], 7)
+
+    def test_selection_lookup_timeout_returns_unverified_asn(self):
+        with patch.object(
+            vpn_gate.subprocess, "run",
+            side_effect=subprocess.TimeoutExpired(["curl"], 7),
+        ):
+            result = vpn_gate.selection_network_info("8.8.8.8")
+        self.assertEqual(result, {"prefix": "", "asn": 0})
+
+    def test_selection_lookup_http_failure_returns_unverified_asn(self):
+        completed = subprocess.CompletedProcess(
+            ["curl"], 28, stdout="", stderr="operation timed out"
+        )
+        with patch.object(
+            vpn_gate.subprocess, "run", return_value=completed
+        ):
+            result = vpn_gate.selection_network_info("8.8.8.8")
+        self.assertEqual(result, {"prefix": "", "asn": 0})
+
 
 class RIPEstatNetworkInfoTests(unittest.TestCase):
     def test_network_prefix_is_kept_only_when_it_contains_the_query_ip(self):
