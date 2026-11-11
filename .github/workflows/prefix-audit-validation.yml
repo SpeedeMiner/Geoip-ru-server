@@ -1,6 +1,8 @@
 name: Prefix audit validation (v37)
 
 on:
+  push:
+    branches: [audit/exact-origin-followup-2026-11]
   pull_request:
     branches: [main]
     paths:
@@ -29,7 +31,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: prefix-audit-validation-${{ github.event.pull_request.number }}
+  group: prefix-audit-validation-${{ github.event.pull_request.number || github.ref_name }}
   cancel-in-progress: true
 
 jobs:
