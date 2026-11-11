@@ -922,3 +922,6 @@ Durable resume point for PR #5. After any conversation/network interruption, rea
 - Job timeout remains nominally due at 17:22:16 UTC (12 minutes from the 17:10:16 UTC job start). Continue monitoring only this run through that boundary; do not cancel or dispatch an overlapping VPN run merely because logs are unavailable.
 - Confirmed result counts remain: usable profiles 1–5 only; profile 6 fetch start only; confirmed OpenVPN attempts 0; verified RU exits 0; target measurement rows 0; artifacts none.
 - PR #5 state was rechecked: {"state":"open"}. No PR state transition was requested or performed.
+
+
+- **Repeated overdue-status snapshot (2026-11-11T17:21:23Z):** a second GitHub Actions query again reports job `130679257182` and measurement step 7 `in_progress`, upload step 8 `pending`, no artifacts; decoded log fetch again returns `BlobNotFound` (Azure response time 2026-11-11T17:21:23Z). This is 1 minute 43 seconds beyond the nominal 17:19:40 UTC step timeout and approximately 3 minutes 38 seconds beyond the nominal 17:17:45 UTC GNU timeout/KILL point. No new owner-visible progress marker or later-stage evidence has been received. Run remains non-terminal in GitHub's job API; job deadline remains approximately 17:22:16 UTC.
