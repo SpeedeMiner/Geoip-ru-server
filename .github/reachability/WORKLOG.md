@@ -706,3 +706,12 @@ Durable resume point for PR #5. After any conversation/network interruption, rea
 - Added unit tests for public-IPv4 filtering, expected mirror mapping, idempotent block replacement, rejection of partial resolution and malformed existing markers.
 - Run #16 had zero OpenVPN attempts, zero verified RU exits, zero target DNS/HTTPS rows and no artifacts. This is an environment/setup failure, not evidence about VPN or target reachability.
 - Validation will be recorded only after the branch's Reachability validation workflow runs against the resulting code commit.
+
+
+### 2026-11-11 — Record apt DNS bootstrap CI and current pending head — IN PROGRESS
+
+- Validation run 43043009808 checked out implementation commit d8e679ae7080407e31042a195c545453b05ab9c7. Its only job completed successfully: the Python/JSON validation step and Go formatting, tests and build all passed. The Python suite reported 119 tests.
+- GitHub's workflow-run summary still reported status in_progress when checked, although its sole job and all job steps were completed with conclusion success. Do not relabel the run itself as completed until the run endpoint confirms it.
+- A follow-up test-only commit b6d5ffcd20dd8e488d6e9c2563f7fda781a5c20d corrected newline literals in the new hosts-file tests so they exercise real line boundaries. Its validation run 43043473870 was created but remained pending with no job listed at the latest check (2026-11-11 14:57:17 UTC).
+- The apt DNS bootstrap code and workflow have deterministic CI coverage, but the live pinned-DoH access from GitHub's westus2 runner is not yet verified. The next manual run must show mirror_doh_lookup_completed for all three Ubuntu hostnames, mirror_hosts_override_installed, all three mirror_getent_verified markers, apt_update_completed and apt_install_completed before proceeding to VPN discovery.
+- No new VPN workflow was dispatched. Run #16 (43038105495) ended before measurement with no artifact. PR #5 remains OPEN / DRAFT and current branch head is b6d5ffcd20dd8e488d6e9c2563f7fda781a5c20d.
