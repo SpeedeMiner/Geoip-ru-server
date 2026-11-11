@@ -40,3 +40,13 @@ Append-only operational journal for PR #10. Keep each checkpoint short, timestam
 ### Journal discipline
 
 Add a checkpoint after every meaningful phase: artifact receipt, parsing result, discovered issue, code correction, test completion, CI completion and PR state change. Do not wait until the end of a long task to record the work. Record exact run IDs, commit SHAs, artifact IDs and hashes whenever available.
+
+### 2026-11-12 00:31 +0500 — RPKI normalization correction implemented and locally tested
+
+- Added `.github/scripts/normalize_v38_postrelease_prefix_audit.py` and eight regression tests in `.github/scripts/test_normalize_v38_postrelease_prefix_audit.py`.
+- Canonicalization changes only comparison labels: `not-found`, `notfound` and `not_found` are treated as the same `not-found` value. Raw values remain preserved in the output's source fields and are also recorded in `RPKI_STATUS_LABEL_VARIANTS`.
+- True status conflicts remain explicit in `RPKI_STATUS_CONFLICTS`; `valid` and `invalid` are never collapsed.
+- Local tests against the exact run #7 artifact: 8/8 passed.
+- Local reprocessing of the exact run #7 56-row TSV: 56 rows retained as REVIEW; 10 spelling-only variants; 1 semantic conflict (`5.45.215.0/24`, AS208398 invalid vs valid).
+- Corrected view counts: 26 `ORIGIN_SETS_AND_STATES_MATCH`, 24 `ORIGIN_SET_DIFFERS`, 3 `NO_TIMESTAMPED_VRP_STATE`, 2 `NO_EXACT_ROUTE`, 1 `SAME_ORIGIN_STATUS_DIFFERS`.
+- The postprocessing code and tests are committed on PR #10 branch; workflow updated to run those tests and the normalizer. Awaiting GitHub Actions verification.
