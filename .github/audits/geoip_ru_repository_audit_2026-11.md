@@ -234,3 +234,46 @@ Run full PR #7 CI after the spot-check/worklist changes; inspect the new worklis
 - PR #7 remains open Draft, mergeable true, no review threads/comments returned. PR #5 and PR #6 untouched.
 - No production prefix input, company allowlist, Go builder, DIRECT policy, geoip_RU.dat, tag or release branch changed.
 - Next technical stage is source catalog + immutable raw snapshot retention, followed by full canonical exact-prefix inventory and exact-address diff against v37. Do not continue adding audit-only gates in lieu of the data inventory.
+
+
+## 2026-11-11 — single-snapshot correction and current v37 inventory (run #215)
+
+### Workflow debugging history
+
+- Run #212 failed because the workflow commit adding the ledger validator landed before the ledger file itself; the subsequent ledger commit fixed that ordering.
+- Run #213 failed because the inline Python parsed a two-character literal `\\t` as the CSV delimiter. Replaced it with explicit TAB splitting.
+- Run #214 passed catalog/ledger/source/provenance/fetch/queue stages and reached canonical inventory, then failed with `geoip_sha: unbound variable` after the old static SHA check was removed. Restored the downstream variable from the verified SHA.
+- Run #215 is the successful validation of the combined correction.
+
+### Run #215 immutable snapshot proof
+
+- [Run #215](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43002597856): SUCCESS, HEAD `09cbe1db1cc4de7d50bdda59cca471532364f3fb`.
+- Artifact ID `13847281344`, size 6,871,809 bytes, SHA-256 `6e5e4e31f53e46c621b85915239891c7ea1d5acb5bf6bf9c4aabc5c469645239`.
+- Release commit root marker and canonical inventory stats both equal `ac2e9a4322c0b7efe293983c88cf5b304771e4c5`.
+- Embedded GeoIP SHA equals current release sidecar: `7ece8f277af01ba528b55c5af54f3cbb88224f3f2a65bc0558876992f9676d13`.
+- New `v37-canonical-inputs.sha256` contains all 16 fetched canonical input/sidecar digests. RU/PRIVATE exact-prefix and address-union metrics match the quality report from the same pinned release commit.
+
+### Inventory result on the current v37 baseline
+
+- 795,017 exact CIDRs in union inventory; 76,293 RU output CIDRs; 151 PRIVATE CIDRs; 23,564 selected-origin BGP CIDRs; 13,679 RIR RU CIDRs; 520,065 global 90-day BGP CIDRs; 193 accepted additional GeoIP CIDRs; 193,285 approved blocked exclusions; 28,291 blocked review candidates.
+- RIR-to-RU-output interval coverage: 99.255239% IPv4 and 98.649940% IPv6.
+- Remaining exact RIR RU residual: 360 prefixes (320 IPv4 / 40 IPv6), all REVIEW; unique residual address-space 328,940 IPv4 and `11532729195086697206485771878400` IPv6 addresses.
+- Selected-origin BGP interval coverage: 99.982380% IPv4 / 100% IPv6. The 8,658 IPv4 addresses outside RU output are fully covered by PRIVATE or approved BLOCKED policy; unexplained selected-origin address-space residual is zero.
+- ipverse exact-origin evidence: 123 observed / 237 not observed / 2 MOAS; exact origins of both MOAS are AS9009=RO and AS209372=US. No RU origin countryCode among observed rows; this is not proof of foreign ownership or physical location.
+- Two MOAS: `92.51.48.0/21`, `193.238.192.0/22`; both stay REVIEW/NO_CHANGE in external assessment ledger.
+
+### Existing priority-prefix evidence refreshed in the same run
+
+- 57 priority prefixes: 53 exact MOAS + 4 company-only.
+- RDAP: 171/171 sample queries OK; 34 multiple resource objects across sampled addresses; 5 one covering/unclassified object; 18 exact resource objects at all samples.
+- RPKI: 111 exact prefix/origin checks: 66 valid, 20 invalid_asn, 25 unknown. Priority triage identifies 19 prefixes with invalid_asn and 12 with unknown.
+- IRR: 57 exact-prefix searches across RIPE and seven RIPE GRS sources; 55 OK, one no exact route object in query results, one no objects in queried sources; 42 BGP-vs-IRR origin-set differences.
+- 19 archived-invalid reconciliation rows: 18 exact-scope external observations, 1 more-specific-only; all REVIEW.
+- These checks cover the 57-prefix priority sample only, not every one of 360 RIR residuals.
+
+### Next action
+
+- Extend exact current RIB/VRP validation to all 123 residuals with ipverse observations, synchronizing capture timestamps and preserving exact NLRI.
+- Then sample/validate the 237 residuals not observed in ipverse, without treating absence as route withdrawal.
+- Complete raw immutable input retention; current source catalog has 38 validated metadata rows but current v37 release explicitly does not retain raw upstream GeoIP .dat inputs.
+- No production ADD/EXCLUDE yet.

@@ -185,3 +185,18 @@ Use one concise record per completed stage:
 - PR #7 remains open Draft; no review threads or comments. No production inputs/builder/allowlist/DIRECT/output/release changed. PR #5/#6 untouched.
 - Resume from: validate this checkpoint commit with push-trigger CI. Then begin source catalog + immutable raw snapshot retention and complete canonical exact-prefix inventory/diff against v37; do not add/remove production prefixes before review.
 
+
+
+### 2026-11-11 — Unified v37 snapshot, canonical inventory and RIR residual BGP evidence — DONE
+
+- Production run #35 is SUCCESS on main `580a25a7a65d957d46d83e827ccbd9308969713e`; current release branch snapshot is `ac2e9a4322c0b7efe293983c88cf5b304771e4c5`. Tag ref `latest-geoip-client-v37` was `f8015a10105f55a1d86ce2dc687a92ec30d3deb9`; keep the tag pointer and release-branch commit separate.
+- [Audit run #215](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43002597856) passed on HEAD `09cbe1db1cc4de7d50bdda59cca471532364f3fb`. Artifact ID `13847281344`, 6,871,809 bytes, SHA-256 `6e5e4e31f53e46c621b85915239891c7ea1d5acb5bf6bf9c4aabc5c469645239`.
+- Snapshot alignment proof: root marker and canonical stats use the same release SHA `ac2e9a...`; embedded GeoIP SHA equals sidecar `7ece8f277af01ba528b55c5af54f3cbb88224f3f2a65bc0558876992f9676d13`; per-file SHA list is in `v37-canonical-inputs.sha256`.
+- Inventory: 795,017 union exact CIDRs; 76,293 RU output CIDRs; 151 PRIVATE; 23,564 selected-origin BGP; 13,679 RIR RU; 520,065 global 90-day BGP; 193 accepted additional GeoIP; 193,285 approved blocked exclusions; 28,291 blocked review candidates.
+- RIR address coverage: 99.255239% IPv4 and 98.649940% IPv6. Residual: 360 exact CIDRs (320 IPv4 / 40 IPv6), all REVIEW; unique unexplained address space 328,940 IPv4 and `11532729195086697206485771878400` IPv6.
+- Selected-origin BGP interval coverage: 99.982380% IPv4 / 100% IPv6; the 8,658 IPv4 addresses outside RU output are covered by PRIVATE or approved BLOCKED policy; no unexplained selected-origin address residual.
+- Exact ipverse evidence for residual set: 123 observed / 237 not observed / 2 exact MOAS; no observed origin countryCode=RU. MOAS: `92.51.48.0/21` and `193.238.192.0/22`, both AS9009=RO + AS209372=US; external ledger keeps REVIEW/NO_CHANGE.
+- Priority scope in the same run: 57 prefixes (53 MOAS + 4 company-only); RDAP 171/171 OK; RPKI 111 pairs (66 valid / 20 invalid_asn / 25 unknown); IRR 57 queries with 55 OK, 1 no exact object in query results, 1 no object in queried sources; 19 archived-invalid rows, all REVIEW.
+- Source catalog: 38 validated metadata rows. Raw upstream GeoIP .dat snapshots are still not retained; mutable source pins need work.
+- No production inputs, builder, allowlist, DIRECT policy, GeoIP binary, release/tag or main changed by this audit PR. PR #7 remains Draft; PR #5/#6 untouched.
+- Next: independent live RouteViews+RIPE RIS exact RIB and same-time VRPs for all 123 observed residuals; then RDAP/IRR for residuals and raw immutable source snapshots. Strict RU remains a separate scope.

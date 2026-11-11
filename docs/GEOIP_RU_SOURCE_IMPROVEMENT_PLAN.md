@@ -252,9 +252,19 @@ PREFIX, ACTION (ADD/EXCLUDE/REVIEW), SCOPE (STRICT_RU/LEGACY_DIRECT), RESOURCE_H
 
 Для каждого production prefix должны быть заполнены exact CIDR, family, scope, resource evidence, holder/registrant, exact origin set и timestamp (если наблюдается), exact RPKI per origin (если применимо), GeoIP feed matches/correlation, причина географического решения, адресный вклад в diff, reviewer/date/expiry. Неопределённость должна сохраняться, а не маскироваться под одобрение.
 
-## 9. Текущий следующий шаг
+## 9. Текущий следующий шаг — актуально на 2026-11-11
 
-После этого документационного этапа собрать source catalog и immutable snapshot bundle, затем построить canonical exact-prefix inventory для всех production GeoIP feeds, RIR RU resources и независимых BGP sources. Сравнить с v37 release по exact CIDR и адресу. Только затем готовить data PR с доказанными ADD/EXCLUDE.
+Metadata source catalog (38 строк) и canonical exact-prefix inventory уже существуют. Текущий inventory подтверждён на одном immutable v37 release snapshot commit `ac2e9a4322c0b7efe293983c88cf5b304771e4c5` и сверяет GeoIP/provenance sidecars. Это завершает базовую инвентаризацию, но не саму проверку всех кандидатов.
+
+Следующий цикл направлен на остатки и источники:
+1. Для всех 360 RIR RU residual exact prefixes получить независимые RouteViews + RIPE RIS exact-NLRI/origin observations с timestamps, collectors и peer counts.
+2. Для каждого exact origin получить VRP/RPKI состояние из snapshot, синхронизированного с BGP capture; отдельно хранить maxLength и не переносить ROA на parent/child.
+3. Для residual prefixes сопоставить exact RDAP resource-holder hierarchy, assignment/transfer, RIPE/GRS IRR и ASN role; не отождествлять resource registrant, maintainer и origin ASN.
+4. Обновить append-only ADD/EXCLUDE/REVIEW candidate ledger с источниками, причиной, reviewer и датой; все спорные случаи остаются REVIEW.
+5. Начать raw immutable snapshot retention для каждого production upstream feed. Сейчас catalog валидирован как metadata, но raw upstream GeoIP inputs в v37 release не сохраняются.
+6. Отдельно спроектировать strict-RU output, не меняя legacy RU+BY+KZ+company semantics.
+
+Не добавлять/исключать production CIDR только по RIR country или ASN countryCode. Требуется совпадающее exact-prefix evidence и независимое подтверждение ресурса/назначения.
 
 
 ## 10. Пример кандидата из свежего priority snapshot: 5.255.192.0/18
@@ -274,3 +284,61 @@ PREFIX, ACTION (ADD/EXCLUDE/REVIEW), SCOPE (STRICT_RU/LEGACY_DIRECT), RESOURCE_H
 
 Использованные внешние reference pages: [IPCTL exact prefix](https://ipctl.io/prefix/5.255.192.0/18), [Cloudflare AS208398](https://radar.cloudflare.com/routing/as208398), [RIPE WHOIS/RDAP view](https://www.browserscan.net/ip-range/AS208398/5.255.192.0/18), [WorldIP AS13238 RIPE RIS observations](https://worldip.io/asn/13238), [WorldIP AS208398 RIPE RIS observations](https://worldip.io/asn/208398).
 
+
+
+## 12. Актуальная точка проекта — run #215 и v37 snapshot
+
+### Зафиксированный baseline
+
+- Production run #35: SUCCESS; main commit `580a25a7a65d957d46d83e827ccbd9308969713e`.
+- Immutable release-branch commit: `ac2e9a4322c0b7efe293983c88cf5b304771e4c5`.
+- Release tag ref `latest-geoip-client-v37` при аудите указывал на `f8015a10105f55a1d86ce2dc687a92ec30d3deb9`; tag pointer и release branch commit не совпадают, они должны оставаться двумя отдельными provenance facts.
+- `geoip_RU.dat`: 951 553 bytes, SHA-256 `7ece8f277af01ba528b55c5af54f3cbb88224f3f2a65bc0558876992f9676d13`.
+- Run #215: [43002597856](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43002597856), SUCCESS на PR #7 HEAD `09cbe1db1cc4de7d50bdda59cca471532364f3fb`.
+- Artifact `v37-prefix-audit-7`, ID `13847281344`, 6 871 809 bytes, SHA-256 `6e5e4e31f53e46c621b85915239891c7ea1d5acb5bf6bf9c4aabc5c469645239`; downloaded and verified.
+- Canonical stats release SHA равен `v37-release-commit.txt`; embedded `geoip_RU.dat` SHA равен release sidecar; `v37-canonical-inputs.sha256` содержит digest каждого canonical input.
+
+### Current inventory and coverage
+
+| Source/metric | Current result |
+|---|---:|
+| Unique exact CIDR union | 795 017 |
+| Final RU output | 76 293 CIDR |
+| Final PRIVATE output | 151 CIDR |
+| Selected-origin BGP | 23 564 CIDR |
+| RIR RU-registered | 13 679 CIDR |
+| ipverse global 90-day BGP | 520 065 CIDR |
+| Accepted additional GeoIP provenance | 193 CIDR |
+| Approved blocked exclusions | 193 285 CIDR |
+| Blocked review candidates (not production exclusions) | 28 291 CIDR |
+
+RU output contains 52 619 113 unique IPv4 addresses; its IPv6 address union is `1192441883226834356864924874964992`. Interval coverage by RU output of RU-registered RIR resources is 99.255239% for IPv4 and 98.649940% for IPv6.
+
+Selected-origin BGP interval coverage is 99.982380% for IPv4 and 100% for IPv6. The 8 658 selected-origin IPv4 addresses outside RU output are covered by PRIVATE or approved BLOCKED policy; unexplained selected-origin address residual is zero. The 14 940 selected-origin prefixes absent as exact CIDRs from RU output must not be auto-added: exact-CIDR identity differs from interval coverage.
+
+### Remaining RIR residuals
+
+- 360 exact RIR RU resource prefixes: 320 IPv4 and 40 IPv6; every row REVIEW.
+- Unique unexplained IPv4 address union after RU + PRIVATE + approved BLOCKED: 328 940.
+- Unique unexplained IPv6 address union: `11532729195086697206485771878400`.
+- 123 exact residual NLRI observed in the pinned ipverse 90-day archive; 237 not observed. Absence in the archive is not proof of withdrawal/unroutability.
+- 2 exact MOAS: `92.51.48.0/21` and `193.238.192.0/22`; both have exact origin set AS9009=RO and AS209372=US in this archive. Across the 123 observed residuals, no origin had ipverse countryCode=RU. CountryCode is not ownership/geolocation proof.
+- Both MOAS records are in `.github/audits/rir_ru_residual_external_assessments_v37.tsv` as REVIEW/NO_CHANGE. No synchronized direct VRP plus full current RIB check has yet been completed for these residuals.
+
+### Existing targeted evidence (separate scope)
+
+- Priority sample: 57 prefixes (53 exact MOAS + 4 company-only), all REVIEW.
+- RDAP: 171/171 first/middle/last sample queries OK; 34 prefixes show multiple resource objects across samples, 5 show one covering/unclassified object, 18 exact resource at all samples.
+- RPKI: 111 exact prefix/origin pairs; 66 valid, 20 invalid_asn, 25 unknown. These are 57 priority prefixes, not all 360 RIR residuals.
+- IRR: 57 exact prefix searches, 55 OK, 1 no exact object in query results, 1 no object in queried RIPE/GRS scope; 42 prefixes have IRR origin-set difference. Queried scope is not every IRR database worldwide.
+- Archived-invalid reconciliation: 19 rows, all REVIEW; 18 with exact-scope external observations and 1 more-specific-only.
+
+### Work remaining
+
+1. Independent live exact RouteViews/RIPE RIS and same-time VRP for the 123 observed residuals.
+2. RDAP/IRR hierarchy and holder checks for the remaining RIR residuals; prioritise 2 MOAS and resource assignments with country/holder inconsistencies.
+3. Pin immutable revision/asset ID, capture timestamp, bytes and SHA-256 for every mutable upstream source; preserve raw input files and licences.
+4. Complete address-space diff and candidate ledger with reviewed ADD/EXCLUDE/REVIEW decisions.
+5. Design separate strict-RU output and tests without changing legacy production output.
+
+PR #7 stays Draft. No production prefixes, builders, allowlist, DIRECT semantics, GeoIP binary, release/tag or main are modified by this audit workstream.
