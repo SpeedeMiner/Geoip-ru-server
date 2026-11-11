@@ -875,3 +875,34 @@ Durable resume point for PR #5. After any conversation/network interruption, rea
 
 
 - Recovery-guide follow-up: `.github/reachability/RESUME.md` was amended in commit `8761626e83c08bbe6a0a98a38b8fccd0b2bff505` to make the pre-GitHub dispatch refusal and the no-Run-#21 state explicit for the next chat. `CHECKPOINT.json` is the authoritative structured state and contains the same blocker.
+
+
+### 2026-11-11 — VPNObratto manual pilot Run #21 — IN PROGRESS / profile 6 fetch started
+
+- Owner-provided live log was sent at 2026-11-11T17:11:10Z and links to job [130679257182](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43065501624/job/130679257182), run [#21 / 43065501624](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43065501624).
+- GitHub REST confirms:
+  - run ID `43065501624`, run number `21`, event `workflow_dispatch`;
+  - actor/triggering actor `SpeedeMiner`;
+  - branch `feature/reachability-full-ru-kz-by`;
+  - exact checkout SHA `5a1badef9e19a71c44cd4b1fa42748f4d688e90f`;
+  - run started `2026-11-11T17:10:12Z`; job `130679257182` started at `17:10:16Z`;
+  - job runner label `ubuntu-24.04`;
+  - measurement step 7 started at `17:10:40Z` and remained `in_progress` on the last REST snapshot; steps 1–6 (setup, checkout, isolated measurement tool install, Go setup, exact published GeoIP download/checksum, RU/PRIVATE export) all concluded `success`;
+  - report upload step 8 is `pending`; workflow artifact list currently empty.
+- The run commit contains the current guarded workflow configuration: job timeout 12 minutes, measurement step timeout 9 minutes, GNU process timeout 7 minutes with TERM and 5-second KILL grace, and OpenVPN route timeout 5 seconds per selected profile. The workflow default inputs are `source=vpnobratno`, `max_vpn_gate_servers=1`, `max_vpn_gate_attempts=6`; actual submitted input payload is not exposed by the run metadata endpoint, so defaults are configuration evidence, not an independently read echo of the dispatch payload.
+- Owner-provided live log confirms:
+  - `runner_guard_timeout=7m kill_after=5s running_as_root=true`;
+  - VPNObratto listing fetched successfully (22,381 bytes);
+  - 32 profile links discovered, cap 24, target six unique hosts;
+  - profiles 1–5 fetched successfully (about 10 KB each), validated as `ip_udp`/UDP, resolved to server IPv4s, and recorded usable with five distinct hosts;
+  - profile 6 download started with pinned-DoH HTTPS and a 20-second per-fetch wall-clock budget. No completion/result marker for profile 6 was in the supplied excerpt.
+- Server IPs confirmed in the excerpt:
+  1. `vpn603266989.opengw.net` → `185.112.224.250`
+  2. `vpn733782555.opengw.net` → `94.159.74.210`
+  3. `vpn712640336.opengw.net` → `92.124.94.110`
+  4. `vpn847521830.opengw.net` → `2.61.109.142`
+  5. `vpn856084155.opengw.net` → `93.157.20.218`
+- Important progress interpretation: the DoH profile-download stage is making progress in this run, unlike the last visible Run #20 marker. The excerpt does **not** yet confirm discovery completion/server selection, OpenVPN process spawn, tunnel route, two-source public RU exit consensus, or target DNS/HTTPS requests. No target reachability conclusion can be made at this point.
+- A request for the complete job log while the job is still active returned `BlobNotFound`; GitHub REST still reports the job active and the artifact list empty. This is a log-archive availability limitation while running, not a measurement result. Re-fetch job logs and artifacts only after a terminal state or after an explicitly available live progress source supplies new markers.
+- Run #21 is **not** to be cancelled or overlapped. Continue monitoring this exact run. At the first new stage marker, record it with a timestamp. After terminal state, download the full logs and artifact, verify the artifact digest and reconcile provider/measurement/summary files. If no verified RU exit is established, do not infer that any target is blocked.
+- PR #5 remains OPEN / DRAFT. The Run #21 checkout SHA is `5a1badef9e19a71c44cd4b1fa42748f4d688e90f`; subsequent documentation updates on the branch do not alter this already-running job's checkout.
