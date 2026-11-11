@@ -496,7 +496,7 @@ jobs:
 
           path = Path(sys.argv[1])
           with path.open(encoding="utf-8", newline="") as stream:
-              rows = list(csv.DictReader(stream, delimiter="\\t"))
+              rows = list(csv.DictReader(stream, dialect="excel-tab"))
           if not rows:
               raise SystemExit("RIR residual queue is empty; expected the frozen non-zero v37 residual")
           if any(row["STATUS"] != "REVIEW" for row in rows):
