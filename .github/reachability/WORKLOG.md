@@ -1026,3 +1026,12 @@ Durable resume point for PR #5. After any conversation/network interruption, rea
 - PR #5 remains OPEN / DRAFT. Run #21 is still the last measurement attempt and remains terminal completed/cancelled due to GitHub's maximum 12-minute job time, with no terminal log archive or artifact. The precise inner stall cause is not proven.
 - No new VPN pilot was started in this session. After recovery-file updates are saved, the next step can be one bounded manual VPNObratto pilot on the validated worker version (one verified RU exit requested, maximum six profile attempts) only after confirming there is no active VPN run. Do not infer residential household access from a RU exit, ASN or organization.
 - No production GeoIP builder/data, DIRECT policy, ASN allowlists, `main`, `release`, PR #6 or other branches were changed.
+
+
+#### Recovery state synchronized for the next chat
+
+- Updated operator README in commit `863f0c5251cbab17a85ac150735dff7f37fcdd30`: runtime limits now match the workflow (7-minute GNU timeout + 5s KILL grace; 9-minute measurement step; 12-minute job), and documentation describes the isolated fetch worker, phase manifest and existing artifact glob.
+- Updated read-first recovery guide in commit `797ddcf3af72c785cf8de9feff883f263edae9fa`: it now marks Run #21 terminal, points to latest code-tested commit `c49dece...`, records Run #209 success and describes the next bounded manual pilot as a future action rather than an already-running job.
+- Updated structured checkpoint in commit `655b67bf6aac8cdee743b52917156bd0a6842073`: latest code validation run/job, 127-test result, worker timeout/crash states, manifest path and next steps are machine-readable.
+- The code-tested HEAD is `c49dece293541d46b6af14282b382459164315d7`; the immediately following README/WORKLOG/RESUME/CHECKPOINT commits are documentation-only.
+- PR #5 remains OPEN / DRAFT. No Run #22 or replacement VPN workflow was dispatched. The new fork-worker implementation has only been exercised in hermetic tests so far; live VPNObratto verification is still pending one explicitly bounded manual pilot.
