@@ -27,22 +27,22 @@
 - Любой merge в main запускает текущий production build/publish workflow, даже для docs-only PR.
 
 
-## Последняя завершённая проверка — run #168
+## Последняя завершённая проверка — run #171
 
 - PR #7: https://github.com/SpeedeMiner/Geoip-ru-server/pull/7 (open, Draft), branch docs/source-improvement-plan-2026-11.
-- CI: https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/42980741689 — 18/18 SUCCESS on HEAD 75ab08369ab70a4f37743912651f4e96aa0f1dc2.
-- Artifact: v37-prefix-audit-7, ID 13836819042, 646,543 bytes, SHA-256 da7a57562822236851d5f715a7dffd57ec4548d7d681803a2295fb247e6d1a0c. Downloaded and verified.
-- Priority inventory: 57 exact prefixes = 53 MOAS + 4 company-only; 57 priority, triage and worklist rows all REVIEW.
-- RDAP: 171/171 samples OK. RPKI: 111 exact-prefix/origin pairs (66 valid, 20 invalid_asn, 25 unknown). IRR: 57 queries (55 OK, one no exact route object in query results, one no object in queried sources).
-- Archived-invalid reconciliation: 19 rows, all REVIEW; classes 16 EXACT_ORIGIN_SET_CHANGED, 1 EXACT_MOAS_RPKI_STATUS_CHANGED, 1 MORE_SPECIFIC_ONLY_NO_EXACT_VERDICT, 1 EXACT_MOAS_INVALID_ORIGIN_REMAINS_UNCONFIRMED.
-- External spot-check ledger: 23 rows total: 22 CHECKED_2026-11-10 plus 5.255.192.0/18 CHECKED_2026-11-11. Worklist validates exact scope counts: 5 EXACT_ONLY, 17 EXACT_AND_MORE_SPECIFIC, 1 MORE_SPECIFIC_ONLY.
-- 5.255.192.0/18: exact MOAS AS13238 + AS208398. RIPE resource allocation is RU-YANDEX-20120914/YANDEX LLC; three RDAP samples are all RU/Yandex child resources, but are not exhaustive. Both exact RPKI pairs valid (maxLength /24); exact RIPE/GRS route object found for AS13238 only; AS208398 registered in Serbia. This is a cross-border route/IRR discrepancy, not proof the IP resource is foreign. Worklist status REVIEW; no production action.
-- Audit changes are limited to review scripts/tests/workflow/TSV/docs. Production builder, prefix inputs, company allowlist, DIRECT, geoip_RU.dat, tags/releases unchanged. PR #5 and PR #6 untouched.
+- CI run #171: https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/42981204736 — **18/18 SUCCESS** on HEAD b467babef15dae5d24259771f77849639fd673b5.
+- Artifact v37-prefix-audit-7, ID 13837906300, 646,551 bytes, SHA-256 9c5aa104d10c7b004b91f23183134a43bf21a1441d5f0371283d59e576796a4a; downloaded and independently verified.
+- Priority inventory: 57 exact prefixes = 53 MOAS + 4 company-only; all 57 priority, triage and worklist rows remain REVIEW.
+- RDAP 171/171 sample queries OK; RPKI 111 exact prefix/origin pairs (66 valid, 20 invalid_asn, 25 unknown); IRR 57 searches (55 OK, one no exact route object in results, one no object returned in queried sources).
+- External spot-check ledger has 23 rows: 22 CHECKED_2026-11-10 plus 5.255.192.0/18 CHECKED_2026-11-11. Worklist verifies 5 EXACT_ONLY / 17 EXACT_AND_MORE_SPECIFIC / 1 MORE_SPECIFIC_ONLY.
+- 5.255.192.0/18: MOAS AS13238 + AS208398; RIPE resource is RU-YANDEX-20120914 / YANDEX LLC; three RDAP samples show RU Yandex subresources; both exact ROAs valid with maxLength /24; exact RIPE/GRS route object only AS13238, while AS208398 is registered in Serbia. This is a cross-border origin / IRR mismatch, not proof the resource is foreign. Keep REVIEW, no production action.
+- Archived-invalid reconciliation: 19 rows all REVIEW; classes 16/1/1/1.
+- Run #171 verifies all latest spot-check/worklist/checkpoint changes. PR #7 description is updated; source changes remain review-only.
 
 ## Следующий шаг
 
-1. Update PR #7 body and .github/PROJECT_CHECKPOINTS.md with run #168 and artifact.
-2. Validate the checkpoint-updated HEAD with push-trigger CI; make sure it completes 18/18.
-3. Next substantive data task: create versioned source catalog + immutable raw snapshot bundle, then a canonical exact-prefix inventory across all production GeoIP feeds, RU RIR resources and independent BGP snapshots. Diff exact CIDRs and address-space totals vs v37.
-4. Keep all candidates REVIEW; do not add/remove production prefixes until individual resource/origin evidence has been reviewed. Do not touch PR #5 or PR #6.
+1. Verify the new push-trigger run for the checkpoint commit recorded after run #171.
+2. Confirm latest PR #7 remains open/Draft and no production files were changed.
+3. Start next technical stage: versioned source catalog + immutable raw snapshots; then canonical exact-prefix inventory across every production GeoIP feed, RU RIR resource and independent BGP source, followed by full exact-CIDR and address-space diff against v37.
+4. Keep ambiguous cases REVIEW; do not change production prefixes until evidence-based review. PR #5 and PR #6 remain untouched.
 
