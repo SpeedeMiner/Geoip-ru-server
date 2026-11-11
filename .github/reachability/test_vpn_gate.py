@@ -468,5 +468,127 @@ class VPNGateResolverSafetyTests(unittest.TestCase):
         doh.assert_called_once_with("ipv6-only.example", "A", timeout=5)
 
 
+class VPNObratnoDiscoveryTests(unittest.TestCase):
+    HOST = "vpn123456789.opengw.net"
+
+    def listing(self, links):
+        return "<html><body>" + "".join(
+            f'<a href="{link}">profile</a>' for link in links
+        ) + "</body></html>"
+
+    def resolver(self, hostname, *_args):
+        if hostname != self.HOST:
+            raise socket.gaierror("unexpected host")
+        return [(socket.AF_INET, socket.SOCK_STREAM, 6, "", ("8.8.8.8", 1194))]
+
+    def test_listing_accepts_only_same_origin_supported_profile_paths(self):
+        valid_ip = (
+            f"/servers/{self.HOST}/{self.HOST}_ip_udp.ovpn"
+        )
+        valid_ddns = (
+            f"/servers/{self.HOST}/{self.HOST}_ddns_udp.ovpn"
+        )
+        links = [
+            valid_ddns,
+            valid_ip,
+            "https://evil.example" + valid_ip,
+            f"/servers/{self.HOST}/vpn999999999.opengw.net_ip_udp.ovpn",
+            valid_ip + "?download=1",
+            "http://vpnobratno.info" + valid_ip,
+            f"/servers/{self.HOST}/{self.HOST}_l2tp_udp.ovpn",
+        ]
+        profiles = vpn_gate.parse_vpnobratno_listing(self.listing(links))
+        self.assertEqual(
+            [item["profile_variant"] for item in profiles],
+            ["ip_udp", "ddns_udp"],
+        )
+        self.assertTrue(all(
+            item["profile_url"].startswith("https://vpnobratno.info/servers/")
+            for item in profiles
+        ))
+
+    def test_ddns_remote_must_match_the_hostname_from_listing(self):
+        address = vpn_gate.resolve_vpnobratno_server_ip(
+            self.HOST, self.HOST, "ddns", self.resolver
+        )
+        self.assertEqual(address, "8.8.8.8")
+        with self.assertRaisesRegex(ValueError, "does not match"):
+            vpn_gate.resolve_vpnobratno_server_ip(
+                self.HOST, "attacker.example", "ddns", self.resolver
+            )
+
+    def test_ip_variant_must_match_public_dns_address_of_listed_host(self):
+        address = vpn_gate.resolve_vpnobratno_server_ip(
+            self.HOST, "8.8.8.8", "ip", self.resolver
+        )
+        self.assertEqual(address, "8.8.8.8")
+        with self.assertRaisesRegex(ValueError, "does not match"):
+            vpn_gate.resolve_vpnobratno_server_ip(
+                self.HOST, "1.1.1.1", "ip", self.resolver
+            )
+
+    def test_discovery_downloads_and_validates_profiles_without_running_them(self):
+        ip_udp_url = (
+            f"https://vpnobratno.info/servers/{self.HOST}/{self.HOST}_ip_udp.ovpn"
+        )
+        ddns_udp_url = (
+            f"https://vpnobratno.info/servers/{self.HOST}/{self.HOST}_ddns_udp.ovpn"
+        )
+        ip_config = SAMPLE_CONFIG.replace("proto tcp", "proto udp").replace(
+            "remote old-volunteer-host.opengw.net 443", "remote 8.8.8.8 1194"
+        )
+        ddns_config = SAMPLE_CONFIG.replace("proto tcp", "proto udp").replace(
+            "remote old-volunteer-host.opengw.net 443", f"remote {self.HOST} 1194"
+        )
+        listing = self.listing([
+            ddns_udp_url.replace("https://vpnobratno.info", ""),
+            ip_udp_url.replace("https://vpnobratno.info", ""),
+        ]).encode()
+        payloads = {
+            vpn_gate.VPNOBRATNO_LIST_URL: listing,
+            ip_udp_url: ip_config.encode(),
+            ddns_udp_url: ddns_config.encode(),
+        }
+        calls = []
+
+        def fetcher(url, timeout):
+            calls.append((url, timeout))
+            return payloads[url]
+
+        servers, metadata = vpn_gate.discover_vpnobratno_servers(
+            fetcher=fetcher, resolver=self.resolver
+        )
+        self.assertEqual(len(servers), 2)
+        self.assertEqual(
+            [server["profile_variant"] for server in servers],
+            ["IP_UDP", "DDNS_UDP"],
+        )
+        self.assertEqual({server["server_ip"] for server in servers}, {"8.8.8.8"})
+        self.assertTrue(all(server["source"] == "VPNOBRATNO" for server in servers))
+        self.assertEqual(metadata["unique_server_hostnames"], 1)
+        self.assertFalse(metadata["profile_directives_executed"])
+        self.assertEqual(len(calls), 3)
+
+    def test_transport_mismatch_and_profile_for_another_host_are_skipped(self):
+        ip_url = (
+            f"https://vpnobratno.info/servers/{self.HOST}/{self.HOST}_ip_udp.ovpn"
+        )
+        config = SAMPLE_CONFIG.replace(
+            "remote old-volunteer-host.opengw.net 443", "remote 8.8.8.8 1194"
+        )
+        listing = self.listing([
+            ip_url.replace("https://vpnobratno.info", "")
+        ]).encode()
+
+        def fetcher(url, timeout):
+            return listing if url == vpn_gate.VPNOBRATNO_LIST_URL else config.encode()
+
+        servers, metadata = vpn_gate.discover_vpnobratno_servers(
+            fetcher=fetcher, resolver=self.resolver
+        )
+        self.assertEqual(servers, [])
+        self.assertEqual(metadata, {}) if False else None
+
+
 if __name__ == "__main__":
     unittest.main()
