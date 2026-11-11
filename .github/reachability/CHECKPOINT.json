@@ -1,14 +1,14 @@
 {
   "schema_version": 1,
-  "updated_at_utc": "2026-11-11T17:08:00Z",
+  "updated_at_utc": "2026-11-11T17:12:00Z",
   "repository": "SpeedeMiner/Geoip-ru-server",
   "pull_request": 5,
   "pull_request_url": "https://github.com/SpeedeMiner/Geoip-ru-server/pull/5",
   "branch": "feature/reachability-full-ru-kz-by",
-  "recorded_pr_head_before_checkpoint_commit": "212e11f2f33a07a3c1630bbc51f5cb2b3d80b9a5",
+  "recorded_pr_head_before_checkpoint_commit": "5a1badef9e19a71c44cd4b1fa42748f4d688e90f",
   "base_sha": "a68e5d6589361814cb1cfedd2af7857e4af806fa",
-  "state": "RUN20_CANCELLED_NO_ARTIFACT; RUNNER_TIMEOUT_PROCESS_GROUP_VERIFIED_ON_UBUNTU_24_04; RUN21_NOT_DISPATCHED_TOOL_WALLET_BLOCKED",
-  "current_phase": "RUNNER_WATCHDOG_VERIFIED; SINGLE_VPNOBRATNO_PILOT_READY_BUT_DISPATCH_BLOCKED_BEFORE_GITHUB_FORM",
+  "state": "RUN21_IN_PROGRESS_PROFILE_6_FETCH_STARTED; RUNNER_TIMEOUT_PROCESS_GROUP_PREFLIGHT_GREEN_RUN200; RUN20_CANCELLED_NO_ARTIFACT",
+  "current_phase": "RUN21_VPNOBRATTO_PROFILE_DISCOVERY_IN_PROGRESS; FIVE_PROFILES_CONFIRMED_USABLE; SIXTH_FETCH_STARTED; NO_OPENVPN_OR_TARGET_EVIDENCE_YET",
   "completed": [
     "repository_reconnaissance",
     "protobuf_inventory_exporter",
@@ -258,7 +258,10 @@
     "openvpn_inherits_supervised_process_group_and_safe_config_has_no_daemon_directive",
     "read_first_resume_guide_added",
     "worklog_runner_watchdog_run200_evidence_appended",
-    "single_run21_dispatch_attempt_refused_before_browser_start_due_insufficient_tinyfish_wallet"
+    "single_run21_dispatch_attempt_refused_before_browser_start_due_insufficient_tinyfish_wallet",
+    "run21_manual_vpnobratto_dispatch_started_by_owner",
+    "run21_setup_geoproto_inventory_steps_success",
+    "run21_vpnobratto_listing_32_links_five_profiles_usable_and_sixth_fetch_started"
   ],
   "latest_successful_validation_run": 43062327051,
   "latest_successful_validation_commit": "212e11f2f33a07a3c1630bbc51f5cb2b3d80b9a5",
@@ -437,12 +440,12 @@
     "production_release_artifact_byte_delta_verified": false
   },
   "next_steps": [
-    "Keep Run #21 uncreated for now. The hosted-runner process-group watchdog preflight is green (Run #200); the intended single pilot is ready but browser dispatch could not start because the automation service wallet is insufficient.",
-    "When a supported GitHub Actions workflow_dispatch capability is available, or after the user resolves the browser-automation service wallet blocker, re-query the live feature branch head and confirm no VPN workflow run is queued/in progress. Then dispatch exactly one pilot: source=vpnobratno, one verified RU exit requested, maximum six profile attempts.",
-    "Do not retry the browser automation task while its non-retryable insufficient-wallet refusal remains. Do not pay, top up, or alter auto-reload on the user's behalf.",
-    "For the eventual pilot, record profile listing/download results, host selection, OpenVPN process start, tunnel route, two-source exit IPv4/country consensus, exit ASN/prefix, target DNS A/AAAA and HTTPS results, artifact upload and digest. A verified RU exit alone is not proof of residential/household ISP access.",
-    "After terminal state, reconcile the full job log and artifact; no verified RU exit means no target measurement verdict. Append detailed evidence to WORKLOG and update CHECKPOINT.",
-    "Keep PR #5 OPEN/DRAFT; preserve main, production GeoIP, DIRECT policy, ASN allowlists, release assets and PR #6."
+    "Continue monitoring only Run #21 (43065501624). Do not cancel it and do not start another VPN workflow while it is active.",
+    "The latest confirmed owner log marker is profile_fetch_started=6/24; profile 6 completion, discovery completion, selection and OpenVPN start have not yet been confirmed. Check current workflow/job state and retrieve logs again after new output or terminal status.",
+    "Record the next markers with timestamps: profile download completion/results; discovery completed; selected profile count/ASNs; openvpn_process_started; tunnel_route_wait_started; tunnel_result=route_installed; dual-source public exit IP/country consensus; target DNS/HTTPS rows.",
+    "When the run reaches a terminal state, retrieve complete job logs and artifacts, verify the artifact digest, and reconcile summary/provider/measurement outputs. If no verified RU exit is obtained, report zero target requests only when the final artifact/log proves it; otherwise preserve unknowns.",
+    "Do not attribute any DNS/HTTPS timeout or runner issue to target blocking. RU exit, ASN or organization is not evidence by itself that the relay is a residential home connection.",
+    "Append all terminal evidence to WORKLOG.md and update CHECKPOINT.json. Keep PR #5 OPEN/DRAFT; do not modify production GeoIP, DIRECT policy, ASN allowlists, release assets or PR #6."
   ],
   "ci_policy": {
     "push_validation_paths": [
@@ -1995,5 +1998,97 @@
     "read_first_resume_guide_blocker_update_commit": "8761626e83c08bbe6a0a98a38b8fccd0b2bff505",
     "final_worklog_entry_commit": "01085045a9e224a9abe9a4b7dd36d3f32f67da69",
     "checkpoint_written_after_worklog_commit": "01085045a9e224a9abe9a4b7dd36d3f32f67da69"
+  },
+  "run21_result": {
+    "run_id": 43065501624,
+    "run_number": 21,
+    "run_url": "https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43065501624",
+    "job_id": 130679257182,
+    "job_url": "https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43065501624/job/130679257182",
+    "event": "workflow_dispatch",
+    "actor": "SpeedeMiner",
+    "branch": "feature/reachability-full-ru-kz-by",
+    "commit": "5a1badef9e19a71c44cd4b1fa42748f4d688e90f",
+    "runner": "ubuntu-24.04",
+    "run_started_at_utc": "2026-11-11T17:10:12Z",
+    "job_started_at_utc": "2026-11-11T17:10:16Z",
+    "measurement_step_started_at_utc": "2026-11-11T17:10:40Z",
+    "owner_log_received_at_utc": "2026-11-11T17:11:10Z",
+    "run_status": "in_progress",
+    "job_status": "in_progress",
+    "measurement_step_status": "in_progress",
+    "upload_step_status": "pending",
+    "artifacts": [],
+    "setup_steps": {
+      "checkout": "success",
+      "install_isolated_vpn_tools": "success",
+      "go_setup": "success",
+      "published_geoip_download_and_checksum": "success",
+      "ru_private_inventory_export": "success"
+    },
+    "workflow_defaults": {
+      "source": "vpnobratno",
+      "max_vpn_gate_servers": 1,
+      "max_vpn_gate_attempts": 6,
+      "actual_dispatch_input_echo": "not_exposed_by_run_metadata"
+    },
+    "watchdogs": {
+      "process_timeout_minutes": 7,
+      "kill_after_seconds": 5,
+      "measurement_step_timeout_minutes": 9,
+      "job_timeout_minutes": 12,
+      "openvpn_connect_timeout_seconds": 5
+    },
+    "discovery": {
+      "source": "vpnobratto",
+      "listing_bytes": 22381,
+      "profile_links_found": 32,
+      "download_cap": 24,
+      "host_target": 6,
+      "confirmed_usable_profiles": 5,
+      "confirmed_distinct_hosts": 5,
+      "profile_6_fetch_started": true,
+      "profile_6_fetch_completed": null,
+      "last_owner_visible_marker": "profile_fetch_started=6/24 wall_timeout=20s transport=pinned_doh_https",
+      "profile_6_wall_timeout_seconds": 20,
+      "server_ip_results": [
+        {
+          "index": 1,
+          "hostname": "vpn603266989.opengw.net",
+          "variant": "ip_udp",
+          "server_ip": "185.112.224.250"
+        },
+        {
+          "index": 2,
+          "hostname": "vpn733782555.opengw.net",
+          "variant": "ip_udp",
+          "server_ip": "94.159.74.210"
+        },
+        {
+          "index": 3,
+          "hostname": "vpn712640336.opengw.net",
+          "variant": "ip_udp",
+          "server_ip": "92.124.94.110"
+        },
+        {
+          "index": 4,
+          "hostname": "vpn847521830.opengw.net",
+          "variant": "ip_udp",
+          "server_ip": "2.61.109.142"
+        },
+        {
+          "index": 5,
+          "hostname": "vpn856084155.opengw.net",
+          "variant": "ip_udp",
+          "server_ip": "93.157.20.218"
+        }
+      ]
+    },
+    "confirmed_openvpn_attempts": 0,
+    "confirmed_verified_ru_exits": 0,
+    "confirmed_target_measurement_rows": 0,
+    "later_phases": "not confirmed from available evidence",
+    "logs_api_while_active": "BlobNotFound",
+    "interpretation": "Pinned-DoH profile fetches 1–5 completed and sixth began, indicating discovery is progressing past the previous Run #20 marker. Do not infer OpenVPN, RU exit or target results from the current excerpt."
   }
 }
