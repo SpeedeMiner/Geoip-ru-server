@@ -93,6 +93,8 @@ def validate_source(
         raise ImportError("source public IP/country is not verified by two metadata services")
     if summary.get("source_ip_verified_by_two_services") is not True:
         raise ImportError("summary does not confirm two-source source-IP verification")
+    if summary.get("source_attribution_status") != "TWO_SOURCE_CONSENSUS":
+        raise ImportError("summary source-attribution status does not confirm two-source consensus")
     if summary.get("automatic_upload") is not False or summary.get("geoip_mutation") is not False:
         raise ImportError("report does not carry the expected local-only/review-only policy")
     if summary.get("proxy_environment_variables") != [] or summary.get("proxy_environment_clear") is not True:
@@ -164,9 +166,13 @@ def validate_family(
 
     if https_result not in {"HTTP_RESPONSE", "INCONCLUSIVE", "NOT_TESTED"}:
         raise ImportError(f"invalid {family} HTTPS result for target {row.get('target_id')}")
+    if status == "DNS_ANSWER" and https_result == "NOT_TESTED":
+        raise ImportError(f"{family} DNS_ANSWER must have a corresponding HTTPS attempt")
+    if status != "DNS_ANSWER" and https_result != "NOT_TESTED":
+        raise ImportError(f"{family} HTTPS must be NOT_TESTED when DNS has no usable address")
     if https_result == "NOT_TESTED":
-        if tested_address or http_status is not None:
-            raise ImportError(f"{family} NOT_TESTED result has an address/status")
+        if tested_address or http_status is not None or https_error:
+            raise ImportError(f"{family} NOT_TESTED result has an unexpected address/status/error")
     else:
         if not normalized or tested_address != normalized[0]:
             raise ImportError(f"{family} HTTPS-tested address is not the first observed DNS address")
@@ -290,7 +296,7 @@ def ingest_report(args: argparse.Namespace) -> dict[str, Any]:
                 })
 
     candidates: list[dict[str, Any]] = []
-    if source_category == "OUTSIDE_GEOIP_RU":
+    if args.required_country == "RU" and source_category == "OUTSIDE_GEOIP_RU":
         candidates.append({
             "CANDIDATE_TYPE": "HOME_PROBE_SOURCE_IP",
             "SOURCE_PUBLIC_IP": source_ip,
