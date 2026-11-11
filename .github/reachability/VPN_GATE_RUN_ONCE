@@ -1,0 +1,1 @@
+One-shot pilot request: connect to one public RU VPN Gate volunteer exit, verify the actual egress, and perform low-volume DNS/HTTPS HEAD checks against the RU-scoped target catalogue. Remove this marker after the run.
