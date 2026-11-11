@@ -223,3 +223,14 @@ Run full PR #7 CI after the spot-check/worklist changes; inspect the new worklis
 - PR #7 body now documents the plan, scope correction, 5.255.192.0/18 evidence, run #171 and artifact. PR #7 remains Draft and unmerged.
 - Resume from: current checkpoint commit needs a push-triggered full CI; after that, the next technical task is immutable source catalog/raw snapshot retention and a complete canonical exact-prefix inventory/diff vs v37. PR #5/#6 remain untouched.
 
+
+
+## 2026-11-11 — Final checkpoint-head validation after run #174
+
+- [Run #174](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/42981784990) passed all 18 workflow steps on HEAD `543fb9329dfb127cd6fd82dc2dba393e8cccc23e`.
+- Artifact `v37-prefix-audit-7`, ID `13837562711`, size 646,557 bytes; SHA-256 `41f8ada9315b872566eb9deea810bbe10dbab13dc4f429064d56964e70b874cf`. Downloaded and independently verified.
+- Artifact checks: 57 priority prefixes = 53 MOAS + 4 company-only; priority, triage and worklist all 57 REVIEW. 23 external spot checks (22 CHECKED_2026-11-10 + 5.255.192.0/18 CHECKED_2026-11-11). Scope relations: 5 EXACT_ONLY, 17 EXACT_AND_MORE_SPECIFIC, 1 MORE_SPECIFIC_ONLY. 19 archived-invalid reconciliation rows all REVIEW.
+- New candidate 5.255.192.0/18 remains exact MOAS AS13238 + AS208398, with RU Yandex RIPE allocation and a Serbian origin ASN; both exact ROAs valid, exact RIPE/GRS object only AS13238. It remains REVIEW; no production change.
+- PR #7 remains open Draft, mergeable true, no review threads/comments returned. PR #5 and PR #6 untouched.
+- No production prefix input, company allowlist, Go builder, DIRECT policy, geoip_RU.dat, tag or release branch changed.
+- Next technical stage is source catalog + immutable raw snapshot retention, followed by full canonical exact-prefix inventory and exact-address diff against v37. Do not continue adding audit-only gates in lieu of the data inventory.
