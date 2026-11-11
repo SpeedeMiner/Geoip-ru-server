@@ -56,7 +56,7 @@ The v37 source manifest recorded HXEHEX CIDR SHA-256 149d27a8e3502b95b9a37881785
 | itdoginfo/allow-domains | Russia/outside-raw.lst identifies RU-side domain routing; Russia/inside-raw.lst has opposite meaning. | Geosite/domain coverage and DNS discovery. | Domain-only; keep inside/outside polarity explicit. |
 | UnRKN/ru-blocklist | Domains marked by maintainers as restricted over VPN / subject to Russian restrictions. | Reverse route/domain evidence for PROXY. | Not geographic RU or prefix admission; verify licensing before redistribution. |
 | wlunlocker/vpn-configs | Public VLESS/VMess/Trojan/Shadowsocks endpoints and node subscriptions, grouped by exit country. | Understand actual VPN nodes and test endpoints, but not destination routes. | Exclude from GeoIP ingestion. Subscription strings contain credentials and third-party node parameters. |
-| slim mi/amnezia-split-tunneling | Repository describes MaxMind GeoLite2 as primary and ipdeny as fallback. | Independent benchmark architecture for geographic country-zone comparison. | MaxMind account/data redistribution and repo license must be checked before use. |
+| slimmi/amnezia-split-tunneling | Repository describes MaxMind GeoLite2 as primary and ipdeny as fallback. | Independent benchmark architecture for geographic country-zone comparison. | MaxMind account/data redistribution and repo license must be checked before use. |
 
 ## 4. Wider source graph from W1ZARDZ
 
@@ -114,7 +114,22 @@ These are not aliases for RU. Existing clients routing geoip:ru therefore do not
 
 Sources without a declared license contribute aggregate metrics only; their raw prefixes are never written into the candidate .dat or prefix TSV. Sources in multiple tiers or a correlated group are not multiple independent confirmations.
 
-## 6. Next improvements to final production build
+## 6. Measured v37 candidate build results (2026-11-11)
+
+The first successful policy-aware build is run **43017072072** (all CI steps passed). Its candidate artifact contains the protobuf, immutable source manifest, per-source metrics, source-prefix inventory and exact RIR residual coverage. The production baseline is unchanged.
+
+- 11 pinned source inputs loaded successfully; the candidate union contains **183,820 unique CIDRs**.
+- Compared with the legacy RU output alone, candidate address space adds **31,774,573 IPv4 addresses** and **11,532,729,195,086,697,206,485,771,878,400 IPv6 addresses**. These are comparison figures, not approved additions.
+- After subtracting v37 RU, PRIVATE and approved BLOCKED carve-outs, the candidate union still contains **31,760,166 IPv4 addresses** and the same IPv6 remainder. This is a candidate-only set, not a production policy change.
+- Source results are uneven. HXEHEX CIDR contributes 31,482,258 IPv4 addresses not in v37 RU, but HXEHEX CIDR is already a candidate-only production input; it is not a newly integrated source. The new HXEHEX host-IP companion contributes 122,974 IPv4 addresses versus RU alone and 122,948 outside RU+PRIVATE+BLOCKED. Escapingworm has only 79 IPv4 addresses new vs RU and zero remaining after current policy.
+- **Kyoresuas Full** is the standout geographic residual comparator: it covers **320/320 IPv4 and 40/40 IPv6 RU-RIR residual prefix rows** after existing policy; exact CIDR matches are 214/320 IPv4 and 40/40 IPv6; unique residual address coverage is 100% in each family.
+- **Whisper** covers 319/320 IPv4 residual rows, 213 exact CIDR matches and 99.922174% of unique IPv4 residual address space, but the repository has no declared license in inspected metadata and the dataset is ipdeny-derived. It is benchmark-only and its prefixes are not redistributed.
+
+**Interpretation:** the Kyoresuas Full result identifies the feed lineage that appears to explain the entire registered-resource residual. It does not independently prove ownership or live route status: its country-zone component is ipdeny-correlated, and a country file may include static/registered ranges that are not currently announced. Before any production admission, exact candidates must be joined to the RIR residual ledger and checked against exact current RouteViews/RIPE RIS NLRI, per-origin VRP/RPKI maxLength, IRR route objects and holder/assignment evidence. The upstream data license/attribution for the embedded country-zone portion also needs confirmation despite the repository's MIT declaration.
+
+Artifact: vpn-route-candidates-5, run #43017072072, SHA-256 999389acc931cfceca2f40a56fe947cf616465156c32aefce6c0271bf0c9d8c8. Candidate protobuf SHA-256: 0978561c1c3607ea4288724507a8544e715f8b36283dc04a43fe57bf546b0072. It contains namespaced ru_vpn_* categories and does not replace or mutate production geoip:ru.
+
+## 7. Next improvements to final production build
 
 1. Preserve existing semantics. Keep legacy RU+BY+KZ/company DIRECT unchanged. Introduce a separate strict geographic RU output and separate service-DIRECT output, with explicit policy and client mapping.
 2. Use independent source groups, not raw source count. Grimbird+Digne remain one group; HXEHEX+Escapingworm are one mobile/operator group; Kyoresuas tiers are one publisher; ipdeny-derived country feeds are one group.
