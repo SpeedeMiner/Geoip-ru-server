@@ -50,7 +50,7 @@ jobs:
           set -euo pipefail
           if ! command -v openvpn >/dev/null 2>&1; then
             echo "[vpn-gate-setup] apt_dns_bootstrap_started method=pinned_https_doh"
-            sudo timeout --signal=TERM --kill-after=2s 45s python3 - <<'PY'
+            sudo timeout --signal=TERM --kill-after=2s 45s python3 -B - <<'PY'
           import pathlib
           import sys
           sys.path.insert(0, ".github/reachability")
