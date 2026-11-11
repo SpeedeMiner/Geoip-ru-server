@@ -1,0 +1,399 @@
+{
+  "schema_version": 1,
+  "countries": [
+    "RU",
+    "KZ",
+    "BY"
+  ],
+  "method": "HTTPS HEAD on port 443; a completed HTTP response proves transport reachability, not service health or absence of censorship",
+  "targets": [
+    {
+      "id": "control-example",
+      "domain": "example.com",
+      "role": "control",
+      "country_scope": [
+        "RU",
+        "KZ",
+        "BY"
+      ],
+      "port": 443,
+      "path": "/"
+    },
+    {
+      "id": "control-cloudflare",
+      "domain": "www.cloudflare.com",
+      "role": "control",
+      "country_scope": [
+        "RU",
+        "KZ",
+        "BY"
+      ],
+      "port": 443,
+      "path": "/"
+    },
+    {
+      "id": "ru-yandex",
+      "domain": "ya.ru",
+      "role": "service",
+      "country_scope": [
+        "RU",
+        "KZ",
+        "BY"
+      ],
+      "port": 443,
+      "path": "/",
+      "reference_url": "https://ya.ru/"
+    },
+    {
+      "id": "ru-vk",
+      "domain": "vk.com",
+      "role": "service",
+      "country_scope": [
+        "RU",
+        "KZ",
+        "BY"
+      ],
+      "port": 443,
+      "path": "/",
+      "reference_url": "https://vk.com/"
+    },
+    {
+      "id": "ru-ozon",
+      "domain": "www.ozon.ru",
+      "role": "service",
+      "country_scope": [
+        "RU",
+        "KZ",
+        "BY"
+      ],
+      "port": 443,
+      "path": "/",
+      "reference_url": "https://www.ozon.ru/"
+    },
+    {
+      "id": "kz-kaspi",
+      "domain": "kaspi.kz",
+      "role": "service",
+      "country_scope": [
+        "RU",
+        "KZ",
+        "BY"
+      ],
+      "port": 443,
+      "path": "/",
+      "reference_url": "https://nationalbank.kz/ru/news/sistemy-elektronnyh-deneg-kazahstana"
+    },
+    {
+      "id": "kz-egov",
+      "domain": "egov.kz",
+      "role": "service",
+      "country_scope": [
+        "RU",
+        "KZ",
+        "BY"
+      ],
+      "port": 443,
+      "path": "/",
+      "reference_url": "https://egov.kz/"
+    },
+    {
+      "id": "kz-beeline",
+      "domain": "beeline.kz",
+      "role": "service",
+      "country_scope": [
+        "RU",
+        "KZ",
+        "BY"
+      ],
+      "port": 443,
+      "path": "/",
+      "reference_url": "https://beeline.kz/"
+    },
+    {
+      "id": "by-beltelecom",
+      "domain": "beltelecom.by",
+      "role": "service",
+      "country_scope": [
+        "RU",
+        "KZ",
+        "BY"
+      ],
+      "port": 443,
+      "path": "/",
+      "reference_url": "https://beltelecom.by/"
+    },
+    {
+      "id": "by-a1",
+      "domain": "a1.by",
+      "role": "service",
+      "country_scope": [
+        "RU",
+        "KZ",
+        "BY"
+      ],
+      "port": 443,
+      "path": "/",
+      "reference_url": "https://a1.by/"
+    },
+    {
+      "id": "by-mts",
+      "domain": "mts.by",
+      "role": "service",
+      "country_scope": [
+        "RU",
+        "KZ",
+        "BY"
+      ],
+      "port": 443,
+      "path": "/",
+      "reference_url": "https://www.mts.by/"
+    },
+    {
+      "id": "ru-gosuslugi",
+      "domain": "gosuslugi.ru",
+      "role": "service",
+      "country_scope": [
+        "RU",
+        "KZ",
+        "BY"
+      ],
+      "port": 443,
+      "path": "/",
+      "reference_url": "https://roskazna.gov.ru/"
+    },
+    {
+      "id": "ru-government",
+      "domain": "government.ru",
+      "role": "service",
+      "country_scope": [
+        "RU",
+        "KZ",
+        "BY"
+      ],
+      "port": 443,
+      "path": "/",
+      "reference_url": "https://government.ru/"
+    },
+    {
+      "id": "ru-cbr",
+      "domain": "cbr.ru",
+      "role": "service",
+      "country_scope": [
+        "RU",
+        "KZ",
+        "BY"
+      ],
+      "port": 443,
+      "path": "/",
+      "reference_url": "https://www.fedsfm.ru/en/useful-links"
+    },
+    {
+      "id": "ru-mail",
+      "domain": "mail.ru",
+      "role": "service",
+      "country_scope": [
+        "RU",
+        "KZ",
+        "BY"
+      ],
+      "port": 443,
+      "path": "/",
+      "reference_url": "https://help.mail.ru/legal/terms/mail/ua/"
+    },
+    {
+      "id": "ru-wildberries",
+      "domain": "wildberries.ru",
+      "role": "service",
+      "country_scope": [
+        "RU",
+        "KZ",
+        "BY"
+      ],
+      "port": 443,
+      "path": "/",
+      "reference_url": "https://t.me/s/mintsifry/2608"
+    },
+    {
+      "id": "ru-avito",
+      "domain": "avito.ru",
+      "role": "service",
+      "country_scope": [
+        "RU",
+        "KZ",
+        "BY"
+      ],
+      "port": 443,
+      "path": "/",
+      "reference_url": "https://t.me/s/mintsifry/2608"
+    },
+    {
+      "id": "ru-dzen",
+      "domain": "dzen.ru",
+      "role": "service",
+      "country_scope": [
+        "RU",
+        "KZ",
+        "BY"
+      ],
+      "port": 443,
+      "path": "/",
+      "reference_url": "https://t.me/s/mintsifry/2608"
+    },
+    {
+      "id": "ru-rutube",
+      "domain": "rutube.ru",
+      "role": "service",
+      "country_scope": [
+        "RU",
+        "KZ",
+        "BY"
+      ],
+      "port": 443,
+      "path": "/",
+      "reference_url": "https://t.me/s/mintsifry/2608"
+    },
+    {
+      "id": "kz-gov",
+      "domain": "gov.kz",
+      "role": "service",
+      "country_scope": [
+        "RU",
+        "KZ",
+        "BY"
+      ],
+      "port": 443,
+      "path": "/",
+      "reference_url": "https://www.gov.kz/?lang=ru"
+    },
+    {
+      "id": "kz-halykbank",
+      "domain": "halykbank.kz",
+      "role": "service",
+      "country_scope": [
+        "RU",
+        "KZ",
+        "BY"
+      ],
+      "port": 443,
+      "path": "/",
+      "reference_url": "https://nationalbank.kz/ru/news/sistemy-elektronnyh-deneg-kazahstana"
+    },
+    {
+      "id": "kz-qazpost",
+      "domain": "qazpost.kz",
+      "role": "service",
+      "country_scope": [
+        "RU",
+        "KZ",
+        "BY"
+      ],
+      "port": 443,
+      "path": "/",
+      "reference_url": "https://nationalbank.kz/ru/news/sistemy-elektronnyh-deneg-kazahstana"
+    },
+    {
+      "id": "kz-kcell",
+      "domain": "kcell.kz",
+      "role": "service",
+      "country_scope": [
+        "RU",
+        "KZ",
+        "BY"
+      ],
+      "port": 443,
+      "path": "/",
+      "reference_url": "https://www.gov.kz/org/telecom/activities/803"
+    },
+    {
+      "id": "kz-tele2",
+      "domain": "tele2.kz",
+      "role": "service",
+      "country_scope": [
+        "RU",
+        "KZ",
+        "BY"
+      ],
+      "port": 443,
+      "path": "/",
+      "reference_url": "https://www.gov.kz/org/telecom/activities/803"
+    },
+    {
+      "id": "by-government",
+      "domain": "government.by",
+      "role": "service",
+      "country_scope": [
+        "RU",
+        "KZ",
+        "BY"
+      ],
+      "port": 443,
+      "path": "/",
+      "reference_url": "https://www.eoiminsk.gov.in/page/useful-links-from-belarus/"
+    },
+    {
+      "id": "by-president",
+      "domain": "president.gov.by",
+      "role": "service",
+      "country_scope": [
+        "RU",
+        "KZ",
+        "BY"
+      ],
+      "port": 443,
+      "path": "/",
+      "reference_url": "https://www.eoiminsk.gov.in/page/useful-links-from-belarus/"
+    },
+    {
+      "id": "by-pravo",
+      "domain": "pravo.by",
+      "role": "service",
+      "country_scope": [
+        "RU",
+        "KZ",
+        "BY"
+      ],
+      "port": 443,
+      "path": "/",
+      "reference_url": "https://ngo.by/en/references"
+    },
+    {
+      "id": "by-belarusbank",
+      "domain": "belarusbank.by",
+      "role": "service",
+      "country_scope": [
+        "RU",
+        "KZ",
+        "BY"
+      ],
+      "port": 443,
+      "path": "/",
+      "reference_url": "https://t.me/s/belarusbank_channel"
+    },
+    {
+      "id": "by-kufar",
+      "domain": "kufar.by",
+      "role": "service",
+      "country_scope": [
+        "RU",
+        "KZ",
+        "BY"
+      ],
+      "port": 443,
+      "path": "/",
+      "reference_url": "https://helpcenter.kufar.by/knowledge_base/item/274917"
+    },
+    {
+      "id": "by-nbrb",
+      "domain": "nbrb.by",
+      "role": "service",
+      "country_scope": [
+        "RU",
+        "KZ",
+        "BY"
+      ],
+      "port": 443,
+      "path": "/",
+      "reference_url": "https://www.eoiminsk.gov.in/page/useful-links-from-belarus/"
+    }
+  ]
+}
