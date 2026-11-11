@@ -1893,9 +1893,9 @@
     "gofmt": "passed",
     "go_test": "passed",
     "go_build": "passed",
-    "implementation": "doh_query now shares one monotonic absolute deadline across pinned resolvers, reads the bounded response in read1 chunks, and refreshes the remaining socket timeout before each chunk. Slow-drip responses cannot extend the DoH query indefinitely.",
+    "implementation": "doh_query now shares one monotonic absolute deadline across pinned resolvers, reads the bounded response in read1 chunks, and refreshes the remaining socket timeout before each chunk. Slow-drip responses cannot extend the DoH query indefinitely. It also prevents an outer SIGALRM TimeoutError (an OSError subclass) from being swallowed by doh_query's resolver-fallback handler and followed by another unbounded resolver attempt: after the caught exception the monotonic deadline is checked before the next resolver.",
     "test": "Regression test advances a fake monotonic clock during chunked reads and verifies that the deadline expires before a second resolver attempt.",
-    "interpretation": "This closes a discovered unbounded slow-drip DoH read path. It is not evidence that this defect caused Run #20's timeout overrun.",
+    "interpretation": "This closes a discovered unbounded slow-drip DoH read path. It is not evidence that this defect caused Run #20's timeout overrun. Source-level review also found that the previous broad OSError fallback could catch the outer SIGALRM TimeoutError and continue to the next resolver. The new absolute deadline closes that specific timeout-propagation hole. The independent 7-minute process-guard / 9-minute step / 12-minute job overrun in Run #20 remains unexplained.",
     "validation_workflow_conclusion": "success",
     "workflow_duration_seconds": 10
   }
