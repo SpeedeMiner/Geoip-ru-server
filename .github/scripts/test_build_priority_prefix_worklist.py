@@ -56,7 +56,7 @@ class WorklistTests(unittest.TestCase):
             ]
             evidence = self.build_inputs(root, rows, spots)
             out, stats = root/"worklist.tsv", root/"stats.txt"
-            result = build_worklist(evidence, out, stats, expected_scope=None)
+            result = build_worklist(evidence, out, stats)
             with out.open(encoding="utf-8", newline="") as f:
                 got = list(csv.DictReader((line for line in f if not line.startswith("#")), delimiter="\t"))
             self.assertEqual(result["rows"], 5)
