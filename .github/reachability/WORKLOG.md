@@ -1035,3 +1035,14 @@ Durable resume point for PR #5. After any conversation/network interruption, rea
 - Updated structured checkpoint in commit `655b67bf6aac8cdee743b52917156bd0a6842073`: latest code validation run/job, 127-test result, worker timeout/crash states, manifest path and next steps are machine-readable.
 - The code-tested HEAD is `c49dece293541d46b6af14282b382459164315d7`; the immediately following README/WORKLOG/RESUME/CHECKPOINT commits are documentation-only.
 - PR #5 remains OPEN / DRAFT. No Run #22 or replacement VPN workflow was dispatched. The new fork-worker implementation has only been exercised in hermetic tests so far; live VPNObratto verification is still pending one explicitly bounded manual pilot.
+
+
+#### Final recovery chain and verified branch state
+
+- Final operator README update: `863f0c5251cbab17a85ac150735dff7f37fcdd30`.
+- Final read-first recovery guide update: `797ddcf3af72c785cf8de9feff883f263edae9fa`.
+- Structured worker-isolation checkpoint update: `655b67bf6aac8cdee743b52917156bd0a6842073`, followed by final checkpoint state update `d5628def5a74a23abb5b867bc638693539e12577`.
+- Final recovery journal update before this entry: `0f2afc6cf627156ae5bdf6e553f6c7db0ee96254`.
+- Latest fully validated code commit remains `c49dece293541d46b6af14282b382459164315d7`; Run #209 `43071264599` / job `130699445722` is terminal SUCCESS with 127 Python tests and all Go checks green.
+- The remaining commits after that code-tested HEAD update only README, WORKLOG, RESUME and CHECKPOINT. They do not change the validated implementation or dispatch a VPN workflow.
+- PR #5 is still OPEN / DRAFT. The latest branch head at the time of this recovery write is `d5628def5a74a23abb5b867bc638693539e12577`. No VPN run is active; Run #21 is terminal.
