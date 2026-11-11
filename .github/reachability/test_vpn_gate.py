@@ -604,5 +604,59 @@ class VPNGateDefaultArgumentsTests(unittest.TestCase):
         self.assertEqual(args.max_attempts, 6)
 
 
+class VPNObratnoFetchSafetyTests(unittest.TestCase):
+    def test_redirect_handler_rejects_cross_origin_and_insecure_redirects(self):
+        handler = vpn_gate.VPNObratnoSameOriginRedirect()
+        request = urllib.request.Request(
+            "https://vpnobratno.info/russia_server_list.html"
+        )
+        for target in (
+            "https://evil.example/profile.ovpn",
+            "https://vpnobratno.info.evil.example/profile.ovpn",
+            "http://vpnobratno.info/profile.ovpn",
+            "https://user@vpnobratno.info/profile.ovpn",
+            "https://vpnobratno.info:8443/profile.ovpn",
+        ):
+            with self.subTest(target=target):
+                with self.assertRaisesRegex(
+                    vpn_gate.ProbeError, "cross-origin or insecure redirect"
+                ):
+                    handler.redirect_request(
+                        request, None, 302, "Found", {}, target
+                    )
+
+    def test_redirect_handler_accepts_same_https_origin_only(self):
+        handler = vpn_gate.VPNObratnoSameOriginRedirect()
+        request = urllib.request.Request(
+            "https://vpnobratno.info/russia_server_list.html"
+        )
+        redirected = handler.redirect_request(
+            request, None, 302, "Found", {},
+            "https://vpnobratno.info/servers/example.ovpn",
+        )
+        self.assertEqual(
+            redirected.full_url,
+            "https://vpnobratno.info/servers/example.ovpn",
+        )
+
+    def test_fetcher_rejects_untrusted_input_before_opening_network(self):
+        with patch.object(vpn_gate.urllib.request, "build_opener") as build_opener:
+            for url in (
+                "http://vpnobratno.info/profile.ovpn",
+                "https://evil.example/profile.ovpn",
+                "https://vpnobratno.info.evil.example/profile.ovpn",
+                "https://vpnobratno.info:8443/profile.ovpn",
+            ):
+                with self.subTest(url=url):
+                    with self.assertRaisesRegex(vpn_gate.ProbeError, "trusted HTTPS origin"):
+                        vpn_gate.fetch_vpnobratno_bytes(url)
+            build_opener.assert_not_called()
+
+    def test_discovery_uses_the_same_origin_fetcher_by_default(self):
+        defaults = vpn_gate.discover_vpnobratno_servers.__defaults__
+        self.assertIs(defaults[0], vpn_gate.fetch_vpnobratno_bytes)
+
+
+
 if __name__ == "__main__":
     unittest.main()
