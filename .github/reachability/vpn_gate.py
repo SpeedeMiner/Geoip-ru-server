@@ -697,7 +697,41 @@ def https_head(domain: str, port: int, path: str, timeout: int) -> tuple[str, in
         # not that the service is healthy or that content is unfiltered.
         return "HTTP_RESPONSE", int(exc.code), ""
     except (urllib.error.URLError, TimeoutError, OSError) as exc:
-        return "INCONCLUSIVE", None, str(exc)[:300]
+        # A system resolver/NSS error is not a service failure. Retry with a
+        # pinned DoH-resolved IP, preserving Host, SNI and certificate checks.
+        try:
+            addresses = doh_query(domain, "A", timeout=min(timeout, 12))
+            if not addresses:
+                addresses = doh_query(domain, "AAAA", timeout=min(timeout, 12))
+            errors = []
+            for address in addresses[:3]:
+                connection = None
+                try:
+                    connection = PinnedHTTPSConnection(
+                        domain, address, port=port, timeout=timeout
+                    )
+                    connection.request(
+                        "HEAD", path,
+                        headers={
+                            "User-Agent": USER_AGENT,
+                            "Accept": "*/*",
+                            "Connection": "close",
+                        },
+                    )
+                    response = connection.getresponse()
+                    response.read(64_000)
+                    return "HTTP_RESPONSE", int(response.status), ""
+                except (OSError, http.client.HTTPException, ssl.SSLError) as fallback_exc:
+                    errors.append(f"{address}: {fallback_exc}")
+                finally:
+                    if connection is not None:
+                        connection.close()
+            detail = "; ".join(errors) if errors else "DoH returned no global address"
+            return "INCONCLUSIVE", None, f"system HTTPS: {str(exc)[:160]}; pinned HTTPS: {detail[:160]}"
+        except ProbeError as fallback_exc:
+            return "INCONCLUSIVE", None, (
+                f"system HTTPS: {str(exc)[:160]}; pinned DoH: {str(fallback_exc)[:160]}"
+            )
 
 
 def test_target(target: dict[str, Any], exit_info: dict[str, Any], networks: dict[str, Any], timeout: int) -> dict[str, Any]:
@@ -822,6 +856,7 @@ def run(args: argparse.Namespace) -> int:
             tmp = pathlib.Path(directory)
             auth_path = tmp / "auth.txt"
             auth_path.write_text("vpn\nvpn\n", encoding="ascii")
+            auth_path.chmod(0o600)
             config_path = tmp / "client.ovpn"
             config_path.write_text(build_safe_openvpn_config(server, auth_path), encoding="utf-8")
             log_path = tmp / "openvpn.log"
@@ -939,7 +974,7 @@ def run(args: argparse.Namespace) -> int:
                 connection_counts["setup_failed"] += 1
             if provider["CONNECTION_RESULT"] not in {"CONNECTED_RU_EGRESS", "REJECTED_EXIT_NOT_RU"}:
                 try:
-                    tail = log_path.read_text(encoding="utf-8", errors="replace").splitlines()[-12:]
+                    tail = log_path.read_text(encoding="utf-8", errors="replace").splitlines()[-60:]
                     if tail:
                         raw_rows.append({
                             "source": "openvpn_diagnostic_tail",
@@ -1001,6 +1036,13 @@ def run(args: argparse.Namespace) -> int:
         encoding="utf-8",
     )
     print(json.dumps(summary, ensure_ascii=False, indent=2, sort_keys=True))
+    if connection_counts["connected_ru_exit"] < args.max_servers:
+        print(
+            f"measurement incomplete: verified {connection_counts['connected_ru_exit']} "
+            f"of {args.max_servers} requested RU VPN exits",
+            file=sys.stderr,
+        )
+        return 2
     return 0
 
 
