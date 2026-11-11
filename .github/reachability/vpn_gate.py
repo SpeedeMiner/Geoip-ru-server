@@ -55,7 +55,8 @@ PROVIDER_FIELDS = [
 ]
 MEASUREMENT_FIELDS = [
     "SOURCE", "OBSERVED_AT", "SERVER_HOSTNAME", "SERVER_IP",
-    "SERVER_ASN", "SERVER_ORG", "EXIT_IP", "EXIT_COUNTRY",
+    "SERVER_ASN", "SERVER_ASN_IP_METADATA", "SERVER_ASN_RIPESTAT", "SERVER_ASN_CONFLICT",
+    "SERVER_ORG", "EXIT_IP", "EXIT_COUNTRY",
     "EXIT_ASN", "EXIT_ASN_IP_METADATA", "EXIT_ASN_RIPESTAT", "EXIT_ASN_CONFLICT",
     "EXIT_ORG", "EXIT_GEOIP_CATEGORY", "EXIT_GEOIP_RU_PREFIX",
     "TARGET_ID", "TARGET_DOMAIN", "DNS_A_RESULT", "DNS_A_ADDRESSES",
@@ -292,7 +293,14 @@ def network_info(address: str) -> dict[str, Any]:
         data = payload.get("data") or {}
         asns = data.get("asns") or []
         asn = parse_asn(asns[0]) if asns else 0
-        return {"prefix": data.get("prefix") or "", "asn": asn}
+        prefix = str(data.get("prefix") or "").strip()
+        try:
+            network = ipaddress.ip_network(prefix, strict=False)
+            if ipaddress.ip_address(address) not in network:
+                prefix = ""
+        except ValueError:
+            prefix = ""
+        return {"prefix": prefix, "asn": asn}
     except ProbeError:
         return {"prefix": "", "asn": 0}
 
@@ -798,6 +806,8 @@ def run(args: argparse.Namespace) -> int:
         "target_measurements": len(measurement_rows),
         "geoip_candidates": len(candidates),
         "provider_rows": len(provider_rows),
+        "server_asn_conflicts": sum(bool(row.get("SERVER_ASN_CONFLICT")) for row in provider_rows),
+        "exit_asn_conflicts": sum(bool(row.get("EXIT_ASN_CONFLICT")) for row in provider_rows),
         "policy": {
             "vpn_gate_country_field_is_not_a_residential_attestation": True,
             "volunteer_access_network_class": "RESIDENTIAL_OR_OTHER_ACCESS_NETWORK_UNVERIFIED",
