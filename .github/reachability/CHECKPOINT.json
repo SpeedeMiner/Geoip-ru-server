@@ -1,14 +1,14 @@
 {
   "schema_version": 1,
-  "updated_at_utc": "2026-11-11T17:22:52Z",
+  "updated_at_utc": "2026-11-11T17:28:39Z",
   "repository": "SpeedeMiner/Geoip-ru-server",
   "pull_request": 5,
   "pull_request_url": "https://github.com/SpeedeMiner/Geoip-ru-server/pull/5",
   "branch": "feature/reachability-full-ru-kz-by",
-  "recorded_pr_head_before_checkpoint_commit": "beba9f75a0bfc08703e79555635698b130ed47a8",
+  "recorded_pr_head_before_checkpoint_commit": "23a276bf2c5be6c00d4dcc8510457a1c9e0f6e0f",
   "base_sha": "a68e5d6589361814cb1cfedd2af7857e4af806fa",
-  "state": "RUN21_GITHUB_JOB_STILL_IN_PROGRESS_AFTER_12M_JOB_TIMEOUT; LOGS_BLOB_NOT_FOUND; NO_ARTIFACT; NO_VERIFIED_RU_EXIT",
-  "current_phase": "RUN21_ACTIONS_JOB_TIMEOUT_OVERRUN; RUNNER_STATUS_UNRESOLVED; NO_TERMINAL_EVIDENCE",
+  "state": "RUN21_COMPLETED_CANCELLED_BY_GITHUB_MAX_12M_EXECUTION_TIME; NO_TERMINAL_LOGS; NO_ARTIFACT; NO_VERIFIED_RU_EXIT",
+  "current_phase": "RUN21_TERMINAL_TIMEOUT_CONFIRMED; INNER_STALL_ROOT_CAUSE_UNRESOLVED; NO_OPENVPN_OR_TARGET_EVIDENCE",
   "completed": [
     "repository_reconnaissance",
     "protobuf_inventory_exporter",
@@ -440,12 +440,11 @@
     "production_release_artifact_byte_delta_verified": false
   },
   "next_steps": [
-    "Run #21 (43065501624) remains the only active VPN run in GitHub's last REST snapshot. Do not cancel or dispatch another run without explicit reason.",
-    "The latest owner-provided marker remains profile 6 fetch started; GitHub still has measurement step 7 in progress, upload pending, artifacts empty, and job logs BlobNotFound as of 17:16:11Z. No OpenVPN route, exit consensus or target outcome is confirmed.",
-    "Recheck the same run/job around and after the nominal process watchdog point: TERM about 17:17:40Z, KILL grace through 17:17:45Z, step timeout 17:19:40Z, job timeout 17:22:16Z.",
-    "When GitHub reaches a terminal state, fetch job steps/logs and artifacts immediately. Verify any artifact digest, reconcile provider and target rows, and update this checkpoint with exact stage evidence.",
-    "If GitHub remains in_progress beyond both step/job limits, record REST timestamps and request owner action on the run page if cancellation is appropriate; do not assume the process survived or that the run is a VPN/provider failure.",
-    "Keep PR #5 OPEN/DRAFT and all production GeoIP, DIRECT policy, ASN allowlist, release and PR #6 boundaries unchanged."
+    "Run #21 (43065501624) is terminal: GitHub run status=completed, conclusion=cancelled; the owner-provided annotation explicitly says the job exceeded the maximum execution time of 12m0s. Do not describe this as a manual owner cancellation.",
+    "The terminal job API reports completed/cancelled, but the step-summary API remains stale (measurement step 7 in_progress, upload step 8 pending, failure-gate step 9 pending). Artifact list is empty and the decoded job-log endpoint returns BlobNotFound after completion.",
+    "Inner stall/root cause remains unresolved. Last confirmed owner-visible marker is profile_fetch_started=6/24; five profiles were usable, sixth fetch completion is unknown. No confirmed OpenVPN attempt, verified RU exit or target measurement rows exist.",
+    "Before any new VPN run, inspect and improve the measurement workflow's per-stage bounded execution and diagnostic persistence so the profile-fetch phase cannot leave the run without a terminal log/artifact. Do not rerun automatically or start an overlapping run.",
+    "Keep PR #5 OPEN/DRAFT and all production GeoIP, DIRECT policy, ASN allowlist, main/release and PR #6 boundaries unchanged."
   ],
   "ci_policy": {
     "push_validation_paths": [
@@ -2017,8 +2016,8 @@
     "job_started_at_utc": "2026-11-11T17:10:16Z",
     "measurement_step_started_at_utc": "2026-11-11T17:10:40Z",
     "owner_log_received_at_utc": "2026-11-11T17:11:10Z",
-    "run_status": "in_progress",
-    "job_status": "in_progress",
+    "run_status": "completed",
+    "job_status": "completed",
     "measurement_step_status": "in_progress",
     "upload_step_status": "pending",
     "artifacts": [],
@@ -2094,25 +2093,27 @@
     "logs_api_while_active": "BlobNotFound",
     "interpretation": "Pinned-DoH profile fetches 1–5 completed and sixth began, indicating discovery is progressing past the previous Run #20 marker. Do not infer OpenVPN, RU exit or target results from the current excerpt.",
     "last_rest_snapshot": {
-      "observed_at_utc": "2026-11-11T17:22:52Z",
-      "run_status": "in_progress",
-      "job_status": "in_progress",
-      "measurement_step_status": "in_progress",
-      "upload_step_status": "pending",
+      "observed_at_utc": "2026-11-11T17:28:39Z",
+      "run_id": 43065501624,
+      "run_status": "completed",
+      "run_conclusion": "cancelled",
+      "run_updated_at_utc": "2026-11-11T17:27:17Z",
+      "job_id": 130679257182,
+      "job_status": "completed",
+      "job_conclusion": "cancelled",
+      "measurement_step_status_from_step_summary": "in_progress",
+      "upload_step_status_from_step_summary": "pending",
+      "failure_gate_step_status_from_step_summary": "pending",
       "artifacts": [],
       "logs_api": "BlobNotFound",
-      "logs_url": null,
-      "expected_gnu_term_approx_utc": "2026-11-11T17:17:40Z",
-      "expected_gnu_kill_after_grace_approx_utc": "2026-11-11T17:17:45Z",
-      "measurement_step_timeout_utc": "2026-11-11T17:19:40Z",
-      "job_timeout_utc": "2026-11-11T17:22:16Z",
-      "job_timeout_overrun_seconds": 36,
-      "confirmed_profile_fetch_completion_index": 5,
+      "timeout_annotation": "The job has exceeded the maximum execution time of 12m0s",
+      "confirmed_usable_profiles": 5,
       "profile_6_fetch_started": true,
+      "profile_6_fetch_completed": null,
       "confirmed_openvpn_attempts": 0,
       "confirmed_verified_ru_exits": 0,
       "confirmed_target_measurement_rows": 0,
-      "interpretation": "GitHub reports a non-terminal job beyond all configured limits; no terminal logs or artifact. Do not infer runner process liveness or later measurement phases."
+      "interpretation": "Job-level timeout is confirmed by owner-provided GitHub annotation. Terminal job conclusion is cancelled. Inner hang location remains unknown; step-summary status is stale; no terminal logs or artifact exist."
     },
     "expected_timeout_milestones_utc": {
       "process_term_approx": "2026-11-11T17:17:40Z",
@@ -2129,7 +2130,7 @@
       "job_page": "Loading",
       "interpretation": "Actions UI confirms In progress but cannot render live job logs at this snapshot."
     },
-    "observability_warning": "At 2026-11-11T17:19:52Z GitHub still reported job and measurement step in_progress even though the nominal GNU timeout+KILL grace (~17:17:45Z) and 9-minute measurement step deadline (~17:19:40Z) had elapsed; the log archive remained BlobNotFound and no artifact existed. Runner/controller stale state is possible but unproven.",
+    "observability_warning": "Terminal job is completed/cancelled after GitHub's max 12-minute execution limit. Step summary still reports measurement in_progress/upload pending, logs BlobNotFound and no artifact; terminal job-level cause is known, inner stall cause remains unknown.",
     "monitoring_snapshots": [
       {
         "observed_at_utc": "2026-11-11T17:19:52Z",
@@ -2193,6 +2194,29 @@
         "confirmed_verified_ru_exits": 0,
         "confirmed_target_measurement_rows": 0,
         "interpretation": "GitHub reports a non-terminal job beyond all configured limits; no terminal logs or artifact. Do not infer runner process liveness or later measurement phases."
+      },
+      {
+        "observed_at_utc": "2026-11-11T17:28:39Z",
+        "run_id": 43065501624,
+        "run_status": "completed",
+        "run_conclusion": "cancelled",
+        "run_updated_at_utc": "2026-11-11T17:27:17Z",
+        "job_id": 130679257182,
+        "job_status": "completed",
+        "job_conclusion": "cancelled",
+        "measurement_step_status_from_step_summary": "in_progress",
+        "upload_step_status_from_step_summary": "pending",
+        "failure_gate_step_status_from_step_summary": "pending",
+        "artifacts": [],
+        "logs_api": "BlobNotFound",
+        "timeout_annotation": "The job has exceeded the maximum execution time of 12m0s",
+        "confirmed_usable_profiles": 5,
+        "profile_6_fetch_started": true,
+        "profile_6_fetch_completed": null,
+        "confirmed_openvpn_attempts": 0,
+        "confirmed_verified_ru_exits": 0,
+        "confirmed_target_measurement_rows": 0,
+        "interpretation": "Job-level timeout is confirmed by owner-provided GitHub annotation. Terminal job conclusion is cancelled. Inner hang location remains unknown; step-summary status is stale; no terminal logs or artifact exist."
       }
     ],
     "job_timeout_overrun": {
@@ -2205,6 +2229,37 @@
       "artifacts": [],
       "logs_api": "BlobNotFound",
       "interpretation": "Job remains in progress 36 seconds beyond configured 12-minute timeout. Runner/controller stale state is plausible; process liveness cannot be established."
+    },
+    "run_conclusion": "cancelled",
+    "job_conclusion": "cancelled",
+    "completed_or_last_updated_at_utc": "2026-11-11T17:27:17Z",
+    "timeout_annotation": {
+      "reported_by_owner_at_utc": "2026-11-11T17:28:19Z",
+      "message": "The job has exceeded the maximum execution time of 12m0s",
+      "interpretation": "GitHub-enforced maximum job execution time; run conclusion is cancelled. Trigger actor SpeedeMiner is not evidence of manual cancellation."
+    },
+    "terminal_snapshot": {
+      "observed_at_utc": "2026-11-11T17:28:39Z",
+      "run_id": 43065501624,
+      "run_status": "completed",
+      "run_conclusion": "cancelled",
+      "run_updated_at_utc": "2026-11-11T17:27:17Z",
+      "job_id": 130679257182,
+      "job_status": "completed",
+      "job_conclusion": "cancelled",
+      "measurement_step_status_from_step_summary": "in_progress",
+      "upload_step_status_from_step_summary": "pending",
+      "failure_gate_step_status_from_step_summary": "pending",
+      "artifacts": [],
+      "logs_api": "BlobNotFound",
+      "timeout_annotation": "The job has exceeded the maximum execution time of 12m0s",
+      "confirmed_usable_profiles": 5,
+      "profile_6_fetch_started": true,
+      "profile_6_fetch_completed": null,
+      "confirmed_openvpn_attempts": 0,
+      "confirmed_verified_ru_exits": 0,
+      "confirmed_target_measurement_rows": 0,
+      "interpretation": "Job-level timeout is confirmed by owner-provided GitHub annotation. Terminal job conclusion is cancelled. Inner hang location remains unknown; step-summary status is stale; no terminal logs or artifact exist."
     }
   }
 }
