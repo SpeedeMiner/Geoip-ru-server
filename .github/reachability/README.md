@@ -55,9 +55,11 @@ The workflow has a manual `source` selector:
 - `vpnobratno` (default): page discovery and the linked profile variants above;
 - `vpngate`: the official VPN Gate CSV API as a fallback source.
 
-It asks for a number of successful RU exits (default three) and a separate
-profile-attempt limit (default three, hard cap six). Failed TLS or authentication
-handshakes are detected from the live OpenVPN log and stop that attempt early.
+The conservative first-pilot defaults are **one successful RU exit** and up
+to **six profile attempts** (hard cap six). This allows alternate IP UDP/UDP/
+IP TCP/TCP profiles to be tried without requiring three separate exits. Failed
+TLS or authentication handshakes are detected from the live OpenVPN log and
+stop that attempt early.
 The collector prefers one candidate per distinct origin ASN before trying
 another profile from an already represented ASN. It stops as soon as the
 requested number of verified RU exits succeeds. The manual job timeout is
