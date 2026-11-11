@@ -533,3 +533,14 @@ Durable resume point for PR #5. After any conversation/network interruption, rea
 - Validation run #42999166787 (https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/42999166787) passed **105 Python tests**, Python compilation/JSON validation, `gofmt`, Go tests and Go build. The earlier code-only validation run #42998594313 and workflow test validation #42998719121 also completed successfully.
 - The in-progress run #42996316782 is unchanged: it checked out commit `435587a`, was launched with `--connect-timeout 60`, and remained `in_progress` at the latest status check. It had not reached report upload and had no artifacts at that check. This run must not be described as using the new five-second timeout.
 - Keep PR #5 OPEN / DRAFT. No production builder, GeoIP database, release branch/assets, DIRECT policy, ASN allowlists or PR #6 were modified.
+
+
+### 2026-11-11 — Updated live pilot #7 confirms five-second timeout and phase progress
+
+- Run #42996316782 (#6), which was still active in the last earlier check, later ended with conclusion `cancelled` at 2026-11-11T09:58:48Z. Its measurement step was cancelled, artifact upload failed, no artifact exists and no target measurement result was produced.
+- Cancellation attribution remains **UNKNOWN**. The REST run object exposes dispatch actor fields, not a cancellation actor. The last read-only monitor for #6 finished at 09:47:25Z; the next browser session (for dispatching #7) started at 09:59:34Z, after the cancellation. No explicit GitHub workflow-cancel command was invoked by this assistant. Do not attribute this cancellation to the owner.
+- Dispatched run #43000272971 (#7) with `source=vpnobratno`, `max_vpn_gate_servers=1`, `max_vpn_gate_attempts=6`, feature branch `feature/reachability-full-ru-kz-by`, and commit `12d0f98f9b5e5d18518e3a517d8858f69f6f426c`.
+- Live GitHub Actions log inspection confirms the updated code is running with `connect_timeout=5s`. Discovery completed with 24 usable profiles; origin ASN selection inspected 24 profile records and selected six profiles across six distinct ASNs. The first OpenVPN attempt is `vpn266997445.opengw.net`, variant `IP_UDP`, server IP `217.144.174.117`, attempt 1/6.
+- At the latest live-log snapshot, the first connection attempt had not yet reported a TUN route. Independent exit IP/country verification had not started and no target DNS/HTTPS request had been sent. This is an in-progress attempt, not a negative reachability result.
+- Validation on the same feature-branch code commit #42999166787 passed 105 Python tests, Python compilation/JSON validation, `gofmt`, `go test ./...` and `go build`.
+- Keep PR #5 OPEN / DRAFT. No production builder, GeoIP data, release branch/assets, DIRECT policy, ASN allowlists or PR #6 were modified.
