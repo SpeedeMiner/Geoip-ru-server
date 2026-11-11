@@ -20,11 +20,14 @@ The Antifilter.network BGP page and FAQ were checked on 2026-11-11:
 - `65444:210`: subset classified by Antifilter.network as directly blocked by Roskomnadzor; announced together with `65444:200`.
 - `65444:300`: /24 summary; not suitable for this exact-IP audit and must not be substituted.
 
-The provider page currently groups `65444:200, 65444:210` under one displayed aggregate of 100,366 prefixes / 196,360 addresses. This is **not** a count for community 210 alone and is not a substitute for the actual BGP RIB.
+The provider page currently shows the selected `65444:200, 65444:210` bundle as 100,366 prefixes / 196,360 addresses. This is a combined display count and must **not** be attributed to community 210 alone. The FAQ distinguishes the two communities: 200 is the wider unsummarized host-IP set; 210 is the unsummarized subset classified as directly blocked and is announced together with 200. The same FAQ documents additional summarized communities (100–107 and 110); do not silently substitute those for the required exact-host 200/210 bundle.
 
-Source pages:
+Source pages (checked 2026-11-11):
 - https://antifilter.network/bgp
 - https://antifilter.network/faq
+- https://bgp.he.net/AS65444
+
+**Public BGP visibility limitation:** AS65444 is marked as a private-use ASN reserved under RFC 6996 by public BGP lookup services. Public RIPE RIS / HE / bgp.tools queries therefore cannot be used to reconstruct the Antifilter customer feed or prove membership of an exact prefix in community 65444:210. They may provide unrelated supplemental origin/holder context for candidate IPs, but only the registered peer session to the Antifilter service can provide the community-bearing route attributes. The number of prefixes shown on the public registration page is not a route snapshot.
 
 The feed is a third-party classification, not a direct official RKN API. The repository policy and source registry already express this limitation.
 
@@ -60,7 +63,7 @@ Capture must preserve:
 - complete `birdc show route ... all` outputs including BGP attributes/communities;
 - SHA-256 for each raw output and a manifest tying hashes to capture metadata.
 
-Before accepting the snapshot, independently verify that every retained route carries community `65444:210`. Keep the unfiltered/session-level diagnostics separately where available, but never mix `65444:200`-only routes into the direct-block set.
+Before accepting the snapshot, independently verify that every retained route carries community `65444:210`. Keep the unfiltered/session-level diagnostics separately where available, but never mix `65444:200`-only routes into the direct-block set. Capture the selected announcement bundle exactly as registered and preserve the attributes as delivered by the peer; do not infer that every route in the combined 200/210 group is tagged 210.
 
 ## 5. Reconciliation after capture
 
@@ -85,6 +88,7 @@ Absence from one snapshot is not proof that a prefix is safe for DIRECT. Preserv
 - Confirmed PR #9 branch HEAD before this checkpoint: `a19e4de1d7a550f15fbc6960a81e924225fc1437`.
 - Confirmed that commit's PR workflow run #71 (`43050025980`) completed successfully.
 - Verified current Antifilter.network page/FAQ community semantics and current peer details.
+- Checked public AS65444 visibility and confirmed its private-use ASN status; public collectors cannot substitute for the actual 65444 customer session.
 - No v38 build was rerun. No production branch, release, tag, GeoIP binary, DIRECT policy, blocked set, or other PR was changed.
 
 ## 7. Next action / blocker
