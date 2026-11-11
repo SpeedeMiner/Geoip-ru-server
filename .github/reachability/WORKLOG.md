@@ -725,3 +725,13 @@ Durable resume point for PR #5. After any conversation/network interruption, rea
 - Documentation/checkpoint-only commits 230b795316989647548df33cb7a50bf0a481b513 and 4712e1a538e102214c9c6e590970b0d946c88676 follow the validated code commit. They do not change code/workflow paths used by the validation workflow.
 - PR #5 current head before this checkpoint update: 4712e1a538e102214c9c6e590970b0d946c88676; PR remains OPEN / DRAFT / not merged.
 - Important limitation: CI tests mock DoH responses. They do not prove live pinned-DoH connectivity from runner region westus2. Next manual run #17 must prove mirror_doh_lookup_completed for all three mirror hosts, mirror_hosts_override_installed, apt_dns_bootstrap_completed, three mirror_getent_verified markers, apt_update_completed, and apt_install_completed before VPN setup can be counted.
+
+
+### 2026-11-11 — Fix root-owned Python bytecode cache after apt bootstrap — IMPLEMENTED / VALIDATION PENDING
+
+- Manual VPN run #17: [43045491865](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43045491865), job 130608225246, execution commit 5080c99a1738bdfce151a12b6ee62caa60593a16, runner Ubuntu 24.04.5 in centralus.
+- The pinned-DoH apt bootstrap succeeded end-to-end: all three Ubuntu mirror names were resolved, `getent` checks passed, apt update fetched 13.1 MB, and OpenVPN 2.6.19 plus iptables were installed. The published GeoIP protobuf checksum passed. The exporter produced 76,293 RU + 151 PRIVATE = 76,444 inventory rows.
+- Measurement then failed immediately at `python3 -m py_compile` with `[Errno 13] Permission denied: '.github/reachability/__pycache__/runner.cpython-312.pyc...'`. The inline bootstrap imported `vpn_gate` under `sudo`, creating a root-owned `__pycache__` directory; the following compile ran as the normal runner user.
+- Downloaded artifact `geoip-ru-vpn-gate-43045491865` (ID 13865929395, 284,687 bytes) and independently verified SHA-256 `56192f146a354011e8ca4a22cf50fb9c51ef4d2efba36959f307d11fc4505b2c` against GitHub. It contains only `reachability_inventory.tsv` (2,501,267 bytes); there are no VPN result files. Thus no profile attempts, verified RU exits or target rows were produced.
+- Fixed the bootstrap interpreter invocation to `python3 -B`. This disables bytecode-cache writes during the privileged import, preventing a root-owned `__pycache__` from being left behind for the unprivileged measurement step. No change to VPN measurement behavior or production GeoIP files.
+- CI validation is pending for this workflow change. Do not describe run #17 as VPN failure; it is a local filesystem-permission failure before any VPN process ran.
