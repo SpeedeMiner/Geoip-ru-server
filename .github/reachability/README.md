@@ -18,70 +18,84 @@ It does not edit or publish \`geoip_RU.dat\`.
   a bounded number of measurements, and saves returned results or explicit
   pending measurement IDs.
 
-## Russian ISP access-network measurements through VPN Gate
+## Russian ISP access-network measurements via VPNObratno / VPN Gate
 
 The original Globalping collector remains a separate, supplementary vantage-point source.
 Its `eyeball-network` tag is not proof of a residential line.
 
-A second, **manual-only** workflow, `Russian ISP VPN Gate reachability`, tests from
-Russian VPN Gate volunteer exits. `vpnobratno.info` describes its Russian servers
-as VPN Gate volunteer servers using Russian ISP connections; the implementation
-uses the official VPN Gate CSV API rather than scraping the directory page.
+A second, **manual-only** workflow, `Russian ISP VPN Gate reachability`, now
+uses `vpnobratno.info/russia_server_list.html` as its default discovery source.
+The site describes its entries as VPN Gate nodes operated by Russian users on
+different Russian Internet providers. The page publishes several OpenVPN
+profiles per node. The collector downloads only linked `.ovpn` files from
+the exact `vpnobratno.info` origin and recognises these variants:
 
-The workflow is **manual-only** (workflow_dispatch); no daily schedule or
-feature-branch push trigger is enabled. It asks for a number of successful RU
-exits (manual default three) and a separate candidate-attempt limit (manual
-default three, hard cap six). Failed TLS or authentication handshakes are
-detected from the live OpenVPN log and stop that candidate early; the collector
-then tries the next candidate from a different origin ASN before reusing an ASN.
-It stops as soon as the requested number of verified RU exits succeeds. The
-manual job timeout is 120 minutes. A and AAAA answers are collected in one
-resolver call per target. The manual dispatch becomes available after this
-workflow is integrated into the repository default branch. It:
+- `IP UDP` — preferred first, pins the literal profile address to the listed server hostname;
+- `UDP` — hostname-based UDP fallback;
+- `IP TCP` — literal-IP TCP fallback;
+- `TCP` — hostname-based TCP fallback.
 
-- selects only VPN Gate records with country code RU, a public IPv4 address and a usable OpenVPN profile;
-- validates the profile structure, then builds a minimal client configuration from an allowlist; untrusted script, plugin, route and external-file directives are never executed or copied;
-- forces the tunnel remote to the API-advertised IP and port;
-- applies an IPv4 OUTPUT kill-switch (only the VPN remote and tunnel interface are allowed) and blocks host IPv6 egress while connected;
-- verifies that the actual public exit IP is in Russia before testing any service;
-- records the actual exit IP, country, ASN/prefix/organization metadata, and whether the source exit IP maps to a RU or PRIVATE prefix in the published GeoIP inventory;
-- tests only the catalogue's RU-scope hostnames using low-volume DNS A/AAAA lookups and HTTPS HEAD requests.
+The profile variants are **connection alternatives for one server**, not
+independent providers. They are ordered IP UDP, UDP, IP TCP, TCP within a
+server. Provider diversity is measured by the server IP's independently
+looked-up origin ASN; another profile for the same server cannot increase the
+distinct-provider count.
 
-The VPN Gate workflow is manual-only (`workflow_dispatch`), with no daily
-schedule or feature-branch push trigger. Manual dispatch becomes available
-after this workflow is integrated into the repository default branch. Its
-artifacts include `vpn_gate_providers.tsv`, `vpn_gate_measurements.jsonl`,
-`vpn_gate_geoip_candidates.tsv`, `vpn_gate_raw.jsonl` and
-`vpn_gate_summary.json`.
+Before a profile can be attempted, the collector checks that its filename
+matches the server hostname and variant shown in the listing, that the profile
+remote agrees with the listed hostname (or that an IP-literal remote is in the
+hostname's current public DNS answers), and that the configured transport
+matches the advertised variant. Profiles are parsed but never executed
+directly: the client is rebuilt from the existing strict allowlist, pins the
+remote IP, and drops untrusted scripts, plugins, route directives and external
+key files. Each successful tunnel must still pass the two-source public exit
+IP/country check before any target is contacted.
 
-**Observed limitation:** four live VPN Gate pilots produced zero completed
-service measurement rows. The final bounded run found only three usable RU
-profiles from two origin ASNs; none established a verified RU exit. VPN Gate
-is not reliable enough here to be the primary source of home-ISP measurements.
-The failed runs do not indicate that target services are blocked or that GeoIP
-ranges are missing. Their endpoint IPs were already covered by RU prefixes.
-The one-shot feature-branch trigger and marker were removed after the pilot.
+The workflow has a manual `source` selector:
+- `vpnobratno` (default): page discovery and the linked profile variants above;
+- `vpngate`: the official VPN Gate CSV API as a fallback source.
 
-#### Observed VPN Gate pilot limitation (2026-11-11)
+It asks for a number of successful RU exits (default three) and a separate
+profile-attempt limit (default three, hard cap six). Failed TLS or authentication
+handshakes are detected from the live OpenVPN log and stop that attempt early.
+The collector prefers one candidate per distinct origin ASN before trying
+another profile from an already represented ASN. It stops as soon as the
+requested number of verified RU exits succeeds. The manual job timeout is
+120 minutes. A and AAAA answers are collected in one resolver call per target.
+Manual dispatch becomes available after this workflow is integrated into the
+repository default branch. It remains manual-only: no daily schedule or
+feature-branch push trigger is enabled.
 
-Four live pilots were executed. Across them, no run produced a completed service
-measurement row. The final bounded run found only three usable RU profiles from
-two origin ASNs; none established a verified RU exit. The first run had a TCP
-connection and TLS negotiation timeout; a later run reached OpenVPN
-`Initialization Sequence Completed` on one node but failed exit-IP metadata
-resolution; subsequent candidates did not establish a TUN route. The final run
-ended with zero verified RU exits, zero target measurements and zero GeoIP
-candidates, and the workflow correctly failed after uploading diagnostics.
+The artifacts include `vpn_gate_providers.tsv`,
+`vpn_gate_measurements.jsonl`, `vpn_gate_geoip_candidates.tsv`,
+`vpn_gate_raw.jsonl` and `vpn_gate_summary.json`. Provider and measurement
+rows retain the discovery source, profile variant and profile URL so a result
+can be traced to the exact connection method used.
 
-This means VPN Gate is not currently reliable enough to be the primary source of
-Russian household-ISP measurements. It does not indicate that any target service
-is blocked or that the GeoIP list is missing ranges. For true household coverage,
-use explicitly consented, user-controlled probes on actual ISP connections and
-independently validate the operator/ASN. Keep VPN Gate and Globalping as
-supplementary evidence only. The one-shot feature-branch trigger and marker were
-removed after the pilot; no automatic VPN measurements remain enabled.
+**Important evidence limit:** VPNObratno says its servers belong to Russian
+VPN Gate users and use services from Russian Internet providers. That is useful
+for finding access-network vantage points, but it does not prove that every
+node is a household broadband line. We record the source as
+`RESIDENTIAL_OR_OTHER_ACCESS_NETWORK_UNVERIFIED` and validate the actual
+exit IP, country and origin ASN independently. Do not call these confirmed
+residential measurements unless the access type is independently established.
 
-### VPN Gate exit verification and provider diversity
+#### What the four earlier live pilots did—and did not—test (2026-11-11)
+
+The four previous bounded pilots used the official VPN Gate CSV API, not the
+new direct VPNObratno profile-link discovery or its IP UDP/IP TCP variants.
+They produced zero verified RU exits and zero completed target-measurement
+rows. Those failures show that the small sample of API-returned profiles
+available during those attempts did not establish a usable tunnel; they do not
+prove that every currently listed VPNObratno profile is unusable, and they do
+not indicate that target services are blocked or GeoIP ranges are missing.
+
+The new VPNObratno discovery and profile-validation path has unit-test
+coverage, but **no live connection through these newly discovered variants
+has been run yet**. Do not describe it as a successful live measurement until
+a manual workflow run records a verified RU exit and actual target rows.
+
+### VPN exit verification and provider diversity
 
 Before sending any service request through a volunteer node, the runner now requires
 two independent public IP-metadata services to agree on the exact exit IPv4 address
@@ -91,10 +105,9 @@ from IP metadata and RIPEstat are recorded in separate columns; a mismatch is
 flagged for review rather than silently choosing one. A returned RIPEstat prefix
 is retained only if it contains the queried IP address.
 
-The initial server sample is no longer simply the three highest-scoring VPN Gate
-rows. The collector inspects up to 24 top-ranked candidates for origin ASN and
-prefers one candidate per distinct observed ASN before selecting a second node
-from the same ASN. If RIPEstat cannot establish an ASN, the candidate is marked
+The collector inspects up to 24 profile candidates for origin ASN and
+prefers one candidate per distinct observed ASN before selecting another
+profile from the same ASN. If RIPEstat cannot establish an ASN, the candidate is marked
 ASN-unverified and is not counted as provider diversity.
 
 After the tunnel is up, system DNS/NSS failures are handled with a fallback
