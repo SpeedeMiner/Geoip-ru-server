@@ -145,3 +145,53 @@ Resume: .github/audits/GEOIP_RU_AUDIT_RESUME.md.
 - До этого priority evidence stage остаётся заблокирован; все новые/неясные строки REVIEW.
 - PR #7 остаётся Draft. PR #5 / feature branch не затрагивались. Production builder, prefix inputs, allowlists, release и \`geoip_RU.dat\` не менялись.
 
+
+
+## 2026-11-11 — Scope drift resolved and new exact-MOAS candidate reviewed (run #159)
+
+### CI cause and correction
+
+The audit priority selection is defined by source data, not by an approved historical number:
+- select every exact prefix with `GLOBAL_BGP_MOAS=yes`;
+- select every `INCLUSION_BASIS=COMPANY_ASN_ONLY`;
+- keep all selected records in `STATUS=REVIEW`.
+
+The old audit scripts/workflow embedded the historical count `56 = 52 MOAS + 4 company-only` in the evidence collector, triage, worklist and workflow validators. The current pinned v37 input snapshot generated `53 MOAS + 4 company-only = 57`. This was a stale validator assumption, not a production build failure or an external API issue.
+
+PR #7 now derives the expected inventory from the exact company review queue, validates set equality and dynamic origin-pair coverage, and passes that validated inventory through RDAP/RPKI/IRR, triage and worklist. The existing curated external spot-check list stays a separately controlled subset. Tests cover a 53+4 selection and dynamic date handling. No automatic approval or production decision was added.
+
+### Run #159
+
+- PR #7: https://github.com/SpeedeMiner/Geoip-ru-server/pull/7.
+- Validation run: https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/42978866087 — **18/18 success** on head `6c0fb4ef2b4f67c8c621365931f289ebf4aefb47`.
+- Artifact: `v37-prefix-audit-7`, ID `13836209176`, 645,109 bytes; SHA-256 `2052fbe9284356b7202c2eb2fb55a9bfdb6fcda1f94fe83780b3312ed4801f96`.
+- Source queue: 3,169 company-origin rows, 23,564 full selected-origin rows; all REVIEW.
+- Priority inventory: 57 exact prefixes, 53 MOAS + 4 company-only.
+- RDAP: 171/171 samples successful; RPKI: 111 exact prefix/origin queries (66 valid, 20 invalid_asn, 25 unknown); IRR query statuses 55 OK, one NO_EXACT_ROUTE_OBJECT_IN_QUERY_RESULTS, one NO_OBJECTS_IN_QUERIED_SOURCES.
+- All 57 priority, holder, triage and worklist rows remain REVIEW. Worklist contains 57 entries. Archived-invalid reconciliation remains 19 entries, all REVIEW, with current classes 16 EXACT_ORIGIN_SET_CHANGED, 1 EXACT_MOAS_RPKI_STATUS_CHANGED, 1 MORE_SPECIFIC_ONLY_NO_EXACT_VERDICT and 1 EXACT_MOAS_INVALID_ORIGIN_REMAINS_UNCONFIRMED.
+- The existing 22 dated external spot checks were preserved. The new prefix was not silently marked checked by the generated priority collector.
+
+### Exact prefix identified: 5.255.192.0/18
+
+The additional priority row is `5.255.192.0/18`:
+- ipverse selection marks exact MOAS origins AS13238 and AS208398; AS13238 is the company/selected ASN that placed this exact prefix in the company-origin review queue. Input snapshot SHA-256: `fadde6a3997e55556c94509032b675dde06684f131e596b88c2910ab907b0f79` (16,268,123 bytes; the upstream URL in the v37 release provenance is a floating `refs/heads/master` codeload URL).
+- Run #159 RIPE RDAP first/middle/last samples: 3/3 HTTP 200; three distinct child resource objects `5.255.192.0/25`, `5.255.223.248/29`, `5.255.255.0/24`, all country RU and Yandex registrant/maintainer data. This is not an exhaustive holder map for all /18 addresses.
+- Run #159 RPKI validation: AS13238 valid and AS208398 valid for the exact /18; both queries HTTP 200 / OK.
+- Run #159 RIPE + seven GRS route-object search: one logical exact route object for AS13238/YANDEX-MNT; no exact AS208398 route object in those queried sources. The object was created and last modified 2012-10-31.
+- External spot-check on 2026-11-11: IPCTL exact-prefix page reports both origins with last-seen 2026-11-11 and two valid ROAs; Cloudflare Radar identifies AS208398 as TELETECH / Edge Technology Plus d.o.o. Beograd, Serbia; RIPE allocation/WHOIS summaries identify `RU-YANDEX-20120914`, ALLOCATED PA, ORG-YA1 / YANDEX LLC, country RU; WorldIP RIPE RIS-derived pages list this MOAS on 2026-11-06. These are independent asynchronous public references, not a single synchronized full RIB.
+- Each exact /18 ROA advertises maxLength /24. RPKI validity is origin authorization, not address-resource ownership or geography. A Serbian ASN origin therefore does not make the RIPE-allocated Yandex /18 a foreign resource.
+- The exact /18 route-object mismatch is review-worthy, but the absence of AS208398 in the queried RIPE/GRS object results does not establish global IRR absence or an invalid route. No proof of hijack, route leak, transfer or customer relationship has been established.
+- Worklist action: `IRR_BGP_ORIGIN_RECONCILIATION`; external spot-check relation `EXACT_AND_MORE_SPECIFIC`; all status remains REVIEW.
+
+### Files and changes in this stage
+
+- Updated `.github/audits/priority_prefix_external_spot_checks_v37.tsv` from 22 to 23 entries by adding `5.255.192.0/18`, date `CHECKED_2026-11-11`, exact + more-specific scope.
+- Updated `.github/scripts/build_priority_prefix_worklist.py` to accept a real ISO `CHECKED_YYYY-MM-DD` date instead of a single hard-coded day. Invalid calendar dates are rejected.
+- Added unit tests for a later-date spot check and invalid date.
+- Updated `.github/workflows/prefix-audit-validation.yml` to expect the 23 curated prefixes, enforce their per-row check dates and exact scope relations, and validate 17 EXACT_AND_MORE_SPECIFIC / 5 EXACT_ONLY / 1 MORE_SPECIFIC_ONLY.
+- Updated the improvement plan with a documented example of the cross-border MOAS/holder distinction.
+- No production prefix input, company allowlist, Go builder, DIRECT policy, `geoip_RU.dat`, release tag or release branch was changed.
+
+### Next step
+
+Run full PR #7 CI after the spot-check/worklist changes; inspect the new worklist row and verify all 57 remain REVIEW and all 23 external spot checks have correct dates/scope. Then update resume/checkpoint/PR body with the verified run and artifact. Continue to the wider source catalog + canonical full exact-prefix inventory only after this validation. Do not add or remove `5.255.192.0/18` from production based solely on MOAS, countryCode or RPKI.
