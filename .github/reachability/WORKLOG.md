@@ -213,3 +213,15 @@ Durable resume point for PR #5. After any conversation/network interruption, rea
 - Current GitHub combined status for the VPN Gate code head returned no checks, and the available workflow-run lookup returned no runs. Do not mark validation successful; no full validation result is visible yet.
 - The manual VPN Gate workflow remains unlaunched. No volunteer exit has been connected, no user traffic or credentials were sent, and no production GeoIP files were changed.
 - Continue from: obtain a visible successful validation for the 41 Python tests and Go checks; then use the manual-only workflow with one or two exits first, inspect exact exit IP/country/ASN/PTR and firewall/resolver restoration, and only then expand to three. Keep PR #5 Draft and do not touch PR #6.
+
+
+### 2026-11-11 — Preserve ASN provenance and validate prefix containment — IMPLEMENTED / CI PENDING
+
+- Split ASN attribution into explicit sources for the VPN server and actual VPN exit: IP metadata ASN versus RIPEstat origin ASN. The selected display/origin ASN prefers RIPEstat when available, while both raw values and a conflict flag remain in provider and measurement outputs.
+- If the two ASN sources conflict for the VPN exit, add a separate `ASN_CONFLICT` candidate row for manual review. Summary includes server and exit ASN conflict counts. No source is silently discarded.
+- Hardened `network_info`: a RIPEstat prefix is kept only if it parses as a CIDR of the right family and contains the exact queried IP. ASN information is retained separately if the returned prefix is absent/mismatched.
+- Added two tests for RIPEstat prefix containment and mismatch rejection. VPN Gate test module now has 14 tests; existing reachability tests remain 29; expected Python discovery count is 43.
+- Updated README to explain ASN provenance and conflict handling.
+- Latest validation-triggering code/test commit: `e1272f0e9b4c3048537a11e91b5d7bddf782012f`; ASN provenance implementation commit: `5668f225362f8e0945b983ffdfcce492c90a5397`; documentation commit: `ba7cee32ecae140a02522c93aceb94a0a64a6f83`.
+- No visible CI checks or Actions run result has been returned by the available GitHub connector. Validation remains pending; previous successful CI predates all VPN Gate code.
+- No live VPN Gate workflow has been dispatched or executed. No GeoIP builder/input/release/DIRECT/ASN allowlist or PR #6 changes.
