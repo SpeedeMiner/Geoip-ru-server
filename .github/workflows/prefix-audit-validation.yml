@@ -395,20 +395,18 @@ jobs:
           inventory="prefix-audit/v37-canonical-inventory"
           mkdir -p "$inventory"
 
-          # The release tag is mutable by name; the exact output bytes are pinned by SHA-256.
-          geoip_url="https://github.com/${{ github.repository }}/releases/download/latest-geoip-client-v37/geoip_RU.dat"
+          # Pin every v37 input, including the binary output, to the immutable release Git commit.
+          release_commit="d613c5f0ef482f2051cbc37a303b2ac30076d313"
+          raw_base="https://raw.githubusercontent.com/${{ github.repository }}/$release_commit"
+          geoip_url="$raw_base/geoip_RU.dat"
           curl --fail --location --silent --show-error \
             --retry 3 --retry-all-errors --connect-timeout 20 --max-time 180 \
             "$geoip_url" -o "$inventory/geoip_RU.dat"
           geoip_sha="$(sha256sum "$inventory/geoip_RU.dat" | awk '{print $1}')"
           if [[ "$geoip_sha" != "c70310071f7611d5c7ae54d409ae7c8d7b4598bbbbb706cbb44e9f0ca9303904" ]]; then
-            echo "::error::v37 geoip_RU.dat SHA-256 mismatch: $geoip_sha"
+            echo "::error::Immutable v37 geoip_RU.dat SHA-256 mismatch: $geoip_sha"
             exit 1
           fi
-
-          # All text inputs below are read from the immutable release commit, not a moving release branch.
-          release_commit="d613c5f0ef482f2051cbc37a303b2ac30076d313"
-          raw_base="https://raw.githubusercontent.com/${{ github.repository }}/$release_commit"
           declare -A expected_sha=(
             ["geoip_RU_BY_KZ_asn_bgp_prefixes.txt"]="92e48d87414e4bbfb3ede304ba725436f2c174c6909499f68c2f18c93f8423b4"
             ["geoip_RU_rir_registered_prefixes.txt"]="ad12b823e7b768b38d8b92406b2863ce9a6ccb1c07575d5aa0eddd4b680dff24"
@@ -442,6 +440,7 @@ jobs:
             --blocked-approved "$inventory/geoip_RU_blocked_ip_exclusions.txt" \
             --blocked-review "$inventory/geoip_RU_blocked_review_candidates.tsv" \
             --output "$inventory/canonical_prefix_inventory.tsv" \
+            --rir-residual-output "$inventory/rir_ru_resource_residual_review.tsv" \
             --stats "$inventory/canonical_prefix_inventory_stats.txt" \
             --release-commit "$release_commit" \
             --geoip-sha256 "$geoip_sha"
@@ -474,6 +473,11 @@ jobs:
               "selected_origin_bgp IPv6: address_union=216861075172383058498599363018752; covered_by_RU_output=216861075172383058498599363018752; coverage=100.000000%",
               "additional_geoip_accepted IPv4: address_union=18258; covered_by_RU_output=18258; coverage=100.000000%",
               "additional_geoip_accepted IPv6: address_union=713060716183296726116943790080; covered_by_RU_output=713060716183296726116943790080; coverage=100.000000%",
+              "selected_origin_bgp IPv4: address_union=49138688; covered_by_RU_output=49130030; outside_RU_output=8658; covered_outside_RU_by_PRIVATE_or_approved_BLOCKED=8658; unexplained_outside_RU_PRIVATE_BLOCKED=0",
+              "selected_origin_bgp IPv6: address_union=216861075172383058498599363018752; covered_by_RU_output=216861075172383058498599363018752; outside_RU_output=0; covered_outside_RU_by_PRIVATE_or_approved_BLOCKED=0; unexplained_outside_RU_PRIVATE_BLOCKED=0",
+              "RIR RU resource unique IPv4 address residual outside RU+PRIVATE+approved BLOCKED: 329324",
+              "RIR RU resource unique IPv6 address residual outside RU+PRIVATE+approved BLOCKED: 11532730404012516821114946584576",
+              "all STATUS=REVIEW",
               "Approved blocked exclusions overlapping RU output IPv4 addresses: 0",
               "Approved blocked exclusions overlapping RU output IPv6 addresses: 0",
               "Exact-prefix flags use canonical CIDR string equality only",
@@ -482,6 +486,31 @@ jobs:
               if required not in stats:
                   raise SystemExit(f"Canonical inventory report missing: {required}")
           print(stats)
+          PY
+
+          python3 - "$inventory/rir_ru_resource_residual_review.tsv" <<'PY'
+          import csv
+          import ipaddress
+          import sys
+          from pathlib import Path
+
+          path = Path(sys.argv[1])
+          with path.open(encoding="utf-8", newline="") as stream:
+              rows = list(csv.DictReader(stream, delimiter="\\t"))
+          if not rows:
+              raise SystemExit("RIR residual queue is empty; expected the frozen non-zero v37 residual")
+          if any(row["STATUS"] != "REVIEW" for row in rows):
+              raise SystemExit("RIR residual queue contains a non-REVIEW row")
+          for row in rows:
+              net = ipaddress.ip_network(row["PREFIX"], strict=True)
+              expected_family = f"IPv{net.version}"
+              if row["FAMILY"] != expected_family or int(row["PREFIX_ADDRESSES"]) != net.num_addresses:
+                  raise SystemExit(f"RIR residual prefix metadata mismatch: {row['PREFIX']}")
+              unexplained = int(row["UNEXPLAINED_OUTSIDE_RU_PRIVATE_BLOCKED_ADDRESSES"])
+              policy = int(row["POLICY_COVERED_ADDRESSES"])
+              if unexplained <= 0 or unexplained + policy != net.num_addresses:
+                  raise SystemExit(f"RIR residual accounting mismatch: {row['PREFIX']}")
+          print(f"Validated {len(rows)} RIR-registered resource residual candidates; all REVIEW")
           PY
 
       - name: Collect RDAP resource-holder samples and per-origin RPKI status for priority prefixes
