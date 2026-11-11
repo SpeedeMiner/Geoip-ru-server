@@ -731,7 +731,7 @@ def resolve_vpnobratno_server_ip(
 ) -> str:
     """Return a listed server's public IPv4 without pre-tunnel DNS for IP variants."""
     expected = expected_hostname.rstrip(".").lower()
-    if not re.fullmatch(r"vpn[0-9]+\\.opengw\\.net", expected):
+    if not re.fullmatch(r"vpn[0-9]+\.opengw\.net", expected):
         raise ValueError("VPNObratto listing has an unsupported server hostname")
     if address_mode == "ddns":
         if remote_host.rstrip(".").lower() != expected:
