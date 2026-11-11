@@ -581,3 +581,12 @@ Durable resume point for PR #5. After any conversation/network interruption, rea
 - CI run [43007678277](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43007678277) on commit `0946a77171bcd7c69ecf62ab5ec3907e3e1f19d7` passed **108 Python tests** plus Python compile/JSON validation, `gofmt`, `go test ./...` and `go build`.
 - The current code, tests, workflow timeout and README note are committed in PR #5. Next step is one fresh manual pilot from the current feature-branch tip, still `vpnobratno`, one verified RU exit target, at most six profile attempts, and a 5-second TUN-route wait.
 - PR #5 remains OPEN / DRAFT. PR #6 and all production builder/data/release/DIRECT/ASN-policy files remain untouched.
+
+### 2026-11-11 — Run #9 dispatched after removing optional preflight enrichment
+
+- After the 108-test CI pass, the manual VPNObratto workflow was dispatched once as [run #43008159447](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43008159447) from feature branch commit `24fd242b0dce540132b0346df17030b5b00e6d3c`.
+- Inputs: `source=vpnobratno`, `max_vpn_gate_servers=1`, `max_vpn_gate_attempts=6`; OpenVPN TUN-route wait remains `5s`. The manual workflow now caps the measurement step at 10 minutes and the job at 20 minutes.
+- Before this dispatch, run #8 was confirmed terminal `cancelled`; no VPN workflow was queued or in progress.
+- At dispatch, setup, checkout, VPN tooling, Go setup, published GeoIP checksum verification and RU/PRIVATE inventory export all passed. The measurement step is `in_progress`; no verified RU exit or target measurements are confirmed yet.
+- The code no longer performs server IP-organization or reverse-PTR lookups in the per-attempt preflight; it reuses the RIPEstat origin ASN/prefix cached during candidate selection. Those optional metadata fields may be empty; post-tunnel two-source exit IP/country verification is unchanged.
+- PR #5 remains OPEN / DRAFT; no changes to PR #6 or production builder/data/release/DIRECT/ASN policy.
