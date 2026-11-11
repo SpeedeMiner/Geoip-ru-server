@@ -1,0 +1,84 @@
+name: v38 post-release exact-prefix audit (review only)
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - "review/v38_postrelease_prefix_audit_bundle_20261111.tar.gz"
+      - ".github/workflows/v38-postrelease-prefix-audit.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: v38-postrelease-prefix-audit-${{ github.event.pull_request.number || github.ref_name }}
+  cancel-in-progress: false
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+
+      - name: Extract and verify immutable review bundle
+        run: |
+          set -euo pipefail
+          echo "a1cdc9716618483ed6214613b65f6b4dec52c0602141e5894a08ea1182623d50  review/v38_postrelease_prefix_audit_bundle_20261111.tar.gz" | sha256sum -c -
+          tar -xzf review/v38_postrelease_prefix_audit_bundle_20261111.tar.gz -C .
+          sha256sum -c SHA256SUMS
+
+      - name: Compile and test audit parser
+        run: |
+          python3 -m py_compile .github/scripts/collect_v38_postrelease_prefix_audit.py .github/scripts/test_v38_postrelease_prefix_audit.py
+          python3 -m unittest discover -s .github/scripts -p 'test_v38_postrelease_prefix_audit.py' -v
+
+      - name: Capture current exact-NLRI and same-source RPKI evidence for 56 priority prefixes
+        run: |
+          python3 .github/scripts/collect_v38_postrelease_prefix_audit.py \
+            --targets review/v38_postrelease_prefix_targets_20261111.tsv \
+            --out-dir v38-postrelease-audit \
+            --timeout 18 \
+            --routeviews-interval 1.1 \
+            --ripe-workers 4
+
+      - name: Validate review-only output and immutable release binding
+        run: |
+          python3 - <<'PY'
+          import csv, hashlib, json
+          from pathlib import Path
+          root = Path('v38-postrelease-audit')
+          manifest = json.loads((root / 'manifest.json').read_text())
+          rows = list(csv.DictReader((root / 'v38_postrelease_prefix_review.tsv').open(encoding='utf-8', newline=''), delimiter='\t'))
+          capture = json.loads((root / 'exact_nlri_capture.json').read_text())
+          if manifest['target_prefixes'] != 56 or len(rows) != 56:
+              raise SystemExit('Expected 56 review rows')
+          if manifest['archived_invalid_prefixes'] != 19:
+              raise SystemExit('Expected 19 archived-invalid rows')
+          if not manifest['all_rows_remain_review'] or not all(r['STATUS'] == 'REVIEW' for r in rows):
+              raise SystemExit('Review-only status invariant failed')
+          if manifest['classification_or_production_changes'] is not False:
+              raise SystemExit('The audit must not change classifications')
+          if capture['release_commit'] != '3033248ea54cb298bafded25ddcd2805d5f0e7ac':
+              raise SystemExit('Unexpected release commit')
+          if capture['release_geoip_sha256'] != 'e757c1b7b8ca5b47c11117784eb78ab25c59fbadc0f6ab55229827560db76800':
+              raise SystemExit('Unexpected release GeoIP hash')
+          if capture['request_count'] != 224 or len(capture['summary']) != 224:
+              raise SystemExit('Expected four evidence requests for each of 56 prefixes')
+          for path in root.iterdir():
+              if path.is_file():
+                  print(f'{path.name}\t{path.stat().st_size}\t{hashlib.sha256(path.read_bytes()).hexdigest()}')
+          print(json.dumps(manifest, indent=2, sort_keys=True))
+          PY
+
+      - name: Upload audit-only evidence bundle
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: v38-postrelease-prefix-audit
+          path: v38-postrelease-audit/
+          if-no-files-found: error
+          retention-days: 30
