@@ -111,25 +111,39 @@ def record_vpnobratno_progress(
     event: str,
     **fields: Any,
 ) -> None:
-    """Atomically persist the last profile-fetch phase without storing profile contents."""
+    """Atomically persist profile progress without a blocking per-event fsync."""
     if progress_path is None:
         return
     path = pathlib.Path(progress_path)
+    profile_key = "listing" if not context.get("profile_index") else str(context["profile_index"])
+
+    def trace(operation: str) -> None:
+        print(
+            f"[vpn-gate] progress_manifest profile={profile_key} event={event} "
+            f"operation={operation} pid={os.getpid()}",
+            flush=True,
+        )
+
     try:
+        trace("parent_mkdir_started")
         path.parent.mkdir(parents=True, exist_ok=True)
+        trace("parent_mkdir_completed")
+
+        trace("read_started")
         try:
             manifest = json.loads(path.read_text(encoding="utf-8"))
             if not isinstance(manifest, dict):
                 manifest = {}
         except (OSError, ValueError, json.JSONDecodeError):
             manifest = {}
+        trace("read_completed")
+
         manifest.setdefault("schema_version", 1)
         manifest.setdefault("workflow_run_id", os.environ.get("GITHUB_RUN_ID", ""))
         manifest.setdefault("workflow_run_attempt", os.environ.get("GITHUB_RUN_ATTEMPT", ""))
         manifest.setdefault("execution_sha", os.environ.get("GITHUB_SHA", ""))
         manifest.setdefault("profiles", {})
-        key = "listing" if not context.get("profile_index") else str(context["profile_index"])
-        record = manifest["profiles"].setdefault(key, {})
+        record = manifest["profiles"].setdefault(profile_key, {})
         for name in ("profile_index", "profile_count", "hostname", "variant", "address_mode"):
             if name in context:
                 record[name] = context[name]
@@ -146,18 +160,26 @@ def record_vpnobratno_progress(
             del events[:-64]
         manifest["updated_at_utc"] = record["updated_at_utc"]
         manifest["last_event"] = {
-            "profile": key,
+            "profile": profile_key,
             "event": event,
             "at_utc": record["updated_at_utc"],
             **fields,
         }
+
         temporary = path.with_name(f".{path.name}.{os.getpid()}.tmp")
+        trace("temporary_write_started")
         with temporary.open("w", encoding="utf-8") as stream:
             json.dump(manifest, stream, ensure_ascii=False, sort_keys=True)
             stream.write("\n")
             stream.flush()
-            os.fsync(stream.fileno())
+        trace("temporary_write_completed")
+
+        # Phase updates are short-lived diagnostic state on an ephemeral runner.
+        # Avoid a synchronous fsync for every network marker: a blocked fsync can
+        # hold a worker in uninterruptible I/O and defeat both worker and job timeouts.
+        trace("atomic_replace_started")
         os.replace(temporary, path)
+        trace("atomic_replace_completed")
     except (OSError, TypeError, ValueError) as exc:
         print(
             f"[vpn-gate] progress_manifest_write_failed error={type(exc).__name__} "
