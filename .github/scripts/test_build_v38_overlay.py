@@ -70,6 +70,25 @@ class GeoIPV38OverlayTests(unittest.TestCase):
             {4: 128, 6: 0},
         )
 
+    def test_blocked_prefix_impact_subtracts_only_approved_addresses_inside_direct_overlap(self):
+        preblock = {ipaddress.ip_network("198.51.100.0/24")}
+        private = set()
+        approved = {
+            ipaddress.ip_network("198.51.100.1/32"),
+            ipaddress.ip_network("198.51.101.1/32"),
+        }
+        ipsum = {ipaddress.ip_network("198.51.100.0/24")}
+        direct_after_private = {4: build.intervals(preblock, 4), 6: []}
+        approved_intervals = {4: build.intervals(approved, 4), 6: []}
+        self.assertEqual(
+            build.blocked_prefix_impact(next(iter(ipsum)), direct_after_private, approved_intervals),
+            (256, 1, 255),
+        )
+        self.assertEqual(
+            build.potential_ipsum_direct_overlap(preblock, private, approved, ipsum),
+            {4: 255, 6: 0},
+        )
+
     def test_ipsum_requires_exact_ipv4_24_only(self):
         with tempfile.TemporaryDirectory() as tmp:
             p=Path(tmp)/"ipsum"
