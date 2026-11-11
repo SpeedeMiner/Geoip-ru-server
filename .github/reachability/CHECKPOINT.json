@@ -1,14 +1,14 @@
 {
   "schema_version": 1,
-  "updated_at_utc": "2026-11-11T14:57:17Z",
+  "updated_at_utc": "2026-11-11T15:02:30Z",
   "repository": "SpeedeMiner/Geoip-ru-server",
   "pull_request": 5,
   "pull_request_url": "https://github.com/SpeedeMiner/Geoip-ru-server/pull/5",
   "branch": "feature/reachability-full-ru-kz-by",
-  "recorded_pr_head_before_checkpoint_commit": "b6d5ffcd20dd8e488d6e9c2563f7fda781a5c20d",
+  "recorded_pr_head_before_checkpoint_commit": "4712e1a538e102214c9c6e590970b0d946c88676",
   "base_sha": "a68e5d6589361814cb1cfedd2af7857e4af806fa",
-  "state": "APT_DOH_BOOTSTRAP_IMPLEMENTED_CODE_WORKFLOW_JOB_VALIDATED_119_TESTS_LATEST_TEST_FIX_CI_PENDING",
-  "current_phase": "WAIT_FOR_LATEST_HEAD_CI_THEN_MANUAL_VPN_RUN",
+  "state": "APT_DOH_BOOTSTRAP_CI_VALIDATED_119_TESTS_READY_FOR_MANUAL_RUN17",
+  "current_phase": "READY_FOR_MANUAL_RUN17_LIVE_DOH_AND_APT_VALIDATION",
   "completed": [
     "repository_reconnaissance",
     "protobuf_inventory_exporter",
@@ -232,7 +232,8 @@
     "run_16_ubuntu2404_apt_dns_failure_inspected",
     "apt_mirror_dns_bootstrap_implementation",
     "apt_mirror_dns_bootstrap_regression_tests",
-    "run16_apt_dns_failure_durable_record"
+    "run16_apt_dns_failure_durable_record",
+    "apt_mirror_dns_bootstrap_ci_validation_119_tests"
   ],
   "latest_successful_validation_run": 43037445995,
   "latest_successful_validation_commit": "05c0d0431990e97851628f7b87ef0b29b0f8763c",
@@ -411,10 +412,10 @@
     "production_release_artifact_byte_delta_verified": false
   },
   "next_steps": [
-    "Check validation run 43043473870 on branch head b6d5ffcd20dd8e488d6e9c2563f7fda781a5c20d; require complete green job and workflow result.",
-    "Only after green validation, manually dispatch Russian ISP VPN Gate reachability on feature/reachability-full-ru-kz-by with source=vpnobratto, max_vpn_gate_servers=1, max_vpn_gate_attempts=6.",
-    "Inspect pinned DoH, getent, apt update and apt install markers before counting any subsequent VPN activity.",
-    "Keep PR #5 OPEN / DRAFT. Do not merge, mark ready, or alter production GeoIP files, DIRECT policy, or PR #6."
+    "Owner manually dispatches Russian ISP VPN Gate reachability on feature/reachability-full-ru-kz-by with source=vpnobratno, max_vpn_gate_servers=1, max_vpn_gate_attempts=6.",
+    "Verify pinned DoH lookup completion for azure.archive.ubuntu.com, archive.ubuntu.com and security.ubuntu.com, mirror_hosts_override_installed, apt_dns_bootstrap_completed, all 3 mirror_getent_verified markers, apt_update_completed and apt_install_completed.",
+    "Only after setup succeeds, inspect profile discovery, server selection, OpenVPN attempts, two-source RU exit consensus and persisted DNS/HTTPS target rows.",
+    "Keep PR #5 OPEN / DRAFT; do not merge, mark ready, rebase or alter production GeoIP files, DIRECT policy, or PR #6."
   ],
   "ci_policy": {
     "push_validation_paths": [
@@ -1086,7 +1087,15 @@
     "result": "failure",
     "failure_stage": "Install isolated VPN measurement tools",
     "artifact_count": 0,
-    "interpretation": "No VPN endpoint or target was measured."
+    "interpretation": "No VPN endpoint or target was measured.",
+    "next_run_number": 17,
+    "state": "ready_for_owner_manual_dispatch_after_green_ci",
+    "parameters": {
+      "branch": "feature/reachability-full-ru-kz-by",
+      "source": "vpnobratno",
+      "max_vpn_gate_servers": "1",
+      "max_vpn_gate_attempts": "6"
+    }
   },
   "latest_manual_dispatch": {
     "run_id": 43038105495,
@@ -1182,20 +1191,16 @@
     "interpretation": "No verified RU tunnel and no target requests. The two 5-second failures are VPN relay connection outcomes, not target-site blocking evidence."
   },
   "latest_validation": {
-    "run_id": 43037445995,
-    "run_url": "https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43037445995",
-    "commit": "05c0d0431990e97851628f7b87ef0b29b0f8763c",
-    "status": "SUCCESS",
-    "completed_at_utc": "2026-11-11T14:20:14Z",
-    "job_id": 130579946393,
-    "python_tests": 116,
-    "python_status": "PASS",
-    "python_compile_and_json": "PASS",
-    "gofmt": "PASS",
-    "go_test": "PASS",
-    "go_build": "PASS",
-    "workflow_file_change_accepted": true,
-    "note": "Full job log confirms Ran 116 tests / OK, then gofmt, go test ./... and go build. This is validation only; apt mirror DNS and actual VPN connectivity still require manual workflow execution."
+    "run_id": 43043473870,
+    "job_id": 130603794526,
+    "tested_commit": "b6d5ffcd20dd8e488d6e9c2563f7fda781a5c20d",
+    "workflow_conclusion": "success",
+    "job_conclusion": "success",
+    "python_tests": 119,
+    "python_result": "OK",
+    "gofmt": "success",
+    "go_test": "success",
+    "go_build": "success"
   },
   "run9_result": {
     "run_id": 43008159447,
@@ -1655,8 +1660,11 @@
       "go_build": "passed",
       "latest_test_only_commit": "b6d5ffcd20dd8e488d6e9c2563f7fda781a5c20d",
       "latest_head_validation_run": 43043473870,
-      "latest_head_validation_status": "pending",
-      "live_doh_from_westus2": "not yet verified"
+      "latest_head_validation_status": "success",
+      "live_doh_from_westus2": "pending manual run #17",
+      "latest_tested_commit": "b6d5ffcd20dd8e488d6e9c2563f7fda781a5c20d",
+      "latest_job_id": 130603794526,
+      "go_checks": "gofmt, go test ./..., go build passed"
     }
   }
 }
