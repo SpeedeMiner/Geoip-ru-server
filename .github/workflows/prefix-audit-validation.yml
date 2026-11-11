@@ -479,6 +479,7 @@ jobs:
             echo "::error::Pinned geoip_RU.dat does not match its release sidecar"
             exit 1
           fi
+          geoip_sha="$actual_geoip_sha"
           expected_provenance_sha="$(awk 'NF > 0 {print $1; exit}' "$inventory/geoip_RU_input_provenance.tsv.sha256sum")"
           actual_provenance_sha="$(sha256sum "$inventory/geoip_RU_input_provenance.tsv" | awk '{print $1}')"
           if [[ ! "$expected_provenance_sha" =~ ^[0-9a-f]{64}$ || "$actual_provenance_sha" != "$expected_provenance_sha" ]]; then
