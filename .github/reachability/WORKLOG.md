@@ -694,3 +694,15 @@ Durable resume point for PR #5. After any conversation/network interruption, rea
 
 - Follow-up validation [#43037445995](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43037445995), job `130579946393`, completed `success` at `2026-11-11T14:20:14Z` on the workflow-change commit `05c0d0431990e97851628f7b87ef0b29b0f8763c`. The full job log confirms `Ran 116 tests` / `OK`, plus `py_compile`/JSON validation, `gofmt`, `go test ./...` and `go build`.
 - Next manual dispatch is run #16, from latest branch `feature/reachability-full-ru-kz-by` (current head includes workflow fix + worklog/checkpoint), using `source=vpnobratno`, one verified RU exit and six maximum profile attempts. Run only after confirming no VPN workflow is active. Do not count it successful until output artifact has a verified RU exit and target DNS/HTTPS rows.
+
+
+### 2026-11-11 — Bootstrap Ubuntu apt mirror DNS independently of runner NSS — IMPLEMENTED / VALIDATION PENDING
+
+- Manual VPN run #16 (43038105495) ran on Ubuntu 24.04.5 / image ubuntu-24.04 version 20261101.360.1, runner region westus2, and failed before Go, inventory export, or VPN measurement. The full job log confirms packages.microsoft.com resolved while azure.archive.ubuntu.com, archive.ubuntu.com and security.ubuntu.com repeatedly failed DNS; the five-minute install step timed out. No artifact or target measurement was produced.
+- Changing from ubuntu-latest to ubuntu-24.04 therefore did not address the root problem: the hosted runner's normal DNS path could not resolve Ubuntu mirror names.
+- Reuse the existing PinnedHTTPSConnection / doh_query implementation, which connects to Cloudflare (1.1.1.1) and Google (8.8.8.8) by literal IP and validates TLS against the resolver hostname.
+- Added install_ubuntu_apt_host_overrides(). It resolves all three Ubuntu mirror hostnames over pinned HTTPS DoH, accepts only public IPv4 answers, writes one clearly delimited temporary override block to the ephemeral runner's /etc/hosts, and rejects partial results or malformed existing markers. It does not alter /etc/resolv.conf; normal apt repository TLS and signed Release/package verification remain enabled.
+- The setup step now runs the bootstrap under a 45-second root-owned timeout, verifies the names with getent, caps apt update/install wall time, and has a six-minute step limit. If pinned DoH itself is unavailable, the job should fail quickly with per-host diagnostics instead of spending five minutes waiting on apt.
+- Added unit tests for public-IPv4 filtering, expected mirror mapping, idempotent block replacement, rejection of partial resolution and malformed existing markers.
+- Run #16 had zero OpenVPN attempts, zero verified RU exits, zero target DNS/HTTPS rows and no artifacts. This is an environment/setup failure, not evidence about VPN or target reachability.
+- Validation will be recorded only after the branch's Reachability validation workflow runs against the resulting code commit.
