@@ -1,14 +1,14 @@
 {
   "schema_version": 1,
-  "updated_at_utc": "2026-11-11T16:15:33Z",
+  "updated_at_utc": "2026-11-11T16:34:00Z",
   "repository": "SpeedeMiner/Geoip-ru-server",
   "pull_request": 5,
   "pull_request_url": "https://github.com/SpeedeMiner/Geoip-ru-server/pull/5",
   "branch": "feature/reachability-full-ru-kz-by",
-  "recorded_pr_head_before_checkpoint_commit": "e339340436f6d17a31494c16f2a7c0f22a82e165",
+  "recorded_pr_head_before_checkpoint_commit": "7d075bda9a5c06e5ad9283f825f8c90e61cbc622",
   "base_sha": "a68e5d6589361814cb1cfedd2af7857e4af806fa",
-  "state": "RUN20_CANCELLED_TIMEOUT_OVERRUN_NO_ARTIFACT_NO_VERIFIABLE_TUNNEL",
-  "current_phase": "INVESTIGATE_RUNNER_WATCHDOG_AND_TERMINATION_BEFORE_RUN21",
+  "state": "RUN20_CANCELLED_NO_ARTIFACT; PINNED_DOH_ABSOLUTE_DEADLINE_IMPLEMENTED_AND_CI_JOB_GREEN; RUN21_NOT_DISPATCHED",
+  "current_phase": "INVESTIGATE_RUNNER_TIMEOUT_OVERRUN; DOH_SOURCE_TIMEOUT_GAP_FIXED_AND_VALIDATED; KEEP_LIVE_RUN_BLOCKED",
   "completed": [
     "repository_reconnaissance",
     "protobuf_inventory_exporter",
@@ -247,12 +247,15 @@
     "vpnobratto_run20_completed_cancelled_2026_11_11_16_14_53z",
     "vpnobratto_run20_artifact_absent_after_cancel",
     "vpnobratto_run20_job_log_unavailable_blobnotfound_after_cancel",
-    "vpnobratto_run20_timeout_overrun_recorded_terminal"
+    "vpnobratto_run20_timeout_overrun_recorded_terminal",
+    "vpnobratto_pinned_doh_absolute_deadline_read1_loop",
+    "vpnobratto_slow_drip_doh_deadline_regression_test",
+    "vpnobratto_validation_122_python_tests_go_success_run_43059474634"
   ],
-  "latest_successful_validation_run": 43051897730,
-  "latest_successful_validation_commit": "a9967f52b4bd3d7a50638ad9ce63d685d57b84a9",
+  "latest_successful_validation_run": 43059474634,
+  "latest_successful_validation_commit": "7d075bda9a5c06e5ad9283f825f8c90e61cbc622",
   "test_counts": {
-    "python_unit_tests": 121,
+    "python_unit_tests": 122,
     "python_unit_tests_status": "PASS",
     "gofmt_status": "PASS",
     "go_tests_status": "PASS",
@@ -425,11 +428,11 @@
     "production_release_artifact_byte_delta_verified": false
   },
   "next_steps": [
-    "Investigate why run #20 did not reach a terminal GitHub state within the 7m process guard, 9m step timeout and 12m job timeout; use available terminal job metadata if it becomes retrievable.",
-    "Review pinned VPNObratno HTTPS fetch, socket/read timeouts and GNU timeout/process-group behavior; do not claim the sixth profile fetch itself caused the full 13-minute overrun without logs.",
-    "Add or improve deterministic timeout/termination observability and tests before another live attempt, if source-level evidence justifies a change.",
-    "Do not dispatch another VPN workflow until the runner/watchdog issue has been addressed and the new code/workflow has green CI.",
-    "Keep PR #5 OPEN / DRAFT; do not merge, mark ready, rebase, or alter production GeoIP outputs, DIRECT policy, ASN allowlists, or PR #6."
+    "Keep Run #21 undispatched. The DoH response reader now enforces an absolute deadline, but Run #20's exact stall/runner failure remains unproven because its terminal logs and artifacts are unavailable.",
+    "Investigate GitHub Actions runner/job timeout behavior separately from application-level network deadlines; do not infer that the DoH defect caused the 13-minute Run #20 overrun.",
+    "If source-level review finds another unbounded operation or a demonstrable process-group cleanup gap, add a narrow regression test and validate it before any live dispatch.",
+    "After runner/watchdog termination is independently addressed and CI is green, run one manually dispatched VPNObratto pilot: source=vpnobratto, one verified RU exit requested, max six profile attempts.",
+    "Keep PR #5 OPEN / DRAFT; do not merge, mark ready, rebase, or change production GeoIP outputs, DIRECT policy, ASN allowlists, or PR #6."
   ],
   "ci_policy": {
     "push_validation_paths": [
@@ -1531,7 +1534,7 @@
     "source": "vpnobratto",
     "max_vpn_gate_servers": 1,
     "max_vpn_gate_attempts": 6,
-    "precondition": "Run #20 is cancelled. Diagnose the watchdog/runner overrun and validate any fix before a new manual dispatch.",
+    "precondition": "Run #20 is cancelled. Do not dispatch until the runner/watchdog timeout overrun is independently understood and addressed; DoH absolute-deadline fix has green validation but does not explain the Run #20 overrun.",
     "not_yet_dispatched": true
   },
   "run14_result": {
@@ -1877,5 +1880,21 @@
     "cancellation_actor": "unknown",
     "diagnosis": "The Actions run exceeded all nominal process/step/job timeout ceilings and was later marked cancelled. No terminal logs or artifacts are available to distinguish a still-running process from a lost/stale hosted runner or controller state.",
     "interpretation": "Five profile downloads completed successfully and the sixth started. Later discovery/OpenVPN/exit/target phases are unknown; no target blocking or residential ISP verdict is supported."
+  },
+  "pinned_doh_absolute_deadline_fix": {
+    "code_commit": "562fb02e568443a0a1aab629c8762ca41d9980b9",
+    "test_commit": "4f7b76fac3f1a22b6cac0b365fcfcfb92e0abb91",
+    "final_test_fixture_commit": "24c6bbad70cc5f1168affaaeb1ae15eda65743f4",
+    "active_duplicate_test_class_sync_commit": "7d075bda9a5c06e5ad9283f825f8c90e61cbc622",
+    "validation_run_id": 43059474634,
+    "validation_job_id": 130657776704,
+    "validation_job_conclusion": "success",
+    "python_tests": 122,
+    "gofmt": "passed",
+    "go_test": "passed",
+    "go_build": "passed",
+    "implementation": "doh_query now shares one monotonic absolute deadline across pinned resolvers, reads the bounded response in read1 chunks, and refreshes the remaining socket timeout before each chunk. Slow-drip responses cannot extend the DoH query indefinitely.",
+    "test": "Regression test advances a fake monotonic clock during chunked reads and verifies that the deadline expires before a second resolver attempt.",
+    "interpretation": "This closes a discovered unbounded slow-drip DoH read path. It is not evidence that this defect caused Run #20's timeout overrun."
   }
 }
