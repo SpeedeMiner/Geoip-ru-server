@@ -63,6 +63,16 @@ class SourceMetadataTests(unittest.TestCase):
         self.assertFalse(result["verified"])
         self.assertEqual(result["status"], "SOURCE_METADATA_UNVERIFIED")
         self.assertEqual(len(result["observations"]), 1)
+    
+    def test_invalid_country_code_is_not_accepted_as_source_attribution(self):
+        with patch.object(home_probe, "fetch_json", side_effect=[
+            {"ip": "8.8.8.8", "country_code": "R?", "connection": {}},
+            {"ip": "8.8.8.8", "country_code": "RU", "connection": {}},
+        ]):
+            result = home_probe.source_metadata(5)
+        self.assertFalse(result["verified"])
+        self.assertEqual(result["status"], "SOURCE_METADATA_UNVERIFIED")
+        self.assertEqual(len(result["observations"]), 1)
 
 
 class HomeDNSResolutionTests(unittest.TestCase):
@@ -152,7 +162,7 @@ class HomeHTTPSProbeTests(unittest.TestCase):
 class HomeProbeSafetyTests(unittest.TestCase):
     def test_consent_is_required_before_any_target_measurement(self):
         args = argparse.Namespace(
-            consent=False, allow_proxy=False, targets="targets.json",
+            consent=False, targets="targets.json",
             output_dir="out", required_country="RU", max_targets=None, timeout=5,
         )
         with patch.object(home_probe, "measure_target") as measure:
@@ -160,18 +170,58 @@ class HomeProbeSafetyTests(unittest.TestCase):
                 home_probe.run_probe(args)
         measure.assert_not_called()
 
-    def test_proxy_environment_is_rejected_by_default(self):
+    def test_proxy_environment_is_always_rejected_for_direct_isp_attribution(self):
         args = argparse.Namespace(
-            consent=True, allow_proxy=False, targets="targets.json",
+            consent=True, targets="targets.json",
             output_dir="out", required_country="RU", max_targets=None, timeout=5,
         )
         with patch.object(home_probe, "proxy_environment", return_value=["HTTPS_PROXY"]):
-            with self.assertRaisesRegex(home_probe.ProbeError, "proxy environment"):
-                home_probe.run_probe(args)
+            with patch.object(home_probe, "source_metadata") as metadata:
+                with self.assertRaisesRegex(home_probe.ProbeError, "proxy environment"):
+                    home_probe.run_probe(args)
+        metadata.assert_not_called()
+
+    def test_verified_wrong_country_stops_before_any_target_request(self):
+        args = argparse.Namespace(
+            consent=True, targets="targets.json",
+            output_dir="out", required_country="RU", max_targets=None, timeout=5,
+        )
+        attribution = {
+            "observations": [{"provider": "one"}, {"provider": "two"}],
+            "errors": [], "verified": True, "status": "TWO_SOURCE_CONSENSUS",
+            "public_ip": "8.8.8.8", "country": "KZ",
+            "asn_candidates": [12345], "organizations": ["Example ISP"],
+        }
+        with tempfile.TemporaryDirectory() as directory:
+            args.output_dir = str(pathlib.Path(directory) / "out")
+            with patch.object(home_probe, "source_metadata", return_value=attribution):
+                with patch.object(home_probe, "measure_target") as measure:
+                    with self.assertRaisesRegex(home_probe.ProbeError, "no target requests were sent"):
+                        home_probe.run_probe(args)
+            measure.assert_not_called()
+            saved = json.loads(
+                (pathlib.Path(args.output_dir) / "home_probe_source.json").read_text(encoding="utf-8")
+            )
+            self.assertEqual(saved["status"], "SOURCE_COUNTRY_MISMATCH")
+            self.assertFalse(saved["required_country_matches"])
+
+    def test_nonempty_output_directory_is_not_overwritten(self):
+        args = argparse.Namespace(
+            consent=True, targets="targets.json",
+            output_dir="out", required_country="RU", max_targets=None, timeout=5,
+        )
+        with tempfile.TemporaryDirectory() as directory:
+            args.output_dir = str(pathlib.Path(directory) / "out")
+            pathlib.Path(args.output_dir).mkdir()
+            (pathlib.Path(args.output_dir) / "existing.txt").write_text("keep", encoding="utf-8")
+            with patch.object(home_probe, "source_metadata") as metadata:
+                with self.assertRaisesRegex(home_probe.ProbeError, "not empty"):
+                    home_probe.run_probe(args)
+            metadata.assert_not_called()
 
     def test_reports_are_saved_locally_without_upload(self):
         args = argparse.Namespace(
-            consent=True, allow_proxy=False, targets="targets.json",
+            consent=True, targets="targets.json",
             output_dir="out", required_country="RU", max_targets=1, timeout=5,
         )
         with tempfile.TemporaryDirectory() as directory:
