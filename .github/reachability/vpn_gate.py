@@ -302,7 +302,7 @@ def inspect_openvpn_profile(config: str) -> dict[str, Any]:
     index = 0
     while index < len(lines):
         line = lines[index].strip()
-        match = re.fullmatch(r"<(ca|tls-auth|tls-crypt)>", line, re.IGNORECASE)
+        match = re.fullmatch(r"<(ca|tls-auth|tls-crypt|tls-crypt-v2)>", line, re.IGNORECASE)
         if match:
             name = match.group(1).lower()
             end_tag = f"</{name}>"
@@ -343,22 +343,62 @@ def inspect_openvpn_profile(config: str) -> dict[str, Any]:
     if "ca" not in blocks or "-----BEGIN CERTIFICATE-----" not in blocks["ca"]:
         raise ValueError("OpenVPN profile has no valid inline CA block")
 
-    def selected_value(name: str) -> str:
-        values = [item[1] for item in directives if item[0].lower() == name and len(item) == 2]
+    def selected_value(name: str, pattern: str, maximum_tokens: int = 2) -> str:
+        values = [
+            item[1] for item in directives
+            if item[0].lower() == name and len(item) == maximum_tokens
+        ]
         if not values:
             return ""
         value = values[0]
-        if not re.fullmatch(r"[A-Za-z0-9_.:+-]{1,80}", value):
+        if not re.fullmatch(pattern, value):
             return ""
         return value
 
-    key_direction = selected_value("key-direction")
+    def selected_x509_name() -> tuple[str, str]:
+        for item in directives:
+            if item[0].lower() != "verify-x509-name" or len(item) not in {2, 3}:
+                continue
+            name = item[1]
+            mode = item[2].lower() if len(item) == 3 else ""
+            if (
+                re.fullmatch(r"[A-Za-z0-9_.:,=/+ -]{1,200}", name)
+                and mode in {"", "name", "subject"}
+            ):
+                return name, mode
+        return "", ""
+
+    remote_cert_ku = []
+    for item in directives:
+        if item[0].lower() == "remote-cert-ku" and 2 <= len(item) <= 5:
+            values = item[1:]
+            if all(re.fullmatch(r"0x[0-9A-Fa-f]{1,8}", value) for value in values):
+                remote_cert_ku = values
+                break
+
+    key_direction = selected_value("key-direction", r"[01]")
+    tls_version_min = selected_value("tls-version-min", r"(?:1\.[0-3]|or-highest|default)")
+    tls_version_max = selected_value("tls-version-max", r"(?:1\.[0-3]|or-highest|default)")
+    tls_cipher = selected_value("tls-cipher", r"[-A-Za-z0-9_:.!@,+=/]{1,256}")
+    tls_ciphersuites = selected_value("tls-ciphersuites", r"[-A-Za-z0-9_:.!@,+=/]{1,256}")
+    tls_cert_profile = selected_value("tls-cert-profile", r"(?:legacy|preferred)")
+    remote_cert_eku = selected_value("remote-cert-eku", r"[A-Za-z0-9_.:-]{1,120}")
+    verify_x509_name, verify_x509_name_mode = selected_x509_name()
     return {
         "port": port,
         "proto": proto,
-        "cipher": selected_value("cipher"),
-        "auth": selected_value("auth"),
+        "cipher": selected_value("cipher", r"[A-Za-z0-9_.:+-]{1,80}"),
+        "auth": selected_value("auth", r"[A-Za-z0-9_.:+-]{1,80}"),
         "key_direction": key_direction,
+        "tls_version_min": tls_version_min,
+        "tls_version_max": tls_version_max,
+        "tls_cipher": tls_cipher,
+        "tls_ciphersuites": tls_ciphersuites,
+        "tls_cert_profile": tls_cert_profile,
+        "remote_cert_eku": remote_cert_eku,
+        "remote_cert_ku": remote_cert_ku,
+        "verify_x509_name": verify_x509_name,
+        "verify_x509_name_mode": verify_x509_name_mode,
         "blocks": blocks,
     }
 
@@ -389,9 +429,27 @@ def build_safe_openvpn_config(server: dict[str, Any], auth_path: pathlib.Path) -
         lines.extend([f"cipher {profile['cipher']}", f"data-ciphers-fallback {profile['cipher']}"])
     if profile["auth"]:
         lines.append(f"auth {profile['auth']}")
+    for option in ("tls_version_min", "tls_version_max", "tls_cipher", "tls_ciphersuites", "tls_cert_profile", "remote_cert_eku"):
+        if profile.get(option):
+            directive = {
+                "tls_version_min": "tls-version-min",
+                "tls_version_max": "tls-version-max",
+                "tls_cipher": "tls-cipher",
+                "tls_ciphersuites": "tls-ciphersuites",
+                "tls_cert_profile": "tls-cert-profile",
+                "remote_cert_eku": "remote-cert-eku",
+            }[option]
+            lines.append(f"{directive} {profile[option]}")
+    if profile.get("remote_cert_ku"):
+        lines.append("remote-cert-ku " + " ".join(profile["remote_cert_ku"]))
+    if profile.get("verify_x509_name"):
+        x509_line = "verify-x509-name " + shlex.quote(profile["verify_x509_name"])
+        if profile.get("verify_x509_name_mode"):
+            x509_line += " " + profile["verify_x509_name_mode"]
+        lines.append(x509_line)
     if profile["key_direction"] and "tls-auth" in profile["blocks"]:
         lines.append(f"key-direction {profile['key_direction']}")
-    for name in ("ca", "tls-auth", "tls-crypt"):
+    for name in ("ca", "tls-auth", "tls-crypt", "tls-crypt-v2"):
         if name in profile["blocks"]:
             lines.append(profile["blocks"][name])
     return "\n".join(lines) + "\n"
