@@ -1379,8 +1379,8 @@ def main() -> int:
         "--source", choices=("vpnobratno", "vpngate"), default="vpnobratno",
         help="Use VPNObratno's published profile variants or the official VPN Gate CSV API",
     )
-    parser.add_argument("--max-servers", type=int, default=3, help="Number of successful RU VPN exits to measure")
-    parser.add_argument("--max-attempts", type=int, default=3, help="Maximum distinct VPN Gate candidates to try (hard cap 6)")
+    parser.add_argument("--max-servers", type=int, default=1, help="Number of successful RU VPN exits to measure")
+    parser.add_argument("--max-attempts", type=int, default=6, help="Maximum VPN profile connection attempts (hard cap 6)")
     parser.add_argument("--connect-timeout", type=int, default=60)
     parser.add_argument("--request-timeout", type=int, default=12)
     args = parser.parse_args()
