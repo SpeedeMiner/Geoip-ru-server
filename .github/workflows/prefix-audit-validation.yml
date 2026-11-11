@@ -213,7 +213,15 @@ jobs:
               raise SystemExit("Invalid or implausible ipverse archive size in release provenance")
           if not row["FETCH_URL"].startswith("https://"):
               raise SystemExit("ipverse archive provenance URL must use HTTPS")
-          print(row["FETCH_URL"], row["SHA256"], row["BYTES"])
+          expected_fetch_url = "https://codeload.github.com/ipverse/as-ip-blocks/tar.gz/refs/heads/master"
+          if row["FETCH_URL"] != expected_fetch_url:
+              raise SystemExit(f"Unexpected ipverse archive source URL: {row['FETCH_URL']}")
+          # v37 was generated at 2026-11-10T17:21:05Z. Pin the upstream daily
+          # commit current at that build time; never follow the mutable master ref
+          # during later audit runs.
+          pinned_archive_commit = "2cc76341e26fbab3009196146c71648480c40e55"
+          pinned_archive_url = f"https://codeload.github.com/ipverse/as-ip-blocks/tar.gz/{pinned_archive_commit}"
+          print(pinned_archive_url, row["SHA256"], row["BYTES"])
           PY
           )
 
