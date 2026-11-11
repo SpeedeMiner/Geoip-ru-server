@@ -448,6 +448,8 @@ def main():
     regional_union = union_networks(*rir.values())
     blocked_base = parse_blocked_base(args.blocked_base)
     ipsum, ipsum_stats = parse_ipsum(args.ipsum)
+    if len(ipsum) < 1000:
+        raise ValueError(f"Antifilter ipsum review feed unexpectedly small: {len(ipsum)} /24 prefixes")
     # ipsum is a /24 approximation of exact blocked hosts, not a list of exact
     # blocked addresses. Keep it review-only to avoid carving co-hosted services.
     blocked = blocked_base
@@ -522,20 +524,25 @@ def main():
     delta_v6 = interval_size(new_vs_base[6])
     base_blocked_iv = {v: intervals(blocked_base, v) for v in (4,6)}
     ipsum_iv = {v: intervals(ipsum, v) for v in (4,6)}
-    # Only address space not already covered by the approved v37 block set is
-    # shown as potential /24 collateral. It is not automatically carved.
+    # Potential /24 collateral is measured against the true pre-block DIRECT
+    # address space: additions + v37 RU, after PRIVATE and approved v37 RKN.
+    preblock_direct_iv = {
+        v: subtract(subtract(preblock_iv[v], private_iv[v]), base_blocked_iv[v])
+        for v in (4,6)
+    }
+    # /24s already covered by the v37 approved block list are not incremental.
     ipsum_only_iv = {
         v: subtract(ipsum_iv[v], base_blocked_iv[v]) for v in (4,6)
     }
     ipsum_overlap_direct = {
-        v: interval_size(intersect(preblock_iv[v], ipsum_only_iv[v])) for v in (4,6)
+        v: interval_size(intersect(preblock_direct_iv[v], ipsum_only_iv[v])) for v in (4,6)
     }
     blocked_rows = []
     for source_id, networks in (("v37-approved-rkn",blocked_base),("antifilter-ipsum-24-review-only",ipsum)):
         for net in sorted(networks,key=lambda n:(n.version,int(n.network_address),n.prefixlen)):
             v=net.version
             one_prefix = [(int(net.network_address),int(net.broadcast_address))]
-            direct_overlap = intersect(one_prefix, preblock_iv[v])
+            direct_overlap = intersect(one_prefix, subtract(preblock_iv[v], private_iv[v]))
             overlap = interval_size(direct_overlap)
             already = interval_size(intersect(direct_overlap, base_blocked_iv[v]))
             blocked_rows.append({
