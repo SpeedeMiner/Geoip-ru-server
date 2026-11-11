@@ -99,7 +99,7 @@ jobs:
             --targets .github/reachability/targets.json \
             --output-dir reachability-output \
             --max-servers "${{ inputs.max_vpn_gate_servers || '1' }}" \
-            --max-attempts "${{ inputs.max_vpn_gate_attempts || '3' }}" \
+            --max-attempts "${{ inputs.max_vpn_gate_attempts || '6' }}" \
             --connect-timeout 60 \
             --request-timeout 12
 
