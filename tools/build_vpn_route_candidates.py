@@ -2,6 +2,7 @@
 """Build a side-by-side, review-only GeoIP protobuf from VPN split-routing feeds."""
 from __future__ import annotations
 import argparse, csv, hashlib, ipaddress, json, time, urllib.request
+from bisect import bisect_right
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -205,6 +206,17 @@ def intervals(nets, version):
 def size(iv):
     return sum(b-a+1 for a,b in iv)
 
+def overlap_size(start, end, iv, starts):
+    if not iv:
+        return 0
+    pos = max(0, bisect_right(starts, start) - 1)
+    total = 0
+    while pos < len(iv) and iv[pos][0] <= end:
+        lo, hi = iv[pos]
+        total += max(0, min(end, hi) - max(start, lo) + 1)
+        pos += 1
+    return total
+
 def intersect(a, b):
     out=[]; i=j=0
     while i<len(a) and j<len(b):
@@ -308,10 +320,11 @@ def main():
             raise RuntimeError("protobuf roundtrip mismatch: "+name)
     (out/"geoip_RU_vpn_candidates.dat").write_bytes(candidate)
     prefix_rows=[]
+    baseline_starts={v:[item[0] for item in baseline_iv[v]] for v in (4,6)}
     for spec in export_specs:
         for net in sorted(loaded[spec["id"]],key=lambda n:(n.version,int(n.network_address),n.prefixlen)):
             v=net.version
-            covered=size(intersect([(int(net.network_address),int(net.broadcast_address))],baseline_iv[v]))
+            covered=overlap_size(int(net.network_address),int(net.broadcast_address),baseline_iv[v],baseline_starts[v])
             status="covered" if covered==net.num_addresses else ("partial" if covered else "new")
             prefix_rows.append({"source_id":spec["id"],"cidr":str(net),"family":"IPv"+str(v),"v37_address_coverage":status})
     write_tsv(out/"candidate_source_prefixes.tsv",["source_id","cidr","family","v37_address_coverage"],prefix_rows)
