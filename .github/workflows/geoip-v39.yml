@@ -3431,28 +3431,44 @@ jobs:
           test -s "$V39_BLOCKED_PROVENANCE"
           test -s "$RIR_RUKZBY_PREFIX_INPUT"
           test -s "$RIR_RUKZBY_STATS"
-          python3 - "$V39_OUTPUT_FILE" "$V39_BLOCKED_FILE" "$V39_MANIFEST" "$V39_QUALITY_REPORT" "$RIR_RUKZBY_PREFIX_INPUT" <<'PY'
+          python3 - "$V39_OUTPUT_FILE" "$V39_BLOCKED_FILE" "$V39_MANIFEST" "$V39_QUALITY_REPORT" "$RIR_RUKZBY_PREFIX_INPUT" "$COMPANY_ASN_PREFIXES" <<'PY'
           import csv, json, sys
           from pathlib import Path
           sys.path.insert(0, ".github/scripts")
           import build_v39_overlay as v39
 
-          output, blocked_path, manifest_path, quality_path, rir_path = map(Path, sys.argv[1:])
+          output, blocked_path, manifest_path, quality_path, rir_path, company_path = map(Path, sys.argv[1:])
           decoded = v39.parse_geoip_dat(output)
           if set(decoded) != {"RU", "PRIVATE"}:
               raise SystemExit(f"v39 must contain exactly RU and PRIVATE, got {sorted(decoded)}")
           blocked = v39.parse_cidr_file(blocked_path)[0]
+          company = v39.parse_cidr_file(company_path, allow_hosts=False)[0]
           for version in (4, 6):
-              if v39.intersect(v39.intervals(decoded["RU"], version), v39.intervals(decoded["PRIVATE"], version)):
+              ru_iv = v39.intervals(decoded["RU"], version)
+              private_iv = v39.intervals(decoded["PRIVATE"], version)
+              blocked_iv = v39.intervals(blocked, version)
+              company_iv = v39.intervals(company, version)
+              if v39.intersect(ru_iv, private_iv):
                   raise SystemExit(f"v39 PRIVATE overlap in IPv{version}")
-              if v39.intersect(v39.intervals(decoded["RU"], version), v39.intervals(blocked, version)):
-                  raise SystemExit(f"v39 RKN-block overlap in IPv{version}")
+              if v39.intersect(ru_iv, blocked_iv):
+                  raise SystemExit(f"v39 non-corporate RKN-block overlap in IPv{version}")
+              company_expected = v39.subtract(company_iv, private_iv)
+              company_missing = v39.subtract(company_expected, ru_iv)
+              if company_missing:
+                  raise SystemExit(f"v39 corporate company-ASN prefixes missing from RU in IPv{version}")
+              if v39.intersect(blocked_iv, company_iv):
+                  raise SystemExit(f"v39 effective blocked set intersects corporate company-ASN prefixes in IPv{version}")
           manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
           safety = manifest.get("safety", {})
           if safety.get("geolocation_used_as_admission_gate") is not False:
               raise SystemExit("v39 manifest says geolocation was used as an admission gate")
           if safety.get("private_precedence_applied") is not True or safety.get("rkn_blocklist_applied_outside_corporate_company_asn_prefixes") is not True:
               raise SystemExit("v39 policy safety flags are missing")
+          if safety.get("corporate_company_asn_prefixes_remain_direct_except_private") is not True or safety.get("private_precedence_over_corporate_exception") is not True:
+              raise SystemExit("v39 corporate exception / PRIVATE precedence safety flags are missing")
+          company_pin = manifest.get("corporate_company_asn_prefixes", {})
+          if company_pin.get("input_sha256") is None:
+              raise SystemExit("v39 manifest is missing company prefix SHA-256 binding")
           if safety.get("ipsum_24_auto_carved") is not False or manifest.get("blocked", {}).get("ipsum_auto_carved") is not False:
               raise SystemExit("v39 must keep coarse ipsum /24s review-only")
           if safety.get("this_builder_modifies_production_main") is not False or safety.get("this_builder_publishes_release") is not False or safety.get("release_workflow_is_main_only") is not True:
