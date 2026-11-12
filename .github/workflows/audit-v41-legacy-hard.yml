@@ -1,0 +1,66 @@
+name: v41 historical hard-block provenance evidence audit
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - ".github/workflows/audit-v41-legacy-hard.yml"
+      - ".github/scripts/audit_v41_legacy_hard_evidence.py"
+      - ".github/scripts/test_audit_v41_legacy_hard_evidence.py"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  legacy-evidence:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - name: Validate audit logic and policy examples
+        run: |
+          python3 -m unittest discover -s .github/scripts -p 'test_audit_v41_legacy_hard_evidence.py' -v
+      - name: Download independently pinned published sources
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p audit-inputs
+          download() {
+            local repo="$1" tag="$2" file="$3" expected="$4" dest="$5"
+            curl --fail --location --retry 3 --retry-all-errors --connect-timeout 20 --max-time 180 \
+              --silent --show-error \
+              "https://github.com/${repo}/releases/download/${tag}/${file}" \
+              --output "audit-inputs/${dest}"
+            printf '%s  %s\n' "$expected" "audit-inputs/${dest}" | sha256sum --check --status
+          }
+          download SpeedeMiner/Geoip-ru-light latest-geoip-client-v34 geoip_RU.dat \
+            33c91a0b703c03580810af807d0062c5179c55e2c7ed4a1cc34a79c63e99a6dd v34.dat
+          download SpeedeMiner/Geoip-ru-server latest-geoip-client-v41 geoip_RU.dat \
+            534d4d80caf45df54566105d8c1930e0aaa293718891f46537256da63b56bf1f v41.dat
+          download SpeedeMiner/Geoip-ru-server latest-geoip-client-v41 geoip_RU_blocked_ip_exact_and_legacy_hard.txt \
+            eadac2b1599ac493c633554634223a1449af02e5a8199db92ee58917adcabe62 hard.txt
+          download SpeedeMiner/Geoip-ru-server latest-geoip-client-v41 geoip_RU_blocked_ipresolve_resolver_only.txt \
+            d23934d53b5e991fa524e8ee7f2582e8c543da4998c426aee12df514e4349860 resolver.txt
+          download SpeedeMiner/Geoip-ru-server latest-geoip-client-v41 geoip_RU_v41_blocked_ip_exclusions.txt \
+            3a0f95c250230188d3d62a6ce0d8e6950e9a11f612e799c715ac72844b2dfa7b effective.txt
+      - name: Produce review-only evidence queues
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 .github/scripts/audit_v41_legacy_hard_evidence.py \
+            --hard audit-inputs/hard.txt --resolver audit-inputs/resolver.txt \
+            --effective audit-inputs/effective.txt \
+            --v34 audit-inputs/v34.dat --v41 audit-inputs/v41.dat \
+            --output-dir audit-output
+          test -s audit-output/legacy_hard_review.tsv
+          test -s audit-output/priority_v34_losses.tsv
+          test -s audit-output/summary.json
+          cat audit-output/summary.json
+      - name: Upload audit evidence without changing routing or release
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: v41-legacy-hard-evidence-20261112
+          path: audit-output/
+          if-no-files-found: error
+          retention-days: 30
