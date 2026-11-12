@@ -108,6 +108,9 @@ jobs:
       BLOCKED_REFILTER_INPUT: refilter-ipsum.lst
       BLOCKED_IPSUM_INPUT: antifilter-ipsum.lst
       BLOCKED_BASELINE_INPUT: geoip_RU_v38_approved_blocked_baseline.txt
+      V38_PINNED_IP_INPUT: geoip_RU_v38_pinned_antifilter-ip.lst
+      V38_PINNED_IPRESOLVE_INPUT: geoip_RU_v38_pinned_antifilter-ipresolve.lst
+      V38_PINNED_SUBNET_INPUT: geoip_RU_v38_pinned_antifilter-subnet.lst
       BLOCKED_REVIEW_INPUT: geoip_RU_blocked_review_candidates.tsv
       BLOCKED_STATS_INPUT: geoip_RU_blocked_source_stats.txt
       BLOCKED_CHECKSUMS_INPUT: geoip_RU_blocked_sources.sha256
@@ -749,6 +752,18 @@ jobs:
           download_file "PINNED V38 APPROVED BLOCKED BASELINE" "$BLOCKED_BASELINE_INPUT" \
             "https://raw.githubusercontent.com/SpeedeMiner/Geoip-ru-server/3033248ea54cb298bafded25ddcd2805d5f0e7ac/geoip_RU_v38_blocked_ip_exclusions.txt"
           echo "df909b12b985b23080075821cedc5e2f73b7b1f89abcd9950293b400ce1e4a5d  $BLOCKED_BASELINE_INPUT" | sha256sum -c -
+          # Historical v38 raw feed snapshots are immutable release assets.
+          # Restore *only* proven resolver-derived baseline entries. An unknown
+          # old baseline entry retains its hard/exact status.
+          download_file "PINNED V38 EXACT IP SOURCE" "$V38_PINNED_IP_INPUT" \
+            "https://github.com/SpeedeMiner/Geoip-ru-server/releases/download/latest-geoip-client-v38/antifilter-ip.lst"
+          echo "c9c0656d0188f4afa740d71332b618d42b5606ab27e7561790f47b588781d1cb  $V38_PINNED_IP_INPUT" | sha256sum -c -
+          download_file "PINNED V38 RESOLVER SOURCE" "$V38_PINNED_IPRESOLVE_INPUT" \
+            "https://github.com/SpeedeMiner/Geoip-ru-server/releases/download/latest-geoip-client-v38/antifilter-ipresolve.lst"
+          echo "8d8d11605a299da96006df6303a90b08b4ae25d35c1d1a199708cb83f84cdf44  $V38_PINNED_IPRESOLVE_INPUT" | sha256sum -c -
+          download_file "PINNED V38 SUBNET SOURCE" "$V38_PINNED_SUBNET_INPUT" \
+            "https://github.com/SpeedeMiner/Geoip-ru-server/releases/download/latest-geoip-client-v38/antifilter-subnet.lst"
+          echo "2554552742bc0da516a321db66b36fa6cece28c4b3c64b66ff6d12320b33bdb6  $V38_PINNED_SUBNET_INPUT" | sha256sum -c -
           download_file "ANTIFILTER SUBNET LIST" "$BLOCKED_SUBNET_INPUT" \
             "https://antifilter.download/list/subnet.lst"
           # Officially described by the aggregator as /24 summarization of individual
@@ -771,6 +786,9 @@ jobs:
             --ip-list "$BLOCKED_IP_RAW_INPUT" \
             --ipresolve "$BLOCKED_IPRESOLVE_INPUT" \
             --baseline "$BLOCKED_BASELINE_INPUT" \
+            --historical-ip-list "$V38_PINNED_IP_INPUT" \
+            --historical-ipresolve "$V38_PINNED_IPRESOLVE_INPUT" \
+            --historical-subnet "$V38_PINNED_SUBNET_INPUT" \
             --subnet "$BLOCKED_SUBNET_INPUT" \
             --community "$BLOCKED_COMMUNITY_INPUT" \
             --refilter "$BLOCKED_REFILTER_INPUT" \
@@ -3159,7 +3177,9 @@ jobs:
               "delegated-afrinic-latest", "delegated-apnic-latest", "delegated-arin-extended-latest",
               "delegated-lacnic-latest", "delegated-ripencc-latest", "iana-ipv4-special-registry.csv",
               "iana-ipv6-special-registry.csv", "as-ip-blocks.tar.gz",
-              "antifilter-ip.lst", "antifilter-ipresolve.lst", "geoip_RU_v38_approved_blocked_baseline.txt", "antifilter-subnet.lst", "antifilter-ipsum.lst",
+              "antifilter-ip.lst", "antifilter-ipresolve.lst", "geoip_RU_v38_approved_blocked_baseline.txt",
+              "geoip_RU_v38_pinned_antifilter-ip.lst", "geoip_RU_v38_pinned_antifilter-ipresolve.lst",
+              "geoip_RU_v38_pinned_antifilter-subnet.lst", "antifilter-subnet.lst", "antifilter-ipsum.lst",
               "antifilter-community.lst", "refilter-ipsum.lst",
           }
           missing_input_files = sorted(expected_input_files - seen_input_files)
@@ -3206,7 +3226,9 @@ jobs:
                   raise SystemExit(f"Blocked source statistics are missing source: {marker}")
           checksum_text = open(blocked_checksums, encoding="utf-8").read()
           for filename in ("antifilter-ip.lst", "antifilter-ipresolve.lst", "antifilter-subnet.lst",
-                           "antifilter-community.lst", "refilter-ipsum.lst", "geoip_RU_v38_approved_blocked_baseline.txt"):
+                           "antifilter-community.lst", "refilter-ipsum.lst", "geoip_RU_v38_approved_blocked_baseline.txt",
+                           "geoip_RU_v38_pinned_antifilter-ip.lst", "geoip_RU_v38_pinned_antifilter-ipresolve.lst",
+                           "geoip_RU_v38_pinned_antifilter-subnet.lst"):
               if filename not in checksum_text:
                   raise SystemExit(f"Blocked-source checksum manifest is missing snapshot: {filename}")
 
@@ -3448,6 +3470,9 @@ jobs:
             geoip_RU_company_asn_registry.sha256sum
             geoip_RU_blocked_ip_exact_and_legacy_hard.txt
             geoip_RU_blocked_ipresolve_resolver_only.txt
+            geoip_RU_v38_pinned_antifilter-ip.lst
+            geoip_RU_v38_pinned_antifilter-ipresolve.lst
+            geoip_RU_v38_pinned_antifilter-subnet.lst
             geoip_RU_BY_KZ_rir_registered_prefixes.tsv
             geoip_RU_BY_KZ_rir_stats.txt
             geoip_RU_v37_base.dat
@@ -3501,6 +3526,9 @@ jobs:
             geoip_RU_company_asn_registry.sha256sum
             geoip_RU_blocked_ip_exact_and_legacy_hard.txt
             geoip_RU_blocked_ipresolve_resolver_only.txt
+            geoip_RU_v38_pinned_antifilter-ip.lst
+            geoip_RU_v38_pinned_antifilter-ipresolve.lst
+            geoip_RU_v38_pinned_antifilter-subnet.lst
             geoip_RU_v37_base_quality_report.txt
             geoip_RU_v37_additional_provenance.tsv
             geoip_RU_BY_KZ_rir_registered_prefixes.tsv
