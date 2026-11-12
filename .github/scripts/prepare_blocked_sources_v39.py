@@ -226,7 +226,8 @@ def main() -> int:
 
     args.approved.write_text(
         "# Approved blocked destinations to carve from DIRECT; generated from named sources.\n"
-        "# Exact IPs from antifilter ip.lst/ipresolve.lst; bounded subnet.lst; curated Telegram routes.\n"
+        "# Pinned v38 approved set is carried forward; current ip.lst/ipresolve/subnet feeds may add entries.\n"
+        "# An empty ipresolve response is unavailable evidence, not a zero-block verdict.\n"
         + "".join(f"{value} # sources={','.join(sorted(accepted[value]))}\n"
                  for value in sorted(accepted, key=sort_key)),
         encoding="utf-8",
