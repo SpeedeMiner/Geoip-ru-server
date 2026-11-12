@@ -13,12 +13,8 @@ on:
       - "docs/GEOIP_RU_V39_POLICY.md"
       - "docs/GEOIP_RU_V39_SOURCE_REGISTRY.tsv"
       - "docs/V39_PUBLIC_RKN_SOURCE_CROSSCHECK.md"
-  schedule:
-    # Daily refresh; one unified DIRECT set covers RU+BY+KZ, with bounded blocked-destination carve-outs.
-    - cron: "45 3 * * *"
-  push:
-    branches:
-      - main
+  # Legacy v39 retained for manual/PR compatibility checks only.
+  # v41 is the sole production publisher after migration.
 
 concurrency:
   group: geoip-direct-ru-by-kz-v39-${{ github.ref }}
@@ -3528,7 +3524,7 @@ jobs:
           cat "$OUTPUT_SHA_FILE"
 
       - name: Upload v39 candidate build artifact
-        if: github.ref != 'refs/heads/main'
+        if: true  # Preserve v39 as a candidate-only/manual compatibility workflow.
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
           name: geoip-direct-rukzby-v39-candidate
@@ -3568,7 +3564,7 @@ jobs:
           retention-days: 30
 
       - name: Publish GitHub Release
-        if: github.ref == 'refs/heads/main'
+        if: false  # Retired v39 production publication; use v41 only.
         # v3.0.3; pin the action implementation to an immutable commit.
         uses: softprops/action-gh-release@efb35369e0ad2afab669f228072c1b0d510eae64
         with:
@@ -3668,7 +3664,7 @@ jobs:
             - RIR registration, BGP announcements, service association and RKN block evidence are distinct signals and are reported separately.
 
       - name: Publish release branch
-        if: github.ref == 'refs/heads/main'
+        if: false  # Retired v39 production publication; use v41 only.
         shell: bash
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -3719,7 +3715,7 @@ jobs:
           purge_jsdelivr "geoip_RU_blocked_ip_exclusions.txt"
 
       - name: Print download and audit URLs
-        if: github.ref == 'refs/heads/main'
+        if: false  # Retired v39 production publication; use v41 only.
         shell: bash
         run: |
           echo "GitHub Release: https://${{ github.server_url }}/${{ github.repository }}/releases/download/latest-geoip-client-v39/geoip_RU.dat"
