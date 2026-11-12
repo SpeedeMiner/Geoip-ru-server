@@ -15,6 +15,8 @@ on:
       - ".github/scripts/audit_v41_shared_hard_guard.py"
       - ".github/scripts/audit_v41_named_service_attribution.py"
       - ".github/scripts/audit_v41_shadow_hard_shared.py"
+      - ".github/scripts/audit_v41_all_hard_override_classes.py"
+      - ".github/scripts/test_audit_v41_all_hard_override_classes.py"
       - ".github/scripts/test_audit_v41_shadow_hard_shared.py"
       - ".github/scripts/test_audit_v41_named_service_attribution.py"
       - ".github/data/v41_observed_shared_service_hard_exceptions.tsv"
@@ -39,6 +41,7 @@ jobs:
           python3 -m unittest discover -s .github/scripts -p 'test_audit_v41_shared_hard_guard.py' -v
           python3 -m unittest discover -s .github/scripts -p 'test_audit_v41_named_service_attribution.py' -v
           python3 -m unittest discover -s .github/scripts -p 'test_audit_v41_shadow_hard_shared.py' -v
+          python3 -m unittest discover -s .github/scripts -p 'test_audit_v41_all_hard_override_classes.py' -v
       - name: Verify current published v41 artifacts against manifest hashes
         shell: bash
         run: |
@@ -89,6 +92,25 @@ jobs:
             --output-dir audit-output
           test -s audit-output/shadow_shared_hard_summary.json
           cat audit-output/shadow_shared_hard_summary.json
+      - name: Audit full hard override distribution across CORE SHARED and OTHER
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 .github/scripts/audit_v41_all_hard_override_classes.py \
+            --hard audit-inputs/hard.txt \
+            --effective audit-inputs/effective.txt \
+            --v41 audit-inputs/v41.dat \
+            --core-prefixes audit-inputs/core.txt \
+            --shared-prefixes audit-inputs/shared.txt \
+            --kyoresuas-v4 audit-inputs/kyoresuas-v4.txt \
+            --kyoresuas-v6 audit-inputs/kyoresuas-v6.txt \
+            --kyoresuas-services audit-inputs/kyoresuas.json \
+            --w1zardz audit-inputs/w1zardz.txt \
+            --hxehex-ip audit-inputs/hxehex.txt \
+            --escapingworm audit-inputs/escapingworm.txt \
+            --output-dir audit-output
+          test -s audit-output/all_hard_override_classes_summary.json
+          cat audit-output/all_hard_override_classes_summary.json
       - name: Upload post-release evidence
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
