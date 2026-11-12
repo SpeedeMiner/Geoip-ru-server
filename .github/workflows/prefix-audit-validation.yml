@@ -184,7 +184,7 @@ jobs:
             geoip_RU_company_asn_manifest.tsv \
             geoip_RU_BY_KZ_asn_bgp_prefixes.txt \
             geoip_RU_input_provenance.tsv \
-            geoip_RU_quality_report.txt; do
+            geoip_RU_v37_base_quality_report.txt; do
             curl --fail --location --silent --show-error \
               --retry 3 --retry-all-errors --connect-timeout 15 --max-time 180 \
               "$base_url/$file" -o "$file"
@@ -245,7 +245,7 @@ jobs:
             geoip_RU_company_asn_manifest.tsv \
             geoip_RU_BY_KZ_asn_bgp_prefixes.txt \
             geoip_RU_input_provenance.tsv \
-            geoip_RU_quality_report.txt \
+            geoip_RU_v37_base_quality_report.txt \
             > v37-release-inputs.sha256
           printf '%s\n' "$release_sha" > v37-release-commit.txt
           echo "release_sha=$release_sha" >> "$GITHUB_OUTPUT"
@@ -288,7 +288,7 @@ jobs:
           import re
           from pathlib import Path
 
-          report = Path("geoip_RU_quality_report.txt").read_text(encoding="utf-8")
+          report = Path("geoip_RU_v37_base_quality_report.txt").read_text(encoding="utf-8")
           expected_company = re.search(
               r"^Unique prefixes originated by curated Russian-company/affiliate ASNs: ([0-9]+)$",
               report, re.MULTILINE,
