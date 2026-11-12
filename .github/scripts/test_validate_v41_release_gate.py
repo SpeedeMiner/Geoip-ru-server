@@ -18,7 +18,7 @@ def nets(*rows):
 
 class ReleaseGateTests(unittest.TestCase):
     def test_protected_hard_exceptions_in_three_classes(self):
-        ru = nets("192.0.2.1/32", "192.0.2.2/32", "192.0.2.3/32")
+        ru = nets("192.0.2.1/32", "192.0.2.2/32", "192.0.2.3/32", "2001:db8::1/128")
         hard = [
             (ipaddress.ip_network("192.0.2.1/32"), {"antifilter-ip.lst"}),
             (ipaddress.ip_network("192.0.2.2/32"), {"antifilter-ip.lst"}),
