@@ -375,6 +375,49 @@ jobs:
           print("\n".join(bundle_manifest))
           PY
 
+      - name: Diagnose current exact-company MOAS and company-only priority subset
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p prefix-audit/diagnostics
+          python3 - <<'PY'
+          import csv
+          import hashlib
+          from pathlib import Path
+          queue = Path("prefix-audit/company_origin_prefix_review.tsv")
+          rows = list(csv.DictReader((line for line in queue.open(encoding="utf-8") if not line.startswith("#")), delimiter="\t"))
+          selected = [row for row in rows if row["GLOBAL_BGP_MOAS"] == "yes" or row["INCLUSION_BASIS"] == "COMPANY_ASN_ONLY"]
+          selected.sort(key=lambda row: row["PREFIX"])
+          moas = [row for row in selected if row["GLOBAL_BGP_MOAS"] == "yes"]
+          only = [row for row in selected if row["INCLUSION_BASIS"] == "COMPANY_ASN_ONLY"]
+          fields = ["PREFIX", "COMPANY_ASNS", "COMPANY_GROUPS", "GLOBAL_BGP_ORIGIN_ASNS",
+                    "GLOBAL_BGP_MOAS", "INCLUSION_BASIS", "BGP_SNAPSHOT_SHA256"]
+          path = Path("prefix-audit/diagnostics/priority_exact_prefixes.tsv")
+          with path.open("w", encoding="utf-8", newline="") as stream:
+              writer = csv.DictWriter(stream, delimiter="\t", fieldnames=fields, extrasaction="ignore")
+              writer.writeheader()
+              writer.writerows(selected)
+          print(f"PINNED_PRIORITY_SET rows={len(selected)}, moas={len(moas)}, company_only={len(only)}")
+          print(f"QUEUE_SHA256={hashlib.sha256(queue.read_bytes()).hexdigest()}")
+          print(f"PRIORITY_SHA256={hashlib.sha256(path.read_bytes()).hexdigest()}")
+          for row in selected:
+              print("PRIORITY_PREFIX",
+                    row["PREFIX"],
+                    "basis="+row["INCLUSION_BASIS"],
+                    "MOAS="+row["GLOBAL_BGP_MOAS"],
+                    "company="+row["COMPANY_ASNS"],
+                    "global_origins="+row["GLOBAL_BGP_ORIGIN_ASNS"])
+          PY
+
+      - name: Upload exact-priority audit diagnostics
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: v37-priority-subset-diagnostics
+          path: prefix-audit/diagnostics/priority_exact_prefixes.tsv
+          if-no-files-found: warn
+          retention-days: 14
+
       - name: Collect RDAP resource-holder samples and per-origin RPKI status for priority prefixes
         shell: bash
         run: |
