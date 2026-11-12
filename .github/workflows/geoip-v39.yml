@@ -148,26 +148,13 @@ jobs:
           AS47542	VK/Mail.ru	VKontakte Ltd / LLC VK	https://prefixkit.com/ru/service-ip-ranges/vk-mailru/
           AS28709	VK/Mail.ru	LLC VK	https://wbdt.ru/AS28709
           AS47764	VK/Mail.ru	LLC VK (Mail.Ru Group legacy ASN)	https://wbdt.ru/AS47764
-          AS35598	Kaspersky	AO Kaspersky Lab	https://bgp.he.net/AS35598
-          AS199945	Kaspersky	AO Kaspersky Lab	https://bgp.he.net/AS199945
           AS209030	Kaspersky	AO Kaspersky Lab	https://bgp.he.net/AS209030
           AS49053	Wildberries	LLC Wildberries	https://wbdt.ru/AS49053
           AS57073	Wildberries	LLC Wildberries	https://wbdt.ru/AS57073
           AS201512	Wildberries	LLC Wildberries (CDN ASN)	https://iamroot.tech/asndatabase/?search=AS201512
           AS211517	Wildberries	LLC Wildberries (Georgia/affiliate ASN)	https://iamroot.tech/asndatabase/?search=AS211517
           AS44386	Ozon	LLC Internet Solutions (Ozon)	https://wbdt.ru/AS44386
-          AS49368	Avito	LLC KEH eCommerce (Avito)	https://bgp.he.net/AS49368
-          AS50952	2GIS	LLC DoubleGIS (2GIS)	https://bgp.he.net/AS50952
-          AS41668	Kontur	JSC PF SKB Kontur	https://bgp.he.net/AS41668
-          AS48642	1C	LLC 1C-Soft (1C)	https://bgp.he.net/AS48642
-          AS48061	Positive-Technologies	AO Positive Technologies	https://bgp.he.net/AS48061
-          AS48190	Rutube	LLC Rutube / Gazprom-Media	https://bgp.he.net/AS48190
           AS35237	Sberbank	Sberbank of Russia PJSC	https://bgp.he.net/AS35237
-          AS200676	T-Bank	JSC TBank (Tinkoff)	https://bgp.he.net/AS200676
-          AS30854	Alfa-Bank	JSC Alfa-Bank	https://bgp.he.net/AS30854
-          AS25476	VTB	VTB Bank PJSC	https://bgp.he.net/AS25476
-          AS30972	Gazprombank	Bank GPB (JSC)	https://bgp.he.net/AS30972
-          AS29194	Raiffeisenbank-RU	AO Raiffeisenbank	https://bgp.he.net/AS29194
           AS49505	Selectel	JSC Selectel	https://bgp.he.net/AS49505
           AS50340	Selectel	JSC Selectel MSK	https://bgp.he.net/AS50340
           AS208677	Cloud.ru	Cloud Technologies LLC / Cloud.ru	https://asn.ipinfo.app/AS208677
@@ -3756,3 +3743,4 @@ jobs:
           echo "v39 expanded RKN exclusions: https://raw.githubusercontent.com/${{ github.repository }}/release/geoip_RU_v39_blocked_ip_exclusions.txt"
           echo "Blocked feed stats: https://raw.githubusercontent.com/${{ github.repository }}/release/geoip_RU_blocked_source_stats.txt"
           echo "Blocked source review candidates: https://raw.githubusercontent.com/${{ github.repository }}/release/geoip_RU_blocked_review_candidates.tsv"
+
