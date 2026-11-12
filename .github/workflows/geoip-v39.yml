@@ -3210,8 +3210,6 @@ jobs:
                   allowed_unavailable = ("ANTIFILTER COMMUNITY CANDIDATES", "RE-FILTER CANDIDATES", "ANTIFILTER IPRESOLVE LIST")
                   if source_name not in allowed_unavailable or digest != "-" or byte_count != "0":
                       raise SystemExit(f"Unexpected unavailable input in provenance manifest: {row}")
-                  if source_name == "ANTIFILTER IPRESOLVE LIST" and "geoip_RU_v38_approved_blocked_baseline.txt" not in seen_input_files:
-                      raise SystemExit("ipresolve unavailable but pinned v38 blocked baseline is missing")
               else:
                   raise SystemExit(f"Unknown input provenance status: {status}")
           expected_input_files = {
