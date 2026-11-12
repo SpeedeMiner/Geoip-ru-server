@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""Assemble the v40 unified DIRECT RU+BY+KZ GeoIP overlay.
+"""Assemble the v41 unified DIRECT RU+BY+KZ GeoIP overlay.
 
-v40 retains the v38 regional/resource/service inputs and applies approved RKN blocks
+v41 retains the v38 regional/resource/service inputs and applies approved RKN blocks
 outside exact prefixes originated by the curated corporate company-ASN allowlist.
 Those corporate-origin prefixes remain DIRECT when an RKN source lists an address
 inside them. PRIVATE retains absolute precedence. Output remains RU and PRIVATE.
@@ -386,23 +386,49 @@ def blocked_prefix_impact(network, preblock_after_private, approved_blocked):
 def parse_blocked_base(path: Path):
     return parse_cidr_file(path, allow_hosts=True)[0]
 
+def build_ru_service_protection_mask(
+    company_prefixes: Iterable[ipaddress._BaseNetwork],
+    rir_ru: Iterable[ipaddress._BaseNetwork] = (),
+    service_sources: dict[str, set[ipaddress._BaseNetwork]] | None = None,
+) -> tuple[set[ipaddress._BaseNetwork], set[ipaddress._BaseNetwork]]:
+    """Build unified DIRECT protection mask from corporate/RIR-RU ASN prefixes and RU services."""
+    service_protected: set[ipaddress._BaseNetwork] = set()
+    rir_ru_set = set(rir_ru)
+    if service_sources:
+        for source_id in ("kyoresuas-standard", "hxehex-mobile-hosts", "operator-whitelist"):
+            service_protected.update(service_sources.get(source_id, set()))
+        w1zardz_nets = service_sources.get("w1zardz-service-direct", set())
+        if w1zardz_nets and rir_ru_set:
+            for version in (4, 6):
+                overlap = intersect(intervals(w1zardz_nets, version), intervals(rir_ru_set, version))
+                service_protected.update(networks_from_intervals(overlap, version))
+    service_protected = set(collapse(service_protected))
+    protected = set(collapse(set(company_prefixes) | service_protected))
+    return protected, service_protected
+
+
 def class_aware_effective_block_set(
     blocked_exact: set,
     blocked_resolved: set,
     core_company_prefixes: set,
     shared_infrastructure_prefixes: set,
+    rir_ru_origin_prefixes: set | None = None,
+    service_protected_prefixes: set | None = None,
 ):
-    """Return effective blocks and resolver-only candidates.
+    """CORE and vetted RU services protect exact blocks; SHARED/RIR protect resolver-only.
 
-    CORE_CORPORATE protects against all inputs. SHARED_INFRA protects only
-    against resolver-only candidates. An exact/hard match always remains blocked.
+    Legacy unclassified v38 baseline is always in the exact/hard layer; a provider
+    origin does not become a first-party corporation merely by RIR-RU registration.
     """
     if core_company_prefixes & shared_infrastructure_prefixes:
-        raise ValueError("CORE_CORPORATE and SHARED_INFRA masks overlap")
+        raise ValueError("CORE_CORPORATE and SHARED_INFRA exact prefix masks overlap")
+    regional = rir_ru_origin_prefixes or set()
+    service = service_protected_prefixes or set()
     resolved_only = subtract_networks(blocked_resolved, blocked_exact)
-    effective_exact = subtract_networks(blocked_exact, core_company_prefixes)
+    effective_exact = subtract_networks(blocked_exact, core_company_prefixes | service)
     effective_resolved = subtract_networks(
-        resolved_only, core_company_prefixes | shared_infrastructure_prefixes
+        resolved_only,
+        core_company_prefixes | shared_infrastructure_prefixes | regional | service
     )
     return set(collapse(effective_exact | effective_resolved)), resolved_only
 
@@ -507,6 +533,7 @@ def main():
     parser.add_argument("--company-prefixes", type=Path, required=True)
     parser.add_argument("--core-company-prefixes", type=Path, required=True)
     parser.add_argument("--shared-infrastructure-prefixes", type=Path, required=True)
+    parser.add_argument("--regional-origin-prefixes", type=Path, required=True)
     parser.add_argument("--ipsum", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--categories", type=Path, required=True)
@@ -533,8 +560,8 @@ def main():
     blocked_base = parse_blocked_base(args.blocked_base)
     blocked_exact = parse_blocked_base(args.blocked_exact)
     blocked_resolved = parse_blocked_base(args.blocked_resolved)
-    if blocked_base != blocked_exact | blocked_resolved:
-        raise ValueError("v40 blocked union does not match exact plus resolver-only sidecars")
+    if any(intervals(blocked_base, v) != intervals(blocked_exact | blocked_resolved, v) for v in (4, 6)):
+        raise ValueError("v41 blocked union address space does not match exact plus resolver-only sidecars")
 
     company_prefixes, company_prefix_stats = parse_cidr_file(args.company_prefixes, allow_hosts=False)
     core_company_prefixes, core_company_stats = parse_cidr_file(args.core_company_prefixes, allow_hosts=False)
@@ -547,28 +574,42 @@ def main():
         raise ValueError("CORE_CORPORATE and SHARED_INFRA prefix masks must be disjoint")
     if core_company_prefixes | shared_infrastructure_prefixes != company_prefixes:
         raise ValueError("CORE/SHARED prefix masks must exactly partition the all-company prefix set")
+    regional_with_companies, regional_origin_stats = parse_cidr_file(args.regional_origin_prefixes, allow_hosts=False)
+    regional_only = subtract_networks(regional_with_companies, company_prefixes)
+    # Preserve the verified v39 service mask: Kyoresuas Standard, HXEHEX, operator
+    # whitelist, and W1ZARDZ only on its RIR-RU resource intersection.
+    _, service_protected = build_ru_service_protection_mask(
+        set(), rir_ru=rir["RU"], service_sources=service_sources
+    )
 
     ipsum, ipsum_stats = parse_ipsum(args.ipsum)
     if len(ipsum) < 1000:
         raise ValueError(f"Antifilter ipsum review feed unexpectedly small: {len(ipsum)} /24 prefixes")
 
-    # v40 precedence:
+    # v41 precedence:
     # CORE_CORPORATE is protected from all approved block inputs. SHARED_INFRA is protected
     # only from current resolver-derived ipresolve candidates. Exact ip.lst, bounded subnet.lst
     # and unclassified v38 baseline entries remain hard blocks for shared infrastructure.
     blocked, resolved_only = class_aware_effective_block_set(
-        blocked_exact, blocked_resolved, core_company_prefixes, shared_infrastructure_prefixes
+        blocked_exact, blocked_resolved, core_company_prefixes,
+        shared_infrastructure_prefixes, regional_only, service_protected
     )
-    ipsum_effective = subtract_networks(ipsum, core_company_prefixes | shared_infrastructure_prefixes)
+    ipsum_effective = subtract_networks(
+        ipsum, core_company_prefixes | shared_infrastructure_prefixes | regional_only | service_protected
+    )
 
-    additions = regional_union | service_union | company_prefixes
+    additions = regional_union | service_union | company_prefixes | regional_only
     source_stats["all-company-asn-origins"] = company_prefix_stats
     source_stats["core-company-asn-origins"] = core_company_stats
     source_stats["shared-infrastructure-asn-origins"] = shared_infrastructure_stats
+    source_stats["rir-ru-selected-origin-protected"] = regional_origin_stats
+    source_stats["verified-ru-service-protected"] = {"valid_rows": len(service_protected), "invalid_rows": 0}
     for source_id, networks, category in (
         ("all-company-asn-origins", company_prefixes, "curated company ASN origin"),
         ("core-company-asn-origins", core_company_prefixes, "CORE_CORPORATE exact origin"),
         ("shared-infrastructure-asn-origins", shared_infrastructure_prefixes, "SHARED_INFRA exact origin"),
+        ("rir-ru-selected-origin-protected", regional_only, "RIR-RU exact-origin resolver exception"),
+        ("verified-ru-service-protected", service_protected, "Verified RU service direct protection"),
     ):
         for net in sorted(networks, key=lambda n: (n.version, int(n.network_address), n.prefixlen)):
             prefix_rows.append({
@@ -585,6 +626,8 @@ def main():
     company_iv = {v: intervals(company_prefixes, v) for v in (4, 6)}
     core_company_iv = {v: intervals(core_company_prefixes, v) for v in (4, 6)}
     shared_infrastructure_iv = {v: intervals(shared_infrastructure_prefixes, v) for v in (4, 6)}
+    regional_only_iv = {v: intervals(regional_only, v) for v in (4, 6)}
+    service_protected_iv = {v: intervals(service_protected, v) for v in (4, 6)}
     blocked_iv = {v: intervals(blocked, v) for v in (4, 6)}
     blocked_base_iv = {v: intervals(blocked_base, v) for v in (4, 6)}
     resolved_only_iv = {v: intervals(resolved_only, v) for v in (4, 6)}
@@ -651,7 +694,7 @@ def main():
         row.update({k:str(v) for k,v in source_stats.get(source_id,{}).items() if isinstance(v,(str,int))})
         metrics_rows.append(row)
 
-    # Compute exact v40 delta and /24 what-if analysis using the same corporate
+    # Compute exact v41 delta and /24 what-if analysis using the same corporate
     # exemption. Only the effective (non-corporate) blocked set is subtracted.
     delta_v4 = interval_size(new_vs_base[4])
     delta_v6 = interval_size(new_vs_base[6])
@@ -678,8 +721,8 @@ def main():
     }
     blocked_rows = []
     for source_id, networks, shared_allowed in (
-        ("v40-exact-and-legacy-hard-blocks", blocked_exact, False),
-        ("v40-current-resolver-only-candidates", resolved_only, True),
+        ("v41-exact-and-legacy-hard-blocks", blocked_exact, False),
+        ("v41-current-resolver-only-candidates", resolved_only, True),
         ("antifilter-ipsum-24-review-only", ipsum, True),
     ):
         for net in sorted(networks,key=lambda n:(n.version,int(n.network_address),n.prefixlen)):
@@ -706,18 +749,21 @@ def main():
     args.output.write_bytes(payload)
     decoded = parse_geoip_dat(args.output)
     if decoded != {"PRIVATE":final_private,"RU":final}:
-        raise ValueError("v40 protobuf read-back verification failed")
+        raise ValueError("v41 protobuf read-back verification failed")
     if intervals(decoded["RU"],4) != final_iv[4] or intervals(decoded["RU"],6) != final_iv[6]:
-        raise ValueError("v40 output address space mismatch")
+        raise ValueError("v41 output address space mismatch")
     if any(intersect(intervals(decoded["RU"],v),private_iv[v]) for v in (4,6)):
-        raise ValueError("PRIVATE precedence violation in v40")
+        raise ValueError("PRIVATE precedence violation in v41")
     if any(intersect(intervals(decoded["RU"],v),blocked_iv[v]) for v in (4,6)):
-        raise ValueError("Non-corporate RKN blocked destination remains in DIRECT v40")
+        raise ValueError("Non-corporate RKN blocked destination remains in DIRECT v41")
     for v in (4,6):
         core_expected = subtract(core_company_iv[v], private_iv[v])
         shared_expected = subtract(shared_infrastructure_iv[v], private_iv[v])
         shared_expected = subtract(shared_expected, intervals(blocked_exact, v))
-        company_expected = core_expected + shared_expected
+        regional_expected = subtract(regional_only_iv[v], private_iv[v])
+        regional_expected = subtract(regional_expected, intervals(blocked_exact, v))
+        service_expected = subtract(service_protected_iv[v], private_iv[v])
+        company_expected = core_expected + shared_expected + regional_expected + service_expected
         company_missing = subtract(company_expected, final_iv[v])
         if company_missing:
             raise ValueError(f"Class-aware company-ASN coverage lost in IPv{v} beyond PRIVATE/hard-block precedence")
@@ -738,7 +784,7 @@ def main():
         writer.writeheader()
         writer.writerows(blocked_rows)
     args.blocked_output.write_text(
-        "# v40 effective blocks: CORE_CORPORATE is exempt from all approved inputs; SHARED_INFRA only from current ipresolve.\n"
+        "# v41 effective blocks: CORE_CORPORATE is exempt from all approved inputs; SHARED_INFRA only from current ipresolve.\n"
         "# Exact ip.lst, bounded subnet.lst and unclassified v38 baseline remain hard blocks for shared infrastructure.\n"
         "# PRIVATE always wins; Antifilter ipsum /24 remains review-only.\n"
         + "".join(str(n)+"\n" for n in sorted(blocked,key=lambda n:(n.version,int(n.network_address),n.prefixlen))),
@@ -749,7 +795,7 @@ def main():
     final_counts = addr_counts(final)
     private_counts = addr_counts(private)
     args.categories.write_text(
-        "# GeoIP DIRECT RU+BY+KZ v40 categories; RU is the regional/service DIRECT bucket.\n"
+        "# GeoIP DIRECT RU+BY+KZ v41 categories; RU is the regional/service DIRECT bucket.\n"
         + f"RU\t{len(final)}\tIPv4={final_counts['ipv4']}\tIPv6={final_counts['ipv6']}\n"
         + f"PRIVATE\t{len(final_private)}\tIPv4={private_counts['ipv4']}\tIPv6={private_counts['ipv6']}\n",
         encoding="utf-8",
@@ -757,10 +803,10 @@ def main():
     blocked_counts = addr_counts(blocked)
     private_counts = addr_counts(private)
     quality = [
-        "GeoIP DIRECT RU+BY+KZ CLIENT v40 — corporate company-ASN origins exempted from RKN carve-outs",
+        "GeoIP DIRECT RU+BY+KZ CLIENT v41 — corporate company-ASN origins exempted from RKN carve-outs",
         "Generated UTC: "+datetime.now(timezone.utc).isoformat(),
         "Base v37 GeoIP SHA-256: "+sha256(base_bytes),
-        "v40 GeoIP SHA-256: "+sha256(payload),
+        "v41 GeoIP SHA-256: "+sha256(payload),
         "",
         "POLICY",
         "- RU+BY+KZ registered resource prefixes and named service destinations are DIRECT regardless of geolocation.",
@@ -778,7 +824,7 @@ def main():
         f"RU IPv4 addresses: {base_counts['ipv4']}",
         f"RU IPv6 addresses: {base_counts['ipv6']}",
         "",
-        "V40 FINAL",
+        "V41 FINAL",
         f"RU CIDRs: {len(final)}",
         f"RU IPv4 addresses: {final_counts['ipv4']}",
         f"RU IPv6 addresses: {final_counts['ipv6']}",
@@ -804,7 +850,7 @@ def main():
         "",
         "RKN BLOCKS AND CORPORATE COMPANY-ASN EXCEPTION",
         f"Original v37 approved blocked CIDRs: {len(blocked_base)}",
-        f"Effective v40 blocked CIDRs after class-aware exceptions: {len(blocked)}",
+        f"Effective v41 blocked CIDRs after class-aware exceptions: {len(blocked)}",
         f"Total block addresses exempted: IPv4={exempted_blocked_counts['ipv4']} IPv6={exempted_blocked_counts['ipv6']}",
         f"Total exempted addresses intersecting DIRECT after PRIVATE: IPv4={exempted_direct_counts[4]} IPv6={exempted_direct_counts[6]}",
         f"CORE_CORPORATE exempted DIRECT addresses after PRIVATE: IPv4={core_exempted_direct_counts[4]} IPv6={core_exempted_direct_counts[6]}",
@@ -816,18 +862,18 @@ def main():
         f"Potential additional IPv4 DIRECT address space affected by /24 review candidates: {ipsum_overlap_direct[4]}",
         f"Potential additional IPv6 DIRECT address space affected by /24 review candidates: {ipsum_overlap_direct[6]}",
         "ipsum /24 candidates are NOT automatically removed from DIRECT; only exact host and bounded prefixes already approved by v37 remain automatic, excluding exact corporate company-ASN origin prefixes from those carves.",
-        "The /24 impact estimate excludes the exact corporate company-ASN prefix space exempted by the v40 policy.",
-        f"Combined v40 effective blocked IPv4 address space: {blocked_counts['ipv4']}",
-        f"Combined v40 effective blocked IPv6 address space: {blocked_counts['ipv6']}",
+        "The /24 impact estimate excludes the exact corporate company-ASN prefix space exempted by the v41 policy.",
+        f"Combined v41 effective blocked IPv4 address space: {blocked_counts['ipv4']}",
+        f"Combined v41 effective blocked IPv6 address space: {blocked_counts['ipv6']}",
         "ipsum is a third-party RKN-derived /24 summary, not a direct official RKN API.",
         "Every /24 carve affects the whole 256-address block; on shared hosting/CDNs it may send unrelated co-resident destinations through VPN.",
         "",
         "FILES",
-        "- geoip_RU.dat: final v40 GeoIP protobuf with RU and PRIVATE categories only.",
-        "- geoip_RU_v40_source_metrics.tsv: per-source unique CIDR and address-space contribution; rows overlap and must not be summed.",
-        "- geoip_RU_v40_prefix_provenance.tsv: service, resource and corporate-origin prefix provenance.",
-        "- geoip_RU_v40_blocked_provenance.tsv: original block overlaps, corporate exemptions and review-only /24 impact estimate.",
-        "- geoip_RU_v40_blocked_ip_exclusions.txt: effective non-corporate blocked set applied to v40.",
+        "- geoip_RU.dat: final v41 GeoIP protobuf with RU and PRIVATE categories only.",
+        "- geoip_RU_v41_source_metrics.tsv: per-source unique CIDR and address-space contribution; rows overlap and must not be summed.",
+        "- geoip_RU_v41_prefix_provenance.tsv: service, resource and corporate-origin prefix provenance.",
+        "- geoip_RU_v41_blocked_provenance.tsv: original block overlaps, corporate exemptions and review-only /24 impact estimate.",
+        "- geoip_RU_v41_blocked_ip_exclusions.txt: effective non-corporate blocked set applied to v41.",
         "- geoip_RU_company_asn_bgp_prefixes.txt: exact prefixes originated by the curated corporate company-ASN allowlist.",
         "",
         "SHA-256 output: "+sha256(payload),
@@ -854,6 +900,16 @@ def main():
             "raw_valid_invalid_rows":core_company_stats,
             "input_sha256":sha256(args.core_company_prefixes.read_bytes()),
         },
+        "regional_origin_prefixes":{
+            "unique_prefixes":len(regional_only),
+            "selected_origin_input_sha256":sha256(args.regional_origin_prefixes.read_bytes()),
+            "protection":"resolver_only_except_verified_service",
+        },
+        "ru_verified_service_prefixes":{
+            "unique_prefixes":len(service_protected),
+            "address_space":addr_counts(service_protected),
+            "protection":"all_approved_block_sources_except_private",
+        },
         "shared_infrastructure_prefixes":{
             "unique_prefixes":len(shared_infrastructure_prefixes),
             "address_space":addr_counts(shared_infrastructure_prefixes),
@@ -864,7 +920,7 @@ def main():
             "approved_union_original_unique":len(blocked_base),
             "exact_and_legacy_hard_unique":len(blocked_exact),
             "current_resolver_only_unique":len(resolved_only),
-            "v40_effective_after_class_aware_exceptions_unique":len(blocked),
+            "v41_effective_after_class_aware_exceptions_unique":len(blocked),
             "all_exempted_unique":len(exempted_blocked),
             "all_exempted_address_space":exempted_blocked_counts,
             "all_exempted_direct_after_private":{f"ipv{v}":exempted_direct_counts[v] for v in (4,6)},
@@ -878,7 +934,7 @@ def main():
             "potential_additional_proxy_ipv6_addresses":ipsum_overlap_direct[6],
         },
         "base_v37_address_space":base_counts,
-        "final_v40_address_space":final_counts,
+        "final_v41_address_space":final_counts,
         "new_after_policy":{"ipv4":delta_v4,"ipv6":delta_v6},
         "safety":{
             "this_builder_modifies_production_main":False,
@@ -890,6 +946,8 @@ def main():
             "core_corporate_prefixes_remain_direct_except_private":True,
             "shared_infrastructure_prefixes_exempt_from_current_ipresolve_only":True,
             "legacy_v38_unclassified_baseline_remains_hard_blocked":True,
+            "rir_ru_selected_origin_resolver_protected":True,
+            "ru_verified_service_exact_and_resolver_protected":True,
             "private_precedence_over_all_exceptions":True,
             "ipsum_24_auto_carved":False,
             "candidate_status":"REVIEW",
@@ -907,14 +965,15 @@ def main():
             "corporate_company_asn_origin_prefixes":sha256(args.company_prefixes.read_bytes()),
             "corporate_core_prefixes":sha256(args.core_company_prefixes.read_bytes()),
             "shared_infrastructure_prefixes":sha256(args.shared_infrastructure_prefixes.read_bytes()),
+            "regional_origin_prefixes":sha256(args.regional_origin_prefixes.read_bytes()),
             "blocked_exact_and_legacy":sha256(args.blocked_exact.read_bytes()),
             "blocked_resolver_only":sha256(args.blocked_resolved.read_bytes()),
             "antifilter_ipsum":sha256(args.ipsum.read_bytes()),
         },
     }
     args.manifest.write_text(json.dumps(manifest,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
-    print(f"v40 protobuf bytes: {len(payload)} sha256={sha256(payload)}")
-    print(f"v40 final RU CIDRs: {len(final)} IPv4={final_counts['ipv4']} IPv6={final_counts['ipv6']}")
+    print(f"v41 protobuf bytes: {len(payload)} sha256={sha256(payload)}")
+    print(f"v41 final RU CIDRs: {len(final)} IPv4={final_counts['ipv4']} IPv6={final_counts['ipv6']}")
     print(f"New after policy IPv4={delta_v4} IPv6={delta_v6}")
     print(f"Company prefixes={len(company_prefixes)} core={len(core_company_prefixes)} shared={len(shared_infrastructure_prefixes)}")
     print(f"Exempted DIRECT IPv4={exempted_direct_counts[4]} IPv6={exempted_direct_counts[6]}; shared resolver DIRECT IPv4={shared_resolver_exempted_direct_counts[4]}")
