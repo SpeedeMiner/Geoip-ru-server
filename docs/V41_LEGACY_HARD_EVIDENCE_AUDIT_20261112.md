@@ -113,3 +113,20 @@ Six P3 hosts (all OTHER) are `185.60.216.1`, `185.60.217.1`, `185.60.218.1`, `18
 The matrix deliberately records `current_regulatory_block_confirmed=NO` and `service_host_ownership_confirmed=NO` for all 153, since direct regulatory evidence and host-level first-party ownership were **not** independently established. It produces routing action `NONE_AUDIT_ONLY`, never modifies the published database or effective blocks. Snapshot baseline warnings remain observational, not approvals.
 
 Detailed session report: `GeoIP_v41_PR16_Hard_Exceptions_Per_IP_Quality_20261112_43282279103.md`. Full CIDR + TSV + JSON are bundled in the CI artifact. No production merge or PR #5 changes.
+
+## P1 service-prefix specificity and review ordering (2026-11-12)
+
+A new read-only, release-hash-verified stage separates **118 P1 exact IPv4 hard addresses** (current `antifilter-ip.lst` and inside SHARED/OTHER DIRECT) by *published service feed specificity*, not by unproven assumptions about actual blocks. Post-release monitor [43284286430](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43284286430) **SUCCESS**, artifact `13974925325`.
+
+| Published service evidence | SHARED_INFRA | OTHER | Total |
+|---|---:|---:|---:|
+| Broad IPv4 CIDR (/24 or wider), no exact /32 claim | 43 | 40 | **83** |
+| Both broad and exact /32 claims | 1 | 0 | **1** |
+| Exact service /32 only | 9 | 25 | **34** |
+| **Total** | **53** | **65** | **118** |
+
+All 118 remain audit candidates because source list membership does **not** prove an active regulatory block. Exact service /`32` in a public catalogue also does **not** verify first-party service ownership. The ordering **broad-only → mixed → exact-only** guides host-specific manual review effort and **does not change route precedence**.
+
+Added `.github/scripts/audit_v41_p1_service_specificity.py` and four module tests, invoked by both historical and post-release workflows. New outputs `p1_current_hard_service_specificity_review.tsv` and `p1_current_hard_review_summary.json` are complete, reviewed-only, and dynamic for future published releases; the existing class-level set-SHA256 regression monitoring remains independent.
+
+**Next decision gate:** independently dated, host-specific regulator/block evidence and actual service-host attribution. No production routing or effective masks were changed. PR #16 remains Draft; no changes to PR #5.
