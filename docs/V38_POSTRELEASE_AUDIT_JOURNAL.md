@@ -50,3 +50,17 @@ Add a checkpoint after every meaningful phase: artifact receipt, parsing result,
 - Local reprocessing of the exact run #7 56-row TSV: 56 rows retained as REVIEW; 10 spelling-only variants; 1 semantic conflict (`5.45.215.0/24`, AS208398 invalid vs valid).
 - Corrected view counts: 26 `ORIGIN_SETS_AND_STATES_MATCH`, 24 `ORIGIN_SET_DIFFERS`, 3 `NO_TIMESTAMPED_VRP_STATE`, 2 `NO_EXACT_ROUTE`, 1 `SAME_ORIGIN_STATUS_DIFFERS`.
 - The postprocessing code and tests are committed on PR #10 branch; workflow updated to run those tests and the normalizer. Awaiting GitHub Actions verification.
+
+
+### 2026-11-12 10:51 +0500 — resumed; normalized audit CI verified; independent RIPEstat run queued
+
+- Re-fetched PR #10 and live refs. PR #10 is OPEN/DRAFT, base `main`, current head `62d290fab955536eb5a123f2897b66509e9596bd`; purpose remains review-only. No merge/readiness transition performed.
+- Production refs unchanged: `main=6c856d5c4b16ff6a77ad507572a7017a4cfe2532`; `release=3033248ea54cb298bafded25ddcd2805d5f0e7ac`.
+- Verified normalization was not left merely as a local change: workflow run #11 `43092778686`, head `5332f4c7d81f26ec8d159990ac69aa2e0ca46564`, completed `success`. All steps passed, including parser/normalizer tests, live capture, normalization, invariant validation and artifact upload.
+- Run #11 artifact: `v38-postrelease-prefix-audit`, ID `13889802705`, size 3,968,416 bytes, GitHub digest `sha256:38ceb79719b7f7a264ec1aeb2acb1bf9535611b9267e60deb682e0df6976f32a`. Logs show label variants recorded separately; the only genuine same-origin RPKI conflict remains explicit. All 56 rows remain REVIEW.
+- Confirmed the normalizer at run #11's exact source commit has blob SHA `e74b6b88b7e1b2b08d4adca4e42379f6d9990618`; `not-found` and `notfound` are aliases for comparison only, while raw source strings remain in their original columns and variants field. `valid` and `invalid` remain distinct.
+- Subsequent enhancement adds independent RIPEstat RPKI validation for exact prefix/origin pairs. Current PR head `62d290f...` includes collector `.github/scripts/collect_v38_ripestat_rpki_validation.py`, normalization and workflow step. This enhancement has not yet produced evidence.
+- Latest audit workflow run #14 `43095830979`, head `62d290fab955536eb5a123f2897b66509e9596bd`, was still `queued` at the latest API check; job list empty, no artifact. Runs #12 and #13 are also queued; newest run #14 is the one matching current PR head. Do not treat queue state as successful capture or infer results.
+- Related general v38 PR build run #84 `43095831006` is also queued for the same current head; no production push/release is authorized by this review PR.
+- Next: monitor run #14 until it starts/completes. If successful, inspect its artifact and verify per-origin validation counts, raw response retention, release-manifest binding, all 56 REVIEW statuses and no production writes. If it remains queued, inspect workflow-run queue/concurrency/runner state rather than spawning duplicate live captures. Do not re-run source collection unnecessarily.
+- Safety boundaries retained: no PR #5 access; no changes to `main`, `release`, tag, release assets, CDN, production GeoIP or classifications. BGP remains optional and was not used.
