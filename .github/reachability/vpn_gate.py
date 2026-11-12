@@ -2234,7 +2234,7 @@ def summarize_target_scans(target_scans: list[dict[str, Any]]) -> dict[str, Any]
 def measurement_exit_code(
     successful_ru_exits: int,
     requested_ru_exits: int,
-    target_scan_status: str = "COMPLETE",
+    target_scan_status: str = "NOT_STARTED_NO_VERIFIED_RU_EXIT",
 ) -> int:
     """Pass only after the requested RU exits and the full target list were scanned."""
     return (

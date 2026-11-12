@@ -291,8 +291,11 @@ class VPNGateMeasurementStatusTests(unittest.TestCase):
 
     def test_no_verified_ru_exit_is_not_a_successful_measurement(self):
         self.assertNotEqual(vpn_gate.measurement_exit_code(0, 1), 0)
-        self.assertEqual(vpn_gate.measurement_exit_code(1, 1), 0)
-        self.assertEqual(vpn_gate.measurement_exit_code(2, 1), 0)
+        # Omitting scan status must fail closed; a tunnel alone is not a complete measurement.
+        self.assertNotEqual(vpn_gate.measurement_exit_code(1, 1), 0)
+        self.assertNotEqual(vpn_gate.measurement_exit_code(2, 1), 0)
+        self.assertEqual(vpn_gate.measurement_exit_code(1, 1, "COMPLETE"), 0)
+        self.assertEqual(vpn_gate.measurement_exit_code(2, 1, "COMPLETE"), 0)
 
     def test_partial_target_scan_is_not_a_successful_measurement(self):
         self.assertNotEqual(
