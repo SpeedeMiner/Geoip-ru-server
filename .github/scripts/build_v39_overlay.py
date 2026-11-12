@@ -644,11 +644,11 @@ def main():
     args.output.write_bytes(payload)
     decoded = parse_geoip_dat(args.output)
     if decoded != {"PRIVATE":final_private,"RU":final}:
-        raise ValueError("v38 protobuf read-back verification failed")
+        raise ValueError("v39 protobuf read-back verification failed")
     if intervals(decoded["RU"],4) != final_iv[4] or intervals(decoded["RU"],6) != final_iv[6]:
-        raise ValueError("v38 output address space mismatch")
+        raise ValueError("v39 output address space mismatch")
     if any(intersect(intervals(decoded["RU"],v),private_iv[v]) for v in (4,6)):
-        raise ValueError("PRIVATE precedence violation in v38")
+        raise ValueError("PRIVATE precedence violation in v39")
     if any(intersect(intervals(decoded["RU"],v),blocked_iv[v]) for v in (4,6)):
         raise ValueError("Non-corporate RKN blocked destination remains in DIRECT v39")
     for v in (4,6):
@@ -745,7 +745,7 @@ def main():
         f"Antifilter ipsum raw/valid/invalid rows: {ipsum_stats['raw_rows']}/{ipsum_stats['valid_rows']}/{ipsum_stats['invalid_rows']}",
         f"Potential additional IPv4 DIRECT address space affected by /24 review candidates: {ipsum_overlap_direct[4]}",
         f"Potential additional IPv6 DIRECT address space affected by /24 review candidates: {ipsum_overlap_direct[6]}",
-        "ipsum /24 candidates are NOT automatically removed from DIRECT; only exact host and bounded prefixes already approved by v37 remain automatic.",
+        "ipsum /24 candidates are NOT automatically removed from DIRECT; only exact host and bounded prefixes already approved by v37 remain automatic, excluding exact corporate company-ASN origin prefixes from those carves.",
         "The /24 impact estimate excludes the exact corporate company-ASN prefix space exempted by the v39 policy.",
         f"Combined v39 effective blocked IPv4 address space: {blocked_counts['ipv4']}",
         f"Combined v39 effective blocked IPv6 address space: {blocked_counts['ipv6']}",
