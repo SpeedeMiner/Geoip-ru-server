@@ -2,8 +2,9 @@
 """Assemble the v39 unified DIRECT RU+BY+KZ GeoIP overlay.
 
 v39 retains the v38 regional/resource/service inputs and applies approved RKN blocks
-outside exact prefixes originated by the curated corporate company-ASN allowlist.
-Those corporate-origin prefixes remain DIRECT when an RKN source lists an address
+outside exact prefixes originated by the curated corporate company-ASN allowlist,
+RIR-RU registered origin ASNs, and Russian service-direct feeds.
+Those protected Russian prefixes remain DIRECT when an RKN source lists an address
 inside them. PRIVATE retains absolute precedence. Output remains RU and PRIVATE.
 """
 from __future__ import annotations
@@ -360,6 +361,26 @@ def subtract_networks(source, *masks):
         output.update(networks_from_intervals(remaining, version))
     return output
 
+def build_protected_direct_mask(
+    company_prefixes: Iterable[ipaddress._BaseNetwork],
+    rir_ru: Iterable[ipaddress._BaseNetwork] = (),
+    service_sources: dict[str, set[ipaddress._BaseNetwork]] | None = None,
+) -> tuple[set[ipaddress._BaseNetwork], set[ipaddress._BaseNetwork]]:
+    """Build unified DIRECT protection mask from corporate/RIR-RU ASN prefixes and RU services."""
+    service_protected: set[ipaddress._BaseNetwork] = set()
+    rir_ru_set = set(rir_ru)
+    if service_sources:
+        for source_id in ("kyoresuas-standard", "hxehex-mobile-hosts", "operator-whitelist"):
+            service_protected.update(service_sources.get(source_id, set()))
+        w1zardz_nets = service_sources.get("w1zardz-service-direct", set())
+        if w1zardz_nets and rir_ru_set:
+            for version in (4, 6):
+                overlap = intersect(intervals(w1zardz_nets, version), intervals(rir_ru_set, version))
+                service_protected.update(networks_from_intervals(overlap, version))
+    service_protected = set(collapse(service_protected))
+    protected = set(collapse(set(company_prefixes) | service_protected))
+    return protected, service_protected
+
 def potential_ipsum_direct_overlap(preblock, private, approved_blocked, ipsum):
     """Count review-only /24 address space intersecting eligible DIRECT, without summing rows."""
     result = {}
@@ -509,22 +530,25 @@ def main():
     blocked_base = parse_blocked_base(args.blocked_base)
     company_prefixes, company_prefix_stats = parse_cidr_file(args.company_prefixes, allow_hosts=False)
     if not company_prefixes:
-        raise ValueError("Corporate company-ASN prefix set is empty; refusing to disable the exception")
+        raise ValueError("Corporate/RIR-RU ASN prefix set is empty; refusing to disable the exception")
     ipsum, ipsum_stats = parse_ipsum(args.ipsum)
     if len(ipsum) < 1000:
         raise ValueError(f"Antifilter ipsum review feed unexpectedly small: {len(ipsum)} /24 prefixes")
-    # Corporate exemption is exact address-space subtraction, not a whole-ASN
-    # or country-wide exemption. For MOAS, an exact prefix is exempt when at
-    # least one exact origin in the selected-origin snapshot is corporate.
-    blocked = subtract_networks(blocked_base, company_prefixes)
-    ipsum_effective = subtract_networks(ipsum, company_prefixes)
+    # Unified RU protection mask combines exact corporate/RIR-RU ASN origin prefixes
+    # and verified Russian service-direct feeds (Kyoresuas, HXEHEX, operator whitelist,
+    # and RIR-RU-backed W1ZARDZ routes).
+    protected_direct_mask, service_protected_mask = build_protected_direct_mask(
+        company_prefixes, rir_ru=rir["RU"], service_sources=service_sources
+    )
+    blocked = subtract_networks(blocked_base, protected_direct_mask)
+    ipsum_effective = subtract_networks(ipsum, protected_direct_mask)
 
-    additions = regional_union | service_union | company_prefixes
+    additions = regional_union | service_union | protected_direct_mask
     source_stats["corporate-company-asn-origins"] = company_prefix_stats
     for net in sorted(company_prefixes, key=lambda n: (n.version, int(n.network_address), n.prefixlen)):
         prefix_rows.append({
             "source_id": "corporate-company-asn-origins",
-            "category": "curated company ASN exact origin",
+            "category": "curated company and RIR-RU ASN exact origin",
             "service": "",
             "tier": "",
             "asn_list": "",
@@ -533,7 +557,7 @@ def main():
         })
     preblock = base_ru | additions
     preblock_iv = {v: intervals(preblock, v) for v in (4, 6)}
-    company_iv = {v: intervals(company_prefixes, v) for v in (4, 6)}
+    company_iv = {v: intervals(protected_direct_mask, v) for v in (4, 6)}
     blocked_iv = {v: intervals(blocked, v) for v in (4, 6)}
     private_overlap = {v: interval_size(intersect(intervals(additions, v), private_iv[v])) for v in (4, 6)}
     block_overlap = {v: interval_size(intersect(preblock_iv[v], blocked_iv[v])) for v in (4, 6)}
@@ -598,8 +622,8 @@ def main():
         row.update({k:str(v) for k,v in source_stats.get(source_id,{}).items() if isinstance(v,(str,int))})
         metrics_rows.append(row)
 
-    # Compute exact v39 delta and /24 what-if analysis using the same corporate
-    # exemption. Only the effective (non-corporate) blocked set is subtracted.
+    # Compute exact v39 delta and /24 what-if analysis using the unified protection mask.
+    # Only the effective (non-corporate, non-RIR-RU, non-RU-service) blocked set is subtracted.
     delta_v4 = interval_size(new_vs_base[4])
     delta_v6 = interval_size(new_vs_base[6])
     base_blocked_iv = blocked_iv
@@ -626,7 +650,7 @@ def main():
                 int(net.network_address), int(net.broadcast_address), preblock_after_private_iv[v]
             )
             company_exempted = interval_size(intersect(direct_parts, company_iv[v]))
-            # Company-exempted DIRECT space is not collateral routed through VPN.
+            # Protected RU/corporate/service DIRECT space is not collateral routed through VPN.
             potential = max(0, potential - company_exempted)
             blocked_rows.append({
                 "source_id":source_id,
@@ -673,8 +697,8 @@ def main():
         writer.writeheader()
         writer.writerows(blocked_rows)
     args.blocked_output.write_text(
-        "# v39 effective RKN carve set: approved blocked inputs minus exact corporate company-ASN origin prefixes.\n"
-        "# Corporate company-ASN prefixes remain DIRECT even when an RKN source lists an address inside them; PRIVATE always wins.\n"
+        "# v39 effective RKN carve set: approved blocked inputs minus exact corporate/RIR-RU ASN and RU service prefixes.\n"
+        "# Corporate company-ASN, RIR-RU ASN and verified RU service prefixes remain DIRECT even when an RKN source lists an address inside them; PRIVATE always wins.\n"
         "# Antifilter ipsum /24 summary is review-only and does not affect this set.\n"
         + "".join(str(n)+"\n" for n in sorted(blocked,key=lambda n:(n.version,int(n.network_address),n.prefixlen))),
         encoding="utf-8",
@@ -692,7 +716,7 @@ def main():
     blocked_counts = addr_counts(blocked)
     private_counts = addr_counts(private)
     quality = [
-        "GeoIP DIRECT RU+BY+KZ CLIENT v39 — corporate company-ASN origins exempted from RKN carve-outs",
+        "GeoIP DIRECT RU+BY+KZ CLIENT v39 — corporate company-ASN, RIR-RU ASN and RU service origins exempted from RKN carve-outs",
         "Generated UTC: "+datetime.now(timezone.utc).isoformat(),
         "Base v37 GeoIP SHA-256: "+sha256(base_bytes),
         "v39 GeoIP SHA-256: "+sha256(payload),
@@ -700,9 +724,8 @@ def main():
         "POLICY",
         "- RU+BY+KZ registered resource prefixes and named service destinations are DIRECT regardless of geolocation.",
         "- PRIVATE has absolute precedence.",
-        "- Approved RKN-derived blocked destinations are carved from DIRECT except on exact prefixes originated by an ASN in the curated corporate company allowlist.",
-        "- The company exception is prefix-specific; it does not exempt whole countries, providers or ASNs beyond the allowlisted origin prefixes.",
-        "- PRIVATE has absolute precedence over corporate-origin exceptions and all other DIRECT sources.",
+        "- Approved RKN-derived blocked destinations are carved from DIRECT except on exact prefixes originated by RIR-RU ASNs, curated corporate company ASNs, or verified Russian service feeds.",
+        "- The protection mask is prefix-specific; PRIVATE has absolute precedence over corporate/RIR-RU/service exceptions and all other DIRECT sources.",
         "- IP GeoIP cannot distinguish unrelated tenants on shared IPs; broad RKN summaries can overblock co-resident services.",
         "",
         "BASELINE V37",
@@ -741,12 +764,13 @@ def main():
         f"Company-exempted blocked address space (all addresses): IPv4={exempted_blocked_counts['ipv4']} IPv6={exempted_blocked_counts['ipv6']}",
         f"Company-exempted addresses intersecting DIRECT after PRIVATE: IPv4={exempted_direct_counts[4]} IPv6={exempted_direct_counts[6]}",
         f"Corporate company-ASN origin prefixes: {len(company_prefixes)}; IPv4 addresses={addr_counts(company_prefixes)['ipv4']}; IPv6 addresses={addr_counts(company_prefixes)['ipv6']}",
+        f"Service-protected DIRECT CIDRs: {len(service_protected_mask)}; Unified protected DIRECT CIDRs: {len(protected_direct_mask)}",
         f"Antifilter ipsum REVIEW-ONLY IPv4 /24 prefixes: {len(ipsum)}",
         f"Antifilter ipsum raw/valid/invalid rows: {ipsum_stats['raw_rows']}/{ipsum_stats['valid_rows']}/{ipsum_stats['invalid_rows']}",
         f"Potential additional IPv4 DIRECT address space affected by /24 review candidates: {ipsum_overlap_direct[4]}",
         f"Potential additional IPv6 DIRECT address space affected by /24 review candidates: {ipsum_overlap_direct[6]}",
-        "ipsum /24 candidates are NOT automatically removed from DIRECT; only exact host and bounded prefixes already approved by v37 remain automatic, excluding exact corporate company-ASN origin prefixes from those carves.",
-        "The /24 impact estimate excludes the exact corporate company-ASN prefix space exempted by the v39 policy.",
+        "ipsum /24 candidates are NOT automatically removed from DIRECT; only exact host and bounded prefixes already approved by v37 remain automatic, excluding exact corporate company-ASN, RIR-RU ASN and RU service prefixes from those carves.",
+        "The /24 impact estimate excludes the exact corporate/RIR-RU/service prefix space exempted by the v39 policy.",
         f"Combined v39 effective blocked IPv4 address space: {blocked_counts['ipv4']}",
         f"Combined v39 effective blocked IPv6 address space: {blocked_counts['ipv6']}",
         "ipsum is a third-party RKN-derived /24 summary, not a direct official RKN API.",
@@ -758,7 +782,7 @@ def main():
         "- geoip_RU_v39_prefix_provenance.tsv: service, resource and corporate-origin prefix provenance.",
         "- geoip_RU_v39_blocked_provenance.tsv: original block overlaps, corporate exemptions and review-only /24 impact estimate.",
         "- geoip_RU_v39_blocked_ip_exclusions.txt: effective non-corporate blocked set applied to v39.",
-        "- geoip_RU_company_asn_bgp_prefixes.txt: exact prefixes originated by the curated corporate company-ASN allowlist.",
+        "- geoip_RU_company_asn_bgp_prefixes.txt: exact prefixes originated by the curated corporate company-ASN allowlist and RIR-RU ASNs.",
         "",
         "SHA-256 output: "+sha256(payload),
     ]
@@ -775,6 +799,10 @@ def main():
         "corporate_company_asn_prefixes":{
             "unique_prefixes":len(company_prefixes),
             "address_space":addr_counts(company_prefixes),
+            "service_protected_unique_prefixes":len(service_protected_mask),
+            "service_protected_address_space":addr_counts(service_protected_mask),
+            "unified_protected_unique_prefixes":len(protected_direct_mask),
+            "unified_protected_address_space":addr_counts(protected_direct_mask),
             "raw_valid_invalid_rows":company_prefix_stats,
             "input_sha256":sha256(args.company_prefixes.read_bytes()),
         },
@@ -802,6 +830,8 @@ def main():
             "private_precedence_applied":True,
             "rkn_blocklist_applied_outside_corporate_company_asn_prefixes":True,
             "corporate_company_asn_prefixes_remain_direct_except_private":True,
+            "rir_ru_asn_prefixes_remain_direct_except_private":True,
+            "ru_service_prefixes_remain_direct_except_private":True,
             "private_precedence_over_corporate_exception":True,
             "ipsum_24_auto_carved":False,
             "candidate_status":"REVIEW",
@@ -824,7 +854,7 @@ def main():
     print(f"v39 protobuf bytes: {len(payload)} sha256={sha256(payload)}")
     print(f"v39 final RU CIDRs: {len(final)} IPv4={final_counts['ipv4']} IPv6={final_counts['ipv6']}")
     print(f"New after policy IPv4={delta_v4} IPv6={delta_v6}")
-    print(f"Company ASN prefixes={len(company_prefixes)}; exempted DIRECT IPv4={exempted_direct_counts[4]} IPv6={exempted_direct_counts[6]}")
+    print(f"Company/RIR-RU ASN prefixes={len(company_prefixes)}; unified protected CIDRs={len(protected_direct_mask)}; exempted DIRECT IPv4={exempted_direct_counts[4]} IPv6={exempted_direct_counts[6]}")
     print(f"RIR RU/BY/KZ rows={rir_rows}; ipsum /24 review-only={len(ipsum)}")
     return 0
 
