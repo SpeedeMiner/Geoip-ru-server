@@ -12,6 +12,7 @@ on:
       - ".github/scripts/build_company_asn_prefix_classes_v41.py"
       - ".github/scripts/prepare_blocked_sources_v41.py"
       - ".github/scripts/validate_v41_overlay.py"
+      - ".github/scripts/validate_v41_release_gate.py"
       - ".github/scripts/test_*.py"
       - ".github/data/geoip_RU_company_asns.tsv"
       - ".github/data/geoip_RU_company_asn_policy.tsv"
@@ -3450,6 +3451,295 @@ jobs:
           echo "=== SHA256 ==="
           sha256sum -c "$OUTPUT_SHA_FILE"
           cat "$OUTPUT_SHA_FILE"
+
+      - name: Enforce current-build v41 hard/DIRECT policy before release publication
+        shell: bash
+        run: |
+          set -euo pipefail
+          # Fatal invariants run against this job's *freshly built* outputs,
+          # not an older published v41 snapshot or online RIPE observations.
+          python3 -m unittest discover -s .github/scripts -p 'test_validate_v41_release_gate.py' -v
+          sha256sum -c "$OUTPUT_SHA_FILE"
+          sha256sum -c "$V41_BLOCKED_SHA"
+          python3 .github/scripts/validate_v41_release_gate.py \
+            --geoip "$V41_OUTPUT_FILE" \
+            --manifest "$V41_MANIFEST" \
+            --quality "$V41_QUALITY_REPORT" \
+            --hard "$BLOCKED_IP_EXACT_INPUT" \
+            --effective "$V41_BLOCKED_FILE" \
+            --core "$CORE_COMPANY_PREFIXES" \
+            --shared "$SHARED_INFRASTRUCTURE_PREFIXES" \
+            --rir "$RIR_RUKZBY_PREFIX_INPUT" \
+            --kyoresuas-v4 "$KY_STANDARD_V4_INPUT" \
+            --kyoresuas-v6 "$KY_STANDARD_V6_INPUT" \
+            --kyoresuas-services "$KY_SERVICES_INPUT" \
+            --w1zardz "$W1ZARDZ_INPUT" \
+            --hxehex-ip "$HXEHEX_IP_INPUT" \
+            --escapingworm "$ESCAPINGWORM_OPERATOR_INPUT"
+          # The same quality report is shipped both to the release assets
+          # and the force-updated release branch. No audit-only extra assets.
+          grep -q '^PRE_PUBLICATION_V41_HARD_POLICY_GATE
+        if: github.ref != 'refs/heads/main'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: geoip-direct-rukzby-v41-candidate
+          path: |
+            geoip_RU.dat
+            geoip_RU.dat.sha256sum
+            geoip_RU_categories.txt
+            geoip_RU_quality_report.txt
+            geoip_RU_v41_manifest.json
+            hydra-geoip.dat
+            geoip_RU_v41_source_metrics.tsv
+            geoip_RU_v41_prefix_provenance.tsv
+            geoip_RU_v41_blocked_provenance.tsv
+            geoip_RU_v41_blocked_ip_exclusions.txt
+            geoip_RU_v41_blocked_ip_exclusions.txt.sha256sum
+            geoip_RU_company_asn_bgp_prefixes.txt
+            geoip_RU_company_asn_core_bgp_prefixes.txt
+            geoip_RU_shared_infrastructure_bgp_prefixes.txt
+            geoip_RU_v41_rir_ru_and_company_origin_prefixes.txt
+            geoip_RU_company_asn_policy.tsv
+            geoip_RU_company_asn_registry.sha256sum
+            geoip_RU_blocked_ip_exact_and_legacy_hard.txt
+            geoip_RU_blocked_ipresolve_resolver_only.txt
+            geoip_RU_v38_pinned_antifilter-ip.lst
+            geoip_RU_v38_pinned_antifilter-ipresolve.lst
+            geoip_RU_v38_pinned_antifilter-subnet.lst
+            geoip_RU_BY_KZ_rir_registered_prefixes.tsv
+            geoip_RU_BY_KZ_rir_stats.txt
+            geoip_RU_v37_base.dat
+            geoip_RU_v37_base_quality_report.txt
+            geoip_RU_v37_additional_provenance.tsv
+            kyoresuas-ru-standard-ipv4.txt
+            kyoresuas-ru-standard-ipv6.txt
+            kyoresuas-services.json
+            w1zardz-ru-ipv4.txt
+            hxehex-ipwhitelist.txt
+            escapingworm-operator-cidr.txt
+            antifilter-ip.lst
+            antifilter-ipresolve.lst
+            geoip_RU_v38_approved_blocked_baseline.txt
+            antifilter-subnet.lst
+            antifilter-ipsum.lst
+            geoip_RU_blocked_ip_exclusions.txt
+            geoip_RU_blocked_ip_exclusions.txt.sha256sum
+            geoip_RU_input_provenance.tsv
+            geoip_RU_input_provenance.tsv.sha256sum
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Publish GitHub Release
+        if: github.ref == 'refs/heads/main'
+        # v3.0.3; pin the action implementation to an immutable commit.
+        uses: softprops/action-gh-release@efb35369e0ad2afab669f228072c1b0d510eae64
+        with:
+          tag_name: latest-geoip-client-v41
+          name: "GeoIP DIRECT RU+BY+KZ CLIENT v41"
+          make_latest: false
+          files: |
+            geoip_RU.dat
+            geoip_RU.dat.sha256sum
+            geoip_RU_categories.txt
+            geoip_RU_sources.txt
+            geoip_RU_source_counts.txt
+            geoip_RU_category_audit.tsv
+            geoip_RU_quality_report.txt
+            geoip_RU_v41_manifest.json
+            hydra-geoip.dat
+            geoip_RU_v41_source_metrics.tsv
+            geoip_RU_v41_prefix_provenance.tsv
+            geoip_RU_v41_blocked_provenance.tsv
+            geoip_RU_v41_blocked_ip_exclusions.txt
+            geoip_RU_v41_blocked_ip_exclusions.txt.sha256sum
+            geoip_RU_company_asn_bgp_prefixes.txt
+            geoip_RU_company_asn_core_bgp_prefixes.txt
+            geoip_RU_shared_infrastructure_bgp_prefixes.txt
+            geoip_RU_v41_rir_ru_and_company_origin_prefixes.txt
+            geoip_RU_company_asn_policy.tsv
+            geoip_RU_company_asn_registry.sha256sum
+            geoip_RU_blocked_ip_exact_and_legacy_hard.txt
+            geoip_RU_blocked_ipresolve_resolver_only.txt
+            geoip_RU_v38_pinned_antifilter-ip.lst
+            geoip_RU_v38_pinned_antifilter-ipresolve.lst
+            geoip_RU_v38_pinned_antifilter-subnet.lst
+            geoip_RU_v37_base_quality_report.txt
+            geoip_RU_v37_additional_provenance.tsv
+            geoip_RU_BY_KZ_rir_registered_prefixes.tsv
+            geoip_RU_BY_KZ_rir_stats.txt
+            geoip_RU_BY_KZ_asn_manifest.txt
+            geoip_RU_company_asn_manifest.tsv
+            geoip_RU_company_asns.txt
+            geoip_RU_BY_KZ_asn_stats.txt
+            geoip_RU_BY_KZ_asn_bgp_prefixes.txt
+            geoip_RU_registered_asns.txt
+            geoip_BY_KZ_registered_asns.txt
+            geoip_RU_blocked_ip_exclusions.txt
+            geoip_RU_blocked_ip_exclusions.txt.sha256sum
+            geoip_RU_blocked_review_candidates.tsv
+            geoip_RU_blocked_source_stats.txt
+            geoip_RU_blocked_sources.sha256
+            geoip_RU_input_provenance.tsv
+            geoip_RU_input_provenance.tsv.sha256sum
+            antifilter-ip.lst
+            antifilter-ipresolve.lst
+            geoip_RU_v38_approved_blocked_baseline.txt
+            antifilter-subnet.lst
+            antifilter-ipsum.lst
+            antifilter-community.lst
+            refilter-ipsum.lst
+            kyoresuas-ru-standard-ipv4.txt
+            kyoresuas-ru-standard-ipv6.txt
+            kyoresuas-services.json
+            w1zardz-ru-ipv4.txt
+            hxehex-ipwhitelist.txt
+            escapingworm-operator-cidr.txt
+            geoip_RU_rir_registered_prefixes.txt
+            geoip_RU_rir_stats.txt
+            geoip_RU_global_bgp_prefixes.txt
+          body: |
+            # GeoIP DIRECT RU+BY+KZ CLIENT v41 — Regional and Service DIRECT
+
+            ## Routing policy
+            - Exactly two GeoIP categories are emitted: `RU` and `PRIVATE`.
+            - `RU` is the unified DIRECT bucket for RU+BY+KZ regional address resources, regional GeoIP/BGP layers, and named service-direct destinations. Physical GeoIP location is not an admission gate.
+            - `PRIVATE` always wins over DIRECT.
+            - CORE_CORPORATE exact origin prefixes are protected from all approved RKN-derived inputs.
+            - SHARED_INFRA origins are protected only from current resolver-derived ipresolve candidates; exact ip.lst, bounded subnet.lst and unclassified v38 baseline blocks still carve them.
+            - MOAS receives CORE_CORPORATE precedence when any exact origin is CORE; otherwise a SHARED_INFRA origin receives resolver-only protection.
+            - RIR-RU registration alone is not proof of corporate ownership and does not create a blanket DIRECT exception.
+            - PRIVATE retains absolute precedence for both classes.
+
+            ## Regional resource and BGP layers
+            - v37 geographic/ASN sources remain the trusted starting point.
+            - v41 additionally imports allocated/assigned/legacy RU, BY and KZ address resources from the five RIR delegated-stat snapshots.
+            - RIR country is resource-registration evidence, not physical geolocation or proof of current BGP reachability; route observation remains separately reported.
+            - Curated company-ASN origin prefixes are retained in DIRECT even when a blocked feed lists addresses inside those exact prefixes; non-corporate blocked addresses are carved.
+
+            ## Service DIRECT outside geolocation
+            - Kyoresuas `ru-standard` service prefixes are imported with per-service category/name/ASN/domain provenance.
+            - W1ZARDZ service-direct, HXEHEX exact host-IP whitelist, and Escapingworm operator whitelist prefixes are separately attributed.
+            - These feeds are treated as service/availability intent, not geographic proof. Their prefixes are still subject to PRIVATE and RKN exclusions.
+            - Service-source coverage and exact address-space deltas are published in `geoip_RU_v41_source_metrics.tsv` and `geoip_RU_v41_prefix_provenance.tsv`.
+
+            ## RKN blocked destinations
+            - Existing exact-host Antifilter `ip.lst` and `ipresolve.lst`, bounded `subnet.lst`, and curated Telegram prefixes remain active.
+            - v41 downloads Antifilter Download `ipsum.lst` as a review-only /24 summary of individual blocked IPs; it is not automatically carved because each /24 may route unrelated shared-hosting/CDN addresses through VPN.
+            - The report publishes the potential DIRECT address-space impact of these /24 candidates in `geoip_RU_v41_blocked_provenance.tsv`; only exact-host and bounded subnet exclusions already approved by the v37 policy are automatically applied.
+            - Community Antifilter and Re-filter suggestions remain review-only; privacy/telemetry labels do not change DIRECT.
+            - The no-BGP public-source fallback cross-checks pinned bol-van/rulist ipban4 vs resolved4 and correlated prebuilt datasets; it does not claim or infer Antifilter community 65444:210 membership.
+            - BGP registration is not a v41 release gate. All 360 new Lib4u/Jirnobruh host-IP candidates remain review-only; shared CIDR matches are not bulk-carved or promoted.
+            - If Antifilter ipresolve.lst is empty/unavailable, v41 carries forward the SHA-256-pinned v38 approved block snapshot (3033248ea54cb298bafded25ddcd2805d5f0e7ac / df909b12b985b23080075821cedc5e2f73b7b1f89abcd9950293b400ce1e4a5d); this is not treated as a zero-block result.
+            - Full pinned refs, candidate-match counts, enrichment limitations and source lineage are documented in [V41 public-source cross-check](https://github.com/SpeedeMiner/Geoip-ru-server/blob/feature/geoip-direct-rukzby-v41-integration/docs/V39_PUBLIC_RKN_SOURCE_CROSSCHECK.md).
+            - GeoIP cannot distinguish unrelated domains on the same IP; domain-only RKN rules remain a separate client geosite layer.
+
+            ## Audit outputs
+            - `geoip_RU_quality_report.txt` records final v41 address coverage and the exact new-vs-v37 delta after PRIVATE and RKN policy.
+            - `geoip_RU_v41_manifest.json` records immutable source refs, source hashes and output SHA-256.
+            - `geoip_RU_BY_KZ_rir_registered_prefixes.tsv` retains country, RIR and resource-status provenance.
+            - The final client file remains `geoip_RU.dat` with `geoip:RU` and `geoip:PRIVATE` only.
+            - `geoip_RU_company_asn_bgp_prefixes.txt` lists exact prefix-level company exceptions; it does not exempt whole ASNs outside the selected-origin snapshot.
+
+            ## Attribution and limitations
+            - Preserve v2fly/geoip CC-BY-SA-4.0 and DB-IP CC-BY-4.0 notices, plus upstream licenses/attributions for service feeds.
+            - RIR registration, BGP announcements, service association and RKN block evidence are distinct signals and are reported separately.
+            - RIR-RU selected origin prefixes receive resolver-only exception unless covered by first-party CORE or verified service policy; this avoids promoting whole shared providers over exact/legacy blocks.
+
+      - name: Publish release branch
+        if: github.ref == 'refs/heads/main'
+        shell: bash
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          rm -rf /tmp/geoip-client-release
+          mkdir -p /tmp/geoip-client-release
+          for file in \
+            "$V41_OUTPUT_FILE" "$OUTPUT_SHA_FILE" "$CATEGORY_FILE" "$SOURCE_FILE" \
+            "$SOURCE_COUNTS" "$CATEGORY_AUDIT" "$V41_QUALITY_REPORT" "$QUALITY_REPORT" "$V41_METRICS" "$V41_PREFIX_PROVENANCE" "$V41_BLOCKED_PROVENANCE" "$V41_BLOCKED_FILE" "$V41_BLOCKED_SHA" "$V41_MANIFEST" "$PROVENANCE_FILE" "$ASN_MANIFEST" "$COMPANY_ASN_MANIFEST" "$COMPANY_ASN_PREFIXES" "$CORE_COMPANY_PREFIXES" "$SHARED_INFRASTRUCTURE_PREFIXES" "$COMPANY_ASN_POLICY" "$REGIONAL_ORIGIN_PREFIXES" "$COMPANY_ASN_REGISTRY" "geoip_RU_company_asn_registry.sha256sum" "$BLOCKED_IP_EXACT_INPUT" "$BLOCKED_IPRESOLVE_ONLY_INPUT" "$ASN_STATS" \
+            "$RU_PREFIX_INPUT" "$RU_ASN_REGISTRY" "$BY_KZ_ASN_REGISTRY" "$RIR_PREFIX_INPUT" "$RIR_STATS" "$RIR_RUKZBY_PREFIX_INPUT" "$RIR_RUKZBY_STATS" "$GLOBAL_BGP_PREFIX_INPUT" \
+            "$BLOCKED_IP_INPUT" "$BLOCKED_IP_SHA_FILE" "$BLOCKED_BASELINE_INPUT" "$BLOCKED_REVIEW_INPUT" "$BLOCKED_STATS_INPUT" "$BLOCKED_CHECKSUMS_INPUT" "$INPUT_PROVENANCE" "$INPUT_PROVENANCE_SHA" "$KY_STANDARD_V4_INPUT" "$KY_STANDARD_V6_INPUT" "$KY_SERVICES_INPUT" "$W1ZARDZ_INPUT" "$HXEHEX_IP_INPUT" "$ESCAPINGWORM_OPERATOR_INPUT" "$BLOCKED_IPSUM_INPUT"; do
+            cp "$file" /tmp/geoip-client-release/"$(basename "$file")"
+          done
+          cd /tmp/geoip-client-release
+          git init
+          git checkout -b release
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add .
+          git commit -m "Publish GeoIP DIRECT RU+BY+KZ CLIENT v41"
+          git remote add origin "https://github.com/${{ github.repository }}.git"
+          AUTH_B64="$(printf 'x-access-token:%s' "$GITHUB_TOKEN" | base64 -w0)"
+          GIT_CONFIG_COUNT=1 \
+          GIT_CONFIG_KEY_0="http.https://github.com/.extraheader" \
+          GIT_CONFIG_VALUE_0="AUTHORIZATION: basic ${AUTH_B64}" \
+          GIT_TERMINAL_PROMPT=0 git push --force origin release
+
+          purge_jsdelivr() {
+            local path="$1"
+            local response
+            response="$(curl --fail --location --silent --show-error \
+              --connect-timeout 15 --max-time 90 \
+              "https://purge.jsdelivr.net/gh/${{ github.repository }}@release/${path}")"
+            printf '%s\n' "$response"
+            python3 -c 'import json,sys; d=json.loads(sys.argv[1]); p=next(iter(d.get("paths",{}).values()),{}); providers=p.get("providers",{}); ok=(d.get("status")=="finished" and p.get("throttled") is False and providers and all(v is True for v in providers.values())); print("Purge status:",d.get("status"),"providers:",providers); sys.exit(0 if ok else 1)' "$response"
+          }
+          purge_jsdelivr "geoip_RU.dat"
+          purge_jsdelivr "geoip_RU.dat.sha256sum"
+          purge_jsdelivr "geoip_RU_quality_report.txt"
+          purge_jsdelivr "geoip_RU_v37_additional_provenance.tsv"
+          purge_jsdelivr "geoip_RU_v41_prefix_provenance.tsv"
+          purge_jsdelivr "geoip_RU_v41_blocked_provenance.tsv"
+          purge_jsdelivr "geoip_RU_v41_manifest.json"
+          purge_jsdelivr "geoip_RU_company_asn_bgp_prefixes.txt"
+          purge_jsdelivr "geoip_RU_company_asn_core_bgp_prefixes.txt"
+          purge_jsdelivr "geoip_RU_shared_infrastructure_bgp_prefixes.txt"
+          purge_jsdelivr "geoip_RU_v41_rir_ru_and_company_origin_prefixes.txt"
+          purge_jsdelivr "geoip_RU_company_asn_policy.tsv"
+          purge_jsdelivr "geoip_RU_blocked_ip_exact_and_legacy_hard.txt"
+          purge_jsdelivr "geoip_RU_blocked_ipresolve_resolver_only.txt"
+          purge_jsdelivr "geoip_RU_BY_KZ_asn_manifest.txt"
+          purge_jsdelivr "geoip_RU_input_provenance.tsv"
+          purge_jsdelivr "geoip_RU_input_provenance.tsv.sha256sum"
+          purge_jsdelivr "geoip_RU_blocked_ip_exclusions.txt"
+
+      - name: Print download and audit URLs
+        if: github.ref == 'refs/heads/main'
+        shell: bash
+        run: |
+          echo "GitHub Release: https://${{ github.server_url }}/${{ github.repository }}/releases/download/latest-geoip-client-v41/geoip_RU.dat"
+          echo "Raw release branch: https://raw.githubusercontent.com/${{ github.repository }}/release/geoip_RU.dat"
+          echo "jsDelivr: https://cdn.jsdelivr.net/gh/${{ github.repository }}@release/geoip_RU.dat"
+          echo "Quality report: https://raw.githubusercontent.com/${{ github.repository }}/release/geoip_RU_quality_report.txt"
+          echo "v37 baseline prefix provenance: https://raw.githubusercontent.com/${{ github.repository }}/release/geoip_RU_v37_additional_provenance.tsv"
+          echo "v41 service/resource prefix provenance: https://raw.githubusercontent.com/${{ github.repository }}/release/geoip_RU_v41_prefix_provenance.tsv"
+          echo "v41 blocked-prefix provenance: https://raw.githubusercontent.com/${{ github.repository }}/release/geoip_RU_v41_blocked_provenance.tsv"
+          echo "v41 source manifest: https://raw.githubusercontent.com/${{ github.repository }}/release/geoip_RU_v41_manifest.json"
+          echo "Input source hashes: https://raw.githubusercontent.com/${{ github.repository }}/release/geoip_RU_input_provenance.tsv"
+          echo "Source contribution report: https://raw.githubusercontent.com/${{ github.repository }}/release/geoip_RU_source_counts.txt"
+          echo "Company ASN manifest: https://raw.githubusercontent.com/${{ github.repository }}/release/geoip_RU_company_asn_manifest.tsv"
+          echo "Company ASN exact origin prefixes: https://raw.githubusercontent.com/${{ github.repository }}/release/geoip_RU_company_asn_bgp_prefixes.txt"
+          echo "CORE_CORPORATE origins: https://raw.githubusercontent.com/${{ github.repository }}/release/geoip_RU_company_asn_core_bgp_prefixes.txt"
+          echo "SHARED_INFRA origins: https://raw.githubusercontent.com/${{ github.repository }}/release/geoip_RU_shared_infrastructure_bgp_prefixes.txt"
+          echo "ASN exception policy: https://raw.githubusercontent.com/${{ github.repository }}/release/geoip_RU_company_asn_policy.tsv"
+          echo "Exact/legacy hard blocks: https://raw.githubusercontent.com/${{ github.repository }}/release/geoip_RU_blocked_ip_exact_and_legacy_hard.txt"
+          echo "Resolver-only block candidates: https://raw.githubusercontent.com/${{ github.repository }}/release/geoip_RU_blocked_ipresolve_resolver_only.txt"
+          echo "RIR RU+BY+KZ resource inventory: https://raw.githubusercontent.com/${{ github.repository }}/release/geoip_RU_BY_KZ_rir_registered_prefixes.tsv"
+          echo "RIR RU-only legacy corroboration list: https://raw.githubusercontent.com/${{ github.repository }}/release/geoip_RU_rir_registered_prefixes.txt"
+          echo "Global BGP observation set: https://raw.githubusercontent.com/${{ github.repository }}/release/geoip_RU_global_bgp_prefixes.txt"
+          echo "BY/KZ RIR ASN inventory: https://raw.githubusercontent.com/${{ github.repository }}/release/geoip_BY_KZ_registered_asns.txt"
+          echo "v37 approved blocked prefixes: https://raw.githubusercontent.com/${{ github.repository }}/release/geoip_RU_blocked_ip_exclusions.txt"
+          echo "v41 expanded RKN exclusions: https://raw.githubusercontent.com/${{ github.repository }}/release/geoip_RU_v41_blocked_ip_exclusions.txt"
+          echo "Blocked feed stats: https://raw.githubusercontent.com/${{ github.repository }}/release/geoip_RU_blocked_source_stats.txt"
+          echo "Blocked source review candidates: https://raw.githubusercontent.com/${{ github.repository }}/release/geoip_RU_blocked_review_candidates.tsv"
+ "$V41_QUALITY_REPORT"
+          {
+            echo '### Pre-publication v41 DIRECT/hard quality gate'
+            echo 'Current-build SHA-256 and routing invariants: PASS'
+            echo 'Known/potential hard source conflicts: documented in geoip_RU_quality_report.txt'
+            echo 'BGP/source membership does not prove current IP-specific blocking'
+          } >> "$GITHUB_STEP_SUMMARY"
+          tail -n 17 "$V41_QUALITY_REPORT"
 
       - name: Upload v41 candidate build artifact
         if: github.ref != 'refs/heads/main'
