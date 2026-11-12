@@ -731,6 +731,21 @@ def main():
             intersect(resolved_only_iv[v], shared_infrastructure_iv[v]), preblock_after_private_iv[v]
         )) for v in (4,6)
     }
+    # Precompute each address-space policy mask once, outside the CIDR loop.
+    # Normalizing full protection masks per blocked row caused quadratic-scale CI work.
+    unblocked_direct_iv = {
+        v: subtract(preblock_after_private_iv[v], base_blocked_iv[v]) for v in (4, 6)
+    }
+    eligible_impact_iv = {}
+    for shared_allowed in (False, True):
+        eligible_impact_iv[shared_allowed] = {}
+        for v in (4, 6):
+            protect = normalize_interval_union(
+                core_company_iv[v], service_protected_iv[v],
+                *([shared_infrastructure_iv[v], regional_only_iv[v]] if shared_allowed else [])
+            )
+            eligible_impact_iv[shared_allowed][v] = subtract(unblocked_direct_iv[v], protect)
+
     blocked_rows = []
     for source_id, networks, shared_allowed in (
         ("v41-exact-and-legacy-hard-blocks", blocked_exact, False),
@@ -746,12 +761,10 @@ def main():
             # Compute incremental impact on address-space intervals.  Exemptions can
             # overlap each other or the already-effective blocked set; subtracting
             # raw exemption counts would double-count such intersections.
-            remaining = subtract(direct_parts, base_blocked_iv[v])
-            protected = normalize_interval_union(
-                core_company_iv[v], service_protected_iv[v],
-                *([shared_infrastructure_iv[v], regional_only_iv[v]] if shared_allowed else [])
-            )
-            potential = interval_size(subtract(remaining, protected))
+            potential = interval_size(intersect_one_range(
+                int(net.network_address), int(net.broadcast_address),
+                eligible_impact_iv[shared_allowed][v]
+            ))
             blocked_rows.append({
                 "source_id":source_id,
                 "prefix":str(net),
