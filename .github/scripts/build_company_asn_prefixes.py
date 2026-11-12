@@ -11,7 +11,7 @@ from collections import defaultdict
 from pathlib import Path
 from typing import Any
 
-ASN_RE = re.compile(r"\\bAS(\\d+)\\b", re.IGNORECASE)
+ASN_RE = re.compile(r"\bAS(\d+)\b", re.IGNORECASE)
 
 
 def sha256(path: Path) -> str:
