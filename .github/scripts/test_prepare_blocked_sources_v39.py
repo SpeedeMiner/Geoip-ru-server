@@ -50,7 +50,7 @@ class BlockedSourcePolicyTests(unittest.TestCase):
             # Current ipresolve endpoint is an empty response. The pinned v38
             # approved baseline carries forward its previously approved addresses.
             paths["ipresolve.lst"].write_text("", encoding="utf-8")
-            start_baseline = int(ipaddress.ip_address("192.0.2.1"))
+            start_baseline = int(ipaddress.ip_address("192.0.10.1"))
             baseline_hosts = [str(ipaddress.ip_address(start_baseline + i)) for i in range(1005)]
             baseline_hosts.append("2001:db8:100::1")
             paths["baseline.txt"].write_text("\n".join(baseline_hosts) + "\n", encoding="utf-8")
