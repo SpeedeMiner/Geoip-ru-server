@@ -21,8 +21,12 @@ on:
       - "docs/V41_EXECUTION_JOURNAL.md"
       - "geoip_RU_company_asns.txt"
       - ".github/scripts/build_v39_overlay.py"
-  # PR validation and manual candidate runs only. Production publishing is disabled until
-  # final policy review and a separate release-enablement change.
+  # v41 is the sole production publisher. v39 publishing is retired in this same PR.
+  schedule:
+    - cron: "45 3 * * *"
+  push:
+    branches:
+      - main
 
 concurrency:
   group: geoip-direct-ru-by-kz-v41-${{ github.ref }}
