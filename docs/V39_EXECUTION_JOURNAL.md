@@ -66,3 +66,21 @@ Append-only log for the v39 production build initiative. Record each meaningful 
 - PRs #6, #7, #8 and #10 were closed with a rationale added to each PR: their RPKI/RDAP/IRR/VPN-route research remained review-only and produced no approved build input; repeated standalone CI/API runs did not change the production dataset. Their threads and artifacts remain preserved. PR #9 is the merged v38 release. PR #5 and its branch were not accessed or changed.
 - Current PR #11 remains OPEN/DRAFT. Main remains `6c856d5c4b16ff6a77ad507572a7017a4cfe2532`; release remains `3033248ea54cb298bafded25ddcd2805d5f0e7ac`. No v39 production release has been published yet.
 - Next: update the PR with this verified artifact summary, re-run candidate CI after the documentation/quality-label cleanup below, then merge only after the latest run passes. Main-only v39 workflow will publish tag/release branch/CDN, after which hashes and assets must be rechecked. Keep v38 available as rollback.
+
+
+## 2026-11-12 12:47 +0500 — v39 production release published and verified
+
+- PR #11 merged (squash) as main commit `610876b5f5cba4603dbea24c79e4a34ea2aa9792`.
+- Main-only production workflow run #10 `43177534361` completed SUCCESS. Source download, selected-origin/RIR extraction, v39 build, independent validation, GitHub Release, release-branch publication and URL output all succeeded. The candidate-artifact step was skipped on main, as configured.
+- GitHub Release: `latest-geoip-client-v39`, Release ID `442630840`, published 2026-11-12 07:46:35 UTC, 47 assets.
+- Tag `latest-geoip-client-v39` points to main merge commit `610876b5f5cba4603dbea24c79e4a34ea2aa9792`.
+- Release branch commit: `767031f305b2c26743b71cdd20a66f3575826dd2`.
+- Published `geoip_RU.dat`: 2,111,794 bytes, SHA-256 `d2a38fbab40e07569f3c732a37074ff67e2435e9fbad0bc072e8281c62070ed0`. The Release asset digest, `geoip_RU.dat.sha256sum` on release branch and `geoip_RU_v39_manifest.json` all match.
+- Final categories: RU 192,797 CIDRs (IPv4 53,100,229; IPv6 1,205,559,204,658,091,812,677,163,847,516,160); PRIVATE 151 CIDRs (IPv4 592,708,862; IPv6 4,325,545,831,231,176,725,068,219,651,071,148,031).
+- Company exception: 3,171 exact selected-origin prefixes. The effective blocked set contains 126,166 CIDR records after subtracting those corporate prefix ranges from 199,640 original approved records. 1,626 IPv4 addresses and zero IPv6 addresses intersecting DIRECT remain protected by the company exception after PRIVATE precedence.
+- The production-run `ipresolve.lst` was available (2,622,450 bytes; SHA-256 `8d8d11605a299da96006df6303a90b08b4ae25d35c1d1a199708cb83f84cdf44`). The immutable v38 baseline was also bundled (3,290,594 bytes; SHA-256 `df909b12b985b23080075821cedc5e2f73b7b1f89abcd9950293b400ce1e4a5d`) for future empty/unavailable ipresolve snapshots.
+- Antifilter ipsum /24 remains review-only: 18,769 entries; estimated 522,315 IPv4 DIRECT overlap outside company-exempt space; no /24 auto-carve.
+- Eleven jsDelivr purge calls returned `status=finished`; both providers `CF=true` and `FY=true` for each path.
+- Final refs: main `610876b5f5cba4603dbea24c79e4a34ea2aa9792`; release `767031f305b2c26743b71cdd20a66f3575826dd2`. v38 remains available at tag `latest-geoip-client-v38` for rollback.
+- Audit-only PRs #6, #7, #8 and #10 are closed; PR #9 (v38) and PR #11 (v39) are merged. PR #5 and `feature/reachability-full-ru-kz-by` were not inspected, modified or tested.
+- No further audit-only live collection is scheduled as part of the v39 build. Current production workflow is the single v39 build; the legacy v38 workflow is manual-only and cannot publish.
