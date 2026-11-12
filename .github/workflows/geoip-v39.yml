@@ -1290,6 +1290,7 @@ jobs:
           python3 .github/scripts/build_company_asn_prefixes.py \
             --selected-prefixes "$RU_PREFIX_INPUT" \
             --company-asns "$COMPANY_ASN_REGISTRY" \
+            --rir-ru-asns "$RU_ASN_REGISTRY" \
             --output "$COMPANY_ASN_PREFIXES"
           for file in "$RU_PREFIX_INPUT" "$GLOBAL_BGP_PREFIX_INPUT" "$ASN_MANIFEST" "$COMPANY_ASN_MANIFEST" "$COMPANY_ASN_PREFIXES" "$ASN_STATS" "$BY_KZ_ASN_REGISTRY"; do
             test -s "$file" || { echo "::error::Missing BGP artifact: $file"; exit 1; }
