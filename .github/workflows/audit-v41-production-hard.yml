@@ -18,6 +18,8 @@ on:
       - ".github/scripts/audit_v41_all_hard_override_classes.py"
       - ".github/scripts/audit_v41_hard_evidence_matrix.py"
       - ".github/scripts/audit_v41_p1_service_specificity.py"
+      - ".github/scripts/audit_v41_p1_broad_clusters.py"
+      - ".github/scripts/test_audit_v41_p1_broad_clusters.py"
       - ".github/scripts/test_audit_v41_p1_service_specificity.py"
       - ".github/scripts/test_audit_v41_hard_evidence_matrix.py"
       - ".github/scripts/test_audit_v41_all_hard_override_classes.py"
@@ -51,6 +53,7 @@ jobs:
           python3 -m unittest discover -s .github/scripts -p 'test_audit_v41_all_hard_override_classes.py' -v
           python3 -m unittest discover -s .github/scripts -p 'test_audit_v41_hard_evidence_matrix.py' -v
           python3 -m unittest discover -s .github/scripts -p 'test_audit_v41_p1_service_specificity.py' -v
+          python3 -m unittest discover -s .github/scripts -p 'test_audit_v41_p1_broad_clusters.py' -v
           python3 -m unittest discover -s .github/scripts -p 'test_audit_v41_all_hard_regressions.py' -v
       - name: Verify current published v41 artifacts against manifest hashes
         shell: bash
@@ -160,6 +163,16 @@ jobs:
           test -s audit-output/p1_current_hard_service_specificity_review.tsv
           test -s audit-output/p1_current_hard_review_summary.json
           cat audit-output/p1_current_hard_review_summary.json
+      - name: Group broad-only P1 current hard hosts for address-level review
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 .github/scripts/audit_v41_p1_broad_clusters.py \
+            --p1 audit-output/p1_current_hard_service_specificity_review.tsv \
+            --output-dir audit-output
+          test -s audit-output/p1_broad_only_host_clusters.tsv
+          test -s audit-output/p1_broad_only_cluster_summary.json
+          cat audit-output/p1_broad_only_cluster_summary.json
       - name: Upload post-release evidence
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
