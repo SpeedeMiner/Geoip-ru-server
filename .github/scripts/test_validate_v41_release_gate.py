@@ -37,6 +37,24 @@ class ReleaseGateTests(unittest.TestCase):
         self.assertEqual(v4["classes"]["SHARED_INFRA"]["current_antifilter_ip"], 1)
         self.assertEqual(v4["classes"]["SHARED_INFRA"]["current_antifilter_subnet"], 1)
         self.assertIn(REPORT_MARKER, format_quality_section(result))
+        self.assertIn("OBSERVED_HARD_DIRECT SHARED_INFRA 192.0.2.2/31", format_quality_section(result))
+
+    def test_same_count_ip_substitution_changes_exact_class_hash(self):
+        def report_for(ip):
+            entry = ipaddress.ip_network(f"{ip}/32")
+            result = inspect_policy(
+                {entry, ipaddress.ip_network("2001:db8::1/128")}, set(), set(),
+                [(entry, {"antifilter-ip.lst"})], {entry}, set(), set())
+            fields = result["families"]["ipv4"]["classes"]["CORE_CORPORATE"]
+            self.assertEqual(fields["addresses"], 1)
+            self.assertEqual(fields["review_cidrs"], [str(entry)])
+            self.assertEqual(fields["review_cidrs_sha256"],
+                             hashlib.sha256((str(entry) + "\\n").encode("ascii")).hexdigest())
+            self.assertIn(f"OBSERVED_HARD_DIRECT CORE_CORPORATE {entry}",
+                          format_quality_section(result))
+            return fields["review_cidrs_sha256"]
+
+        self.assertNotEqual(report_for("192.0.2.8"), report_for("192.0.2.9"))
 
     def test_unprotected_hard_direct_fails_even_if_shared(self):
         with self.assertRaisesRegex(ValueError, "unprotected hard-block leak"):
