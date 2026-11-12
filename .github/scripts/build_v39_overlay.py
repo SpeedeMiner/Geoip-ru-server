@@ -676,10 +676,10 @@ def main():
     if any(intersect(intervals(decoded["RU"],v),blocked_iv[v]) for v in (4,6)):
         raise ValueError("Non-corporate RKN blocked destination remains in DIRECT v39")
     for v in (4,6):
-        company_expected = subtract(company_iv[v], private_iv[v])
-        company_missing = subtract(company_expected, final_iv[v])
-        if company_missing:
-            raise ValueError(f"Corporate company-ASN coverage lost in IPv{v} beyond PRIVATE precedence")
+        protected_expected = subtract(protected_direct_iv[v], private_iv[v])
+        protected_missing = subtract(protected_expected, final_iv[v])
+        if protected_missing:
+            raise ValueError(f"Unified protected DIRECT coverage lost in IPv{v} beyond PRIVATE precedence")
 
     with args.metrics.open("w",encoding="utf-8",newline="") as f:
         fields = sorted({k for row in metrics_rows for k in row})
