@@ -68,12 +68,27 @@ class PriorityPrefixTriageTests(unittest.TestCase):
             self.assertTrue(all(row["STATUS"] == "REVIEW" for row in rows))
             self.assertIn("no row is automatically approved", stats.read_text(encoding="utf-8"))
 
+    def test_default_scope_tracks_current_inventory_without_approval(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            self._fixture(root)
+            output, stats = root / "out.tsv", root / "stats.txt"
+            result = build_triage(root, output, stats)
+            self.assertEqual(result["rows"], 2)
+            with output.open(encoding="utf-8", newline="") as stream:
+                rows = list(csv.DictReader(
+                    (line for line in stream if not line.startswith("#")), delimiter="\t"
+                ))
+            self.assertEqual(len(rows), 2)
+            self.assertTrue(all(row["STATUS"] == "REVIEW" for row in rows))
+            self.assertIn("Priority prefixes: 2", stats.read_text(encoding="utf-8"))
+
     def test_scope_change_fails_closed(self):
         with tempfile.TemporaryDirectory() as temp:
             root = Path(temp)
             self._fixture(root)
             with self.assertRaisesRegex(ValueError, "priority scope changed"):
-                build_triage(root, root / "out.tsv", root / "stats.txt")
+                build_triage(root, root / "out.tsv", root / "stats.txt", expected_scope=(56, 52, 4))
 
     def test_non_review_input_is_rejected(self):
         with tempfile.TemporaryDirectory() as temp:

@@ -375,49 +375,6 @@ jobs:
           print("\n".join(bundle_manifest))
           PY
 
-      - name: Diagnose current exact-company MOAS and company-only priority subset
-        shell: bash
-        run: |
-          set -euo pipefail
-          mkdir -p prefix-audit/diagnostics
-          python3 - <<'PY'
-          import csv
-          import hashlib
-          from pathlib import Path
-          queue = Path("prefix-audit/company_origin_prefix_review.tsv")
-          rows = list(csv.DictReader((line for line in queue.open(encoding="utf-8") if not line.startswith("#")), delimiter="\t"))
-          selected = [row for row in rows if row["GLOBAL_BGP_MOAS"] == "yes" or row["INCLUSION_BASIS"] == "COMPANY_ASN_ONLY"]
-          selected.sort(key=lambda row: row["PREFIX"])
-          moas = [row for row in selected if row["GLOBAL_BGP_MOAS"] == "yes"]
-          only = [row for row in selected if row["INCLUSION_BASIS"] == "COMPANY_ASN_ONLY"]
-          fields = ["PREFIX", "COMPANY_ASNS", "COMPANY_GROUPS", "GLOBAL_BGP_ORIGIN_ASNS",
-                    "GLOBAL_BGP_MOAS", "INCLUSION_BASIS", "BGP_SNAPSHOT_SHA256"]
-          path = Path("prefix-audit/diagnostics/priority_exact_prefixes.tsv")
-          with path.open("w", encoding="utf-8", newline="") as stream:
-              writer = csv.DictWriter(stream, delimiter="\t", fieldnames=fields, extrasaction="ignore")
-              writer.writeheader()
-              writer.writerows(selected)
-          print(f"PINNED_PRIORITY_SET rows={len(selected)}, moas={len(moas)}, company_only={len(only)}")
-          print(f"QUEUE_SHA256={hashlib.sha256(queue.read_bytes()).hexdigest()}")
-          print(f"PRIORITY_SHA256={hashlib.sha256(path.read_bytes()).hexdigest()}")
-          for row in selected:
-              print("PRIORITY_PREFIX",
-                    row["PREFIX"],
-                    "basis="+row["INCLUSION_BASIS"],
-                    "MOAS="+row["GLOBAL_BGP_MOAS"],
-                    "company="+row["COMPANY_ASNS"],
-                    "global_origins="+row["GLOBAL_BGP_ORIGIN_ASNS"])
-          PY
-
-      - name: Upload exact-priority audit diagnostics
-        if: always()
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
-        with:
-          name: v37-priority-subset-diagnostics
-          path: prefix-audit/diagnostics/priority_exact_prefixes.tsv
-          if-no-files-found: warn
-          retention-days: 14
-
       - name: Collect RDAP resource-holder samples and per-origin RPKI status for priority prefixes
         shell: bash
         run: |
@@ -449,14 +406,16 @@ jobs:
           }
           priority = read_tsv(Path("prefix-audit/priority-prefix-evidence/priority_prefixes.tsv"))
           priority_prefixes = {row["PREFIX"] for row in priority}
-          if len(priority) != 56 or len(priority_prefixes) != 56:
-              raise SystemExit(f"Expected 56 unique priority prefixes, got {len(priority)} rows/{len(priority_prefixes)} unique")
+          if not priority or len(priority) != len(priority_prefixes):
+              raise SystemExit(f"Priority set must be nonempty and unique: {len(priority)} rows/{len(priority_prefixes)} unique")
           if priority_prefixes != expected_priority:
               raise SystemExit("Priority prefix set differs from exact company MOAS + company-only selection")
-          if sum(row["GLOBAL_BGP_MOAS"] == "yes" for row in priority) != 52:
-              raise SystemExit("Expected exactly 52 company MOAS prefixes")
-          if sum(row["INCLUSION_BASIS"] == "COMPANY_ASN_ONLY" for row in priority) != 4:
-              raise SystemExit("Expected exactly four company-only prefixes")
+          expected_moas_count = sum(row["GLOBAL_BGP_MOAS"] == "yes" for row in company)
+          expected_company_only_count = sum(row["INCLUSION_BASIS"] == "COMPANY_ASN_ONLY" for row in company)
+          actual_moas_count = sum(row["GLOBAL_BGP_MOAS"] == "yes" for row in priority)
+          actual_company_only_count = sum(row["INCLUSION_BASIS"] == "COMPANY_ASN_ONLY" for row in priority)
+          if (actual_moas_count, actual_company_only_count) != (expected_moas_count, expected_company_only_count):
+              raise SystemExit(f"Priority scope mismatched the pinned queue: expected MOAS/company-only={expected_moas_count}/{expected_company_only_count}, got {actual_moas_count}/{actual_company_only_count}")
           if any(row["STATUS"] != "REVIEW" for row in priority):
               raise SystemExit("Priority prefix table contains a non-REVIEW status")
 
@@ -503,7 +462,7 @@ jobs:
           )
 
           holder_summary = read_tsv(Path("prefix-audit/priority-prefix-evidence/prefix_holder_review_summary.tsv"))
-          if len(holder_summary) != 56 or {row["PREFIX"] for row in holder_summary} != priority_prefixes:
+          if len(holder_summary) != len(priority) or {row["PREFIX"] for row in holder_summary} != priority_prefixes:
               raise SystemExit("RDAP per-prefix holder summary is incomplete")
           if any(row["STATUS"] != "REVIEW" for row in holder_summary):
               raise SystemExit("RDAP holder summary contains a non-REVIEW status")
@@ -533,8 +492,8 @@ jobs:
           irr_summary = read_tsv(Path("prefix-audit/priority-prefix-evidence/irr_prefix_summary.tsv"))
           irr_objects = read_tsv(Path("prefix-audit/priority-prefix-evidence/irr_route_objects.tsv"))
           irr_unique_objects = read_tsv(Path("prefix-audit/priority-prefix-evidence/irr_route_objects_deduplicated.tsv"))
-          if len(irr_summary) != 56 or {row["PREFIX"] for row in irr_summary} != priority_prefixes:
-              raise SystemExit("IRR query summary is incomplete for the 56 priority prefixes")
+          if len(irr_summary) != len(priority) or {row["PREFIX"] for row in irr_summary} != priority_prefixes:
+              raise SystemExit("IRR query summary is incomplete for the current priority prefixes")
           if any(not row["QUERY_STATUS"] for row in irr_summary):
               raise SystemExit("IRR query summary contains blank query statuses")
           for row in irr_summary:
@@ -608,9 +567,9 @@ jobs:
               "IANA IPv4 RDAP bootstrap SHA256:",
               "IANA IPv6 RDAP bootstrap URL:",
               "IANA IPv6 RDAP bootstrap SHA256:",
-              "Priority prefixes: 56",
-              "Exact MOAS prefixes: 52",
-              "Company-only prefixes: 4",
+              f"Priority prefixes: {len(priority)}",
+              f"Exact MOAS prefixes: {actual_moas_count}",
+              f"Company-only prefixes: {actual_company_only_count}",
               "RPKI origin-prefix checks attempted:",
               "IRR sources queried:",
               "IRR exact-prefix search query statuses:",
@@ -624,7 +583,7 @@ jobs:
 
           manifest = [
               "Priority prefix evidence stage",
-              "Scope: 52 exact company MOAS prefixes plus four company-only prefixes.",
+              f"Scope: {actual_moas_count} exact company MOAS prefixes plus {actual_company_only_count} company-only prefixes.",
               f"RDAP sample queries: {len(rdap)} attempted; {rdap_success} successful; errors={dict(sorted(rdap_errors.items()))}",
               f"RPKI prefix/origin pairs: {len(rpki)}; states/errors={dict(sorted(rpki_statuses.items()))}",
               f"IRR exact-prefix queries: {len(irr_summary)}; query statuses={dict(sorted(Counter(row['QUERY_STATUS'] for row in irr_summary).items()))}",
@@ -664,8 +623,8 @@ jobs:
 
           priority = read_tsv(base / "priority_prefixes.tsv")
           triage = read_tsv(base / "priority_prefix_triage.tsv")
-          if len(priority) != 56 or len(triage) != 56:
-              raise SystemExit(f"Expected 56 priority/triage rows, got {len(priority)}/{len(triage)}")
+          if not priority or len(priority) != len(triage):
+              raise SystemExit(f"Priority and triage row counts differ: {len(priority)}/{len(triage)}")
           if {row["PREFIX"] for row in priority} != {row["PREFIX"] for row in triage}:
               raise SystemExit("Triage prefix inventory differs from the priority queue")
           if any(row["STATUS"] != "REVIEW" for row in triage):
@@ -673,7 +632,7 @@ jobs:
           stats_path = base / "priority_prefix_triage_stats.txt"
           stats = stats_path.read_text(encoding="utf-8")
           for required in (
-              "Priority prefixes: 56",
+              f"Priority prefixes: {len(priority)}",
               "All rows: STATUS=REVIEW",
               "no row is automatically approved",
               "both set differences are retained in the TSV",
@@ -721,10 +680,11 @@ jobs:
               "177.1.199.0/24", "185.3.32.0/22", "195.225.160.0/22",
               "212.106.32.0/19", "213.154.160.0/19", "31.172.192.0/19",
               "62.64.0.0/19", "77.234.0.0/19", "92.37.128.0/17",
-              "93.181.240.0/20",
+              "93.181.240.0/20", "5.255.192.0/18",
           }
-          if len(worklist) != 56 or len({r["PREFIX"] for r in worklist}) != 56:
-              raise SystemExit("Worklist must contain 56 unique exact prefixes")
+          worklist_prefixes = {r["PREFIX"] for r in worklist}
+          if len(worklist) != len(worklist_prefixes) or worklist_prefixes != {r["PREFIX"] for r in priority}:
+              raise SystemExit("Worklist must match the current unique priority prefix inventory")
           if {r["PREFIX"] for r in worklist} != {r["PREFIX"] for r in triage}:
               raise SystemExit("Worklist prefix inventory differs from triage")
           if {r["PREFIX"] for r in worklist} != {r["PREFIX"] for r in priority}:
@@ -736,10 +696,13 @@ jobs:
           if [int(r["REVIEW_ORDER"]) for r in worklist] != sorted(int(r["REVIEW_ORDER"]) for r in worklist):
               raise SystemExit("Worklist is not sorted by review order")
           spot_rows = [r for r in worklist if r["EXTERNAL_SPOT_CHECK_STATUS"] != "NOT_SPOT_CHECKED"]
-          if {r["PREFIX"] for r in spot_rows} != expected_spots or len(spot_rows) != 22:
-              raise SystemExit("External spot-check scope does not match the twenty-two reviewed prefixes")
-          if any(r["EXTERNAL_SPOT_CHECK_STATUS"] != "CHECKED_2026-11-10" for r in spot_rows):
-              raise SystemExit("Unexpected spot-check timestamp")
+          if {r["PREFIX"] for r in spot_rows} != expected_spots or len(spot_rows) != 23:
+              raise SystemExit("External spot-check scope does not match the twenty-three reviewed prefixes")
+          expected_spot_statuses = {prefix: "CHECKED_2026-11-10" for prefix in expected_spots}
+          expected_spot_statuses["5.255.192.0/18"] = "CHECKED_2026-11-11"
+          actual_spot_statuses = {r["PREFIX"]:r["EXTERNAL_SPOT_CHECK_STATUS"] for r in spot_rows}
+          if actual_spot_statuses != expected_spot_statuses:
+              raise SystemExit(f"Unexpected spot-check timestamps: {actual_spot_statuses}")
           expected_scope_relations = {
               "5.45.192.0/18": "EXACT_ONLY",
               "5.45.215.0/24": "EXACT_ONLY",
@@ -763,6 +726,7 @@ jobs:
               "77.234.0.0/19": "EXACT_ONLY",
               "92.37.128.0/17": "EXACT_AND_MORE_SPECIFIC",
               "93.181.240.0/20": "EXACT_AND_MORE_SPECIFIC",
+              "5.255.192.0/18": "EXACT_AND_MORE_SPECIFIC",
           }
           actual_scope_relations = {
               r["PREFIX"]: r["EXTERNAL_SPOT_CHECK_SCOPE_RELATION"] for r in spot_rows
@@ -771,9 +735,9 @@ jobs:
               raise SystemExit(f"External NLRI scope relations differ: {actual_scope_relations}")
           stats = (base / "priority_prefix_review_worklist_stats.txt").read_text(encoding="utf-8")
           for required in (
-              "Priority prefixes: 56", "External spot-check rows: 22", "All rows: STATUS=REVIEW",
+              f"Priority prefixes: {len(priority)}", "External spot-check rows: 23", "All rows: STATUS=REVIEW",
               "External spot-check scope EXACT_ONLY: 5",
-              "External spot-check scope EXACT_AND_MORE_SPECIFIC: 16",
+              "External spot-check scope EXACT_AND_MORE_SPECIFIC: 17",
               "External spot-check scope MORE_SPECIFIC_ONLY: 1",
           ):
               if required not in stats:

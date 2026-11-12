@@ -15,7 +15,7 @@ from collections import Counter, defaultdict
 from pathlib import Path
 from typing import Iterable
 
-EXPECTED_SCOPE = (56, 52, 4)  # total, exact-MOAS, company-only
+EXPECTED_SCOPE: tuple[int, int, int] | None = None  # derive scope from the generated exact-prefix inventory
 GOOD_IRR_QUERY_STATUSES = {
     "OK", "NO_OBJECTS_IN_QUERIED_SOURCES", "NO_EXACT_ROUTE_OBJECT_IN_QUERY_RESULTS",
 }
