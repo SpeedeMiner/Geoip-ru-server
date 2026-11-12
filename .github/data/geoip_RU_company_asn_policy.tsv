@@ -1,4 +1,5 @@
 ASN	EXCEPTION_CLASS	COMPANY_GROUP	POLICY_NOTE
+AS13238	CORE_CORPORATE	Yandex	Dedicated corporate/first-party origin
 AS200350	SHARED_INFRA	Yandex	Shared hosting, CDN, cloud, access or transit infrastructure; retain exact and subnet blocks
 AS202611	CORE_CORPORATE	Yandex	Dedicated corporate/first-party origin
 AS215013	SHARED_INFRA	Yandex	Shared hosting, CDN, cloud, access or transit infrastructure; retain exact and subnet blocks

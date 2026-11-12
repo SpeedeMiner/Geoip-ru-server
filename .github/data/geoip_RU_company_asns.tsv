@@ -1,5 +1,6 @@
 # v41 selected corporate ASN registry: reviewed v39 set plus validated v40 additions.
-# ASN\tGROUP\tENTITY\tEVIDENCE\nAS13238	Yandex	YANDEX LLC	https://iamroot.tech/asndatabase/?search=AS13238
+# ASN\tGROUP\tENTITY\tEVIDENCE
+AS13238	Yandex	YANDEX LLC	https://iamroot.tech/asndatabase/?search=AS13238
 AS200350	Yandex	Yandex.Cloud LLC	https://wbdt.ru/AS200350
 AS202611	Yandex	Yandex.Telecom LLC	https://bgp.he.net/AS202611
 AS215013	Yandex	Yandex.Cloud LLC (YCCDN)	https://ipctl.io/as/215013
