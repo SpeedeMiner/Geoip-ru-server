@@ -1,0 +1,23 @@
+{
+  "schema": 1,
+  "observed_release_sha256": "534d4d80caf45df54566105d8c1930e0aaa293718891f46537256da63b56bf1f",
+  "observation_only_not_approved": true,
+  "categories": {
+    "CORE_CORPORATE": {
+      "ipv4_addresses": 19,
+      "current_ip_lst_addresses": 19,
+      "cidr_list_sha256": "693ee1f6c27083767c4902d948ca80c6ee2217635cd9ba0884c3b87d9a870120"
+    },
+    "SHARED_INFRA": {
+      "ipv4_addresses": 59,
+      "current_ip_lst_addresses": 53,
+      "cidr_list_sha256": "1bbedea37c1ff3c7caf5705180e079aa99492fd08c87e0a1cd21674b79dd124b"
+    },
+    "OTHER": {
+      "ipv4_addresses": 75,
+      "current_ip_lst_addresses": 65,
+      "cidr_list_sha256": "ffdfd0bf0cd671321145bb91e0c6a20027fd0001a3a83947954114b00de47d07"
+    }
+  },
+  "source": "Published v41, audited CI run 43279656237"
+}
