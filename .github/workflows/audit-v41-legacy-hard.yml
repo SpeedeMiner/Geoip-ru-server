@@ -16,6 +16,9 @@ on:
       - ".github/scripts/audit_v41_shadow_hard_shared.py"
       - ".github/scripts/audit_v41_all_hard_override_classes.py"
       - ".github/scripts/test_audit_v41_all_hard_override_classes.py"
+      - ".github/scripts/audit_v41_all_hard_regressions.py"
+      - ".github/scripts/test_audit_v41_all_hard_regressions.py"
+      - ".github/data/v41_observed_all_hard_override_classes.json"
       - ".github/scripts/audit_v41_other_current_hard_ris.py"
       - ".github/scripts/test_audit_v41_other_current_hard_ris.py"
       - ".github/scripts/test_audit_v41_shadow_hard_shared.py"
@@ -191,6 +194,17 @@ jobs:
           test -s audit-output/other_current_hard_ris_evidence.tsv
           test -s audit-output/other_current_hard_ris_summary.json
           cat audit-output/other_current_hard_ris_summary.json
+      - name: Warn if hard-exception addresses change in ANY ASN class
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 .github/scripts/audit_v41_all_hard_regressions.py \
+            --baseline .github/data/v41_observed_all_hard_override_classes.json \
+            --summary audit-output/all_hard_override_classes_summary.json \
+            --cidr-dir audit-output \
+            --output-dir audit-output
+          test -s audit-output/hard_override_class_regressions.json
+          cat audit-output/hard_override_class_regressions.json
       - name: Upload audit evidence without changing routing or release
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
