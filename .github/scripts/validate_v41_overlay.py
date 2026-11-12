@@ -44,7 +44,7 @@ def validate(args: argparse.Namespace) -> dict:
     feeds.hxehex_ip = args.hxehex_ip
     feeds.escapingworm = args.escapingworm
     service_sources, _, _ = builder.load_service_inputs(feeds)
-    rir_resources = builder.parse_rir_inventory(args.rir)
+    rir_resources, _ = builder.parse_rir_tsv(args.rir)
     _, service_protected = builder.build_ru_service_protection_mask(
         set(), rir_ru=rir_resources["RU"], service_sources=service_sources
     )
