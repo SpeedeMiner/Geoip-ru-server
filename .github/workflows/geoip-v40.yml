@@ -3371,63 +3371,18 @@ jobs:
           test -s "$V40_BLOCKED_PROVENANCE"
           test -s "$RIR_RUKZBY_PREFIX_INPUT"
           test -s "$RIR_RUKZBY_STATS"
-          python3 - "$V40_OUTPUT_FILE" "$V40_BLOCKED_FILE" "$V40_MANIFEST" "$V40_QUALITY_REPORT" "$RIR_RUKZBY_PREFIX_INPUT" "$COMPANY_ASN_PREFIXES" <<'PY'
-          import csv, hashlib, json, sys
-          from pathlib import Path
-          sys.path.insert(0, ".github/scripts")
-          import build_v40_overlay as v40
-
-          output, blocked_path, manifest_path, quality_path, rir_path, company_path = map(Path, sys.argv[1:])
-          decoded = v40.parse_geoip_dat(output)
-          if set(decoded) != {"RU", "PRIVATE"}:
-              raise SystemExit(f"v40 must contain exactly RU and PRIVATE, got {sorted(decoded)}")
-          blocked = v40.parse_cidr_file(blocked_path)[0]
-          company = v40.parse_cidr_file(company_path, allow_hosts=False)[0]
-          for version in (4, 6):
-              ru_iv = v40.intervals(decoded["RU"], version)
-              private_iv = v40.intervals(decoded["PRIVATE"], version)
-              blocked_iv = v40.intervals(blocked, version)
-              company_iv = v40.intervals(company, version)
-              if v40.intersect(ru_iv, private_iv):
-                  raise SystemExit(f"v40 PRIVATE overlap in IPv{version}")
-              if v40.intersect(ru_iv, blocked_iv):
-                  raise SystemExit(f"v40 non-corporate RKN-block overlap in IPv{version}")
-              company_expected = v40.subtract(company_iv, private_iv)
-              company_missing = v40.subtract(company_expected, ru_iv)
-              if company_missing:
-                  raise SystemExit(f"v40 corporate company-ASN prefixes missing from RU in IPv{version}")
-              if v40.intersect(blocked_iv, company_iv):
-                  raise SystemExit(f"v40 effective blocked set intersects corporate company-ASN prefixes in IPv{version}")
-          manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
-          safety = manifest.get("safety", {})
-          if safety.get("geolocation_used_as_admission_gate") is not False:
-              raise SystemExit("v40 manifest says geolocation was used as an admission gate")
-          if safety.get("private_precedence_applied") is not True or safety.get("rkn_blocklist_applied_outside_corporate_company_asn_prefixes") is not True:
-              raise SystemExit("v40 policy safety flags are missing")
-          if safety.get("corporate_company_asn_prefixes_remain_direct_except_private") is not True or safety.get("private_precedence_over_corporate_exception") is not True:
-              raise SystemExit("v40 corporate exception / PRIVATE precedence safety flags are missing")
-          company_pin = manifest.get("corporate_company_asn_prefixes", {})
-          actual_company_sha = hashlib.sha256(company_path.read_bytes()).hexdigest()
-          if company_pin.get("input_sha256") != actual_company_sha:
-              raise SystemExit("v40 company-prefix sidecar SHA-256 does not match manifest")
-          if manifest.get("input_sha256", {}).get("corporate_company_asn_origin_prefixes") != actual_company_sha:
-              raise SystemExit("v40 corporate-prefix input SHA-256 is not pinned consistently")
-          if safety.get("ipsum_24_auto_carved") is not False or manifest.get("blocked", {}).get("ipsum_auto_carved") is not False:
-              raise SystemExit("v40 must keep coarse ipsum /24s review-only")
-          if safety.get("this_builder_modifies_production_main") is not False or safety.get("this_builder_publishes_release") is not False or safety.get("release_workflow_is_main_only") is not True:
-              raise SystemExit("v40 overlay safety/production-publish boundary flags are invalid")
-          countries = set()
-          with rir_path.open(encoding="utf-8", newline="") as stream:
-              for row in csv.DictReader(stream, delimiter=chr(9)):
-                  countries.add(row["country"])
-          if countries != {"RU", "BY", "KZ"}:
-              raise SystemExit(f"v40 RIR resources missing regional country rows: {countries}")
-          quality = quality_path.read_text(encoding="utf-8")
-          for marker in ("New IPv4 addresses vs v37", "New IPv6 addresses vs v37", "Antifilter ipsum REVIEW-ONLY IPv4 /24 prefixes"):
-              if marker not in quality:
-                  raise SystemExit(f"v40 quality report is missing marker: {marker}")
-          print(f"Validated v40 final GeoIP: {output.stat().st_size} bytes; RU CIDRs={len(decoded['RU'])}; PRIVATE CIDRs={len(decoded['PRIVATE'])}")
-          PY
+          python3 .github/scripts/validate_v40_overlay.py \
+            --geoip "$V40_OUTPUT_FILE" \
+            --blocked-union "$BLOCKED_IP_INPUT" \
+            --blocked-exact "$BLOCKED_IP_EXACT_INPUT" \
+            --blocked-resolved "$BLOCKED_IPRESOLVE_ONLY_INPUT" \
+            --company-all "$COMPANY_ASN_PREFIXES" \
+            --company-core "$CORE_COMPANY_PREFIXES" \
+            --company-shared "$SHARED_INFRASTRUCTURE_PREFIXES" \
+            --effective-blocked "$V40_BLOCKED_FILE" \
+            --manifest "$V40_MANIFEST" \
+            --quality "$V40_QUALITY_REPORT" \
+            --rir "$RIR_RUKZBY_PREFIX_INPUT"Y
 
           echo "=== v40 RU+BY+KZ RIR resource inventory ==="
           cat "$RIR_RUKZBY_STATS"
