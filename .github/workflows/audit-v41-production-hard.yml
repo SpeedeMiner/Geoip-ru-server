@@ -17,6 +17,8 @@ on:
       - ".github/scripts/audit_v41_shadow_hard_shared.py"
       - ".github/scripts/audit_v41_all_hard_override_classes.py"
       - ".github/scripts/audit_v41_hard_evidence_matrix.py"
+      - ".github/scripts/audit_v41_p1_service_specificity.py"
+      - ".github/scripts/test_audit_v41_p1_service_specificity.py"
       - ".github/scripts/test_audit_v41_hard_evidence_matrix.py"
       - ".github/scripts/test_audit_v41_all_hard_override_classes.py"
       - ".github/scripts/audit_v41_all_hard_regressions.py"
@@ -48,6 +50,7 @@ jobs:
           python3 -m unittest discover -s .github/scripts -p 'test_audit_v41_shadow_hard_shared.py' -v
           python3 -m unittest discover -s .github/scripts -p 'test_audit_v41_all_hard_override_classes.py' -v
           python3 -m unittest discover -s .github/scripts -p 'test_audit_v41_hard_evidence_matrix.py' -v
+          python3 -m unittest discover -s .github/scripts -p 'test_audit_v41_p1_service_specificity.py' -v
           python3 -m unittest discover -s .github/scripts -p 'test_audit_v41_all_hard_regressions.py' -v
       - name: Verify current published v41 artifacts against manifest hashes
         shell: bash
@@ -147,6 +150,16 @@ jobs:
           test -s audit-output/all_153_hard_exceptions_evidence_matrix.tsv
           test -s audit-output/all_hard_evidence_matrix_summary.json
           cat audit-output/all_hard_evidence_matrix_summary.json
+      - name: Prioritize current hard IP by exact vs broad service protection
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 .github/scripts/audit_v41_p1_service_specificity.py \
+            --matrix audit-output/all_153_hard_exceptions_evidence_matrix.tsv \
+            --output-dir audit-output
+          test -s audit-output/p1_current_hard_service_specificity_review.tsv
+          test -s audit-output/p1_current_hard_review_summary.json
+          cat audit-output/p1_current_hard_review_summary.json
       - name: Upload post-release evidence
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
