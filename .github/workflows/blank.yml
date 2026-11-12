@@ -1,23 +1,7 @@
-name: Build Unified GeoIP DIRECT RU+BY+KZ CLIENT v38
+name: Legacy GeoIP DIRECT RU+BY+KZ CLIENT v38 (manual, no publication)
 
 on:
   workflow_dispatch:
-  pull_request:
-    branches: [main]
-    paths:
-      - ".github/workflows/blank.yml"
-      - ".github/scripts/build_rir_rukzby_prefixes.py"
-      - ".github/scripts/build_v38_overlay.py"
-      - ".github/scripts/test_*.py"
-      - "docs/GEOIP_RU_V38_POLICY.md"
-      - "docs/GEOIP_RU_V38_SOURCE_REGISTRY.tsv"
-      - "docs/V38_PUBLIC_RKN_SOURCE_CROSSCHECK.md"
-  schedule:
-    # Daily refresh; one unified DIRECT set covers RU+BY+KZ, with bounded blocked-destination carve-outs.
-    - cron: "45 3 * * *"
-  push:
-    branches:
-      - main
 
 concurrency:
   group: geoip-direct-ru-by-kz-v38-${{ github.ref }}
@@ -3529,7 +3513,7 @@ jobs:
           retention-days: 30
 
       - name: Publish GitHub Release
-        if: github.ref == 'refs/heads/main'
+        if: false
         # v3.0.3; pin the action implementation to an immutable commit.
         uses: softprops/action-gh-release@efb35369e0ad2afab669f228072c1b0d510eae64
         with:
@@ -3625,7 +3609,7 @@ jobs:
             - RIR registration, BGP announcements, service association and RKN block evidence are distinct signals and are reported separately.
 
       - name: Publish release branch
-        if: github.ref == 'refs/heads/main'
+        if: false
         shell: bash
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -3675,7 +3659,7 @@ jobs:
           purge_jsdelivr "geoip_RU_blocked_ip_exclusions.txt"
 
       - name: Print download and audit URLs
-        if: github.ref == 'refs/heads/main'
+        if: false
         shell: bash
         run: |
           echo "GitHub Release: https://${{ github.server_url }}/${{ github.repository }}/releases/download/latest-geoip-client-v38/geoip_RU.dat"
