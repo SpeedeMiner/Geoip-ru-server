@@ -35,6 +35,16 @@ class LegacyHardEvidenceTests(unittest.TestCase):
         self.assertEqual(rows[0]["current_resolver"], "NO")
         self.assertEqual(rows[1]["review_priority"], "MEDIUM")
 
+    def test_unblocked_legacy_hard_inside_direct_is_override_review(self):
+        rows, summary = audit(
+            [(ipaddress.ip_network("198.51.100.5/32"), {"v38-baseline-hard-or-unclassified"})],
+            [], set(), nets("198.51.100.0/24"), nets("198.51.100.5/32")
+        )
+        self.assertEqual(rows[0]["in_v41_direct"], "YES")
+        self.assertEqual(rows[0]["still_effective_block"], "NO")
+        self.assertEqual(rows[0]["review_priority"], "OVERRIDE_REVIEW")
+        self.assertEqual(summary["legacy_only_not_effective_and_in_direct"], 1)
+
     def test_unrecognized_provenance_fails_closed(self):
         with tempfile.TemporaryDirectory() as tmp:
             path = Path(tmp) / "hard.txt"
