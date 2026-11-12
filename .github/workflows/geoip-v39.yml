@@ -3432,7 +3432,7 @@ jobs:
           test -s "$RIR_RUKZBY_PREFIX_INPUT"
           test -s "$RIR_RUKZBY_STATS"
           python3 - "$V39_OUTPUT_FILE" "$V39_BLOCKED_FILE" "$V39_MANIFEST" "$V39_QUALITY_REPORT" "$RIR_RUKZBY_PREFIX_INPUT" "$COMPANY_ASN_PREFIXES" <<'PY'
-          import csv, json, sys
+          import csv, hashlib, json, sys
           from pathlib import Path
           sys.path.insert(0, ".github/scripts")
           import build_v39_overlay as v39
@@ -3467,8 +3467,11 @@ jobs:
           if safety.get("corporate_company_asn_prefixes_remain_direct_except_private") is not True or safety.get("private_precedence_over_corporate_exception") is not True:
               raise SystemExit("v39 corporate exception / PRIVATE precedence safety flags are missing")
           company_pin = manifest.get("corporate_company_asn_prefixes", {})
-          if company_pin.get("input_sha256") is None:
-              raise SystemExit("v39 manifest is missing company prefix SHA-256 binding")
+          actual_company_sha = hashlib.sha256(company_path.read_bytes()).hexdigest()
+          if company_pin.get("input_sha256") != actual_company_sha:
+              raise SystemExit("v39 company-prefix sidecar SHA-256 does not match manifest")
+          if manifest.get("input_sha256", {}).get("corporate_company_asn_origin_prefixes") != actual_company_sha:
+              raise SystemExit("v39 corporate-prefix input SHA-256 is not pinned consistently")
           if safety.get("ipsum_24_auto_carved") is not False or manifest.get("blocked", {}).get("ipsum_auto_carved") is not False:
               raise SystemExit("v39 must keep coarse ipsum /24s review-only")
           if safety.get("this_builder_modifies_production_main") is not False or safety.get("this_builder_publishes_release") is not False or safety.get("release_workflow_is_main_only") is not True:
@@ -3696,6 +3699,7 @@ jobs:
           purge_jsdelivr "geoip_RU_v39_prefix_provenance.tsv"
           purge_jsdelivr "geoip_RU_v39_blocked_provenance.tsv"
           purge_jsdelivr "geoip_RU_v39_manifest.json"
+          purge_jsdelivr "geoip_RU_company_asn_bgp_prefixes.txt"
           purge_jsdelivr "geoip_RU_input_provenance.tsv"
           purge_jsdelivr "geoip_RU_input_provenance.tsv.sha256sum"
           purge_jsdelivr "geoip_RU_blocked_ip_exclusions.txt"
