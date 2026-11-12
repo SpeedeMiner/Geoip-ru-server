@@ -16,11 +16,11 @@ on:
       - ".github/data/geoip_RU_company_asns.tsv"
       - ".github/data/geoip_RU_company_asn_policy.tsv"
       - "docs/GEOIP_RU_V41_POLICY.md"
-      - "docs/GEOIP_RU_V41_SOURCE_REGISTRY.tsv"
-      - "docs/V41_PUBLIC_RKN_SOURCE_CROSSCHECK.md"
+      - "docs/GEOIP_RU_V39_SOURCE_REGISTRY.tsv"
+      - "docs/V39_PUBLIC_RKN_SOURCE_CROSSCHECK.md"
+      - "docs/V41_EXECUTION_JOURNAL.md"
       - "geoip_RU_company_asns.txt"
       - ".github/scripts/build_v39_overlay.py"
-      - ".github/scripts/build_company_asn_prefixes.py"
   # PR validation and manual candidate runs only. Production publishing is disabled until
   # final policy review and a separate release-enablement change.
 
@@ -3595,7 +3595,7 @@ jobs:
             - The no-BGP public-source fallback cross-checks pinned bol-van/rulist ipban4 vs resolved4 and correlated prebuilt datasets; it does not claim or infer Antifilter community 65444:210 membership.
             - BGP registration is not a v41 release gate. All 360 new Lib4u/Jirnobruh host-IP candidates remain review-only; shared CIDR matches are not bulk-carved or promoted.
             - If Antifilter ipresolve.lst is empty/unavailable, v41 carries forward the SHA-256-pinned v38 approved block snapshot (3033248ea54cb298bafded25ddcd2805d5f0e7ac / df909b12b985b23080075821cedc5e2f73b7b1f89abcd9950293b400ce1e4a5d); this is not treated as a zero-block result.
-            - Full pinned refs, candidate-match counts, enrichment limitations and source lineage are documented in [V41 public-source cross-check](https://github.com/SpeedeMiner/Geoip-ru-server/blob/main/docs/V41_PUBLIC_RKN_SOURCE_CROSSCHECK.md).
+            - Full pinned refs, candidate-match counts, enrichment limitations and source lineage are documented in [V41 public-source cross-check](https://github.com/SpeedeMiner/Geoip-ru-server/blob/feature/geoip-direct-rukzby-v41-integration/docs/V39_PUBLIC_RKN_SOURCE_CROSSCHECK.md).
             - GeoIP cannot distinguish unrelated domains on the same IP; domain-only RKN rules remain a separate client geosite layer.
 
             ## Audit outputs
