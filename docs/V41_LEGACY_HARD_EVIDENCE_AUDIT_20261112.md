@@ -50,3 +50,17 @@ Run `.github/workflows/audit-v41-legacy-hard.yml` on the Draft PR #16 or manuall
 - `summary.json`: exact deterministic counters
 
 The workflow is read-only and isolated from the production publishing path. PR #5, production and existing release tags remain unchanged.
+
+## Pinned source-level override verification (second-stage audit)
+
+CI [43269113929](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43269113929) **SUCCESS**, artifact `13966064822`, SHA-256-pinned against the published 2026-11-12 v41 service feeds and CORE/SHARED origin sidecars. The new workflow stage exports `nine_legacy_hard_service_overrides.tsv` and `nine_override_summary.json`, listing most-specific and broadest matching prefixes per source.
+
+- Nine legacy hard /`32` addresses are in final v41 DIRECT even though absent from the effective block set.
+- Six intersect SHARED_INFRA and a separate verified-service protection feed; **zero intersect CORE_CORPORATE**.
+- Eight of nine are covered by one or more service prefixes /`24` or broader; only `88.223.91.1/32` is covered solely by exact HXEHEX host evidence.
+- Coverage by sources: Kyoresuas=5, Escapingworm=4, HXEHEX=1, W1ZARDZ=0. One address `158.160.63.17/32` intersects two service feeds; the coverage counts are **not additive**.
+- In Qrator AS51115, `178.248.234.146` and `178.248.236.100` match **most-specific** Kyoresuas /`24` but also the broader Kyoresuas /`21`. Thus merely reporting a /`21` matches hides the more precise source hierarchy.
+- Yandex AS200350 includes the broad /`16` `158.160.0.0/16`, /`18` `89.169.128.0/18`, and /`20` `111.88.144.0/20` service matches. Timeweb AS9123 `81.200.149.9/32` matches Escapingworm /`22`.
+- Two AS210079 hosts `46.254.18.79/32` and `46.254.18.115/32` match an Escapingworm /`23`, outside CORE and SHARED masks.
+
+**Decision:** keep this as review-only evidence and flag service-mask overlaps with exact legacy hard entries, especially on shared/CDN clouds. The audit establishes *which rules caused the effective exemption*, not whether a historical block is still valid today. An external, dated and address-specific corroboration would be needed before changing either the block exemption or DIRECT. No production inputs were modified.
