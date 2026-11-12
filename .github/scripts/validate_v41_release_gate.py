@@ -104,6 +104,13 @@ def inspect_policy(ru, private, effective, hard_rows, core, shared, service):
             raise ValueError(f"IPv{version} hard exception class partition mismatch")
         summary = {}
         for name, addresses in partition.items():
+            # Exact, stable CIDR representation makes same-count address
+            # substitutions visible in the release's existing quality report.
+            cidrs = sorted(
+                builder.networks_from_intervals(addresses, version),
+                key=lambda net: (int(net.network_address), net.prefixlen),
+            )
+            canonical = "".join(f"{net}\\n" for net in cidrs)
             summary[name] = {
                 "addresses": builder.interval_size(addresses),
                 "current_antifilter_ip": builder.interval_size(
@@ -112,6 +119,8 @@ def inspect_policy(ru, private, effective, hard_rows, core, shared, service):
                     builder.intersect(addresses, builder.intervals(current_subnet, version))),
                 "service_protected": builder.interval_size(
                     builder.intersect(addresses, builder.intervals(service, version))),
+                "review_cidrs": [str(net) for net in cidrs],
+                "review_cidrs_sha256": hashlib.sha256(canonical.encode("ascii")).hexdigest(),
             }
         result["families"][f"ipv{version}"] = {
             "hard_direct_overridden_addresses": builder.interval_size(hard_direct),
@@ -135,7 +144,15 @@ def format_quality_section(result: dict) -> str:
             lines.append(f"  {name}: addresses={fields['addresses']}, "
                          f"current_ip_lst={fields['current_antifilter_ip']}, "
                          f"current_subnet_lst={fields['current_antifilter_subnet']}, "
-                         f"service_protected={fields['service_protected']}")
+                         f"service_protected={fields['service_protected']}, "
+                         f"review_cidr_count={len(fields['review_cidrs'])}, "
+                         f"review_cidrs_sha256={fields['review_cidrs_sha256']}")
+            # No second audit artifact: this is the exact protected hard
+            # address set in the existing published quality report. A summary
+            # CIDR can represent adjacent hosts; it is NOT a new block rule.
+            lines.extend(f"    OBSERVED_HARD_DIRECT {name} {cidr}"
+                         for cidr in fields["review_cidrs"])
+    lines.append("Observed CIDRs describe current DIRECT/hard overlaps, not blocks or approvals")
     lines.append("Unresolved source conflicts: audit-only; no automatic changes to DIRECT")
     return "\n".join(lines) + "\n"
 
