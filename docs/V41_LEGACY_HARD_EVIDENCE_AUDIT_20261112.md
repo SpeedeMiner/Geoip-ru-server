@@ -64,3 +64,20 @@ CI [43269113929](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/432
 - Two AS210079 hosts `46.254.18.79/32` and `46.254.18.115/32` match an Escapingworm /`23`, outside CORE and SHARED masks.
 
 **Decision:** keep this as review-only evidence and flag service-mask overlaps with exact legacy hard entries, especially on shared/CDN clouds. The audit establishes *which rules caused the effective exemption*, not whether a historical block is still valid today. An external, dated and address-specific corroboration would be needed before changing either the block exemption or DIRECT. No production inputs were modified.
+
+## Full exact hard IPv4 host regression monitor (2026-11-12)
+
+The earlier nine-host review was restricted to legacy-v38-only hard evidence. The expanded, **read-only** monitor now scans **all 57,612 exact IPv4 /32 hard host entries**, irrespective of legacy or current provenance, and flags addresses satisfying **all four conditions**: inside a SHARED_INFRA origin prefix, within a broad (IPv4 /24 or larger) service protection prefix, present in final v41 DIRECT, and absent from the effective blocked mask.
+
+The first verified broad audit was GitHub Actions [43271570738](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43271570738), SUCCESS; artifact `13966979700`. Results: **50** broad-service SHARED hard exceptions in final DIRECT; **6** previously observed in the historical-only audit, **44 previously untracked** (this does **not** mean newly introduced by the latest production update). **All 44** are present in the published current `antifilter-ip.lst`. Of those, **42** also have legacy-v38 hard provenance; two have only the current hard-source provenance. All 50 are exact /32 addresses from the original hard inputs. Evidence source memberships are not additive.
+
+Top clusters within the 44 untracked cases: `158.160.0.0/16` **17** (Yandex cloud class), `89.169.0.0/16` **5**, `111.88.0.0/16` **4**, `178.248.0.0/16` **4**, and `185.65.0.0/16` **3**. Broad-source memberships across these 44: Kyoresuas **43**, Escapingworm **19**, W1ZARDZ **3**, often overlapping. These are **candidate risk flags**, not proven active regulatory blocks; `antifilter-ip.lst` includes DNS-derived results.
+
+The monitor's six-entry baseline `.github/data/v41_observed_shared_service_hard_exceptions.tsv` is an **observed snapshot, not an approval allowlist**. It permits warnings on any newly detected case outside the original six and reports when a previously observed case disappears; it changes neither final DIRECT nor effective-block policy. Report outputs:
+- `all_shared_service_hard_overrides.tsv` includes exact evidence labels, SHARED prefix, matching broad service sources, and whether each match was in the six-entry historical observation baseline
+- `shared_service_hard_guard_summary.json` provides current-versus-legacy evidence counters and newly discovered untracked cases
+- the GitHub Actions workflow emits a visible `::warning` for untracked cases, without failing production or automatically whitelisting any address
+
+**Priority for next policy review:** verify the 44 current-source hard exceptions against dated IP-specific evidence and confirmed first-party service ownership; avoid removing broad-service masks until their real service consequences are measured. The 213 historically dropped v34-only IPs remain a separate audit queue, also not safe to restore without evidence.
+
+No change to production binaries, main, release, tags, or PR #5 was made by this audit.
