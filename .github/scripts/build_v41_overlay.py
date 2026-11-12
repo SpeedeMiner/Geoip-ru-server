@@ -263,6 +263,18 @@ def intervals(networks: Iterable[ipaddress._BaseNetwork], version: int):
             merged[-1][1] = max(merged[-1][1], end)
     return [(a, b) for a, b in merged]
 
+def normalize_interval_union(*groups):
+    """Merge arbitrarily ordered/overlapping interval lists before set operations."""
+    pairs = sorted(pair for group in groups for pair in group)
+    merged = []
+    for start, end in pairs:
+        if not merged or start > merged[-1][1] + 1:
+            merged.append([start, end])
+        else:
+            merged[-1][1] = max(merged[-1][1], end)
+    return [(start, end) for start, end in merged]
+
+
 def interval_size(values):
     return sum(end - start + 1 for start, end in values)
 
@@ -763,7 +775,9 @@ def main():
         regional_expected = subtract(regional_only_iv[v], private_iv[v])
         regional_expected = subtract(regional_expected, intervals(blocked_exact, v))
         service_expected = subtract(service_protected_iv[v], private_iv[v])
-        company_expected = core_expected + shared_expected + regional_expected + service_expected
+        company_expected = normalize_interval_union(
+            core_expected, shared_expected, regional_expected, service_expected
+        )
         company_missing = subtract(company_expected, final_iv[v])
         if company_missing:
             raise ValueError(f"Class-aware company-ASN coverage lost in IPv{v} beyond PRIVATE/hard-block precedence")

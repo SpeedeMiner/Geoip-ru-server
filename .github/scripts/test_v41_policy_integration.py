@@ -5,6 +5,7 @@ from build_v41_overlay import (
     class_aware_effective_block_set,
     build_ru_service_protection_mask,
     intervals,
+    normalize_interval_union,
 )
 
 
@@ -13,6 +14,14 @@ def n(*ranges):
 
 
 class V41PolicyIntegrationTests(unittest.TestCase):
+    def test_union_normalizes_disjoint_unsorted_overlapping_masks(self):
+        observed = normalize_interval_union(
+            [(200, 299), (1000, 1200)],
+            [(150, 250), (400, 499)],
+            [(500, 600), (1201, 1250)],
+        )
+        self.assertEqual(observed, [(150, 299), (400, 600), (1000, 1250)])
+
     def test_core_company_survives_exact_and_resolved(self):
         exact = n("198.51.100.0/24")
         resolved = n("203.0.113.0/24")
