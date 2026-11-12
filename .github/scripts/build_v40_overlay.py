@@ -738,10 +738,10 @@ def main():
         writer.writeheader()
         writer.writerows(blocked_rows)
     args.blocked_output.write_text(
-        "# v40 effective blocks: CORE_CORPORATE is exempt from all approved inputs; SHARED_INFRA only from current ipresolve.\\n"
-        "# Exact ip.lst, bounded subnet.lst and unclassified v38 baseline remain hard blocks for shared infrastructure.\\n"
-        "# PRIVATE always wins; Antifilter ipsum /24 remains review-only.\\n"
-        + "".join(str(n)+"\\n" for n in sorted(blocked,key=lambda n:(n.version,int(n.network_address),n.prefixlen))),
+        "# v40 effective blocks: CORE_CORPORATE is exempt from all approved inputs; SHARED_INFRA only from current ipresolve.\n"
+        "# Exact ip.lst, bounded subnet.lst and unclassified v38 baseline remain hard blocks for shared infrastructure.\n"
+        "# PRIVATE always wins; Antifilter ipsum /24 remains review-only.\n"
+        + "".join(str(n)+"\n" for n in sorted(blocked,key=lambda n:(n.version,int(n.network_address),n.prefixlen))),
         encoding="utf-8",
     )
 
