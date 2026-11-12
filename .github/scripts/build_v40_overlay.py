@@ -386,6 +386,26 @@ def blocked_prefix_impact(network, preblock_after_private, approved_blocked):
 def parse_blocked_base(path: Path):
     return parse_cidr_file(path, allow_hosts=True)[0]
 
+def class_aware_effective_block_set(
+    blocked_exact: set,
+    blocked_resolved: set,
+    core_company_prefixes: set,
+    shared_infrastructure_prefixes: set,
+):
+    """Return effective blocks and resolver-only candidates.
+
+    CORE_CORPORATE protects against all inputs. SHARED_INFRA protects only
+    against resolver-only candidates. An exact/hard match always remains blocked.
+    """
+    if core_company_prefixes & shared_infrastructure_prefixes:
+        raise ValueError("CORE_CORPORATE and SHARED_INFRA masks overlap")
+    resolved_only = subtract_networks(blocked_resolved, blocked_exact)
+    effective_exact = subtract_networks(blocked_exact, core_company_prefixes)
+    effective_resolved = subtract_networks(
+        resolved_only, core_company_prefixes | shared_infrastructure_prefixes
+    )
+    return set(collapse(effective_exact | effective_resolved)), resolved_only
+
 def parse_ipsum(path: Path):
     networks = set()
     raw = invalid = 0
@@ -536,10 +556,9 @@ def main():
     # CORE_CORPORATE is protected from all approved block inputs. SHARED_INFRA is protected
     # only from current resolver-derived ipresolve candidates. Exact ip.lst, bounded subnet.lst
     # and unclassified v38 baseline entries remain hard blocks for shared infrastructure.
-    resolved_only = subtract_networks(blocked_resolved, blocked_exact)
-    effective_exact = subtract_networks(blocked_exact, core_company_prefixes)
-    effective_resolved = subtract_networks(resolved_only, core_company_prefixes | shared_infrastructure_prefixes)
-    blocked = set(collapse(effective_exact | effective_resolved))
+    blocked, resolved_only = class_aware_effective_block_set(
+        blocked_exact, blocked_resolved, core_company_prefixes, shared_infrastructure_prefixes
+    )
     ipsum_effective = subtract_networks(ipsum, core_company_prefixes | shared_infrastructure_prefixes)
 
     additions = regional_union | service_union | company_prefixes
