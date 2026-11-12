@@ -9,6 +9,9 @@ on:
       - ".github/scripts/test_audit_v41_legacy_hard_evidence.py"
       - ".github/scripts/audit_v41_service_hard_overrides.py"
       - ".github/scripts/test_audit_v41_service_hard_overrides.py"
+      - ".github/scripts/audit_v41_shared_hard_guard.py"
+      - ".github/scripts/test_audit_v41_shared_hard_guard.py"
+      - ".github/data/v41_observed_shared_service_hard_exceptions.tsv"
   workflow_dispatch:
 
 permissions:
@@ -94,6 +97,27 @@ jobs:
           test -s audit-output/nine_legacy_hard_service_overrides.tsv
           test -s audit-output/nine_override_summary.json
           cat audit-output/nine_override_summary.json
+      - name: Warn on newly introduced SHARED broad-service hard exceptions
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 .github/scripts/audit_v41_shared_hard_guard.py \
+            --hard audit-inputs/hard.txt \
+            --effective audit-inputs/effective.txt \
+            --v41 audit-inputs/v41.dat \
+            --baseline .github/data/v41_observed_shared_service_hard_exceptions.tsv \
+            --core-prefixes audit-inputs/core.txt \
+            --shared-prefixes audit-inputs/shared.txt \
+            --kyoresuas-v4 audit-inputs/kyoresuas-v4.txt \
+            --kyoresuas-v6 audit-inputs/kyoresuas-v6.txt \
+            --kyoresuas-services audit-inputs/kyoresuas.json \
+            --w1zardz audit-inputs/w1zardz.txt \
+            --hxehex-ip audit-inputs/hxehex.txt \
+            --escapingworm audit-inputs/escapingworm.txt \
+            --output-dir audit-output
+          test -s audit-output/all_shared_service_hard_overrides.tsv
+          test -s audit-output/shared_service_hard_guard_summary.json
+          cat audit-output/shared_service_hard_guard_summary.json
       - name: Upload audit evidence without changing routing or release
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
