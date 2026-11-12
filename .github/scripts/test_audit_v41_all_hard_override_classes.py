@@ -22,6 +22,8 @@ class AllHardOverrideClassTests(unittest.TestCase):
         self.assertEqual(v["by_origin_class"]["SHARED_INFRA"]["addresses"], 2)
         self.assertEqual(v["by_origin_class"]["OTHER"]["addresses"], 1)
         self.assertEqual(v["by_origin_class"]["SHARED_INFRA"]["also_verified_service_addresses"], 2)
+        self.assertEqual(v["by_origin_class"]["SHARED_INFRA"]["current_antifilter_ip_addresses"], 2)
+        self.assertEqual(v["by_origin_class"]["OTHER"]["legacy_v38_addresses"], 0)
         self.assertEqual(v["by_origin_class"]["OTHER"]["without_verified_service_addresses"], 1)
 
     def test_ipv6_as_well(self):
