@@ -159,7 +159,10 @@ def main() -> int:
             for value in hist_unique:
                 net = ipaddress.ip_network(value, strict=True)
                 if role in ("exact", "resolver") and not is_host(net):
-                    raise SystemExit(f"Non-host prefix in historical v38 {hist_source}: {value}")
+                    # Historical raw feeds can contain occasional subnet records.
+                    # Without an exact host-only provenance match, keep any matching
+                    # approved v38 baseline CIDR hard/unclassified (never downgrade it).
+                    continue
                 if role == "subnet":
                     if not subnet_auto_approved(net):
                         continue  # RKN-wide subnet candidates were review-only in v38.
