@@ -178,5 +178,51 @@ class BlockedSourcePolicyTests(unittest.TestCase):
 
 
 
+    def test_pinned_v38_raw_feeds_restore_only_proven_resolver_history(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            def host_rows(start):
+                first = int(ipaddress.ip_address(start))
+                return "\n".join(str(ipaddress.ip_address(first + i)) for i in range(1005)) + "\n"
+            (root / "baseline.txt").write_text(host_rows("192.0.20.1"), encoding="utf-8")
+            (root / "hist-resolve.txt").write_text(host_rows("192.0.20.1"), encoding="utf-8")
+            (root / "hist-ip.txt").write_text(host_rows("198.51.20.1"), encoding="utf-8")
+            (root / "hist-subnet.txt").write_text("192.0.20.0/24\n", encoding="utf-8")
+            (root / "ip.lst").write_text(host_rows("198.51.20.1"), encoding="utf-8")
+            (root / "ipresolve.lst").write_text("", encoding="utf-8")
+            (root / "subnet.lst").write_text("198.51.30.0/24\n", encoding="utf-8")
+            for name in ("community.lst", "ipsum.lst"):
+                (root / name).write_text("", encoding="utf-8")
+            argv = [
+                "prepare_blocked_sources_v41.py",
+                "--ip-list", str(root / "ip.lst"),
+                "--ipresolve", str(root / "ipresolve.lst"),
+                "--baseline", str(root / "baseline.txt"),
+                "--historical-ip-list", str(root / "hist-ip.txt"),
+                "--historical-ipresolve", str(root / "hist-resolve.txt"),
+                "--historical-subnet", str(root / "hist-subnet.txt"),
+                "--subnet", str(root / "subnet.lst"),
+                "--community", str(root / "community.lst"),
+                "--refilter", str(root / "ipsum.lst"),
+                "--approved", str(root / "approved.txt"),
+                "--exact-approved", str(root / "exact.txt"),
+                "--resolved-approved", str(root / "resolved.txt"),
+                "--review", str(root / "review.tsv"),
+                "--stats", str(root / "stats.tsv"),
+                "--checksums", str(root / "checksums.sha256"),
+            ]
+            with mock.patch("sys.argv", argv), contextlib.redirect_stdout(io.StringIO()):
+                self.assertEqual(main(), 0)
+            exact = (root / "exact.txt").read_text(encoding="utf-8")
+            resolver = (root / "resolved.txt").read_text(encoding="utf-8")
+            self.assertIn("192.0.20.1/32", exact)
+            self.assertNotIn("192.0.20.1/32", resolver)
+            self.assertIn("192.0.21.1/32", resolver)
+            self.assertNotIn("192.0.21.1/32", exact)
+            self.assertIn("198.51.20.1/32", exact)
+            self.assertIn("v38-historical-ipresolve-only", resolver)
+            self.assertIn("v38-historical-ipresolve.lst", (root / "stats.tsv").read_text(encoding="utf-8"))
+
+
 if __name__ == "__main__":
     unittest.main()
