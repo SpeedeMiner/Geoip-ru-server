@@ -1253,3 +1253,37 @@ Durable resume point for PR #5. After any conversation/network interruption, rea
 - After CI passes, dispatch one bounded live pilot from the latest feature branch with source `vpnobratno`, one verified RU exit and six max attempts. Expect summary to carry real run ID/attempt/SHA and `target_scan_status=COMPLETE` only if every declared target received a row.
 - Any HTTP response including 403/418/503 remains a transport observation; certificate mismatch, timeouts and skipped targets are not block verdicts. Residential/home ISP status remains independently unverified.
 - Keep PR #5 OPEN / DRAFT. No production GeoIP mutation, automatic CIDR additions, DIRECT policy, ASN allowlists, `main`, `release` or PR #6 changes.
+
+
+## 2026-11-12 06:18 UTC — Fail-closed scan-status default; Run #221 validation SUCCESS
+
+### Queue state and recovery
+
+- Before the new code push, validation Runs #218 / 43095995983 (commit 73bd2cb), #219 / 43096100580 (commit dab7399), and #220 / 43096310463 (commit ef84c89) remained `queued`.
+- The GitHub Actions Jobs API returned `total_count=0` for each run. Thus no validation job had been provisioned and no runner had started; there is no test-failure evidence from those runs.
+- The queued state overlapped a GitHub Actions service incident reported on 2026-11-11. This is plausible context for the backlog, but the specific causal link to these three run IDs is unproven.
+- A new push on the feature branch started Run #221, which obtained a job and completed successfully. Use it as the validation for the latest code head.
+
+### Fail-closed helper hardening
+
+- Commit: `f2255d194f10c2f1222a0c7b29b36e6a241da6bc`.
+- Changed the default `target_scan_status` argument of `measurement_exit_code()` from `COMPLETE` to `NOT_STARTED_NO_VERIFIED_RU_EXIT`. This prevents a future caller that forgets the scan-status argument from reporting success solely because the requested number of VPN exits was established.
+- Updated `test_no_verified_ru_exit_is_not_a_successful_measurement`: when scan status is omitted, even one or two successful RU exits return non-zero; an explicit `COMPLETE` scan returns zero. Existing tests retain failure assertions for `PARTIAL` and `NOT_STARTED_NO_VERIFIED_RU_EXIT`.
+
+### Run #221 — SUCCESS
+
+- Workflow run: [#221 / 43167224578](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43167224578).
+- Job: `131011801617`, “Validate inventory exporter and collectors”.
+- Checked-out commit: `f2255d194f10c2f1222a0c7b29b36e6a241da6bc`.
+- Completed at 2026-11-12 06:18:51 UTC with workflow/job conclusion `success`.
+- Python: **142 tests passed** in 1.455 seconds.
+- GNU timeout preflight: `PASS`; TERM-resistant parent/child received TERM then KILL and were absent afterward.
+- Go checks: `gofmt`, `go test ./...`, and `go build` passed.
+- Scope: hermetic code validation only. No OpenVPN connection, verified RU exit or target measurement was performed by this CI run.
+
+### Next step and evidence limits
+
+- The next measurement action is one manual VPNObratno pilot from the current feature branch, with one verified RU exit requested and a maximum of six profile attempts. It remains manual-only and must not be started without explicit owner authorization.
+- For acceptance, verify non-empty workflow run ID/attempt/SHA in the progress manifest, all 30 target IDs attempted, `target_scan_status=COMPLETE`, and `targets_not_tested_count=0`. A partial scan should upload artifacts and then fail the final gate.
+- HTTP 403/418/503 are responses, not block verdicts. Timeouts, TLS mismatch and missing rows are inconclusive/coverage gaps, not evidence of filtering. A VPNObratno volunteer exit does not prove a residential/home ISP.
+- PR #5 remains OPEN / DRAFT. No production GeoIP source, builder, `geoip_RU.dat`, release assets, DIRECT, ASN allowlists, `main`, `release` or PR #6 were changed.

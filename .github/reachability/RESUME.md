@@ -156,3 +156,28 @@ Workflow integration: `.github/workflows/reachability-validation.yml` now runs o
 - Every session should record exact commit SHA, workflow run/job IDs, test counts, artifact status, and explicit negative evidence.
 - Documentation-only commits do not require repeating a VPN measurement.
 - This project is evidence collection only; candidates remain review-only and never modify production GeoIP automatically.
+
+
+## Latest state — Run #221 CI green and fail-closed default hardened (2026-11-12 06:18 UTC)
+
+### Current code and validation
+
+- Current validated code commit: `f2255d194f10c2f1222a0c7b29b36e6a241da6bc`.
+- Follow-up hardening: `measurement_exit_code()` in `.github/reachability/vpn_gate.py` now defaults `target_scan_status` to `NOT_STARTED_NO_VERIFIED_RU_EXIT`, not `COMPLETE`. A caller that omits the scan status therefore fails closed even if the requested number of RU exits was reached.
+- Regression test updated: omission of the scan status with one or two successful RU exits is non-zero; explicit `COMPLETE` remains success. `PARTIAL` and `NOT_STARTED_NO_VERIFIED_RU_EXIT` remain failures.
+- Validation [Run #221 / 43167224578](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43167224578), job `131011801617`, completed **SUCCESS** on commit `f2255d1...` at 2026-11-12 06:18:51 UTC.
+- Python: **142/142 tests passed** in 1.455 seconds. GNU timeout process-tree preflight passed (TERM then KILL; parent and child absent). Go formatting, `go test ./...` and `go build` passed.
+- Run #221 is CI-only. It did not start OpenVPN or perform a target scan.
+
+### Old queued runs
+
+- Earlier Runs #218 / `43095995983`, #219 / `43096100580`, and #220 / `43096310463` remain reported as `queued`; their Jobs API returned `total_count=0` for each, so no runner/job was provisioned and no tests ran there.
+- A fresh push of the latest code created Run #221, which completed successfully. Use #221 as the latest validation for the current code; do not describe #218–#220 as failing tests.
+- The timing overlaps a GitHub Actions service incident on 2026-11-11, but the exact cause of these particular runs remaining queued is not proven.
+
+### Next action
+
+- No live VPN run has been dispatched after Run #24. A manual VPNObratno pilot is still the next measurement step, but it should be launched only after explicit owner authorization.
+- For that pilot, request one verified RU exit with up to six profile attempts. Confirm the artifact includes non-empty `workflow_run_id`, `workflow_run_attempt`, `execution_sha`, and all 30 target IDs; require `target_scan_status=COMPLETE` and `targets_not_tested_count=0`.
+- If target scan remains partial, reports must upload before the final gate fails. Timeouts, TLS mismatch, HTTP 403/418/503 and omitted targets are not block evidence; VPNObratno volunteer nodes are not proof of residential household access.
+- PR #5 remains **OPEN / DRAFT**. Do not merge or change production GeoIP data, builder, DIRECT, ASN allowlists, `main`, `release` or PR #6.
