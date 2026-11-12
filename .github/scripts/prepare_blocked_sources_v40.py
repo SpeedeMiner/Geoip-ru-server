@@ -240,8 +240,8 @@ def main() -> int:
     def write_prefix_set(path: Path, header: str, values: dict[str, set[str]]) -> None:
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(
-            header + "\\n" + "".join(
-                f"{value} # sources={','.join(sorted(values[value]))}\\n"
+            header + "\n" + "".join(
+                f"{value} # sources={','.join(sorted(values[value]))}\n"
                 for value in sorted(values, key=sort_key)
             ),
             encoding="utf-8",
