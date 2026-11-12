@@ -45,3 +45,9 @@ All 5,125 IPv4 addresses removed from v39 DIRECT are covered by the v41 effectiv
 2. Validate attribution and first-party/shared classification for all 49 corporate ASN entries. RIR-RU origin association is not automatic corporate ownership.
 3. Candidate and release workflows must not be merged blindly: v41 only accepts PR or manual trigger and does not publish from this branch; the legacy v39 production scheduler must be explicitly retired before any v41 production activation.
 4. No tags, GitHub Release assets, CDN content or `main`/`release` changes are authorized by this report.
+
+## Later correction status (2026-11-12)
+
+Historical run `43213336816` genuinely passed 88 Python tests at that commit. The earlier 57-versus-56 audit blocker is reported fixed in the newer candidate, and a local reviewer reports 92 passing tests. Neither statement establishes a successful GitHub Actions run for the latest v41 branch head.
+
+Branch-only corrective commits: `3b953bb` (interval-safe blocked provenance), `d23846f` (workflow paths and link), `d5890a3` (49-row root ASN registry). No changes to the released GeoIP binaries were made by those commits.
