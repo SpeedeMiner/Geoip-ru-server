@@ -1,0 +1,69 @@
+name: Post-release v41 SHARED hard-block override monitor
+
+on:
+  workflow_run:
+    workflows:
+      - "Build Unified GeoIP DIRECT RU+BY+KZ CLIENT v41"
+    types: [completed]
+    branches: [main]
+  pull_request:
+    branches: [main]
+    paths:
+      - ".github/workflows/audit-v41-production-hard.yml"
+      - ".github/scripts/download_v41_published_audit_inputs.py"
+      - ".github/scripts/test_download_v41_published_audit_inputs.py"
+      - ".github/scripts/audit_v41_shared_hard_guard.py"
+      - ".github/data/v41_observed_shared_service_hard_exceptions.tsv"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  monitor:
+    if: ${{ github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout read-only audit
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - name: Test input-integrity and regression guard logic
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m unittest discover -s .github/scripts -p 'test_download_v41_published_audit_inputs.py' -v
+          python3 -m unittest discover -s .github/scripts -p 'test_audit_v41_shared_hard_guard.py' -v
+      - name: Verify current published v41 artifacts against manifest hashes
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 .github/scripts/download_v41_published_audit_inputs.py --output-dir audit-inputs
+      - name: Emit policy warnings for SHARED hard hosts overridden by service masks
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 .github/scripts/audit_v41_shared_hard_guard.py \
+            --hard audit-inputs/hard.txt \
+            --effective audit-inputs/effective.txt \
+            --v41 audit-inputs/v41.dat \
+            --baseline .github/data/v41_observed_shared_service_hard_exceptions.tsv \
+            --core-prefixes audit-inputs/core.txt \
+            --shared-prefixes audit-inputs/shared.txt \
+            --kyoresuas-v4 audit-inputs/kyoresuas-v4.txt \
+            --kyoresuas-v6 audit-inputs/kyoresuas-v6.txt \
+            --kyoresuas-services audit-inputs/kyoresuas.json \
+            --w1zardz audit-inputs/w1zardz.txt \
+            --hxehex-ip audit-inputs/hxehex.txt \
+            --escapingworm audit-inputs/escapingworm.txt \
+            --output-dir audit-output
+          cat audit-output/shared_service_hard_guard_summary.json
+          echo "### SHARED service hard-block exceptions" >> "$GITHUB_STEP_SUMMARY"
+          echo 'No production routing files are modified. Observation baseline is not an approval allowlist.' >> "$GITHUB_STEP_SUMMARY"
+          echo 'Full current-source cases in the uploaded TSV report.' >> "$GITHUB_STEP_SUMMARY"
+      - name: Upload post-release evidence
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: v41-post-release-shared-hard-override-review
+          path: audit-output/
+          if-no-files-found: error
+          retention-days: 30
