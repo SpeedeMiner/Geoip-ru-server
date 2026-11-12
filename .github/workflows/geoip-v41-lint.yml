@@ -1,0 +1,34 @@
+name: GeoIP v41 workflow syntax and source lint
+on:
+  push:
+    branches:
+      - feature/geoip-direct-rukzby-v41-integration
+  pull_request:
+    branches: [main]
+    paths:
+      - ".github/workflows/geoip-v41.yml"
+      - ".github/workflows/geoip-v41-lint.yml"
+      - ".github/scripts/*v41*.py"
+      - ".github/data/geoip_RU_company_*.tsv"
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - name: Parse workflow YAML and compile v41 Python sources
+        run: |
+          python3 - <<'PY'
+          import pathlib, subprocess, sys
+          import yaml
+          workflow=pathlib.Path(".github/workflows/geoip-v41.yml")
+          with workflow.open(encoding="utf-8") as f:
+              data=yaml.safe_load(f)
+          if not isinstance(data,dict) or "jobs" not in data:
+              raise SystemExit("Invalid workflow mapping")
+          for path in sorted(pathlib.Path(".github/scripts").glob("*v41*.py")):
+              compile(path.read_text(encoding="utf-8"),str(path),"exec")
+              print("PYTHON OK",path)
+          print("YAML OK",list(data.keys()), "jobs",list(data["jobs"]))
+          PY
