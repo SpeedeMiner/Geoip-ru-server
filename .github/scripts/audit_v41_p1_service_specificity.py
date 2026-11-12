@@ -76,16 +76,14 @@ def main():
     a=p.parse_args()
     with a.matrix.open(encoding="utf-8",newline="") as fh:
         rows=list(csv.DictReader(fh,delimiter="\t"))
-    if not rows or len(rows)!=153:
-        raise ValueError("Full 153-address v41 evidence matrix required")
+    if not rows:
+        raise ValueError("Nonempty complete hard exception matrix required")
     out,stats=triage(rows)
-    if stats["total_p1_current_ip_lst"]!=118:
-        raise ValueError("Published v41 P1 input unexpectedly changed; review baseline and rerun")
     a.output_dir.mkdir(parents=True,exist_ok=True)
-    with (a.output_dir/"p1_118_service_specificity_review.tsv").open("w",encoding="utf-8",newline="") as fh:
+    with (a.output_dir/"p1_current_hard_service_specificity_review.tsv").open("w",encoding="utf-8",newline="") as fh:
         writer=csv.DictWriter(fh,fieldnames=list(out[0]),delimiter="\t")
         writer.writeheader();writer.writerows(out)
-    (a.output_dir/"p1_118_review_summary.json").write_text(
+    (a.output_dir/"p1_current_hard_review_summary.json").write_text(
         json.dumps(stats,ensure_ascii=False,indent=2,sort_keys=True)+"\n",encoding="utf-8")
     print(json.dumps(stats,ensure_ascii=False,sort_keys=True))
 
