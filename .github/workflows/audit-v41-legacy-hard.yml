@@ -55,6 +55,7 @@ jobs:
             --output-dir audit-output
           test -s audit-output/legacy_hard_review.tsv
           test -s audit-output/priority_v34_losses.tsv
+          test -s audit-output/legacy_hard_override_review.tsv
           test -s audit-output/summary.json
           cat audit-output/summary.json
       - name: Upload audit evidence without changing routing or release
