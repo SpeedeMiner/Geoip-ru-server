@@ -130,3 +130,13 @@ All 118 remain audit candidates because source list membership does **not** prov
 Added `.github/scripts/audit_v41_p1_service_specificity.py` and four module tests, invoked by both historical and post-release workflows. New outputs `p1_current_hard_service_specificity_review.tsv` and `p1_current_hard_review_summary.json` are complete, reviewed-only, and dynamic for future published releases; the existing class-level set-SHA256 regression monitoring remains independent.
 
 **Next decision gate:** independently dated, host-specific regulator/block evidence and actual service-host attribution. No production routing or effective masks were changed. PR #16 remains Draft; no changes to PR #5.
+
+## P1 broad-only exact-host clusters: 83 current hard conflicts (2026-11-12)
+
+CI [43285725663](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43285725663) **SUCCESS**, artifact `13974309051`. New read-only script `.github/scripts/audit_v41_p1_broad_clusters.py` and four tests run in both audit workflows and export `p1_broad_only_host_clusters.tsv` plus `p1_broad_only_cluster_summary.json`. The script takes the **83 exact P1 /`32` hosts** from the previously verified 118-row P1 table and groups only these exact hosts into **29 /`16`**, **42 /`20`**, and **62 /`24`** observation bins.
+
+Top review bins: `81.177.0.0/16` **18 exact hard-IP**, `158.160.0.0/16` **17**, `89.169.0.0/16` **5**, `111.88.0.0/16` **4**, `185.135.0.0/16` **4**. Tighter grouping: `81.177.128.0/20` **18**, and `81.177.135.0/24` **7**. These bins must **never** be interpreted as evidence that all IP addresses within the entire grouped CIDR are blocked. Every observed conflict remains an exact /`32`, and source catalog ownership/current RKN block remain unverified.
+
+Operational next action: conduct dated, address-specific regulator/source corroboration and service-host verification for the 18-IP `81.177.128.0/20` and the dispersed 17-IP `158.160.0.0/16` first. Do **not** change production DIRECT, effective hard masks, or IPSUM based solely on these groupings. The six-entry SHARED observation baseline and all-class address-hash baselines are observation-only, not permissions.
+
+No production, main, release, tag, or PR #5 changes.
