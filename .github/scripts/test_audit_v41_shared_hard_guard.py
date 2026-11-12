@@ -29,7 +29,7 @@ class SharedHardGuardTests(unittest.TestCase):
             self.sources(), set(),
             nets("198.51.100.0/24", "203.0.113.0/24"), {}
         )
-        self.assertEqual(summary["new_unreviewed_prefixes"], ["198.51.100.1/32"])
+        self.assertEqual(summary["previously_untracked_prefixes"], ["198.51.100.1/32"])
         self.assertEqual(summary["shared_broad_service_hard_overrides"], 1)
         self.assertEqual(rows[0]["evidence_sources"], "antifilter-ip.lst")
         self.assertEqual(rows[0]["known_observation"], "NO")
@@ -42,7 +42,7 @@ class SharedHardGuardTests(unittest.TestCase):
                 "198.51.100.1/32": "Observed only, no approval"
             }
         )
-        self.assertEqual(summary["new_unreviewed_hard_overrides"], 0)
+        self.assertEqual(summary["previously_untracked_hard_overrides"], 0)
         self.assertTrue(summary["baseline_observed_not_approved"])
 
     def test_hard_remaining_blocked_and_exact_host_not_flagged(self):
@@ -52,7 +52,7 @@ class SharedHardGuardTests(unittest.TestCase):
             nets("198.51.100.0/24", "203.0.113.0/24"), {}
         )
         self.assertEqual(rows, [])
-        self.assertEqual(summary["new_unreviewed_hard_overrides"], 0)
+        self.assertEqual(summary["previously_untracked_hard_overrides"], 0)
 
     def test_baseline_requires_documented_host_entries(self):
         with tempfile.TemporaryDirectory() as tmp:
