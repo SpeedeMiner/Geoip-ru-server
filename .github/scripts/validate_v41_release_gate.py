@@ -125,7 +125,7 @@ def format_quality_section(result: dict) -> str:
     lines = ["", REPORT_MARKER, "Status: PASS",
              "Inputs: this build's SHA256-verified manifest, GeoIP, and source sidecars",
              "Policy: PRIVATE and effective hard blocks excluded from DIRECT",
-             "Allowed hard exceptions: CORE_CORPORATE or current verified service-protection mask",
+             "Allowed hard exceptions: CORE_CORPORATE or configured service-protection mask",
              "No hard exception is accepted solely due to SHARED_INFRA or BGP/ASN origin",
              "Exception source membership does not prove a current regulator IP block"]
     for family, summary in result["families"].items():
