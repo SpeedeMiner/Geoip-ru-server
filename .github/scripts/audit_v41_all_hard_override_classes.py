@@ -25,6 +25,11 @@ def partition_overrides(ru, hard_rows, effective, core, shared, service_sources)
     hard = {net for net, _ in hard_rows}
     service = set().union(*service_sources.values())
     groups = {}
+    provenance_groups = {
+        "current_antifilter_ip": {net for net, tags in hard_rows if "antifilter-ip.lst" in tags},
+        "current_antifilter_subnet": {net for net, tags in hard_rows if "antifilter-subnet.lst" in tags},
+        "legacy_v38": {net for net, tags in hard_rows if "v38-baseline-hard-or-unclassified" in tags},
+    }
     masks = {"CORE_CORPORATE": core, "SHARED_INFRA": shared}
     for version in (4, 6):
         ru_iv = intervals(ru, version)
@@ -51,11 +56,16 @@ def partition_overrides(ru, hard_rows, effective, core, shared, service_sources)
         results = {}
         for name, values in split.items():
             in_service = intersect(values, service_iv)
+            source_counts = {
+                label + "_addresses": interval_size(intersect(values, intervals(networks, version)))
+                for label, networks in provenance_groups.items()
+            }
             results[name] = {
                 "addresses": interval_size(values),
                 "cidrs": len(networks_from_intervals(values, version)),
                 "also_verified_service_addresses": interval_size(in_service),
                 "without_verified_service_addresses": interval_size(values) - interval_size(in_service),
+                **source_counts,
                 "intervals": values,
             }
         groups[version] = {"total_addresses": interval_size(all_overrides),
