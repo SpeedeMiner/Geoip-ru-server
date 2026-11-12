@@ -3086,6 +3086,7 @@ jobs:
           # named service-direct routes, then apply only the already approved exact/bounded RKN set.
           python3 .github/scripts/build_v41_overlay.py \
             --base "$OUTPUT_FILE" \
+            --hydra "$HYDRA_INPUT" \
             --rir "$RIR_RUKZBY_PREFIX_INPUT" \
             --kyoresuas-v4 "$KY_STANDARD_V4_INPUT" \
             --kyoresuas-v6 "$KY_STANDARD_V6_INPUT" \
@@ -3118,7 +3119,7 @@ jobs:
           sha256sum -c "$OUTPUT_SHA_FILE"
           sha256sum -c "$V41_BLOCKED_SHA"
 
-          for file in "$OUTPUT_FILE" "$V41_OUTPUT_FILE" "$OUTPUT_SHA_FILE" "$V41_BLOCKED_SHA" "$BLOCKED_IP_SHA_FILE" "$CATEGORY_FILE" "$SOURCE_FILE" "$SOURCE_COUNTS" "$CATEGORY_AUDIT" "$QUALITY_REPORT" "$V41_QUALITY_REPORT" "$V41_METRICS" "$V41_PREFIX_PROVENANCE" "$V41_BLOCKED_PROVENANCE" "$V41_BLOCKED_FILE" "$V41_MANIFEST" "$PROVENANCE_FILE" "$ASN_MANIFEST" "$COMPANY_ASN_MANIFEST" "$COMPANY_ASN_PREFIXES" "$CORE_COMPANY_PREFIXES" "$SHARED_INFRASTRUCTURE_PREFIXES" "$COMPANY_ASN_POLICY" "$ASN_STATS" "$BY_KZ_ASN_REGISTRY" "$BLOCKED_IP_INPUT" "$BLOCKED_IP_EXACT_INPUT" "$BLOCKED_IPRESOLVE_ONLY_INPUT" "$BLOCKED_IPSUM_INPUT" "$BLOCKED_REVIEW_INPUT" "$BLOCKED_STATS_INPUT" "$BLOCKED_CHECKSUMS_INPUT" "$BLOCKED_IP_RAW_INPUT" "$BLOCKED_IPRESOLVE_INPUT" "$BLOCKED_SUBNET_INPUT" "$INPUT_PROVENANCE" "$INPUT_PROVENANCE_SHA" "$RIR_RUKZBY_PREFIX_INPUT" "$RIR_RUKZBY_STATS" "$KY_STANDARD_V4_INPUT" "$KY_STANDARD_V6_INPUT" "$KY_SERVICES_INPUT" "$HXEHEX_IP_INPUT" "$ESCAPINGWORM_OPERATOR_INPUT"; do
+          for file in "$OUTPUT_FILE" "$V41_OUTPUT_FILE" "$OUTPUT_SHA_FILE" "$V41_BLOCKED_SHA" "$BLOCKED_IP_SHA_FILE" "$CATEGORY_FILE" "$SOURCE_FILE" "$SOURCE_COUNTS" "$CATEGORY_AUDIT" "$QUALITY_REPORT" "$V41_QUALITY_REPORT" "$V41_METRICS" "$V41_PREFIX_PROVENANCE" "$V41_BLOCKED_PROVENANCE" "$V41_BLOCKED_FILE" "$V41_MANIFEST" "$PROVENANCE_FILE" "$ASN_MANIFEST" "$COMPANY_ASN_MANIFEST" "$COMPANY_ASN_PREFIXES" "$CORE_COMPANY_PREFIXES" "$SHARED_INFRASTRUCTURE_PREFIXES" "$COMPANY_ASN_POLICY" "$ASN_STATS" "$BY_KZ_ASN_REGISTRY" "$BLOCKED_IP_INPUT" "$BLOCKED_IP_EXACT_INPUT" "$BLOCKED_IPRESOLVE_ONLY_INPUT" "$BLOCKED_IPSUM_INPUT" "$BLOCKED_REVIEW_INPUT" "$BLOCKED_STATS_INPUT" "$BLOCKED_CHECKSUMS_INPUT" "$BLOCKED_IP_RAW_INPUT" "$BLOCKED_IPRESOLVE_INPUT" "$BLOCKED_SUBNET_INPUT" "$INPUT_PROVENANCE" "$INPUT_PROVENANCE_SHA" "$HYDRA_INPUT" "$RIR_RUKZBY_PREFIX_INPUT" "$RIR_RUKZBY_STATS" "$KY_STANDARD_V4_INPUT" "$KY_STANDARD_V6_INPUT" "$KY_SERVICES_INPUT" "$HXEHEX_IP_INPUT" "$ESCAPINGWORM_OPERATOR_INPUT"; do
             test -s "$file" || { echo "::error::Missing or empty v41 build artifact: $file"; exit 1; }
           done
 
@@ -3404,6 +3405,7 @@ jobs:
           test -s "$RIR_RUKZBY_STATS"
           python3 .github/scripts/validate_v41_overlay.py \
             --geoip "$V41_OUTPUT_FILE" \
+            --hydra "$HYDRA_INPUT" \
             --blocked-union "$BLOCKED_IP_INPUT" \
             --blocked-exact "$BLOCKED_IP_EXACT_INPUT" \
             --blocked-resolved "$BLOCKED_IPRESOLVE_ONLY_INPUT" \
@@ -3460,6 +3462,7 @@ jobs:
             geoip_RU_categories.txt
             geoip_RU_quality_report.txt
             geoip_RU_v41_manifest.json
+            hydra-geoip.dat
             geoip_RU_v41_source_metrics.tsv
             geoip_RU_v41_prefix_provenance.tsv
             geoip_RU_v41_blocked_provenance.tsv
@@ -3516,6 +3519,7 @@ jobs:
             geoip_RU_category_audit.tsv
             geoip_RU_quality_report.txt
             geoip_RU_v41_manifest.json
+            hydra-geoip.dat
             geoip_RU_v41_source_metrics.tsv
             geoip_RU_v41_prefix_provenance.tsv
             geoip_RU_v41_blocked_provenance.tsv
