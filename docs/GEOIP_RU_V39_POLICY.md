@@ -78,3 +78,10 @@ The builder and independent workflow validation prove that:
 Exact-origin/RPKI/RDAP/IRR audits that do not propose or validate a build input are not standalone recurring workflows in v39. Useful static findings and provenance are retained in repository documentation; repeated audit-only API collection is closed to avoid consuming CI/API capacity without changing build inputs.
 
 The v39 workflow creates candidate artifacts on pull requests. Release/tag publication, release-branch update and CDN purge remain restricted to a successful run on `main`.
+
+
+## 7. Empty ipresolve feed and immutable block carry-forward
+
+The v39 workflow pins the previously approved v38 combined blocked set at release commit `3033248ea54cb298bafded25ddcd2805d5f0e7ac`, SHA-256 `df909b12b985b23080075821cedc5e2f73b7b1f89abcd9950293b400ce1e4a5d`. It unions this immutable baseline with the current available `ip.lst` and bounded `subnet.lst` inputs before applying the corporate-origin exception.
+
+During the v39 candidate run, the live Antifilter `ipresolve.lst` endpoint returned an empty body. The workflow records it as `unavailable` and the blocked-source parser emits `EMPTY_FALLBACK_V38_PINNED_BASELINE`. This does **not** mean there are zero resolved-IP blocks: prior approved entries remain carried forward from the pinned baseline. A non-empty but unexpectedly small/truncated feed still fails closed. The final effective blocked set is then reduced by exact corporate company-ASN origin prefixes; PRIVATE still wins.

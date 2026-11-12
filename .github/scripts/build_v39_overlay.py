@@ -753,7 +753,7 @@ def main():
         "Every /24 carve affects the whole 256-address block; on shared hosting/CDNs it may send unrelated co-resident destinations through VPN.",
         "",
         "FILES",
-        "- geoip_RU.dat: final v38 GeoIP protobuf with RU and PRIVATE categories only.",
+        "- geoip_RU.dat: final v39 GeoIP protobuf with RU and PRIVATE categories only.",
         "- geoip_RU_v39_source_metrics.tsv: per-source unique CIDR and address-space contribution; rows overlap and must not be summed.",
         "- geoip_RU_v39_prefix_provenance.tsv: service, resource and corporate-origin prefix provenance.",
         "- geoip_RU_v39_blocked_provenance.tsv: original block overlaps, corporate exemptions and review-only /24 impact estimate.",

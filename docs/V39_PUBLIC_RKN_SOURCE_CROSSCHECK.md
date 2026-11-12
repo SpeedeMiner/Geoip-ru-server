@@ -107,3 +107,10 @@ Public lists can cross-check host observations, flag possible missing PROXY entr
 v39 does not make the Antifilter public lists broader. It changes the precedence of the approved blocked set: exact company-origin prefixes are subtracted from the effective block set before DIRECT is carved. The company-origin prefix list is generated from the same selected-origin prefix snapshot and `geoip_RU_company_asns.txt`; both input hashes are preserved. This avoids exempting a whole ASN or provider based solely on its name.
 
 The effective set is `approved_blocked - company_origin_prefixes`. All other exact-host and bounded-subnet blocked addresses continue to be carved. PRIVATE remains higher priority. `ipsum.lst` remains review-only.
+
+
+## 7. Pinned v38 baseline when Antifilter ipresolve is unavailable
+
+The v39 run received an empty body from `https://antifilter.download/list/ipresolve.lst`. It did not interpret that as an empty blocklist. It downloaded the previously approved combined v38 block set from immutable release commit `3033248ea54cb298bafded25ddcd2805d5f0e7ac` and verified SHA-256 `df909b12b985b23080075821cedc5e2f73b7b1f89abcd9950293b400ce1e4a5d`. The builder carries that baseline forward, unions available current exact-IP and bounded-subnet feeds, and records ipresolve status as unavailable/fallback. New non-empty but undersized feeds still fail closed.
+
+After this conservative union, the v39 corporate company-ASN prefix mask is subtracted from the blocked set. PRIVATE continues to override the exception. The pinned baseline is exported in the candidate/release assets for reproducibility.
