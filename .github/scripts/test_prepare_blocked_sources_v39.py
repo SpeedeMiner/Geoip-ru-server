@@ -86,7 +86,7 @@ class BlockedSourcePolicyTests(unittest.TestCase):
 
             self.assertIn("198.51.0.1/32", approved)
             self.assertIn("2001:db8:100::1/128", approved)
-            self.assertIn("192.0.2.1/32", approved)
+            self.assertIn("192.0.10.1/32", approved)
             self.assertIn("EMPTY_FALLBACK_V38_PINNED_BASELINE", stats)
             self.assertIn("v38-approved-baseline", stats)
             self.assertIn("203.0.113.0/24", approved)
