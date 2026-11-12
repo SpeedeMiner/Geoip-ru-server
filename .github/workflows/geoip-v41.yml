@@ -3581,7 +3581,7 @@ jobs:
             ## Attribution and limitations
             - Preserve v2fly/geoip CC-BY-SA-4.0 and DB-IP CC-BY-4.0 notices, plus upstream licenses/attributions for service feeds.
             - RIR registration, BGP announcements, service association and RKN block evidence are distinct signals and are reported separately.
-          - RIR-RU selected origin prefixes receive resolver-only exception unless covered by first-party CORE or verified service policy; this avoids promoting whole shared providers over exact/legacy blocks.
+            - RIR-RU selected origin prefixes receive resolver-only exception unless covered by first-party CORE or verified service policy; this avoids promoting whole shared providers over exact/legacy blocks.
 
       - name: Publish release branch
         if: github.ref == 'refs/heads/main'
