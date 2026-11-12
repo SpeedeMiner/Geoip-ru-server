@@ -16,6 +16,8 @@ on:
       - ".github/scripts/audit_v41_named_service_attribution.py"
       - ".github/scripts/audit_v41_shadow_hard_shared.py"
       - ".github/scripts/audit_v41_all_hard_override_classes.py"
+      - ".github/scripts/audit_v41_hard_evidence_matrix.py"
+      - ".github/scripts/test_audit_v41_hard_evidence_matrix.py"
       - ".github/scripts/test_audit_v41_all_hard_override_classes.py"
       - ".github/scripts/audit_v41_all_hard_regressions.py"
       - ".github/scripts/test_audit_v41_all_hard_regressions.py"
@@ -45,6 +47,7 @@ jobs:
           python3 -m unittest discover -s .github/scripts -p 'test_audit_v41_named_service_attribution.py' -v
           python3 -m unittest discover -s .github/scripts -p 'test_audit_v41_shadow_hard_shared.py' -v
           python3 -m unittest discover -s .github/scripts -p 'test_audit_v41_all_hard_override_classes.py' -v
+          python3 -m unittest discover -s .github/scripts -p 'test_audit_v41_hard_evidence_matrix.py' -v
           python3 -m unittest discover -s .github/scripts -p 'test_audit_v41_all_hard_regressions.py' -v
       - name: Verify current published v41 artifacts against manifest hashes
         shell: bash
@@ -126,6 +129,24 @@ jobs:
             --output-dir audit-output
           test -s audit-output/hard_override_class_regressions.json
           cat audit-output/hard_override_class_regressions.json
+      - name: Build complete address-specific hard exception evidence matrix
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 .github/scripts/audit_v41_hard_evidence_matrix.py \
+            --cidr-dir audit-output --hard audit-inputs/hard.txt \
+            --core-prefixes audit-inputs/core.txt \
+            --shared-prefixes audit-inputs/shared.txt \
+            --kyoresuas-v4 audit-inputs/kyoresuas-v4.txt \
+            --kyoresuas-v6 audit-inputs/kyoresuas-v6.txt \
+            --kyoresuas-services audit-inputs/kyoresuas.json \
+            --w1zardz audit-inputs/w1zardz.txt \
+            --hxehex-ip audit-inputs/hxehex.txt \
+            --escapingworm audit-inputs/escapingworm.txt \
+            --output-dir audit-output
+          test -s audit-output/all_153_hard_exceptions_evidence_matrix.tsv
+          test -s audit-output/all_hard_evidence_matrix_summary.json
+          cat audit-output/all_hard_evidence_matrix_summary.json
       - name: Upload post-release evidence
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
