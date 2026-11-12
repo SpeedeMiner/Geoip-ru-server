@@ -557,7 +557,7 @@ def main():
         })
     preblock = base_ru | additions
     preblock_iv = {v: intervals(preblock, v) for v in (4, 6)}
-    company_iv = {v: intervals(protected_direct_mask, v) for v in (4, 6)}
+    protected_direct_iv = {v: intervals(protected_direct_mask, v) for v in (4, 6)}
     blocked_iv = {v: intervals(blocked, v) for v in (4, 6)}
     private_overlap = {v: interval_size(intersect(intervals(additions, v), private_iv[v])) for v in (4, 6)}
     block_overlap = {v: interval_size(intersect(preblock_iv[v], blocked_iv[v])) for v in (4, 6)}
@@ -649,9 +649,9 @@ def main():
             direct_parts = intersect_one_range(
                 int(net.network_address), int(net.broadcast_address), preblock_after_private_iv[v]
             )
-            company_exempted = interval_size(intersect(direct_parts, company_iv[v]))
+            protected_direct_exempted = interval_size(intersect(direct_parts, protected_direct_iv[v]))
             # Protected RU/corporate/service DIRECT space is not collateral routed through VPN.
-            potential = max(0, potential - company_exempted)
+            potential = max(0, potential - protected_direct_exempted)
             blocked_rows.append({
                 "source_id":source_id,
                 "prefix":str(net),
@@ -659,7 +659,7 @@ def main():
                 "addresses":net.num_addresses,
                 "overlap_preblock_direct":overlap,
                 "already_approved_blocked":already,
-                "company_asn_exempted_addresses":company_exempted,
+                "protected_direct_exempted_addresses":protected_direct_exempted,
                 "potential_additional_proxy_addresses":potential,
             })
 
@@ -692,7 +692,7 @@ def main():
         writer.writeheader()
         writer.writerows(prefix_rows)
     with args.blocked_provenance.open("w",encoding="utf-8",newline="") as f:
-        fields=["source_id","prefix","family","addresses","overlap_preblock_direct","already_approved_blocked","company_asn_exempted_addresses","potential_additional_proxy_addresses"]
+        fields=["source_id","prefix","family","addresses","overlap_preblock_direct","already_approved_blocked","protected_direct_exempted_addresses","potential_additional_proxy_addresses"]
         writer=csv.DictWriter(f,fieldnames=fields,delimiter="\t",lineterminator="\n")
         writer.writeheader()
         writer.writerows(blocked_rows)
@@ -737,8 +737,8 @@ def main():
         f"RU CIDRs: {len(final)}",
         f"RU IPv4 addresses: {final_counts['ipv4']}",
         f"RU IPv6 addresses: {final_counts['ipv6']}",
-        f"New IPv4 addresses vs v37 after PRIVATE/RKN/company-ASN exception: {delta_v4}",
-        f"New IPv6 addresses vs v37 after PRIVATE/RKN/company-ASN exception: {delta_v6}",
+        f"New IPv4 addresses vs v37 after PRIVATE/RKN/corporate-RIR-service protection: {delta_v4}",
+        f"New IPv6 addresses vs v37 after PRIVATE/RKN/corporate-RIR-service protection: {delta_v6}",
         f"PRIVATE IPv4 addresses: {private_counts['ipv4']}",
         f"PRIVATE IPv6 addresses: {private_counts['ipv6']}",
         "",
@@ -757,13 +757,13 @@ def main():
         "Service and operator whitelist routes are separate from geographic/RIR resource evidence.",
         "Service datasets can include foreign-located or shared-provider endpoints; no country geolocation filter was applied.",
         "",
-        "RKN BLOCKS AND CORPORATE COMPANY-ASN EXCEPTION",
+        "RKN BLOCKS AND UNIFIED DIRECT PROTECTION",
         f"Original v37 approved blocked CIDRs: {len(blocked_base)}",
-        f"Effective v39 blocked CIDRs after corporate exception: {len(blocked)}",
-        f"Company-exempted blocked CIDRs: {len(exempted_blocked)}",
-        f"Company-exempted blocked address space (all addresses): IPv4={exempted_blocked_counts['ipv4']} IPv6={exempted_blocked_counts['ipv6']}",
-        f"Company-exempted addresses intersecting DIRECT after PRIVATE: IPv4={exempted_direct_counts[4]} IPv6={exempted_direct_counts[6]}",
-        f"Corporate company-ASN origin prefixes: {len(company_prefixes)}; IPv4 addresses={addr_counts(company_prefixes)['ipv4']}; IPv6 addresses={addr_counts(company_prefixes)['ipv6']}",
+        f"Effective v39 blocked CIDRs after unified DIRECT protection: {len(blocked)}",
+        f"Protected-DIRECT-exempted blocked CIDRs: {len(exempted_blocked)}",
+        f"Protected-DIRECT-exempted blocked address space (all addresses): IPv4={exempted_blocked_counts['ipv4']} IPv6={exempted_blocked_counts['ipv6']}",
+        f"Protected-DIRECT-exempted addresses intersecting DIRECT after PRIVATE: IPv4={exempted_direct_counts[4]} IPv6={exempted_direct_counts[6]}",
+        f"Corporate/RIR-RU ASN origin prefixes: {len(company_prefixes)}; IPv4 addresses={addr_counts(company_prefixes)['ipv4']}; IPv6 addresses={addr_counts(company_prefixes)['ipv6']}",
         f"Service-protected DIRECT CIDRs: {len(service_protected_mask)}; Unified protected DIRECT CIDRs: {len(protected_direct_mask)}",
         f"Antifilter ipsum REVIEW-ONLY IPv4 /24 prefixes: {len(ipsum)}",
         f"Antifilter ipsum raw/valid/invalid rows: {ipsum_stats['raw_rows']}/{ipsum_stats['valid_rows']}/{ipsum_stats['invalid_rows']}",
@@ -803,17 +803,18 @@ def main():
             "service_protected_address_space":addr_counts(service_protected_mask),
             "unified_protected_unique_prefixes":len(protected_direct_mask),
             "unified_protected_address_space":addr_counts(protected_direct_mask),
+            "origin_scope":"Curated corporate company-ASN and registered RIR-RU ASN exact origins; service masks are counted separately.",
             "raw_valid_invalid_rows":company_prefix_stats,
             "input_sha256":sha256(args.company_prefixes.read_bytes()),
         },
         "blocked":{
             "v37_approved_original_unique":len(blocked_base),
             "v39_effective_after_company_exception_unique":len(blocked),
-            "company_asn_exempted_unique":len(exempted_blocked),
-            "company_asn_exempted_address_space":exempted_blocked_counts,
-            "company_asn_exempted_direct_after_private":{f"ipv{v}":exempted_direct_counts[v] for v in (4,6)},
+            "protected_direct_exempted_unique":len(exempted_blocked),
+            "protected_direct_exempted_address_space":exempted_blocked_counts,
+            "protected_direct_exempted_after_private":{f"ipv{v}":exempted_direct_counts[v] for v in (4,6)},
             "ipsum_review_only_unique":len(ipsum),
-            "ipsum_company_adjusted_review_only_unique":len(ipsum_effective),
+            "ipsum_protected_direct_adjusted_review_only_unique":len(ipsum_effective),
             "ipsum_auto_carved":False,
             "ipsum_sha256":sha256(args.ipsum.read_bytes()),
             "potential_additional_proxy_ipv4_addresses":ipsum_overlap_direct[4],
@@ -829,6 +830,7 @@ def main():
             "geolocation_used_as_admission_gate":False,
             "private_precedence_applied":True,
             "rkn_blocklist_applied_outside_corporate_company_asn_prefixes":True,
+            "rkn_blocklist_applied_outside_unified_protected_direct_mask":True,
             "corporate_company_asn_prefixes_remain_direct_except_private":True,
             "rir_ru_asn_prefixes_remain_direct_except_private":True,
             "ru_service_prefixes_remain_direct_except_private":True,
@@ -854,7 +856,7 @@ def main():
     print(f"v39 protobuf bytes: {len(payload)} sha256={sha256(payload)}")
     print(f"v39 final RU CIDRs: {len(final)} IPv4={final_counts['ipv4']} IPv6={final_counts['ipv6']}")
     print(f"New after policy IPv4={delta_v4} IPv6={delta_v6}")
-    print(f"Company/RIR-RU ASN prefixes={len(company_prefixes)}; unified protected CIDRs={len(protected_direct_mask)}; exempted DIRECT IPv4={exempted_direct_counts[4]} IPv6={exempted_direct_counts[6]}")
+    print(f"Corporate/RIR-RU ASN prefixes={len(company_prefixes)}; unified protected CIDRs={len(protected_direct_mask)}; protected-DIRECT-exempted IPv4={exempted_direct_counts[4]} IPv6={exempted_direct_counts[6]}")
     print(f"RIR RU/BY/KZ rows={rir_rows}; ipsum /24 review-only={len(ipsum)}")
     return 0
 
