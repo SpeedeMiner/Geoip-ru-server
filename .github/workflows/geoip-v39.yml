@@ -13,12 +13,8 @@ on:
       - "docs/GEOIP_RU_V39_POLICY.md"
       - "docs/GEOIP_RU_V39_SOURCE_REGISTRY.tsv"
       - "docs/V39_PUBLIC_RKN_SOURCE_CROSSCHECK.md"
-  schedule:
-    # Daily refresh; one unified DIRECT set covers RU+BY+KZ, with bounded blocked-destination carve-outs.
-    - cron: "45 3 * * *"
-  push:
-    branches:
-      - main
+  # Legacy v39 retained for manual/PR compatibility checks only.
+  # v41 is the sole production publisher after migration.
 
 concurrency:
   group: geoip-direct-ru-by-kz-v39-${{ github.ref }}
@@ -148,6 +144,7 @@ jobs:
           AS47542	VK/Mail.ru	VKontakte Ltd / LLC VK	https://prefixkit.com/ru/service-ip-ranges/vk-mailru/
           AS28709	VK/Mail.ru	LLC VK	https://wbdt.ru/AS28709
           AS47764	VK/Mail.ru	LLC VK (Mail.Ru Group legacy ASN)	https://wbdt.ru/AS47764
+          AS209030	Kaspersky	AO Kaspersky Lab	https://bgp.he.net/AS209030
           AS49053	Wildberries	LLC Wildberries	https://wbdt.ru/AS49053
           AS57073	Wildberries	LLC Wildberries	https://wbdt.ru/AS57073
           AS201512	Wildberries	LLC Wildberries (CDN ASN)	https://iamroot.tech/asndatabase/?search=AS201512
@@ -1290,6 +1287,7 @@ jobs:
           python3 .github/scripts/build_company_asn_prefixes.py \
             --selected-prefixes "$RU_PREFIX_INPUT" \
             --company-asns "$COMPANY_ASN_REGISTRY" \
+            --rir-ru-asns "$RU_ASN_REGISTRY" \
             --output "$COMPANY_ASN_PREFIXES"
           for file in "$RU_PREFIX_INPUT" "$GLOBAL_BGP_PREFIX_INPUT" "$ASN_MANIFEST" "$COMPANY_ASN_MANIFEST" "$COMPANY_ASN_PREFIXES" "$ASN_STATS" "$BY_KZ_ASN_REGISTRY"; do
             test -s "$file" || { echo "::error::Missing BGP artifact: $file"; exit 1; }
@@ -3526,7 +3524,7 @@ jobs:
           cat "$OUTPUT_SHA_FILE"
 
       - name: Upload v39 candidate build artifact
-        if: github.ref != 'refs/heads/main'
+        if: true  # Preserve v39 as a candidate-only/manual compatibility workflow.
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
           name: geoip-direct-rukzby-v39-candidate
@@ -3566,7 +3564,7 @@ jobs:
           retention-days: 30
 
       - name: Publish GitHub Release
-        if: github.ref == 'refs/heads/main'
+        if: false  # Retired v39 production publication; use v41 only.
         # v3.0.3; pin the action implementation to an immutable commit.
         uses: softprops/action-gh-release@efb35369e0ad2afab669f228072c1b0d510eae64
         with:
@@ -3666,7 +3664,7 @@ jobs:
             - RIR registration, BGP announcements, service association and RKN block evidence are distinct signals and are reported separately.
 
       - name: Publish release branch
-        if: github.ref == 'refs/heads/main'
+        if: false  # Retired v39 production publication; use v41 only.
         shell: bash
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -3717,7 +3715,7 @@ jobs:
           purge_jsdelivr "geoip_RU_blocked_ip_exclusions.txt"
 
       - name: Print download and audit URLs
-        if: github.ref == 'refs/heads/main'
+        if: false  # Retired v39 production publication; use v41 only.
         shell: bash
         run: |
           echo "GitHub Release: https://${{ github.server_url }}/${{ github.repository }}/releases/download/latest-geoip-client-v39/geoip_RU.dat"
@@ -3741,3 +3739,4 @@ jobs:
           echo "v39 expanded RKN exclusions: https://raw.githubusercontent.com/${{ github.repository }}/release/geoip_RU_v39_blocked_ip_exclusions.txt"
           echo "Blocked feed stats: https://raw.githubusercontent.com/${{ github.repository }}/release/geoip_RU_blocked_source_stats.txt"
           echo "Blocked source review candidates: https://raw.githubusercontent.com/${{ github.repository }}/release/geoip_RU_blocked_review_candidates.tsv"
+

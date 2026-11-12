@@ -515,12 +515,24 @@ def write_tsv(path: Path, rows: list[dict[str, str]], columns: list[str]) -> Non
 def build_evidence(company_queue: Path, output_dir: Path, max_workers: int = 5) -> dict[str, Any]:
     source_rows, source_sha = read_company_queue(company_queue)
     priority = select_priority_rows(source_rows)
-    if len(priority) != 56:
-        raise ValueError(f"expected 56 company MOAS/company-only priority prefixes, got {len(priority)}")
-    moas_count = sum(row["GLOBAL_BGP_MOAS"] == "yes" for row in priority)
+    if not priority:
+        raise ValueError("priority selection is empty; expected exact MOAS or company-only prefixes")
+    moas_count = sum(row["GLOBAL_BGP_MOAS"].strip().lower() == "yes" for row in priority)
     company_only_count = sum(row["INCLUSION_BASIS"] == "COMPANY_ASN_ONLY" for row in priority)
-    if (moas_count, company_only_count) != (52, 4):
-        raise ValueError(f"unexpected priority split: MOAS={moas_count}, company_only={company_only_count}")
+    selected_prefixes = {row["PREFIX"] for row in priority}
+    expected_prefixes = {
+        row["PREFIX"] for row in source_rows
+        if row["GLOBAL_BGP_MOAS"].strip().lower() == "yes"
+        or row["INCLUSION_BASIS"] == "COMPANY_ASN_ONLY"
+    }
+    if len(selected_prefixes) != len(priority) or selected_prefixes != expected_prefixes:
+        raise ValueError("priority selector output differs from the exact MOAS/company-only source selection")
+    if any(
+        row["GLOBAL_BGP_MOAS"].strip().lower() != "yes"
+        and row["INCLUSION_BASIS"] != "COMPANY_ASN_ONLY"
+        for row in priority
+    ):
+        raise ValueError("priority selector included a prefix outside the exact MOAS/company-only scope")
 
     bootstraps: dict[int, list[tuple[ipaddress._BaseNetwork, list[str]]]] = {}
     bootstrap_hashes: dict[int, str] = {}

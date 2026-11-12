@@ -5,9 +5,10 @@ import argparse
 import csv
 import ipaddress
 from collections import Counter
+from datetime import date
 from pathlib import Path
 
-EXPECTED = (56, 52, 4)
+EXPECTED: tuple[int, int, int] | None = None  # exact scope is derived from the validated triage input
 HEADER = (
     "REVIEW_ORDER", "REVIEW_PRIORITY", "PRIMARY_REVIEW_TRACK", "PREFIX", "FAMILY",
     "GLOBAL_BGP_ORIGIN_ASNS", "RPKI_INVALID_ORIGINS", "RPKI_UNKNOWN_ORIGINS",
@@ -88,8 +89,13 @@ def build_worklist(evidence: Path, output: Path, stats_path: Path,
             raise ValueError(f"invalid family or non-REVIEW triage row: {prefix}")
     spot_scope_relations: dict[str, str] = {}
     for prefix, row in spots.items():
-        if row.get("STATUS") != "CHECKED_2026-11-10" or not row.get("SUMMARY", "").strip():
+        checked_status = row.get("STATUS", "").strip()
+        if not checked_status.startswith("CHECKED_") or not row.get("SUMMARY", "").strip():
             raise ValueError(f"invalid or undated spot-check row: {prefix}")
+        try:
+            date.fromisoformat(checked_status.removeprefix("CHECKED_"))
+        except ValueError as exc:
+            raise ValueError(f"invalid spot-check date for {prefix}: {checked_status}") from exc
         target = ipaddress.ip_network(prefix, strict=True)
         observed = [ipaddress.ip_network(x.strip(), strict=True)
                     for x in row.get("OBSERVED_PREFIXES", "").split("|") if x.strip()]

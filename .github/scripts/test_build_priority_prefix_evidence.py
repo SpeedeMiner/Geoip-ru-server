@@ -65,6 +65,38 @@ class PriorityPrefixEvidenceTests(unittest.TestCase):
         self.assertEqual(selected[1]["PRIORITY_REASON"], "COMPANY_ONLY")
         self.assertTrue(all(row["STATUS"] == "REVIEW" for row in selected))
 
+    def test_priority_selector_tracks_a_new_snapshot_scope_of_53_moas_plus_four_company_only(self):
+        rows = []
+        for index in range(53):
+            rows.append(make_row(
+                f"2001:db8:{index:x}::/48",
+                "AS64500",
+                "AS64500,AS64496",
+                "yes",
+                "REGIONAL_RIR_ASN_ORIGIN+COMPANY_ASN",
+            ))
+        for index in range(4):
+            rows.append(make_row(
+                f"2001:db8:{100 + index:x}::/48",
+                "AS64501",
+                "AS64501",
+                "no",
+                "COMPANY_ASN_ONLY",
+            ))
+
+        selected = select_priority_rows(rows)
+        self.assertEqual(len(selected), 57)
+        self.assertEqual(
+            sum(row["GLOBAL_BGP_MOAS"].lower() == "yes" for row in selected), 53
+        )
+        self.assertEqual(
+            sum(row["INCLUSION_BASIS"] == "COMPANY_ASN_ONLY" for row in selected), 4
+        )
+        self.assertTrue(all(row["STATUS"] == "REVIEW" for row in selected))
+        self.assertEqual(
+            sum(row["PRIORITY_REASON"] == "EXACT_MOAS" for row in selected), 53
+        )
+
     def test_sample_addresses_are_first_midpoint_last_and_deduplicated(self):
         self.assertEqual(
             sample_addresses("192.0.2.0/30"),
