@@ -173,7 +173,7 @@ Workflow integration: `.github/workflows/reachability-validation.yml` now runs o
 
 - Earlier Runs #218 / `43095995983`, #219 / `43096100580`, and #220 / `43096310463` remain reported as `queued`; their Jobs API returned `total_count=0` for each, so no runner/job was provisioned and no tests ran there.
 - A fresh push of the latest code created Run #221, which completed successfully. Use #221 as the latest validation for the current code; do not describe #218–#220 as failing tests.
-- The timing overlaps a GitHub Actions service incident on 2026-11-11, but the exact cause of these particular runs remaining queued is not proven.
+- The chronology matters: #218–#220 entered the queue at 20:25:45–20:28:58 UTC, while GitHub's official status page first reported Actions degradation at 20:48 UTC and backlog fully processed at 21:21 UTC. The incident therefore cannot explain why the jobs were not provisioned initially; it may have overlapped the later wait, but there is no proof it caused these exact runs to remain queued. Root cause remains unknown.
 
 ### Next action
 

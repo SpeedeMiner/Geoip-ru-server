@@ -2937,5 +2937,22 @@
       "status": "queued",
       "jobs_total_count": 0
     }
-  ]
+  ],
+  "queue_diagnosis": {
+    "stale_runs": [
+      43095995983,
+      43096100580,
+      43096310463
+    ],
+    "first_queued_at_utc": [
+      "2026-11-11T20:25:45Z",
+      "2026-11-11T20:26:49Z",
+      "2026-11-11T20:28:58Z"
+    ],
+    "jobs_api_total_count": 0,
+    "official_actions_degradation_started_at_utc": "2026-11-11T20:48:00Z",
+    "official_actions_backlog_fully_processed_at_utc": "2026-11-11T21:21:00Z",
+    "causal_assessment": "The initial queue/no-job condition predates the officially reported Actions degradation, so that incident cannot explain the initial lack of job provisioning. It may have overlapped the later wait, but no evidence ties it to these exact run IDs. Exact cause remains UNKNOWN.",
+    "source": "https://www.githubstatus.com/"
+  }
 }

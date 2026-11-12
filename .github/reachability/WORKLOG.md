@@ -1261,7 +1261,7 @@ Durable resume point for PR #5. After any conversation/network interruption, rea
 
 - Before the new code push, validation Runs #218 / 43095995983 (commit 73bd2cb), #219 / 43096100580 (commit dab7399), and #220 / 43096310463 (commit ef84c89) remained `queued`.
 - The GitHub Actions Jobs API returned `total_count=0` for each run. Thus no validation job had been provisioned and no runner had started; there is no test-failure evidence from those runs.
-- The queued state overlapped a GitHub Actions service incident reported on 2026-11-11. This is plausible context for the backlog, but the specific causal link to these three run IDs is unproven.
+- Chronology correction: #218–#220 were queued at 20:25:45–20:28:58 UTC. GitHub's official status page reports Actions degradation starting at 20:48 UTC and the Actions backlog fully processed at 21:21 UTC. The incident started after these runs were already queued, so it cannot explain the initial absence of provisioned jobs. It may have overlapped the later wait, but no evidence ties it to these specific runs; root cause remains UNKNOWN. Source: https://www.githubstatus.com/.
 - A new push on the feature branch started Run #221, which obtained a job and completed successfully. Use it as the validation for the latest code head.
 
 ### Fail-closed helper hardening
@@ -1287,3 +1287,10 @@ Durable resume point for PR #5. After any conversation/network interruption, rea
 - For acceptance, verify non-empty workflow run ID/attempt/SHA in the progress manifest, all 30 target IDs attempted, `target_scan_status=COMPLETE`, and `targets_not_tested_count=0`. A partial scan should upload artifacts and then fail the final gate.
 - HTTP 403/418/503 are responses, not block verdicts. Timeouts, TLS mismatch and missing rows are inconclusive/coverage gaps, not evidence of filtering. A VPNObratno volunteer exit does not prove a residential/home ISP.
 - PR #5 remains OPEN / DRAFT. No production GeoIP source, builder, `geoip_RU.dat`, release assets, DIRECT, ASN allowlists, `main`, `release` or PR #6 were changed.
+
+
+### Queue incident chronology clarification
+
+- The initial queued state of Runs #218–#220 preceded the GitHub Actions component incident: their create times are 20:25:45Z, 20:26:49Z and 20:28:58Z; the official status page first reports Actions degraded availability at 20:48Z.
+- GitHub reported the backlog fully processed and the incident resolved at 21:21Z. This may have affected the later wait, but the incident cannot explain why no jobs were provisioned at the time the runs first entered the queue.
+- The exact reason these three runs remained queued with `total_count=0` jobs is UNKNOWN. Run #221 on the latest code head is the successful validation to rely on.
