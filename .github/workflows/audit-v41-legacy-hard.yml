@@ -16,6 +16,8 @@ on:
       - ".github/scripts/audit_v41_shadow_hard_shared.py"
       - ".github/scripts/audit_v41_all_hard_override_classes.py"
       - ".github/scripts/test_audit_v41_all_hard_override_classes.py"
+      - ".github/scripts/audit_v41_other_current_hard_ris.py"
+      - ".github/scripts/test_audit_v41_other_current_hard_ris.py"
       - ".github/scripts/test_audit_v41_shadow_hard_shared.py"
       - ".github/scripts/audit_v41_shared_hard_guard.py"
       - ".github/scripts/test_audit_v41_shared_hard_guard.py"
@@ -178,6 +180,17 @@ jobs:
             --output-dir audit-output
           test -s audit-output/all_hard_override_classes_summary.json
           cat audit-output/all_hard_override_classes_summary.json
+      - name: Query RIPE RIS for current hard blocks outside CORE and SHARED
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 .github/scripts/audit_v41_other_current_hard_ris.py \
+            --other-cidrs audit-output/ipv4_hard_overrides_other.txt \
+            --hard audit-inputs/hard.txt \
+            --output-dir audit-output
+          test -s audit-output/other_current_hard_ris_evidence.tsv
+          test -s audit-output/other_current_hard_ris_summary.json
+          cat audit-output/other_current_hard_ris_summary.json
       - name: Upload audit evidence without changing routing or release
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
