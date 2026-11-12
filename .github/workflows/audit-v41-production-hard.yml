@@ -13,6 +13,8 @@ on:
       - ".github/scripts/download_v41_published_audit_inputs.py"
       - ".github/scripts/test_download_v41_published_audit_inputs.py"
       - ".github/scripts/audit_v41_shared_hard_guard.py"
+      - ".github/scripts/audit_v41_named_service_attribution.py"
+      - ".github/scripts/test_audit_v41_named_service_attribution.py"
       - ".github/data/v41_observed_shared_service_hard_exceptions.tsv"
   workflow_dispatch:
 
@@ -33,6 +35,7 @@ jobs:
           set -euo pipefail
           python3 -m unittest discover -s .github/scripts -p 'test_download_v41_published_audit_inputs.py' -v
           python3 -m unittest discover -s .github/scripts -p 'test_audit_v41_shared_hard_guard.py' -v
+          python3 -m unittest discover -s .github/scripts -p 'test_audit_v41_named_service_attribution.py' -v
       - name: Verify current published v41 artifacts against manifest hashes
         shell: bash
         run: |
@@ -60,6 +63,17 @@ jobs:
           echo "### SHARED service hard-block exceptions" >> "$GITHUB_STEP_SUMMARY"
           echo 'No production routing files are modified. Observation baseline is not an approval allowlist.' >> "$GITHUB_STEP_SUMMARY"
           echo 'Full current-source cases in the uploaded TSV report.' >> "$GITHUB_STEP_SUMMARY"
+      - name: Attribute hard overrides to named service-catalog claims
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 .github/scripts/audit_v41_named_service_attribution.py \
+            --overrides audit-output/all_shared_service_hard_overrides.tsv \
+            --services audit-inputs/kyoresuas.json \
+            --output-dir audit-output
+          test -s audit-output/hard_service_named_attribution.tsv
+          test -s audit-output/hard_service_named_attribution_summary.json
+          cat audit-output/hard_service_named_attribution_summary.json
       - name: Upload post-release evidence
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
