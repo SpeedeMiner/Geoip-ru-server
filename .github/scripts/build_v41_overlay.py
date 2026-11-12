@@ -743,7 +743,15 @@ def main():
             direct_parts = intersect_one_range(int(net.network_address), int(net.broadcast_address), preblock_after_private_iv[v])
             core_exempted = interval_size(intersect(direct_parts, core_company_iv[v]))
             shared_exempted = interval_size(intersect(direct_parts, shared_infrastructure_iv[v])) if shared_allowed else 0
-            potential = max(0, potential - core_exempted - shared_exempted)
+            # Compute incremental impact on address-space intervals.  Exemptions can
+            # overlap each other or the already-effective blocked set; subtracting
+            # raw exemption counts would double-count such intersections.
+            remaining = subtract(direct_parts, base_blocked_iv[v])
+            protected = normalize_interval_union(
+                core_company_iv[v], service_protected_iv[v],
+                *([shared_infrastructure_iv[v], regional_only_iv[v]] if shared_allowed else [])
+            )
+            potential = interval_size(subtract(remaining, protected))
             blocked_rows.append({
                 "source_id":source_id,
                 "prefix":str(net),
