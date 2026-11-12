@@ -11,6 +11,8 @@ on:
       - ".github/scripts/test_audit_v41_service_hard_overrides.py"
       - ".github/scripts/audit_v41_named_service_attribution.py"
       - ".github/scripts/test_audit_v41_named_service_attribution.py"
+      - ".github/scripts/audit_v41_current_hard_ris.py"
+      - ".github/scripts/test_audit_v41_current_hard_ris.py"
       - ".github/scripts/audit_v41_shared_hard_guard.py"
       - ".github/scripts/test_audit_v41_shared_hard_guard.py"
       - ".github/data/v41_observed_shared_service_hard_exceptions.tsv"
@@ -131,6 +133,16 @@ jobs:
           test -s audit-output/hard_service_named_attribution.tsv
           test -s audit-output/hard_service_named_attribution_summary.json
           cat audit-output/hard_service_named_attribution_summary.json
+      - name: Add independent RIPE RIS origin observations for current-source hard hosts
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 .github/scripts/audit_v41_current_hard_ris.py \
+            --attribution audit-output/hard_service_named_attribution.tsv \
+            --output-dir audit-output
+          test -s audit-output/hard_current_ris_bgp_evidence.tsv
+          test -s audit-output/hard_current_ris_bgp_summary.json
+          cat audit-output/hard_current_ris_bgp_summary.json
       - name: Upload audit evidence without changing routing or release
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
