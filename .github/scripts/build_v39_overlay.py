@@ -520,6 +520,17 @@ def main():
     ipsum_effective = subtract_networks(ipsum, company_prefixes)
 
     additions = regional_union | service_union | company_prefixes
+    source_stats["corporate-company-asn-origins"] = company_prefix_stats
+    for net in sorted(company_prefixes, key=lambda n: (n.version, int(n.network_address), n.prefixlen)):
+        prefix_rows.append({
+            "source_id": "corporate-company-asn-origins",
+            "category": "curated company ASN exact origin",
+            "service": "",
+            "tier": "",
+            "asn_list": "",
+            "domains": "",
+            "prefix": str(net),
+        })
     preblock = base_ru | additions
     preblock_iv = {v: intervals(preblock, v) for v in (4, 6)}
     company_iv = {v: intervals(company_prefixes, v) for v in (4, 6)}
@@ -575,7 +586,7 @@ def main():
 
     # Source contribution: address-space union per source, not additive totals.
     metrics_rows = []
-    for source_id, networks in [("rir-RU",rir["RU"]),("rir-BY",rir["BY"]),("rir-KZ",rir["KZ"])] + list(service_sources.items()):
+    for source_id, networks in [("rir-RU",rir["RU"]),("rir-BY",rir["BY"]),("rir-KZ",rir["KZ"]),("corporate-company-asn-origins",company_prefixes)] + list(service_sources.items()):
         row = {"source_id":source_id,"unique_cidrs":len(networks)}
         for v in (4, 6):
             src_iv = intervals(networks, v)
