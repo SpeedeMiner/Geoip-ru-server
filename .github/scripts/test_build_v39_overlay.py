@@ -75,6 +75,31 @@ class GeoIPV39CorporateExemptionTests(unittest.TestCase):
             {4: 0, 6: 0},
         )
 
+    def test_protected_direct_mask_includes_curated_services_and_rir_ru_w1zardz_only(self):
+        company = {ipaddress.ip_network("5.45.192.0/18")}
+        rir_ru = {ipaddress.ip_network("85.192.0.0/16")}
+        service_sources = {
+            "kyoresuas-standard": {ipaddress.ip_network("77.88.0.0/18")},
+            "hxehex-mobile-hosts": {ipaddress.ip_network("91.107.80.1/32")},
+            "operator-whitelist": {ipaddress.ip_network("185.32.184.0/23")},
+            "w1zardz-service-direct": {
+                ipaddress.ip_network("85.192.10.0/24"),  # inside RIR-RU -> protected
+                ipaddress.ip_network("104.16.0.0/24"),   # foreign CDN -> NOT protected from RKN carve
+            },
+        }
+        protected, service_protected = build.build_protected_direct_mask(
+            company, rir_ru=rir_ru, service_sources=service_sources
+        )
+        blocked = {
+            ipaddress.ip_network("77.88.5.5/32"),
+            ipaddress.ip_network("85.192.10.5/32"),
+            ipaddress.ip_network("104.16.0.5/32"),
+        }
+        effective_blocked = build.subtract_networks(blocked, protected)
+        self.assertIn(ipaddress.ip_network("85.192.10.0/24"), service_protected)
+        self.assertNotIn(ipaddress.ip_network("104.16.0.0/24"), service_protected)
+        self.assertEqual(effective_blocked, {ipaddress.ip_network("104.16.0.5/32")})
+
 
 if __name__ == "__main__":
     unittest.main()
