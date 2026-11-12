@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Warn on new shared-infra IPv4 hard-host overrides by broad service masks.
+"""Warn on previously untracked shared-infra hard-host overrides by broad masks.
 
 This is a READ-ONLY diagnostic, not a mechanism for approving, restoring or
 subtracting any routing entries. An established observation is NOT an approval.
@@ -90,11 +90,15 @@ def scan(hard, effective, direct, sources, core, shared, baseline):
     found = {row["prefix"] for row in flagged}
     new = sorted(found - baseline.keys(), key=lambda x: int(ipaddress.ip_network(x).network_address))
     disappeared = sorted(baseline.keys() - found)
+    current_ip_lst = sum("antifilter-ip.lst" in row["evidence_sources"].split(",") for row in flagged)
+    legacy_only = sum(row["evidence_sources"] == "v38-baseline-hard-or-unclassified" for row in flagged)
     result = {
         "all_hard_ipv4_32_unique": len(hard_by_ip),
+        "overrides_with_current_ip_lst_evidence": current_ip_lst,
+        "overrides_with_legacy_only_hard_evidence": legacy_only,
         "shared_broad_service_hard_overrides": len(flagged),
-        "new_unreviewed_hard_overrides": len(new),
-        "new_unreviewed_prefixes": new,
+        "previously_untracked_hard_overrides": len(new),
+        "previously_untracked_prefixes": new,
         "previously_observed_not_current": disappeared,
         "baseline_observed_not_approved": True,
         "scope": "audit_only_no_production_change",
@@ -131,10 +135,10 @@ def main():
         json.dumps(summary, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
         encoding="utf-8"
     )
-    if summary["new_unreviewed_hard_overrides"]:
-        print("::warning title=New SHARED broad-service hard exceptions::"
-              + f"{summary['new_unreviewed_hard_overrides']} newly observed hard-host exceptions: "
-              + ", ".join(summary["new_unreviewed_prefixes"][:15])
+    if summary["previously_untracked_hard_overrides"]:
+        print("::warning title=Previously untracked SHARED broad-service hard exceptions::"
+              + f"{summary['previously_untracked_hard_overrides']} hard-host exceptions absent from the six-case observation baseline: "
+              + ", ".join(summary["previously_untracked_prefixes"][:15])
               + ". Review report; baseline entries are not approvals.")
     print(json.dumps(summary, ensure_ascii=False, sort_keys=True))
 
