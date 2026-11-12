@@ -153,7 +153,7 @@ def main():
         writer.writeheader()
         writer.writerows(r for r in rows if r["in_v34_but_not_v41"] == "YES")
     with (args.output_dir / "legacy_hard_override_review.tsv").open("w", encoding="utf-8", newline="") as out:
-        writer = csv.DictWriter(out, fieldnames=fields, delimiter="\\t")
+        writer = csv.DictWriter(out, fieldnames=fields, delimiter="\t")
         writer.writeheader()
         writer.writerows(r for r in rows if r["still_effective_block"] == "NO")
     (args.output_dir / "summary.json").write_text(
