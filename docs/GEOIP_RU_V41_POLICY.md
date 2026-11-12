@@ -1,6 +1,6 @@
 # v41 integration policy — RU+BY+KZ unified DIRECT
 
-Status: **candidate / Draft PR only**. No release has been authorized or published by this branch.
+Status: **v41 already released; this Hydra expansion is PR-only until successful independent validation**.
 
 ## Preservation of v39 and v40
 
@@ -31,6 +31,15 @@ v41 imports from v40:
 
 This is a policy change from the broader v39 PR #12 proposal, which protected RIR origins from all block sources. The v39 source and tests are retained in the branch, while v41 explicitly restricts RIR protection to resolver-only to avoid false DIRECT routing of blocked hosted addresses. This conflict must be reviewed using candidate provenance before production release.
 
+## Hydra DIRECT / WHITELIST expansion
+
+- The upstream `hydraponique/roscomvpn-geoip` file already enters the v37 builder, but its `direct` and `whitelist` categories were previously counted only as diagnostic candidates.
+- Both categories are now explicitly admitted in the v41 overlay as **routing intent**, not as RU geolocation, first-party corporate origin, or unconditional block exemption.
+- The source is the same fetched `hydra-geoip.dat` used by the base builder. Its SHA-256, category counts, source-level metrics and exact prefix provenance are recorded.
+- Eligibility is `(Hydra DIRECT ∪ Hydra WHITELIST) − PRIVATE − effective v41 blocked set`. Hydra does **not** override hard/exact/legacy/RIR block precedence or create a new class of corporate protected ASN.
+- The independent validator checks full eligible Hydra address-space inclusion in the final `geoip:RU`, including IPv4 and IPv6, and verifies the source hash. Missing categories or a default route fail closed.
+- Because Hydra may contain non-RU/CDN routing intent, this policy broadens the meaning of the RU routing bucket deliberately; review the exact resulting address delta before production rollout.
+
 ## Data and validation contracts
 
 The active `geoip_RU.dat` candidate must contain only RU and PRIVATE, with zero overlap. The resulting RU and effective non-protected blocked sets must be disjoint. Separate masks must be SHA-256 pinned to their source files; source file handles and all output sidecars must be validated independently.
@@ -39,4 +48,4 @@ All received but unverified `RPKI/RDAP/IRR` audit candidates remain review-only.
 
 ## Publication boundary
 
-The v41 workflow is PR/manual candidate only. No schedule or push-to-main automatic publication has been enabled. Release/tag/CDN publication remains prohibited until a successful, verified candidate and separate release decision. The released v39 tag is retained as rollback.
+The existing v41 production workflow runs on main pushes and a daily schedule. This Hydra change is isolated in a PR: production remains unchanged until reviewed and merged. The released v41 tag remains available as a rollback point; publication of the expanded dataset requires a green candidate and explicit address-delta review.

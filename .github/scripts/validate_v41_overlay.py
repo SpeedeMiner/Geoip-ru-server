@@ -99,7 +99,21 @@ def validate(args: argparse.Namespace) -> dict:
         if builder.subtract(blocked_shared, allowed_shared_hard):
             raise ValueError(f"Effective block intersects SHARED_INFRA outside exact/legacy hard blocks in IPv{version}")
 
+    # Independent full set inclusion check: all Hydra DIRECT/WHITELIST entries
+    # must survive except PRIVATE and the effective v41 blocked set.
+    hydra_sources = builder.parse_hydra_direct_whitelist(args.hydra)
+    expected_hydra = builder.hydra_expected_after_policy(hydra_sources, decoded["PRIVATE"], output_blocked)
+    for version in (4, 6):
+        if builder.subtract(builder.intervals(expected_hydra, version), builder.intervals(decoded["RU"], version)):
+            raise ValueError(f"Hydra DIRECT/WHITELIST IPv{version} eligible coverage missing")
+
     manifest = json.loads(args.manifest.read_text(encoding="utf-8"))
+    if manifest.get("input_sha256", {}).get("hydra_geoip") != sha256(args.hydra):
+        raise ValueError("Hydra input SHA-256 mismatch")
+    if manifest.get("hydra_routing_intent", {}).get("input_sha256") != sha256(args.hydra):
+        raise ValueError("Hydra provenance SHA-256 mismatch")
+    if manifest.get("safety", {}).get("hydra_direct_whitelist_added_without_block_exemption") is not True:
+        raise ValueError("Hydra precedence safety flag missing")
     if manifest.get("output_sha256") != sha256(args.geoip):
         raise ValueError("Manifest output SHA-256 does not match GeoIP protobuf")
     if manifest.get("input_sha256", {}).get("corporate_company_asn_origin_prefixes") != sha256(args.company_all):
@@ -166,6 +180,8 @@ def validate(args: argparse.Namespace) -> dict:
         "shared_infrastructure_prefixes": len(shared),
         "rir_ru_additional_origin_prefixes": len(regional_only),
         "verified_ru_service_prefixes": len(service_protected),
+        "hydra_direct_prefixes": len(hydra_sources["hydra-direct"]),
+        "hydra_whitelist_prefixes": len(hydra_sources["hydra-whitelist"]),
         "status": "VALID",
     }
     print(json.dumps(report, ensure_ascii=False, sort_keys=True))
@@ -175,7 +191,7 @@ def validate(args: argparse.Namespace) -> dict:
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     for name in (
-        "geoip", "blocked_union", "blocked_exact", "blocked_resolved",
+        "geoip", "hydra", "blocked_union", "blocked_exact", "blocked_resolved",
         "company_all", "company_core", "company_shared", "regional_origin_prefixes",
         "kyoresuas_v4", "kyoresuas_v6", "kyoresuas_services", "w1zardz",
         "hxehex_ip", "escapingworm", "effective_blocked",

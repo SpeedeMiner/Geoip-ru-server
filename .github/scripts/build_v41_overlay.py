@@ -222,6 +222,24 @@ def parse_geoip_dat(path: Path):
         raise ValueError("base GeoIP protobuf has no categories")
     return result
 
+def parse_hydra_direct_whitelist(path: Path):
+    """Hydra routing-intent categories; PRIVATE and v41 blocks still take precedence."""
+    categories = parse_geoip_dat(path)
+    if not {"DIRECT", "WHITELIST"}.issubset(categories):
+        raise ValueError("Hydra GeoIP is missing DIRECT or WHITELIST category")
+    direct, whitelist = categories["DIRECT"], categories["WHITELIST"]
+    if not direct or not whitelist:
+        raise ValueError("Hydra DIRECT/WHITELIST cannot be empty")
+    if any(net.prefixlen == 0 for net in direct | whitelist):
+        raise ValueError("Hydra DIRECT/WHITELIST contains a default route")
+    return {"hydra-direct": direct, "hydra-whitelist": whitelist}
+
+
+def hydra_expected_after_policy(hydra_sources, private, blocked):
+    """Exact address-space set of Hydra candidates eligible for DIRECT."""
+    return subtract_networks(union_networks(*hydra_sources.values()), private, blocked)
+
+
 def encode_varint(value: int) -> bytes:
     out = bytearray()
     while value > 0x7F:
@@ -532,6 +550,7 @@ def load_service_inputs(args):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--base", type=Path, required=True)
+    parser.add_argument("--hydra", type=Path, required=True)
     parser.add_argument("--rir", type=Path, required=True)
     parser.add_argument("--kyoresuas-v4", type=Path, required=True)
     parser.add_argument("--kyoresuas-v6", type=Path, required=True)
@@ -567,6 +586,12 @@ def main():
 
     rir, rir_rows = parse_rir_tsv(args.rir)
     service_sources, source_stats, prefix_rows = load_service_inputs(args)
+    hydra_sources = parse_hydra_direct_whitelist(args.hydra)
+    for hydra_id, hydra_nets in hydra_sources.items():
+        source_stats[hydra_id] = {"raw_files": [args.hydra.name], "valid_rows": len(hydra_nets)}
+        for net in sorted(hydra_nets, key=lambda n: (n.version, int(n.network_address), n.prefixlen)):
+            prefix_rows.append({"source_id": hydra_id, "category": "routing-intent",
+                "service": "", "tier": "", "asn_list": "", "domains": "", "prefix": str(net)})
     service_union = union_networks(*service_sources.values())
     regional_union = union_networks(*rir.values())
     blocked_base = parse_blocked_base(args.blocked_base)
@@ -610,7 +635,10 @@ def main():
         ipsum, core_company_prefixes | shared_infrastructure_prefixes | regional_only | service_protected
     )
 
-    additions = regional_union | service_union | company_prefixes | regional_only
+    # Hydra's DIRECT and WHITELIST signal user-requested routes, not geography or
+    # first-party ownership. Never include Hydra in CORE/service exemptions.
+    hydra_union = union_networks(*hydra_sources.values())
+    additions = regional_union | service_union | company_prefixes | regional_only | hydra_union
     source_stats["all-company-asn-origins"] = company_prefix_stats
     source_stats["core-company-asn-origins"] = core_company_stats
     source_stats["shared-infrastructure-asn-origins"] = shared_infrastructure_stats
@@ -650,6 +678,9 @@ def main():
     # Convert to exact intervals before subtracting PRIVATE and RKN block prefixes.
     final = subtract_networks(preblock, private, blocked)
     final = set(collapse(final))
+    hydra_expected = hydra_expected_after_policy(hydra_sources, private, blocked)
+    if any(subtract(intervals(hydra_expected, v), intervals(final, v)) for v in (4, 6)):
+        raise ValueError("Hydra DIRECT/WHITELIST coverage missing after PRIVATE/block policy")
     final_iv = {v: intervals(final, v) for v in (4, 6)}
     final_private = set(collapse(private))
 
@@ -694,7 +725,7 @@ def main():
 
     # Source contribution: address-space union per source, not additive totals.
     metrics_rows = []
-    for source_id, networks in [("rir-RU",rir["RU"]),("rir-BY",rir["BY"]),("rir-KZ",rir["KZ"]),("corporate-company-asn-origins",company_prefixes)] + list(service_sources.items()):
+    for source_id, networks in [("rir-RU",rir["RU"]),("rir-BY",rir["BY"]),("rir-KZ",rir["KZ"]),("corporate-company-asn-origins",company_prefixes)] + list(service_sources.items()) + list(hydra_sources.items()):
         row = {"source_id":source_id,"unique_cidrs":len(networks)}
         for v in (4, 6):
             src_iv = intervals(networks, v)
@@ -875,6 +906,12 @@ def main():
         f"RIR rows with registry/status provenance: {rir_rows}",
         "RIR registration is resource-holder evidence, not physical geolocation or proof of current BGP reachability.",
         "",
+        "HYDRA ROUTING-INTENT COVERAGE",
+        f"Hydra DIRECT CIDRs: {len(hydra_sources['hydra-direct'])}",
+        f"Hydra WHITELIST CIDRs: {len(hydra_sources['hydra-whitelist'])}",
+        f"Hydra eligible after PRIVATE and v41 blocks: {addr_counts(hydra_expected)}",
+        "Hydra is routing-intent, not a geolocation or corporate attribution; it does not override blocked/PRIVATE.",
+        "",
         "SERVICE DIRECT INPUTS",
         f"Kyoresuas Standard services represented in service catalog: {service_stats_count(source_stats)}",
         f"W1ZARDZ unique service/direct prefixes: {len(service_sources['w1zardz-service-direct'])}",
@@ -923,6 +960,13 @@ def main():
         "sources":SOURCE_REFS,
         "rir_inventory":{"rows":rir_rows,"countries":{c:len(rir[c]) for c in ("RU","BY","KZ")}},
         "service_sources":source_stats,
+        "hydra_routing_intent": {
+            "direct_cidrs": len(hydra_sources["hydra-direct"]),
+            "whitelist_cidrs": len(hydra_sources["hydra-whitelist"]),
+            "combined_eligible_address_space": addr_counts(hydra_expected),
+            "precedence": "PRIVATE > effective v41 blocked set > Hydra DIRECT/WHITELIST",
+            "input_sha256": sha256(args.hydra.read_bytes()),
+        },
         "corporate_company_asn_prefixes":{
             "unique_prefixes":len(company_prefixes),
             "address_space":addr_counts(company_prefixes),
@@ -985,10 +1029,12 @@ def main():
             "ru_verified_service_exact_and_resolver_protected":True,
             "private_precedence_over_all_exceptions":True,
             "ipsum_24_auto_carved":False,
+            "hydra_direct_whitelist_added_without_block_exemption":True,
             "candidate_status":"REVIEW",
         },
         "input_sha256":{
             "base_v37_geoip":sha256(args.base.read_bytes()),
+            "hydra_geoip":sha256(args.hydra.read_bytes()),
             "regional_rir_inventory":sha256(args.rir.read_bytes()),
             "kyoresuas_standard_ipv4":sha256(args.kyoresuas_v4.read_bytes()),
             "kyoresuas_standard_ipv6":sha256(args.kyoresuas_v6.read_bytes()),
