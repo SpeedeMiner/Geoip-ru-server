@@ -49,7 +49,7 @@ class ReleaseGateTests(unittest.TestCase):
             self.assertEqual(fields["addresses"], 1)
             self.assertEqual(fields["review_cidrs"], [str(entry)])
             self.assertEqual(fields["review_cidrs_sha256"],
-                             hashlib.sha256((str(entry) + "\\n").encode("ascii")).hexdigest())
+                             hashlib.sha256((str(entry) + "\n").encode("ascii")).hexdigest())
             self.assertIn(f"OBSERVED_HARD_DIRECT CORE_CORPORATE {entry}",
                           format_quality_section(result))
             return fields["review_cidrs_sha256"]
