@@ -18,7 +18,6 @@ on:
       - "docs/GEOIP_RU_V41_POLICY.md"
       - "docs/GEOIP_RU_V41_SOURCE_REGISTRY.tsv"
       - "docs/V41_PUBLIC_RKN_SOURCE_CROSSCHECK.md"
-      - "docs/V41_EXECUTION_JOURNAL.md"
       - "geoip_RU_company_asns.txt"
       - ".github/scripts/build_v39_overlay.py"
       - ".github/scripts/build_company_asn_prefixes.py"
