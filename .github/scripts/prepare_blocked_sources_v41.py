@@ -104,6 +104,9 @@ def main() -> int:
     parser.add_argument("--ip-list", type=Path, required=True)
     parser.add_argument("--ipresolve", type=Path, required=True)
     parser.add_argument("--baseline", type=Path, required=True)
+    parser.add_argument("--historical-ip-list", type=Path)
+    parser.add_argument("--historical-ipresolve", type=Path)
+    parser.add_argument("--historical-subnet", type=Path)
     parser.add_argument("--subnet", type=Path, required=True)
     parser.add_argument("--community", type=Path, required=True)
     parser.add_argument("--refilter", type=Path, required=True)
@@ -115,6 +118,9 @@ def main() -> int:
     parser.add_argument("--checksums", type=Path, required=True)
     args = parser.parse_args()
 
+    historical_paths = (args.historical_ip_list, args.historical_ipresolve, args.historical_subnet)
+    if any(historical_paths) and not all(historical_paths):
+        raise SystemExit("Historical baseline classification needs all three pinned v38 feed snapshots")
     source_paths = {
         "antifilter-ip.lst": args.ip_list,
         "antifilter-ipresolve.lst": args.ipresolve,
@@ -123,6 +129,12 @@ def main() -> int:
         "re-filter-ipsum.lst": args.refilter,
         "v38-approved-baseline": args.baseline,
     }
+    if all(historical_paths):
+        source_paths.update({
+            "v38-historical-ip.lst": args.historical_ip_list,
+            "v38-historical-ipresolve.lst": args.historical_ipresolve,
+            "v38-historical-subnet.lst": args.historical_subnet,
+        })
     accepted: dict[str, set[str]] = defaultdict(set)
     exact_accepted: dict[str, set[str]] = defaultdict(set)
     resolved_accepted: dict[str, set[str]] = defaultdict(set)
@@ -130,6 +142,39 @@ def main() -> int:
     rows: dict[str, dict[str, int]] = {}
     feed_status: dict[str, str] = {source: "AVAILABLE" for source in source_paths}
     telegram_set = set(TELEGRAM_PREFIXES)
+    historical_exact_hosts: set[str] = set()
+    historical_resolver_hosts: set[str] = set()
+    historical_hard_subnets: list[ipaddress._BaseNetwork] = []
+    if all(historical_paths):
+        historic_specs = (
+            ("v38-historical-ip.lst", "exact"),
+            ("v38-historical-ipresolve.lst", "resolver"),
+            ("v38-historical-subnet.lst", "subnet"),
+        )
+        for hist_source, role in historic_specs:
+            hist_nets, hist_lines, hist_invalid = read_feed(source_paths[hist_source], hist_source)
+            hist_unique = set(hist_nets)
+            if hist_lines == 0 or not hist_unique or hist_invalid > max(50, int(hist_lines * 0.005)):
+                raise SystemExit(f"Invalid pinned historical v38 feed {hist_source}: lines={hist_lines}, valid={len(hist_unique)}, invalid={hist_invalid}")
+            for value in hist_unique:
+                net = ipaddress.ip_network(value, strict=True)
+                if role in ("exact", "resolver") and not is_host(net):
+                    raise SystemExit(f"Non-host prefix in historical v38 {hist_source}: {value}")
+                if role == "subnet":
+                    if not subnet_auto_approved(net):
+                        continue  # RKN-wide subnet candidates were review-only in v38.
+                    historical_hard_subnets.append(net)
+                elif role == "exact":
+                    historical_exact_hosts.add(value)
+                else:
+                    historical_resolver_hosts.add(value)
+            rows[hist_source] = {
+                "data_lines":hist_lines, "valid_unique":len(hist_unique),
+                "approved":len(hist_unique), "review":0, "invalid":hist_invalid,
+            }
+        if len(historical_resolver_hosts) < 1000 or len(historical_exact_hosts) < 1000:
+            raise SystemExit("Pinned historical v38 host-IP snapshots unexpectedly small")
+        print(f"::notice::Historical v38 source evidence: hard-IP={len(historical_exact_hosts)} resolver-IP={len(historical_resolver_hosts)} bounded-subnets={len(historical_hard_subnets)}")
 
     # Carry forward every v38-approved prefix from an immutable, checksum-pinned
     # release snapshot. Reject anything wider than the existing explicit policy.
@@ -144,9 +189,18 @@ def main() -> int:
         net = ipaddress.ip_network(value, strict=True)
         if is_host(net) or subnet_auto_approved(net) or value in telegram_set:
             accepted[value].add(source)
-            # v38 combined baseline has no source-level provenance per CIDR.
-            # Conservatively retain it as a hard/exact block for every network class.
-            exact_accepted[value].add("v38-baseline-unclassified")
+            # Reconstruct only demonstrable historical source classes from the
+            # checksum-pinned v38 raw feed assets. Unknown entries remain hard.
+            from_historic_resolver = value in historical_resolver_hosts
+            from_historic_exact = value in historical_exact_hosts
+            inside_historic_hard_subnet = any(
+                net.version == subnet.version and net.subnet_of(subnet)
+                for subnet in historical_hard_subnets
+            )
+            if from_historic_resolver and not from_historic_exact and not inside_historic_hard_subnet:
+                resolved_accepted[value].add("v38-historical-ipresolve-only")
+            else:
+                exact_accepted[value].add("v38-baseline-hard-or-unclassified")
         else:
             raise SystemExit(f"unsafe broad prefix in pinned v38 approved baseline: {value}")
     rows[source] = {"data_lines": lines, "valid_unique": len(unique), "approved": len(unique),
@@ -254,12 +308,12 @@ def main() -> int:
     )
     write_prefix_set(
         args.exact_approved,
-        "# v41 exact/hard blocks: current ip.lst, bounded subnet.lst, Telegram, and all unclassified v38 baseline rows.",
+        "# v41 exact/hard blocks: current ip.lst, bounded subnet.lst, Telegram, and pinned legacy blocks without resolver-only provenance.",
         exact_accepted,
     )
     write_prefix_set(
         args.resolved_approved,
-        "# v41 resolver-derived candidates: current Antifilter ipresolve.lst only.",
+        "# v41 resolver-derived candidates: current ipresolve plus historical v38 resolver-only addresses supported by pinned source evidence.",
         resolved_accepted,
     )
     args.review.write_text(
