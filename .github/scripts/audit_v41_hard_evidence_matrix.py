@@ -25,7 +25,7 @@ def read_ip_hosts(path):
             raise ValueError(f"Only IPv4 hard exception hosts expected: {net}")
         if net.num_addresses > 65536:
             raise ValueError("Unusually broad override mask; review before enumeration")
-        hosts.update(net.hosts() if net.prefixlen < 31 else net)
+        hosts.update(net)
     return hosts
 
 def build_matrix(class_hosts, hard_rows, service_sources, core, shared):
