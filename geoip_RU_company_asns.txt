@@ -1,8 +1,5 @@
-# Curated Russian-company and confirmed affiliate ASN allowlist for unified DIRECT RU+BY+KZ v39.
-# Format: ASN<TAB>COMPANY_GROUP<TAB>REGISTERED_ENTITY_OR_NOTE<TAB>EVIDENCE_URL
-# All BGP prefixes originated by these ASNs are added and protected from RKN block carves even when ipverse countryCode is not RU.
-# Only listed origin ASNs are included; upstreams/peers are NOT recursively imported. AS208398 is a transit/upstream and is intentionally not imported wholesale.
-# Prefix source is ipverse aggregated.json, an observation dataset covering up to 90 days.
+# v41 selected corporate ASN registry: reviewed v39 set plus validated v40 additions.
+# ASN\tGROUP\tENTITY\tEVIDENCE
 AS13238	Yandex	YANDEX LLC	https://iamroot.tech/asndatabase/?search=AS13238
 AS200350	Yandex	Yandex.Cloud LLC	https://wbdt.ru/AS200350
 AS202611	Yandex	Yandex.Telecom LLC	https://bgp.he.net/AS202611
@@ -45,3 +42,10 @@ AS15774	TransTelecom	TTK-Svyaz LLC	https://iptrust.co/tools/asn/country/RU
 AS9049	ER-Telecom	JSC ER-Telecom Holding	https://iptrust.co/tools/asn/country/RU
 AS48858	ER-Telecom	JSC ER-Telecom Holding	https://bgp.he.net/country/RU
 AS25513	MGTS	PJSC Moscow City Telephone Network	https://ipcheckerpro.com/asn?cc=RU
+AS43399	T-Bank	TBANK JSC	https://bgp.tools/as/43399
+AS15632	Alfa-Bank	JSC Alfa-Bank	https://bgp.tools/as/15632
+AS59840	Alfa-Bank	JSC Alfa-Bank (Baltbank legacy ASN; one current IPv4 route)	https://bgp.tools/as/59840
+AS41551	VTB	VTB Bank (Public Joint-Stock Company)	https://bgp.tools/as/41551
+AS201012	Avito	KEH eCommerce LLC (Avito)	https://bgp.tools/as/201012
+AS197482	2GIS	DoubleGIS LLC	https://bgp.tools/as/197482
+AS49675	SKB Kontur	SKB Kontur Production JSC	https://www.peeringdb.com/asn/49675
