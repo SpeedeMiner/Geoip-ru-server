@@ -37,3 +37,16 @@ Append-only log for the v39 production build initiative. Record each meaningful 
 3. Close PRs #6, #7, #8 and #10 with explicit reasons and pointers to this consolidated v39 process. Do not touch PR #5.
 4. After successful candidate validation and review, publish v39 via main-only workflow, then verify tag, release assets, release branch, hashes and CDN purge.
 5. Append exact commit/run/artifact IDs, output counts and SHA-256. Keep v38 untouched as rollback baseline until v39 release is verified.
+
+
+## 2026-11-12 12:27 +0500 — CI recovery: pinned v38 blocked fallback
+
+- v39 PR #11 candidate run #1 `43173770372` stopped in source download because Antifilter `ipresolve.lst` returned an empty body. The workflow correctly failed closed; it did not treat that empty response as a clean/zero blocklist.
+- Confirmed the immutable v38 approved combined block-set sidecar at release commit `3033248ea54cb298bafded25ddcd2805d5f0e7ac`: SHA-256 `df909b12b985b23080075821cedc5e2f73b7b1f89abcd9950293b400ce1e4a5d`.
+- Added v39-only `.github/scripts/prepare_blocked_sources_v39.py`: it imports the full pinned v38 approved block set, then unions available current ip.lst and bounded subnet.lst entries. If ipresolve is empty/unavailable, its prior approved rows remain carried by the baseline and the status is explicitly `EMPTY_FALLBACK_V38_PINNED_BASELINE`. This is not a zero-block inference.
+- Baseline rows are checked against the exact previous safety thresholds (host /32,/128; bounded subnet /16 IPv4,/112 IPv6; explicit Telegram prefixes). Any unsafe broad prefix in the pinned baseline fails closed.
+- Workflow now downloads the baseline from the exact v38 release commit, verifies its SHA-256, records it in source provenance/checksums/artifacts and only treats ipresolve as optionally unavailable. The old v38 parser/workflow code is unchanged; v38 workflow has been set to manual-only with publication steps disabled.
+- First blocked-source baseline implementation CI run #4 `43174865988` and #5 `43175021426` passed the downloads, extraction and v37 build, but one test fixture failed because the fabricated baseline range `192.0.2.1+` overlapped the test's community-only address `192.0.2.123`. This was a test-fixture collision, not a policy/code failure.
+- Corrected the fixture to use `192.0.10.1+`; run #6 `43175209879` is testing the current branch HEAD `d7b1cc7f6c6b5c034650822801f634266758dec0`. Do not accept earlier run conclusions as validation of the corrected fixture.
+- Production refs are unchanged: main `6c856d5c4b16ff6a77ad507572a7017a4cfe2532`, release `3033248ea54cb298bafded25ddcd2805d5f0e7ac`.
+
