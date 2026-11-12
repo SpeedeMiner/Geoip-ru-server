@@ -93,3 +93,23 @@ No change to production binaries, main, release, tags, or PR #5 was made by this
 - **Policy decision postponed:** verify specific current hard block evidence and service use before changing any of the 59 exact host destinations. In particular, avoid blindly overriding narrow /`32` service exceptions while evaluating broad shared-hosting masks.
 
 The PR is Draft and this is evidence gathering only; no `main`, `release`, binary, tag or PR #5 mutation.
+
+## All 153 hard exceptions: address-specific provenance matrix (2026-11-12)
+
+Source verification: post-release audit [43282279103](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43282279103) **SUCCESS**, artifact `13973212255`, source SHA-256 checked against published v41.
+
+New `.github/scripts/audit_v41_hard_evidence_matrix.py` and tests generate `all_153_hard_exceptions_evidence_matrix.tsv` and `all_hard_evidence_matrix_summary.json` in both read-only audit workflows. The 153 exact addresses are partitioned without double-counting across CORE=19, SHARED=59, OTHER=75; every address has original hard-source provenance.
+
+| Class | Total | Current ip.lst | Current subnet.lst | v38 legacy | Exact service /32 evidence | Broad service /24 or wider |
+|---|---:|---:|---:|---:|---:|---:|
+| CORE | 19 | 19 | 0 | 18 | 0 | 18 |
+| SHARED | 59 | 53 | 0 | 57 | 10 | 50 |
+| OTHER | 75 | 65 | 6 | 69 | 33 | 42 |
+
+The review matrix uses **P1=118** (current ip.lst on SHARED/OTHER), **P2=19** (current ip.lst on CORE), **P3=6** (current subnet.lst outside ip.lst), **P4=10** (no current ip.lst/subnet evidence). The P4 group includes nine historical-only addresses and one `runetfreedom-static-telegram` plus historical hard entry `185.76.151.1/32`; P4 **must not be misinterpreted as proof of unblocking**.
+
+Six P3 hosts (all OTHER) are `185.60.216.1`, `185.60.217.1`, `185.60.218.1`, `185.60.219.1`, `185.89.217.1`, `185.104.45.1`; each overlaps HXEHEX service evidence.
+
+The matrix deliberately records `current_regulatory_block_confirmed=NO` and `service_host_ownership_confirmed=NO` for all 153, since direct regulatory evidence and host-level first-party ownership were **not** independently established. It produces routing action `NONE_AUDIT_ONLY`, never modifies the published database or effective blocks. Snapshot baseline warnings remain observational, not approvals.
+
+Detailed session report: `GeoIP_v41_PR16_Hard_Exceptions_Per_IP_Quality_20261112_43282279103.md`. Full CIDR + TSV + JSON are bundled in the CI artifact. No production merge or PR #5 changes.
