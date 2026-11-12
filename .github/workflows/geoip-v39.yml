@@ -96,6 +96,7 @@ jobs:
       BLOCKED_COMMUNITY_INPUT: antifilter-community.lst
       BLOCKED_REFILTER_INPUT: refilter-ipsum.lst
       BLOCKED_IPSUM_INPUT: antifilter-ipsum.lst
+      BLOCKED_BASELINE_INPUT: geoip_RU_v38_approved_blocked_baseline.txt
       BLOCKED_REVIEW_INPUT: geoip_RU_blocked_review_candidates.tsv
       BLOCKED_STATS_INPUT: geoip_RU_blocked_source_stats.txt
       BLOCKED_CHECKSUMS_INPUT: geoip_RU_blocked_sources.sha256
@@ -820,8 +821,14 @@ jobs:
           # ip.lst and ipresolve.lst are host-IP lists; subnet.lst is explicit RKN-derived CIDR.
           download_file "ANTIFILTER EXACT BLOCKED IP LIST" "$BLOCKED_IP_RAW_INPUT" \
             "https://antifilter.download/list/ip.lst"
-          download_file "ANTIFILTER IPRESOLVE LIST" "$BLOCKED_IPRESOLVE_INPUT" \
+          download_optional_file "ANTIFILTER IPRESOLVE LIST" "$BLOCKED_IPRESOLVE_INPUT" \
             "https://antifilter.download/list/ipresolve.lst"
+
+          # Preserve the previously approved blocked-set if ipresolve is empty.
+          # The baseline is pinned to the exact v38 release commit and SHA-256.
+          download_file "PINNED V38 APPROVED BLOCKED BASELINE" "$BLOCKED_BASELINE_INPUT" \
+            "https://raw.githubusercontent.com/SpeedeMiner/Geoip-ru-server/3033248ea54cb298bafded25ddcd2805d5f0e7ac/geoip_RU_v38_blocked_ip_exclusions.txt"
+          echo "df909b12b985b23080075821cedc5e2f73b7b1f89abcd9950293b400ce1e4a5d  $BLOCKED_BASELINE_INPUT" | sha256sum -c -
           download_file "ANTIFILTER SUBNET LIST" "$BLOCKED_SUBNET_INPUT" \
             "https://antifilter.download/list/subnet.lst"
           # Officially described by the aggregator as /24 summarization of individual
@@ -840,9 +847,10 @@ jobs:
           sha256sum "$INPUT_PROVENANCE" > "$INPUT_PROVENANCE_SHA"
           sha256sum -c "$INPUT_PROVENANCE_SHA"
 
-          python3 .github/scripts/prepare_blocked_sources.py \
+          python3 .github/scripts/prepare_blocked_sources_v39.py \
             --ip-list "$BLOCKED_IP_RAW_INPUT" \
             --ipresolve "$BLOCKED_IPRESOLVE_INPUT" \
+            --baseline "$BLOCKED_BASELINE_INPUT" \
             --subnet "$BLOCKED_SUBNET_INPUT" \
             --community "$BLOCKED_COMMUNITY_INPUT" \
             --refilter "$BLOCKED_REFILTER_INPUT" \
@@ -855,7 +863,7 @@ jobs:
           for file in "$HYDRA_INPUT" "$GRIMBIRD_INPUT" "$DIGNE_INPUT" "$DAVOYAN_INPUT" \
                       "$GOLUKON_INPUT" "$V2FLY_INPUT" "$V2FLY_SHA_INPUT" \
                       "$LOYALSOLDIER_RU_INPUT" "$LOYALSOLDIER_BY_INPUT" "$LOYALSOLDIER_PRIVATE_INPUT" \
-                      "$BY_KZ_ASN_REGISTRY" "$BLOCKED_IP_INPUT" "$BLOCKED_IP_RAW_INPUT" \
+                      "$BY_KZ_ASN_REGISTRY" "$BLOCKED_IP_INPUT" "$BLOCKED_IP_RAW_INPUT" "$BLOCKED_BASELINE_INPUT" \
                       "$BLOCKED_IPRESOLVE_INPUT" "$BLOCKED_SUBNET_INPUT" "$BLOCKED_IPSUM_INPUT" "$BLOCKED_REVIEW_INPUT" \
                       "$BLOCKED_STATS_INPUT" "$BLOCKED_CHECKSUMS_INPUT" "$HXEHEX_INPUT" "$W1ZARDZ_INPUT" \
                       "$KY_STANDARD_V4_INPUT" "$KY_STANDARD_V6_INPUT" "$KY_SERVICES_INPUT" "$HXEHEX_IP_INPUT" "$ESCAPINGWORM_OPERATOR_INPUT" \
@@ -3199,8 +3207,11 @@ jobs:
                   if not byte_count.isdigit() or int(byte_count) <= 0:
                       raise SystemExit(f"Invalid downloaded-source byte count: {row}")
               elif status == "unavailable":
-                  if source_name not in ("ANTIFILTER COMMUNITY CANDIDATES", "RE-FILTER CANDIDATES") or digest != "-" or byte_count != "0":
+                  allowed_unavailable = ("ANTIFILTER COMMUNITY CANDIDATES", "RE-FILTER CANDIDATES", "ANTIFILTER IPRESOLVE LIST")
+                  if source_name not in allowed_unavailable or digest != "-" or byte_count != "0":
                       raise SystemExit(f"Unexpected unavailable input in provenance manifest: {row}")
+                  if source_name == "ANTIFILTER IPRESOLVE LIST" and "geoip_RU_v38_approved_blocked_baseline.txt" not in seen_input_files:
+                      raise SystemExit("ipresolve unavailable but pinned v38 blocked baseline is missing")
               else:
                   raise SystemExit(f"Unknown input provenance status: {status}")
           expected_input_files = {
@@ -3213,7 +3224,7 @@ jobs:
               "delegated-afrinic-latest", "delegated-apnic-latest", "delegated-arin-extended-latest",
               "delegated-lacnic-latest", "delegated-ripencc-latest", "iana-ipv4-special-registry.csv",
               "iana-ipv6-special-registry.csv", "as-ip-blocks.tar.gz",
-              "antifilter-ip.lst", "antifilter-ipresolve.lst", "antifilter-subnet.lst", "antifilter-ipsum.lst",
+              "antifilter-ip.lst", "antifilter-ipresolve.lst", "geoip_RU_v38_approved_blocked_baseline.txt", "antifilter-subnet.lst", "antifilter-ipsum.lst",
               "antifilter-community.lst", "refilter-ipsum.lst",
           }
           missing_input_files = sorted(expected_input_files - seen_input_files)
@@ -3255,12 +3266,12 @@ jobs:
               raise SystemExit("Blocked review-only candidate file has an unexpected schema")
           blocked_stats_text = open(blocked_stats, encoding="utf-8").read()
           for marker in ("antifilter-ip.lst", "antifilter-ipresolve.lst", "antifilter-subnet.lst",
-                         "community-antifilter-community.lst", "re-filter-ipsum.lst", "runetfreedom-static-telegram"):
+                         "community-antifilter-community.lst", "re-filter-ipsum.lst", "runetfreedom-static-telegram", "v38-approved-baseline"):
               if marker not in blocked_stats_text:
                   raise SystemExit(f"Blocked source statistics are missing source: {marker}")
           checksum_text = open(blocked_checksums, encoding="utf-8").read()
           for filename in ("antifilter-ip.lst", "antifilter-ipresolve.lst", "antifilter-subnet.lst",
-                           "antifilter-community.lst", "refilter-ipsum.lst"):
+                           "antifilter-community.lst", "refilter-ipsum.lst", "geoip_RU_v38_approved_blocked_baseline.txt"):
               if filename not in checksum_text:
                   raise SystemExit(f"Blocked-source checksum manifest is missing snapshot: {filename}")
 
@@ -3546,6 +3557,7 @@ jobs:
             escapingworm-operator-cidr.txt
             antifilter-ip.lst
             antifilter-ipresolve.lst
+            geoip_RU_v38_approved_blocked_baseline.txt
             antifilter-subnet.lst
             antifilter-ipsum.lst
             geoip_RU_blocked_ip_exclusions.txt
@@ -3598,6 +3610,7 @@ jobs:
             geoip_RU_input_provenance.tsv.sha256sum
             antifilter-ip.lst
             antifilter-ipresolve.lst
+            geoip_RU_v38_approved_blocked_baseline.txt
             antifilter-subnet.lst
             antifilter-ipsum.lst
             antifilter-community.lst
@@ -3666,7 +3679,7 @@ jobs:
             "$V39_OUTPUT_FILE" "$OUTPUT_SHA_FILE" "$CATEGORY_FILE" "$SOURCE_FILE" \
             "$SOURCE_COUNTS" "$CATEGORY_AUDIT" "$V39_QUALITY_REPORT" "$QUALITY_REPORT" "$V39_METRICS" "$V39_PREFIX_PROVENANCE" "$V39_BLOCKED_PROVENANCE" "$V39_BLOCKED_FILE" "$V39_BLOCKED_SHA" "$V39_MANIFEST" "$PROVENANCE_FILE" "$ASN_MANIFEST" "$COMPANY_ASN_MANIFEST" "$COMPANY_ASN_PREFIXES" "$COMPANY_ASN_REGISTRY" "$ASN_STATS" \
             "$RU_PREFIX_INPUT" "$RU_ASN_REGISTRY" "$BY_KZ_ASN_REGISTRY" "$RIR_PREFIX_INPUT" "$RIR_STATS" "$RIR_RUKZBY_PREFIX_INPUT" "$RIR_RUKZBY_STATS" "$GLOBAL_BGP_PREFIX_INPUT" \
-            "$BLOCKED_IP_INPUT" "$BLOCKED_IP_SHA_FILE" "$BLOCKED_REVIEW_INPUT" "$BLOCKED_STATS_INPUT" "$BLOCKED_CHECKSUMS_INPUT" "$INPUT_PROVENANCE" "$INPUT_PROVENANCE_SHA" "$KY_STANDARD_V4_INPUT" "$KY_STANDARD_V6_INPUT" "$KY_SERVICES_INPUT" "$W1ZARDZ_INPUT" "$HXEHEX_IP_INPUT" "$ESCAPINGWORM_OPERATOR_INPUT" "$BLOCKED_IPSUM_INPUT"; do
+            "$BLOCKED_IP_INPUT" "$BLOCKED_IP_SHA_FILE" "$BLOCKED_BASELINE_INPUT" "$BLOCKED_REVIEW_INPUT" "$BLOCKED_STATS_INPUT" "$BLOCKED_CHECKSUMS_INPUT" "$INPUT_PROVENANCE" "$INPUT_PROVENANCE_SHA" "$KY_STANDARD_V4_INPUT" "$KY_STANDARD_V6_INPUT" "$KY_SERVICES_INPUT" "$W1ZARDZ_INPUT" "$HXEHEX_IP_INPUT" "$ESCAPINGWORM_OPERATOR_INPUT" "$BLOCKED_IPSUM_INPUT"; do
             cp "$file" /tmp/geoip-client-release/"$(basename "$file")"
           done
           cd /tmp/geoip-client-release
