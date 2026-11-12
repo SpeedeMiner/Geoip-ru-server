@@ -97,7 +97,7 @@ jobs:
           test -s audit-output/nine_legacy_hard_service_overrides.tsv
           test -s audit-output/nine_override_summary.json
           cat audit-output/nine_override_summary.json
-      - name: Warn on newly introduced SHARED broad-service hard exceptions
+      - name: Warn on untracked SHARED broad-service hard exceptions
         shell: bash
         run: |
           set -euo pipefail
