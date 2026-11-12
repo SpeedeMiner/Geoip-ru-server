@@ -1,0 +1,127 @@
+name: Exact GeoIP v34 Light vs v41 Server interval audit
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - ".github/workflows/compare-v34-v41.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  exact-coverage:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Check out audit workflow
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - name: Download pinned releases and compare exact IPv4/IPv6 intervals
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import hashlib,ipaddress,json,pathlib,urllib.request,time
+          O=pathlib.Path("audit-v41-v34");O.mkdir(exist_ok=True)
+          U={"v34":("SpeedeMiner/Geoip-ru-light","latest-geoip-client-v34","geoip_RU.dat"),"v41":("SpeedeMiner/Geoip-ru-server","latest-geoip-client-v41","geoip_RU.dat"),"blocked":("SpeedeMiner/Geoip-ru-server","latest-geoip-client-v41","geoip_RU_v41_blocked_ip_exclusions.txt"),"hydra":("SpeedeMiner/Geoip-ru-server","latest-geoip-client-v41","hydra-geoip.dat")}
+          H={"v34":"33c91a0b703c03580810af807d0062c5179c55e2c7ed4a1cc34a79c63e99a6dd","v41":"534d4d80caf45df54566105d8c1930e0aaa293718891f46537256da63b56bf1f"}
+          D={};info={}
+          for key,(repo,tag,name) in U.items():
+            error=None
+            for url in [f"https://github.com/{repo}/releases/download/{tag}/{name}",f"https://raw.githubusercontent.com/{repo}/release/{name}"]:
+              try:
+                with urllib.request.urlopen(urllib.request.Request(url,headers={"User-Agent":"geoip-comparison"}),timeout=60) as r: data=r.read()
+                if not data: raise ValueError("empty response")
+                break
+              except Exception as exc: error=exc;time.sleep(2)
+            else: raise RuntimeError(f"{key}: {error}")
+            digest=hashlib.sha256(data).hexdigest()
+            if key in H and digest!=H[key]: raise ValueError(f"{key} hash changed: {digest}")
+            D[key]=data;info[key]={"bytes":len(data),"sha256":digest,"url":url};print(key,info[key],flush=True)
+          def varint(b,p):
+            n=s=0
+            while p<len(b):
+              c=b[p];p+=1;n|=(c&127)<<s
+              if c<128:return n,p
+              s+=7
+            raise ValueError("truncated varint")
+          def fields(b):
+            p=0
+            while p<len(b):
+              tag,p=varint(b,p);field,w=tag>>3,tag&7
+              if w==0:v,p=varint(b,p)
+              elif w==2:
+                length,p=varint(b,p);v=b[p:p+length];p+=length
+                if len(v)!=length:raise ValueError("truncated")
+              else:raise ValueError("unexpected wire "+str(w))
+              yield field,w,v
+          def geo(b):
+            out={}
+            for tag,w,v in fields(b):
+              if tag!=1 or w!=2:continue
+              category=None;cidrs=[]
+              for t,w,v in fields(v):
+                if t==1 and w==2:category=v.decode("ascii").upper()
+                if t==2 and w==2:
+                  addr=mask=None
+                  for q,w,x in fields(v):
+                    if q==1 and w==2:addr=x
+                    if q==2 and w==0:mask=x
+                  if addr is not None and mask is not None:cidrs.append(ipaddress.ip_network((ipaddress.ip_address(addr),mask),strict=False))
+              if category:out.setdefault(category,[]).extend(cidrs)
+            return out
+          def norm(nets,fam):
+            pairs=sorted((int(x.network_address),int(x.broadcast_address)) for x in nets if x.version==fam)
+            out=[]
+            for a,b in pairs:
+              if out and a<=out[-1][1]+1:out[-1]=(out[-1][0],max(out[-1][1],b))
+              else:out.append((a,b))
+            return out
+          def diff(a,b):
+            out=[];j=0
+            for lo,hi in a:
+              pos=lo
+              while j<len(b) and b[j][1]<pos:j+=1
+              k=j
+              while k<len(b) and b[k][0]<=hi:
+                x,y=b[k]
+                if x>pos:out.append((pos,min(x-1,hi)))
+                pos=max(pos,y+1)
+                if pos>hi:break
+                k+=1
+              if pos<=hi:out.append((pos,hi))
+            return out
+          def count(a):return sum(hi-lo+1 for lo,hi in a)
+          def overlap(a,b):return count(a)-count(diff(a,b))
+          def save(a,fam,name):
+            c=ipaddress.IPv4Address if fam==4 else ipaddress.IPv6Address
+            with (O/f"ipv{fam}_{name}.txt").open("w") as o:
+              for lo,hi in a:
+                for net in ipaddress.summarize_address_range(c(lo),c(hi)):o.write(str(net)+"\n")
+          A=geo(D["v34"]);B=geo(D["v41"]);HD=geo(D["hydra"])
+          assert set(A)==set(B)=={"RU","PRIVATE"},(list(A),list(B))
+          blocked=[]
+          for row in D["blocked"].decode("utf-8-sig").splitlines():
+            row=row.split("#",1)[0].strip()
+            if row:blocked.append(ipaddress.ip_network(row,strict=True))
+          output={"inputs":info,"category_cidrs":{"v34":{k:len(v) for k,v in A.items()},"v41":{k:len(v) for k,v in B.items()}},"families":{}}
+          for fam in [4,6]:
+            old=norm(A["RU"],fam);new=norm(B["RU"],fam);old_private=norm(A["PRIVATE"],fam);new_private=norm(B["PRIVATE"],fam)
+            added=diff(new,old);lost=diff(old,new);bl=norm(blocked,fam);hyd=norm(HD["DIRECT"]+HD["WHITELIST"],fam)
+            assert count(old)+count(added)-count(lost)==count(new)
+            assert not diff(old_private,new_private) and not diff(new_private,old_private)
+            save(added,fam,"v41_only");save(lost,fam,"v34_only")
+            stats={"v34_addresses":count(old),"v41_addresses":count(new),"intersection_addresses":count(old)-count(lost),"v41_only_addresses":count(added),"v34_only_addresses":count(lost),"net_delta_addresses":count(new)-count(old),"v34_retained_percent":round(100*(count(old)-count(lost))/count(old),6),"v41_only_intervals":len(added),"v34_only_intervals":len(lost),"v34_only_in_v41_blocked":overlap(lost,bl),"v34_only_not_in_v41_blocked":count(lost)-overlap(lost,bl),"v41_only_in_hydra":overlap(added,hyd),"v41_only_outside_hydra":count(added)-overlap(added,hyd),"v41_only_in_v41_blocked":overlap(added,bl),"private_addresses":count(old_private)}
+            output["families"][f"ipv{fam}"]={k:str(v) if isinstance(v,int) and v>2**53 else v for k,v in stats.items()}
+            print(f"IPv{fam}:",json.dumps(output["families"][f"ipv{fam}"],ensure_ascii=False),flush=True)
+          (O/"summary.json").write_text(json.dumps(output,ensure_ascii=False,indent=2)+"\n")
+          print("AUDIT_OK")
+          PY
+      - name: Upload exact comparison report and address lists
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: geoip-v34-light-v41-server-exact-interval-audit
+          path: audit-v41-v34/
+          if-no-files-found: error
+          retention-days: 30
