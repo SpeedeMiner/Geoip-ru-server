@@ -142,13 +142,13 @@ class BlockedSourcePolicyTests(unittest.TestCase):
             root = Path(directory)
             start = int(ipaddress.ip_address("203.0.114.1"))
             resolver_rows = [str(ipaddress.ip_address(start + i)) for i in range(1005)]
-            (root / "ipresolve.lst").write_text("\\n".join(resolver_rows) + "\\n", encoding="utf-8")
+            (root / "ipresolve.lst").write_text("\n".join(resolver_rows) + "\n", encoding="utf-8")
             base_start = int(ipaddress.ip_address("192.0.20.1"))
             baseline_rows = [str(ipaddress.ip_address(base_start + i)) for i in range(1005)]
-            (root / "baseline.txt").write_text("\\n".join(baseline_rows) + "\\n", encoding="utf-8")
+            (root / "baseline.txt").write_text("\n".join(baseline_rows) + "\n", encoding="utf-8")
             exact_rows = [str(ipaddress.ip_address(int(ipaddress.ip_address("198.51.20.1")) + i)) for i in range(1005)]
-            (root / "ip.lst").write_text("\\n".join(exact_rows) + "\\n", encoding="utf-8")
-            (root / "subnet.lst").write_text("198.51.30.0/24\\n", encoding="utf-8")
+            (root / "ip.lst").write_text("\n".join(exact_rows) + "\n", encoding="utf-8")
+            (root / "subnet.lst").write_text("198.51.30.0/24\n", encoding="utf-8")
             for name in ("community.lst", "ipsum.lst"):
                 (root / name).write_text("", encoding="utf-8")
             argv = [
