@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Prepare v40 blocked exclusions with an immutable v38 fallback snapshot.
+"""Prepare v41 blocked exclusions with an immutable v38 fallback snapshot.
 
 The approved v38 combined exclusion set is the fail-safe baseline. New ip.lst and
 bounded subnet.lst entries are unioned into it. ipresolve.lst may be unavailable
@@ -249,17 +249,17 @@ def main() -> int:
 
     write_prefix_set(
         args.approved,
-        "# v40 approved blocked destinations: union of exact/legacy and current resolver candidates.",
+        "# v41 approved blocked destinations: union of exact/legacy and current resolver candidates.",
         accepted,
     )
     write_prefix_set(
         args.exact_approved,
-        "# v40 exact/hard blocks: current ip.lst, bounded subnet.lst, Telegram, and all unclassified v38 baseline rows.",
+        "# v41 exact/hard blocks: current ip.lst, bounded subnet.lst, Telegram, and all unclassified v38 baseline rows.",
         exact_accepted,
     )
     write_prefix_set(
         args.resolved_approved,
-        "# v40 resolver-derived candidates: current Antifilter ipresolve.lst only.",
+        "# v41 resolver-derived candidates: current Antifilter ipresolve.lst only.",
         resolved_accepted,
     )
     args.review.write_text(

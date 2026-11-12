@@ -1,7 +1,7 @@
 import ipaddress
 import unittest
 
-from build_v40_overlay import class_aware_effective_block_set
+from build_v41_overlay import class_aware_effective_block_set
 
 
 def nets(*values):

@@ -2,7 +2,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from build_company_asn_prefix_classes_v40 import build_company_prefix_classes
+from build_company_asn_prefix_classes_v41 import build_company_prefix_classes
 
 
 class CompanyASNPrefixClassTests(unittest.TestCase):

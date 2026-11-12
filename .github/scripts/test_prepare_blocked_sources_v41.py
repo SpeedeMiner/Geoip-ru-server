@@ -6,7 +6,7 @@ import unittest
 from pathlib import Path
 from unittest import mock
 
-from prepare_blocked_sources_v40 import TELEGRAM_PREFIXES, is_host, main, parse_line, subnet_auto_approved
+from prepare_blocked_sources_v41 import TELEGRAM_PREFIXES, is_host, main, parse_line, subnet_auto_approved
 
 
 class BlockedSourcePolicyTests(unittest.TestCase):
@@ -65,7 +65,7 @@ class BlockedSourcePolicyTests(unittest.TestCase):
             )
 
             argv = [
-                "prepare_blocked_sources_v40.py",
+                "prepare_blocked_sources_v41.py",
                 "--ip-list", str(paths["ip.lst"]),
                 "--ipresolve", str(paths["ipresolve.lst"]),
                 "--baseline", str(paths["baseline.txt"]),
@@ -119,7 +119,7 @@ class BlockedSourcePolicyTests(unittest.TestCase):
             for name in ("ip.lst", "ipresolve.lst", "subnet.lst", "community.lst", "ipsum.lst"):
                 (root / name).write_text("", encoding="utf-8")
             argv = [
-                "prepare_blocked_sources_v40.py",
+                "prepare_blocked_sources_v41.py",
                 "--ip-list", str(root / "ip.lst"),
                 "--ipresolve", str(root / "ipresolve.lst"),
                 "--baseline", str(baseline),
@@ -152,7 +152,7 @@ class BlockedSourcePolicyTests(unittest.TestCase):
             for name in ("community.lst", "ipsum.lst"):
                 (root / name).write_text("", encoding="utf-8")
             argv = [
-                "prepare_blocked_sources_v40.py",
+                "prepare_blocked_sources_v41.py",
                 "--ip-list", str(root / "ip.lst"),
                 "--ipresolve", str(root / "ipresolve.lst"),
                 "--baseline", str(root / "baseline.txt"),

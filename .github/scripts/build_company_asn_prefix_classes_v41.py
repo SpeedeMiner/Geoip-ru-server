@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Extract exact corporate and shared-infrastructure origin prefixes for GeoIP v40."""
+"""Extract exact corporate and shared-infrastructure origin prefixes for GeoIP v41."""
 from __future__ import annotations
 
 import argparse
@@ -92,7 +92,7 @@ def write_prefixes(path: Path, title: str, prefixes: dict[str, set[int]],
                    selected: Path, registry: Path, policy: Path) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("w", encoding="utf-8", newline="\n") as stream:
-        stream.write(f"# v40 {title}\n")
+        stream.write(f"# v41 {title}\n")
         stream.write("# Exact selected-origin prefixes from the same pinned ipverse snapshot used by the base builder.\n")
         stream.write(f"# selected_origin_input_sha256={sha256(selected)}\n")
         stream.write(f"# company_registry_sha256={sha256(registry)}\n")
