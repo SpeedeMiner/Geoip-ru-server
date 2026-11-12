@@ -110,7 +110,7 @@ def inspect_policy(ru, private, effective, hard_rows, core, shared, service):
                 builder.networks_from_intervals(addresses, version),
                 key=lambda net: (int(net.network_address), net.prefixlen),
             )
-            canonical = "".join(f"{net}\\n" for net in cidrs)
+            canonical = "".join(f"{net}\n" for net in cidrs)
             summary[name] = {
                 "addresses": builder.interval_size(addresses),
                 "current_antifilter_ip": builder.interval_size(
