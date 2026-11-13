@@ -1,4 +1,4 @@
-Generated UTC: 2026-11-13T12:02:36.929433+00:00
+Generated UTC: 2026-11-13T18:02:02.947479+00:00
 Unique RU-registered ASNs: 5771
 Unique BY-registered ASNs: 116
 Unique KZ-registered ASNs: 271
@@ -16,7 +16,7 @@ Raw ASN resource records: 5771
 Interpretation: one raw IPv4 resource interval can expand to multiple CIDR components; this is conversion, not contribution from another RIR. Unique output CIDRs are de-duplicated across all registries.
 Caveat: RIR country describes registration, not physical hosting location.
 afrinic: snapshot=2026-11-12, ASN records=0, IPv4 resource records=0, IPv4 CIDR components=0, IPv6 resource records=0, IPv6 CIDR components=0, registry-local unique CIDRs=0 (zero valid for an RIR with no RU records of this type)
-apnic: snapshot=2026-11-12, ASN records=0, IPv4 resource records=0, IPv4 CIDR components=0, IPv6 resource records=0, IPv6 CIDR components=0, registry-local unique CIDRs=0 (zero valid for an RIR with no RU records of this type)
-arin: snapshot=2026-11-12, ASN records=0, IPv4 resource records=0, IPv4 CIDR components=0, IPv6 resource records=0, IPv6 CIDR components=0, registry-local unique CIDRs=0 (zero valid for an RIR with no RU records of this type)
+apnic: snapshot=2026-11-13, ASN records=0, IPv4 resource records=0, IPv4 CIDR components=0, IPv6 resource records=0, IPv6 CIDR components=0, registry-local unique CIDRs=0 (zero valid for an RIR with no RU records of this type)
+arin: snapshot=2026-11-13, ASN records=0, IPv4 resource records=0, IPv4 CIDR components=0, IPv6 resource records=0, IPv6 CIDR components=0, registry-local unique CIDRs=0 (zero valid for an RIR with no RU records of this type)
 lacnic: snapshot=2026-11-12, ASN records=0, IPv4 resource records=0, IPv4 CIDR components=0, IPv6 resource records=0, IPv6 CIDR components=0, registry-local unique CIDRs=0 (zero valid for an RIR with no RU records of this type)
 ripencc: snapshot=2026-11-12, ASN records=5771, IPv4 resource records=11468, IPv4 CIDR components=11500, IPv6 resource records=2184, IPv6 CIDR components=2184, registry-local unique CIDRs=13684 (zero valid for an RIR with no RU records of this type)

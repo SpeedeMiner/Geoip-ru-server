@@ -3499,7 +3499,7 @@ AS197628	-	-	RIR_RU	SUDAK-NET	Sudak-Net LLC	RU	9	0
 AS197632	-	-	RIR_RU	LIRAL-TELECOM-AS	Liral-Telecom Ltd	RU	1	0
 AS197668	-	-	RIR_RU	AKO-NET	Administration of the Governor and Government of the Kirov region	RU	1	0
 AS197686	-	-	RIR_BY_KZ	KAZTELEPORT	JSC Kazteleport - subsidiary of Halyk Bank of Kazakhstan	KZ	1	1
-AS197695	-	-	RIR_RU	AS-REGRU	Domain names registrar REG.RU Ltd	RU	145	14
+AS197695	REG.RU	Domain names registrar REG.RU Ltd	RIR_RU+COMPANY_ALLOWLIST	AS-REGRU	Domain names registrar REG.RU Ltd	RU	145	14
 AS197714	-	-	RIR_RU	CITYLINE-RU	Chishko Evgeniy Nikolaevich	RU	1	0
 AS197717	-	-	RIR_RU	MGOK-AS	JSC Mikhailovsky GOK im. A.V. Varicheva	RU	1	0
 AS197718	-	-	RIR_RU	ELEKTRON-AS	OOO Elektron	RU	1	0

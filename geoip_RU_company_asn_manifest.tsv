@@ -37,6 +37,7 @@ AS57724	DDoS-Guard	DDoS-Guard Ltd	https://bgp.he.net/AS57724	yes	RU	20	1	yes	no
 AS59840	Alfa-Bank	JSC Alfa-Bank (Baltbank legacy ASN; one current IPv4 route)	https://bgp.tools/as/59840	no	-	0	0	yes	no
 AS197068	Qrator	HLL LLC (High Load Lab / Qrator DDoS mitigation)	https://bgp.tools/as/197068	yes	RU	6	9	yes	no
 AS197482	2GIS	DoubleGIS LLC	https://bgp.tools/as/197482	yes	RU	2	0	yes	no
+AS197695	REG.RU	Domain names registrar REG.RU Ltd	https://rdap.db.ripe.net/autnum/197695	yes	RU	145	14	yes	no
 AS200107	Kaspersky	Kaspersky Lab Switzerland GmbH (global KSN/update origin ASN)	https://bgp.tools/as/200107	yes	CH	15	16	no	no
 AS200350	Yandex	Yandex.Cloud LLC	https://wbdt.ru/AS200350	yes	RU	34	2	yes	no
 AS201012	Avito	KEH eCommerce LLC (Avito)	https://bgp.tools/as/201012	yes	RU	4	0	yes	no
