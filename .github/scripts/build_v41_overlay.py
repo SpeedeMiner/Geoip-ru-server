@@ -469,8 +469,8 @@ def class_aware_effective_block_set(
 ):
     """Only CORE and explicit service hosts can override hard blocks.
 
-    Legacy unclassified v38 baseline is always in the exact/hard layer; a provider
-    origin does not become a first-party corporation merely by RIR-RU registration.
+    The input preparation step assigns historical v38 evidence to its layer.
+    Regional origin by itself never overrides a hard block.
     """
     if core_company_prefixes & shared_infrastructure_prefixes:
         raise ValueError("CORE_CORPORATE and SHARED_INFRA exact prefix masks overlap")
@@ -644,10 +644,8 @@ def main():
     if len(ipsum) < 1000:
         raise ValueError(f"Antifilter ipsum review feed unexpectedly small: {len(ipsum)} /24 prefixes")
 
-    # v41 precedence:
-    # CORE_CORPORATE is protected from all approved block inputs. SHARED_INFRA is protected
-    # only from current resolver-derived ipresolve candidates. Exact ip.lst, bounded subnet.lst
-    # and unclassified v38 baseline entries remain hard blocks for shared infrastructure.
+    # CORE and explicit service hosts may override hard blocks. SHARED and
+    # regional origins only override entries in the prepared resolver-only layer.
     blocked, resolved_only = class_aware_effective_block_set(
         blocked_exact, blocked_resolved, core_company_prefixes,
         shared_infrastructure_prefixes, regional_only, service_exact, service_resolver
@@ -807,7 +805,7 @@ def main():
     blocked_rows = []
     for source_id, networks, shared_allowed in (
         ("v41-exact-and-legacy-hard-blocks", blocked_exact, False),
-        ("v41-current-resolver-only-candidates", resolved_only, True),
+        ("v41-resolver-only-candidates", resolved_only, True),
         ("antifilter-ipsum-24-review-only", ipsum, True),
     ):
         for net in sorted(networks,key=lambda n:(n.version,int(n.network_address),n.prefixlen)):
@@ -906,10 +904,11 @@ def main():
         "- RU+BY+KZ registered resource prefixes and named service destinations are DIRECT regardless of geolocation.",
         "- PRIVATE has absolute precedence.",
         "- CORE_CORPORATE exact origin prefixes are protected from all approved block inputs.",
-        "- SHARED_INFRA exact origin prefixes are protected only from current ipresolve resolver-derived candidates.",
-        "- Exact ip.lst, bounded subnet.lst, and unclassified legacy v38 baseline records remain hard blocks for SHARED_INFRA.",
+        "- SHARED_INFRA exact origin prefixes are protected only against the resolver-only layer.",
+        "- Current ip.lst, bounded subnet.lst, Telegram and ineligible historical v38 records stay in the hard layer.",
+        "- Eligible v38-only regional IPv4 /32 records move to the resolver-only layer without leaving the approved union.",
         "- MOAS is CORE_CORPORATE when any exact origin is CORE; otherwise SHARED_INFRA receives resolver-only protection.",
-        "- RIR RU+BY+KZ selected origins protect against ipresolve only, not hard blocks.",
+        "- RIR RU+BY+KZ selected origins protect against the resolver-only layer, not hard blocks.",
         "- Regional registration alone does not imply corporate ownership.",
         "- Only literal service hosts can override hard blocks, never a service subnet or operator whitelist.",
         "- PRIVATE has absolute precedence over every origin class and all block exceptions.",
@@ -1034,7 +1033,7 @@ def main():
         "blocked":{
             "approved_union_original_unique":len(blocked_base),
             "exact_and_legacy_hard_unique":len(blocked_exact),
-            "current_resolver_only_unique":len(resolved_only),
+            "resolver_only_unique":len(resolved_only),
             "v41_effective_after_class_aware_exceptions_unique":len(blocked),
             "all_exempted_unique":len(exempted_blocked),
             "all_exempted_address_space":exempted_blocked_counts,
@@ -1059,8 +1058,8 @@ def main():
             "private_precedence_applied":True,
             "rkn_exact_ip_and_subnet_blocks_apply_to_shared_infrastructure":True,
             "core_corporate_prefixes_remain_direct_except_private":True,
-            "shared_infrastructure_prefixes_exempt_from_current_ipresolve_only":True,
-            "legacy_v38_unclassified_baseline_remains_hard_blocked":True,
+            "shared_infrastructure_prefixes_exempt_from_resolver_layer_only":True,
+            "legacy_v38_reclassification_preserves_approved_union":True,
             "rir_rukzby_selected_origin_resolver_protected":True,
             "service_hard_block_exemptions_require_literal_hosts":True,
             "private_precedence_over_all_exceptions":True,

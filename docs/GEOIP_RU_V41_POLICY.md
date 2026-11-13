@@ -1,6 +1,6 @@
 # v41 integration policy — RU+BY+KZ unified DIRECT
 
-Status: **v41 already released. The v41.1 service/region policy below is a separate candidate stacked on the v41 publication-hardening PR.**
+Status: **v41 already released. The v41.2 historical policy is a candidate stacked on the v41.1 service/region policy and publication hardening.**
 
 ## Preservation of v39 and v40
 
@@ -31,7 +31,13 @@ v41 imports from v40:
 
 The build uses the actual BY/KZ ASN registry alongside the RU registry, without checking physical location or creating company exemptions. The published sidecar retains the original `geoip_RU_v41_rir_ru_and_company_origin_prefixes.txt` filename for compatibility and records both registry hashes. No change to the corporate registry is required for the already registered BY/KZ networks.
 
-`ip.lst` is itself DNS-derived according to Antifilter. Its existing hard classification is preserved here deliberately to isolate the routing delta. These source memberships do not prove an active direct IP block. Demoting `ip.lst` or historical-only v38 addresses is outside this candidate.
+`ip.lst` is itself DNS-derived according to Antifilter. Its existing hard classification is preserved. These source memberships do not prove an active direct IP block, and absence from feeds is not evidence of unblocking.
+
+### v41.2 historical-only IPv4 hosts
+
+A v38 baseline hard/unclassified host may move to the resolver-only layer when it is an IPv4 `/32`, is covered by a selected RU/BY/KZ BGP origin or SHARED_INFRA, and has no address-space overlap with any current `ip.lst`, `ipresolve.lst`, `subnet.lst` entry or curated Telegram route. A covering CIDR in one of those sources vetoes the change even when that CIDR is review-only. The rule never moves whole subnets or IPv6 hosts. If current ipresolve is missing, or a current required feed has tolerated malformed rows, no new reclassification takes place on that build. Invalid required feeds still fail under the existing thresholds.
+
+The original approved union and its provenance remain unchanged. The new `v38-historical-only-regional-resolver` label records the policy decision in the resolver sidecar and source statistics. It does not assert that the original entry came from DNS or that the destination is now reachable. Remaining overlapping hard prefixes and PRIVATE still take precedence. No publication asset name changes.
 
 ## Hydra DIRECT / WHITELIST expansion
 
