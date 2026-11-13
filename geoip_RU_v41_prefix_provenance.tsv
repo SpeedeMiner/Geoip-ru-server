@@ -91119,7 +91119,6 @@ hxehex-mobile-hosts						185.76.140.1/32
 hxehex-mobile-hosts						185.76.146.1/32
 hxehex-mobile-hosts						185.76.147.1/32
 hxehex-mobile-hosts						185.76.150.1/32
-hxehex-mobile-hosts						185.76.151.1/32
 hxehex-mobile-hosts						185.76.152.1/32
 hxehex-mobile-hosts						185.76.153.1/32
 hxehex-mobile-hosts						185.76.154.1/32
@@ -298819,7 +298818,6 @@ verified-service-exact-hosts	Literal host service hard-block exception					185.7
 verified-service-exact-hosts	Literal host service hard-block exception					185.76.146.1/32
 verified-service-exact-hosts	Literal host service hard-block exception					185.76.147.1/32
 verified-service-exact-hosts	Literal host service hard-block exception					185.76.150.1/32
-verified-service-exact-hosts	Literal host service hard-block exception					185.76.151.1/32
 verified-service-exact-hosts	Literal host service hard-block exception					185.76.152.1/32
 verified-service-exact-hosts	Literal host service hard-block exception					185.76.153.1/32
 verified-service-exact-hosts	Literal host service hard-block exception					185.76.154.1/32
@@ -439659,7 +439657,6 @@ verified-service-resolver-protected	Verified service resolver protection					185
 verified-service-resolver-protected	Verified service resolver protection					185.76.146.1/32
 verified-service-resolver-protected	Verified service resolver protection					185.76.147.1/32
 verified-service-resolver-protected	Verified service resolver protection					185.76.150.1/32
-verified-service-resolver-protected	Verified service resolver protection					185.76.151.1/32
 verified-service-resolver-protected	Verified service resolver protection					185.76.152.1/32
 verified-service-resolver-protected	Verified service resolver protection					185.76.153.1/32
 verified-service-resolver-protected	Verified service resolver protection					185.76.154.1/32
@@ -492536,6 +492533,9 @@ verified-service-resolver-protected	Verified service resolver protection					2a1
 verified-service-resolver-protected	Verified service resolver protection					2a14:25c0::/32
 verified-service-resolver-protected	Verified service resolver protection					2a14:25c5::/32
 verified-service-resolver-protected	Verified service resolver protection					2a14:25c6::/31
+reviewed-operator-prefixes	RU			AS402931		153.52.151.0/24
+reviewed-operator-prefixes	KZ			AS215294		178.92.244.0/23
+reviewed-operator-prefixes	BY			AS207957		179.253.86.0/24
 rir-resource-RU	RIR resource registration	RU				2.56.24.0/23
 rir-resource-RU	RIR resource registration	RU				2.56.26.0/23
 rir-resource-RU	RIR resource registration	RU				2.56.88.0/22

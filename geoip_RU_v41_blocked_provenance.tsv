@@ -44019,7 +44019,7 @@ v41-exact-and-legacy-hard-blocks	185.76.65.42/32	IPv4	1	0	0	0	0	0
 v41-exact-and-legacy-hard-blocks	185.76.65.45/32	IPv4	1	0	0	0	0	0
 v41-exact-and-legacy-hard-blocks	185.76.65.112/32	IPv4	1	0	0	0	0	0
 v41-exact-and-legacy-hard-blocks	185.76.70.184/32	IPv4	1	0	0	0	0	0
-v41-exact-and-legacy-hard-blocks	185.76.151.0/24	IPv4	256	1	0	0	0	0
+v41-exact-and-legacy-hard-blocks	185.76.151.0/24	IPv4	256	0	0	0	0	0
 v41-exact-and-legacy-hard-blocks	185.76.215.222/32	IPv4	1	0	0	0	0	0
 v41-exact-and-legacy-hard-blocks	185.76.237.144/32	IPv4	1	0	0	0	0	0
 v41-exact-and-legacy-hard-blocks	185.76.237.193/32	IPv4	1	0	0	0	0	0

@@ -1,13 +1,14 @@
 GeoIP DIRECT RU+BY+KZ CLIENT v41 — corporate company-ASN origins exempted from RKN carve-outs
-Generated UTC: 2026-11-13T09:50:35.432460+00:00
+Generated UTC: 2026-11-13T11:20:00.171587+00:00
 Base v37 GeoIP SHA-256: 6b0830dd5087046f4b2d2de9068c4e7ed4fc56122074d89a46cbfdd3104f2cb3
-v41 GeoIP SHA-256: bba99f4950140789a3863b2aff4ecade5e0b4d040c13eb5ac3b5bdf927d73315
+v41 GeoIP SHA-256: b56081f3b09e05db9b6fc1b9205c8351e62884ef09b843a4832e6f362b2557c5
 
 POLICY
 - RU+BY+KZ registered resource prefixes and named service destinations are DIRECT regardless of geolocation.
 - PRIVATE has absolute precedence.
 - CORE_CORPORATE exact origin prefixes are protected from all approved block inputs.
 - SHARED_INFRA exact origin prefixes are protected only against the resolver-only layer.
+- Official Telegram CIDRs are non-exempt in DIRECT. Overlapping HXEHEX entries are rejected before service protection.
 - Current ip.lst stays hard except individually reviewed IPv4 hosts, and bounded subnet.lst, Telegram and ineligible historical v38 records stay hard.
 - Eligible v38-only regional IPv4 /32 records move to the resolver-only layer without leaving the approved union.
 - MOAS is CORE_CORPORATE when any exact origin is CORE; otherwise SHARED_INFRA receives resolver-only protection.
@@ -23,10 +24,10 @@ RU IPv4 addresses: 52632577
 RU IPv6 addresses: 1192521157300195567661209186467840
 
 V41 FINAL
-RU CIDRs: 190380
-RU IPv4 addresses: 53531452
+RU CIDRs: 190382
+RU IPv4 addresses: 53532475
 RU IPv6 addresses: 1205876356595180923515330646507520
-New IPv4 addresses vs v37 after PRIVATE/RKN/company-ASN exception: 898875
+New IPv4 addresses vs v37 after PRIVATE/RKN/company-ASN exception: 899898
 New IPv6 addresses vs v37 after PRIVATE/RKN/company-ASN exception: 13355199294985355854121460039680
 PRIVATE IPv4 addresses: 592708862
 PRIVATE IPv6 addresses: 4325545831231176725068219651071148031
@@ -47,18 +48,18 @@ Hydra is routing-intent, not a geolocation or corporate attribution; it does not
 SERVICE DIRECT INPUTS
 Kyoresuas Standard services represented in service catalog: 90
 W1ZARDZ unique service/direct prefixes: 948
-HXEHEX exact host-IP prefixes: 141664
+HXEHEX exact host-IP prefixes: 141663
 Escapingworm operator whitelist prefixes: 88
-Literal service hosts eligible for hard exceptions: 142775
-Service resolver-protected address space: {'ipv4': 963803, 'ipv6': 3322716899175153296500653555718}
+Literal service hosts eligible for hard exceptions: 142774
+Service resolver-protected address space: {'ipv4': 963802, 'ipv6': 3322716899175153296500653555718}
 Service and operator whitelist routes are separate from geographic/RIR resource evidence.
 Service datasets can include foreign-located or shared-provider endpoints; no country geolocation filter was applied.
 
 RKN BLOCKS AND CORPORATE COMPANY-ASN EXCEPTION
 Original v37 approved blocked CIDRs: 200172
-Effective v41 blocked CIDRs after class-aware exceptions: 125290
-Total block addresses exempted: IPv4=3142 IPv6=0
-Total exempted addresses intersecting DIRECT after PRIVATE: IPv4=3142 IPv6=0
+Effective v41 blocked CIDRs after class-aware exceptions: 125283
+Total block addresses exempted: IPv4=3141 IPv6=0
+Total exempted addresses intersecting DIRECT after PRIVATE: IPv4=3141 IPv6=0
 CORE_CORPORATE exempted DIRECT addresses after PRIVATE: IPv4=32 IPv6=0
 SHARED_INFRA resolver-only exempted DIRECT addresses: IPv4=465 IPv6=0
 All company origin prefixes: 3263; IPv4 addresses=19472128; IPv6 addresses=21372506477678918853184033128448
@@ -69,7 +70,7 @@ Potential additional IPv4 DIRECT address space affected by /24 review candidates
 Potential additional IPv6 DIRECT address space affected by /24 review candidates: 0
 ipsum /24 candidates are NOT automatically removed from DIRECT; only exact host and bounded prefixes already approved by v37 remain automatic, excluding exact corporate company-ASN origin prefixes from those carves.
 The /24 impact estimate excludes the exact corporate company-ASN prefix space exempted by the v41 policy.
-Combined v41 effective blocked IPv4 address space: 583240
+Combined v41 effective blocked IPv4 address space: 583241
 Combined v41 effective blocked IPv6 address space: 79232998217542796110242775040
 ipsum is a third-party RKN-derived /24 summary, not a direct official RKN API.
 Every /24 carve affects the whole 256-address block; on shared hosting/CDNs it may send unrelated co-resident destinations through VPN.
@@ -82,7 +83,7 @@ FILES
 - geoip_RU_v41_blocked_ip_exclusions.txt: effective non-corporate blocked set applied to v41.
 - geoip_RU_company_asn_bgp_prefixes.txt: exact prefixes originated by the curated corporate company-ASN allowlist.
 
-SHA-256 output: bba99f4950140789a3863b2aff4ecade5e0b4d040c13eb5ac3b5bdf927d73315
+SHA-256 output: b56081f3b09e05db9b6fc1b9205c8351e62884ef09b843a4832e6f362b2557c5
 
 PRE_PUBLICATION_V41_HARD_POLICY_GATE
 Status: PASS
@@ -91,7 +92,7 @@ Policy: PRIVATE and effective hard blocks excluded from DIRECT
 Allowed hard exceptions: CORE_CORPORATE or eligible literal service host
 No hard exception is accepted solely due to SHARED_INFRA or BGP/ASN origin
 Exception source membership does not prove a current regulator IP block
-ipv4: hard_direct=60, unprotected=0
+ipv4: hard_direct=59, unprotected=0
   CORE_CORPORATE: addresses=16, current_ip_lst=16, current_subnet_lst=0, service_protected=0, review_cidr_count=16, review_cidrs_sha256=33cfdac328730961942cb3b35e284449a7812c35ebf373dfe67b3e71b190e48f
     OBSERVED_HARD_DIRECT CORE_CORPORATE 87.240.132.78/32
     OBSERVED_HARD_DIRECT CORE_CORPORATE 89.208.84.111/32
@@ -121,7 +122,7 @@ ipv4: hard_direct=60, unprotected=0
     OBSERVED_HARD_DIRECT SHARED_INFRA 185.215.4.40/32
     OBSERVED_HARD_DIRECT SHARED_INFRA 185.215.4.45/32
     OBSERVED_HARD_DIRECT SHARED_INFRA 185.215.4.66/32
-  OTHER: addresses=33, current_ip_lst=25, current_subnet_lst=6, service_protected=33, review_cidr_count=33, review_cidrs_sha256=323e1c134308a3e9c095ecd41bf6bb954112430e7f1bdacdfa248b4948f4ab08
+  OTHER: addresses=32, current_ip_lst=25, current_subnet_lst=6, service_protected=32, review_cidr_count=32, review_cidrs_sha256=9331e3949cea98b2bcc8ed6a6b7799aba72ec90e3429f8979a05820aa9225e3c
     OBSERVED_HARD_DIRECT OTHER 31.31.196.17/32
     OBSERVED_HARD_DIRECT OTHER 31.31.197.1/32
     OBSERVED_HARD_DIRECT OTHER 31.31.197.32/32
@@ -143,7 +144,6 @@ ipv4: hard_direct=60, unprotected=0
     OBSERVED_HARD_DIRECT OTHER 185.60.219.1/32
     OBSERVED_HARD_DIRECT OTHER 185.63.144.1/32
     OBSERVED_HARD_DIRECT OTHER 185.73.223.1/32
-    OBSERVED_HARD_DIRECT OTHER 185.76.151.1/32
     OBSERVED_HARD_DIRECT OTHER 185.89.217.1/32
     OBSERVED_HARD_DIRECT OTHER 185.104.45.1/32
     OBSERVED_HARD_DIRECT OTHER 185.165.123.36/32

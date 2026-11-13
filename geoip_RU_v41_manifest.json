@@ -1,9 +1,9 @@
 {
   "schema": 2,
-  "generated_at": "2026-11-13T09:50:35.917411+00:00",
+  "generated_at": "2026-11-13T11:20:00.570372+00:00",
   "base_v37_sha256": "6b0830dd5087046f4b2d2de9068c4e7ed4fc56122074d89a46cbfdd3104f2cb3",
-  "output_sha256": "bba99f4950140789a3863b2aff4ecade5e0b4d040c13eb5ac3b5bdf927d73315",
-  "output_bytes": 2088043,
+  "output_sha256": "b56081f3b09e05db9b6fc1b9205c8351e62884ef09b843a4832e6f362b2557c5",
+  "output_bytes": 2088063,
   "sources": {
     "kyoresuas-standard": {
       "repository": "kyoresuas/ru-direct",
@@ -39,6 +39,10 @@
       ],
       "license": "MIT"
     }
+  },
+  "telegram_official": {
+    "cidrs": 14,
+    "input_sha256": "3ecd072cedf72eceee6961b18a51e37f905d5ce4a656a5d24cf5fea63e6ec651"
   },
   "rir_inventory": {
     "rows": 14621,
@@ -77,7 +81,8 @@
       ],
       "raw_rows": 141664,
       "valid_rows": 141664,
-      "invalid_rows": 0
+      "invalid_rows": 0,
+      "telegram_unique_prefixes_rejected": 1
     },
     "operator-whitelist": {
       "raw_files": [
@@ -120,12 +125,20 @@
       "invalid_rows": 0
     },
     "verified-service-exact-hosts": {
-      "valid_rows": 142775,
+      "valid_rows": 142774,
       "invalid_rows": 0
     },
     "verified-service-resolver-protected": {
-      "valid_rows": 140627,
+      "valid_rows": 140626,
       "invalid_rows": 0
+    },
+    "reviewed-operator-prefixes": {
+      "raw_files": [
+        "v41-reviewed-operator-prefixes.tsv"
+      ],
+      "valid_rows": 3,
+      "input_sha256": "5ba7cdca7f299fc1914a462001f8712a33e9bdea307ac3f152f8cd4026a8c32e",
+      "protection": "none"
     }
   },
   "hydra_routing_intent": {
@@ -170,19 +183,19 @@
     "protection": "resolver_only"
   },
   "ru_verified_service_prefixes": {
-    "unique_prefixes": 140627,
+    "unique_prefixes": 140626,
     "address_space": {
-      "ipv4": 963803,
+      "ipv4": 963802,
       "ipv6": 3322716899175153296500653555718
     },
-    "exact_host_prefixes": 142775,
+    "exact_host_prefixes": 142774,
     "exact_host_address_space": {
-      "ipv4": 142710,
+      "ipv4": 142709,
       "ipv6": 65
     },
-    "resolver_protected_prefixes": 140627,
+    "resolver_protected_prefixes": 140626,
     "resolver_protected_address_space": {
-      "ipv4": 963803,
+      "ipv4": 963802,
       "ipv6": 3322716899175153296500653555718
     },
     "protection": "only_literal_hosts_override_hard_blocks"
@@ -204,14 +217,14 @@
     "approved_union_original_unique": 200172,
     "exact_and_legacy_hard_unique": 57942,
     "resolver_only_unique": 81086,
-    "v41_effective_after_class_aware_exceptions_unique": 125290,
-    "all_exempted_unique": 2961,
+    "v41_effective_after_class_aware_exceptions_unique": 125283,
+    "all_exempted_unique": 2960,
     "all_exempted_address_space": {
-      "ipv4": 3142,
+      "ipv4": 3141,
       "ipv6": 0
     },
     "all_exempted_direct_after_private": {
-      "ipv4": 3142,
+      "ipv4": 3141,
       "ipv6": 0
     },
     "core_company_asn_exempted_direct_after_private": {
@@ -234,11 +247,11 @@
     "ipv6": 1192521157300195567661209186467840
   },
   "final_v41_address_space": {
-    "ipv4": 53531452,
+    "ipv4": 53532475,
     "ipv6": 1205876356595180923515330646507520
   },
   "new_after_policy": {
-    "ipv4": 898875,
+    "ipv4": 899898,
     "ipv6": 13355199294985355854121460039680
   },
   "safety": {
@@ -248,7 +261,8 @@
     "geolocation_used_as_admission_gate": false,
     "private_precedence_applied": true,
     "rkn_exact_ip_and_subnet_blocks_apply_to_shared_infrastructure": true,
-    "core_corporate_prefixes_remain_direct_except_private": true,
+    "core_corporate_prefixes_remain_direct_except_private_and_official_telegram": true,
+    "official_telegram_precedes_all_direct_exceptions": true,
     "shared_infrastructure_prefixes_exempt_from_resolver_layer_only": true,
     "legacy_v38_reclassification_preserves_approved_union": true,
     "rir_rukzby_selected_origin_resolver_protected": true,

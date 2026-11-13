@@ -121,7 +121,7 @@ Inclusion policy: prefixes originated by allowlisted company ASNs are included r
 Country metadata policy: ipverse countryCode is audit-only and is never an inclusion filter for allowlisted company-ASN origins.
 Per-ASN evidence and prefix counts: geoip_RU_company_asn_manifest.tsv
 
-Generated UTC: 2026-11-13T09:49:24.296890+00:00
+Generated UTC: 2026-11-13T11:19:09.859777+00:00
 ipverse aggregated.json files: 97489
 RIR delegated-stats registered RU ASNs: 5771
 RIR delegated-stats registered BY/KZ ASNs: 387
