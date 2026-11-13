@@ -1,4 +1,4 @@
-# v41 resolver-derived candidates: current ipresolve plus historical v38 resolver-only addresses supported by pinned source evidence.
+# v41 resolver-only layer: current ipresolve, proven historical resolver entries, and eligible v38-only regional hosts (not proof of DNS origin).
 1.1.1.1/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 1.32.194.67/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 1.32.194.195/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
@@ -8,6 +8,8 @@
 2.16.10.104/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 2.16.10.123/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 2.16.10.130/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+2.16.20.42/32 # sources=v38-historical-only-regional-resolver
+2.16.20.43/32 # sources=v38-historical-only-regional-resolver
 2.16.154.42/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 2.16.154.56/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 2.16.154.75/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
@@ -1285,6 +1287,7 @@
 5.23.51.104/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 5.23.51.236/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 5.23.54.224/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+5.23.55.225/32 # sources=v38-historical-only-regional-resolver
 5.34.177.217/32 # sources=antifilter-ipresolve.lst
 5.34.177.218/32 # sources=antifilter-ipresolve.lst
 5.34.178.30/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
@@ -1303,7 +1306,11 @@
 5.35.33.149/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 5.35.33.182/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 5.35.83.57/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+5.35.88.228/32 # sources=v38-historical-only-regional-resolver
+5.35.94.59/32 # sources=v38-historical-only-regional-resolver
 5.35.95.37/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+5.35.95.141/32 # sources=v38-historical-only-regional-resolver
+5.35.95.170/32 # sources=v38-historical-only-regional-resolver
 5.35.98.203/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 5.35.170.15/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 5.35.170.25/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
@@ -1375,6 +1382,7 @@
 5.42.64.22/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 5.42.65.51/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 5.42.65.102/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+5.42.67.20/32 # sources=v38-historical-only-regional-resolver
 5.42.68.19/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 5.42.76.84/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 5.42.100.76/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
@@ -1916,7 +1924,9 @@
 5.45.82.89/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 5.45.82.117/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 5.45.82.246/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+5.45.83.74/32 # sources=v38-historical-only-regional-resolver
 5.45.83.103/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+5.45.83.112/32 # sources=v38-historical-only-regional-resolver
 5.45.84.9/32 # sources=antifilter-ipresolve.lst
 5.45.84.12/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 5.45.84.19/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
@@ -2806,6 +2816,8 @@
 5.101.77.20/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 5.101.77.44/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 5.101.78.54/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+5.101.80.46/32 # sources=v38-historical-only-regional-resolver
+5.101.80.84/32 # sources=v38-historical-only-regional-resolver
 5.101.106.50/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 5.101.112.126/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 5.101.114.61/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
@@ -2839,6 +2851,7 @@
 5.101.152.246/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 5.101.152.251/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 5.101.153.2/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+5.101.153.4/32 # sources=v38-historical-only-regional-resolver
 5.101.153.10/32 # sources=antifilter-ipresolve.lst
 5.101.153.21/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 5.101.153.29/32 # sources=antifilter-ipresolve.lst
@@ -2851,6 +2864,7 @@
 5.101.153.86/32 # sources=antifilter-ipresolve.lst
 5.101.153.98/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 5.101.153.121/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+5.101.153.128/32 # sources=v38-historical-only-regional-resolver
 5.101.153.135/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 5.101.153.136/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 5.101.153.143/32 # sources=antifilter-ipresolve.lst
@@ -2897,6 +2911,9 @@
 5.104.111.84/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 5.104.111.210/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 5.104.111.248/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+5.129.219.18/32 # sources=v38-historical-only-regional-resolver
+5.129.223.192/32 # sources=v38-historical-only-regional-resolver
+5.129.253.158/32 # sources=v38-historical-only-regional-resolver
 5.133.123.68/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 5.133.211.55/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 5.133.212.37/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
@@ -3069,6 +3086,8 @@
 5.178.65.208/32 # sources=antifilter-ipresolve.lst
 5.178.65.216/32 # sources=antifilter-ipresolve.lst
 5.178.67.252/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+5.178.85.221/32 # sources=v38-historical-only-regional-resolver
+5.180.47.163/32 # sources=v38-historical-only-regional-resolver
 5.180.102.22/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 5.180.144.25/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 5.180.174.176/32 # sources=antifilter-ipresolve.lst
@@ -3093,6 +3112,7 @@
 5.182.5.66/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 5.182.26.16/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 5.182.26.61/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+5.182.36.137/32 # sources=v38-historical-only-regional-resolver
 5.182.86.107/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 5.182.87.164/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 5.182.87.165/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
@@ -3101,7 +3121,9 @@
 5.182.210.65/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 5.182.210.71/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 5.182.211.203/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+5.183.188.115/32 # sources=v38-historical-only-regional-resolver
 5.183.188.131/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+5.183.190.171/32 # sources=v38-historical-only-regional-resolver
 5.183.209.191/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 5.187.0.7/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 5.187.0.16/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
@@ -4896,6 +4918,7 @@
 13.112.112.74/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 13.113.20.168/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 13.127.107.23/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+13.143.244.95/32 # sources=v38-historical-only-regional-resolver
 13.200.123.229/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 13.213.84.193/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 13.214.63.128/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
@@ -9168,6 +9191,7 @@
 31.31.196.10/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 31.31.196.16/32 # sources=antifilter-ipresolve.lst
 31.31.196.17/32 # sources=antifilter-ipresolve.lst
+31.31.196.18/32 # sources=v38-historical-only-regional-resolver
 31.31.196.22/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 31.31.196.24/32 # sources=antifilter-ipresolve.lst
 31.31.196.27/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
@@ -9175,6 +9199,7 @@
 31.31.196.30/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 31.31.196.38/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 31.31.196.42/32 # sources=antifilter-ipresolve.lst
+31.31.196.47/32 # sources=v38-historical-only-regional-resolver
 31.31.196.58/32 # sources=antifilter-ipresolve.lst
 31.31.196.70/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 31.31.196.72/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
@@ -9212,6 +9237,7 @@
 31.31.196.220/32 # sources=antifilter-ipresolve.lst
 31.31.196.229/32 # sources=antifilter-ipresolve.lst
 31.31.196.230/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+31.31.196.239/32 # sources=v38-historical-only-regional-resolver
 31.31.196.240/32 # sources=antifilter-ipresolve.lst
 31.31.196.241/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 31.31.196.247/32 # sources=antifilter-ipresolve.lst
@@ -9228,6 +9254,7 @@
 31.31.198.45/32 # sources=antifilter-ipresolve.lst
 31.31.198.54/32 # sources=antifilter-ipresolve.lst
 31.31.198.57/32 # sources=antifilter-ipresolve.lst
+31.31.198.65/32 # sources=v38-historical-only-regional-resolver
 31.31.198.66/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 31.31.198.98/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 31.31.198.99/32 # sources=antifilter-ipresolve.lst
@@ -9236,6 +9263,7 @@
 31.31.198.120/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 31.31.198.122/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 31.31.198.123/32 # sources=antifilter-ipresolve.lst
+31.31.198.124/32 # sources=v38-historical-only-regional-resolver
 31.31.198.135/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 31.31.198.146/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 31.31.198.160/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
@@ -9243,6 +9271,7 @@
 31.31.198.186/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 31.31.198.187/32 # sources=antifilter-ipresolve.lst
 31.31.198.188/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+31.31.198.189/32 # sources=v38-historical-only-regional-resolver
 31.31.198.198/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 31.31.198.201/32 # sources=antifilter-ipresolve.lst
 31.31.198.205/32 # sources=antifilter-ipresolve.lst
@@ -9251,9 +9280,12 @@
 31.31.198.224/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 31.31.198.230/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 31.31.198.233/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+31.31.200.128/32 # sources=v38-historical-only-regional-resolver
 31.31.201.62/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+31.31.201.135/32 # sources=v38-historical-only-regional-resolver
 31.31.205.31/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 31.31.205.163/32 # sources=antifilter-ipresolve.lst
+31.31.207.26/32 # sources=v38-historical-only-regional-resolver
 31.40.32.10/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 31.41.40.18/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 31.41.40.19/32 # sources=antifilter-ipresolve.lst
@@ -9288,12 +9320,22 @@
 31.44.4.101/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 31.47.74.88/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 31.47.240.130/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+31.128.36.46/32 # sources=v38-historical-only-regional-resolver
+31.128.43.49/32 # sources=v38-historical-only-regional-resolver
+31.128.44.5/32 # sources=v38-historical-only-regional-resolver
+31.128.45.18/32 # sources=v38-historical-only-regional-resolver
+31.128.45.30/32 # sources=v38-historical-only-regional-resolver
+31.128.45.205/32 # sources=v38-historical-only-regional-resolver
 31.128.67.61/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 31.129.96.64/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 31.129.97.56/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 31.129.97.145/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+31.129.100.128/32 # sources=v38-historical-only-regional-resolver
 31.129.101.170/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+31.129.102.3/32 # sources=v38-historical-only-regional-resolver
 31.129.107.251/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+31.129.110.60/32 # sources=v38-historical-only-regional-resolver
+31.129.110.65/32 # sources=v38-historical-only-regional-resolver
 31.130.203.81/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 31.130.203.137/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 31.130.203.168/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
@@ -9456,6 +9498,7 @@
 31.192.127.85/32 # sources=antifilter-ipresolve.lst
 31.192.212.202/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 31.192.228.197/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+31.192.237.117/32 # sources=v38-historical-only-regional-resolver
 31.192.250.21/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 31.192.250.22/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 31.193.172.60/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
@@ -11778,6 +11821,7 @@
 37.140.192.146/32 # sources=antifilter-ipresolve.lst
 37.140.192.149/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 37.140.192.151/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+37.140.192.171/32 # sources=v38-historical-only-regional-resolver
 37.140.192.179/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 37.140.192.183/32 # sources=antifilter-ipresolve.lst
 37.140.192.187/32 # sources=antifilter-ipresolve.lst
@@ -11788,6 +11832,7 @@
 37.140.192.213/32 # sources=antifilter-ipresolve.lst
 37.140.192.216/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 37.140.192.222/32 # sources=antifilter-ipresolve.lst
+37.140.192.229/32 # sources=v38-historical-only-regional-resolver
 37.140.192.240/32 # sources=antifilter-ipresolve.lst
 37.140.192.245/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 37.140.241.22/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
@@ -11850,6 +11895,8 @@
 37.187.244.227/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 37.187.248.33/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 37.187.252.55/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+37.192.115.175/32 # sources=v38-historical-only-regional-resolver
+37.194.95.125/32 # sources=v38-historical-only-regional-resolver
 37.200.55.114/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 37.203.33.66/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 37.203.34.70/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
@@ -12426,6 +12473,7 @@
 45.8.104.31/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 45.8.104.48/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 45.8.104.102/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+45.8.124.7/32 # sources=v38-historical-only-regional-resolver
 45.8.144.99/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 45.8.144.113/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 45.8.144.147/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
@@ -12456,6 +12504,7 @@
 45.8.210.201/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 45.8.210.214/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 45.8.251.32/32 # sources=antifilter-ipresolve.lst
+45.9.40.95/32 # sources=v38-historical-only-regional-resolver
 45.9.43.22/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 45.9.148.78/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 45.9.148.156/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
@@ -12770,6 +12819,7 @@
 45.12.16.242/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 45.12.17.44/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 45.12.18.192/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+45.12.19.73/32 # sources=v38-historical-only-regional-resolver
 45.12.30.1/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 45.12.30.2/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 45.12.30.3/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
@@ -13195,7 +13245,9 @@
 45.12.31.254/32 # sources=antifilter-ipresolve.lst
 45.12.32.134/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 45.12.32.140/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+45.12.74.214/32 # sources=v38-historical-only-regional-resolver
 45.12.75.43/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+45.12.75.153/32 # sources=v38-historical-only-regional-resolver
 45.12.212.8/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 45.12.212.78/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 45.12.212.90/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
@@ -13228,7 +13280,9 @@
 45.12.215.186/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 45.12.215.195/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 45.12.215.227/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+45.12.237.77/32 # sources=v38-historical-only-regional-resolver
 45.12.237.253/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+45.12.239.216/32 # sources=v38-historical-only-regional-resolver
 45.13.133.83/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 45.13.252.112/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 45.13.252.115/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
@@ -13794,6 +13848,7 @@
 45.67.35.125/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 45.67.35.140/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 45.67.35.165/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+45.67.56.234/32 # sources=v38-historical-only-regional-resolver
 45.67.58.194/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 45.67.59.32/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 45.67.228.35/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
@@ -14046,9 +14101,11 @@
 45.79.244.209/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 45.79.250.11/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 45.79.250.72/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+45.80.68.4/32 # sources=v38-historical-only-regional-resolver
 45.80.68.192/32 # sources=antifilter-ipresolve.lst
 45.80.69.22/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 45.80.69.130/32 # sources=antifilter-ipresolve.lst
+45.80.70.184/32 # sources=v38-historical-only-regional-resolver
 45.80.110.1/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 45.80.110.2/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 45.80.111.3/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
@@ -14377,6 +14434,7 @@
 45.84.217.84/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 45.84.224.20/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 45.84.224.115/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+45.84.225.116/32 # sources=v38-historical-only-regional-resolver
 45.84.225.214/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 45.84.226.24/32 # sources=antifilter-ipresolve.lst
 45.85.118.2/32 # sources=antifilter-ipresolve.lst
@@ -14571,6 +14629,7 @@
 45.88.203.4/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 45.88.203.5/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 45.89.27.229/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+45.89.61.10/32 # sources=v38-historical-only-regional-resolver
 45.89.66.185/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 45.89.66.195/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 45.89.67.93/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
@@ -14579,6 +14638,7 @@
 45.89.204.15/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 45.89.204.240/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 45.89.207.110/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+45.89.228.71/32 # sources=v38-historical-only-regional-resolver
 45.90.33.170/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 45.90.34.177/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 45.90.46.85/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
@@ -14592,6 +14652,7 @@
 45.90.58.107/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 45.90.58.226/32 # sources=antifilter-ipresolve.lst
 45.90.218.163/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+45.91.52.212/32 # sources=v38-historical-only-regional-resolver
 45.91.67.130/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 45.91.200.16/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 45.91.200.111/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
@@ -15070,6 +15131,7 @@
 45.131.46.251/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 45.131.98.130/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 45.131.182.61/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+45.131.186.31/32 # sources=v38-historical-only-regional-resolver
 45.132.8.223/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 45.132.104.89/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 45.132.105.36/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
@@ -15626,6 +15688,7 @@
 45.144.29.124/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 45.144.29.135/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 45.144.29.141/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+45.144.29.156/32 # sources=v38-historical-only-regional-resolver
 45.144.29.180/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 45.144.29.235/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 45.144.29.239/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
@@ -16074,6 +16137,7 @@
 45.148.164.72/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 45.148.164.74/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 45.148.164.86/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+45.150.36.147/32 # sources=v38-historical-only-regional-resolver
 45.150.64.8/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 45.150.66.7/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 45.150.67.25/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
@@ -16212,6 +16276,7 @@
 45.153.184.3/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 45.153.184.67/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 45.153.186.173/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+45.153.191.224/32 # sources=v38-historical-only-regional-resolver
 45.153.230.22/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 45.153.231.170/32 # sources=antifilter-ipresolve.lst
 45.153.241.64/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
@@ -17007,6 +17072,7 @@
 46.8.45.189/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 46.8.45.214/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 46.8.153.202/32 # sources=antifilter-ipresolve.lst
+46.8.203.57/32 # sources=v38-historical-only-regional-resolver
 46.8.211.13/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 46.8.255.135/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 46.13.10.11/32 # sources=antifilter-ipresolve.lst
@@ -17839,6 +17905,13 @@
 46.166.189.98/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 46.166.189.207/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 46.166.189.210/32 # sources=antifilter-ipresolve.lst
+46.173.16.250/32 # sources=v38-historical-only-regional-resolver
+46.173.18.63/32 # sources=v38-historical-only-regional-resolver
+46.173.19.68/32 # sources=v38-historical-only-regional-resolver
+46.173.26.75/32 # sources=v38-historical-only-regional-resolver
+46.173.26.172/32 # sources=v38-historical-only-regional-resolver
+46.173.27.152/32 # sources=v38-historical-only-regional-resolver
+46.173.27.242/32 # sources=v38-historical-only-regional-resolver
 46.173.221.33/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 46.174.143.13/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 46.175.144.188/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
@@ -17979,12 +18052,14 @@
 46.249.204.22/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 46.250.221.13/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 46.252.18.224/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+46.252.112.218/32 # sources=v38-historical-only-regional-resolver
 46.252.151.195/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 46.252.153.202/32 # sources=antifilter-ipresolve.lst
 46.252.157.42/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 46.252.158.52/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 46.253.203.142/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 46.254.16.156/32 # sources=antifilter-ipresolve.lst
+46.254.18.115/32 # sources=v38-historical-only-regional-resolver
 46.254.20.224/32 # sources=antifilter-ipresolve.lst
 46.254.107.11/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 46.254.107.60/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
@@ -24498,7 +24573,10 @@
 62.106.66.21/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 62.108.32.102/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 62.108.32.127/32 # sources=antifilter-ipresolve.lst
+62.109.0.11/32 # sources=v38-historical-only-regional-resolver
 62.109.5.200/32 # sources=antifilter-ipresolve.lst
+62.109.13.109/32 # sources=v38-historical-only-regional-resolver
+62.109.27.67/32 # sources=v38-historical-only-regional-resolver
 62.109.31.130/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 62.109.34.50/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 62.109.141.196/32 # sources=antifilter-ipresolve.lst
@@ -24523,8 +24601,11 @@
 62.112.11.193/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 62.112.15.2/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 62.112.194.218/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+62.113.98.31/32 # sources=v38-historical-only-regional-resolver
+62.113.98.211/32 # sources=v38-historical-only-regional-resolver
 62.113.103.128/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 62.113.105.167/32 # sources=antifilter-ipresolve.lst
+62.113.109.7/32 # sources=v38-historical-only-regional-resolver
 62.113.109.254/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 62.113.110.83/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 62.113.111.205/32 # sources=antifilter-ipresolve.lst
@@ -24701,6 +24782,7 @@
 62.173.145.70/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 62.173.146.191/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 62.173.146.211/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+62.173.150.111/32 # sources=v38-historical-only-regional-resolver
 62.173.161.28/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 62.178.64.126/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 62.182.82.126/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
@@ -24789,11 +24871,13 @@
 62.212.95.136/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 62.212.95.174/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 62.214.74.90/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+62.217.180.212/32 # sources=v38-historical-only-regional-resolver
 62.217.183.69/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 62.219.91.45/32 # sources=antifilter-ipresolve.lst
 62.221.252.146/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 62.221.254.17/32 # sources=antifilter-ipresolve.lst
 62.233.41.33/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+62.233.43.247/32 # sources=v38-historical-only-regional-resolver
 62.233.53.132/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 62.233.57.5/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 62.233.57.129/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
@@ -27218,6 +27302,8 @@
 72.52.224.10/32 # sources=antifilter-ipresolve.lst
 72.52.232.112/32 # sources=antifilter-ipresolve.lst
 72.55.159.73/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+72.56.9.169/32 # sources=v38-historical-only-regional-resolver
+72.56.38.184/32 # sources=v38-historical-only-regional-resolver
 72.167.36.28/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 72.167.45.53/32 # sources=antifilter-ipresolve.lst
 72.167.50.172/32 # sources=antifilter-ipresolve.lst
@@ -27904,9 +27990,12 @@
 77.221.159.50/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 77.221.159.235/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 77.222.33.74/32 # sources=antifilter-ipresolve.lst
+77.222.40.66/32 # sources=v38-historical-only-regional-resolver
 77.222.40.105/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 77.222.40.224/32 # sources=antifilter-ipresolve.lst
 77.222.40.254/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+77.222.54.10/32 # sources=v38-historical-only-regional-resolver
+77.222.56.180/32 # sources=v38-historical-only-regional-resolver
 77.222.56.224/32 # sources=antifilter-ipresolve.lst
 77.222.57.10/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 77.222.57.193/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
@@ -27920,6 +28009,7 @@
 77.232.36.207/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 77.232.41.86/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 77.232.66.48/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+77.232.128.209/32 # sources=v38-historical-only-regional-resolver
 77.233.249.23/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 77.235.50.27/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 77.235.52.67/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
@@ -27966,6 +28056,7 @@
 77.246.105.194/32 # sources=antifilter-ipresolve.lst
 77.246.111.92/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 77.246.144.49/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+77.246.145.101/32 # sources=v38-historical-only-regional-resolver
 77.246.145.196/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 77.247.108.241/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 77.247.179.131/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
@@ -28652,6 +28743,8 @@
 80.78.27.14/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 80.78.27.78/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 80.78.27.120/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+80.78.245.247/32 # sources=v38-historical-only-regional-resolver
+80.78.246.31/32 # sources=v38-historical-only-regional-resolver
 80.79.5.57/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 80.79.6.8/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 80.79.6.10/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
@@ -28998,6 +29091,7 @@
 81.25.49.246/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 81.25.71.39/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 81.25.71.48/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+81.26.183.197/32 # sources=v38-historical-only-regional-resolver
 81.27.101.106/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 81.28.5.166/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 81.28.5.198/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
@@ -29390,6 +29484,7 @@
 81.177.104.93/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 81.177.107.255/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 81.177.111.93/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+81.177.121.37/32 # sources=v38-historical-only-regional-resolver
 81.177.133.194/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 81.177.135.31/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 81.177.135.41/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
@@ -29668,6 +29763,7 @@
 82.200.204.12/32 # sources=antifilter-ipresolve.lst
 82.200.204.13/32 # sources=antifilter-ipresolve.lst
 82.200.204.37/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+82.202.131.171/32 # sources=v38-historical-only-regional-resolver
 82.202.194.14/32 # sources=antifilter-ipresolve.lst
 82.202.244.28/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 82.208.22.51/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
@@ -30261,8 +30357,10 @@
 83.208.14.147/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 83.217.95.26/32 # sources=antifilter-ipresolve.lst
 83.219.14.218/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+83.220.168.99/32 # sources=v38-historical-only-regional-resolver
 83.221.180.229/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 83.222.14.207/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+83.222.16.251/32 # sources=v38-historical-only-regional-resolver
 83.222.104.86/32 # sources=antifilter-ipresolve.lst
 83.222.114.94/32 # sources=antifilter-ipresolve.lst
 83.222.232.158/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
@@ -30379,6 +30477,8 @@
 84.47.116.137/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 84.47.128.247/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 84.47.162.250/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+84.47.178.48/32 # sources=v38-historical-only-regional-resolver
+84.47.178.57/32 # sources=v38-historical-only-regional-resolver
 84.50.110.180/32 # sources=antifilter-ipresolve.lst
 84.199.9.116/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 84.200.110.123/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
@@ -30559,6 +30659,8 @@
 85.117.32.186/32 # sources=antifilter-ipresolve.lst
 85.117.32.187/32 # sources=antifilter-ipresolve.lst
 85.117.34.34/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+85.117.234.6/32 # sources=v38-historical-only-regional-resolver
+85.117.235.191/32 # sources=v38-historical-only-regional-resolver
 85.118.100.11/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 85.119.122.73/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 85.119.149.18/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
@@ -30597,6 +30699,7 @@
 85.187.142.69/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 85.187.142.70/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 85.187.142.74/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+85.192.30.39/32 # sources=v38-historical-only-regional-resolver
 85.192.40.195/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 85.192.48.12/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 85.192.48.147/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
@@ -30615,6 +30718,12 @@
 85.195.97.49/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 85.195.100.210/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 85.195.100.211/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+85.198.64.169/32 # sources=v38-historical-only-regional-resolver
+85.198.66.95/32 # sources=v38-historical-only-regional-resolver
+85.198.68.179/32 # sources=v38-historical-only-regional-resolver
+85.198.69.37/32 # sources=v38-historical-only-regional-resolver
+85.198.70.217/32 # sources=v38-historical-only-regional-resolver
+85.198.88.123/32 # sources=v38-historical-only-regional-resolver
 85.204.116.195/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 85.206.160.74/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 85.206.172.120/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
@@ -30942,6 +31051,7 @@
 87.120.254.235/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 87.121.91.7/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 87.121.98.45/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+87.228.33.239/32 # sources=v38-historical-only-regional-resolver
 87.229.72.165/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 87.229.73.27/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 87.229.120.69/32 # sources=antifilter-ipresolve.lst
@@ -31034,11 +31144,14 @@
 87.236.16.254/32 # sources=antifilter-ipresolve.lst
 87.236.17.11/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 87.236.17.98/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+87.236.17.245/32 # sources=v38-historical-only-regional-resolver
 87.236.18.33/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 87.236.18.96/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 87.236.18.134/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 87.236.18.208/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 87.236.18.237/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+87.236.19.13/32 # sources=v38-historical-only-regional-resolver
+87.236.19.14/32 # sources=v38-historical-only-regional-resolver
 87.236.19.50/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 87.236.19.57/32 # sources=antifilter-ipresolve.lst
 87.236.19.77/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
@@ -31047,15 +31160,19 @@
 87.236.19.123/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 87.236.19.141/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 87.236.19.142/32 # sources=antifilter-ipresolve.lst
+87.236.19.147/32 # sources=v38-historical-only-regional-resolver
+87.236.19.152/32 # sources=v38-historical-only-regional-resolver
 87.236.19.169/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 87.236.19.175/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 87.236.19.239/32 # sources=antifilter-ipresolve.lst
 87.236.19.240/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 87.236.19.243/32 # sources=antifilter-ipresolve.lst
+87.236.19.253/32 # sources=v38-historical-only-regional-resolver
 87.236.21.156/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 87.236.21.169/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 87.236.21.181/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 87.236.22.145/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+87.236.23.248/32 # sources=v38-historical-only-regional-resolver
 87.236.177.7/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 87.236.177.50/32 # sources=antifilter-ipresolve.lst
 87.236.177.67/32 # sources=antifilter-ipresolve.lst
@@ -31074,6 +31191,7 @@
 87.239.187.242/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 87.242.70.66/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 87.242.70.208/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+87.242.94.227/32 # sources=v38-historical-only-regional-resolver
 87.246.7.166/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 87.247.244.117/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 87.248.119.251/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
@@ -31768,6 +31886,7 @@
 88.210.13.205/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 88.210.14.143/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 88.212.202.50/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+88.212.206.60/32 # sources=v38-historical-only-regional-resolver
 88.212.206.70/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 88.212.206.251/32 # sources=antifilter-ipresolve.lst
 88.212.207.125/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
@@ -31835,6 +31954,7 @@
 89.23.103.188/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 89.23.107.224/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 89.23.115.137/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+89.23.196.57/32 # sources=v38-historical-only-regional-resolver
 89.30.216.196/32 # sources=antifilter-ipresolve.lst
 89.31.75.83/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 89.31.143.1/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
@@ -32329,6 +32449,7 @@
 89.208.107.241/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 89.208.137.48/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 89.208.142.248/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+89.208.209.177/32 # sources=v38-historical-only-regional-resolver
 89.208.212.70/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 89.212.118.80/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 89.213.174.226/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
@@ -32394,6 +32515,7 @@
 90.156.129.68/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 90.156.152.83/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 90.156.152.97/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+90.156.169.136/32 # sources=v38-historical-only-regional-resolver
 90.156.201.12/32 # sources=antifilter-ipresolve.lst
 90.156.201.15/32 # sources=antifilter-ipresolve.lst
 90.156.201.21/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
@@ -33382,6 +33504,7 @@
 91.193.18.180/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 91.193.18.183/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 91.193.42.11/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+91.193.180.93/32 # sources=v38-historical-only-regional-resolver
 91.193.180.112/32 # sources=antifilter-ipresolve.lst
 91.193.180.124/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 91.193.180.142/32 # sources=antifilter-ipresolve.lst
@@ -33396,6 +33519,7 @@
 91.193.182.152/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 91.193.183.76/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 91.193.183.120/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+91.193.183.161/32 # sources=v38-historical-only-regional-resolver
 91.194.2.65/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 91.194.2.76/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 91.194.2.77/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
@@ -33404,6 +33528,7 @@
 91.194.2.84/32 # sources=antifilter-ipresolve.lst
 91.194.2.91/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 91.194.2.93/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+91.194.55.44/32 # sources=v38-historical-only-regional-resolver
 91.194.57.150/32 # sources=antifilter-ipresolve.lst
 91.194.76.188/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 91.194.77.112/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
@@ -33497,6 +33622,8 @@
 91.201.28.212/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 91.201.52.102/32 # sources=antifilter-ipresolve.lst
 91.201.52.105/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+91.201.52.137/32 # sources=v38-historical-only-regional-resolver
+91.201.52.244/32 # sources=v38-historical-only-regional-resolver
 91.201.53.39/32 # sources=antifilter-ipresolve.lst
 91.201.55.75/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 91.201.60.8/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
@@ -33886,6 +34013,7 @@
 91.226.31.86/32 # sources=antifilter-ipresolve.lst
 91.226.31.87/32 # sources=antifilter-ipresolve.lst
 91.226.31.93/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+91.226.80.57/32 # sources=v38-historical-only-regional-resolver
 91.226.93.126/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 91.226.97.0/32 # sources=antifilter-ipresolve.lst
 91.226.97.37/32 # sources=antifilter-ipresolve.lst
@@ -34035,6 +34163,7 @@
 91.227.16.11/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 91.227.16.17/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 91.227.16.22/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+91.227.16.120/32 # sources=v38-historical-only-regional-resolver
 91.227.16.122/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 91.227.34.40/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 91.227.77.47/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
@@ -34178,6 +34307,7 @@
 91.236.136.105/32 # sources=antifilter-ipresolve.lst
 91.236.136.108/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 91.236.136.138/32 # sources=antifilter-ipresolve.lst
+91.236.136.140/32 # sources=v38-historical-only-regional-resolver
 91.236.136.148/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 91.236.136.166/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 91.236.136.168/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
@@ -34231,6 +34361,7 @@
 91.240.20.134/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 91.240.21.4/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 91.240.21.12/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+91.240.84.215/32 # sources=v38-historical-only-regional-resolver
 91.240.143.231/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 91.240.202.232/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 91.240.216.82/32 # sources=antifilter-ipresolve.lst
@@ -34286,6 +34417,7 @@
 92.53.96.41/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 92.53.96.100/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 92.53.96.101/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+92.53.96.105/32 # sources=v38-historical-only-regional-resolver
 92.53.96.106/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 92.53.96.113/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 92.53.96.119/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
@@ -34672,6 +34804,7 @@
 92.241.171.245/32 # sources=antifilter-ipresolve.lst
 92.243.16.143/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 92.243.95.216/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+92.246.76.92/32 # sources=v38-historical-only-regional-resolver
 92.246.137.47/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 92.249.44.35/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 92.249.45.108/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
@@ -35524,6 +35657,7 @@
 94.102.57.52/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 94.102.59.11/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 94.102.63.202/32 # sources=antifilter-ipresolve.lst
+94.103.2.184/32 # sources=v38-historical-only-regional-resolver
 94.103.9.50/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 94.103.9.55/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 94.103.9.183/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
@@ -35555,6 +35689,7 @@
 94.103.91.142/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 94.103.91.149/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 94.103.91.241/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+94.103.92.86/32 # sources=v38-historical-only-regional-resolver
 94.103.92.176/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 94.103.92.207/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 94.103.93.47/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
@@ -35688,6 +35823,7 @@
 94.131.11.50/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 94.131.11.183/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 94.131.14.36/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+94.131.91.12/32 # sources=v38-historical-only-regional-resolver
 94.131.99.28/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 94.131.105.31/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 94.131.105.33/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
@@ -35755,6 +35891,7 @@
 94.156.175.197/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 94.156.218.73/32 # sources=antifilter-ipresolve.lst
 94.158.48.2/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+94.159.117.234/32 # sources=v38-historical-only-regional-resolver
 94.176.182.247/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 94.176.210.64/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 94.176.210.65/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
@@ -35878,6 +36015,7 @@
 94.177.224.42/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 94.181.178.99/32 # sources=antifilter-ipresolve.lst
 94.181.191.195/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+94.183.236.236/32 # sources=v38-historical-only-regional-resolver
 94.190.156.157/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 94.198.40.49/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 94.198.52.44/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
@@ -35915,6 +36053,7 @@
 94.231.109.238/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 94.231.205.166/32 # sources=antifilter-ipresolve.lst
 94.231.205.181/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+94.232.60.73/32 # sources=v38-historical-only-regional-resolver
 94.232.244.144/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 94.232.245.99/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 94.236.26.161/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
@@ -36196,6 +36335,7 @@
 95.142.39.138/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 95.142.39.182/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 95.142.39.185/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+95.142.39.188/32 # sources=v38-historical-only-regional-resolver
 95.142.39.216/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 95.142.39.231/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 95.142.39.235/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
@@ -36419,6 +36559,7 @@
 95.211.244.220/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 95.211.244.221/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 95.211.247.68/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+95.213.179.67/32 # sources=v38-historical-only-regional-resolver
 95.213.179.76/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 95.213.205.34/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 95.213.216.139/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
@@ -95369,6 +95510,7 @@
 109.169.87.13/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 109.169.87.59/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 109.169.87.78/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+109.172.38.34/32 # sources=v38-historical-only-regional-resolver
 109.174.24.35/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 109.195.197.213/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 109.199.104.59/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
@@ -95983,6 +96125,7 @@
 109.248.147.246/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 109.248.150.41/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 109.248.203.151/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+109.248.203.159/32 # sources=v38-historical-only-regional-resolver
 109.248.231.12/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 109.248.245.12/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 109.250.76.88/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
@@ -96285,6 +96428,7 @@
 125.209.252.185/32 # sources=antifilter-ipresolve.lst
 125.209.252.186/32 # sources=antifilter-ipresolve.lst
 125.212.216.15/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+128.0.133.146/32 # sources=v38-historical-only-regional-resolver
 128.14.22.11/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 128.14.74.99/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 128.65.195.148/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
@@ -96452,6 +96596,7 @@
 130.0.232.187/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 130.0.235.20/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 130.0.237.23/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+130.49.164.206/32 # sources=v38-historical-only-regional-resolver
 130.61.201.141/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 130.117.46.163/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 130.117.53.188/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
@@ -96530,6 +96675,7 @@
 132.148.214.231/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 132.148.215.42/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 132.226.221.248/32 # sources=antifilter-ipresolve.lst
+132.243.230.110/32 # sources=v38-historical-only-regional-resolver
 133.18.30.166/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 133.18.73.80/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 133.18.90.17/32 # sources=antifilter-ipresolve.lst
@@ -96563,6 +96709,7 @@
 134.0.14.34/32 # sources=antifilter-ipresolve.lst
 134.0.14.240/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 134.0.112.80/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+134.0.113.54/32 # sources=v38-historical-only-regional-resolver
 134.0.113.63/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 134.0.116.160/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 134.19.177.67/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
@@ -97361,6 +97508,7 @@
 136.244.99.226/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 136.244.102.101/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 136.244.118.223/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+137.22.146.126/32 # sources=v38-historical-only-regional-resolver
 137.59.148.97/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 137.66.0.25/32 # sources=antifilter-ipresolve.lst
 137.66.44.194/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
@@ -97443,6 +97591,7 @@
 138.1.38.130/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 138.2.21.2/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 138.3.223.229/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+138.16.168.70/32 # sources=v38-historical-only-regional-resolver
 138.68.2.119/32 # sources=antifilter-ipresolve.lst
 138.68.19.218/32 # sources=antifilter-ipresolve.lst
 138.68.42.43/32 # sources=antifilter-ipresolve.lst
@@ -97643,6 +97792,9 @@
 138.122.25.131/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 138.122.25.135/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 138.122.247.9/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+138.124.89.173/32 # sources=v38-historical-only-regional-resolver
+138.124.112.53/32 # sources=v38-historical-only-regional-resolver
+138.124.116.120/32 # sources=v38-historical-only-regional-resolver
 138.124.181.5/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 138.124.181.6/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 138.124.181.7/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
@@ -100608,6 +100760,7 @@
 152.89.219.55/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 152.89.219.119/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 152.89.219.124/32 # sources=antifilter-ipresolve.lst
+152.89.219.135/32 # sources=v38-historical-only-regional-resolver
 152.89.234.25/32 # sources=antifilter-ipresolve.lst
 152.89.247.74/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 152.89.247.109/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
@@ -100823,6 +100976,17 @@
 155.133.142.6/32 # sources=antifilter-ipresolve.lst
 155.138.193.253/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 155.138.241.194/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+155.212.134.10/32 # sources=v38-historical-only-regional-resolver
+155.212.137.129/32 # sources=v38-historical-only-regional-resolver
+155.212.142.237/32 # sources=v38-historical-only-regional-resolver
+155.212.143.151/32 # sources=v38-historical-only-regional-resolver
+155.212.167.142/32 # sources=v38-historical-only-regional-resolver
+155.212.210.121/32 # sources=v38-historical-only-regional-resolver
+155.212.210.209/32 # sources=v38-historical-only-regional-resolver
+155.212.217.21/32 # sources=v38-historical-only-regional-resolver
+155.212.219.214/32 # sources=v38-historical-only-regional-resolver
+155.212.223.65/32 # sources=v38-historical-only-regional-resolver
+155.212.223.70/32 # sources=v38-historical-only-regional-resolver
 155.248.218.23/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 155.254.244.37/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 155.254.244.38/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
@@ -100864,6 +101028,7 @@
 157.7.208.61/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 157.7.209.205/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 157.20.182.174/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+157.22.197.21/32 # sources=v38-historical-only-regional-resolver
 157.65.90.124/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 157.90.0.42/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 157.90.2.142/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
@@ -101506,6 +101671,19 @@
 159.148.199.143/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 159.174.57.21/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 159.174.132.170/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+159.194.201.148/32 # sources=v38-historical-only-regional-resolver
+159.194.203.97/32 # sources=v38-historical-only-regional-resolver
+159.194.209.56/32 # sources=v38-historical-only-regional-resolver
+159.194.209.100/32 # sources=v38-historical-only-regional-resolver
+159.194.211.41/32 # sources=v38-historical-only-regional-resolver
+159.194.213.190/32 # sources=v38-historical-only-regional-resolver
+159.194.226.241/32 # sources=v38-historical-only-regional-resolver
+159.194.234.175/32 # sources=v38-historical-only-regional-resolver
+159.194.235.231/32 # sources=v38-historical-only-regional-resolver
+159.194.237.5/32 # sources=v38-historical-only-regional-resolver
+159.194.240.142/32 # sources=v38-historical-only-regional-resolver
+159.194.251.37/32 # sources=v38-historical-only-regional-resolver
+159.194.254.128/32 # sources=v38-historical-only-regional-resolver
 159.196.59.249/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 159.203.10.129/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 159.203.18.120/32 # sources=antifilter-ipresolve.lst
@@ -105008,6 +105186,7 @@
 170.106.82.203/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 170.130.40.14/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 170.130.44.148/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+170.168.1.118/32 # sources=v38-historical-only-regional-resolver
 170.178.168.203/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 170.178.183.18/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 170.187.156.161/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
@@ -131777,6 +131956,9 @@
 176.10.250.225/32 # sources=antifilter-ipresolve.lst
 176.10.250.229/32 # sources=antifilter-ipresolve.lst
 176.10.250.233/32 # sources=antifilter-ipresolve.lst
+176.12.73.232/32 # sources=v38-historical-only-regional-resolver
+176.14.128.205/32 # sources=v38-historical-only-regional-resolver
+176.15.143.100/32 # sources=v38-historical-only-regional-resolver
 176.28.12.211/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 176.28.64.180/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 176.31.5.124/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
@@ -131877,7 +132059,14 @@
 176.56.226.176/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 176.56.228.100/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 176.56.229.7/32 # sources=antifilter-ipresolve.lst
+176.57.64.76/32 # sources=v38-historical-only-regional-resolver
+176.57.64.239/32 # sources=v38-historical-only-regional-resolver
+176.57.65.161/32 # sources=v38-historical-only-regional-resolver
 176.57.65.242/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+176.57.66.194/32 # sources=v38-historical-only-regional-resolver
+176.57.66.239/32 # sources=v38-historical-only-regional-resolver
+176.57.67.174/32 # sources=v38-historical-only-regional-resolver
+176.57.67.175/32 # sources=v38-historical-only-regional-resolver
 176.57.68.48/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 176.57.68.86/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 176.57.68.96/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
@@ -132055,6 +132244,7 @@
 176.105.254.191/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 176.105.255.88/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 176.107.179.149/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+176.109.103.100/32 # sources=v38-historical-only-regional-resolver
 176.111.60.57/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 176.111.61.179/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 176.111.63.42/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
@@ -132153,6 +132343,7 @@
 176.126.207.78/32 # sources=antifilter-ipresolve.lst
 176.126.207.157/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 176.126.207.232/32 # sources=antifilter-ipresolve.lst
+176.209.48.88/32 # sources=v38-historical-only-regional-resolver
 176.214.101.60/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 176.217.116.155/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 176.222.54.235/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
@@ -132557,6 +132748,7 @@
 178.57.90.214/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 178.57.217.191/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 178.57.219.64/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+178.57.222.40/32 # sources=v38-historical-only-regional-resolver
 178.62.5.160/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 178.62.16.10/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 178.62.24.128/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
@@ -133333,6 +133525,7 @@
 178.218.223.252/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 178.222.247.237/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 178.236.246.119/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+178.236.255.75/32 # sources=v38-historical-only-regional-resolver
 178.237.35.10/32 # sources=antifilter-ipresolve.lst
 178.237.35.12/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 178.237.35.16/32 # sources=antifilter-ipresolve.lst
@@ -133370,6 +133563,7 @@
 178.248.234.146/32 # sources=antifilter-ipresolve.lst
 178.248.235.182/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 178.248.236.23/32 # sources=antifilter-ipresolve.lst
+178.248.236.100/32 # sources=v38-historical-only-regional-resolver
 178.248.238.82/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 178.248.238.89/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 178.248.238.158/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
@@ -133378,6 +133572,7 @@
 178.250.15.208/32 # sources=antifilter-ipresolve.lst
 178.250.51.131/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 178.250.73.49/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+178.250.158.55/32 # sources=v38-historical-only-regional-resolver
 178.250.189.93/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 178.250.241.36/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 178.250.241.43/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
@@ -135580,6 +135775,7 @@
 179.48.251.210/32 # sources=antifilter-ipresolve.lst
 179.61.219.153/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 179.61.219.182/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+179.252.220.119/32 # sources=v38-historical-only-regional-resolver
 180.43.4.9/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 180.215.66.116/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 180.222.178.138/32 # sources=antifilter-ipresolve.lst
@@ -135849,6 +136045,7 @@
 185.4.67.130/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 185.4.67.171/32 # sources=antifilter-ipresolve.lst
 185.4.67.181/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+185.4.67.223/32 # sources=v38-historical-only-regional-resolver
 185.4.67.227/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 185.4.67.238/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 185.4.67.243/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
@@ -136162,6 +136359,7 @@
 185.20.100.193/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 185.20.100.194/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 185.20.100.195/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+185.20.113.71/32 # sources=v38-historical-only-regional-resolver
 185.20.184.24/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 185.20.184.118/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 185.20.184.220/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
@@ -136187,6 +136385,7 @@
 185.22.155.56/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 185.22.155.62/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 185.22.155.77/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+185.23.35.42/32 # sources=v38-historical-only-regional-resolver
 185.23.70.17/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 185.23.108.20/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 185.23.108.36/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
@@ -136401,6 +136600,7 @@
 185.32.57.119/32 # sources=antifilter-ipresolve.lst
 185.32.57.128/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 185.32.57.138/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+185.32.57.142/32 # sources=v38-historical-only-regional-resolver
 185.32.57.150/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 185.32.57.157/32 # sources=antifilter-ipresolve.lst
 185.32.57.205/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
@@ -138381,6 +138581,7 @@
 185.116.195.41/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 185.116.195.172/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 185.116.195.192/32 # sources=antifilter-ipresolve.lst
+185.116.195.194/32 # sources=v38-historical-only-regional-resolver
 185.116.195.195/32 # sources=antifilter-ipresolve.lst
 185.116.195.196/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 185.116.195.203/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
@@ -139986,6 +140187,7 @@
 185.179.189.16/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 185.179.190.233/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 185.179.191.67/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+185.179.191.146/32 # sources=v38-historical-only-regional-resolver
 185.180.12.68/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 185.180.196.37/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 185.180.196.69/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
@@ -140705,6 +140907,9 @@
 185.206.214.197/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 185.206.214.251/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 185.206.215.225/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+185.207.0.216/32 # sources=v38-historical-only-regional-resolver
+185.207.1.184/32 # sources=v38-historical-only-regional-resolver
+185.207.1.247/32 # sources=v38-historical-only-regional-resolver
 185.207.108.140/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 185.207.136.49/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 185.207.188.150/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
@@ -141103,6 +141308,7 @@
 185.225.16.224/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 185.225.19.195/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 185.225.34.53/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+185.225.34.82/32 # sources=v38-historical-only-regional-resolver
 185.225.34.220/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 185.225.35.239/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 185.225.35.246/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
@@ -141163,6 +141369,7 @@
 185.231.153.123/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 185.231.153.239/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 185.231.154.44/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+185.231.154.200/32 # sources=v38-historical-only-regional-resolver
 185.231.154.204/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 185.231.155.95/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 185.231.155.145/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
@@ -141536,6 +141743,7 @@
 185.240.30.61/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 185.240.30.62/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 185.240.31.2/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+185.240.102.22/32 # sources=v38-historical-only-regional-resolver
 185.240.102.38/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 185.240.102.207/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 185.240.103.71/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
@@ -141574,6 +141782,7 @@
 185.241.61.135/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 185.241.61.238/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 185.241.61.254/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+185.241.195.81/32 # sources=v38-historical-only-regional-resolver
 185.242.85.218/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 185.242.86.115/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 185.242.86.160/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
@@ -141653,6 +141862,7 @@
 185.244.219.213/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 185.245.180.37/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 185.246.45.62/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+185.246.67.193/32 # sources=v38-historical-only-regional-resolver
 185.246.88.245/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 185.246.128.42/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 185.246.128.50/32 # sources=antifilter-ipresolve.lst
@@ -141901,6 +142111,7 @@
 186.202.153.7/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 186.202.153.170/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 186.202.153.180/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+186.246.31.97/32 # sources=v38-historical-only-regional-resolver
 187.45.193.175/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 187.87.90.56/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 188.27.134.15/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
@@ -142475,6 +142686,7 @@
 188.95.113.105/32 # sources=antifilter-ipresolve.lst
 188.95.154.135/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 188.95.154.136/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+188.113.168.100/32 # sources=v38-historical-only-regional-resolver
 188.114.96.0/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 188.114.96.1/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 188.114.96.2/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
@@ -142628,6 +142840,8 @@
 188.119.113.248/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 188.119.113.251/32 # sources=antifilter-ipresolve.lst
 188.119.149.81/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+188.120.225.190/32 # sources=v38-historical-only-regional-resolver
+188.120.253.166/32 # sources=v38-historical-only-regional-resolver
 188.121.41.51/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 188.121.41.117/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 188.121.43.25/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
@@ -143118,6 +143332,7 @@
 188.127.241.83/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 188.127.241.85/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 188.127.243.65/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+188.127.243.156/32 # sources=v38-historical-only-regional-resolver
 188.127.249.34/32 # sources=antifilter-ipresolve.lst
 188.127.249.193/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 188.127.250.153/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
@@ -143736,6 +143951,7 @@
 188.241.58.136/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 188.241.58.142/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 188.241.120.34/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+188.241.216.223/32 # sources=v38-historical-only-regional-resolver
 188.241.222.206/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 188.242.178.192/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 188.243.58.89/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
@@ -143758,6 +143974,7 @@
 188.244.122.202/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 188.244.122.203/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 188.244.122.216/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+188.246.226.192/32 # sources=v38-historical-only-regional-resolver
 188.246.231.162/32 # sources=antifilter-ipresolve.lst
 188.246.235.221/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 188.247.109.170/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
@@ -144427,6 +144644,7 @@
 192.133.142.243/32 # sources=antifilter-ipresolve.lst
 192.133.142.255/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 192.138.189.25/32 # sources=antifilter-ipresolve.lst
+192.144.56.64/32 # sources=v38-historical-only-regional-resolver
 192.144.60.14/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 192.144.60.18/32 # sources=antifilter-ipresolve.lst
 192.145.234.88/32 # sources=antifilter-ipresolve.lst
@@ -144694,6 +144912,7 @@
 193.0.61.132/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 193.0.178.96/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 193.0.201.76/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+193.3.17.48/32 # sources=v38-historical-only-regional-resolver
 193.9.49.1/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 193.9.49.2/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 193.9.49.4/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
@@ -145698,6 +145917,9 @@
 193.164.17.160/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 193.164.149.163/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 193.164.149.244/32 # sources=antifilter-ipresolve.lst
+193.168.48.61/32 # sources=v38-historical-only-regional-resolver
+193.168.49.50/32 # sources=v38-historical-only-regional-resolver
+193.168.49.187/32 # sources=v38-historical-only-regional-resolver
 193.168.131.40/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 193.168.131.85/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 193.168.131.89/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
@@ -145732,6 +145954,8 @@
 193.176.77.23/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 193.176.77.109/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 193.176.77.131/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+193.176.78.25/32 # sources=v38-historical-only-regional-resolver
+193.176.79.109/32 # sources=v38-historical-only-regional-resolver
 193.176.79.192/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 193.176.183.17/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 193.176.184.100/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
@@ -145912,6 +146136,7 @@
 193.233.15.243/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 193.233.15.252/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 193.233.15.254/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+193.233.20.92/32 # sources=v38-historical-only-regional-resolver
 193.233.48.103/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 193.233.63.2/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 193.233.63.3/32 # sources=antifilter-ipresolve.lst
@@ -145984,8 +146209,11 @@
 193.233.132.14/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 193.233.132.147/32 # sources=antifilter-ipresolve.lst
 193.233.135.16/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+193.233.135.199/32 # sources=v38-historical-only-regional-resolver
 193.233.202.96/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+193.233.218.82/32 # sources=v38-historical-only-regional-resolver
 193.233.233.1/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+193.233.250.108/32 # sources=v38-historical-only-regional-resolver
 193.234.165.82/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 193.234.165.243/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 193.234.223.132/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
@@ -146200,7 +146428,10 @@
 194.55.245.233/32 # sources=antifilter-ipresolve.lst
 194.58.68.177/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 194.58.70.93/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+194.58.70.148/32 # sources=v38-historical-only-regional-resolver
+194.58.88.103/32 # sources=v38-historical-only-regional-resolver
 194.58.104.169/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+194.58.105.103/32 # sources=v38-historical-only-regional-resolver
 194.58.107.86/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 194.58.109.232/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 194.58.112.165/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
@@ -146233,6 +146464,7 @@
 194.62.251.138/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 194.63.248.52/32 # sources=antifilter-ipresolve.lst
 194.67.67.109/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+194.67.68.101/32 # sources=v38-historical-only-regional-resolver
 194.67.68.225/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 194.67.92.172/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 194.67.92.222/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
@@ -146241,6 +146473,7 @@
 194.67.111.102/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 194.67.111.121/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 194.67.117.144/32 # sources=antifilter-ipresolve.lst
+194.67.122.49/32 # sources=v38-historical-only-regional-resolver
 194.67.196.31/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 194.67.196.63/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 194.67.196.103/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
@@ -146264,6 +146497,7 @@
 194.85.61.76/32 # sources=antifilter-ipresolve.lst
 194.87.14.76/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 194.87.31.34/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+194.87.76.101/32 # sources=v38-historical-only-regional-resolver
 194.87.97.168/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 194.87.103.70/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 194.87.107.192/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
@@ -146326,6 +146560,19 @@
 194.127.164.4/32 # sources=antifilter-ipresolve.lst
 194.132.63.152/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 194.132.110.176/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+194.135.23.29/32 # sources=v38-historical-only-regional-resolver
+194.135.23.83/32 # sources=v38-historical-only-regional-resolver
+194.135.23.119/32 # sources=v38-historical-only-regional-resolver
+194.135.23.214/32 # sources=v38-historical-only-regional-resolver
+194.135.23.231/32 # sources=v38-historical-only-regional-resolver
+194.135.24.5/32 # sources=v38-historical-only-regional-resolver
+194.135.24.39/32 # sources=v38-historical-only-regional-resolver
+194.135.24.83/32 # sources=v38-historical-only-regional-resolver
+194.135.24.117/32 # sources=v38-historical-only-regional-resolver
+194.135.24.139/32 # sources=v38-historical-only-regional-resolver
+194.135.24.180/32 # sources=v38-historical-only-regional-resolver
+194.135.24.213/32 # sources=v38-historical-only-regional-resolver
+194.135.24.232/32 # sources=v38-historical-only-regional-resolver
 194.135.33.4/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 194.135.33.76/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 194.135.33.91/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
@@ -146464,6 +146711,7 @@
 194.226.41.11/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 194.226.41.13/32 # sources=antifilter-ipresolve.lst
 194.226.60.32/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+194.226.112.184/32 # sources=v38-historical-only-regional-resolver
 194.233.83.62/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 194.233.84.235/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 194.233.86.170/32 # sources=antifilter-ipresolve.lst
@@ -146518,6 +146766,7 @@
 195.2.78.252/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 195.2.80.10/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 195.2.80.66/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+195.2.80.146/32 # sources=v38-historical-only-regional-resolver
 195.2.81.111/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 195.2.84.101/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 195.2.84.111/32 # sources=antifilter-ipresolve.lst
@@ -146686,6 +146935,7 @@
 195.24.68.10/32 # sources=antifilter-ipresolve.lst
 195.24.68.20/32 # sources=antifilter-ipresolve.lst
 195.24.68.22/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+195.24.71.185/32 # sources=v38-historical-only-regional-resolver
 195.26.153.167/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 195.28.12.144/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 195.28.180.102/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
@@ -146791,7 +147041,9 @@
 195.54.178.67/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 195.54.192.109/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 195.55.105.229/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+195.58.48.26/32 # sources=v38-historical-only-regional-resolver
 195.58.54.246/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+195.58.56.96/32 # sources=v38-historical-only-regional-resolver
 195.60.71.177/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 195.62.46.66/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 195.62.46.69/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
@@ -148551,6 +148803,10 @@
 200.124.154.239/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 200.124.154.243/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 200.183.200.182/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+201.24.63.233/32 # sources=v38-historical-only-regional-resolver
+201.34.130.154/32 # sources=v38-historical-only-regional-resolver
+201.34.137.151/32 # sources=v38-historical-only-regional-resolver
+201.51.18.114/32 # sources=v38-historical-only-regional-resolver
 201.218.220.28/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 201.218.220.226/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 202.6.244.93/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
@@ -151906,6 +152162,7 @@
 212.7.207.92/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 212.7.207.98/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 212.7.211.104/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+212.8.228.88/32 # sources=v38-historical-only-regional-resolver
 212.8.240.195/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 212.8.242.149/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 212.8.244.19/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
@@ -152297,6 +152554,9 @@
 212.63.223.226/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 212.63.223.227/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 212.64.147.151/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+212.67.8.205/32 # sources=v38-historical-only-regional-resolver
+212.67.9.44/32 # sources=v38-historical-only-regional-resolver
+212.67.12.210/32 # sources=v38-historical-only-regional-resolver
 212.71.235.87/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 212.71.239.201/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 212.71.244.19/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
@@ -152856,6 +153116,7 @@
 212.118.41.237/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 212.118.42.3/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 212.118.43.232/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+212.118.45.86/32 # sources=v38-historical-only-regional-resolver
 212.118.48.121/32 # sources=antifilter-ipresolve.lst
 212.118.53.53/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 212.118.55.80/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
@@ -153093,6 +153354,7 @@
 213.136.93.170/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 213.136.94.37/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 213.136.94.45/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+213.139.209.78/32 # sources=v38-historical-only-regional-resolver
 213.142.130.84/32 # sources=antifilter-ipresolve.lst
 213.142.146.27/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 213.142.146.28/32 # sources=antifilter-ipresolve.lst
@@ -153558,6 +153820,7 @@
 213.226.100.73/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 213.226.100.121/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 213.226.100.168/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
+213.226.114.177/32 # sources=v38-historical-only-regional-resolver
 213.226.124.251/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 213.227.129.81/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 213.227.129.232/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
@@ -153870,6 +154133,11 @@
 217.112.43.74/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 217.112.43.105/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 217.112.167.50/32 # sources=antifilter-ipresolve.lst
+217.114.3.5/32 # sources=v38-historical-only-regional-resolver
+217.114.3.116/32 # sources=v38-historical-only-regional-resolver
+217.114.11.127/32 # sources=v38-historical-only-regional-resolver
+217.114.14.208/32 # sources=v38-historical-only-regional-resolver
+217.114.15.211/32 # sources=v38-historical-only-regional-resolver
 217.114.42.6/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 217.114.42.11/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only
 217.114.42.14/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve-only

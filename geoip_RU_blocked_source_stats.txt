@@ -8,6 +8,9 @@ v38-approved-baseline	AVAILABLE	193307	193307	193307	0	0
 v38-historical-ip.lst	AVAILABLE	50830	50830	50830	0	0
 v38-historical-ipresolve.lst	AVAILABLE	154198	154198	154198	0	0
 v38-historical-subnet.lst	AVAILABLE	71	71	71	0	0
+regional-origin-mask	AVAILABLE	23633	23633	0	0	0
+shared-infrastructure-mask	AVAILABLE	2980	2980	0	0	0
 runetfreedom-static-telegram	CURATED	12	12	12	0	0
 TOTAL_APPROVED_UNIQUE	-	-	200172	200172	-	-
 TOTAL_REVIEW_ROWS	-	-	-	0	28572	-
+v38-historical-only-regional-resolver	APPLIED	-	268	268	0	0

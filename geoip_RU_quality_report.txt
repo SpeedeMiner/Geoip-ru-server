@@ -1,16 +1,19 @@
 GeoIP DIRECT RU+BY+KZ CLIENT v41 — corporate company-ASN origins exempted from RKN carve-outs
-Generated UTC: 2026-11-13T05:51:52.580078+00:00
+Generated UTC: 2026-11-13T08:37:23.318440+00:00
 Base v37 GeoIP SHA-256: 6b0830dd5087046f4b2d2de9068c4e7ed4fc56122074d89a46cbfdd3104f2cb3
-v41 GeoIP SHA-256: 576bf92bf1dc57a85ff5292e9dd2519f1400aabc160503721b1ae0a4431fb1eb
+v41 GeoIP SHA-256: 53d235e89a9255709efd61df5c5f3c98f291398e1f94be448ee12ec24c5fadfd
 
 POLICY
 - RU+BY+KZ registered resource prefixes and named service destinations are DIRECT regardless of geolocation.
 - PRIVATE has absolute precedence.
 - CORE_CORPORATE exact origin prefixes are protected from all approved block inputs.
-- SHARED_INFRA exact origin prefixes are protected only from current ipresolve resolver-derived candidates.
-- Exact ip.lst, bounded subnet.lst, and unclassified legacy v38 baseline records remain hard blocks for SHARED_INFRA.
+- SHARED_INFRA exact origin prefixes are protected only against the resolver-only layer.
+- Current ip.lst, bounded subnet.lst, Telegram and ineligible historical v38 records stay in the hard layer.
+- Eligible v38-only regional IPv4 /32 records move to the resolver-only layer without leaving the approved union.
 - MOAS is CORE_CORPORATE when any exact origin is CORE; otherwise SHARED_INFRA receives resolver-only protection.
-- RIR-RU registration alone does not imply corporate ownership and does not create an exception.
+- RIR RU+BY+KZ selected origins protect against the resolver-only layer, not hard blocks.
+- Regional registration alone does not imply corporate ownership.
+- Only literal service hosts can override hard blocks, never a service subnet or operator whitelist.
 - PRIVATE has absolute precedence over every origin class and all block exceptions.
 - IP GeoIP cannot distinguish unrelated tenants on shared IPs; broad RKN summaries can overblock co-resident services.
 
@@ -20,10 +23,10 @@ RU IPv4 addresses: 52632577
 RU IPv6 addresses: 1192521157300195567661209186467840
 
 V41 FINAL
-RU CIDRs: 193514
-RU IPv4 addresses: 53530519
+RU CIDRs: 190803
+RU IPv4 addresses: 53531389
 RU IPv6 addresses: 1205876356595180923515330646507520
-New IPv4 addresses vs v37 after PRIVATE/RKN/company-ASN exception: 897942
+New IPv4 addresses vs v37 after PRIVATE/RKN/company-ASN exception: 898812
 New IPv6 addresses vs v37 after PRIVATE/RKN/company-ASN exception: 13355199294985355854121460039680
 PRIVATE IPv4 addresses: 592708862
 PRIVATE IPv6 addresses: 4325545831231176725068219651071148031
@@ -38,7 +41,7 @@ RIR registration is resource-holder evidence, not physical geolocation or proof 
 HYDRA ROUTING-INTENT COVERAGE
 Hydra DIRECT CIDRs: 37187
 Hydra WHITELIST CIDRs: 6710
-Hydra eligible after PRIVATE and v41 blocks: {'ipv4': 49123922, 'ipv6': 2847564326570538260578726576128}
+Hydra eligible after PRIVATE and v41 blocks: {'ipv4': 49124089, 'ipv6': 2847564326570538260578726576128}
 Hydra is routing-intent, not a geolocation or corporate attribution; it does not override blocked/PRIVATE.
 
 SERVICE DIRECT INPUTS
@@ -46,25 +49,27 @@ Kyoresuas Standard services represented in service catalog: 90
 W1ZARDZ unique service/direct prefixes: 948
 HXEHEX exact host-IP prefixes: 141664
 Escapingworm operator whitelist prefixes: 88
+Literal service hosts eligible for hard exceptions: 142775
+Service resolver-protected address space: {'ipv4': 963803, 'ipv6': 3322716899175153296500653555718}
 Service and operator whitelist routes are separate from geographic/RIR resource evidence.
 Service datasets can include foreign-located or shared-provider endpoints; no country geolocation filter was applied.
 
 RKN BLOCKS AND CORPORATE COMPANY-ASN EXCEPTION
 Original v37 approved blocked CIDRs: 200172
-Effective v41 blocked CIDRs after class-aware exceptions: 126088
-Total block addresses exempted: IPv4=2209 IPv6=0
-Total exempted addresses intersecting DIRECT after PRIVATE: IPv4=2209 IPv6=0
+Effective v41 blocked CIDRs after class-aware exceptions: 125353
+Total block addresses exempted: IPv4=3079 IPv6=0
+Total exempted addresses intersecting DIRECT after PRIVATE: IPv4=3079 IPv6=0
 CORE_CORPORATE exempted DIRECT addresses after PRIVATE: IPv4=32 IPv6=0
-SHARED_INFRA resolver-only exempted DIRECT addresses: IPv4=416 IPv6=0
+SHARED_INFRA resolver-only exempted DIRECT addresses: IPv4=450 IPv6=0
 All company origin prefixes: 3263; IPv4 addresses=19472128; IPv6 addresses=21372506477678918853184033128448
 CORE_CORPORATE origin prefixes: 283; SHARED_INFRA origin prefixes: 2980
 Antifilter ipsum REVIEW-ONLY IPv4 /24 prefixes: 18831
 Antifilter ipsum raw/valid/invalid rows: 18831/18831/0
-Potential additional IPv4 DIRECT address space affected by /24 review candidates: 137204
+Potential additional IPv4 DIRECT address space affected by /24 review candidates: 89200
 Potential additional IPv6 DIRECT address space affected by /24 review candidates: 0
 ipsum /24 candidates are NOT automatically removed from DIRECT; only exact host and bounded prefixes already approved by v37 remain automatic, excluding exact corporate company-ASN origin prefixes from those carves.
 The /24 impact estimate excludes the exact corporate company-ASN prefix space exempted by the v41 policy.
-Combined v41 effective blocked IPv4 address space: 584173
+Combined v41 effective blocked IPv4 address space: 583303
 Combined v41 effective blocked IPv6 address space: 79232998217542796110242775040
 ipsum is a third-party RKN-derived /24 summary, not a direct official RKN API.
 Every /24 carve affects the whole 256-address block; on shared hosting/CDNs it may send unrelated co-resident destinations through VPN.
@@ -77,144 +82,59 @@ FILES
 - geoip_RU_v41_blocked_ip_exclusions.txt: effective non-corporate blocked set applied to v41.
 - geoip_RU_company_asn_bgp_prefixes.txt: exact prefixes originated by the curated corporate company-ASN allowlist.
 
-SHA-256 output: 576bf92bf1dc57a85ff5292e9dd2519f1400aabc160503721b1ae0a4431fb1eb
+SHA-256 output: 53d235e89a9255709efd61df5c5f3c98f291398e1f94be448ee12ec24c5fadfd
 
 PRE_PUBLICATION_V41_HARD_POLICY_GATE
 Status: PASS
 Inputs: this build's SHA256-verified manifest, GeoIP, and source sidecars
 Policy: PRIVATE and effective hard blocks excluded from DIRECT
-Allowed hard exceptions: CORE_CORPORATE or configured service-protection mask
+Allowed hard exceptions: CORE_CORPORATE or eligible literal service host
 No hard exception is accepted solely due to SHARED_INFRA or BGP/ASN origin
 Exception source membership does not prove a current regulator IP block
-ipv4: hard_direct=154, unprotected=0
-  CORE_CORPORATE: addresses=19, current_ip_lst=16, current_subnet_lst=0, service_protected=18, review_cidr_count=19, review_cidrs_sha256=693ee1f6c27083767c4902d948ca80c6ee2217635cd9ba0884c3b87d9a870120
+ipv4: hard_direct=60, unprotected=0
+  CORE_CORPORATE: addresses=16, current_ip_lst=16, current_subnet_lst=0, service_protected=0, review_cidr_count=16, review_cidrs_sha256=33cfdac328730961942cb3b35e284449a7812c35ebf373dfe67b3e71b190e48f
     OBSERVED_HARD_DIRECT CORE_CORPORATE 87.240.132.78/32
     OBSERVED_HARD_DIRECT CORE_CORPORATE 89.208.84.111/32
-    OBSERVED_HARD_DIRECT CORE_CORPORATE 89.208.209.177/32
     OBSERVED_HARD_DIRECT CORE_CORPORATE 89.208.211.102/32
     OBSERVED_HARD_DIRECT CORE_CORPORATE 89.208.221.5/32
     OBSERVED_HARD_DIRECT CORE_CORPORATE 89.208.223.117/32
     OBSERVED_HARD_DIRECT CORE_CORPORATE 89.208.223.193/32
     OBSERVED_HARD_DIRECT CORE_CORPORATE 89.208.228.19/32
-    OBSERVED_HARD_DIRECT CORE_CORPORATE 94.131.91.12/32
     OBSERVED_HARD_DIRECT CORE_CORPORATE 95.163.249.111/32
     OBSERVED_HARD_DIRECT CORE_CORPORATE 146.185.243.90/32
     OBSERVED_HARD_DIRECT CORE_CORPORATE 160.5.219.190/32
     OBSERVED_HARD_DIRECT CORE_CORPORATE 161.104.106.238/32
     OBSERVED_HARD_DIRECT CORE_CORPORATE 185.86.147.14/32
     OBSERVED_HARD_DIRECT CORE_CORPORATE 185.241.194.222/32
-    OBSERVED_HARD_DIRECT CORE_CORPORATE 185.241.195.81/32
     OBSERVED_HARD_DIRECT CORE_CORPORATE 212.233.78.117/32
     OBSERVED_HARD_DIRECT CORE_CORPORATE 212.233.79.158/32
     OBSERVED_HARD_DIRECT CORE_CORPORATE 212.233.89.180/32
-  SHARED_INFRA: addresses=60, current_ip_lst=58, current_subnet_lst=0, service_protected=60, review_cidr_count=60, review_cidrs_sha256=c3eed10cf82378d7461817637e47b9aa64716325f5ea3fa8fba51939c1a2c98f
-    OBSERVED_HARD_DIRECT SHARED_INFRA 46.21.247.148/32
+  SHARED_INFRA: addresses=11, current_ip_lst=11, current_subnet_lst=0, service_protected=11, review_cidr_count=11, review_cidrs_sha256=4dd715763bc39189e6595b48bc873786309c88eb8469bdf3874517c28f856977
     OBSERVED_HARD_DIRECT SHARED_INFRA 46.148.232.104/32
-    OBSERVED_HARD_DIRECT SHARED_INFRA 78.155.198.216/32
-    OBSERVED_HARD_DIRECT SHARED_INFRA 81.26.183.197/32
-    OBSERVED_HARD_DIRECT SHARED_INFRA 81.26.184.189/32
-    OBSERVED_HARD_DIRECT SHARED_INFRA 81.161.98.167/32
-    OBSERVED_HARD_DIRECT SHARED_INFRA 81.161.99.223/32
-    OBSERVED_HARD_DIRECT SHARED_INFRA 81.200.149.9/32
-    OBSERVED_HARD_DIRECT SHARED_INFRA 89.169.128.225/32
-    OBSERVED_HARD_DIRECT SHARED_INFRA 89.169.143.19/32
-    OBSERVED_HARD_DIRECT SHARED_INFRA 89.169.147.86/32
-    OBSERVED_HARD_DIRECT SHARED_INFRA 89.169.154.135/32
-    OBSERVED_HARD_DIRECT SHARED_INFRA 89.169.160.161/32
-    OBSERVED_HARD_DIRECT SHARED_INFRA 89.169.161.50/32
     OBSERVED_HARD_DIRECT SHARED_INFRA 92.53.96.144/32
     OBSERVED_HARD_DIRECT SHARED_INFRA 95.129.236.1/32
-    OBSERVED_HARD_DIRECT SHARED_INFRA 95.181.181.115/32
-    OBSERVED_HARD_DIRECT SHARED_INFRA 111.88.151.77/32
-    OBSERVED_HARD_DIRECT SHARED_INFRA 111.88.154.238/32
-    OBSERVED_HARD_DIRECT SHARED_INFRA 111.88.155.167/32
-    OBSERVED_HARD_DIRECT SHARED_INFRA 111.88.246.235/32
-    OBSERVED_HARD_DIRECT SHARED_INFRA 111.88.253.116/32
-    OBSERVED_HARD_DIRECT SHARED_INFRA 153.51.163.157/32
-    OBSERVED_HARD_DIRECT SHARED_INFRA 158.160.13.236/32
-    OBSERVED_HARD_DIRECT SHARED_INFRA 158.160.63.17/32
-    OBSERVED_HARD_DIRECT SHARED_INFRA 158.160.94.242/32
-    OBSERVED_HARD_DIRECT SHARED_INFRA 158.160.109.94/32
-    OBSERVED_HARD_DIRECT SHARED_INFRA 158.160.116.191/32
-    OBSERVED_HARD_DIRECT SHARED_INFRA 158.160.116.199/32
-    OBSERVED_HARD_DIRECT SHARED_INFRA 158.160.139.27/32
-    OBSERVED_HARD_DIRECT SHARED_INFRA 158.160.140.116/32
-    OBSERVED_HARD_DIRECT SHARED_INFRA 158.160.142.52/32
-    OBSERVED_HARD_DIRECT SHARED_INFRA 158.160.145.13/32
-    OBSERVED_HARD_DIRECT SHARED_INFRA 158.160.171.31/32
-    OBSERVED_HARD_DIRECT SHARED_INFRA 158.160.189.160/32
-    OBSERVED_HARD_DIRECT SHARED_INFRA 158.160.204.146/32
-    OBSERVED_HARD_DIRECT SHARED_INFRA 158.160.217.206/32
-    OBSERVED_HARD_DIRECT SHARED_INFRA 158.160.225.86/32
-    OBSERVED_HARD_DIRECT SHARED_INFRA 158.160.227.3/32
-    OBSERVED_HARD_DIRECT SHARED_INFRA 158.160.230.192/32
-    OBSERVED_HARD_DIRECT SHARED_INFRA 158.160.230.238/32
     OBSERVED_HARD_DIRECT SHARED_INFRA 176.57.67.92/32
-    OBSERVED_HARD_DIRECT SHARED_INFRA 178.248.232.95/32
-    OBSERVED_HARD_DIRECT SHARED_INFRA 178.248.234.146/32
     OBSERVED_HARD_DIRECT SHARED_INFRA 178.248.234.210/32
-    OBSERVED_HARD_DIRECT SHARED_INFRA 178.248.236.23/32
-    OBSERVED_HARD_DIRECT SHARED_INFRA 178.248.236.100/32
-    OBSERVED_HARD_DIRECT SHARED_INFRA 178.248.239.183/32
-    OBSERVED_HARD_DIRECT SHARED_INFRA 185.65.148.19/32
-    OBSERVED_HARD_DIRECT SHARED_INFRA 185.65.148.57/32
-    OBSERVED_HARD_DIRECT SHARED_INFRA 185.65.148.173/32
-    OBSERVED_HARD_DIRECT SHARED_INFRA 185.94.109.45/32
     OBSERVED_HARD_DIRECT SHARED_INFRA 185.129.100.112/32
     OBSERVED_HARD_DIRECT SHARED_INFRA 185.178.208.183/32
     OBSERVED_HARD_DIRECT SHARED_INFRA 185.215.4.10/32
     OBSERVED_HARD_DIRECT SHARED_INFRA 185.215.4.40/32
     OBSERVED_HARD_DIRECT SHARED_INFRA 185.215.4.45/32
     OBSERVED_HARD_DIRECT SHARED_INFRA 185.215.4.66/32
-    OBSERVED_HARD_DIRECT SHARED_INFRA 188.72.112.1/32
-    OBSERVED_HARD_DIRECT SHARED_INFRA 217.198.169.243/32
-  OTHER: addresses=75, current_ip_lst=66, current_subnet_lst=6, service_protected=75, review_cidr_count=73, review_cidrs_sha256=ffdfd0bf0cd671321145bb91e0c6a20027fd0001a3a83947954114b00de47d07
+  OTHER: addresses=33, current_ip_lst=25, current_subnet_lst=6, service_protected=33, review_cidr_count=33, review_cidrs_sha256=323e1c134308a3e9c095ecd41bf6bb954112430e7f1bdacdfa248b4948f4ab08
     OBSERVED_HARD_DIRECT OTHER 31.31.196.17/32
     OBSERVED_HARD_DIRECT OTHER 31.31.197.1/32
     OBSERVED_HARD_DIRECT OTHER 31.31.197.32/32
-    OBSERVED_HARD_DIRECT OTHER 31.31.205.163/32
     OBSERVED_HARD_DIRECT OTHER 45.130.41.212/32
-    OBSERVED_HARD_DIRECT OTHER 46.174.49.154/32
-    OBSERVED_HARD_DIRECT OTHER 46.254.18.79/32
-    OBSERVED_HARD_DIRECT OTHER 46.254.18.115/32
-    OBSERVED_HARD_DIRECT OTHER 46.254.19.118/32
     OBSERVED_HARD_DIRECT OTHER 77.222.40.132/32
-    OBSERVED_HARD_DIRECT OTHER 78.159.247.146/32
-    OBSERVED_HARD_DIRECT OTHER 78.159.247.198/32
-    OBSERVED_HARD_DIRECT OTHER 79.174.91.166/32
-    OBSERVED_HARD_DIRECT OTHER 79.174.93.134/32
-    OBSERVED_HARD_DIRECT OTHER 81.177.135.2/32
-    OBSERVED_HARD_DIRECT OTHER 81.177.135.38/32
-    OBSERVED_HARD_DIRECT OTHER 81.177.135.51/32
-    OBSERVED_HARD_DIRECT OTHER 81.177.135.125/32
-    OBSERVED_HARD_DIRECT OTHER 81.177.135.126/32
-    OBSERVED_HARD_DIRECT OTHER 81.177.135.185/32
-    OBSERVED_HARD_DIRECT OTHER 81.177.135.211/32
-    OBSERVED_HARD_DIRECT OTHER 81.177.136.113/32
-    OBSERVED_HARD_DIRECT OTHER 81.177.139.64/32
-    OBSERVED_HARD_DIRECT OTHER 81.177.139.151/32
-    OBSERVED_HARD_DIRECT OTHER 81.177.139.247/32
-    OBSERVED_HARD_DIRECT OTHER 81.177.140.28/32
-    OBSERVED_HARD_DIRECT OTHER 81.177.140.54/32
-    OBSERVED_HARD_DIRECT OTHER 81.177.140.147/32
-    OBSERVED_HARD_DIRECT OTHER 81.177.140.201/32
-    OBSERVED_HARD_DIRECT OTHER 81.177.141.15/32
-    OBSERVED_HARD_DIRECT OTHER 81.177.143.54/31
     OBSERVED_HARD_DIRECT OTHER 88.223.91.1/32
     OBSERVED_HARD_DIRECT OTHER 89.253.240.17/32
     OBSERVED_HARD_DIRECT OTHER 91.199.149.151/32
     OBSERVED_HARD_DIRECT OTHER 91.247.37.1/32
     OBSERVED_HARD_DIRECT OTHER 94.247.142.1/32
     OBSERVED_HARD_DIRECT OTHER 95.163.244.135/32
-    OBSERVED_HARD_DIRECT OTHER 95.173.136.70/31
-    OBSERVED_HARD_DIRECT OTHER 95.173.136.72/32
-    OBSERVED_HARD_DIRECT OTHER 151.236.109.225/32
     OBSERVED_HARD_DIRECT OTHER 178.210.92.164/32
-    OBSERVED_HARD_DIRECT OTHER 178.250.242.169/32
-    OBSERVED_HARD_DIRECT OTHER 178.250.243.221/32
     OBSERVED_HARD_DIRECT OTHER 185.22.155.27/32
-    OBSERVED_HARD_DIRECT OTHER 185.31.114.248/32
-    OBSERVED_HARD_DIRECT OTHER 185.40.152.47/32
     OBSERVED_HARD_DIRECT OTHER 185.41.148.1/32
     OBSERVED_HARD_DIRECT OTHER 185.56.234.1/32
     OBSERVED_HARD_DIRECT OTHER 185.60.216.1/32
@@ -226,15 +146,8 @@ ipv4: hard_direct=154, unprotected=0
     OBSERVED_HARD_DIRECT OTHER 185.76.151.1/32
     OBSERVED_HARD_DIRECT OTHER 185.89.217.1/32
     OBSERVED_HARD_DIRECT OTHER 185.104.45.1/32
-    OBSERVED_HARD_DIRECT OTHER 185.135.80.100/32
-    OBSERVED_HARD_DIRECT OTHER 185.135.80.231/32
-    OBSERVED_HARD_DIRECT OTHER 185.135.83.3/32
-    OBSERVED_HARD_DIRECT OTHER 185.135.83.132/32
     OBSERVED_HARD_DIRECT OTHER 185.165.123.36/32
-    OBSERVED_HARD_DIRECT OTHER 185.169.155.14/32
-    OBSERVED_HARD_DIRECT OTHER 185.253.23.33/32
     OBSERVED_HARD_DIRECT OTHER 193.168.47.254/32
-    OBSERVED_HARD_DIRECT OTHER 193.232.91.8/32
     OBSERVED_HARD_DIRECT OTHER 194.58.112.174/32
     OBSERVED_HARD_DIRECT OTHER 194.67.71.106/32
     OBSERVED_HARD_DIRECT OTHER 194.67.71.193/32

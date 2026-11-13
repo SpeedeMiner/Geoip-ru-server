@@ -121,7 +121,7 @@ Inclusion policy: prefixes originated by allowlisted company ASNs are included r
 Country metadata policy: ipverse countryCode is audit-only and is never an inclusion filter for allowlisted company-ASN origins.
 Per-ASN evidence and prefix counts: geoip_RU_company_asn_manifest.tsv
 
-Generated UTC: 2026-11-13T05:50:57.796304+00:00
+Generated UTC: 2026-11-13T08:36:18.284086+00:00
 ipverse aggregated.json files: 97489
 RIR delegated-stats registered RU ASNs: 5771
 RIR delegated-stats registered BY/KZ ASNs: 387
@@ -168,9 +168,12 @@ v38-approved-baseline	AVAILABLE	193307	193307	193307	0	0
 v38-historical-ip.lst	AVAILABLE	50830	50830	50830	0	0
 v38-historical-ipresolve.lst	AVAILABLE	154198	154198	154198	0	0
 v38-historical-subnet.lst	AVAILABLE	71	71	71	0	0
+regional-origin-mask	AVAILABLE	23633	23633	0	0	0
+shared-infrastructure-mask	AVAILABLE	2980	2980	0	0	0
 runetfreedom-static-telegram	CURATED	12	12	12	0	0
 TOTAL_APPROVED_UNIQUE	-	-	200172	200172	-	-
 TOTAL_REVIEW_ROWS	-	-	-	0	28572	-
+v38-historical-only-regional-resolver	APPLIED	-	268	268	0	0
 
 Source snapshots and normalized checksum manifest: geoip_RU_blocked_sources.sha256
 86e5074ecf70b624b103fdf72e02c15b52edea30f17b4a33636daa15042a2e78  antifilter-ip.lst  source=antifilter-ip.lst
@@ -182,9 +185,11 @@ df909b12b985b23080075821cedc5e2f73b7b1f89abcd9950293b400ce1e4a5d  geoip_RU_v38_a
 c9c0656d0188f4afa740d71332b618d42b5606ab27e7561790f47b588781d1cb  geoip_RU_v38_pinned_antifilter-ip.lst  source=v38-historical-ip.lst
 8d8d11605a299da96006df6303a90b08b4ae25d35c1d1a199708cb83f84cdf44  geoip_RU_v38_pinned_antifilter-ipresolve.lst  source=v38-historical-ipresolve.lst
 2554552742bc0da516a321db66b36fa6cece28c4b3c64b66ff6d12320b33bdb6  geoip_RU_v38_pinned_antifilter-subnet.lst  source=v38-historical-subnet.lst
+a64bb02046b92ff65f5e04f45bf14e4ba6c691b4c34fee563b8078b2e1c31568  geoip_RU_v41_rir_ru_and_company_origin_prefixes.txt  source=regional-origin-mask
+2e2fda6cbb2fa016486cdca9c51bba02fc33c99b42b0d2c297cc24a3be1d8058  geoip_RU_shared_infrastructure_bgp_prefixes.txt  source=shared-infrastructure-mask
 ab3d23271aa413304ae05be8d4ea1fadf8594eed645d87d3f0c6ac2311ca22c8  geoip_RU_blocked_ip_exclusions.txt  normalized=approved-union
-b8b14811bdcc08fe1ce040c7aeafe49c5e63c1c7c8b0a44a21471d1024b57513  geoip_RU_blocked_ip_exact_and_legacy_hard.txt  normalized=exact-hard
-d23934d53b5e991fa524e8ee7f2582e8c543da4998c426aee12df514e4349860  geoip_RU_blocked_ipresolve_resolver_only.txt  normalized=resolver-only
+6624a3fa1ea003bd7e5a091490970e8e3381800a430c44aa9af618858f5efce7  geoip_RU_blocked_ip_exact_and_legacy_hard.txt  normalized=exact-hard
+830f73ac8ff292bb8e341815398fa8c0117f01e83978afa060ca4d0e099ff792  geoip_RU_blocked_ipresolve_resolver_only.txt  normalized=resolver-only
 6d4794d31a534429e8e1448d0057a7bc029926a558ba9b7820b459a5c05ecb55  geoip_RU_blocked_review_candidates.tsv  normalized=review-only
 
 Approved blocked-prefix SHA256: ab3d23271aa413304ae05be8d4ea1fadf8594eed645d87d3f0c6ac2311ca22c8

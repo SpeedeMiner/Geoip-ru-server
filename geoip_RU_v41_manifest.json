@@ -1,9 +1,9 @@
 {
   "schema": 2,
-  "generated_at": "2026-11-13T05:51:54.444159+00:00",
+  "generated_at": "2026-11-13T08:37:23.724295+00:00",
   "base_v37_sha256": "6b0830dd5087046f4b2d2de9068c4e7ed4fc56122074d89a46cbfdd3104f2cb3",
-  "output_sha256": "576bf92bf1dc57a85ff5292e9dd2519f1400aabc160503721b1ae0a4431fb1eb",
-  "output_bytes": 2119384,
+  "output_sha256": "53d235e89a9255709efd61df5c5f3c98f291398e1f94be448ee12ec24c5fadfd",
+  "output_bytes": 2092273,
   "sources": {
     "kyoresuas-standard": {
       "repository": "kyoresuas/ru-direct",
@@ -114,12 +114,16 @@
       "valid_rows": 2980,
       "invalid_rows": 0
     },
-    "rir-ru-selected-origin-protected": {
-      "raw_rows": 21563,
-      "valid_rows": 21563,
+    "rir-rukzby-selected-origin-protected": {
+      "raw_rows": 23633,
+      "valid_rows": 23633,
       "invalid_rows": 0
     },
-    "verified-ru-service-protected": {
+    "verified-service-exact-hosts": {
+      "valid_rows": 142775,
+      "invalid_rows": 0
+    },
+    "verified-service-resolver-protected": {
       "valid_rows": 140627,
       "invalid_rows": 0
     }
@@ -128,7 +132,7 @@
     "direct_cidrs": 37187,
     "whitelist_cidrs": 6710,
     "combined_eligible_address_space": {
-      "ipv4": 49123922,
+      "ipv4": 49124089,
       "ipv6": 2847564326570538260578726576128
     },
     "precedence": "PRIVATE > effective v41 blocked set > Hydra DIRECT/WHITELIST",
@@ -161,9 +165,9 @@
     "input_sha256": "4ca5332c4eb6b89ebfe3ecc0f6093a1d89681c39d145e568e127f8f1867f7e1e"
   },
   "regional_origin_prefixes": {
-    "unique_prefixes": 13584,
-    "selected_origin_input_sha256": "d45bcc878fda21373bf3401c718c6cb1c902082345e4396deb6108a7dbfc05fb",
-    "protection": "resolver_only_except_verified_service"
+    "unique_prefixes": 14865,
+    "selected_origin_input_sha256": "a64bb02046b92ff65f5e04f45bf14e4ba6c691b4c34fee563b8078b2e1c31568",
+    "protection": "resolver_only"
   },
   "ru_verified_service_prefixes": {
     "unique_prefixes": 140627,
@@ -171,7 +175,17 @@
       "ipv4": 963803,
       "ipv6": 3322716899175153296500653555718
     },
-    "protection": "all_approved_block_sources_except_private"
+    "exact_host_prefixes": 142775,
+    "exact_host_address_space": {
+      "ipv4": 142710,
+      "ipv6": 65
+    },
+    "resolver_protected_prefixes": 140627,
+    "resolver_protected_address_space": {
+      "ipv4": 963803,
+      "ipv6": 3322716899175153296500653555718
+    },
+    "protection": "only_literal_hosts_override_hard_blocks"
   },
   "shared_infrastructure_prefixes": {
     "unique_prefixes": 2980,
@@ -188,16 +202,16 @@
   },
   "blocked": {
     "approved_union_original_unique": 200172,
-    "exact_and_legacy_hard_unique": 58273,
-    "current_resolver_only_unique": 80758,
-    "v41_effective_after_class_aware_exceptions_unique": 126088,
-    "all_exempted_unique": 2132,
+    "exact_and_legacy_hard_unique": 58005,
+    "resolver_only_unique": 81023,
+    "v41_effective_after_class_aware_exceptions_unique": 125353,
+    "all_exempted_unique": 2898,
     "all_exempted_address_space": {
-      "ipv4": 2209,
+      "ipv4": 3079,
       "ipv6": 0
     },
     "all_exempted_direct_after_private": {
-      "ipv4": 2209,
+      "ipv4": 3079,
       "ipv6": 0
     },
     "core_company_asn_exempted_direct_after_private": {
@@ -205,14 +219,14 @@
       "ipv6": 0
     },
     "shared_infrastructure_resolver_exempted_direct_after_private": {
-      "ipv4": 416,
+      "ipv4": 450,
       "ipv6": 0
     },
     "ipsum_review_only_unique": 18831,
-    "ipsum_company_adjusted_review_only_unique": 19297,
+    "ipsum_company_adjusted_review_only_unique": 18998,
     "ipsum_auto_carved": false,
     "ipsum_sha256": "9ff20f2abd97a58b02eb017c2a975cbf534611b358594311f5feed9aad132d42",
-    "potential_additional_proxy_ipv4_addresses": 137204,
+    "potential_additional_proxy_ipv4_addresses": 89200,
     "potential_additional_proxy_ipv6_addresses": 0
   },
   "base_v37_address_space": {
@@ -220,11 +234,11 @@
     "ipv6": 1192521157300195567661209186467840
   },
   "final_v41_address_space": {
-    "ipv4": 53530519,
+    "ipv4": 53531389,
     "ipv6": 1205876356595180923515330646507520
   },
   "new_after_policy": {
-    "ipv4": 897942,
+    "ipv4": 898812,
     "ipv6": 13355199294985355854121460039680
   },
   "safety": {
@@ -235,10 +249,10 @@
     "private_precedence_applied": true,
     "rkn_exact_ip_and_subnet_blocks_apply_to_shared_infrastructure": true,
     "core_corporate_prefixes_remain_direct_except_private": true,
-    "shared_infrastructure_prefixes_exempt_from_current_ipresolve_only": true,
-    "legacy_v38_unclassified_baseline_remains_hard_blocked": true,
-    "rir_ru_selected_origin_resolver_protected": true,
-    "ru_verified_service_exact_and_resolver_protected": true,
+    "shared_infrastructure_prefixes_exempt_from_resolver_layer_only": true,
+    "legacy_v38_reclassification_preserves_approved_union": true,
+    "rir_rukzby_selected_origin_resolver_protected": true,
+    "service_hard_block_exemptions_require_literal_hosts": true,
     "private_precedence_over_all_exceptions": true,
     "ipsum_24_auto_carved": false,
     "hydra_direct_whitelist_added_without_block_exemption": true,
@@ -258,9 +272,9 @@
     "corporate_company_asn_origin_prefixes": "327ce30d723f47793b4c0847c2b81ad95347aa72b4fbcb817d0497bb245c2ed0",
     "corporate_core_prefixes": "4ca5332c4eb6b89ebfe3ecc0f6093a1d89681c39d145e568e127f8f1867f7e1e",
     "shared_infrastructure_prefixes": "2e2fda6cbb2fa016486cdca9c51bba02fc33c99b42b0d2c297cc24a3be1d8058",
-    "regional_origin_prefixes": "d45bcc878fda21373bf3401c718c6cb1c902082345e4396deb6108a7dbfc05fb",
-    "blocked_exact_and_legacy": "b8b14811bdcc08fe1ce040c7aeafe49c5e63c1c7c8b0a44a21471d1024b57513",
-    "blocked_resolver_only": "d23934d53b5e991fa524e8ee7f2582e8c543da4998c426aee12df514e4349860",
+    "regional_origin_prefixes": "a64bb02046b92ff65f5e04f45bf14e4ba6c691b4c34fee563b8078b2e1c31568",
+    "blocked_exact_and_legacy": "6624a3fa1ea003bd7e5a091490970e8e3381800a430c44aa9af618858f5efce7",
+    "blocked_resolver_only": "830f73ac8ff292bb8e341815398fa8c0117f01e83978afa060ca4d0e099ff792",
     "antifilter_ipsum": "9ff20f2abd97a58b02eb017c2a975cbf534611b358594311f5feed9aad132d42"
   }
 }
