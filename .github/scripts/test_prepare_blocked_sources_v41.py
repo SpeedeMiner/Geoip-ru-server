@@ -9,8 +9,10 @@ from unittest import mock
 from collections import defaultdict
 
 from prepare_blocked_sources_v41 import (
-    LEGACY_HARD, LEGACY_REGIONAL_RESOLVER, TELEGRAM_PREFIXES, is_host, main, parse_line,
-    read_reviewed_ip_list_hosts, reclassify_legacy_hosts, subnet_auto_approved,
+    CURRENT_IP_LIST, LEGACY_HARD, LEGACY_REGIONAL_RESOLVER, REVIEWED_LEGACY_RESOLVER,
+    TELEGRAM_PREFIXES, is_host, main, parse_line,
+    read_reviewed_ip_list_hosts, reclassify_legacy_hosts, reclassify_reviewed_legacy_hosts,
+    subnet_auto_approved,
 )
 
 
@@ -45,6 +47,34 @@ class BlockedSourcePolicyTests(unittest.TestCase):
         self.assertEqual(resolved["192.0.2.1/32"], {LEGACY_REGIONAL_RESOLVER})
         self.assertEqual(approved_before, hard.keys() | resolved.keys())
         self.assertNotIn("192.0.2.1/32", hard)
+
+    def test_reviewed_legacy_never_reclassifies_independent_hard_evidence(self):
+        pair = {LEGACY_HARD, CURRENT_IP_LIST}
+        hosts = [f"192.0.2.{i}/32" for i in (1, 2, 3, 4, 5, 65, 129)]
+        one, other_label, legacy_only, current_only, not_historical_exact, historical_cover, current_cover = hosts
+        hard = {
+            one: pair.copy(),
+            other_label: pair | {"antifilter-subnet.lst"},
+            legacy_only: {LEGACY_HARD},
+            current_only: {CURRENT_IP_LIST},
+            not_historical_exact: pair.copy(),
+            historical_cover: pair.copy(),
+            current_cover: pair.copy(),
+            "192.0.2.128/26": {"antifilter-subnet.lst"},
+        }
+        original = {k: v.copy() for k, v in hard.items()}
+        resolved = defaultdict(set, {one: {"antifilter-ipresolve.lst"}})
+        absent = "192.0.2.200/32"
+        moved = reclassify_reviewed_legacy_hosts(
+            hard, resolved, set(hosts) | {absent},
+            (set(hosts) - {not_historical_exact}) | {absent}, ["192.0.2.64/26"],
+        )
+        self.assertEqual(moved, 1)
+        del original[one]
+        self.assertEqual(hard, original)
+        self.assertEqual(dict(resolved), {
+            one: {"antifilter-ipresolve.lst", CURRENT_IP_LIST, REVIEWED_LEGACY_RESOLVER}
+        })
 
     def test_ip_resolve_host_semantics(self):
         self.assertTrue(is_host(parse_line("203.0.113.9")))
@@ -275,6 +305,33 @@ class BlockedSourcePolicyTests(unittest.TestCase):
             self.assertIn("198.51.20.1/32", exact)
             self.assertIn("v38-historical-ipresolve-only", resolver)
             self.assertIn("v38-historical-ipresolve.lst", (root / "stats.tsv").read_text(encoding="utf-8"))
+
+            # Reclassify an exact historical/current overlap only. An identical
+            # exact pair under an approved historical subnet must remain hard.
+            for name in ("hist-ip.txt", "ip.lst"):
+                with (root / name).open("a", encoding="utf-8") as stream:
+                    stream.write("192.0.20.1\n192.0.21.2\n")
+            reviewed_legacy = root / "reviewed-legacy.txt"
+            reviewed_legacy.write_text("192.0.20.1/32\n192.0.21.2/32\n", encoding="utf-8")
+            with mock.patch("sys.argv", argv), contextlib.redirect_stdout(io.StringIO()):
+                self.assertEqual(main(), 0)
+            paired_union = (root / "approved.txt").read_bytes()
+            with mock.patch("sys.argv", argv + ["--reviewed-legacy-ip-list-hosts", str(reviewed_legacy)]), contextlib.redirect_stdout(io.StringIO()):
+                self.assertEqual(main(), 0)
+            self.assertEqual(paired_union, (root / "approved.txt").read_bytes())
+            hard_after_review = (root / "exact.txt").read_text(encoding="utf-8")
+            soft_after_review = (root / "resolved.txt").read_text(encoding="utf-8")
+            self.assertIn("192.0.20.1/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified",
+                          hard_after_review)
+            self.assertNotIn("192.0.21.2/32", hard_after_review)
+            self.assertIn(f"192.0.21.2/32 # sources=antifilter-ip.lst,{REVIEWED_LEGACY_RESOLVER}", soft_after_review)
+            self.assertIn(f"{REVIEWED_LEGACY_RESOLVER}\tPARTIAL_OR_NOT_APPLIED\t2\t2\t1",
+                          (root / "stats.tsv").read_text(encoding="utf-8"))
+            self.assertIn(f"policy={REVIEWED_LEGACY_RESOLVER}", (root / "checksums.sha256").read_text(encoding="utf-8"))
+            for name in ("hist-ip.txt", "ip.lst"):
+                (root / name).write_text(host_rows("198.51.20.1"), encoding="utf-8")
+            with mock.patch("sys.argv", argv), contextlib.redirect_stdout(io.StringIO()):
+                self.assertEqual(main(), 0)
 
             (root / "regional.txt").write_text("192.0.20.0/24\n", encoding="utf-8")
             (root / "shared.txt").write_text("192.0.21.0/24\n", encoding="utf-8")

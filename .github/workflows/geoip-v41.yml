@@ -30,6 +30,7 @@ on:
       - ".github/scripts/build_company_asn_prefix_classes_v41.py"
       - ".github/scripts/prepare_blocked_sources_v41.py"
       - ".github/data/v41-reviewed-ip-list-hosts.txt"
+      - ".github/data/v41-reviewed-legacy-ip-list-hosts.txt"
       - ".github/data/v41-reviewed-operator-prefixes.tsv"
       - ".github/scripts/validate_v41_overlay.py"
       - ".github/scripts/validate_v41_release_gate.py"
@@ -201,6 +202,7 @@ jobs:
           python3 .github/scripts/prepare_blocked_sources_v41.py \
             --ip-list "$BLOCKED_IP_RAW_INPUT" \
             --reviewed-ip-list-hosts .github/data/v41-reviewed-ip-list-hosts.txt \
+            --reviewed-legacy-ip-list-hosts .github/data/v41-reviewed-legacy-ip-list-hosts.txt \
             --ipresolve "$BLOCKED_IPRESOLVE_INPUT" \
             --baseline "$BLOCKED_BASELINE_INPUT" \
             --historical-ip-list "$V38_PINNED_IP_INPUT" \
