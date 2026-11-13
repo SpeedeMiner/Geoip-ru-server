@@ -134,6 +134,13 @@ def parse_reviewed_operator_prefixes(path: Path):
     return rows
 
 
+def reviewed_operator_provenance(reviewed, source_id):
+    ordered = sorted(reviewed, key=lambda net: (net.version, int(net.network_address), net.prefixlen))
+    return [{"source_id": source_id, "category": reviewed[net][0],
+             "service": "", "tier": "", "asn_list": reviewed[net][1], "domains": "",
+             "prefix": str(net)} for net in ordered]
+
+
 def parse_rir_tsv(path: Path):
     result = defaultdict(set)
     records = 0
@@ -747,9 +754,7 @@ def main():
             "input_sha256": sha256(args.reviewed_operator_prefixes.read_bytes()),
             "protection": "none",
         }
-        for net, (country, asn) in sorted(reviewed.items()):
-            prefix_rows.append({"source_id": reviewed_source, "category": country,
-                                "service": "", "tier": "", "asn_list": asn, "domains": "", "prefix": str(net)})
+        prefix_rows.extend(reviewed_operator_provenance(reviewed, reviewed_source))
     # Reviewed networks contribute coverage only. They do not enter any block exemption mask.
     additions.update(reviewed)
     preblock = base_ru | additions
