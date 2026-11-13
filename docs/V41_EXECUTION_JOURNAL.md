@@ -176,3 +176,9 @@ See [v41 release hardening](V41_RELEASE_HARDENING.md). Routing-policy changes ar
 - Draft PR #26 head before this check: `3319960`. RIPE RDAP child records and the RIS 2026-11-13T08:00Z view support only `31.204.8.0/21` (RU parent, US-FIXED, AS209372) and `109.238.168.0/21` (KZ parent, IPXO with two covering US /22 assignments, AS26548) in this batch. Both exact routes were seen by 319/319 RIS peers without more-specifics.
 - Preserve `31.204.2.0/24` (RU assignment, same origin), `109.238.160.0/21` and all other IPv4 coverage outside the two /21s. Leave `212.124.96.0/19` unchanged: a DE value on the allocation and a CH origin do not settle the relationship to the RU registrant MnogoByte at child level.
 - Fixed-input replay expectation: IPv4 -4,096 only relative to the previous draft, and IPv4 +7,223 / -33,162 versus the published DAT. No changes to IPv6, PRIVATE, RIR inventory or hard/resolver/effective block masks. No merge or publication.
+
+## 2026-11-13 — PR #26 release checkpoint
+
+- Exact new regional admission exclusions: `31.204.16.0/21` (US), `31.204.32.0/20` and `31.204.56.0/21` (AU), and `212.124.106.0/24` (US). See the policy for child routes, RDAP and operator geofeed evidence. Keep `31.204.28.0/22`, the rest of MnogoByte and the unresolved review queue unchanged.
+- Exact delta to previous candidate `4c0c913`: IPv4 -8,448 only. Prior rolling DAT comparison: +7,223 / -41,610 IPv4, IPv6 and PRIVATE unchanged. The input inventory and block masks must match the previous candidate byte-for-byte.
+- Align the rolling release description with the effective v41 policy. Release via the existing main-push workflow only after matching the fixed-input and PR builds. Verify the production workflow, rolling DAT, immutable snapshot and release-branch DAT after publication. Do not touch PR #5.

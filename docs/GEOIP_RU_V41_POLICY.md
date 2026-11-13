@@ -1,6 +1,6 @@
 # v41 integration policy — RU+BY+KZ unified DIRECT
 
-Status: **v41 already released. This provenance-aware revision is a candidate and does not replace the published v41 yet.**
+The policy below describes the v41 publisher and the regional/block-provenance revision in PR #26. The rolling release and run-specific snapshots identify the deployed build.
 
 ## Preservation of v39 and v40
 
@@ -35,7 +35,7 @@ The v37 base and approved-union filenames remain unchanged. The base still subtr
 - The upstream `hydraponique/roscomvpn-geoip` file already enters the v37 builder, but its `direct` and `whitelist` categories were previously counted only as diagnostic candidates.
 - Both categories are now explicitly admitted in the v41 overlay as **routing intent**, not as RU geolocation, first-party corporate origin, or unconditional block exemption.
 - The source is the same fetched `hydra-geoip.dat` used by the base builder. Its SHA-256, category counts, source-level metrics and exact prefix provenance are recorded.
-- Eligibility is `(Hydra DIRECT ∪ Hydra WHITELIST) − PRIVATE − effective v41 blocked set`. Hydra does **not** override hard/exact/legacy/RIR block precedence or create a new class of corporate protected ASN.
+- Eligibility is `(Hydra DIRECT ∪ Hydra WHITELIST) − PRIVATE − effective v41 blocked set − reviewed regional admission exclusions`. Hydra does **not** override hard/exact/legacy/RIR block precedence or create a new class of corporate protected ASN.
 - The independent validator checks full eligible Hydra address-space inclusion in the final `geoip:RU`, including IPv4 and IPv6, and verifies the source hash. Missing categories or a default route fail closed.
 - Because Hydra may contain non-RU/CDN routing intent, this policy broadens the meaning of the RU routing bucket deliberately; review the exact resulting address delta before production rollout.
 
@@ -47,7 +47,7 @@ All received but unverified `RPKI/RDAP/IRR` audit candidates remain review-only.
 
 ## Publication boundary
 
-The existing v41 production workflow runs on main pushes and a daily schedule. This Hydra change is isolated in a PR: production remains unchanged until reviewed and merged. The released v41 tag remains available as a rollback point; publication of the expanded dataset requires a green candidate and explicit address-delta review.
+The existing v41 production workflow runs on main pushes and a daily schedule. Pull-request builds cannot publish. Main builds compare the candidate independently with the prior release before updating the rolling artifact and creating a run-specific snapshot. Use a run-specific snapshot, not the rolling link, for rollback.
 
 ## Reviewed regional admission conflicts
 
@@ -59,3 +59,7 @@ The v41 overlay excludes exact IPv4 prefixes in [the reviewed admission table](.
 - Exact [RDAP for `145.249.96.0/21`](https://rdap.db.ripe.net/ip/145.249.96.0/21) identifies Media Broadcast Satellite GmbH in DE. [RIPE RIS](https://stat.ripe.net/data/routing-status/data.json?resource=145.249.96.0%2F21) observes AS211095 for the /21 and the observed /24 child. The rest of `145.249.0.0/16` is not excluded, including the `145.249.128.0/17` Kazakhstan route.
 - Inside the RU-delegated `31.204.0.0/18`, [exact RIPE RDAP](https://rdap.db.ripe.net/ip/31.204.8.0/21) shows `31.204.8.0/21` as `US-FIXED`, country US, with a WS Telecom technical contact and no registered child assignments. [RIPE RIS](https://stat.ripe.net/data/routing-status/data.json?resource=31.204.8.0%2F21) observes only AS209372 on the exact /21 and no more-specific routes. Keep other ranges, including [`31.204.2.0/24`](https://rdap.db.ripe.net/ip/31.204.2.0/24), an RU assignment with the same origin. Do not use AS209372 as a country-wide exclusion.
 - Inside the KZ-delegated `109.238.160.0/20`, [exact RIPE RDAP](https://rdap.db.ripe.net/ip/109.238.168.0/21) shows `109.238.168.0/21` sub-allocated to IPXO with country US. Its two covering child assignments [`109.238.168.0/22`](https://rdap.db.ripe.net/ip/109.238.168.0/22) and [`109.238.172.0/22`](https://rdap.db.ripe.net/ip/109.238.172.0/22) also record US. [RIPE RIS](https://stat.ripe.net/data/routing-status/data.json?resource=109.238.168.0%2F21) observes only AS26548 ([PureVoltage](https://www.peeringdb.com/asn/26548)) on the exact /21 and no more-specific routes. Do not expand the exclusion to the other /21 or to the ASN.
+- [RIPE RDAP](https://rdap.db.ripe.net/ip/31.204.16.0/21) records the exact `31.204.16.0/21` as US-FIXED with New York remarks and no more-specific assignments. The two [RIPE RIS child routes](https://stat.ripe.net/data/routing-status/data.json?resource=31.204.16.0%2F21) are both AS213541 and cover the /21.
+- RIPE RDAP records `31.204.32.0/20` and `31.204.56.0/21` as [WSAU /20](https://rdap.db.ripe.net/ip/31.204.32.0/20) and [WSAU /21](https://rdap.db.ripe.net/ip/31.204.56.0/21), both AU, with no registered child assignments. The [WS Telecom geofeed](https://ws-sdn.net/feed/wssdnfeed.csv) corroborates AU for both exact ranges. [RIPE RIS](https://stat.ripe.net/data/routing-status/data.json?resource=31.204.32.0%2F20) sees AS9009 at the /20 and both /21 child routes from AS213541, covering the /20. The [separate /21](https://stat.ripe.net/data/routing-status/data.json?resource=31.204.56.0%2F21) is originated directly by AS213541. The table stores the origin covering the full ranges at longest match, not an assertion of exclusive origin across less-specific routes.
+- Within the RU-delegated MnogoByte `212.124.96.0/19`, exclude only [`212.124.106.0/24`](https://rdap.db.ripe.net/ip/212.124.106.0/24), an exact US DIGITALONE-NET assignment with no registered children and an exact [AS47328 RIS route](https://stat.ripe.net/data/routing-status/data.json?resource=212.124.106.0%2F24). Other covering routes returned only the parent RDAP allocation, with a DE country value and a RU registrant. No exclusion of the parent, adjacent `212.124.107.0/24` or whole ASN.
+- `31.204.28.0/22` stays in DIRECT for this revision. Its exact US assignment and foreign origin are noted, but the holder remains RU-associated and the operator geofeed does not cover it. Retain the rest of the unresolved queue without a bulk change.
