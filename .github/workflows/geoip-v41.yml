@@ -33,6 +33,8 @@ on:
       - ".github/data/v41-reviewed-operator-prefixes.tsv"
       - ".github/scripts/validate_v41_overlay.py"
       - ".github/scripts/validate_v41_release_gate.py"
+      - ".github/scripts/validate_v41_telegram.py"
+      - ".github/data/v41-telegram-official-cidrs.txt"
       - ".github/scripts/test_*.py"
       - ".github/data/geoip_RU_company_asns.tsv"
       - ".github/data/geoip_RU_company_asn_policy.tsv"
@@ -421,6 +423,16 @@ jobs:
             echo 'Hard-source exceptions: see geoip_RU_quality_report.txt'
           } >> "$GITHUB_STEP_SUMMARY"
           tail -n 17 "$V41_QUALITY_REPORT"
+
+      - name: Verify final DIRECT against the full official Telegram feed
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl --fail --silent --show-error --location --proto '=https' --proto-redir '=https' \
+            --connect-timeout 10 --max-time 25 --retry 2 --max-filesize 16384 \
+            https://core.telegram.org/resources/cidr.txt -o "$RUNNER_TEMP/telegram-cidrs.txt"
+          python3 .github/scripts/validate_v41_telegram.py \
+            --geoip "$V41_OUTPUT_FILE" --official-feed "$RUNNER_TEMP/telegram-cidrs.txt"
 
       - name: Verify absolute publication bounds independently
         shell: bash

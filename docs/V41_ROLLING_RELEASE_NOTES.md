@@ -4,7 +4,7 @@
 - Exactly two GeoIP categories are emitted: `RU` and `PRIVATE`.
 - `RU` is the unified DIRECT bucket for RU+BY+KZ regional address resources, regional GeoIP/BGP layers, and named service-direct destinations. Physical GeoIP location is not an admission gate.
 - `PRIVATE` always wins over DIRECT.
-- CORE_CORPORATE exact origin prefixes are protected from all approved RKN-derived inputs.
+- CORE_CORPORATE exact origin prefixes are protected from ordinary RKN-derived inputs. The complete official Telegram feed overrides all DIRECT exceptions.
 - SHARED_INFRA origins are protected only from the resolver layer. Unreviewed ip.lst, bounded subnet.lst and ineligible v38 hard records still carve them.
 - MOAS receives CORE_CORPORATE precedence when any exact origin is CORE; otherwise a SHARED_INFRA origin receives resolver-only protection.
 - RIR RU/BY/KZ registration is not proof of corporate ownership and does not create a blanket block exception.
