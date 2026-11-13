@@ -1,7 +1,7 @@
 GeoIP DIRECT RU+BY+KZ CLIENT v41 — corporate company-ASN origins exempted from RKN carve-outs
-Generated UTC: 2026-11-13T11:36:33.161565+00:00
+Generated UTC: 2026-11-13T12:04:35.416264+00:00
 Base v37 GeoIP SHA-256: 6b0830dd5087046f4b2d2de9068c4e7ed4fc56122074d89a46cbfdd3104f2cb3
-v41 GeoIP SHA-256: b56081f3b09e05db9b6fc1b9205c8351e62884ef09b843a4832e6f362b2557c5
+v41 GeoIP SHA-256: 5e0e1f9fba8ad18b800e4cc6d255a7b94b6529a7426e6bafeba622aa0aa8b937
 
 POLICY
 - RU+BY+KZ registered resource prefixes and named service destinations are DIRECT regardless of geolocation.
@@ -24,11 +24,11 @@ RU IPv4 addresses: 52632577
 RU IPv6 addresses: 1192521157300195567661209186467840
 
 V41 FINAL
-RU CIDRs: 190382
+RU CIDRs: 190383
 RU IPv4 addresses: 53532475
-RU IPv6 addresses: 1205876356595180923515330646507520
+RU IPv6 addresses: 1205876356595199370259404356059136
 New IPv4 addresses vs v37 after PRIVATE/RKN/company-ASN exception: 899898
-New IPv6 addresses vs v37 after PRIVATE/RKN/company-ASN exception: 13355199294985355854121460039680
+New IPv6 addresses vs v37 after PRIVATE/RKN/company-ASN exception: 13355199295003802598195169591296
 PRIVATE IPv4 addresses: 592708862
 PRIVATE IPv6 addresses: 4325545831231176725068219651071148031
 
@@ -83,7 +83,7 @@ FILES
 - geoip_RU_v41_blocked_ip_exclusions.txt: effective non-corporate blocked set applied to v41.
 - geoip_RU_company_asn_bgp_prefixes.txt: exact prefixes originated by the curated corporate company-ASN allowlist.
 
-SHA-256 output: b56081f3b09e05db9b6fc1b9205c8351e62884ef09b843a4832e6f362b2557c5
+SHA-256 output: 5e0e1f9fba8ad18b800e4cc6d255a7b94b6529a7426e6bafeba622aa0aa8b937
 
 PRE_PUBLICATION_V41_HARD_POLICY_GATE
 Status: PASS

@@ -492536,6 +492536,7 @@ verified-service-resolver-protected	Verified service resolver protection					2a1
 reviewed-operator-prefixes	RU			AS402931		153.52.151.0/24
 reviewed-operator-prefixes	KZ			AS215294		178.92.244.0/23
 reviewed-operator-prefixes	BY			AS207957		179.253.86.0/24
+reviewed-operator-prefixes	RU			AS3327		2001:ad0:2000:1::/64
 rir-resource-RU	RIR resource registration	RU				2.56.24.0/23
 rir-resource-RU	RIR resource registration	RU				2.56.26.0/23
 rir-resource-RU	RIR resource registration	RU				2.56.88.0/22

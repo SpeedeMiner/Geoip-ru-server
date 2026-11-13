@@ -1,9 +1,9 @@
 {
   "schema": 2,
-  "generated_at": "2026-11-13T11:36:33.665299+00:00",
+  "generated_at": "2026-11-13T12:04:35.882347+00:00",
   "base_v37_sha256": "6b0830dd5087046f4b2d2de9068c4e7ed4fc56122074d89a46cbfdd3104f2cb3",
-  "output_sha256": "b56081f3b09e05db9b6fc1b9205c8351e62884ef09b843a4832e6f362b2557c5",
-  "output_bytes": 2088063,
+  "output_sha256": "5e0e1f9fba8ad18b800e4cc6d255a7b94b6529a7426e6bafeba622aa0aa8b937",
+  "output_bytes": 2088085,
   "sources": {
     "kyoresuas-standard": {
       "repository": "kyoresuas/ru-direct",
@@ -136,8 +136,8 @@
       "raw_files": [
         "v41-reviewed-operator-prefixes.tsv"
       ],
-      "valid_rows": 3,
-      "input_sha256": "5ba7cdca7f299fc1914a462001f8712a33e9bdea307ac3f152f8cd4026a8c32e",
+      "valid_rows": 4,
+      "input_sha256": "1c5fda0eaa946cd4491705fb7d1763f7a61cb943aa10d86ca9397c78758ae6c3",
       "protection": "none"
     }
   },
@@ -248,11 +248,11 @@
   },
   "final_v41_address_space": {
     "ipv4": 53532475,
-    "ipv6": 1205876356595180923515330646507520
+    "ipv6": 1205876356595199370259404356059136
   },
   "new_after_policy": {
     "ipv4": 899898,
-    "ipv6": 13355199294985355854121460039680
+    "ipv6": 13355199295003802598195169591296
   },
   "safety": {
     "this_builder_modifies_production_main": false,
