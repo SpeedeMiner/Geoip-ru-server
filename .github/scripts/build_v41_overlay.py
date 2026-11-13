@@ -99,6 +99,9 @@ def parse_cidr_file(path: Path, allow_hosts: bool = True):
         raise ValueError(f"source {path} has too many invalid rows: {invalid}")
     return networks, {"raw_rows": raw + invalid, "valid_rows": raw, "invalid_rows": invalid}
 
+MAX_REVIEWED_OPERATOR_PREFIXES = 64
+
+
 def parse_reviewed_operator_prefixes(path: Path):
     """Read exact reviewed prefixes without conferring ASN-level trust."""
     rows = {}
@@ -127,8 +130,8 @@ def parse_reviewed_operator_prefixes(path: Path):
             except ValueError as error:
                 raise ValueError(f"{path}:{reader.line_num}: invalid reviewed operator prefix row") from error
             rows[network] = (country, asn)
-            if len(rows) > 32:
-                raise ValueError(f"{path}: too many reviewed operator prefixes")
+            if len(rows) > MAX_REVIEWED_OPERATOR_PREFIXES:
+                raise ValueError(f"{path}: too many reviewed operator prefixes (max {MAX_REVIEWED_OPERATOR_PREFIXES})")
     if not rows:
         raise ValueError(f"{path}: empty reviewed operator prefix list")
     return rows

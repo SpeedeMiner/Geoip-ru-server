@@ -4,7 +4,7 @@ import tempfile
 import unittest
 
 from build_v41_overlay import (
-    assert_reviewed_operator_coverage, class_aware_effective_block_set,
+    MAX_REVIEWED_OPERATOR_PREFIXES, assert_reviewed_operator_coverage, class_aware_effective_block_set,
     parse_reviewed_operator_prefixes, reviewed_operator_provenance, subtract_networks,
 )
 
@@ -73,3 +73,9 @@ class ReviewedOperatorPrefixesTests(unittest.TestCase):
                 assert_reviewed_operator_coverage(
                     subtract_networks(direct, {host}), private, hard, admission, reviewed,
                 )
+
+    def test_reviewed_operator_row_limit_remains_bounded(self):
+        rows = [f"RU\t11.0.{i}.0/24\tAS402931\n" for i in range(MAX_REVIEWED_OPERATOR_PREFIXES + 1)]
+        self.assertEqual(len(self.parse("".join(rows[:-1]))), MAX_REVIEWED_OPERATOR_PREFIXES)
+        with self.assertRaisesRegex(ValueError, "too many reviewed operator prefixes"):
+            self.parse("".join(rows))

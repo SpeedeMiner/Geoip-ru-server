@@ -202,3 +202,9 @@ See [v41 release hardening](V41_RELEASE_HARDENING.md). Routing-policy changes ar
 - Start from PR #27 head `e17846c`. Selected 22 exact RU assignments across HOSTKEY (2), FIRSTSERVER (10), IHOR/PSERVERS (6), TIME-HOST (4). This keeps the existing 32-row operator cap (10 + 22). Prioritize exact corroboration and greater observed DIRECT recovery. See [pinned evidence](v41-geo-only-operator-evidence-20261114.json). No BGP aggregate or ASN-wide exception.
 - Expected incremental DIRECT delta: +85 IPv4 (2 + 42 + 17 + 24), no removals, zero IPv6/PRIVATE change. The hard masks and registry evidence remain unchanged. Verify `185.174.138.82/32` stays hard and both RU/FI-conflicting IHOR candidate prefixes remain unapproved.
 - Unmodified from the remaining cohort: 762 IPv4. Draft only. No changes to main, the release, or PR #5.
+
+## 2026-11-14 — Bounded expansion of the reviewed operator table
+
+- Start from PR #27 head `84c48c7`. Raise the row ceiling from 32 to 64, test both sides of the boundary, and retain the minimum /23 IPv4 and /64 IPv6 prefix lengths, overlap checks, exact manual scope and both publication validators.
+- Add six exact RU FIRSTSERVER assignments and ten IHOR/PSERVERS assignments with matching registry-linked geofeeds and complete same-origin RIS coverage. The three IHOR /23 rows without an exact route are covered by their paired /24 announcements. Expected delta is +19 IPv4 (6 FIRSTSERVER, 13 IHOR), no removals and no changes to IPv6, PRIVATE, hard or regional-exclusion masks. Evidence is [pinned here](v41-geo-only-operator-followup-20261114.json).
+- Keep mixed RU/FI IHOR entries unchanged. Also leave `62.3.58.0/24` unchanged: its exact RIS announcement and RU assignment description do not make the RDAP assignment covering .0 through .254 an exact /24. PR #27 stays draft. No production or PR #5 change.
