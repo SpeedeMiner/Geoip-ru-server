@@ -92,3 +92,7 @@
 - Both workflow modifications are in the SAME v41 PR to avoid a transient dual-publisher state after merging.
 - Release gate: validate lint/CI after these trigger changes, transition PR #13 from Draft, merge using expected head SHA, then independently verify v41 GitHub Release and `release` branch hashes. If CI or release fails, record the failure rather than claiming publication.
 - Excluded from all operations: PR #5 and `feature/reachability-full-ru-kz-by`; PRs #6–#9 kept Draft.
+
+## 2026-11-13 — publication and source integrity
+
+See [v41 release hardening](V41_RELEASE_HARDENING.md). Routing-policy changes are evaluated separately. PR #5 and its head branch are out of scope.

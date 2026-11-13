@@ -54,9 +54,11 @@ def parse_network(token: str, host_to_32: bool = True):
     if not token:
         raise ValueError("empty network token")
     if "/" in token:
-        return ipaddress.ip_network(token, strict=False)
+        return ipaddress.ip_network(token, strict=True)
+    if not host_to_32:
+        raise ValueError("explicit CIDR prefix length required")
     address = ipaddress.ip_address(token)
-    return ipaddress.ip_network((address, address.max_prefixlen if host_to_32 else address.max_prefixlen), strict=False)
+    return ipaddress.ip_network((address, address.max_prefixlen), strict=True)
 
 def parse_cidr_file(path: Path, allow_hosts: bool = True):
     networks = set()
@@ -74,12 +76,13 @@ def parse_cidr_file(path: Path, allow_hosts: bool = True):
                 break
         values = line.replace(",", " ").replace(";", " ").split()
         found = None
-        for token in values:
+        # The first field is the address. Do not accept a different address
+        # in trailing metadata after an invalid primary field.
+        if values:
             try:
-                found = parse_network(token, allow_hosts)
-                break
+                found = parse_network(values[0], allow_hosts)
             except ValueError:
-                continue
+                pass
         if found is None:
             invalid += 1
             continue
@@ -203,21 +206,35 @@ def parse_geoip_dat(path: Path):
             continue
         category = None
         networks = set()
+        inverse_seen = False
         for en, ew, ev in protobuf_fields(entry):
             if en == 1 and ew == 2:
+                if category is not None:
+                    raise ValueError("duplicate GeoIP category field")
                 category = ev.decode("ascii").upper()
             elif en == 2 and ew == 2:
                 address = prefix = None
                 for cn, cw, cv in protobuf_fields(ev):
                     if cn == 1 and cw == 2:
+                        if address is not None:
+                            raise ValueError("duplicate GeoIP address field")
                         address = cv
                     elif cn == 2 and cw == 0:
+                        if prefix is not None:
+                            raise ValueError("duplicate GeoIP prefix field")
                         prefix = int(cv)
                 if address is not None and prefix is not None:
                     ip = ipaddress.ip_address(address)
-                    networks.add(ipaddress.ip_network((ip, prefix), strict=False))
-        if category:
-            result.setdefault(category, set()).update(networks)
+                    networks.add(ipaddress.ip_network((ip, prefix), strict=True))
+                else:
+                    raise ValueError("invalid GeoIP CIDR: missing IP or prefix")
+            elif en == 3:
+                if ew != 0 or ev != 0 or inverse_seen:
+                    raise ValueError("inverted or malformed GeoIP categories are unsupported")
+                inverse_seen = True
+        if not category or category in result:
+            raise ValueError("missing or duplicate GeoIP category")
+        result[category] = networks
     if not result:
         raise ValueError("base GeoIP protobuf has no categories")
     return result
@@ -230,8 +247,8 @@ def parse_hydra_direct_whitelist(path: Path):
     direct, whitelist = categories["DIRECT"], categories["WHITELIST"]
     if not direct or not whitelist:
         raise ValueError("Hydra DIRECT/WHITELIST cannot be empty")
-    if any(net.prefixlen == 0 for net in direct | whitelist):
-        raise ValueError("Hydra DIRECT/WHITELIST contains a default route")
+    if any(net.prefixlen < (8 if net.version == 4 else 24) for net in direct | whitelist):
+        raise ValueError("Hydra DIRECT/WHITELIST contains a default route or overly broad prefix")
     return {"hydra-direct": direct, "hydra-whitelist": whitelist}
 
 
