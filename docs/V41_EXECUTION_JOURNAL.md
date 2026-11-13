@@ -196,3 +196,9 @@ See [v41 release hardening](V41_RELEASE_HARDENING.md). Routing-policy changes ar
 - In the dated public registry mirror, 649 addresses have an active domain/URL record, 310 have no active match and four have an exact active IP-only record. Two of the latter also match domain/URL records. Keep only the four exact IP tokens as reviewed hard evidence, without inferring that the mirror is official or signed. See [the evidence extract](v41-geo-only-exact-ip-evidence-20261113.json).
 - Restore only the 110 addresses previously lost to advisory DNS evidence inside six exact independently reviewed operator ranges. The rest of each of these ranges was already in DIRECT. See [the routing policy evidence](GEOIP_RU_V41_POLICY.md#reviewed-operator-prefixes-and-geography-only-inputs). Do not extend by ASN, BGP aggregate, tenant, geolocation feed, or registry absence alone.
 - Hold HOSTKEY and TIME-HOST and other mixed-location rows for individual checks. In particular IHOR geolocated-RU origin space contains assignments in both RU and FI. Leave all unresolved rows unchanged. No PR #5 work or production publication.
+
+## 2026-11-14 — Second exact geography-only review
+
+- Start from PR #27 head `e17846c`. Selected 22 exact RU assignments across HOSTKEY (2), FIRSTSERVER (10), IHOR/PSERVERS (6), TIME-HOST (4). This keeps the existing 32-row operator cap (10 + 22). Prioritize exact corroboration and greater observed DIRECT recovery. See [pinned evidence](v41-geo-only-operator-evidence-20261114.json). No BGP aggregate or ASN-wide exception.
+- Expected incremental DIRECT delta: +85 IPv4 (2 + 42 + 17 + 24), no removals, zero IPv6/PRIVATE change. The hard masks and registry evidence remain unchanged. Verify `185.174.138.82/32` stays hard and both RU/FI-conflicting IHOR candidate prefixes remain unapproved.
+- Unmodified from the remaining cohort: 762 IPv4. Draft only. No changes to main, the release, or PR #5.

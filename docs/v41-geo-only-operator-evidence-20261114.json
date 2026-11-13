@@ -1,0 +1,399 @@
+{
+  "scope": "Follow-up exact RU assignments. Resolver-only; no ASN-wide exception. RIS observations are routing evidence, not application reachability. The 2026-11-13 RIS view was checked in this follow-up.",
+  "base_pr_head": "e17846cab1f5fe9535bdd62ddd2d73829a86fd58",
+  "records": [
+    {
+      "prefix": "193.187.93.0/24",
+      "origin": "AS50867",
+      "netname": "Hostkey-2",
+      "ru_cidr": true,
+      "expected_restored_ipv4": 1,
+      "ris_query_time": "2026-11-13T08:00:00",
+      "ris_peers": {
+        "ris_peers_seeing": 319,
+        "total_ris_peers": 319
+      },
+      "ris_more_specifics": [],
+      "ris_less_specifics": [],
+      "rdap": "https://rdap.db.ripe.net/ip/193.187.93.0/24",
+      "ris": "https://stat.ripe.net/data/routing-status/data.json?resource=193.187.93.0%2F24",
+      "geofeed": "https://fast-telecom.net/geofeed/193.187.93.0.csv",
+      "geofeed_sha256": "1811aff9bc0fbe6877bbbcf89b740b537802615061d08e5e62d4757fb1a2c490"
+    },
+    {
+      "prefix": "193.187.94.0/24",
+      "origin": "AS50867",
+      "netname": "Hostkey-3",
+      "ru_cidr": true,
+      "expected_restored_ipv4": 1,
+      "ris_query_time": "2026-11-13T08:00:00",
+      "ris_peers": {
+        "ris_peers_seeing": 319,
+        "total_ris_peers": 319
+      },
+      "ris_more_specifics": [],
+      "ris_less_specifics": [],
+      "rdap": "https://rdap.db.ripe.net/ip/193.187.94.0/24",
+      "ris": "https://stat.ripe.net/data/routing-status/data.json?resource=193.187.94.0%2F24",
+      "geofeed": "https://fast-telecom.net/geofeed/193.187.94.0.csv",
+      "geofeed_sha256": "decd2085d35dbd3006666267f2c87de5c83c3526cc7ecb4ddb849662f296c877"
+    },
+    {
+      "prefix": "185.174.138.0/24",
+      "origin": "AS204997",
+      "netname": "FIRSTSERVER",
+      "ru_cidr": true,
+      "expected_restored_ipv4": 23,
+      "ris_query_time": "2026-11-13T08:00:00",
+      "ris_peers": {
+        "ris_peers_seeing": 318,
+        "total_ris_peers": 319
+      },
+      "ris_more_specifics": [],
+      "ris_less_specifics": [],
+      "rdap": "https://rdap.db.ripe.net/ip/185.174.138.0/24",
+      "ris": "https://stat.ripe.net/data/routing-status/data.json?resource=185.174.138.0%2F24",
+      "geofeed": "https://geofeed.first-server.net/fb_geofeed.csv",
+      "geofeed_sha256": "3721f92fd09917143e01ec9117b46de301a289ecaaec0965ca1d8d2e0dd9ae89"
+    },
+    {
+      "prefix": "185.139.68.0/24",
+      "origin": "AS204997",
+      "netname": "FIRSTSERVER",
+      "ru_cidr": true,
+      "expected_restored_ipv4": 4,
+      "ris_query_time": "2026-11-13T08:00:00",
+      "ris_peers": {
+        "ris_peers_seeing": 318,
+        "total_ris_peers": 319
+      },
+      "ris_more_specifics": [],
+      "ris_less_specifics": [],
+      "rdap": "https://rdap.db.ripe.net/ip/185.139.68.0/24",
+      "ris": "https://stat.ripe.net/data/routing-status/data.json?resource=185.139.68.0%2F24",
+      "geofeed": "https://geofeed.first-server.net/fb_geofeed.csv",
+      "geofeed_sha256": "3721f92fd09917143e01ec9117b46de301a289ecaaec0965ca1d8d2e0dd9ae89"
+    },
+    {
+      "prefix": "185.189.15.0/24",
+      "origin": "AS204997",
+      "netname": "FIRSTSERVER",
+      "ru_cidr": true,
+      "expected_restored_ipv4": 3,
+      "ris_query_time": "2026-11-13T08:00:00",
+      "ris_peers": {
+        "ris_peers_seeing": 317,
+        "total_ris_peers": 319
+      },
+      "ris_more_specifics": [],
+      "ris_less_specifics": [],
+      "rdap": "https://rdap.db.ripe.net/ip/185.189.15.0/24",
+      "ris": "https://stat.ripe.net/data/routing-status/data.json?resource=185.189.15.0%2F24",
+      "geofeed": "https://geofeed.first-server.net/fb_geofeed.csv",
+      "geofeed_sha256": "3721f92fd09917143e01ec9117b46de301a289ecaaec0965ca1d8d2e0dd9ae89"
+    },
+    {
+      "prefix": "185.195.26.0/24",
+      "origin": "AS204997",
+      "netname": "FIRSTSERVER",
+      "ru_cidr": true,
+      "expected_restored_ipv4": 3,
+      "ris_query_time": "2026-11-13T08:00:00",
+      "ris_peers": {
+        "ris_peers_seeing": 318,
+        "total_ris_peers": 319
+      },
+      "ris_more_specifics": [],
+      "ris_less_specifics": [],
+      "rdap": "https://rdap.db.ripe.net/ip/185.195.26.0/24",
+      "ris": "https://stat.ripe.net/data/routing-status/data.json?resource=185.195.26.0%2F24",
+      "geofeed": "https://geofeed.first-server.net/fb_geofeed.csv",
+      "geofeed_sha256": "3721f92fd09917143e01ec9117b46de301a289ecaaec0965ca1d8d2e0dd9ae89"
+    },
+    {
+      "prefix": "147.78.66.0/24",
+      "origin": "AS204997",
+      "netname": "FIRSTSERVER",
+      "ru_cidr": true,
+      "expected_restored_ipv4": 2,
+      "ris_query_time": "2026-11-13T08:00:00",
+      "ris_peers": {
+        "ris_peers_seeing": 318,
+        "total_ris_peers": 319
+      },
+      "ris_more_specifics": [],
+      "ris_less_specifics": [],
+      "rdap": "https://rdap.db.ripe.net/ip/147.78.66.0/24",
+      "ris": "https://stat.ripe.net/data/routing-status/data.json?resource=147.78.66.0%2F24",
+      "geofeed": "https://geofeed.first-server.net/fb_geofeed.csv",
+      "geofeed_sha256": "3721f92fd09917143e01ec9117b46de301a289ecaaec0965ca1d8d2e0dd9ae89"
+    },
+    {
+      "prefix": "185.212.148.0/24",
+      "origin": "AS204997",
+      "netname": "FIRSTSERVER",
+      "ru_cidr": true,
+      "expected_restored_ipv4": 2,
+      "ris_query_time": "2026-11-13T08:00:00",
+      "ris_peers": {
+        "ris_peers_seeing": 318,
+        "total_ris_peers": 319
+      },
+      "ris_more_specifics": [],
+      "ris_less_specifics": [],
+      "rdap": "https://rdap.db.ripe.net/ip/185.212.148.0/24",
+      "ris": "https://stat.ripe.net/data/routing-status/data.json?resource=185.212.148.0%2F24",
+      "geofeed": "https://geofeed.first-server.net/fb_geofeed.csv",
+      "geofeed_sha256": "3721f92fd09917143e01ec9117b46de301a289ecaaec0965ca1d8d2e0dd9ae89"
+    },
+    {
+      "prefix": "185.244.173.0/24",
+      "origin": "AS204997",
+      "netname": "FIRSTSERVER",
+      "ru_cidr": true,
+      "expected_restored_ipv4": 2,
+      "ris_query_time": "2026-11-13T08:00:00",
+      "ris_peers": {
+        "ris_peers_seeing": 318,
+        "total_ris_peers": 319
+      },
+      "ris_more_specifics": [],
+      "ris_less_specifics": [],
+      "rdap": "https://rdap.db.ripe.net/ip/185.244.173.0/24",
+      "ris": "https://stat.ripe.net/data/routing-status/data.json?resource=185.244.173.0%2F24",
+      "geofeed": "https://geofeed.first-server.net/fb_geofeed.csv",
+      "geofeed_sha256": "3721f92fd09917143e01ec9117b46de301a289ecaaec0965ca1d8d2e0dd9ae89"
+    },
+    {
+      "prefix": "104.128.140.0/24",
+      "origin": "AS204997",
+      "netname": "FIRST-SERVER-MNT",
+      "ru_cidr": true,
+      "expected_restored_ipv4": 1,
+      "ris_query_time": "2026-11-13T08:00:00",
+      "ris_peers": {
+        "ris_peers_seeing": 318,
+        "total_ris_peers": 319
+      },
+      "ris_more_specifics": [],
+      "ris_less_specifics": [],
+      "rdap": "https://rdap.db.ripe.net/ip/104.128.140.0/24",
+      "ris": "https://stat.ripe.net/data/routing-status/data.json?resource=104.128.140.0%2F24",
+      "geofeed": "https://geofeed.first-server.net/fb_geofeed.csv",
+      "geofeed_sha256": "3721f92fd09917143e01ec9117b46de301a289ecaaec0965ca1d8d2e0dd9ae89"
+    },
+    {
+      "prefix": "139.28.223.0/24",
+      "origin": "AS204997",
+      "netname": "FIRSTSERVER",
+      "ru_cidr": true,
+      "expected_restored_ipv4": 1,
+      "ris_query_time": "2026-11-13T08:00:00",
+      "ris_peers": {
+        "ris_peers_seeing": 318,
+        "total_ris_peers": 319
+      },
+      "ris_more_specifics": [],
+      "ris_less_specifics": [],
+      "rdap": "https://rdap.db.ripe.net/ip/139.28.223.0/24",
+      "ris": "https://stat.ripe.net/data/routing-status/data.json?resource=139.28.223.0%2F24",
+      "geofeed": "https://geofeed.first-server.net/fb_geofeed.csv",
+      "geofeed_sha256": "3721f92fd09917143e01ec9117b46de301a289ecaaec0965ca1d8d2e0dd9ae89"
+    },
+    {
+      "prefix": "185.139.70.0/24",
+      "origin": "AS204997",
+      "netname": "FIRSTSERVER",
+      "ru_cidr": true,
+      "expected_restored_ipv4": 1,
+      "ris_query_time": "2026-11-13T08:00:00",
+      "ris_peers": {
+        "ris_peers_seeing": 318,
+        "total_ris_peers": 319
+      },
+      "ris_more_specifics": [],
+      "ris_less_specifics": [],
+      "rdap": "https://rdap.db.ripe.net/ip/185.139.70.0/24",
+      "ris": "https://stat.ripe.net/data/routing-status/data.json?resource=185.139.70.0%2F24",
+      "geofeed": "https://geofeed.first-server.net/fb_geofeed.csv",
+      "geofeed_sha256": "3721f92fd09917143e01ec9117b46de301a289ecaaec0965ca1d8d2e0dd9ae89"
+    },
+    {
+      "prefix": "193.124.184.0/24",
+      "origin": "AS209641",
+      "netname": "PSERVERS-CLOUD-HOSTING",
+      "ru_cidr": true,
+      "expected_restored_ipv4": 5,
+      "ris_query_time": "2026-11-13T08:00:00",
+      "ris_peers": {
+        "ris_peers_seeing": 319,
+        "total_ris_peers": 319
+      },
+      "ris_more_specifics": [],
+      "ris_less_specifics": [],
+      "rdap": "https://rdap.db.ripe.net/ip/193.124.184.0/24",
+      "ris": "https://stat.ripe.net/data/routing-status/data.json?resource=193.124.184.0%2F24",
+      "geofeed": "https://geofeed.power-servers.net/ih_geofeed.csv",
+      "geofeed_sha256": "e3ab163fce08d816cd398a59134b715f341ca4f444566f4ef8f0b97b9c2e5269"
+    },
+    {
+      "prefix": "45.89.66.0/24",
+      "origin": "AS209641",
+      "netname": "PSERVERS-CLOUD-HOSTING",
+      "ru_cidr": true,
+      "expected_restored_ipv4": 3,
+      "ris_query_time": "2026-11-13T08:00:00",
+      "ris_peers": {
+        "ris_peers_seeing": 319,
+        "total_ris_peers": 319
+      },
+      "ris_more_specifics": [],
+      "ris_less_specifics": [],
+      "rdap": "https://rdap.db.ripe.net/ip/45.89.66.0/24",
+      "ris": "https://stat.ripe.net/data/routing-status/data.json?resource=45.89.66.0%2F24",
+      "geofeed": "https://geofeed.power-servers.net/ih_geofeed.csv",
+      "geofeed_sha256": "e3ab163fce08d816cd398a59134b715f341ca4f444566f4ef8f0b97b9c2e5269"
+    },
+    {
+      "prefix": "45.89.67.0/24",
+      "origin": "AS209641",
+      "netname": "PSERVERS-CLOUD-HOSTING",
+      "ru_cidr": true,
+      "expected_restored_ipv4": 3,
+      "ris_query_time": "2026-11-13T08:00:00",
+      "ris_peers": {
+        "ris_peers_seeing": 319,
+        "total_ris_peers": 319
+      },
+      "ris_more_specifics": [],
+      "ris_less_specifics": [],
+      "rdap": "https://rdap.db.ripe.net/ip/45.89.67.0/24",
+      "ris": "https://stat.ripe.net/data/routing-status/data.json?resource=45.89.67.0%2F24",
+      "geofeed": "https://geofeed.power-servers.net/ih_geofeed.csv",
+      "geofeed_sha256": "e3ab163fce08d816cd398a59134b715f341ca4f444566f4ef8f0b97b9c2e5269"
+    },
+    {
+      "prefix": "185.125.218.0/23",
+      "origin": "AS209641",
+      "netname": "PSERVERS-CLOUD-HOSTING",
+      "ru_cidr": true,
+      "expected_restored_ipv4": 3,
+      "ris_query_time": "2026-11-13T08:00:00",
+      "ris_peers": {
+        "ris_peers_seeing": 319,
+        "total_ris_peers": 319
+      },
+      "ris_more_specifics": [],
+      "ris_less_specifics": [
+        {
+          "prefix": "185.125.216.0/22",
+          "origin": 209641
+        }
+      ],
+      "rdap": "https://rdap.db.ripe.net/ip/185.125.218.0/23",
+      "ris": "https://stat.ripe.net/data/routing-status/data.json?resource=185.125.218.0%2F23",
+      "geofeed": "https://geofeed.power-servers.net/ih_geofeed.csv",
+      "geofeed_sha256": "e3ab163fce08d816cd398a59134b715f341ca4f444566f4ef8f0b97b9c2e5269"
+    },
+    {
+      "prefix": "94.142.140.0/24",
+      "origin": "AS209641",
+      "netname": "PSERVERS-CLOUD-HOSTING",
+      "ru_cidr": true,
+      "expected_restored_ipv4": 2,
+      "ris_query_time": "2026-11-13T08:00:00",
+      "ris_peers": {
+        "ris_peers_seeing": 319,
+        "total_ris_peers": 319
+      },
+      "ris_more_specifics": [],
+      "ris_less_specifics": [],
+      "rdap": "https://rdap.db.ripe.net/ip/94.142.140.0/24",
+      "ris": "https://stat.ripe.net/data/routing-status/data.json?resource=94.142.140.0%2F24",
+      "geofeed": "https://geofeed.power-servers.net/ih_geofeed.csv",
+      "geofeed_sha256": "e3ab163fce08d816cd398a59134b715f341ca4f444566f4ef8f0b97b9c2e5269"
+    },
+    {
+      "prefix": "94.142.139.0/24",
+      "origin": "AS209641",
+      "netname": "PSERVERS-CLOUD-HOSTING",
+      "ru_cidr": true,
+      "expected_restored_ipv4": 1,
+      "ris_query_time": "2026-11-13T08:00:00",
+      "ris_peers": {
+        "ris_peers_seeing": 319,
+        "total_ris_peers": 319
+      },
+      "ris_more_specifics": [],
+      "ris_less_specifics": [],
+      "rdap": "https://rdap.db.ripe.net/ip/94.142.139.0/24",
+      "ris": "https://stat.ripe.net/data/routing-status/data.json?resource=94.142.139.0%2F24",
+      "geofeed": "https://geofeed.power-servers.net/ih_geofeed.csv",
+      "geofeed_sha256": "e3ab163fce08d816cd398a59134b715f341ca4f444566f4ef8f0b97b9c2e5269"
+    },
+    {
+      "prefix": "45.130.151.0/24",
+      "origin": "AS212913",
+      "netname": "RU-TIMEHOST-20201103",
+      "ru_cidr": true,
+      "expected_restored_ipv4": 13,
+      "ris_query_time": "2026-11-13T08:00:00",
+      "ris_peers": {
+        "ris_peers_seeing": 319,
+        "total_ris_peers": 319
+      },
+      "ris_more_specifics": [],
+      "ris_less_specifics": [],
+      "rdap": "https://rdap.db.ripe.net/ip/45.130.151.0/24",
+      "ris": "https://stat.ripe.net/data/routing-status/data.json?resource=45.130.151.0%2F24"
+    },
+    {
+      "prefix": "45.131.46.0/24",
+      "origin": "AS212913",
+      "netname": "RU-TIMEHOST-20210712",
+      "ru_cidr": true,
+      "expected_restored_ipv4": 8,
+      "ris_query_time": "2026-11-13T08:00:00",
+      "ris_peers": {
+        "ris_peers_seeing": 319,
+        "total_ris_peers": 319
+      },
+      "ris_more_specifics": [],
+      "ris_less_specifics": [],
+      "rdap": "https://rdap.db.ripe.net/ip/45.131.46.0/24",
+      "ris": "https://stat.ripe.net/data/routing-status/data.json?resource=45.131.46.0%2F24"
+    },
+    {
+      "prefix": "94.103.183.0/24",
+      "origin": "AS212913",
+      "netname": "RU-TIMEHOST-20210930",
+      "ru_cidr": true,
+      "expected_restored_ipv4": 2,
+      "ris_query_time": "2026-11-13T08:00:00",
+      "ris_peers": {
+        "ris_peers_seeing": 319,
+        "total_ris_peers": 319
+      },
+      "ris_more_specifics": [],
+      "ris_less_specifics": [],
+      "rdap": "https://rdap.db.ripe.net/ip/94.103.183.0/24",
+      "ris": "https://stat.ripe.net/data/routing-status/data.json?resource=94.103.183.0%2F24"
+    },
+    {
+      "prefix": "193.3.23.0/24",
+      "origin": "AS212913",
+      "netname": "RU-TIMEHOST-20210914",
+      "ru_cidr": true,
+      "expected_restored_ipv4": 1,
+      "ris_query_time": "2026-11-13T08:00:00",
+      "ris_peers": {
+        "ris_peers_seeing": 319,
+        "total_ris_peers": 319
+      },
+      "ris_more_specifics": [],
+      "ris_less_specifics": [],
+      "rdap": "https://rdap.db.ripe.net/ip/193.3.23.0/24",
+      "ris": "https://stat.ripe.net/data/routing-status/data.json?resource=193.3.23.0%2F24"
+    }
+  ]
+}

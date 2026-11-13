@@ -69,6 +69,8 @@ Six exact reviewed entries recover 110 IPv4 addresses in the 2026-11-13 fixed-in
 
 The [SERV.HOST geofeed](https://status.serv.host/geofeed/subnet.csv) corroborates the four AS207957 entries. The two Compubyte ranges are exact RU assignments to the origin holder, with the UCOZ-NET /23 covered by two same-origin /24s and COMPUBYTE-NET announced as a /24. The larger historical ipverse aggregates do not widen the approved scope.
 
+The [second prefix review](v41-geo-only-operator-evidence-20261114.json) adds 22 exact RU rows (HOSTKEY, FIRSTSERVER, IHOR/PSERVERS and TIME-HOST). Every row has an exact RU registry object and a matching RIS announcement with no conflicting observed origins. The first three operators have matching exact geofeed entries. TIME-HOST has exact assignments to ORG-TH111-RIPE and matching RIS origins. No ASN-wide action. Keep the conflicting IHOR `94.142.141.0/24` and `193.124.191.0/24` out of this exception table. The existing exact hard entry `185.174.138.82/32` still takes precedence inside the reviewed FIRSTSERVER /24.
+
 ## Reviewed regional admission conflicts
 
 The v41 overlay excludes exact IPv4 prefixes in [the reviewed admission table](../.github/data/v41-regional-admission-exclusions.tsv) from the emitted RU category after candidate assembly. This does not modify RIR inventories, select or reject an entire ASN, add an output category, or alter RKN, Telegram or resolver block inputs and masks. The list is local and reviewed. It is not populated by a country feed or automated geographic filtering. A regional parent allocation alone is not enough for the listed cases because exact or more-specific assignment records and the observed origin point outside the region.
