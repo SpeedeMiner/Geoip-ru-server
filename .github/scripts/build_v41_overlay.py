@@ -97,6 +97,39 @@ def parse_cidr_file(path: Path, allow_hosts: bool = True):
         raise ValueError(f"source {path} has too many invalid rows: {invalid}")
     return networks, {"raw_rows": raw + invalid, "valid_rows": raw, "invalid_rows": invalid}
 
+def parse_reviewed_operator_prefixes(path: Path):
+    """Read explicit IPv4 candidates without conferring ASN-level trust."""
+    rows = {}
+    with path.open(encoding="utf-8", newline="") as handle:
+        reader = csv.DictReader(handle, delimiter="\t")
+        if reader.fieldnames != ["country", "prefix", "origin_asn"]:
+            raise ValueError(f"{path}: unexpected reviewed operator prefix header")
+        for row in reader:
+            try:
+                country, token, asn = (row[key] for key in reader.fieldnames)
+                if None in row or country not in ("RU", "BY", "KZ") or not token or not asn:
+                    raise ValueError
+                network = ipaddress.IPv4Network(token, strict=True)
+                if (token != str(network) or network.prefixlen < 23
+                        or not network.is_global or network.is_multicast):
+                    raise ValueError
+                if not asn.startswith("AS") or not asn[2:].isascii() or not asn[2:].isdigit():
+                    raise ValueError
+                number = int(asn[2:])
+                if asn != f"AS{number}" or not 1 <= number <= 4294967295:
+                    raise ValueError
+                if any(network.overlaps(other) for other in rows):
+                    raise ValueError
+            except ValueError as error:
+                raise ValueError(f"{path}:{reader.line_num}: invalid reviewed operator prefix row") from error
+            rows[network] = (country, asn)
+            if len(rows) > 32:
+                raise ValueError(f"{path}: too many reviewed operator prefixes")
+    if not rows:
+        raise ValueError(f"{path}: empty reviewed operator prefix list")
+    return rows
+
+
 def parse_rir_tsv(path: Path):
     result = defaultdict(set)
     records = 0
@@ -590,6 +623,7 @@ def main():
     parser.add_argument("--core-company-prefixes", type=Path, required=True)
     parser.add_argument("--shared-infrastructure-prefixes", type=Path, required=True)
     parser.add_argument("--regional-origin-prefixes", type=Path, required=True)
+    parser.add_argument("--reviewed-operator-prefixes", type=Path)
     parser.add_argument("--ipsum", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--categories", type=Path, required=True)
@@ -682,6 +716,20 @@ def main():
                 "domains": "",
                 "prefix": str(net),
             })
+    reviewed = parse_reviewed_operator_prefixes(args.reviewed_operator_prefixes) if args.reviewed_operator_prefixes else {}
+    reviewed_source = "reviewed-operator-prefixes"
+    if args.reviewed_operator_prefixes:
+        source_stats[reviewed_source] = {
+            "raw_files": [args.reviewed_operator_prefixes.name],
+            "valid_rows": len(reviewed),
+            "input_sha256": sha256(args.reviewed_operator_prefixes.read_bytes()),
+            "protection": "none",
+        }
+        for net, (country, asn) in sorted(reviewed.items()):
+            prefix_rows.append({"source_id": reviewed_source, "category": country,
+                                "service": "", "tier": "", "asn_list": asn, "domains": "", "prefix": str(net)})
+    # Reviewed networks contribute coverage only. They do not enter any block exemption mask.
+    additions.update(reviewed)
     preblock = base_ru | additions
     preblock_iv = {v: intervals(preblock, v) for v in (4, 6)}
     core_company_iv = {v: intervals(core_company_prefixes, v) for v in (4, 6)}
@@ -751,6 +799,8 @@ def main():
         ("verified-service-exact-hosts", service_exact),
         ("verified-service-resolver-protected", service_resolver),
     ]
+    if args.reviewed_operator_prefixes:
+        measured_sources.append((reviewed_source, reviewed))
     for source_id, networks in measured_sources + list(service_sources.items()) + list(hydra_sources.items()):
         row = {"source_id":source_id,"unique_cidrs":len(networks)}
         for v in (4, 6):
