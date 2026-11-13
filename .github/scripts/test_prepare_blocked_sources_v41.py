@@ -6,10 +6,34 @@ import unittest
 from pathlib import Path
 from unittest import mock
 
-from prepare_blocked_sources_v41 import TELEGRAM_PREFIXES, is_host, main, parse_line, subnet_auto_approved
+from collections import defaultdict
+
+from prepare_blocked_sources_v41 import (
+    LEGACY_HARD, LEGACY_REGIONAL_RESOLVER, TELEGRAM_PREFIXES, is_host, main, parse_line,
+    reclassify_legacy_hosts, subnet_auto_approved,
+)
 
 
 class BlockedSourcePolicyTests(unittest.TestCase):
+    def test_legacy_reclassification_is_host_only_and_checks_covering_live_prefixes(self):
+        hard = {x: {LEGACY_HARD} for x in (
+            "192.0.2.1/32", "192.0.2.2/32", "192.0.2.3/32", "192.0.2.4/32",
+            "192.0.2.10/31", "198.51.100.1/32", "2001:db8::1/128",
+            "91.108.4.1/32", "192.0.2.64/32",
+        )}
+        hard["192.0.2.2/32"].add("antifilter-ip.lst")
+        resolved = defaultdict(set, {"192.0.2.3/32": {"antifilter-ipresolve.lst"}})
+        approved_before = hard.keys() | resolved.keys()
+        count = reclassify_legacy_hosts(
+            hard, resolved,
+            {"192.0.2.2/32", "192.0.2.3/32", "192.0.2.4/30", "192.0.2.64/26"} | set(TELEGRAM_PREFIXES),
+            {"192.0.2.0/24", "91.108.4.0/22", "2001:db8::/48"},
+        )
+        self.assertEqual(count, 1)
+        self.assertEqual(resolved["192.0.2.1/32"], {LEGACY_REGIONAL_RESOLVER})
+        self.assertEqual(approved_before, hard.keys() | resolved.keys())
+        self.assertNotIn("192.0.2.1/32", hard)
+
     def test_ip_resolve_host_semantics(self):
         self.assertTrue(is_host(parse_line("203.0.113.9")))
         self.assertTrue(is_host(parse_line("2001:db8::1")))
@@ -222,6 +246,34 @@ class BlockedSourcePolicyTests(unittest.TestCase):
             self.assertIn("198.51.20.1/32", exact)
             self.assertIn("v38-historical-ipresolve-only", resolver)
             self.assertIn("v38-historical-ipresolve.lst", (root / "stats.tsv").read_text(encoding="utf-8"))
+
+            (root / "regional.txt").write_text("192.0.20.0/24\n", encoding="utf-8")
+            (root / "shared.txt").write_text("192.0.21.0/24\n", encoding="utf-8")
+            argv += ["--regional-origin-prefixes", str(root / "regional.txt"),
+                     "--shared-infrastructure-prefixes", str(root / "shared.txt")]
+            original_approved = (root / "approved.txt").read_bytes()
+            with mock.patch("sys.argv", argv), contextlib.redirect_stdout(io.StringIO()):
+                self.assertEqual(main(), 0)
+            self.assertEqual(exact, (root / "exact.txt").read_text(encoding="utf-8"))
+            self.assertEqual(resolver, (root / "resolved.txt").read_text(encoding="utf-8"))
+            self.assertIn("SKIPPED_INCOMPLETE_CURRENT_EVIDENCE", (root / "stats.tsv").read_text())
+            self.assertEqual(original_approved, (root / "approved.txt").read_bytes())
+
+            (root / "ipresolve.lst").write_text(host_rows("203.0.113.1") + "192.0.20.2\n", encoding="utf-8")
+            with mock.patch("sys.argv", argv), contextlib.redirect_stdout(io.StringIO()):
+                self.assertEqual(main(), 0)
+            self.assertIn("192.0.20.2/32 # sources=v38-baseline-hard-or-unclassified",
+                          (root / "exact.txt").read_text(encoding="utf-8"))
+            self.assertIn("192.0.20.1/32 # sources=v38-historical-only-regional-resolver",
+                          (root / "resolved.txt").read_text(encoding="utf-8"))
+            self.assertIn("v38-historical-only-regional-resolver\tAPPLIED", (root / "stats.tsv").read_text())
+            with (root / "ipresolve.lst").open("a", encoding="utf-8") as stream:
+                stream.write("not-an-address\n")
+            with mock.patch("sys.argv", argv), contextlib.redirect_stdout(io.StringIO()):
+                self.assertEqual(main(), 0)
+            self.assertIn("192.0.20.1/32 # sources=v38-baseline-hard-or-unclassified",
+                          (root / "exact.txt").read_text(encoding="utf-8"))
+            self.assertIn("SKIPPED_INCOMPLETE_CURRENT_EVIDENCE", (root / "stats.tsv").read_text())
 
 
 if __name__ == "__main__":

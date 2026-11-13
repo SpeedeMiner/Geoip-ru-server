@@ -8,7 +8,7 @@ on:
         required: false
         type: string
   pull_request:
-    branches: [main, hardening/v41-release-integrity]
+    branches: [main, hardening/v41-release-integrity, policy/v41-1-service-and-regional]
     paths:
       - ".github/workflows/geoip-v41.yml"
       - ".github/scripts/build_rir_rukzby_prefixes.py"
@@ -226,7 +226,7 @@ jobs:
               rm -f "$tmp"
               printf '# Optional source unavailable during this build: %s\n' "$url" > "$output"
               record_source_download "$label" "$output" "$url" "unavailable"
-              echo "::warning::Optional review-only source unavailable: ${label}; continuing without its candidates."
+              echo "::warning::Optional source unavailable: ${label}; see blocked-source stats for fallback status."
             fi
           }
 
@@ -611,30 +611,12 @@ jobs:
           sha256sum "$INPUT_PROVENANCE" > "$INPUT_PROVENANCE_SHA"
           sha256sum -c "$INPUT_PROVENANCE_SHA"
 
-          python3 .github/scripts/prepare_blocked_sources_v41.py \
-            --ip-list "$BLOCKED_IP_RAW_INPUT" \
-            --ipresolve "$BLOCKED_IPRESOLVE_INPUT" \
-            --baseline "$BLOCKED_BASELINE_INPUT" \
-            --historical-ip-list "$V38_PINNED_IP_INPUT" \
-            --historical-ipresolve "$V38_PINNED_IPRESOLVE_INPUT" \
-            --historical-subnet "$V38_PINNED_SUBNET_INPUT" \
-            --subnet "$BLOCKED_SUBNET_INPUT" \
-            --community "$BLOCKED_COMMUNITY_INPUT" \
-            --refilter "$BLOCKED_REFILTER_INPUT" \
-            --approved "$BLOCKED_IP_INPUT" \
-            --exact-approved "$BLOCKED_IP_EXACT_INPUT" \
-            --resolved-approved "$BLOCKED_IPRESOLVE_ONLY_INPUT" \
-            --review "$BLOCKED_REVIEW_INPUT" \
-            --stats "$BLOCKED_STATS_INPUT" \
-            --checksums "$BLOCKED_CHECKSUMS_INPUT"
-
           # Validate every required core source and the additive ASN/BGP inputs before parsing.
           for file in "$HYDRA_INPUT" "$GRIMBIRD_INPUT" "$DIGNE_INPUT" "$DAVOYAN_INPUT" \
                       "$GOLUKON_INPUT" "$V2FLY_INPUT" "$V2FLY_SHA_INPUT" \
                       "$LOYALSOLDIER_RU_INPUT" "$LOYALSOLDIER_BY_INPUT" "$LOYALSOLDIER_PRIVATE_INPUT" \
-                      "$BY_KZ_ASN_REGISTRY" "$BLOCKED_IP_INPUT" "$BLOCKED_IP_EXACT_INPUT" "$BLOCKED_IPRESOLVE_ONLY_INPUT" "$BLOCKED_IP_RAW_INPUT" "$BLOCKED_BASELINE_INPUT" \
-                      "$BLOCKED_IPRESOLVE_INPUT" "$BLOCKED_SUBNET_INPUT" "$BLOCKED_IPSUM_INPUT" "$BLOCKED_REVIEW_INPUT" \
-                      "$BLOCKED_STATS_INPUT" "$BLOCKED_CHECKSUMS_INPUT" "$HXEHEX_INPUT" "$W1ZARDZ_INPUT" \
+                      "$BY_KZ_ASN_REGISTRY" "$BLOCKED_IP_RAW_INPUT" "$BLOCKED_BASELINE_INPUT" \
+                      "$BLOCKED_IPRESOLVE_INPUT" "$BLOCKED_SUBNET_INPUT" "$BLOCKED_IPSUM_INPUT" "$HXEHEX_INPUT" "$W1ZARDZ_INPUT" \
                       "$KY_STANDARD_V4_INPUT" "$KY_STANDARD_V6_INPUT" "$KY_SERVICES_INPUT" "$HXEHEX_IP_INPUT" "$ESCAPINGWORM_OPERATOR_INPUT" \
                       "$RIR_RUKZBY_PREFIX_INPUT" "$RIR_RUKZBY_STATS" "$AFRINIC_STATS" "$APNIC_STATS" \
                       "$ARIN_STATS" "$LACNIC_STATS" "$RIPENCC_STATS" "$RU_ASN_REGISTRY" \
@@ -652,8 +634,7 @@ jobs:
                  "$HXEHEX_INPUT" "$W1ZARDZ_INPUT" "$AFRINIC_STATS" "$APNIC_STATS" \
                  "$ARIN_STATS" "$LACNIC_STATS" "$RIPENCC_STATS" "$RU_ASN_REGISTRY" "$IPVERSE_BGP_ARCHIVE" \
                  "$IANA_V4_CSV" "$IANA_V6_CSV" "$BLOCKED_IP_RAW_INPUT" "$BLOCKED_IPRESOLVE_INPUT" \
-                 "$BLOCKED_SUBNET_INPUT" "$BLOCKED_COMMUNITY_INPUT" "$BLOCKED_REFILTER_INPUT" \
-                 "$BLOCKED_IP_INPUT" "$BLOCKED_REVIEW_INPUT" "$BLOCKED_STATS_INPUT"
+                 "$BLOCKED_SUBNET_INPUT" "$BLOCKED_COMMUNITY_INPUT" "$BLOCKED_REFILTER_INPUT"
 
       - name: Extract RU/BY/KZ registered ASN prefixes and global ipverse BGP observation set
         shell: bash
@@ -682,6 +663,29 @@ jobs:
           for file in "$RU_PREFIX_INPUT" "$GLOBAL_BGP_PREFIX_INPUT" "$ASN_MANIFEST" "$COMPANY_ASN_MANIFEST" "$COMPANY_ASN_PREFIXES" "$CORE_COMPANY_PREFIXES" "$SHARED_INFRASTRUCTURE_PREFIXES" "$COMPANY_ASN_POLICY" "$REGIONAL_ORIGIN_PREFIXES" "$ASN_STATS" "$BY_KZ_ASN_REGISTRY"; do
             test -s "$file" || { echo "::error::Missing BGP artifact: $file"; exit 1; }
           done
+
+      - name: Prepare current and legacy block layers after ASN selection
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 .github/scripts/prepare_blocked_sources_v41.py \
+            --ip-list "$BLOCKED_IP_RAW_INPUT" \
+            --ipresolve "$BLOCKED_IPRESOLVE_INPUT" \
+            --baseline "$BLOCKED_BASELINE_INPUT" \
+            --historical-ip-list "$V38_PINNED_IP_INPUT" \
+            --historical-ipresolve "$V38_PINNED_IPRESOLVE_INPUT" \
+            --historical-subnet "$V38_PINNED_SUBNET_INPUT" \
+            --subnet "$BLOCKED_SUBNET_INPUT" \
+            --community "$BLOCKED_COMMUNITY_INPUT" \
+            --refilter "$BLOCKED_REFILTER_INPUT" \
+            --regional-origin-prefixes "$REGIONAL_ORIGIN_PREFIXES" \
+            --shared-infrastructure-prefixes "$SHARED_INFRASTRUCTURE_PREFIXES" \
+            --approved "$BLOCKED_IP_INPUT" \
+            --exact-approved "$BLOCKED_IP_EXACT_INPUT" \
+            --resolved-approved "$BLOCKED_IPRESOLVE_ONLY_INPUT" \
+            --review "$BLOCKED_REVIEW_INPUT" \
+            --stats "$BLOCKED_STATS_INPUT" \
+            --checksums "$BLOCKED_CHECKSUMS_INPUT"
 
       - name: Build unified DIRECT GeoIP RU+BY+KZ v37 with curated blocked-destination exclusions
         shell: bash
@@ -1402,7 +1406,7 @@ jobs:
             - `RU` is the unified DIRECT bucket for RU+BY+KZ regional address resources, regional GeoIP/BGP layers, and named service-direct destinations. Physical GeoIP location is not an admission gate.
             - `PRIVATE` always wins over DIRECT.
             - CORE_CORPORATE exact origin prefixes are protected from all approved RKN-derived inputs.
-            - SHARED_INFRA origins are protected only from current resolver-derived ipresolve candidates; exact ip.lst, bounded subnet.lst and unclassified v38 baseline blocks still carve them.
+            - SHARED_INFRA origins are protected only from current resolver-derived ipresolve candidates; exact ip.lst, bounded subnet.lst and ineligible v38 hard records still carve them.
             - MOAS receives CORE_CORPORATE precedence when any exact origin is CORE; otherwise a SHARED_INFRA origin receives resolver-only protection.
             - RIR RU/BY/KZ registration is not proof of corporate ownership and does not create a blanket block exception.
             - PRIVATE retains absolute precedence for both classes.
@@ -1421,12 +1425,13 @@ jobs:
 
             ## RKN blocked destinations
             - Existing exact-host Antifilter `ip.lst` and `ipresolve.lst`, bounded `subnet.lst`, and curated Telegram prefixes remain active.
+            - A v38-only IPv4 /32 can move from hard to resolver-only inside a selected RU/BY/KZ origin or SHARED mask when none of the three current Antifilter feeds or curated Telegram prefixes covers it. The approved union is unchanged.
             - v41 downloads Antifilter Download `ipsum.lst` as a review-only /24 summary of individual blocked IPs; it is not automatically carved because each /24 may route unrelated shared-hosting/CDN addresses through VPN.
             - The report publishes the potential DIRECT address-space impact of these /24 candidates in `geoip_RU_v41_blocked_provenance.tsv`; only exact-host and bounded subnet exclusions already approved by the v37 policy are automatically applied.
             - Community Antifilter and Re-filter suggestions remain review-only; privacy/telemetry labels do not change DIRECT.
             - The no-BGP public-source fallback cross-checks pinned bol-van/rulist ipban4 vs resolved4 and correlated prebuilt datasets; it does not claim or infer Antifilter community 65444:210 membership.
             - BGP registration is not a v41 release gate. All 360 new Lib4u/Jirnobruh host-IP candidates remain review-only; shared CIDR matches are not bulk-carved or promoted.
-            - If Antifilter ipresolve.lst is empty/unavailable, v41 carries forward the SHA-256-pinned v38 approved block snapshot (3033248ea54cb298bafded25ddcd2805d5f0e7ac / df909b12b985b23080075821cedc5e2f73b7b1f89abcd9950293b400ce1e4a5d); this is not treated as a zero-block result.
+            - If Antifilter ipresolve.lst is empty/unavailable, v41 carries forward the SHA-256-pinned v38 approved block snapshot (3033248ea54cb298bafded25ddcd2805d5f0e7ac / df909b12b985b23080075821cedc5e2f73b7b1f89abcd9950293b400ce1e4a5d); no v38 hard entries are reclassified on that build.
             - Full pinned refs, candidate-match counts, enrichment limitations and source lineage are documented in [V41 public-source cross-check](https://github.com/SpeedeMiner/Geoip-ru-server/blob/feature/geoip-direct-rukzby-v41-integration/docs/V39_PUBLIC_RKN_SOURCE_CROSSCHECK.md).
             - GeoIP cannot distinguish unrelated domains on the same IP; domain-only RKN rules remain a separate client geosite layer.
 
