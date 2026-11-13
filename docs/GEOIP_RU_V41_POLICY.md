@@ -1,6 +1,6 @@
 # v41 integration policy — RU+BY+KZ unified DIRECT
 
-Status: **v41 already released. The v41.2 historical policy is a candidate stacked on the v41.1 service/region policy and publication hardening.**
+The policy below describes the v41 publisher and the regional/block-provenance revision in PR #26. The rolling release and run-specific snapshots identify the deployed build.
 
 ## Preservation of v39 and v40
 
@@ -22,29 +22,20 @@ v41 imports from v40:
 
 ## Explicit precedence for conflicts
 
-1. PRIVATE wins over every DIRECT rule or protected prefix.
-2. CORE_CORPORATE selected-origin prefixes are exempt from approved exact/hard **and** resolver-only blocks, except PRIVATE.
-3. Only literal IPv4 `/32` and IPv6 `/128` entries from Kyoresuas Standard, HXEHEX and W1ZARDZ inside an RU RIR resource may override hard blocks. Hosts are selected from the original rows before intersection or aggregation. All other service CIDRs, including Escapingworm operator entries of any length and even IPv4 `/25–/31` or IPv6 `/65–/127`, can override only the current `ipresolve.lst` layer. W1ZARDZ resolver protection uses the intersection with RU, BY and KZ RIR resources. A W1ZARDZ host in BY/KZ does not acquire a new hard-block exception.
-4. SHARED_INFRA and selected RIR-RU/BY/KZ BGP origins have resolver-only protection. The existing hard layer (`ip.lst`, bounded `subnet.lst`, curated Telegram blocks and the pinned unclassified v38 baseline) takes precedence unless CORE or an eligible literal service host independently applies.
-5. Any other block is subtracted from DIRECT as before. No further `ipsum.lst` /24 is automatically carved.
-6. RIR origin registration is **not** proof of a company relationship. No recursive import of upstream/peer/affiliate ASNs.
+1. PRIVATE always wins. The pinned official Telegram set remains non-exempt.
+2. Current bounded Antifilter `subnet.lst` entries and separately reviewed direct IP/subnet registry records are hard. They cannot be overridden by CORE, SHARED, regional origin, or service masks. The subnet feed is an upstream signal, not a verified direct lookup of every row in the official registry.
+3. Antifilter [documents](https://antifilter.download/) `ip.lst` and `ipresolve.lst` as DNS-derived. They, and unverified historical v38 entries, remain in the source union and advisory layer. They cannot carve selected RU/BY/KZ origins, registered RU/BY/KZ resource ranges, corporate/shared origins, or the existing service resolver masks. Outside those protections, prior resolver filtering still applies. `ipsum.lst` remains review-only.
+4. `.github/data/v41-reviewed-rkn-ip-records.tsv` accepts only manually reviewed direct IP or subnet records with canonical CIDR, review date and evidence URL. Domain/URL-only evidence is not sufficient. The 2026-11-13 [reviewed evidence extract](v41-pr26-direct-ip-evidence-20261113.json) ties the exact host rows to individual decision metadata in a dated registry mirror snapshot. The extract is not an official signed export, and the snapshot is not a rolling build input. Automatic size limits stay in place.
+5. REG.RU AS197695 is classified as SHARED_INFRA and is admitted only by the existing regional ASN selection, not by its new classification. The same class already covers the reviewed origins of Timeweb, Selectel and DDoS-Guard. No recursive import of peer/upstream/tenant ASNs. Registration is routing evidence, not a per-tenant reachability guarantee.
 
-The build uses the actual BY/KZ ASN registry alongside the RU registry, without checking physical location or creating company exemptions. The published sidecar retains the original `geoip_RU_v41_rir_ru_and_company_origin_prefixes.txt` filename for compatibility and records both registry hashes. No change to the corporate registry is required for the already registered BY/KZ networks.
-
-`ip.lst` is itself DNS-derived according to Antifilter. Its existing hard classification is preserved. These source memberships do not prove an active direct IP block, and absence from feeds is not evidence of unblocking.
-
-### v41.2 historical-only IPv4 hosts
-
-A v38 baseline hard/unclassified host may move to the resolver-only layer when it is an IPv4 `/32`, is covered by a selected RU/BY/KZ BGP origin or SHARED_INFRA, and has no address-space overlap with any current `ip.lst`, `ipresolve.lst`, `subnet.lst` entry or curated Telegram route. A covering CIDR in one of those sources vetoes the change even when that CIDR is review-only. The rule never moves whole subnets or IPv6 hosts. If current ipresolve is missing, or a current required feed has tolerated malformed rows, no new reclassification takes place on that build. Invalid required feeds still fail under the existing thresholds.
-
-The original approved union and its provenance remain unchanged. The new `v38-historical-only-regional-resolver` label records the policy decision in the resolver sidecar and source statistics. It does not assert that the original entry came from DNS or that the destination is now reachable. Remaining overlapping hard prefixes and PRIVATE still take precedence. No publication asset name changes.
+The v37 base and approved-union filenames remain unchanged. The base still subtracts the full union. The v41 overlay restores eligible regional/service coverage against advisory evidence and re-applies the effective exclusions. No source is removed, no GeoSite policy is edited and no checked domain is treated as a direct IP block. The historical raw feeds are retained for attribution, not as current confirmation.
 
 ## Hydra DIRECT / WHITELIST expansion
 
 - The upstream `hydraponique/roscomvpn-geoip` file already enters the v37 builder, but its `direct` and `whitelist` categories were previously counted only as diagnostic candidates.
 - Both categories are now explicitly admitted in the v41 overlay as **routing intent**, not as RU geolocation, first-party corporate origin, or unconditional block exemption.
 - The source is the same fetched `hydra-geoip.dat` used by the base builder. Its SHA-256, category counts, source-level metrics and exact prefix provenance are recorded.
-- Eligibility is `(Hydra DIRECT ∪ Hydra WHITELIST) − PRIVATE − effective v41 blocked set`. Hydra does **not** override hard/exact/legacy/RIR block precedence or create a new class of corporate protected ASN.
+- Eligibility is `(Hydra DIRECT ∪ Hydra WHITELIST) − PRIVATE − effective v41 blocked set − reviewed regional admission exclusions`. Hydra does **not** override hard/exact/legacy/RIR block precedence or create a new class of corporate protected ASN.
 - The independent validator checks full eligible Hydra address-space inclusion in the final `geoip:RU`, including IPv4 and IPv6, and verifies the source hash. Missing categories or a default route fail closed.
 - Because Hydra may contain non-RU/CDN routing intent, this policy broadens the meaning of the RU routing bucket deliberately; review the exact resulting address delta before production rollout.
 
@@ -56,4 +47,19 @@ All received but unverified `RPKI/RDAP/IRR` audit candidates remain review-only.
 
 ## Publication boundary
 
-The existing v41 production workflow runs on main pushes and a daily schedule. This Hydra change is isolated in a PR: production remains unchanged until reviewed and merged. The released v41 tag remains available as a rollback point; publication of the expanded dataset requires a green candidate and explicit address-delta review.
+The existing v41 production workflow runs on main pushes and a daily schedule. Pull-request builds cannot publish. Main builds compare the candidate independently with the prior release before updating the rolling artifact and creating a run-specific snapshot. Use a run-specific snapshot, not the rolling link, for rollback.
+
+## Reviewed regional admission conflicts
+
+The v41 overlay excludes exact IPv4 prefixes in [the reviewed admission table](../.github/data/v41-regional-admission-exclusions.tsv) from the emitted RU category after candidate assembly. This does not modify RIR inventories, select or reject an entire ASN, add an output category, or alter RKN, Telegram or resolver block inputs and masks. The list is local and reviewed. It is not populated by a country feed or automated geographic filtering. A regional parent allocation alone is not enough for the listed cases because exact or more-specific assignment records and the observed origin point outside the region.
+
+- `185.49.68.0/22` has BY delegated registration. Its six [more-specific RIPE assignments](https://rdap.db.ripe.net/ip/185.49.70.0/25) cover the whole block and show DE. [RIPE RIS](https://stat.ripe.net/data/routing-status/data.json?resource=185.49.68.0%2F22) sees AS28753 for the /22 and all four /24s.
+- `185.17.120.0/22` and `195.54.32.0/23` have RU delegated registration. Their exact [RDAP /22](https://rdap.db.ripe.net/ip/185.17.120.0/22) and [RDAP /23](https://rdap.db.ripe.net/ip/195.54.32.0/23) objects show DE and [RIPE RIS](https://stat.ripe.net/data/prefix-overview/data.json?resource=195.54.32.0%2F23) observes AS28753 for the /23, as for the /22. This is prefix-specific operational evidence, not physical geolocation of every IP.
+- Inside RU-delegated `145.249.0.0/16`, exact RIPE records for [`145.249.0.0/18`](https://rdap.db.ripe.net/ip/145.249.0.0/18) and [`145.249.64.0/19`](https://rdap.db.ripe.net/ip/145.249.64.0/19) identify Syrian Telecom and country SY. [RIPE RIS](https://stat.ripe.net/data/routing-status/data.json?resource=145.249.0.0%2F18) observes four adjacent /20s from AS29256 covering the /18. The [/19](https://stat.ripe.net/data/routing-status/data.json?resource=145.249.64.0%2F19) is announced by AS29256 directly.
+- Exact [RDAP for `145.249.96.0/21`](https://rdap.db.ripe.net/ip/145.249.96.0/21) identifies Media Broadcast Satellite GmbH in DE. [RIPE RIS](https://stat.ripe.net/data/routing-status/data.json?resource=145.249.96.0%2F21) observes AS211095 for the /21 and the observed /24 child. The rest of `145.249.0.0/16` is not excluded, including the `145.249.128.0/17` Kazakhstan route.
+- Inside the RU-delegated `31.204.0.0/18`, [exact RIPE RDAP](https://rdap.db.ripe.net/ip/31.204.8.0/21) shows `31.204.8.0/21` as `US-FIXED`, country US, with a WS Telecom technical contact and no registered child assignments. [RIPE RIS](https://stat.ripe.net/data/routing-status/data.json?resource=31.204.8.0%2F21) observes only AS209372 on the exact /21 and no more-specific routes. Keep other ranges, including [`31.204.2.0/24`](https://rdap.db.ripe.net/ip/31.204.2.0/24), an RU assignment with the same origin. Do not use AS209372 as a country-wide exclusion.
+- Inside the KZ-delegated `109.238.160.0/20`, [exact RIPE RDAP](https://rdap.db.ripe.net/ip/109.238.168.0/21) shows `109.238.168.0/21` sub-allocated to IPXO with country US. Its two covering child assignments [`109.238.168.0/22`](https://rdap.db.ripe.net/ip/109.238.168.0/22) and [`109.238.172.0/22`](https://rdap.db.ripe.net/ip/109.238.172.0/22) also record US. [RIPE RIS](https://stat.ripe.net/data/routing-status/data.json?resource=109.238.168.0%2F21) observes only AS26548 ([PureVoltage](https://www.peeringdb.com/asn/26548)) on the exact /21 and no more-specific routes. Do not expand the exclusion to the other /21 or to the ASN.
+- [RIPE RDAP](https://rdap.db.ripe.net/ip/31.204.16.0/21) records the exact `31.204.16.0/21` as US-FIXED with New York remarks and no more-specific assignments. The two [RIPE RIS child routes](https://stat.ripe.net/data/routing-status/data.json?resource=31.204.16.0%2F21) are both AS213541 and cover the /21.
+- RIPE RDAP records `31.204.32.0/20` and `31.204.56.0/21` as [WSAU /20](https://rdap.db.ripe.net/ip/31.204.32.0/20) and [WSAU /21](https://rdap.db.ripe.net/ip/31.204.56.0/21), both AU, with no registered child assignments. The [WS Telecom geofeed](https://ws-sdn.net/feed/wssdnfeed.csv) corroborates AU for both exact ranges. [RIPE RIS](https://stat.ripe.net/data/routing-status/data.json?resource=31.204.32.0%2F20) sees AS9009 at the /20 and both /21 child routes from AS213541, covering the /20. The [separate /21](https://stat.ripe.net/data/routing-status/data.json?resource=31.204.56.0%2F21) is originated directly by AS213541. The table stores the origin covering the full ranges at longest match, not an assertion of exclusive origin across less-specific routes.
+- Within the RU-delegated MnogoByte `212.124.96.0/19`, exclude only [`212.124.106.0/24`](https://rdap.db.ripe.net/ip/212.124.106.0/24), an exact US DIGITALONE-NET assignment with no registered children and an exact [AS47328 RIS route](https://stat.ripe.net/data/routing-status/data.json?resource=212.124.106.0%2F24). Other covering routes returned only the parent RDAP allocation, with a DE country value and a RU registrant. No exclusion of the parent, adjacent `212.124.107.0/24` or whole ASN.
+- `31.204.28.0/22` stays in DIRECT for this revision. Its exact US assignment and foreign origin are noted, but the holder remains RU-associated and the operator geofeed does not cover it. Retain the rest of the unresolved queue without a bulk change.

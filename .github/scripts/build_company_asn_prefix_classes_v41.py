@@ -156,7 +156,7 @@ def build_company_prefix_classes(selected_prefixes: Path, company_registry: Path
 
     write_prefixes(all_output, "all allowlisted company-ASN origin prefixes", all_prefixes,
                    selected_prefixes, company_registry, policy_file)
-    write_prefixes(core_output, "CORE_CORPORATE origin prefixes (protected from all approved blocks)", core_prefixes,
+    write_prefixes(core_output, "CORE_CORPORATE origin prefixes (protected from resolver-only blocks)", core_prefixes,
                    selected_prefixes, company_registry, policy_file)
     write_prefixes(shared_output, "SHARED_INFRA origin prefixes (protected from resolver-only blocks)", shared_prefixes,
                    selected_prefixes, company_registry, policy_file)
