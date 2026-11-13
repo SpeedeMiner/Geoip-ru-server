@@ -2,6 +2,7 @@
 set -euo pipefail
 sha256sum -c "$OUTPUT_SHA_FILE"
 sha256sum -c "$V41_BLOCKED_SHA"
+python3 ../.github/scripts/validate_v41_telegram.py --geoip "$V41_OUTPUT_FILE"
 grep -q '^PRE_PUBLICATION_V41_HARD_POLICY_GATE$' "$V41_QUALITY_REPORT"
 ref="$(git ls-remote --exit-code origin refs/heads/release | cut -f1)"
 [[ "$ref" =~ ^[0-9a-f]{40}$ ]]

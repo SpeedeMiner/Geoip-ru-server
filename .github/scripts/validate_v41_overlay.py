@@ -10,6 +10,7 @@ import ipaddress
 from pathlib import Path
 
 import build_v41_overlay as builder
+from validate_v41_telegram import PINNED_FEED, read_telegram_feed
 
 
 def sha256(path: Path) -> str:
@@ -43,7 +44,8 @@ def validate(args: argparse.Namespace) -> dict:
     feeds.w1zardz = args.w1zardz
     feeds.hxehex_ip = args.hxehex_ip
     feeds.escapingworm = args.escapingworm
-    service_sources, _, _ = builder.load_service_inputs(feeds)
+    telegram = read_telegram_feed(PINNED_FEED)
+    service_sources, _, _ = builder.load_service_inputs(feeds, telegram)
     rir_resources, _ = builder.parse_rir_tsv(args.rir)
     service_exact, service_resolver = builder.build_service_protection_masks(rir_resources, service_sources)
     if company_core & shared or company_core | shared != company_all:
@@ -52,7 +54,8 @@ def validate(args: argparse.Namespace) -> dict:
         raise ValueError("Approved blocked address-space union differs from exact + resolver sidecars")
 
     effective, resolved_only = builder.class_aware_effective_block_set(
-        blocked_exact, blocked_resolved, company_core, shared, regional_only, service_exact, service_resolver
+        blocked_exact, blocked_resolved, company_core, shared, regional_only, service_exact, service_resolver,
+        non_exempt=telegram,
     )
     output_blocked = builder.parse_cidr_file(args.effective_blocked)[0]
     if output_blocked != effective:
@@ -62,7 +65,8 @@ def validate(args: argparse.Namespace) -> dict:
         ru_iv = builder.intervals(decoded["RU"], version)
         private_iv = builder.intervals(decoded["PRIVATE"], version)
         blocked_iv = builder.intervals(output_blocked, version)
-        exact_iv = builder.intervals(blocked_exact, version)
+        exact_iv = builder.intervals(blocked_exact | telegram, version)
+        telegram_iv = builder.intervals(telegram, version)
         core_iv = builder.intervals(company_core, version)
         shared_iv = builder.intervals(shared, version)
         regional_iv = builder.intervals(regional_only, version)
@@ -74,7 +78,7 @@ def validate(args: argparse.Namespace) -> dict:
             raise ValueError(f"RU intersects effective blocked set in IPv{version}")
 
         core_expected = builder.subtract(core_iv, private_iv)
-        core_missing = builder.subtract(core_expected, ru_iv)
+        core_missing = builder.subtract(builder.subtract(core_expected, telegram_iv), ru_iv)
         if core_missing:
             raise ValueError(f"CORE_CORPORATE prefix coverage lost in IPv{version}")
 
@@ -89,7 +93,7 @@ def validate(args: argparse.Namespace) -> dict:
             raise ValueError(f"RIR RU+BY+KZ selected origin resolver-only protection lost in IPv{version}")
         service_expected = builder.subtract(service_resolver_iv, private_iv)
         service_expected = builder.subtract(service_expected, builder.subtract(exact_iv, service_exact_iv))
-        if builder.subtract(service_expected, ru_iv):
+        if builder.subtract(builder.subtract(service_expected, telegram_iv), ru_iv):
             raise ValueError(f"Verified RU service protection lost in IPv{version}")
 
         # A shared provider may overlap an exact/legacy hard block, but no
@@ -129,10 +133,14 @@ def validate(args: argparse.Namespace) -> dict:
     if manifest.get("input_sha256", {}).get("regional_origin_prefixes") != sha256(args.regional_origin_prefixes):
         raise ValueError("Manifest selected regional origin SHA-256 mismatch")
 
+    if manifest.get("telegram_official") != {"cidrs": len(telegram), "input_sha256": sha256(PINNED_FEED)}:
+        raise ValueError("Manifest official Telegram snapshot mismatch")
+
     safety = manifest.get("safety", {})
     required_flags = {
         "private_precedence_applied": True,
-        "core_corporate_prefixes_remain_direct_except_private": True,
+        "official_telegram_precedes_all_direct_exceptions": True,
+        "core_corporate_prefixes_remain_direct_except_private_and_official_telegram": True,
         "shared_infrastructure_prefixes_exempt_from_resolver_layer_only": True,
         "rkn_exact_ip_and_subnet_blocks_apply_to_shared_infrastructure": True,
         "legacy_v38_reclassification_preserves_approved_union": True,

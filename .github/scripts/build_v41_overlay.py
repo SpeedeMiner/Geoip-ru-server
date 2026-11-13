@@ -19,6 +19,8 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Iterable
 
+from validate_v41_telegram import PINNED_FEED, read_telegram_feed
+
 SOURCE_REFS = {
     "kyoresuas-standard": {
         "repository": "kyoresuas/ru-direct",
@@ -96,6 +98,39 @@ def parse_cidr_file(path: Path, allow_hosts: bool = True):
     if invalid > max(20, int((raw + invalid) * 0.01)):
         raise ValueError(f"source {path} has too many invalid rows: {invalid}")
     return networks, {"raw_rows": raw + invalid, "valid_rows": raw, "invalid_rows": invalid}
+
+def parse_reviewed_operator_prefixes(path: Path):
+    """Read explicit IPv4 candidates without conferring ASN-level trust."""
+    rows = {}
+    with path.open(encoding="utf-8", newline="") as handle:
+        reader = csv.DictReader(handle, delimiter="\t")
+        if reader.fieldnames != ["country", "prefix", "origin_asn"]:
+            raise ValueError(f"{path}: unexpected reviewed operator prefix header")
+        for row in reader:
+            try:
+                country, token, asn = (row[key] for key in reader.fieldnames)
+                if None in row or country not in ("RU", "BY", "KZ") or not token or not asn:
+                    raise ValueError
+                network = ipaddress.IPv4Network(token, strict=True)
+                if (token != str(network) or network.prefixlen < 23
+                        or not network.is_global or network.is_multicast):
+                    raise ValueError
+                if not asn.startswith("AS") or not asn[2:].isascii() or not asn[2:].isdigit():
+                    raise ValueError
+                number = int(asn[2:])
+                if asn != f"AS{number}" or not 1 <= number <= 4294967295:
+                    raise ValueError
+                if any(network.overlaps(other) for other in rows):
+                    raise ValueError
+            except ValueError as error:
+                raise ValueError(f"{path}:{reader.line_num}: invalid reviewed operator prefix row") from error
+            rows[network] = (country, asn)
+            if len(rows) > 32:
+                raise ValueError(f"{path}: too many reviewed operator prefixes")
+    if not rows:
+        raise ValueError(f"{path}: empty reviewed operator prefix list")
+    return rows
+
 
 def parse_rir_tsv(path: Path):
     result = defaultdict(set)
@@ -466,11 +501,13 @@ def class_aware_effective_block_set(
     regional_origin_prefixes: set | None = None,
     service_exact_hosts: set | None = None,
     service_resolver_prefixes: set | None = None,
+    non_exempt: set | None = None,
 ):
     """Only CORE and explicit service hosts can override hard blocks.
 
     The input preparation step assigns historical v38 evidence to its layer.
     Regional origin by itself never overrides a hard block.
+    Non-exempt prefixes remain blocked even when they overlap an exception.
     """
     if core_company_prefixes & shared_infrastructure_prefixes:
         raise ValueError("CORE_CORPORATE and SHARED_INFRA exact prefix masks overlap")
@@ -479,8 +516,9 @@ def class_aware_effective_block_set(
     if any(net.prefixlen != net.max_prefixlen for net in service_exact):
         raise ValueError("Hard service exceptions must be literal host prefixes")
     service_resolver = (service_resolver_prefixes or set()) | service_exact
-    resolved_only = subtract_networks(blocked_resolved, blocked_exact)
-    effective_exact = subtract_networks(blocked_exact, core_company_prefixes | service_exact)
+    unconditional = non_exempt or set()
+    resolved_only = subtract_networks(blocked_resolved, blocked_exact | unconditional)
+    effective_exact = subtract_networks(blocked_exact, core_company_prefixes | service_exact) | unconditional
     effective_resolved = subtract_networks(
         resolved_only,
         core_company_prefixes | shared_infrastructure_prefixes | regional | service_resolver
@@ -512,7 +550,9 @@ def parse_ipsum(path: Path):
         raise ValueError(f"Antifilter ipsum has too many invalid rows: {invalid}")
     return networks, {"raw_rows": raw + invalid, "valid_rows": raw, "invalid_rows": invalid}
 
-def load_service_inputs(args):
+def load_service_inputs(args, telegram=None):
+    if telegram is None:
+        telegram = read_telegram_feed(PINNED_FEED)
     sources = {}
     source_stats = {}
     provenance_rows = []
@@ -558,6 +598,17 @@ def load_service_inputs(args):
         ("operator-whitelist", args.escapingworm),
     ):
         networks, stats = parse_cidr_file(path, allow_hosts=True)
+        if source_id == "hxehex-mobile-hosts":
+            masks = {v: intervals(telegram, v) for v in (4, 6)}
+            # Filter raw rows before host classification. Never create a literal
+            # host exception by splitting a partially overlapping upstream CIDR.
+            conflicts = {
+                net for net in networks if intersect_one_range(
+                    int(net.network_address), int(net.broadcast_address), masks[net.version]
+                )
+            }
+            networks.difference_update(conflicts)
+            stats["telegram_unique_prefixes_rejected"] = len(conflicts)
         sources[source_id] = networks
         source_stats[source_id] = {"raw_files":[path.name], **stats}
         for net in sorted(networks, key=lambda n:(n.version,int(n.network_address),n.prefixlen)):
@@ -590,6 +641,7 @@ def main():
     parser.add_argument("--core-company-prefixes", type=Path, required=True)
     parser.add_argument("--shared-infrastructure-prefixes", type=Path, required=True)
     parser.add_argument("--regional-origin-prefixes", type=Path, required=True)
+    parser.add_argument("--reviewed-operator-prefixes", type=Path)
     parser.add_argument("--ipsum", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--categories", type=Path, required=True)
@@ -610,7 +662,8 @@ def main():
     private_iv = {v: intervals(private, v) for v in (4, 6)}
 
     rir, rir_rows = parse_rir_tsv(args.rir)
-    service_sources, source_stats, prefix_rows = load_service_inputs(args)
+    telegram = read_telegram_feed(PINNED_FEED)
+    service_sources, source_stats, prefix_rows = load_service_inputs(args, telegram)
     hydra_sources = parse_hydra_direct_whitelist(args.hydra)
     for hydra_id, hydra_nets in hydra_sources.items():
         source_stats[hydra_id] = {"raw_files": [args.hydra.name], "valid_rows": len(hydra_nets)}
@@ -648,7 +701,8 @@ def main():
     # regional origins only override entries in the prepared resolver-only layer.
     blocked, resolved_only = class_aware_effective_block_set(
         blocked_exact, blocked_resolved, core_company_prefixes,
-        shared_infrastructure_prefixes, regional_only, service_exact, service_resolver
+        shared_infrastructure_prefixes, regional_only, service_exact, service_resolver,
+        non_exempt=telegram,
     )
     ipsum_effective = subtract_networks(
         ipsum, core_company_prefixes | shared_infrastructure_prefixes | regional_only | service_resolver
@@ -682,6 +736,20 @@ def main():
                 "domains": "",
                 "prefix": str(net),
             })
+    reviewed = parse_reviewed_operator_prefixes(args.reviewed_operator_prefixes) if args.reviewed_operator_prefixes else {}
+    reviewed_source = "reviewed-operator-prefixes"
+    if args.reviewed_operator_prefixes:
+        source_stats[reviewed_source] = {
+            "raw_files": [args.reviewed_operator_prefixes.name],
+            "valid_rows": len(reviewed),
+            "input_sha256": sha256(args.reviewed_operator_prefixes.read_bytes()),
+            "protection": "none",
+        }
+        for net, (country, asn) in sorted(reviewed.items()):
+            prefix_rows.append({"source_id": reviewed_source, "category": country,
+                                "service": "", "tier": "", "asn_list": asn, "domains": "", "prefix": str(net)})
+    # Reviewed networks contribute coverage only. They do not enter any block exemption mask.
+    additions.update(reviewed)
     preblock = base_ru | additions
     preblock_iv = {v: intervals(preblock, v) for v in (4, 6)}
     core_company_iv = {v: intervals(core_company_prefixes, v) for v in (4, 6)}
@@ -751,6 +819,8 @@ def main():
         ("verified-service-exact-hosts", service_exact),
         ("verified-service-resolver-protected", service_resolver),
     ]
+    if args.reviewed_operator_prefixes:
+        measured_sources.append((reviewed_source, reviewed))
     for source_id, networks in measured_sources + list(service_sources.items()) + list(hydra_sources.items()):
         row = {"source_id":source_id,"unique_cidrs":len(networks)}
         for v in (4, 6):
@@ -856,6 +926,7 @@ def main():
         company_expected = normalize_interval_union(
             core_expected, shared_expected, regional_expected, service_expected
         )
+        company_expected = subtract(company_expected, intervals(telegram, v))
         company_missing = subtract(company_expected, final_iv[v])
         if company_missing:
             raise ValueError(f"Class-aware company-ASN coverage lost in IPv{v} beyond PRIVATE/hard-block precedence")
@@ -905,6 +976,7 @@ def main():
         "- PRIVATE has absolute precedence.",
         "- CORE_CORPORATE exact origin prefixes are protected from all approved block inputs.",
         "- SHARED_INFRA exact origin prefixes are protected only against the resolver-only layer.",
+        "- Official Telegram CIDRs are non-exempt in DIRECT. Overlapping HXEHEX entries are rejected before service protection.",
         "- Current ip.lst stays hard except individually reviewed IPv4 hosts, and bounded subnet.lst, Telegram and ineligible historical v38 records stay hard.",
         "- Eligible v38-only regional IPv4 /32 records move to the resolver-only layer without leaving the approved union.",
         "- MOAS is CORE_CORPORATE when any exact origin is CORE; otherwise SHARED_INFRA receives resolver-only protection.",
@@ -989,6 +1061,7 @@ def main():
         "output_sha256":sha256(payload),
         "output_bytes":len(payload),
         "sources":SOURCE_REFS,
+        "telegram_official": {"cidrs": len(telegram), "input_sha256": sha256(PINNED_FEED.read_bytes())},
         "rir_inventory":{"rows":rir_rows,"countries":{c:len(rir[c]) for c in ("RU","BY","KZ")}},
         "service_sources":source_stats,
         "hydra_routing_intent": {
@@ -1057,7 +1130,8 @@ def main():
             "geolocation_used_as_admission_gate":False,
             "private_precedence_applied":True,
             "rkn_exact_ip_and_subnet_blocks_apply_to_shared_infrastructure":True,
-            "core_corporate_prefixes_remain_direct_except_private":True,
+            "core_corporate_prefixes_remain_direct_except_private_and_official_telegram":True,
+            "official_telegram_precedes_all_direct_exceptions":True,
             "shared_infrastructure_prefixes_exempt_from_resolver_layer_only":True,
             "legacy_v38_reclassification_preserves_approved_union":True,
             "rir_rukzby_selected_origin_resolver_protected":True,

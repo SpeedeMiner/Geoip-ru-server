@@ -30,8 +30,11 @@ on:
       - ".github/scripts/build_company_asn_prefix_classes_v41.py"
       - ".github/scripts/prepare_blocked_sources_v41.py"
       - ".github/data/v41-reviewed-ip-list-hosts.txt"
+      - ".github/data/v41-reviewed-operator-prefixes.tsv"
       - ".github/scripts/validate_v41_overlay.py"
       - ".github/scripts/validate_v41_release_gate.py"
+      - ".github/scripts/validate_v41_telegram.py"
+      - ".github/data/v41-telegram-official-cidrs.txt"
       - ".github/scripts/test_*.py"
       - ".github/data/geoip_RU_company_asns.tsv"
       - ".github/data/geoip_RU_company_asn_policy.tsv"
@@ -295,6 +298,7 @@ jobs:
             --core-company-prefixes "$CORE_COMPANY_PREFIXES" \
             --shared-infrastructure-prefixes "$SHARED_INFRASTRUCTURE_PREFIXES" \
             --regional-origin-prefixes "$REGIONAL_ORIGIN_PREFIXES" \
+            --reviewed-operator-prefixes .github/data/v41-reviewed-operator-prefixes.tsv \
             --ipsum "$BLOCKED_IPSUM_INPUT" \
             --output "$V41_OUTPUT_FILE" \
             --categories "$CATEGORY_FILE" \
@@ -419,6 +423,16 @@ jobs:
             echo 'Hard-source exceptions: see geoip_RU_quality_report.txt'
           } >> "$GITHUB_STEP_SUMMARY"
           tail -n 17 "$V41_QUALITY_REPORT"
+
+      - name: Verify final DIRECT against the full official Telegram feed
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl --fail --silent --show-error --location --proto '=https' --proto-redir '=https' \
+            --connect-timeout 10 --max-time 25 --retry 2 --max-filesize 16384 \
+            https://core.telegram.org/resources/cidr.txt -o "$RUNNER_TEMP/telegram-cidrs.txt"
+          python3 .github/scripts/validate_v41_telegram.py \
+            --geoip "$V41_OUTPUT_FILE" --official-feed "$RUNNER_TEMP/telegram-cidrs.txt"
 
       - name: Verify absolute publication bounds independently
         shell: bash
