@@ -1,0 +1,32 @@
+Generated UTC: 2026-11-13T05:50:57.796304+00:00
+ipverse aggregated.json files: 97489
+RIR delegated-stats registered RU ASNs: 5771
+RIR delegated-stats registered BY/KZ ASNs: 387
+Curated Russian-company ASN allowlist entries: 56
+Curated company ASNs with ipverse BGP data: 52
+Selected RIR-RU/BY/KZ or company ASNs with ipverse BGP data: 5343
+Active BY/KZ RIR ASNs with ipverse announcements: 333
+Unique prefixes originated by RIR-RU ASNs: 21519
+Unique prefixes originated by RIR-BY/KZ ASNs: 2080
+Unique prefixes originated by curated Russian-company/affiliate ASNs: 3263
+Yandex Turkey AS212066 static DIRECT overrides: 45.148.65.0/24, 2a14:48c6::/48
+Yandex Turkey AS212066 ipverse-observed prefixes at build time: 2 of 2
+Yandex Turkey AS212066 required DIRECT prefixes covered: 2 of 2
+Unique prefixes in DIRECT ASN-origin/pinned layer (RIR-RU/BY/KZ OR company allowlist): 23633
+Raw selected IPv4 prefix records (RIR-RU OR company allowlist): 21588
+Raw selected IPv6 prefix records (RIR-RU OR company allowlist): 2153
+Raw company-allowlisted IPv4 prefix records: 3045
+Raw company-allowlisted IPv6 prefix records: 225
+Raw RIR-RU IPv4 prefix records: 19714
+Raw RIR-RU IPv6 prefix records: 1899
+Unique global ipverse prefixes: 519951
+Raw global IPv4 prefix records: 426984
+Raw global IPv6 prefix records: 97326
+Prefixes originated by multiple selected ASNs: 101
+Company ASN ipverse countryCode distribution (audit only): CH=1, KZ=2, RU=50, TR=1
+RIR-RU ASN ipverse countryCode mismatches (audit only): UNKNOWN=264
+RIR-BY/KZ ASN ipverse countryCode mismatches (audit only): UNKNOWN=10
+Invalid/default prefixes skipped: 0
+Country handling: ipverse countryCode is not used as an inclusion filter for selected RIR-RU, RIR-BY/KZ or company-affiliate origin ASNs.
+Scope: announced prefixes present in ipverse aggregated.json observations (up to 90 days), not a real-time or historical-complete RIB.
+ASN allowlist semantics: only prefixes originated by the listed ASN are imported; peer/upstream ASNs are not recursively included.

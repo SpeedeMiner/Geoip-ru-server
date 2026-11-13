@@ -1,0 +1,22 @@
+GeoIP DIRECT RU+BY+KZ CLIENT v37 — unified regional direct coverage, company-affiliate ASN policy and curated blocked-destination carve-outs
+The single emitted RU category is the unified DIRECT region: geographic RU + BY + KZ, plus confirmed company-affiliate origin ASNs, minus approved blocked destinations and higher-priority PRIVATE space.
+Geographic sources: Loyalsoldier geoip:ru and geoip:by; v2fly geoip.dat categories ru, by and kz. The client still receives one geoip_RU.dat with only RU and PRIVATE categories.
+v24 is not fetched, protected, or used as a regression baseline.
+Additional RU GeoIP feeds: Grimbird, Digne, Davoyan, Golukon.
+Hydra roscomvpn-geoip currently publishes direct/whitelist/private, not strict geoip:ru; its direct/whitelist CIDRs are diagnostic candidates only, not an additional RU GeoIP feed.
+Additional-feed admission: overlap of two distinct logical source groups OR overlap with RIR-RU/BY/KZ or company-allowlisted ASN BGP OR overlap with an RIR-RU registered address resource.
+Correlation control: Grimbird and Digne are grouped together and cannot independently corroborate one another.
+Per-prefix additional-feed evidence is exported in geoip_RU_additional_provenance.tsv; overlap columns are independent and may overlap.
+All observed prefixes originated by RIR-RU or RIR-BY/KZ ASNs, plus curated Russian-company affiliate ASNs, are included regardless of ipverse countryCode; this identifies the network operator, not physical server location.
+RIR-RU IPv4/IPv6 resources are corroboration only; RIR-BY/KZ ASNs contribute observed origin prefixes, while registration country does not prove physical server location.
+Curated Russian-company ASN allowlist: geoip_RU_company_asns.txt; output manifest: geoip_RU_company_asn_manifest.tsv.
+Hydra direct/whitelist and other candidate lists are diagnostic only and never subtract from RU. Candidate-only ranges are not independently admitted.
+PRIVATE priority: built-in local/reserved ranges + IANA Globally-Reachable=False entries + Loyalsoldier private.dat. IANA Globally-Reachable=True exceptions carve out broad special-purpose blocks.
+Blocked exclusions: Antifilter ip.lst/ipresolve.lst exact hosts, bounded subnet.lst CIDRs, and explicitly configured RunetFreedom Telegram routes. Community and Re-filter remain review-only.
+RunetFreedom source configuration: https://github.com/runetfreedom/russia-blocked-geoip/blob/main/config.json
+Broader subnet.lst entries beyond /16 IPv4 or /112 IPv6 are not auto-carved; they are exported for manual review. This is third-party RKN-derived data, not an official API.
+Telemetry/privacy-risk classifications are audit-only and are NOT carved out of DIRECT. Confirmed telemetry stays DIRECT unless its exact IP independently appears in an approved blocked source; the GeoIP file cannot identify application or domain intent on shared IPs.
+Global BGP observation comes from ipverse/as-ip-blocks aggregated.json dataset; it covers ASes observed announcing within the preceding 90 days, not a real-time global RIB.
+A prefix not observed in the ipverse aggregate must not be called globally unroutable solely on that basis.
+Only existing GeoIP categories RU and PRIVATE are emitted; RU is the unified DIRECT RU+BY+KZ set. Both IPv4 and IPv6 are supported.
+Attribution: v2fly/geoip is licensed CC-BY-SA-4.0; upstream README also identifies DB-IP data under CC-BY-4.0. Preserve applicable notices.

@@ -1,0 +1,11 @@
+Generated UTC: 2026-11-13T05:50:18.777600+00:00
+Rows are resource registration evidence; they do not imply physical geolocation or current BGP reachability.
+afrinic: snapshot=2026-11-12; resource_records=0; CIDR_components=0; unique_country_registry_rows=0
+apnic: snapshot=2026-11-12; resource_records=0; CIDR_components=0; unique_country_registry_rows=0
+arin: snapshot=2026-11-12; resource_records=0; CIDR_components=0; unique_country_registry_rows=0
+lacnic: snapshot=2026-11-12; resource_records=0; CIDR_components=0; unique_country_registry_rows=0
+ripencc: snapshot=2026-11-12; resource_records=14588; CIDR_components=14621; unique_country_registry_rows=14621
+RU: unique_ipv4_prefixes=11500; unique_ipv6_prefixes=2184
+BY: unique_ipv4_prefixes=110; unique_ipv6_prefixes=32
+KZ: unique_ipv4_prefixes=697; unique_ipv6_prefixes=98
+Total RU+BY+KZ resource rows: 14621
