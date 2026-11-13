@@ -8,7 +8,7 @@ from types import SimpleNamespace
 
 from validate_v41_release_gate import (
     REPORT_MARKER, SOURCE_KEYS, check_manifest, format_quality_section,
-    inspect_policy, read_hard_sources,
+    inspect_policy, literal_service_exceptions, read_hard_sources,
 )
 
 
@@ -76,6 +76,27 @@ class ReleaseGateTests(unittest.TestCase):
                 with self.assertRaisesRegex(ValueError, f"^IPv{host.version} unprotected hard-block leak"):
                     inspect_policy(ru, set(), set(), [(host, {"antifilter-ip.lst"})],
                                    set(), shared, set())
+
+    def test_gate_rejects_a_subnet_in_hard_service_exceptions(self):
+        ru = nets("192.0.2.4/32", "2001:db8::1/128")
+        with self.assertRaisesRegex(ValueError, "literal host"):
+            inspect_policy(
+                ru, set(), set(), [(ipaddress.ip_network("192.0.2.4/32"), {"antifilter-ip.lst"})],
+                set(), set(), nets("192.0.2.0/24"),
+            )
+
+    def test_gate_reconstructs_literal_service_hosts_from_sources(self):
+        regions = {"RU": nets("192.0.2.1/32", "192.0.2.4/31"), "BY": nets("198.51.100.1/32")}
+        sources = {
+            "w1zardz-service-direct": nets("192.0.2.0/30", "192.0.2.4/32", "198.51.100.1/32"),
+            "kyoresuas-standard": nets("192.0.2.8/32", "192.0.2.10/31"),
+            "hxehex-mobile-hosts": nets("2001:db8::6/128"),
+            "operator-whitelist": nets("192.0.2.9/32"),
+        }
+        self.assertEqual(
+            literal_service_exceptions(regions, sources),
+            nets("192.0.2.4/32", "192.0.2.8/32", "2001:db8::6/128"),
+        )
 
     def test_effective_and_private_precedence_are_fatal(self):
         ru = nets("192.0.2.1/32", "2001:db8::1/128")

@@ -45,16 +45,14 @@ def validate(args: argparse.Namespace) -> dict:
     feeds.escapingworm = args.escapingworm
     service_sources, _, _ = builder.load_service_inputs(feeds)
     rir_resources, _ = builder.parse_rir_tsv(args.rir)
-    _, service_protected = builder.build_ru_service_protection_mask(
-        set(), rir_ru=rir_resources["RU"], service_sources=service_sources
-    )
+    service_exact, service_resolver = builder.build_service_protection_masks(rir_resources, service_sources)
     if company_core & shared or company_core | shared != company_all:
         raise ValueError("Company core/shared masks are not a disjoint exact partition")
     if any(builder.intervals(blocked_union, version) != builder.intervals(blocked_exact | blocked_resolved, version) for version in (4, 6)):
         raise ValueError("Approved blocked address-space union differs from exact + resolver sidecars")
 
     effective, resolved_only = builder.class_aware_effective_block_set(
-        blocked_exact, blocked_resolved, company_core, shared, regional_only, service_protected
+        blocked_exact, blocked_resolved, company_core, shared, regional_only, service_exact, service_resolver
     )
     output_blocked = builder.parse_cidr_file(args.effective_blocked)[0]
     if output_blocked != effective:
@@ -68,7 +66,8 @@ def validate(args: argparse.Namespace) -> dict:
         core_iv = builder.intervals(company_core, version)
         shared_iv = builder.intervals(shared, version)
         regional_iv = builder.intervals(regional_only, version)
-        service_iv = builder.intervals(service_protected, version)
+        service_exact_iv = builder.intervals(service_exact, version)
+        service_resolver_iv = builder.intervals(service_resolver, version)
         if builder.intersect(ru_iv, private_iv):
             raise ValueError(f"RU intersects PRIVATE in IPv{version}")
         if builder.intersect(ru_iv, blocked_iv):
@@ -87,8 +86,9 @@ def validate(args: argparse.Namespace) -> dict:
         regional_expected = builder.subtract(regional_iv, private_iv)
         regional_expected = builder.subtract(regional_expected, exact_iv)
         if builder.subtract(regional_expected, ru_iv):
-            raise ValueError(f"RIR-RU selected origin resolver-only protection lost in IPv{version}")
-        service_expected = builder.subtract(service_iv, private_iv)
+            raise ValueError(f"RIR RU+BY+KZ selected origin resolver-only protection lost in IPv{version}")
+        service_expected = builder.subtract(service_resolver_iv, private_iv)
+        service_expected = builder.subtract(service_expected, builder.subtract(exact_iv, service_exact_iv))
         if builder.subtract(service_expected, ru_iv):
             raise ValueError(f"Verified RU service protection lost in IPv{version}")
 
@@ -127,7 +127,7 @@ def validate(args: argparse.Namespace) -> dict:
     if manifest.get("input_sha256", {}).get("blocked_resolver_only") != sha256(args.blocked_resolved):
         raise ValueError("Manifest resolver-only block SHA-256 mismatch")
     if manifest.get("input_sha256", {}).get("regional_origin_prefixes") != sha256(args.regional_origin_prefixes):
-        raise ValueError("Manifest selected RIR-RU origin SHA-256 mismatch")
+        raise ValueError("Manifest selected regional origin SHA-256 mismatch")
 
     safety = manifest.get("safety", {})
     required_flags = {
@@ -136,8 +136,8 @@ def validate(args: argparse.Namespace) -> dict:
         "shared_infrastructure_prefixes_exempt_from_current_ipresolve_only": True,
         "rkn_exact_ip_and_subnet_blocks_apply_to_shared_infrastructure": True,
         "legacy_v38_unclassified_baseline_remains_hard_blocked": True,
-        "rir_ru_selected_origin_resolver_protected": True,
-        "ru_verified_service_exact_and_resolver_protected": True,
+        "rir_rukzby_selected_origin_resolver_protected": True,
+        "service_hard_block_exemptions_require_literal_hosts": True,
         "private_precedence_over_all_exceptions": True,
         "ipsum_24_auto_carved": False,
     }
@@ -161,7 +161,7 @@ def validate(args: argparse.Namespace) -> dict:
         "CORE_CORPORATE",
         "SHARED_INFRA",
         "Antifilter ipsum REVIEW-ONLY IPv4 /24 prefixes",
-        "RIR-RU registration alone does not imply corporate ownership",
+        "Regional registration alone does not imply corporate ownership",
     ):
         if marker not in quality:
             raise ValueError(f"v41 quality report missing policy marker: {marker}")
@@ -178,8 +178,9 @@ def validate(args: argparse.Namespace) -> dict:
         "company_prefixes": len(company_all),
         "core_company_prefixes": len(company_core),
         "shared_infrastructure_prefixes": len(shared),
-        "rir_ru_additional_origin_prefixes": len(regional_only),
-        "verified_ru_service_prefixes": len(service_protected),
+        "regional_additional_origin_prefixes": len(regional_only),
+        "verified_service_exact_hosts": len(service_exact),
+        "verified_service_resolver_prefixes": len(service_resolver),
         "hydra_direct_prefixes": len(hydra_sources["hydra-direct"]),
         "hydra_whitelist_prefixes": len(hydra_sources["hydra-whitelist"]),
         "status": "VALID",

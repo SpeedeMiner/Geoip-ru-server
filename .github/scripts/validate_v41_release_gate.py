@@ -67,8 +67,25 @@ def read_hard_sources(path: Path):
     return rows
 
 
+def literal_service_exceptions(regions, sources):
+    """Verify hard exceptions from original rows, without reusing the overlay masks."""
+    result = set()
+    for name in ("kyoresuas-standard", "hxehex-mobile-hosts", "w1zardz-service-direct"):
+        for net in sources.get(name, ()):
+            if net.prefixlen != net.max_prefixlen:
+                continue
+            if name != "w1zardz-service-direct" or any(
+                resource.version == net.version and net.network_address in resource
+                for resource in regions["RU"]
+            ):
+                result.add(net)
+    return result
+
+
 def inspect_policy(ru, private, effective, hard_rows, core, shared, service):
     """Exact disjoint address sets, not CIDR row counts. Raises on unsafe output."""
+    if any(net.prefixlen != net.max_prefixlen for net in service):
+        raise ValueError("Hard service exceptions must be literal host prefixes")
     hard = {prefix for prefix, _ in hard_rows}
     current_ip = {prefix for prefix, labels in hard_rows if "antifilter-ip.lst" in labels}
     current_subnet = {prefix for prefix, labels in hard_rows if "antifilter-subnet.lst" in labels}
@@ -134,7 +151,7 @@ def format_quality_section(result: dict) -> str:
     lines = ["", REPORT_MARKER, "Status: PASS",
              "Inputs: this build's SHA256-verified manifest, GeoIP, and source sidecars",
              "Policy: PRIVATE and effective hard blocks excluded from DIRECT",
-             "Allowed hard exceptions: CORE_CORPORATE or configured service-protection mask",
+             "Allowed hard exceptions: CORE_CORPORATE or eligible literal service host",
              "No hard exception is accepted solely due to SHARED_INFRA or BGP/ASN origin",
              "Exception source membership does not prove a current regulator IP block"]
     for family, summary in result["families"].items():
@@ -182,8 +199,7 @@ def main() -> int:
                       "w1zardz", "hxehex_ip", "escapingworm"):
             setattr(feed, field, getattr(a, field))
         sources, _, _ = builder.load_service_inputs(feed)
-        _, service = builder.build_ru_service_protection_mask(
-            set(), rir_ru=regions["RU"], service_sources=sources)
+        service = literal_service_exceptions(regions, sources)
         result = inspect_policy(categories["RU"], categories["PRIVATE"], effective,
                                 read_hard_sources(a.hard), core, shared, service)
 

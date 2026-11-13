@@ -1,6 +1,6 @@
 # v41 integration policy — RU+BY+KZ unified DIRECT
 
-Status: **v41 already released; this Hydra expansion is PR-only until successful independent validation**.
+Status: **v41 already released. The v41.1 service/region policy below is a separate candidate stacked on the v41 publication-hardening PR.**
 
 ## Preservation of v39 and v40
 
@@ -24,12 +24,14 @@ v41 imports from v40:
 
 1. PRIVATE wins over every DIRECT rule or protected prefix.
 2. CORE_CORPORATE selected-origin prefixes are exempt from approved exact/hard **and** resolver-only blocks, except PRIVATE.
-3. Vetted Russian service prefixes from Kyoresuas Standard, HXEHEX and Escapingworm are exempt from approved exact/hard and resolver-only blocks, except PRIVATE. W1ZARDZ must overlap an RU RIR resource first.
-4. SHARED_INFRA origin prefixes and RIR-RU selected-origin prefixes have resolver-only protection: exact `ip.lst`, bounded `subnet.lst`, curated Telegram blocks and the unclassified pinned v38 baseline still apply. This intentionally resolves the v39/v40 policy conflict without granting blanket hard-block exceptions to access/transit/hosting providers.
+3. Only literal IPv4 `/32` and IPv6 `/128` entries from Kyoresuas Standard, HXEHEX and W1ZARDZ inside an RU RIR resource may override hard blocks. Hosts are selected from the original rows before intersection or aggregation. All other service CIDRs, including Escapingworm operator entries of any length and even IPv4 `/25–/31` or IPv6 `/65–/127`, can override only the current `ipresolve.lst` layer. W1ZARDZ resolver protection uses the intersection with RU, BY and KZ RIR resources. A W1ZARDZ host in BY/KZ does not acquire a new hard-block exception.
+4. SHARED_INFRA and selected RIR-RU/BY/KZ BGP origins have resolver-only protection. The existing hard layer (`ip.lst`, bounded `subnet.lst`, curated Telegram blocks and the pinned unclassified v38 baseline) takes precedence unless CORE or an eligible literal service host independently applies.
 5. Any other block is subtracted from DIRECT as before. No further `ipsum.lst` /24 is automatically carved.
 6. RIR origin registration is **not** proof of a company relationship. No recursive import of upstream/peer/affiliate ASNs.
 
-This is a policy change from the broader v39 PR #12 proposal, which protected RIR origins from all block sources. The v39 source and tests are retained in the branch, while v41 explicitly restricts RIR protection to resolver-only to avoid false DIRECT routing of blocked hosted addresses. This conflict must be reviewed using candidate provenance before production release.
+The build uses the actual BY/KZ ASN registry alongside the RU registry, without checking physical location or creating company exemptions. The published sidecar retains the original `geoip_RU_v41_rir_ru_and_company_origin_prefixes.txt` filename for compatibility and records both registry hashes. No change to the corporate registry is required for the already registered BY/KZ networks.
+
+`ip.lst` is itself DNS-derived according to Antifilter. Its existing hard classification is preserved here deliberately to isolate the routing delta. These source memberships do not prove an active direct IP block. Demoting `ip.lst` or historical-only v38 addresses is outside this candidate.
 
 ## Hydra DIRECT / WHITELIST expansion
 
