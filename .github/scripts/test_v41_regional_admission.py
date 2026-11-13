@@ -29,9 +29,10 @@ class RegionalAdmissionTests(unittest.TestCase):
         path = Path(__file__).resolve().parent.parent / "data/v41-regional-admission-exclusions.tsv"
         rows = parse_regional_admission_exclusions(path)
         self.assertEqual({str(n) for n in rows}, {
+            "145.249.0.0/18", "145.249.64.0/19", "145.249.96.0/21",
             "185.17.120.0/22", "185.49.68.0/22", "195.54.32.0/23",
         })
-        self.assertEqual({row["origin_asn"] for row in rows.values()}, {"AS28753"})
+        self.assertEqual({row["origin_asn"] for row in rows.values()}, {"AS28753", "AS29256", "AS211095"})
 
     def test_invalid_row_cannot_widen_mask(self):
         row = "185.49.68.0/22\tBY\tDE\tAS28753\t2026-11-13\n"
