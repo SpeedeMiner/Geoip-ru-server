@@ -42,6 +42,7 @@ TOKEN_PREFIXES = ("IP-CIDR6,", "IP-CIDR,", "CIDR,")
 LEGACY_HARD = "v38-baseline-hard-or-unclassified"
 LEGACY_REGIONAL_RESOLVER = "v38-historical-only-regional-resolver"
 CURRENT_IP_LIST = "antifilter-ip.lst"
+REVIEWED_LEGACY_RESOLVER = "v38-reviewed-ip-list-resolver"
 
 
 def read_reviewed_ip_list_hosts(path):
@@ -157,10 +158,29 @@ def reclassify_legacy_hosts(exact, resolved, live_prefixes, regional_prefixes):
     return moved
 
 
+def reclassify_reviewed_legacy_hosts(exact, resolved, reviewed, historical_exact, historical_subnets):
+    """Reclassify only the reviewed pair of exact source labels, never a hard subnet."""
+    if not reviewed:
+        return 0
+    in_hard_subnet = ipv4_coverage(
+        [value for value in exact if not value.endswith("/32")] + historical_subnets
+    )
+    moved = 0
+    for value in reviewed & historical_exact:
+        if exact.get(value) != {LEGACY_HARD, CURRENT_IP_LIST}:
+            continue
+        if in_hard_subnet(int(ipaddress.IPv4Network(value).network_address)):
+            continue
+        del exact[value]
+        resolved[value].update((CURRENT_IP_LIST, REVIEWED_LEGACY_RESOLVER))
+        moved += 1
+    return moved
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--ip-list", type=Path, required=True)
     parser.add_argument("--reviewed-ip-list-hosts", type=Path)
+    parser.add_argument("--reviewed-legacy-ip-list-hosts", type=Path)
     parser.add_argument("--ipresolve", type=Path, required=True)
     parser.add_argument("--baseline", type=Path, required=True)
     parser.add_argument("--historical-ip-list", type=Path)
@@ -180,10 +200,18 @@ def main() -> int:
     args = parser.parse_args()
     reviewed = read_reviewed_ip_list_hosts(args.reviewed_ip_list_hosts) if args.reviewed_ip_list_hosts else set()
     reviewed_seen = set()
+    reviewed_legacy = (
+        read_reviewed_ip_list_hosts(args.reviewed_legacy_ip_list_hosts)
+        if args.reviewed_legacy_ip_list_hosts else set()
+    )
+    if reviewed & reviewed_legacy:
+        raise SystemExit("Current-only and legacy/current reviewed host policies must be disjoint")
 
     historical_paths = (args.historical_ip_list, args.historical_ipresolve, args.historical_subnet)
     if any(historical_paths) and not all(historical_paths):
         raise SystemExit("Historical baseline classification needs all three pinned v38 feed snapshots")
+    if reviewed_legacy and not all(historical_paths):
+        raise SystemExit("Reviewed legacy hosts need all three pinned v38 feed snapshots")
     regional_paths = (args.regional_origin_prefixes, args.shared_infrastructure_prefixes)
     if any(regional_paths) and (not all(regional_paths) or not all(historical_paths)):
         raise SystemExit("Legacy reclassification needs both origin masks and all three historical snapshots")
@@ -365,6 +393,11 @@ def main() -> int:
             reclassification_status = "SKIPPED_INCOMPLETE_CURRENT_EVIDENCE"
             print("::warning::Keeping legacy hard classification because a current feed is missing or has invalid rows.")
 
+    legacy_reviewed_moved = reclassify_reviewed_legacy_hosts(
+        exact_accepted, resolved_accepted, reviewed_legacy, historical_exact_hosts,
+        [str(net) for net in historical_hard_subnets],
+    )
+
     # Community suggestions and Re-filter summaries are diagnostic candidates only.
     # They do not enter `accepted`, even when they are exact host IPs.
     for source in ("community-antifilter-community.lst", "re-filter-ipsum.lst"):
@@ -433,6 +466,12 @@ def main() -> int:
     stats_lines.append(f"{LEGACY_REGIONAL_RESOLVER}\t{reclassification_status}\t-\t{moved}\t{moved}\t0\t0")
     if args.reviewed_ip_list_hosts:
         stats_lines.append(f"reviewed-ip-list-hosts\tAPPLIED\t{len(reviewed)}\t{len(reviewed)}\t{len(reviewed_seen)}\t0\t0")
+    if args.reviewed_legacy_ip_list_hosts:
+        status = "APPLIED" if legacy_reviewed_moved == len(reviewed_legacy) else "PARTIAL_OR_NOT_APPLIED"
+        count = len(reviewed_legacy)
+        stats_lines.append(
+            f"{REVIEWED_LEGACY_RESOLVER}\t{status}\t{count}\t{count}\t{legacy_reviewed_moved}\t0\t0"
+        )
     args.stats.write_text("\n".join(stats_lines) + "\n", encoding="utf-8")
 
     checksum_lines = []
@@ -442,6 +481,9 @@ def main() -> int:
     if args.reviewed_ip_list_hosts:
         path = args.reviewed_ip_list_hosts
         checksum_lines.append(f"{hashlib.sha256(path.read_bytes()).hexdigest()}  {path.name}  policy=reviewed-ip-list-hosts")
+    if args.reviewed_legacy_ip_list_hosts:
+        path = args.reviewed_legacy_ip_list_hosts
+        checksum_lines.append(f"{hashlib.sha256(path.read_bytes()).hexdigest()}  {path.name}  policy={REVIEWED_LEGACY_RESOLVER}")
     checksum_lines.append(f"{hashlib.sha256(args.approved.read_bytes()).hexdigest()}  {args.approved.name}  normalized=approved-union")
     checksum_lines.append(f"{hashlib.sha256(args.exact_approved.read_bytes()).hexdigest()}  {args.exact_approved.name}  normalized=exact-hard")
     checksum_lines.append(f"{hashlib.sha256(args.resolved_approved.read_bytes()).hexdigest()}  {args.resolved_approved.name}  normalized=resolver-only")
