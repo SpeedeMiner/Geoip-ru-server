@@ -100,7 +100,7 @@ def parse_cidr_file(path: Path, allow_hosts: bool = True):
     return networks, {"raw_rows": raw + invalid, "valid_rows": raw, "invalid_rows": invalid}
 
 def parse_reviewed_operator_prefixes(path: Path):
-    """Read explicit IPv4 candidates without conferring ASN-level trust."""
+    """Read exact reviewed prefixes without conferring ASN-level trust."""
     rows = {}
     with path.open(encoding="utf-8", newline="") as handle:
         reader = csv.DictReader(handle, delimiter="\t")
@@ -111,16 +111,18 @@ def parse_reviewed_operator_prefixes(path: Path):
                 country, token, asn = (row[key] for key in reader.fieldnames)
                 if None in row or country not in ("RU", "BY", "KZ") or not token or not asn:
                     raise ValueError
-                network = ipaddress.IPv4Network(token, strict=True)
-                if (token != str(network) or network.prefixlen < 23
-                        or not network.is_global or network.is_multicast):
+                network = ipaddress.ip_network(token, strict=True)
+                minimum = 23 if network.version == 4 else 64
+                if (token != str(network) or network.prefixlen < minimum
+                        or not network.is_global or network.is_multicast
+                        or getattr(network.network_address, "ipv4_mapped", None) is not None):
                     raise ValueError
                 if not asn.startswith("AS") or not asn[2:].isascii() or not asn[2:].isdigit():
                     raise ValueError
                 number = int(asn[2:])
                 if asn != f"AS{number}" or not 1 <= number <= 4294967295:
                     raise ValueError
-                if any(network.overlaps(other) for other in rows):
+                if any(network.version == other.version and network.overlaps(other) for other in rows):
                     raise ValueError
             except ValueError as error:
                 raise ValueError(f"{path}:{reader.line_num}: invalid reviewed operator prefix row") from error
@@ -130,6 +132,13 @@ def parse_reviewed_operator_prefixes(path: Path):
     if not rows:
         raise ValueError(f"{path}: empty reviewed operator prefix list")
     return rows
+
+
+def reviewed_operator_provenance(reviewed, source_id):
+    ordered = sorted(reviewed, key=lambda net: (net.version, int(net.network_address), net.prefixlen))
+    return [{"source_id": source_id, "category": reviewed[net][0],
+             "service": "", "tier": "", "asn_list": reviewed[net][1], "domains": "",
+             "prefix": str(net)} for net in ordered]
 
 
 def parse_rir_tsv(path: Path):
@@ -745,9 +754,7 @@ def main():
             "input_sha256": sha256(args.reviewed_operator_prefixes.read_bytes()),
             "protection": "none",
         }
-        for net, (country, asn) in sorted(reviewed.items()):
-            prefix_rows.append({"source_id": reviewed_source, "category": country,
-                                "service": "", "tier": "", "asn_list": asn, "domains": "", "prefix": str(net)})
+        prefix_rows.extend(reviewed_operator_provenance(reviewed, reviewed_source))
     # Reviewed networks contribute coverage only. They do not enter any block exemption mask.
     additions.update(reviewed)
     preblock = base_ru | additions
