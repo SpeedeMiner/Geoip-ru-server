@@ -8,7 +8,7 @@ from types import SimpleNamespace
 
 from validate_v41_release_gate import (
     REPORT_MARKER, SOURCE_KEYS, check_manifest, format_quality_section,
-    inspect_policy, literal_service_exceptions, read_hard_sources,
+    inspect_policy, literal_service_exceptions, read_hard_sources, verify_hard_evidence,
 )
 
 
@@ -17,56 +17,14 @@ def nets(*rows):
 
 
 class ReleaseGateTests(unittest.TestCase):
-    def test_protected_hard_exceptions_in_three_classes(self):
-        ru = nets("192.0.2.1/32", "192.0.2.2/32", "192.0.2.3/32",
-                  "192.0.2.4/32", "2001:db8::1/128")
-        hard = [
-            (ipaddress.ip_network("192.0.2.1/32"), {"antifilter-ip.lst"}),
-            (ipaddress.ip_network("192.0.2.2/32"), {"antifilter-ip.lst"}),
-            (ipaddress.ip_network("192.0.2.3/32"), {"antifilter-subnet.lst"}),
-            (ipaddress.ip_network("192.0.2.4/32"), {"antifilter-ip.lst"}),
-        ]
-        result = inspect_policy(
-            ru, set(), set(), hard,
-            core=nets("192.0.2.1/32"),
-            shared=nets("192.0.2.0/30"),
-            service=nets("192.0.2.2/32", "192.0.2.3/32", "192.0.2.4/32"))
-        v4 = result["families"]["ipv4"]
-        classes = v4["classes"]
-        self.assertEqual(v4["hard_direct_overridden_addresses"], 4)
-        self.assertEqual(v4["unprotected_hard_direct_addresses"], 0)
-        for name, count, cidr in (
-            ("CORE_CORPORATE", 1, "192.0.2.1/32"),
-            ("SHARED_INFRA", 2, "192.0.2.2/31"),
-            ("OTHER", 1, "192.0.2.4/32"),
-        ):
-            with self.subTest(name=name):
-                self.assertEqual(classes[name]["addresses"], count)
-                self.assertEqual(classes[name]["review_cidrs"], [cidr])
-                self.assertIn(f"OBSERVED_HARD_DIRECT {name} {cidr}",
-                              format_quality_section(result))
-        self.assertEqual(classes["SHARED_INFRA"]["current_antifilter_ip"], 1)
-        self.assertEqual(classes["SHARED_INFRA"]["current_antifilter_subnet"], 1)
-        self.assertEqual(classes["OTHER"]["current_antifilter_ip"], 1)
-        self.assertEqual(classes["OTHER"]["service_protected"], 1)
-        self.assertIn(REPORT_MARKER, format_quality_section(result))
-
-    def test_same_count_ip_substitution_changes_exact_class_hash(self):
-        def report_for(ip):
-            entry = ipaddress.ip_network(f"{ip}/32")
-            result = inspect_policy(
-                {entry, ipaddress.ip_network("2001:db8::1/128")}, set(), set(),
-                [(entry, {"antifilter-ip.lst"})], {entry}, set(), set())
-            fields = result["families"]["ipv4"]["classes"]["CORE_CORPORATE"]
-            self.assertEqual(fields["addresses"], 1)
-            self.assertEqual(fields["review_cidrs"], [str(entry)])
-            self.assertEqual(fields["review_cidrs_sha256"],
-                             hashlib.sha256((str(entry) + "\n").encode("ascii")).hexdigest())
-            self.assertIn(f"OBSERVED_HARD_DIRECT CORE_CORPORATE {entry}",
-                          format_quality_section(result))
-            return fields["review_cidrs_sha256"]
-
-        self.assertNotEqual(report_for("192.0.2.8"), report_for("192.0.2.9"))
+    def test_confirmed_ip_blocks_win_over_every_direct_protection_class(self):
+        ru = nets("192.0.2.1/32", "2001:db8::1/128")
+        for role in ("core", "shared", "service"):
+            for host in ru:
+                with self.subTest(role=role, version=host.version):
+                    masks = {key: {host} if key == role else set() for key in ("core", "shared", "service")}
+                    with self.assertRaisesRegex(ValueError, "unprotected hard-block leak"):
+                        inspect_policy(ru, set(), set(), [(host, {"reviewed-rkn-ip-record"})], **masks)
 
     def test_unprotected_hard_direct_fails_even_if_shared(self):
         ru = nets("192.0.2.4/32", "2001:db8::1/128")
@@ -117,12 +75,31 @@ class ReleaseGateTests(unittest.TestCase):
             f = Path(t) / "hard.txt"
             f.write_text("192.0.2.1/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified\n",
                          encoding="utf-8")
-            records = read_hard_sources(f)
-            self.assertEqual(len(records), 1)
-            self.assertIn("antifilter-ip.lst", records[0][1])
+            with self.assertRaisesRegex(ValueError, "non-IP or unknown evidence"):
+                read_hard_sources(f)
+            f.write_text("192.0.2.1/32 # sources=reviewed-rkn-ip-record\n")
+            self.assertEqual(len(read_hard_sources(f)), 1)
             f.write_text("192.0.2.1/32\n", encoding="utf-8")
             with self.assertRaisesRegex(ValueError, "missing provenance"):
                 read_hard_sources(f)
+
+    def test_gate_rebuilds_hard_sources_and_rejects_missing_or_injected_cidr(self):
+        from prepare_blocked_sources_v41 import TELEGRAM_PREFIXES
+        with tempfile.TemporaryDirectory() as t:
+            subnet = Path(t) / "subnet.lst"
+            registry = Path(t) / "reviewed.tsv"
+            subnet.write_text("192.0.2.0/24\n198.0.0.0/8\n")
+            registry.write_text(
+                "CIDR\tKIND\tCHECKED_ON\tEVIDENCE\n"
+                "203.0.113.1/32\tDIRECT_IP_OR_SUBNET\t2026-11-13\thttps://blocklist.rkn.gov.ru/example\n"
+            )
+            rows = [(ipaddress.ip_network(p), {"runetfreedom-static-telegram"}) for p in TELEGRAM_PREFIXES]
+            rows += [(ipaddress.ip_network("192.0.2.0/24"), {"antifilter-subnet.lst"}),
+                     (ipaddress.ip_network("203.0.113.1/32"), {"reviewed-rkn-ip-record"})]
+            verify_hard_evidence(rows, subnet, registry)
+            for tampered in (rows[:-1], rows + [(ipaddress.ip_network("192.0.3.0/24"), {"antifilter-subnet.lst"})]):
+                with self.assertRaisesRegex(ValueError, "does not match"):
+                    verify_hard_evidence(tampered, subnet, registry)
 
     def test_manifest_verifies_the_current_inputs(self):
         with tempfile.TemporaryDirectory() as t:

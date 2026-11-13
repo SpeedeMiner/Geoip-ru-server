@@ -56,3 +56,4 @@ AS35022	Gazprombank	Gazprombank JSC	https://2ip.io/as/35022/
 AS47724	HeadHunter	HEADHUNTER LLC (hh.ru)	https://2ip.io/ru/ip/94.124.200.0/
 AS197068	Qrator	HLL LLC (High Load Lab / Qrator DDoS mitigation)	https://bgp.tools/as/197068
 AS51115	Qrator	HLL LLC (High Load Lab / Qrator)	https://bgp.tools/as/51115
+AS197695	REG.RU	Domain names registrar REG.RU Ltd	https://rdap.db.ripe.net/autnum/197695

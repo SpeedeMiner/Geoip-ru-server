@@ -22,12 +22,12 @@ class V41PolicyIntegrationTests(unittest.TestCase):
         )
         self.assertEqual(observed, [(150, 299), (400, 600), (1000, 1250)])
 
-    def test_core_company_survives_exact_and_resolved(self):
+    def test_core_company_survives_resolver_but_not_exact(self):
         exact = n("198.51.100.0/24")
         resolved = n("203.0.113.0/24")
         core = n("198.51.100.128/25", "203.0.113.128/25")
         result, _ = class_aware_effective_block_set(exact, resolved, core, set())
-        self.assertEqual(result, n("198.51.100.0/25", "203.0.113.0/25"))
+        self.assertEqual(result, n("198.51.100.0/24", "203.0.113.0/25"))
 
     def test_shared_and_rir_are_resolver_only_not_hard_exempt(self):
         exact = n("192.0.2.0/24", "198.51.100.0/24")
@@ -37,7 +37,7 @@ class V41PolicyIntegrationTests(unittest.TestCase):
         result, _ = class_aware_effective_block_set(exact, resolved, set(), shared, regional)
         self.assertEqual(result, n("192.0.2.0/24", "198.51.100.0/24", "203.0.113.0/25"))
 
-    def test_literal_hosts_survive_but_service_subnets_do_not_override_hard(self):
+    def test_neither_literal_hosts_nor_service_subnets_override_hard(self):
         exact = n("77.88.5.5/32", "77.88.5.6/32", "77.88.5.7/32",
                   "104.16.0.5/32", "185.32.184.6/32", "2001:db8::5/128",
                   "2001:db8::6/128")
@@ -53,8 +53,8 @@ class V41PolicyIntegrationTests(unittest.TestCase):
         effective, _ = class_aware_effective_block_set(
             exact, resolved, set(), n("77.88.0.0/18"), set(), hosts, resolver,
         )
-        self.assertEqual(effective, n("77.88.5.5/32", "104.16.0.5/32",
-                                      "185.32.184.6/32", "2001:db8::5/128"))
+        self.assertEqual(addr_counts(effective), addr_counts(exact))
+        self.assertEqual(addr_counts(effective | exact), addr_counts(exact))
 
     def test_w1zardz_regional_intersection_cannot_synthesize_a_hard_exception(self):
         hosts, resolver = build_service_protection_masks(
@@ -81,9 +81,9 @@ class V41PolicyIntegrationTests(unittest.TestCase):
         exact = n("2001:db8:100::/48")
         core = n("2001:db8:100:8000::/49")
         output, _ = class_aware_effective_block_set(exact, set(), core, set())
-        self.assertEqual(output, n("2001:db8:100::/49"))
+        self.assertEqual(output, exact)
 
-    def test_legacy_unclassified_baseline_stays_hard_for_rir(self):
+    def test_explicit_subnet_stays_hard_for_rir(self):
         exact = n("203.0.113.0/24")
         resolver = n("203.0.113.0/24")
         regional = n("203.0.113.0/24")

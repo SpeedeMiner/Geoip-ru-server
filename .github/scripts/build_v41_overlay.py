@@ -1,10 +1,9 @@
 #!/usr/bin/env python3
 """Assemble the v41 unified DIRECT RU+BY+KZ GeoIP overlay.
 
-v41 retains the v38 regional/resource/service inputs and applies approved RKN blocks
-outside exact prefixes originated by the curated corporate company-ASN allowlist.
-Those corporate-origin prefixes remain DIRECT when an RKN source lists an address
-inside them. PRIVATE retains absolute precedence. Output remains RU and PRIVATE.
+v41 keeps selected origins and registered regional resources DIRECT against DNS
+and unverified legacy exclusions. Hard IP/subnet evidence and Telegram still win.
+PRIVATE retains absolute precedence. Output remains RU and PRIVATE.
 """
 from __future__ import annotations
 
@@ -481,7 +480,7 @@ def build_service_protection_masks(rir, service_sources):
     """Return literal service hosts and the full resolver-protection address space.
 
     Select hosts before clipping or collapsing so neither an allocation boundary
-    nor a provider network can create a hard-block exception.
+    nor a provider network can manufacture a literal service host.
     """
     ky = service_sources.get("kyoresuas-standard", set())
     hxehex = service_sources.get("hxehex-mobile-hosts", set())
@@ -512,12 +511,7 @@ def class_aware_effective_block_set(
     service_resolver_prefixes: set | None = None,
     non_exempt: set | None = None,
 ):
-    """Only CORE and explicit service hosts can override hard blocks.
-
-    The input preparation step assigns historical v38 evidence to its layer.
-    Regional origin by itself never overrides a hard block.
-    Non-exempt prefixes remain blocked even when they overlap an exception.
-    """
+    """Hard IP evidence wins over every origin and service protection mask."""
     if core_company_prefixes & shared_infrastructure_prefixes:
         raise ValueError("CORE_CORPORATE and SHARED_INFRA exact prefix masks overlap")
     regional = regional_origin_prefixes or set()
@@ -527,7 +521,7 @@ def class_aware_effective_block_set(
     service_resolver = (service_resolver_prefixes or set()) | service_exact
     unconditional = non_exempt or set()
     resolved_only = subtract_networks(blocked_resolved, blocked_exact | unconditional)
-    effective_exact = subtract_networks(blocked_exact, core_company_prefixes | service_exact) | unconditional
+    effective_exact = blocked_exact | unconditional
     effective_resolved = subtract_networks(
         resolved_only,
         core_company_prefixes | shared_infrastructure_prefixes | regional | service_resolver
@@ -706,15 +700,15 @@ def main():
     if len(ipsum) < 1000:
         raise ValueError(f"Antifilter ipsum review feed unexpectedly small: {len(ipsum)} /24 prefixes")
 
-    # CORE and explicit service hosts may override hard blocks. SHARED and
-    # regional origins only override entries in the prepared resolver-only layer.
+    # DNS and unverified history cannot cut any registered regional resource.
+    # Explicit subnet/IP evidence and Telegram remain unconditional.
     blocked, resolved_only = class_aware_effective_block_set(
         blocked_exact, blocked_resolved, core_company_prefixes,
-        shared_infrastructure_prefixes, regional_only, service_exact, service_resolver,
+        shared_infrastructure_prefixes, regional_only | regional_union, service_exact, service_resolver,
         non_exempt=telegram,
     )
     ipsum_effective = subtract_networks(
-        ipsum, core_company_prefixes | shared_infrastructure_prefixes | regional_only | service_resolver
+        ipsum, core_company_prefixes | shared_infrastructure_prefixes | regional_only | regional_union | service_resolver
     )
 
     # Hydra's DIRECT and WHITELIST signal user-requested routes, not geography or
@@ -732,7 +726,7 @@ def main():
         ("core-company-asn-origins", core_company_prefixes, "CORE_CORPORATE exact origin"),
         ("shared-infrastructure-asn-origins", shared_infrastructure_prefixes, "SHARED_INFRA exact origin"),
         ("rir-rukzby-selected-origin-protected", regional_only, "RIR RU+BY+KZ selected-origin resolver exception"),
-        ("verified-service-exact-hosts", service_exact, "Literal host service hard-block exception"),
+        ("verified-service-exact-hosts", service_exact, "Literal service host (resolver protection only)"),
         ("verified-service-resolver-protected", service_resolver, "Verified service resolver protection"),
     ):
         for net in sorted(networks, key=lambda n: (n.version, int(n.network_address), n.prefixlen)):
@@ -762,10 +756,10 @@ def main():
     core_company_iv = {v: intervals(core_company_prefixes, v) for v in (4, 6)}
     shared_infrastructure_iv = {v: intervals(shared_infrastructure_prefixes, v) for v in (4, 6)}
     regional_only_iv = {v: intervals(regional_only, v) for v in (4, 6)}
+    regional_resource_iv = {v: intervals(regional_union, v) for v in (4, 6)}
     service_exact_iv = {v: intervals(service_exact, v) for v in (4, 6)}
     service_resolver_iv = {v: intervals(service_resolver, v) for v in (4, 6)}
     blocked_iv = {v: intervals(blocked, v) for v in (4, 6)}
-    blocked_base_iv = {v: intervals(blocked_base, v) for v in (4, 6)}
     resolved_only_iv = {v: intervals(resolved_only, v) for v in (4, 6)}
     # CIDR set difference is not address-space subtraction: e.g. removing
     # 203.0.113.128/25 from a covering 203.0.113.0/24 must retain only the /25.
@@ -856,7 +850,7 @@ def main():
     }
     core_exempted_direct_counts = {
         v: interval_size(intersect(
-            intersect(blocked_base_iv[v], core_company_iv[v]), preblock_after_private_iv[v]
+            intersect(exempted_blocked_iv[v], core_company_iv[v]), preblock_after_private_iv[v]
         )) for v in (4,6)
     }
     shared_resolver_exempted_direct_counts = {
@@ -874,9 +868,9 @@ def main():
         eligible_impact_iv[shared_allowed] = {}
         for v in (4, 6):
             protect = normalize_interval_union(
-                core_company_iv[v], service_resolver_iv[v] if shared_allowed else service_exact_iv[v],
-                *([shared_infrastructure_iv[v], regional_only_iv[v]] if shared_allowed else [])
-            )
+                core_company_iv[v], service_resolver_iv[v], service_exact_iv[v],
+                shared_infrastructure_iv[v], regional_only_iv[v], regional_resource_iv[v],
+            ) if shared_allowed else []
             eligible_impact_iv[shared_allowed][v] = subtract(unblocked_direct_iv[v], protect)
 
     blocked_rows = []
@@ -889,7 +883,7 @@ def main():
             v=net.version
             overlap, already, potential = blocked_prefix_impact(net, preblock_after_private_iv, base_blocked_iv)
             direct_parts = intersect_one_range(int(net.network_address), int(net.broadcast_address), preblock_after_private_iv[v])
-            core_exempted = interval_size(intersect(direct_parts, core_company_iv[v]))
+            core_exempted = interval_size(intersect(direct_parts, core_company_iv[v])) if shared_allowed else 0
             shared_exempted = interval_size(intersect(direct_parts, shared_infrastructure_iv[v])) if shared_allowed else 0
             # Compute incremental impact on address-space intervals.  Exemptions can
             # overlap each other or the already-effective blocked set; subtracting
@@ -923,17 +917,11 @@ def main():
     if any(intersect(intervals(decoded["RU"],v),blocked_iv[v]) for v in (4,6)):
         raise ValueError("Non-corporate RKN blocked destination remains in DIRECT v41")
     for v in (4,6):
-        core_expected = subtract(core_company_iv[v], private_iv[v])
-        shared_expected = subtract(shared_infrastructure_iv[v], private_iv[v])
-        shared_expected = subtract(shared_expected, intervals(blocked_exact, v))
-        regional_expected = subtract(regional_only_iv[v], private_iv[v])
-        regional_expected = subtract(regional_expected, intervals(blocked_exact, v))
-        service_expected = subtract(service_resolver_iv[v], private_iv[v])
-        service_expected = subtract(service_expected, subtract(intervals(blocked_exact, v), service_exact_iv[v]))
         company_expected = normalize_interval_union(
-            core_expected, shared_expected, regional_expected, service_expected
+            core_company_iv[v], shared_infrastructure_iv[v], regional_only_iv[v],
+            regional_resource_iv[v], service_resolver_iv[v], service_exact_iv[v],
         )
-        company_expected = subtract(company_expected, intervals(telegram, v))
+        company_expected = subtract(subtract(company_expected, private_iv[v]), blocked_iv[v])
         company_missing = subtract(company_expected, final_iv[v])
         if company_missing:
             raise ValueError(f"Class-aware company-ASN coverage lost in IPv{v} beyond PRIVATE/hard-block precedence")
@@ -954,8 +942,8 @@ def main():
         writer.writeheader()
         writer.writerows(blocked_rows)
     args.blocked_output.write_text(
-        "# v41 effective blocks: CORE_CORPORATE is exempt from all approved inputs; SHARED_INFRA only from the resolver layer.\n"
-        "# Current ip.lst is hard except reviewed host entries; bounded subnets, Telegram and legacy hard labels keep precedence.\n"
+        "# v41 effective blocks: IP/subnet evidence and Telegram outrank all DIRECT masks.\n"
+        "# DNS-derived and unverified legacy entries cannot carve protected regional or service coverage.\n"
         "# PRIVATE always wins; Antifilter ipsum /24 remains review-only.\n"
         + "".join(str(n)+"\n" for n in sorted(blocked,key=lambda n:(n.version,int(n.network_address),n.prefixlen))),
         encoding="utf-8",
@@ -973,7 +961,7 @@ def main():
     blocked_counts = addr_counts(blocked)
     private_counts = addr_counts(private)
     quality = [
-        "GeoIP DIRECT RU+BY+KZ CLIENT v41 — corporate company-ASN origins exempted from RKN carve-outs",
+        "GeoIP DIRECT RU+BY+KZ CLIENT v41 — provenance-aware IP exclusions",
         "Generated UTC: "+datetime.now(timezone.utc).isoformat(),
         "Base v37 GeoIP SHA-256: "+sha256(base_bytes),
         "v41 GeoIP SHA-256: "+sha256(payload),
@@ -981,15 +969,15 @@ def main():
         "POLICY",
         "- RU+BY+KZ registered resource prefixes and named service destinations are DIRECT regardless of geolocation.",
         "- PRIVATE has absolute precedence.",
-        "- CORE_CORPORATE exact origin prefixes are protected from all approved block inputs.",
+        "- CORE_CORPORATE exact origin prefixes are protected from the resolver layer only.",
         "- SHARED_INFRA exact origin prefixes are protected only against the resolver-only layer.",
         "- Official Telegram CIDRs are non-exempt in DIRECT. Overlapping HXEHEX entries are rejected before service protection.",
-        "- Current ip.lst stays hard except individually reviewed IPv4 hosts, and bounded subnet.lst, Telegram and ineligible historical v38 records stay hard.",
-        "- Eligible v38-only regional IPv4 /32 records move to the resolver-only layer without leaving the approved union.",
+        "- Current ip.lst and ipresolve.lst are DNS-derived; unverified historical v38 is advisory.",
+        "- Current bounded subnet feed and reviewed direct registry IP/subnet records remain hard.",
         "- MOAS is CORE_CORPORATE when any exact origin is CORE; otherwise SHARED_INFRA receives resolver-only protection.",
-        "- RIR RU+BY+KZ selected origins protect against the resolver-only layer, not hard blocks.",
+        "- RIR RU+BY+KZ selected origins and registered resources protect against the resolver layer, not hard blocks.",
         "- Regional registration alone does not imply corporate ownership.",
-        "- Only literal service hosts can override hard blocks, never a service subnet or operator whitelist.",
+        "- No origin, literal service host or operator whitelist may override hard IP/subnet evidence.",
         "- PRIVATE has absolute precedence over every origin class and all block exceptions.",
         "- IP GeoIP cannot distinguish unrelated tenants on shared IPs; broad RKN summaries can overblock co-resident services.",
         "",
@@ -1025,7 +1013,7 @@ def main():
         f"W1ZARDZ unique service/direct prefixes: {len(service_sources['w1zardz-service-direct'])}",
         f"HXEHEX exact host-IP prefixes: {len(service_sources['hxehex-mobile-hosts'])}",
         f"Escapingworm operator whitelist prefixes: {len(service_sources['operator-whitelist'])}",
-        f"Literal service hosts eligible for hard exceptions: {len(service_exact)}",
+        f"Literal service hosts (resolver protection only): {len(service_exact)}",
         f"Service resolver-protected address space: {addr_counts(service_resolver)}",
         "Service and operator whitelist routes are separate from geographic/RIR resource evidence.",
         "Service datasets can include foreign-located or shared-provider endpoints; no country geolocation filter was applied.",
@@ -1043,7 +1031,7 @@ def main():
         f"Antifilter ipsum raw/valid/invalid rows: {ipsum_stats['raw_rows']}/{ipsum_stats['valid_rows']}/{ipsum_stats['invalid_rows']}",
         f"Potential additional IPv4 DIRECT address space affected by /24 review candidates: {ipsum_overlap_direct[4]}",
         f"Potential additional IPv6 DIRECT address space affected by /24 review candidates: {ipsum_overlap_direct[6]}",
-        "ipsum /24 candidates are NOT automatically removed from DIRECT; only exact host and bounded prefixes already approved by v37 remain automatic, excluding exact corporate company-ASN origin prefixes from those carves.",
+        "ipsum /24 candidates remain review-only. DNS-derived and unverified historical evidence cannot carve selected origin or RIR-resource coverage. Explicit IP/subnet evidence and Telegram take precedence.",
         "The /24 impact estimate excludes the exact corporate company-ASN prefix space exempted by the v41 policy.",
         f"Combined v41 effective blocked IPv4 address space: {blocked_counts['ipv4']}",
         f"Combined v41 effective blocked IPv6 address space: {blocked_counts['ipv6']}",
@@ -1102,7 +1090,7 @@ def main():
             "exact_host_address_space":addr_counts(service_exact),
             "resolver_protected_prefixes":len(service_resolver),
             "resolver_protected_address_space":addr_counts(service_resolver),
-            "protection":"only_literal_hosts_override_hard_blocks",
+            "protection":"resolver_only_no_hard_override",
         },
         "shared_infrastructure_prefixes":{
             "unique_prefixes":len(shared_infrastructure_prefixes),
@@ -1137,12 +1125,12 @@ def main():
             "geolocation_used_as_admission_gate":False,
             "private_precedence_applied":True,
             "rkn_exact_ip_and_subnet_blocks_apply_to_shared_infrastructure":True,
-            "core_corporate_prefixes_remain_direct_except_private_and_official_telegram":True,
+            "confirmed_ip_subnet_precedes_all_direct_exceptions":True,
             "official_telegram_precedes_all_direct_exceptions":True,
             "shared_infrastructure_prefixes_exempt_from_resolver_layer_only":True,
             "legacy_v38_reclassification_preserves_approved_union":True,
             "rir_rukzby_selected_origin_resolver_protected":True,
-            "service_hard_block_exemptions_require_literal_hosts":True,
+            "all_direct_protection_masks_are_resolver_only":True,
             "private_precedence_over_all_exceptions":True,
             "ipsum_24_auto_carved":False,
             "hydra_direct_whitelist_added_without_block_exemption":True,

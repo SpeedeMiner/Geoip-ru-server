@@ -1,6 +1,6 @@
 # v41 integration policy — RU+BY+KZ unified DIRECT
 
-Status: **v41 already released. The v41.2 historical policy is a candidate stacked on the v41.1 service/region policy and publication hardening.**
+Status: **v41 already released. This provenance-aware revision is a candidate and does not replace the published v41 yet.**
 
 ## Preservation of v39 and v40
 
@@ -22,22 +22,13 @@ v41 imports from v40:
 
 ## Explicit precedence for conflicts
 
-1. PRIVATE wins over every DIRECT rule or protected prefix.
-2. CORE_CORPORATE selected-origin prefixes are exempt from approved exact/hard **and** resolver-only blocks, except PRIVATE.
-3. Only literal IPv4 `/32` and IPv6 `/128` entries from Kyoresuas Standard, HXEHEX and W1ZARDZ inside an RU RIR resource may override hard blocks. Hosts are selected from the original rows before intersection or aggregation. All other service CIDRs, including Escapingworm operator entries of any length and even IPv4 `/25–/31` or IPv6 `/65–/127`, can override only the current `ipresolve.lst` layer. W1ZARDZ resolver protection uses the intersection with RU, BY and KZ RIR resources. A W1ZARDZ host in BY/KZ does not acquire a new hard-block exception.
-4. SHARED_INFRA and selected RIR-RU/BY/KZ BGP origins have resolver-only protection. The existing hard layer (`ip.lst`, bounded `subnet.lst`, curated Telegram blocks and the pinned unclassified v38 baseline) takes precedence unless CORE or an eligible literal service host independently applies.
-5. Any other block is subtracted from DIRECT as before. No further `ipsum.lst` /24 is automatically carved.
-6. RIR origin registration is **not** proof of a company relationship. No recursive import of upstream/peer/affiliate ASNs.
+1. PRIVATE always wins. The pinned official Telegram set remains non-exempt.
+2. Current bounded Antifilter `subnet.lst` entries and separately reviewed direct IP/subnet registry records are hard. They cannot be overridden by CORE, SHARED, regional origin, or service masks. The subnet feed is an upstream signal, not a verified direct lookup of every row in the official registry.
+3. Antifilter [documents](https://antifilter.download/) `ip.lst` and `ipresolve.lst` as DNS-derived. They, and unverified historical v38 entries, remain in the source union and advisory layer. They cannot carve selected RU/BY/KZ origins, registered RU/BY/KZ resource ranges, corporate/shared origins, or the existing service resolver masks. Outside those protections, prior resolver filtering still applies. `ipsum.lst` remains review-only.
+4. `.github/data/v41-reviewed-rkn-ip-records.tsv` accepts only manually reviewed direct IP or subnet records with canonical CIDR, review date and evidence URL. Domain/URL-only evidence is not sufficient. The table starts empty because no current official direct records were verified for the reviewed banks. An empty table does not assert that the registry is empty. Automatic size limits stay in place.
+5. REG.RU AS197695 is classified as SHARED_INFRA and is admitted only by the existing regional ASN selection, not by its new classification. The same class already covers the reviewed origins of Timeweb, Selectel and DDoS-Guard. No recursive import of peer/upstream/tenant ASNs. Registration is routing evidence, not a per-tenant reachability guarantee.
 
-The build uses the actual BY/KZ ASN registry alongside the RU registry, without checking physical location or creating company exemptions. The published sidecar retains the original `geoip_RU_v41_rir_ru_and_company_origin_prefixes.txt` filename for compatibility and records both registry hashes. No change to the corporate registry is required for the already registered BY/KZ networks.
-
-`ip.lst` is itself DNS-derived according to Antifilter. Its existing hard classification is preserved. These source memberships do not prove an active direct IP block, and absence from feeds is not evidence of unblocking.
-
-### v41.2 historical-only IPv4 hosts
-
-A v38 baseline hard/unclassified host may move to the resolver-only layer when it is an IPv4 `/32`, is covered by a selected RU/BY/KZ BGP origin or SHARED_INFRA, and has no address-space overlap with any current `ip.lst`, `ipresolve.lst`, `subnet.lst` entry or curated Telegram route. A covering CIDR in one of those sources vetoes the change even when that CIDR is review-only. The rule never moves whole subnets or IPv6 hosts. If current ipresolve is missing, or a current required feed has tolerated malformed rows, no new reclassification takes place on that build. Invalid required feeds still fail under the existing thresholds.
-
-The original approved union and its provenance remain unchanged. The new `v38-historical-only-regional-resolver` label records the policy decision in the resolver sidecar and source statistics. It does not assert that the original entry came from DNS or that the destination is now reachable. Remaining overlapping hard prefixes and PRIVATE still take precedence. No publication asset name changes.
+The v37 base and approved-union filenames remain unchanged. The base still subtracts the full union. The v41 overlay restores eligible regional/service coverage against advisory evidence and re-applies the effective exclusions. No source is removed, no GeoSite policy is edited and no checked domain is treated as a direct IP block. The historical raw feeds are retained for attribution, not as current confirmation.
 
 ## Hydra DIRECT / WHITELIST expansion
 

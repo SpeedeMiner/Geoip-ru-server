@@ -29,7 +29,7 @@ on:
       - ".github/scripts/build_company_asn_prefixes.py"
       - ".github/scripts/build_company_asn_prefix_classes_v41.py"
       - ".github/scripts/prepare_blocked_sources_v41.py"
-      - ".github/data/v41-reviewed-ip-list-hosts.txt"
+      - ".github/data/v41-reviewed-rkn-ip-records.tsv"
       - ".github/data/v41-reviewed-operator-prefixes.tsv"
       - ".github/scripts/validate_v41_overlay.py"
       - ".github/scripts/validate_v41_release_gate.py"
@@ -200,7 +200,7 @@ jobs:
           set -euo pipefail
           python3 .github/scripts/prepare_blocked_sources_v41.py \
             --ip-list "$BLOCKED_IP_RAW_INPUT" \
-            --reviewed-ip-list-hosts .github/data/v41-reviewed-ip-list-hosts.txt \
+            --confirmed-ip-records .github/data/v41-reviewed-rkn-ip-records.tsv \
             --ipresolve "$BLOCKED_IPRESOLVE_INPUT" \
             --baseline "$BLOCKED_BASELINE_INPUT" \
             --historical-ip-list "$V38_PINNED_IP_INPUT" \
@@ -209,8 +209,6 @@ jobs:
             --subnet "$BLOCKED_SUBNET_INPUT" \
             --community "$BLOCKED_COMMUNITY_INPUT" \
             --refilter "$BLOCKED_REFILTER_INPUT" \
-            --regional-origin-prefixes "$REGIONAL_ORIGIN_PREFIXES" \
-            --shared-infrastructure-prefixes "$SHARED_INFRASTRUCTURE_PREFIXES" \
             --approved "$BLOCKED_IP_INPUT" \
             --exact-approved "$BLOCKED_IP_EXACT_INPUT" \
             --resolved-approved "$BLOCKED_IPRESOLVE_ONLY_INPUT" \
@@ -404,6 +402,8 @@ jobs:
             --manifest "$V41_MANIFEST" \
             --quality "$V41_QUALITY_REPORT" \
             --hard "$BLOCKED_IP_EXACT_INPUT" \
+            --current-subnet-feed "$BLOCKED_SUBNET_INPUT" \
+            --confirmed-ip-records .github/data/v41-reviewed-rkn-ip-records.tsv \
             --effective "$V41_BLOCKED_FILE" \
             --core "$CORE_COMPANY_PREFIXES" \
             --shared "$SHARED_INFRASTRUCTURE_PREFIXES" \

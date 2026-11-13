@@ -48,13 +48,14 @@ def validate(args: argparse.Namespace) -> dict:
     service_sources, _, _ = builder.load_service_inputs(feeds, telegram)
     rir_resources, _ = builder.parse_rir_tsv(args.rir)
     service_exact, service_resolver = builder.build_service_protection_masks(rir_resources, service_sources)
+    regional_resources = builder.union_networks(*rir_resources.values())
     if company_core & shared or company_core | shared != company_all:
         raise ValueError("Company core/shared masks are not a disjoint exact partition")
     if any(builder.intervals(blocked_union, version) != builder.intervals(blocked_exact | blocked_resolved, version) for version in (4, 6)):
         raise ValueError("Approved blocked address-space union differs from exact + resolver sidecars")
 
     effective, resolved_only = builder.class_aware_effective_block_set(
-        blocked_exact, blocked_resolved, company_core, shared, regional_only, service_exact, service_resolver,
+        blocked_exact, blocked_resolved, company_core, shared, regional_only | regional_resources, service_exact, service_resolver,
         non_exempt=telegram,
     )
     output_blocked = builder.parse_cidr_file(args.effective_blocked)[0]
@@ -66,11 +67,9 @@ def validate(args: argparse.Namespace) -> dict:
         private_iv = builder.intervals(decoded["PRIVATE"], version)
         blocked_iv = builder.intervals(output_blocked, version)
         exact_iv = builder.intervals(blocked_exact | telegram, version)
-        telegram_iv = builder.intervals(telegram, version)
         core_iv = builder.intervals(company_core, version)
         shared_iv = builder.intervals(shared, version)
-        regional_iv = builder.intervals(regional_only, version)
-        service_exact_iv = builder.intervals(service_exact, version)
+        regional_iv = builder.intervals(regional_only | regional_resources, version)
         service_resolver_iv = builder.intervals(service_resolver, version)
         if builder.intersect(ru_iv, private_iv):
             raise ValueError(f"RU intersects PRIVATE in IPv{version}")
@@ -78,7 +77,7 @@ def validate(args: argparse.Namespace) -> dict:
             raise ValueError(f"RU intersects effective blocked set in IPv{version}")
 
         core_expected = builder.subtract(core_iv, private_iv)
-        core_missing = builder.subtract(builder.subtract(core_expected, telegram_iv), ru_iv)
+        core_missing = builder.subtract(builder.subtract(core_expected, exact_iv), ru_iv)
         if core_missing:
             raise ValueError(f"CORE_CORPORATE prefix coverage lost in IPv{version}")
 
@@ -92,8 +91,8 @@ def validate(args: argparse.Namespace) -> dict:
         if builder.subtract(regional_expected, ru_iv):
             raise ValueError(f"RIR RU+BY+KZ selected origin resolver-only protection lost in IPv{version}")
         service_expected = builder.subtract(service_resolver_iv, private_iv)
-        service_expected = builder.subtract(service_expected, builder.subtract(exact_iv, service_exact_iv))
-        if builder.subtract(builder.subtract(service_expected, telegram_iv), ru_iv):
+        service_expected = builder.subtract(service_expected, exact_iv)
+        if builder.subtract(service_expected, ru_iv):
             raise ValueError(f"Verified RU service protection lost in IPv{version}")
 
         # A shared provider may overlap an exact/legacy hard block, but no
@@ -140,12 +139,12 @@ def validate(args: argparse.Namespace) -> dict:
     required_flags = {
         "private_precedence_applied": True,
         "official_telegram_precedes_all_direct_exceptions": True,
-        "core_corporate_prefixes_remain_direct_except_private_and_official_telegram": True,
+        "confirmed_ip_subnet_precedes_all_direct_exceptions": True,
         "shared_infrastructure_prefixes_exempt_from_resolver_layer_only": True,
         "rkn_exact_ip_and_subnet_blocks_apply_to_shared_infrastructure": True,
         "legacy_v38_reclassification_preserves_approved_union": True,
         "rir_rukzby_selected_origin_resolver_protected": True,
-        "service_hard_block_exemptions_require_literal_hosts": True,
+        "all_direct_protection_masks_are_resolver_only": True,
         "private_precedence_over_all_exceptions": True,
         "ipsum_24_auto_carved": False,
     }

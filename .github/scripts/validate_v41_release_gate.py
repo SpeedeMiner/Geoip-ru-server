@@ -1,10 +1,8 @@
 #!/usr/bin/env python3
 """Fail-closed v41 pre-publication hard/DIRECT policy gate.
 
-Use only this *build's* inputs and manifest. The permitted exceptions are
-CORE_CORPORATE and the precise service protection mask reconstructed from
-current source data. Current Antifilter hard-source membership is provenance,
-NOT independent proof of an active legal IP block. No remote API calls.
+Use only this build's inputs and manifest. Explicit IP/subnet records may
+not be overridden by any DIRECT origin or service mask. No remote API calls.
 """
 from __future__ import annotations
 
@@ -15,6 +13,10 @@ import json
 from pathlib import Path
 
 import build_v41_overlay as builder
+from prepare_blocked_sources_v41 import (
+    CONFIRMED_IP, HARD_SOURCE_LABELS, TELEGRAM_PREFIXES,
+    read_confirmed_ip_records, read_feed, subnet_auto_approved,
+)
 
 REPORT_MARKER = "PRE_PUBLICATION_V41_HARD_POLICY_GATE"
 SOURCE_KEYS = {
@@ -59,12 +61,28 @@ def read_hard_sources(path: Path):
             raise ValueError(f"hard source row {number} is missing provenance")
         net = ipaddress.ip_network(prefix.strip(), strict=True)
         tags = frozenset(x.strip() for x in provenance.strip()[len("sources="):].split(","))
-        if "" in tags or not tags:
-            raise ValueError(f"hard source row {number} has empty labels")
+        if not tags or not tags <= HARD_SOURCE_LABELS:
+            raise ValueError(f"hard source row {number} has non-IP or unknown evidence: {sorted(tags)}")
         rows.append((net, tags))
     if not rows:
         raise ValueError("hard source has no CIDR records")
     return rows
+
+
+def verify_hard_evidence(hard_rows, subnet_feed: Path, reviewed_registry: Path):
+    """Reconstruct exact CIDR-to-source provenance, not just address coverage."""
+    subnets, _, _ = read_feed(subnet_feed, "antifilter-subnet.lst")
+    confirmed = read_confirmed_ip_records(reviewed_registry)
+    expected = {}
+    for source, values in (
+        ("antifilter-subnet.lst", (x for x in subnets if subnet_auto_approved(ipaddress.ip_network(x)))),
+        ("runetfreedom-static-telegram", TELEGRAM_PREFIXES),
+        (CONFIRMED_IP, confirmed),
+    ):
+        for value in values:
+            expected.setdefault(ipaddress.ip_network(value), set()).add(source)
+    if len(hard_rows) != len(expected) or dict(hard_rows) != expected:
+        raise ValueError("Hard sidecar does not match current explicit IP/subnet evidence")
 
 
 def literal_service_exceptions(regions, sources):
@@ -89,7 +107,6 @@ def inspect_policy(ru, private, effective, hard_rows, core, shared, service):
     hard = {prefix for prefix, _ in hard_rows}
     current_ip = {prefix for prefix, labels in hard_rows if "antifilter-ip.lst" in labels}
     current_subnet = {prefix for prefix, labels in hard_rows if "antifilter-subnet.lst" in labels}
-    allowed = core | service
     result = {"status": "PASS", "policy": "PRIVATE > effective blocked > DIRECT",
               "hard_exceptions_are_observations_not_approval": True, "families": {}}
     for version in (4, 6):
@@ -101,13 +118,10 @@ def inspect_policy(ru, private, effective, hard_rows, core, shared, service):
         if builder.intersect(ru_i, builder.intervals(effective, version)):
             raise ValueError(f"IPv{version} DIRECT intersects effective blocked set")
         hard_direct = builder.intersect(ru_i, builder.intervals(hard, version))
-        # This is the actionable strict safety condition: hard exceptions must
-        # be explainable by the current, actual CORE or service policy mask.
-        unjustified = builder.subtract(hard_direct, builder.intervals(allowed, version))
-        if unjustified:
+        if hard_direct:
             ip = ipaddress.IPv4Address if version == 4 else ipaddress.IPv6Address
             raise ValueError(f"IPv{version} unprotected hard-block leak in DIRECT, "
-                             f"first address={ip(unjustified[0][0])}")
+                             f"first address={ip(hard_direct[0][0])}")
         core_part = builder.intersect(hard_direct, builder.intervals(core, version))
         shared_part = builder.subtract(
             builder.intersect(hard_direct, builder.intervals(shared, version)), core_part)
@@ -151,8 +165,7 @@ def format_quality_section(result: dict) -> str:
     lines = ["", REPORT_MARKER, "Status: PASS",
              "Inputs: this build's SHA256-verified manifest, GeoIP, and source sidecars",
              "Policy: PRIVATE and effective hard blocks excluded from DIRECT",
-             "Allowed hard exceptions: CORE_CORPORATE or eligible literal service host",
-             "No hard exception is accepted solely due to SHARED_INFRA or BGP/ASN origin",
+             "No hard-IP exceptions for any ASN or service protection class",
              "Exception source membership does not prove a current regulator IP block"]
     for family, summary in result["families"].items():
         lines.append(f"{family}: hard_direct={summary['hard_direct_overridden_addresses']}"
@@ -180,6 +193,8 @@ def main() -> int:
                   "shared", "rir", "kyoresuas_v4", "kyoresuas_v6",
                   "kyoresuas_services", "w1zardz", "hxehex_ip", "escapingworm"):
         p.add_argument("--" + field.replace("_", "-"), type=Path, required=True)
+    p.add_argument("--current-subnet-feed", type=Path, required=True)
+    p.add_argument("--confirmed-ip-records", type=Path, required=True)
     a = p.parse_args()
     try:
         manifest = json.loads(a.manifest.read_text(encoding="utf-8"))
@@ -200,8 +215,10 @@ def main() -> int:
             setattr(feed, field, getattr(a, field))
         sources, _, _ = builder.load_service_inputs(feed)
         service = literal_service_exceptions(regions, sources)
+        hard_rows = read_hard_sources(a.hard)
+        verify_hard_evidence(hard_rows, a.current_subnet_feed, a.confirmed_ip_records)
         result = inspect_policy(categories["RU"], categories["PRIVATE"], effective,
-                                read_hard_sources(a.hard), core, shared, service)
+                                hard_rows, core, shared, service)
 
         original = a.quality.read_text(encoding="utf-8")
         if REPORT_MARKER in original:

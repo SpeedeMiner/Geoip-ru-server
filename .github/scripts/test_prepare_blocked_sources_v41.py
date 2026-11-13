@@ -6,45 +6,30 @@ import unittest
 from pathlib import Path
 from unittest import mock
 
-from collections import defaultdict
-
 from prepare_blocked_sources_v41 import (
-    LEGACY_HARD, LEGACY_REGIONAL_RESOLVER, TELEGRAM_PREFIXES, is_host, main, parse_line,
-    read_reviewed_ip_list_hosts, reclassify_legacy_hosts, subnet_auto_approved,
+    CONFIRMED_IP, TELEGRAM_PREFIXES, is_host, main, parse_line,
+    read_confirmed_ip_records, subnet_auto_approved,
 )
 
 
 class BlockedSourcePolicyTests(unittest.TestCase):
-    def test_reviewed_list_requires_unique_canonical_ipv4_hosts(self):
+    def test_confirmed_registry_requires_evidence_and_rejects_dns_rows(self):
         with tempfile.TemporaryDirectory() as directory:
-            path = Path(directory) / "reviewed.txt"
-            for data in ("", "192.0.2.3", "192.0.2.0/24", "2001:db8::1/128",
-                         "192.0.2.3/32\n192.0.2.3/32\n"):
-                with self.subTest(data=data):
-                    path.write_text(data, encoding="utf-8")
+            path = Path(directory) / "reviewed.tsv"
+            header = "CIDR\tKIND\tCHECKED_ON\tEVIDENCE\n"
+            row = "192.0.2.3/32\tDIRECT_IP_OR_SUBNET\t2026-11-13\thttps://blocklist.rkn.gov.ru/example\n"
+            for bad in ("", header + row + row,
+                        header + row.replace("DIRECT_IP_OR_SUBNET", "DNS"),
+                        header + row.replace("192.0.2.3/32", "0.0.0.0/0"),
+                        header + row.replace("https://blocklist.rkn.gov.ru/example", "unknown")):
+                with self.subTest(bad=bad):
+                    path.write_text(bad)
                     with self.assertRaises(ValueError):
-                        read_reviewed_ip_list_hosts(path)
-            path.write_text("# provenance\n192.0.2.3/32\n", encoding="utf-8")
-            self.assertEqual(read_reviewed_ip_list_hosts(path), {"192.0.2.3/32"})
-
-    def test_legacy_reclassification_is_host_only_and_checks_covering_live_prefixes(self):
-        hard = {x: {LEGACY_HARD} for x in (
-            "192.0.2.1/32", "192.0.2.2/32", "192.0.2.3/32", "192.0.2.4/32",
-            "192.0.2.10/31", "198.51.100.1/32", "2001:db8::1/128",
-            "91.108.4.1/32", "192.0.2.64/32",
-        )}
-        hard["192.0.2.2/32"].add("antifilter-ip.lst")
-        resolved = defaultdict(set, {"192.0.2.3/32": {"antifilter-ipresolve.lst"}})
-        approved_before = hard.keys() | resolved.keys()
-        count = reclassify_legacy_hosts(
-            hard, resolved,
-            {"192.0.2.2/32", "192.0.2.3/32", "192.0.2.4/30", "192.0.2.64/26"} | set(TELEGRAM_PREFIXES),
-            {"192.0.2.0/24", "91.108.4.0/22", "2001:db8::/48"},
-        )
-        self.assertEqual(count, 1)
-        self.assertEqual(resolved["192.0.2.1/32"], {LEGACY_REGIONAL_RESOLVER})
-        self.assertEqual(approved_before, hard.keys() | resolved.keys())
-        self.assertNotIn("192.0.2.1/32", hard)
+                        read_confirmed_ip_records(path)
+            path.write_text(header + row)
+            self.assertEqual(read_confirmed_ip_records(path), {"192.0.2.3/32"})
+            path.write_text(header)
+            self.assertEqual(read_confirmed_ip_records(path), set())
 
     def test_ip_resolve_host_semantics(self):
         self.assertTrue(is_host(parse_line("203.0.113.9")))
@@ -129,10 +114,11 @@ class BlockedSourcePolicyTests(unittest.TestCase):
             self.assertIn("192.0.10.1/32", approved)
             self.assertIn("EMPTY_FALLBACK_V38_PINNED_BASELINE", stats)
             self.assertIn("v38-approved-baseline", stats)
-            self.assertIn("192.0.10.1/32", exact)
-            self.assertIn("198.51.0.1/32", exact)
-            self.assertNotIn("192.0.10.1/32", resolved)
-            self.assertEqual(len([x for x in resolved.splitlines() if x and not x.startswith("#")]), 0)
+            self.assertNotIn("192.0.10.1/32", exact)
+            self.assertNotIn("198.51.0.1/32", exact)
+            self.assertIn("192.0.10.1/32 # sources=v38-baseline-unverified", resolved)
+            self.assertIn("198.51.0.1/32 # sources=antifilter-ip.lst", resolved)
+            self.assertIn("2001:db8:100::1/128 # sources=v38-baseline-unverified", resolved)
             self.assertIn("203.0.113.0/24", approved)
             self.assertIn("2001:db8:1::/112", approved)
             self.assertIn("149.154.160.0/20", approved)
@@ -143,24 +129,20 @@ class BlockedSourcePolicyTests(unittest.TestCase):
             self.assertIn("2001:db8:2::/48", review)
             self.assertIn("192.0.2.123/32", review)
 
-            # An absent host is not introduced, and coincident v38 hard
-            # provenance survives removal of the selected current ip.lst label.
-            reviewed = root / "reviewed.txt"
-            reviewed.write_text("198.51.0.1/32\n192.0.10.1/32\n192.0.2.9/32\n", encoding="utf-8")
-            with paths["ip.lst"].open("a", encoding="utf-8") as f:
-                f.write("192.0.10.1\n")
-            with mock.patch("sys.argv", argv + ["--reviewed-ip-list-hosts", str(reviewed)]), contextlib.redirect_stdout(io.StringIO()):
+            confirmed = root / "confirmed.tsv"
+            confirmed.write_text(
+                "CIDR\tKIND\tCHECKED_ON\tEVIDENCE\n"
+                "198.51.0.1/32\tDIRECT_IP_OR_SUBNET\t2026-11-13\thttps://blocklist.rkn.gov.ru/example\n"
+                "2001:db8:100::1/128\tDIRECT_IP_OR_SUBNET\t2026-11-13\thttps://blocklist.rkn.gov.ru/example-v6\n"
+            )
+            with mock.patch("sys.argv", argv + ["--confirmed-ip-records", str(confirmed)]), contextlib.redirect_stdout(io.StringIO()):
                 self.assertEqual(main(), 0)
             hard = paths["exact.txt"].read_text()
             soft = paths["resolved.txt"].read_text()
-            self.assertNotIn("198.51.0.1/32", hard)
-            self.assertIn("198.51.0.2/32 # sources=antifilter-ip.lst", hard)
-            self.assertIn("192.0.10.1/32 # sources=v38-baseline-hard-or-unclassified", hard)
+            self.assertIn(f"198.51.0.1/32 # sources={CONFIRMED_IP}", hard)
+            self.assertIn(f"2001:db8:100::1/128 # sources={CONFIRMED_IP}", hard)
+            self.assertNotIn("198.51.0.2/32", hard)
             self.assertIn("198.51.0.1/32 # sources=antifilter-ip.lst", soft)
-            self.assertIn("192.0.10.1/32 # sources=antifilter-ip.lst", soft)
-            self.assertNotIn("192.0.2.9/32", paths["approved.txt"].read_text())
-            self.assertIn("community-antifilter-community.lst", stats)
-            self.assertIn("re-filter-ipsum.lst", stats)
 
     def test_pinned_baseline_rejects_unapproved_wide_prefixes(self):
         with tempfile.TemporaryDirectory() as directory:
@@ -223,15 +205,16 @@ class BlockedSourcePolicyTests(unittest.TestCase):
                 self.assertEqual(main(), 0)
             exact = (root / "exact.txt").read_text(encoding="utf-8")
             resolved = (root / "resolved.txt").read_text(encoding="utf-8")
-            self.assertIn("198.51.20.1/32", exact)
+            self.assertIn("198.51.20.1/32", resolved)
+            self.assertNotIn("198.51.20.1/32", exact)
             self.assertIn("198.51.30.0/24", exact)
-            self.assertIn("192.0.20.1/32", exact)  # legacy baseline is unclassified and stays hard
+            self.assertIn("192.0.20.1/32 # sources=v38-baseline-unverified", resolved)
             self.assertIn("203.0.114.1/32", resolved)
             self.assertNotIn("203.0.114.1/32", exact)
 
 
 
-    def test_pinned_v38_raw_feeds_restore_only_proven_resolver_history(self):
+    def test_pinned_v38_is_attributed_without_inheriting_hard_status(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             def host_rows(start):
@@ -268,41 +251,12 @@ class BlockedSourcePolicyTests(unittest.TestCase):
                 self.assertEqual(main(), 0)
             exact = (root / "exact.txt").read_text(encoding="utf-8")
             resolver = (root / "resolved.txt").read_text(encoding="utf-8")
-            self.assertIn("192.0.20.1/32", exact)
-            self.assertNotIn("192.0.20.1/32", resolver)
-            self.assertIn("192.0.21.1/32", resolver)
-            self.assertNotIn("192.0.21.1/32", exact)
-            self.assertIn("198.51.20.1/32", exact)
-            self.assertIn("v38-historical-ipresolve-only", resolver)
-            self.assertIn("v38-historical-ipresolve.lst", (root / "stats.tsv").read_text(encoding="utf-8"))
-
-            (root / "regional.txt").write_text("192.0.20.0/24\n", encoding="utf-8")
-            (root / "shared.txt").write_text("192.0.21.0/24\n", encoding="utf-8")
-            argv += ["--regional-origin-prefixes", str(root / "regional.txt"),
-                     "--shared-infrastructure-prefixes", str(root / "shared.txt")]
-            original_approved = (root / "approved.txt").read_bytes()
-            with mock.patch("sys.argv", argv), contextlib.redirect_stdout(io.StringIO()):
-                self.assertEqual(main(), 0)
-            self.assertEqual(exact, (root / "exact.txt").read_text(encoding="utf-8"))
-            self.assertEqual(resolver, (root / "resolved.txt").read_text(encoding="utf-8"))
-            self.assertIn("SKIPPED_INCOMPLETE_CURRENT_EVIDENCE", (root / "stats.tsv").read_text())
-            self.assertEqual(original_approved, (root / "approved.txt").read_bytes())
-
-            (root / "ipresolve.lst").write_text(host_rows("203.0.113.1") + "192.0.20.2\n", encoding="utf-8")
-            with mock.patch("sys.argv", argv), contextlib.redirect_stdout(io.StringIO()):
-                self.assertEqual(main(), 0)
-            self.assertIn("192.0.20.2/32 # sources=v38-baseline-hard-or-unclassified",
-                          (root / "exact.txt").read_text(encoding="utf-8"))
-            self.assertIn("192.0.20.1/32 # sources=v38-historical-only-regional-resolver",
-                          (root / "resolved.txt").read_text(encoding="utf-8"))
-            self.assertIn("v38-historical-only-regional-resolver\tAPPLIED", (root / "stats.tsv").read_text())
-            with (root / "ipresolve.lst").open("a", encoding="utf-8") as stream:
-                stream.write("not-an-address\n")
-            with mock.patch("sys.argv", argv), contextlib.redirect_stdout(io.StringIO()):
-                self.assertEqual(main(), 0)
-            self.assertIn("192.0.20.1/32 # sources=v38-baseline-hard-or-unclassified",
-                          (root / "exact.txt").read_text(encoding="utf-8"))
-            self.assertIn("SKIPPED_INCOMPLETE_CURRENT_EVIDENCE", (root / "stats.tsv").read_text())
+            self.assertNotIn("192.0.20.1/32", exact)
+            self.assertIn("192.0.20.1/32 # sources=v38-historical-ipresolve.lst-dns", resolver)
+            self.assertIn("192.0.21.1/32 # sources=v38-historical-ipresolve.lst-dns", resolver)
+            self.assertIn("198.51.20.1/32 # sources=antifilter-ip.lst", resolver)
+            self.assertIn("198.51.30.0/24 # sources=antifilter-subnet.lst", exact)
+            self.assertIn("v38-historical-ipresolve.lst", (root / "stats.tsv").read_text())
 
 
 if __name__ == "__main__":

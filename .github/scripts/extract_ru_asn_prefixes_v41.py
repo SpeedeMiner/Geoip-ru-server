@@ -56,9 +56,15 @@ def read_company_asns(path):
     return result
 
 
+# Shared hosting annotations must not grant REG.RU admission if it stops
+# appearing in the underlying regional ASN inventory.
+REGIONAL_ONLY_CLASSIFIED_ASNS = {197695}
+
+
 def is_selected_asn(asn, rir_ru_asns, rir_by_kz_asns, company_asns):
     # Country metadata is not an inclusion filter for selected RU/BY/KZ regional ASNs or affiliates.
-    return asn in rir_ru_asns or asn in rir_by_kz_asns or asn in company_asns
+    return (asn in rir_ru_asns or asn in rir_by_kz_asns
+            or (asn in company_asns and asn not in REGIONAL_ONLY_CLASSIFIED_ASNS))
 
 
 def parse_announced_prefixes(prefixes):
@@ -113,6 +119,8 @@ def self_test_selection():
     assert is_selected_asn(12389, rir_ru, rir_by_kz, companies)
     # A foreign, unlisted ASN is not selected just because it appears in a non-RU country.
     assert not is_selected_asn(64500, rir_ru, rir_by_kz, companies)
+    assert not is_selected_asn(197695, set(), set(), {197695: {}})
+    assert is_selected_asn(197695, {197695}, set(), {197695: {}})
     pinned = {}
     pinned_prefixes = add_static_prefix_overrides(pinned, {"45.148.65.0/24": 212066, "2a14:48c6::/48": 212066})
     assert pinned_prefixes == {"45.148.65.0/24", "2a14:48c6::/48"}

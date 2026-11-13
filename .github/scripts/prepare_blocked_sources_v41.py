@@ -1,24 +1,22 @@
 #!/usr/bin/env python3
 """Prepare v41 blocked exclusions with an immutable v38 fallback snapshot.
 
-The approved v38 combined exclusion set is the fail-safe baseline. New ip.lst and
-bounded subnet.lst entries are unioned into it. ipresolve.lst may be unavailable
-or empty; in that case its prior approved contents remain carried by the pinned
-v38 baseline and the current feed is explicitly marked unavailable, never as a
-confirmed zero-block snapshot. Community/Re-filter remain review-only.
+Preserve the approved v38 union as evidence, not as proof of direct IP blocks.
+Current and historical DNS-derived addresses and unverified v38 records are
+resolver candidates. Only explicit current subnet-list entries, separately
+reviewed registry IP records and pinned Telegram policy enter the hard mask.
 """
 from __future__ import annotations
 
 import argparse
+import csv
+from datetime import date
 import hashlib
 import ipaddress
 import re
 import sys
-from bisect import bisect_right
 from collections import defaultdict
-from itertools import accumulate
 from pathlib import Path
-from typing import Iterable
 
 # Curated prefixes explicitly present in runetfreedom/russia-blocked-geoip/config.json
 # under ru-blocked / ru-blocked-community. These are kept as exact service prefixes,
@@ -39,28 +37,29 @@ TELEGRAM_PREFIXES = (
 )
 
 TOKEN_PREFIXES = ("IP-CIDR6,", "IP-CIDR,", "CIDR,")
-LEGACY_HARD = "v38-baseline-hard-or-unclassified"
-LEGACY_REGIONAL_RESOLVER = "v38-historical-only-regional-resolver"
-CURRENT_IP_LIST = "antifilter-ip.lst"
+CONFIRMED_IP = "reviewed-rkn-ip-record"
+HARD_SOURCE_LABELS = frozenset({
+    CONFIRMED_IP, "antifilter-subnet.lst", "runetfreedom-static-telegram",
+})
 
 
-def read_reviewed_ip_list_hosts(path):
-    """Read a versioned set of individually reviewed IPv4 host records."""
-    result = set()
-    for number, raw in enumerate(path.read_text(encoding="utf-8").splitlines(), 1):
-        token = raw.strip()
-        if not token or token.startswith("#"):
-            continue
-        try:
-            net = ipaddress.IPv4Network(token, strict=True)
-        except ValueError as exc:
-            raise ValueError(f"{path}:{number}: expected canonical IPv4 /32") from exc
-        if net.prefixlen != 32 or token != net.with_prefixlen or token in result:
-            raise ValueError(f"{path}:{number}: expected unique canonical IPv4 /32")
-        result.add(token)
-    if not result:
-        raise ValueError(f"{path}: no reviewed hosts")
-    return result
+def read_confirmed_ip_records(path: Path) -> set[str]:
+    """Load only reviewed direct-IP records, not IPs extracted from domain entries."""
+    with path.open(encoding="utf-8", newline="") as stream:
+        reader = csv.DictReader(stream, delimiter="\t")
+        if reader.fieldnames != ["CIDR", "KIND", "CHECKED_ON", "EVIDENCE"]:
+            raise ValueError(f"{path}: invalid reviewed registry TSV header")
+        result = set()
+        for row in reader:
+            prefix, kind, checked, evidence = (row.get(key) or "" for key in reader.fieldnames)
+            net = ipaddress.ip_network(prefix, strict=True)
+            if (None in row or prefix != str(net) or prefix in result
+                    or kind != "DIRECT_IP_OR_SUBNET" or not subnet_auto_approved(net)
+                    or date.fromisoformat(checked).isoformat() != checked
+                    or not re.fullmatch(r"https://[^\s/]+/[^\s]*", evidence)):
+                raise ValueError(f"{path}:{reader.line_num}: invalid reviewed direct IP/subnet record")
+            result.add(prefix)
+        return result
 
 
 def sort_key(value: str) -> tuple[int, int, int]:
@@ -123,52 +122,16 @@ def subnet_auto_approved(net: ipaddress._BaseNetwork) -> bool:
     return net.prefixlen >= (16 if net.version == 4 else 112)
 
 
-def ipv4_coverage(prefixes):
-    ranges = sorted(
-        (int(net.network_address), int(net.broadcast_address))
-        for value in prefixes if (net := ipaddress.ip_network(value)).version == 4
-    )
-    starts = [lo for lo, _ in ranges]
-    ends = list(accumulate((hi for _, hi in ranges), max))
-
-    def contains(address):
-        index = bisect_right(starts, address) - 1
-        return index >= 0 and ends[index] >= address
-
-    return contains
-
-
-def reclassify_legacy_hosts(exact, resolved, live_prefixes, regional_prefixes):
-    """Keep the approved union, but remove hard status for eligible v38-only IPv4 hosts."""
-    in_live = ipv4_coverage(live_prefixes)
-    in_regional = ipv4_coverage(regional_prefixes)
-    moved = 0
-    for value, labels in list(exact.items()):
-        if labels != {LEGACY_HARD} or not value.endswith("/32"):
-            continue
-        net = ipaddress.ip_network(value)
-        if net.version != 4:
-            continue
-        address = int(net.network_address)
-        if in_regional(address) and not in_live(address):
-            del exact[value]
-            resolved[value].add(LEGACY_REGIONAL_RESOLVER)
-            moved += 1
-    return moved
-
-
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--ip-list", type=Path, required=True)
-    parser.add_argument("--reviewed-ip-list-hosts", type=Path)
+    parser.add_argument("--confirmed-ip-records", type=Path)
     parser.add_argument("--ipresolve", type=Path, required=True)
     parser.add_argument("--baseline", type=Path, required=True)
     parser.add_argument("--historical-ip-list", type=Path)
     parser.add_argument("--historical-ipresolve", type=Path)
     parser.add_argument("--historical-subnet", type=Path)
     parser.add_argument("--subnet", type=Path, required=True)
-    parser.add_argument("--regional-origin-prefixes", type=Path)
-    parser.add_argument("--shared-infrastructure-prefixes", type=Path)
     parser.add_argument("--community", type=Path, required=True)
     parser.add_argument("--refilter", type=Path, required=True)
     parser.add_argument("--approved", type=Path, required=True)
@@ -178,15 +141,9 @@ def main() -> int:
     parser.add_argument("--stats", type=Path, required=True)
     parser.add_argument("--checksums", type=Path, required=True)
     args = parser.parse_args()
-    reviewed = read_reviewed_ip_list_hosts(args.reviewed_ip_list_hosts) if args.reviewed_ip_list_hosts else set()
-    reviewed_seen = set()
-
     historical_paths = (args.historical_ip_list, args.historical_ipresolve, args.historical_subnet)
     if any(historical_paths) and not all(historical_paths):
-        raise SystemExit("Historical baseline classification needs all three pinned v38 feed snapshots")
-    regional_paths = (args.regional_origin_prefixes, args.shared_infrastructure_prefixes)
-    if any(regional_paths) and (not all(regional_paths) or not all(historical_paths)):
-        raise SystemExit("Legacy reclassification needs both origin masks and all three historical snapshots")
+        raise SystemExit("Historical baseline attribution needs all three pinned v38 feed snapshots")
     source_paths = {
         "antifilter-ip.lst": args.ip_list,
         "antifilter-ipresolve.lst": args.ipresolve,
@@ -208,13 +165,12 @@ def main() -> int:
     rows: dict[str, dict[str, int]] = {}
     feed_status: dict[str, str] = {source: "AVAILABLE" for source in source_paths}
     telegram_set = set(TELEGRAM_PREFIXES)
-    live_prefixes = set(telegram_set)
-    historical_exact_hosts: set[str] = set()
+    historical_dns_hosts: set[str] = set()
     historical_resolver_hosts: set[str] = set()
-    historical_hard_subnets: list[ipaddress._BaseNetwork] = []
+    historical_subnet_count = 0
     if all(historical_paths):
         historic_specs = (
-            ("v38-historical-ip.lst", "exact"),
+            ("v38-historical-ip.lst", "dns"),
             ("v38-historical-ipresolve.lst", "resolver"),
             ("v38-historical-subnet.lst", "subnet"),
         )
@@ -225,26 +181,24 @@ def main() -> int:
                 raise SystemExit(f"Invalid pinned historical v38 feed {hist_source}: lines={hist_lines}, valid={len(hist_unique)}, invalid={hist_invalid}")
             for value in hist_unique:
                 net = ipaddress.ip_network(value, strict=True)
-                if role in ("exact", "resolver") and not is_host(net):
-                    # Historical raw feeds can contain occasional subnet records.
-                    # Without an exact host-only provenance match, keep any matching
-                    # approved v38 baseline CIDR hard/unclassified here.
+                if role in ("dns", "resolver") and not is_host(net):
+                    # Historical host feeds may contain stray subnet rows.
                     continue
                 if role == "subnet":
                     if not subnet_auto_approved(net):
                         continue  # RKN-wide subnet candidates were review-only in v38.
-                    historical_hard_subnets.append(net)
-                elif role == "exact":
-                    historical_exact_hosts.add(value)
+                    historical_subnet_count += 1
+                elif role == "dns":
+                    historical_dns_hosts.add(value)
                 else:
                     historical_resolver_hosts.add(value)
             rows[hist_source] = {
                 "data_lines":hist_lines, "valid_unique":len(hist_unique),
                 "approved":len(hist_unique), "review":0, "invalid":hist_invalid,
             }
-        if len(historical_resolver_hosts) < 1000 or len(historical_exact_hosts) < 1000:
+        if len(historical_resolver_hosts) < 1000 or len(historical_dns_hosts) < 1000:
             raise SystemExit("Pinned historical v38 host-IP snapshots unexpectedly small")
-        print(f"::notice::Historical v38 source evidence: hard-IP={len(historical_exact_hosts)} resolver-IP={len(historical_resolver_hosts)} bounded-subnets={len(historical_hard_subnets)}")
+        print(f"::notice::Historical v38 source evidence: dns-IP={len(historical_dns_hosts)} resolver-IP={len(historical_resolver_hosts)} bounded-subnets={historical_subnet_count}")
 
     # Carry forward every v38-approved prefix from an immutable, checksum-pinned
     # release snapshot. Reject anything wider than the existing explicit policy.
@@ -259,18 +213,14 @@ def main() -> int:
         net = ipaddress.ip_network(value, strict=True)
         if is_host(net) or subnet_auto_approved(net) or value in telegram_set:
             accepted[value].add(source)
-            # Reconstruct only demonstrable historical source classes from the
-            # checksum-pinned v38 raw feed assets. Unknown entries remain hard.
-            from_historic_resolver = value in historical_resolver_hosts
-            from_historic_exact = value in historical_exact_hosts
-            inside_historic_hard_subnet = any(
-                net.version == subnet.version and net.subnet_of(subnet)
-                for subnet in historical_hard_subnets
-            )
-            if from_historic_resolver and not from_historic_exact and not inside_historic_hard_subnet:
-                resolved_accepted[value].add("v38-historical-ipresolve-only")
-            else:
-                exact_accepted[value].add(LEGACY_HARD)
+            # Historical snapshots are audit evidence, not active IP decisions.
+            labels = resolved_accepted[value]
+            if value in historical_dns_hosts:
+                labels.add("v38-historical-ip.lst-dns")
+            if value in historical_resolver_hosts:
+                labels.add("v38-historical-ipresolve.lst-dns")
+            if not labels:
+                labels.add("v38-baseline-unverified")
         else:
             raise SystemExit(f"unsafe broad prefix in pinned v38 approved baseline: {value}")
     rows[source] = {"data_lines": lines, "valid_unique": len(unique), "approved": len(unique),
@@ -282,7 +232,6 @@ def main() -> int:
     for source in ("antifilter-ip.lst", "antifilter-ipresolve.lst"):
         nets, lines, invalid = read_feed(source_paths[source], source)
         unique = set(nets)
-        live_prefixes.update(unique)
         approved = 0
         review_count = 0
         if source == "antifilter-ipresolve.lst" and lines == 0 and not unique:
@@ -294,12 +243,7 @@ def main() -> int:
             net = ipaddress.ip_network(value, strict=True)
             if is_host(net):
                 accepted[value].add(source)
-                if source == CURRENT_IP_LIST and value not in reviewed:
-                    exact_accepted[value].add(source)
-                else:
-                    resolved_accepted[value].add(source)
-                    if source == CURRENT_IP_LIST:
-                        reviewed_seen.add(value)
+                resolved_accepted[value].add(source)
                 approved += 1
             else:
                 review.add((source, value, "non-host prefix in host-IP feed"))
@@ -316,7 +260,6 @@ def main() -> int:
     source = "antifilter-subnet.lst"
     nets, lines, invalid = read_feed(source_paths[source], source)
     unique = set(nets)
-    live_prefixes.update(unique)
     approved = 0
     review_count = 0
     for value in unique:
@@ -345,25 +288,14 @@ def main() -> int:
         "approved": len(telegram_set), "review": 0, "invalid": 0,
     }
 
-    moved = 0
-    reclassification_status = "DISABLED"
-    if all(regional_paths):
-        masks = set()
-        for key, path in zip(("regional-origin-mask", "shared-infrastructure-mask"), regional_paths, strict=True):
-            prefixes, lines, invalid = read_feed(path, key)
-            if not prefixes or invalid or any(ipaddress.ip_network(value).prefixlen == 0 for value in prefixes):
-                raise SystemExit(f"Invalid v41 legacy reclassification mask: {key}")
-            masks.update(prefixes)
-            source_paths[key] = path
-            rows[key] = {"data_lines": lines, "valid_unique": len(set(prefixes)),
-                         "approved": 0, "review": 0, "invalid": invalid}
-        active_feeds = ("antifilter-ip.lst", "antifilter-ipresolve.lst", "antifilter-subnet.lst")
-        if all(feed_status[source] == "AVAILABLE" and rows[source]["invalid"] == 0 for source in active_feeds):
-            moved = reclassify_legacy_hosts(exact_accepted, resolved_accepted, live_prefixes, masks)
-            reclassification_status = "APPLIED"
-        else:
-            reclassification_status = "SKIPPED_INCOMPLETE_CURRENT_EVIDENCE"
-            print("::warning::Keeping legacy hard classification because a current feed is missing or has invalid rows.")
+    if args.confirmed_ip_records:
+        confirmed = read_confirmed_ip_records(args.confirmed_ip_records)
+        source_paths[CONFIRMED_IP] = args.confirmed_ip_records
+        rows[CONFIRMED_IP] = {"data_lines": len(confirmed), "valid_unique": len(confirmed),
+                              "approved": len(confirmed), "review": 0, "invalid": 0}
+        for value in confirmed:
+            accepted[value].add(CONFIRMED_IP)
+            exact_accepted[value].add(CONFIRMED_IP)
 
     # Community suggestions and Re-filter summaries are diagnostic candidates only.
     # They do not enter `accepted`, even when they are exact host IPs.
@@ -382,7 +314,7 @@ def main() -> int:
     # Reject any prefix broader than the explicit allowlist and thresholds.
     for value in accepted:
         net = ipaddress.ip_network(value, strict=True)
-        if not is_host(net) and not subnet_auto_approved(net) and value not in telegram_set:
+        if not subnet_auto_approved(net) and value not in telegram_set:
             raise SystemExit(f"unsafe broad prefix accidentally approved: {value}")
 
     def write_prefix_set(path: Path, header: str, values: dict[str, set[str]]) -> None:
@@ -402,14 +334,12 @@ def main() -> int:
     )
     write_prefix_set(
         args.exact_approved,
-        "# v41 hard blocks: unreviewed current ip.lst, bounded subnet.lst, Telegram, and pinned legacy hard records." if reviewed else
-        "# v41 hard blocks: current ip.lst, bounded subnet.lst, Telegram, and pinned legacy blocks not eligible for resolver-only status.",
+        "# v41 hard blocks: current bounded subnet feed, reviewed direct registry IP records and Telegram policy.",
         exact_accepted,
     )
     write_prefix_set(
         args.resolved_approved,
-        "# v41 resolver-only layer: current ipresolve, individually reviewed ip.lst hosts, and eligible v38 records." if reviewed else
-        "# v41 resolver-only layer: current ipresolve, proven historical resolver entries, and eligible v38-only regional hosts (not proof of DNS origin).",
+        "# v41 advisory layer: DNS-derived and unverified historical records, not direct registry IP evidence.",
         resolved_accepted,
     )
     args.review.write_text(
@@ -430,18 +360,12 @@ def main() -> int:
     stats_lines.append(f"runetfreedom-static-telegram\tCURATED\t{row['data_lines']}\t{row['valid_unique']}\t{row['approved']}\t0\t0")
     stats_lines.append(f"TOTAL_APPROVED_UNIQUE\t-\t-\t{len(accepted)}\t{len(accepted)}\t-\t-")
     stats_lines.append(f"TOTAL_REVIEW_ROWS\t-\t-\t-\t0\t{len(review)}\t-")
-    stats_lines.append(f"{LEGACY_REGIONAL_RESOLVER}\t{reclassification_status}\t-\t{moved}\t{moved}\t0\t0")
-    if args.reviewed_ip_list_hosts:
-        stats_lines.append(f"reviewed-ip-list-hosts\tAPPLIED\t{len(reviewed)}\t{len(reviewed)}\t{len(reviewed_seen)}\t0\t0")
     args.stats.write_text("\n".join(stats_lines) + "\n", encoding="utf-8")
 
     checksum_lines = []
     for source, path in source_paths.items():
         digest = hashlib.sha256(path.read_bytes()).hexdigest()
         checksum_lines.append(f"{digest}  {path.name}  source={source}")
-    if args.reviewed_ip_list_hosts:
-        path = args.reviewed_ip_list_hosts
-        checksum_lines.append(f"{hashlib.sha256(path.read_bytes()).hexdigest()}  {path.name}  policy=reviewed-ip-list-hosts")
     checksum_lines.append(f"{hashlib.sha256(args.approved.read_bytes()).hexdigest()}  {args.approved.name}  normalized=approved-union")
     checksum_lines.append(f"{hashlib.sha256(args.exact_approved.read_bytes()).hexdigest()}  {args.exact_approved.name}  normalized=exact-hard")
     checksum_lines.append(f"{hashlib.sha256(args.resolved_approved.read_bytes()).hexdigest()}  {args.resolved_approved.name}  normalized=resolver-only")

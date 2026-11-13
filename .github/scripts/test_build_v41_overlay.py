@@ -9,13 +9,13 @@ def nets(*values):
 
 
 class ClassAwareBlockPrecedenceTests(unittest.TestCase):
-    def test_core_corporate_is_exempt_from_exact_and_resolver_blocks(self):
+    def test_core_corporate_is_exempt_from_resolver_but_not_hard_ip_evidence(self):
         exact = nets("198.51.100.0/24")
         resolved = nets("203.0.113.0/24")
         core = nets("198.51.100.128/25", "203.0.113.128/25")
         shared = set()
         effective, resolver_only = class_aware_effective_block_set(exact, resolved, core, shared)
-        self.assertEqual(effective, nets("198.51.100.0/25", "203.0.113.0/25"))
+        self.assertEqual(effective, nets("198.51.100.0/24", "203.0.113.0/25"))
         self.assertEqual(resolver_only, resolved)
 
     def test_shared_infrastructure_is_exempt_only_from_resolver_only_entries(self):
@@ -34,7 +34,7 @@ class ClassAwareBlockPrecedenceTests(unittest.TestCase):
         self.assertEqual(effective, exact)
         self.assertEqual(resolver_only, set())
 
-    def test_unclassified_legacy_baseline_remains_hard_for_shared_infrastructure(self):
+    def test_explicit_subnet_remains_hard_for_shared_infrastructure(self):
         legacy = nets("192.0.2.0/24")
         current_resolved = nets("203.0.113.0/24")
         shared = nets("192.0.2.0/24", "203.0.113.0/24")

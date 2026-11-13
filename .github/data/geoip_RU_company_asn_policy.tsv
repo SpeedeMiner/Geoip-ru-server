@@ -55,3 +55,4 @@ AS35022	CORE_CORPORATE	Gazprombank	Dedicated corporate/first-party origin
 AS47724	CORE_CORPORATE	HeadHunter	Dedicated corporate/first-party origin
 AS197068	SHARED_INFRA	Qrator	Shared hosting, CDN, cloud, access or transit infrastructure; retain exact and subnet blocks
 AS51115	SHARED_INFRA	Qrator	Shared hosting, CDN, cloud, access or transit infrastructure; retain exact and subnet blocks
+AS197695	SHARED_INFRA	REG.RU	Shared hosting origin already selected through the RIR-RU registry

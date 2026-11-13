@@ -43,14 +43,14 @@ class TelegramPrecedenceTests(unittest.TestCase):
                         assert_disjoint(dat, feed)
 
     def test_official_feed_wins_over_core_and_service_exceptions(self):
-        hard = nets("185.76.151.0/24", "1.2.3.4/32")
+        hard = nets("185.76.151.0/24")
         protected = nets("185.76.151.1/32", "1.2.3.4/32")
         v6 = nets("2a0a:f280::1/128")
         effective, resolver_only = overlay.class_aware_effective_block_set(
-            hard, v6, v6, set(), service_exact_hosts=protected,
+            hard, v6 | nets("1.2.3.4/32"), v6, set(), service_exact_hosts=protected,
             non_exempt=read_telegram_feed(PINNED_FEED))
         self.assertEqual(overlay.subtract_networks(protected | v6, effective), nets("1.2.3.4/32"))
-        self.assertFalse(resolver_only)
+        self.assertEqual(resolver_only, nets("1.2.3.4/32"))
 
     def test_hxehex_source_filters_exact_host_before_service_classification(self):
         with tempfile.TemporaryDirectory() as folder:
