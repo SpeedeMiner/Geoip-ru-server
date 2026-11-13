@@ -18,26 +18,38 @@ def nets(*rows):
 
 class ReleaseGateTests(unittest.TestCase):
     def test_protected_hard_exceptions_in_three_classes(self):
-        ru = nets("192.0.2.1/32", "192.0.2.2/32", "192.0.2.3/32", "2001:db8::1/128")
+        ru = nets("192.0.2.1/32", "192.0.2.2/32", "192.0.2.3/32",
+                  "192.0.2.4/32", "2001:db8::1/128")
         hard = [
             (ipaddress.ip_network("192.0.2.1/32"), {"antifilter-ip.lst"}),
             (ipaddress.ip_network("192.0.2.2/32"), {"antifilter-ip.lst"}),
             (ipaddress.ip_network("192.0.2.3/32"), {"antifilter-subnet.lst"}),
+            (ipaddress.ip_network("192.0.2.4/32"), {"antifilter-ip.lst"}),
         ]
         result = inspect_policy(
             ru, set(), set(), hard,
             core=nets("192.0.2.1/32"),
             shared=nets("192.0.2.0/30"),
-            service=nets("192.0.2.2/32", "192.0.2.3/32"))
+            service=nets("192.0.2.2/32", "192.0.2.3/32", "192.0.2.4/32"))
         v4 = result["families"]["ipv4"]
-        self.assertEqual(v4["hard_direct_overridden_addresses"], 3)
+        classes = v4["classes"]
+        self.assertEqual(v4["hard_direct_overridden_addresses"], 4)
         self.assertEqual(v4["unprotected_hard_direct_addresses"], 0)
-        self.assertEqual(v4["classes"]["CORE_CORPORATE"]["addresses"], 1)
-        self.assertEqual(v4["classes"]["SHARED_INFRA"]["addresses"], 2)
-        self.assertEqual(v4["classes"]["SHARED_INFRA"]["current_antifilter_ip"], 1)
-        self.assertEqual(v4["classes"]["SHARED_INFRA"]["current_antifilter_subnet"], 1)
+        for name, count, cidr in (
+            ("CORE_CORPORATE", 1, "192.0.2.1/32"),
+            ("SHARED_INFRA", 2, "192.0.2.2/31"),
+            ("OTHER", 1, "192.0.2.4/32"),
+        ):
+            with self.subTest(name=name):
+                self.assertEqual(classes[name]["addresses"], count)
+                self.assertEqual(classes[name]["review_cidrs"], [cidr])
+                self.assertIn(f"OBSERVED_HARD_DIRECT {name} {cidr}",
+                              format_quality_section(result))
+        self.assertEqual(classes["SHARED_INFRA"]["current_antifilter_ip"], 1)
+        self.assertEqual(classes["SHARED_INFRA"]["current_antifilter_subnet"], 1)
+        self.assertEqual(classes["OTHER"]["current_antifilter_ip"], 1)
+        self.assertEqual(classes["OTHER"]["service_protected"], 1)
         self.assertIn(REPORT_MARKER, format_quality_section(result))
-        self.assertIn("OBSERVED_HARD_DIRECT SHARED_INFRA 192.0.2.2/31", format_quality_section(result))
 
     def test_same_count_ip_substitution_changes_exact_class_hash(self):
         def report_for(ip):
@@ -57,18 +69,27 @@ class ReleaseGateTests(unittest.TestCase):
         self.assertNotEqual(report_for("192.0.2.8"), report_for("192.0.2.9"))
 
     def test_unprotected_hard_direct_fails_even_if_shared(self):
-        with self.assertRaisesRegex(ValueError, "unprotected hard-block leak"):
-            inspect_policy(
-                nets("192.0.2.4/32"), set(), set(),
-                [(ipaddress.ip_network("192.0.2.4/32"), {"antifilter-ip.lst"})],
-                set(), nets("192.0.2.0/24"), set())
+        ru = nets("192.0.2.4/32", "2001:db8::1/128")
+        shared = nets("192.0.2.0/24", "2001:db8::/64")
+        for host in sorted(ru, key=lambda net: net.version):
+            with self.subTest(version=host.version):
+                with self.assertRaisesRegex(ValueError, f"^IPv{host.version} unprotected hard-block leak"):
+                    inspect_policy(ru, set(), set(), [(host, {"antifilter-ip.lst"})],
+                                   set(), shared, set())
 
     def test_effective_and_private_precedence_are_fatal(self):
-        host = nets("192.0.2.1/32")
-        for private, effective in [(host, set()), (set(), host)]:
-            with self.subTest(private=bool(private)):
-                with self.assertRaises(ValueError):
-                    inspect_policy(host, private, effective, [], set(), set(), set())
+        ru = nets("192.0.2.1/32", "2001:db8::1/128")
+        for host in sorted(ru, key=lambda net: net.version):
+            protected = {host}
+            hard = [(host, {"antifilter-ip.lst"})]
+            for private, effective, mask in (
+                (protected, set(), "PRIVATE"),
+                (set(), protected, "effective blocked set"),
+            ):
+                with self.subTest(version=host.version, mask=mask):
+                    with self.assertRaisesRegex(
+                            ValueError, f"^IPv{host.version} DIRECT intersects {mask}$"):
+                        inspect_policy(ru, private, effective, hard, protected, set(), set())
 
     def test_hard_sources_require_provenance(self):
         with tempfile.TemporaryDirectory() as t:

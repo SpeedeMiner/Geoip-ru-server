@@ -40,9 +40,11 @@ The entries below were independently matched against published candidate origin 
 3. Distinguish current resolver evidence from *historical resolver labels*: membership in an older resolver list must not count as current support.
 4. Retain fail-closed existing production behavior until exceptions are reviewed; review-only output must never modify `geoip_RU.dat` or release branch.
 
-## Reproduction
+## Historical reproduction
 
-Run `.github/workflows/audit-v41-legacy-hard.yml` on the Draft PR #16 or manually. The workflow downloads five SHA256-pinned release inputs and runs `.github/scripts/audit_v41_legacy_hard_evidence.py`, then uploads:
+The standalone audit workflow is not in the current PR #16 or the production build. The original [successful run](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43267132482) used the [workflow](https://github.com/SpeedeMiner/Geoip-ru-server/blob/1de88d8eabb9aee6c835710c9d478ca7c0bc7048/.github/workflows/audit-v41-legacy-hard.yml) and [audit script](https://github.com/SpeedeMiner/Geoip-ru-server/blob/1de88d8eabb9aee6c835710c9d478ca7c0bc7048/.github/scripts/audit_v41_legacy_hard_evidence.py) at `1de88d8eabb9aee6c835710c9d478ca7c0bc7048`. To reproduce locally, check out that commit, use the five inputs with the SHA-256 digests listed in the archived workflow, and run its “Produce review-only evidence queues” command. The release URLs use moving tags, so a current download is not a substitute if the digest differs.
+
+The historical run produced:
 
 - `legacy_hard_review.tsv`: 7,208 addresses with current/historical evidence and policy flags
 - `priority_v34_losses.tsv`: 239 addresses, including 213 highest-priority unconfirmed hard records
@@ -140,3 +142,9 @@ Top review bins: `81.177.0.0/16` **18 exact hard-IP**, `158.160.0.0/16` **17**, 
 Operational next action: conduct dated, address-specific regulator/source corroboration and service-host verification for the 18-IP `81.177.128.0/20` and the dispersed 17-IP `158.160.0.0/16` first. Do **not** change production DIRECT, effective hard masks, or IPSUM based solely on these groupings. The six-entry SHARED observation baseline and all-class address-hash baselines are observation-only, not permissions.
 
 No production, main, release, tag, or PR #5 changes.
+
+## Pre-publication gate review — 2026-11-13
+
+- The current v41 workflow runs the release gate after the independent overlay validator and before candidate upload or publication. It records the observed CORE_CORPORATE, SHARED_INFRA, and OTHER hard/DIRECT address sets in the existing quality report. It does not alter routing decisions.
+- The original PRIVATE/effective BLOCK regression test accepted any `ValueError` and supplied only IPv4 DIRECT. With either guard disabled, the missing IPv6 error incorrectly satisfied the test. Dual-stack cases now assert the specific guard error for each address family, using a protected hard address.
+- The class fixture now covers a service-protected hard address outside both CORE and SHARED, including its exact OTHER CIDR in the quality report. SHARED-only hard leaks are tested in both families. No audit workflow was restored.
