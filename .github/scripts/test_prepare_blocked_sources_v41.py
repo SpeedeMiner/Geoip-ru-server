@@ -10,11 +10,23 @@ from collections import defaultdict
 
 from prepare_blocked_sources_v41 import (
     LEGACY_HARD, LEGACY_REGIONAL_RESOLVER, TELEGRAM_PREFIXES, is_host, main, parse_line,
-    reclassify_legacy_hosts, subnet_auto_approved,
+    read_reviewed_ip_list_hosts, reclassify_legacy_hosts, subnet_auto_approved,
 )
 
 
 class BlockedSourcePolicyTests(unittest.TestCase):
+    def test_reviewed_list_requires_unique_canonical_ipv4_hosts(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "reviewed.txt"
+            for data in ("", "192.0.2.3", "192.0.2.0/24", "2001:db8::1/128",
+                         "192.0.2.3/32\n192.0.2.3/32\n"):
+                with self.subTest(data=data):
+                    path.write_text(data, encoding="utf-8")
+                    with self.assertRaises(ValueError):
+                        read_reviewed_ip_list_hosts(path)
+            path.write_text("# provenance\n192.0.2.3/32\n", encoding="utf-8")
+            self.assertEqual(read_reviewed_ip_list_hosts(path), {"192.0.2.3/32"})
+
     def test_legacy_reclassification_is_host_only_and_checks_covering_live_prefixes(self):
         hard = {x: {LEGACY_HARD} for x in (
             "192.0.2.1/32", "192.0.2.2/32", "192.0.2.3/32", "192.0.2.4/32",
@@ -130,6 +142,23 @@ class BlockedSourcePolicyTests(unittest.TestCase):
             self.assertIn("192.0.0.0/8", review)
             self.assertIn("2001:db8:2::/48", review)
             self.assertIn("192.0.2.123/32", review)
+
+            # An absent host is not introduced, and coincident v38 hard
+            # provenance survives removal of the selected current ip.lst label.
+            reviewed = root / "reviewed.txt"
+            reviewed.write_text("198.51.0.1/32\n192.0.10.1/32\n192.0.2.9/32\n", encoding="utf-8")
+            with paths["ip.lst"].open("a", encoding="utf-8") as f:
+                f.write("192.0.10.1\n")
+            with mock.patch("sys.argv", argv + ["--reviewed-ip-list-hosts", str(reviewed)]), contextlib.redirect_stdout(io.StringIO()):
+                self.assertEqual(main(), 0)
+            hard = paths["exact.txt"].read_text()
+            soft = paths["resolved.txt"].read_text()
+            self.assertNotIn("198.51.0.1/32", hard)
+            self.assertIn("198.51.0.2/32 # sources=antifilter-ip.lst", hard)
+            self.assertIn("192.0.10.1/32 # sources=v38-baseline-hard-or-unclassified", hard)
+            self.assertIn("198.51.0.1/32 # sources=antifilter-ip.lst", soft)
+            self.assertIn("192.0.10.1/32 # sources=antifilter-ip.lst", soft)
+            self.assertNotIn("192.0.2.9/32", paths["approved.txt"].read_text())
             self.assertIn("community-antifilter-community.lst", stats)
             self.assertIn("re-filter-ipsum.lst", stats)
 

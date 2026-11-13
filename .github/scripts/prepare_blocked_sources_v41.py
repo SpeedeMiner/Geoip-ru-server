@@ -41,6 +41,26 @@ TELEGRAM_PREFIXES = (
 TOKEN_PREFIXES = ("IP-CIDR6,", "IP-CIDR,", "CIDR,")
 LEGACY_HARD = "v38-baseline-hard-or-unclassified"
 LEGACY_REGIONAL_RESOLVER = "v38-historical-only-regional-resolver"
+CURRENT_IP_LIST = "antifilter-ip.lst"
+
+
+def read_reviewed_ip_list_hosts(path):
+    """Read a versioned set of individually reviewed IPv4 host records."""
+    result = set()
+    for number, raw in enumerate(path.read_text(encoding="utf-8").splitlines(), 1):
+        token = raw.strip()
+        if not token or token.startswith("#"):
+            continue
+        try:
+            net = ipaddress.IPv4Network(token, strict=True)
+        except ValueError as exc:
+            raise ValueError(f"{path}:{number}: expected canonical IPv4 /32") from exc
+        if net.prefixlen != 32 or token != net.with_prefixlen or token in result:
+            raise ValueError(f"{path}:{number}: expected unique canonical IPv4 /32")
+        result.add(token)
+    if not result:
+        raise ValueError(f"{path}: no reviewed hosts")
+    return result
 
 
 def sort_key(value: str) -> tuple[int, int, int]:
@@ -140,6 +160,7 @@ def reclassify_legacy_hosts(exact, resolved, live_prefixes, regional_prefixes):
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--ip-list", type=Path, required=True)
+    parser.add_argument("--reviewed-ip-list-hosts", type=Path)
     parser.add_argument("--ipresolve", type=Path, required=True)
     parser.add_argument("--baseline", type=Path, required=True)
     parser.add_argument("--historical-ip-list", type=Path)
@@ -157,6 +178,8 @@ def main() -> int:
     parser.add_argument("--stats", type=Path, required=True)
     parser.add_argument("--checksums", type=Path, required=True)
     args = parser.parse_args()
+    reviewed = read_reviewed_ip_list_hosts(args.reviewed_ip_list_hosts) if args.reviewed_ip_list_hosts else set()
+    reviewed_seen = set()
 
     historical_paths = (args.historical_ip_list, args.historical_ipresolve, args.historical_subnet)
     if any(historical_paths) and not all(historical_paths):
@@ -271,10 +294,12 @@ def main() -> int:
             net = ipaddress.ip_network(value, strict=True)
             if is_host(net):
                 accepted[value].add(source)
-                if source == "antifilter-ip.lst":
+                if source == CURRENT_IP_LIST and value not in reviewed:
                     exact_accepted[value].add(source)
                 else:
                     resolved_accepted[value].add(source)
+                    if source == CURRENT_IP_LIST:
+                        reviewed_seen.add(value)
                 approved += 1
             else:
                 review.add((source, value, "non-host prefix in host-IP feed"))
@@ -377,11 +402,13 @@ def main() -> int:
     )
     write_prefix_set(
         args.exact_approved,
+        "# v41 hard blocks: unreviewed current ip.lst, bounded subnet.lst, Telegram, and pinned legacy hard records." if reviewed else
         "# v41 hard blocks: current ip.lst, bounded subnet.lst, Telegram, and pinned legacy blocks not eligible for resolver-only status.",
         exact_accepted,
     )
     write_prefix_set(
         args.resolved_approved,
+        "# v41 resolver-only layer: current ipresolve, individually reviewed ip.lst hosts, and eligible v38 records." if reviewed else
         "# v41 resolver-only layer: current ipresolve, proven historical resolver entries, and eligible v38-only regional hosts (not proof of DNS origin).",
         resolved_accepted,
     )
@@ -404,12 +431,17 @@ def main() -> int:
     stats_lines.append(f"TOTAL_APPROVED_UNIQUE\t-\t-\t{len(accepted)}\t{len(accepted)}\t-\t-")
     stats_lines.append(f"TOTAL_REVIEW_ROWS\t-\t-\t-\t0\t{len(review)}\t-")
     stats_lines.append(f"{LEGACY_REGIONAL_RESOLVER}\t{reclassification_status}\t-\t{moved}\t{moved}\t0\t0")
+    if args.reviewed_ip_list_hosts:
+        stats_lines.append(f"reviewed-ip-list-hosts\tAPPLIED\t{len(reviewed)}\t{len(reviewed)}\t{len(reviewed_seen)}\t0\t0")
     args.stats.write_text("\n".join(stats_lines) + "\n", encoding="utf-8")
 
     checksum_lines = []
     for source, path in source_paths.items():
         digest = hashlib.sha256(path.read_bytes()).hexdigest()
         checksum_lines.append(f"{digest}  {path.name}  source={source}")
+    if args.reviewed_ip_list_hosts:
+        path = args.reviewed_ip_list_hosts
+        checksum_lines.append(f"{hashlib.sha256(path.read_bytes()).hexdigest()}  {path.name}  policy=reviewed-ip-list-hosts")
     checksum_lines.append(f"{hashlib.sha256(args.approved.read_bytes()).hexdigest()}  {args.approved.name}  normalized=approved-union")
     checksum_lines.append(f"{hashlib.sha256(args.exact_approved.read_bytes()).hexdigest()}  {args.exact_approved.name}  normalized=exact-hard")
     checksum_lines.append(f"{hashlib.sha256(args.resolved_approved.read_bytes()).hexdigest()}  {args.resolved_approved.name}  normalized=resolver-only")
