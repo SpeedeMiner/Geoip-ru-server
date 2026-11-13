@@ -5,7 +5,7 @@
 - `RU` is the unified DIRECT bucket for RU+BY+KZ regional address resources, regional GeoIP/BGP layers, and named service-direct destinations. Physical GeoIP location is not an admission gate.
 - `PRIVATE` always wins over DIRECT.
 - CORE_CORPORATE exact origin prefixes are protected from all approved RKN-derived inputs.
-- SHARED_INFRA origins are protected only from current resolver-derived ipresolve candidates; exact ip.lst, bounded subnet.lst and ineligible v38 hard records still carve them.
+- SHARED_INFRA origins are protected only from the resolver layer. Unreviewed ip.lst, bounded subnet.lst and ineligible v38 hard records still carve them.
 - MOAS receives CORE_CORPORATE precedence when any exact origin is CORE; otherwise a SHARED_INFRA origin receives resolver-only protection.
 - RIR RU/BY/KZ registration is not proof of corporate ownership and does not create a blanket block exception.
 - PRIVATE retains absolute precedence for both classes.
@@ -14,7 +14,7 @@
 - v37 geographic/ASN sources remain the trusted starting point.
 - v41 additionally imports allocated/assigned/legacy RU, BY and KZ address resources from the five RIR delegated-stat snapshots.
 - RIR country is resource-registration evidence, not physical geolocation or proof of current BGP reachability; route observation remains separately reported.
-- Only CORE company prefixes and eligible literal service hosts can override hard blocks; SHARED and selected RIR origins can override only the ipresolve layer.
+- Only CORE company prefixes and eligible literal service hosts can override hard blocks; SHARED and selected RIR origins can override only the resolver layer.
 
 ## Service DIRECT outside geolocation
 - Kyoresuas `ru-standard` service prefixes are imported with per-service category/name/ASN/domain provenance.
@@ -24,6 +24,7 @@
 
 ## RKN blocked destinations
 - Existing exact-host Antifilter `ip.lst` and `ipresolve.lst`, bounded `subnet.lst`, and curated Telegram prefixes remain active.
+- Individually reviewed IPv4 /32 entries move only their current `ip.lst` provenance into resolver-only. Independent hard inputs and the approved union are unchanged.
 - A v38-only IPv4 /32 can move from hard to resolver-only inside a selected RU/BY/KZ origin or SHARED mask when none of the three current Antifilter feeds or curated Telegram prefixes covers it. The approved union is unchanged.
 - v41 downloads Antifilter Download `ipsum.lst` as a review-only /24 summary of individual blocked IPs; it is not automatically carved because each /24 may route unrelated shared-hosting/CDN addresses through VPN.
 - The report publishes the potential DIRECT address-space impact of these /24 candidates in `geoip_RU_v41_blocked_provenance.tsv`; only exact-host and bounded subnet exclusions already approved by the v37 policy are automatically applied.
@@ -44,4 +45,4 @@
 ## Attribution and limitations
 - Preserve v2fly/geoip CC-BY-SA-4.0 and DB-IP CC-BY-4.0 notices, plus upstream licenses/attributions for service feeds.
 - RIR registration, BGP announcements, service association and RKN block evidence are distinct signals and are reported separately.
-- RIR RU/BY/KZ selected origin prefixes receive an ipresolve-only exception. Only CORE and explicitly listed service hosts can override hard blocks.
+- RIR RU/BY/KZ selected origin prefixes receive a resolver-layer exception. Only CORE and explicitly listed service hosts can override hard blocks.

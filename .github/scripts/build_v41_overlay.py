@@ -876,8 +876,8 @@ def main():
         writer.writeheader()
         writer.writerows(blocked_rows)
     args.blocked_output.write_text(
-        "# v41 effective blocks: CORE_CORPORATE is exempt from all approved inputs; SHARED_INFRA only from current ipresolve.\n"
-        "# Exact ip.lst, bounded subnet.lst and unclassified v38 baseline remain hard blocks for shared infrastructure.\n"
+        "# v41 effective blocks: CORE_CORPORATE is exempt from all approved inputs; SHARED_INFRA only from the resolver layer.\n"
+        "# Current ip.lst is hard except reviewed host entries; bounded subnets, Telegram and legacy hard labels keep precedence.\n"
         "# PRIVATE always wins; Antifilter ipsum /24 remains review-only.\n"
         + "".join(str(n)+"\n" for n in sorted(blocked,key=lambda n:(n.version,int(n.network_address),n.prefixlen))),
         encoding="utf-8",
@@ -905,7 +905,7 @@ def main():
         "- PRIVATE has absolute precedence.",
         "- CORE_CORPORATE exact origin prefixes are protected from all approved block inputs.",
         "- SHARED_INFRA exact origin prefixes are protected only against the resolver-only layer.",
-        "- Current ip.lst, bounded subnet.lst, Telegram and ineligible historical v38 records stay in the hard layer.",
+        "- Current ip.lst stays hard except individually reviewed IPv4 hosts, and bounded subnet.lst, Telegram and ineligible historical v38 records stay hard.",
         "- Eligible v38-only regional IPv4 /32 records move to the resolver-only layer without leaving the approved union.",
         "- MOAS is CORE_CORPORATE when any exact origin is CORE; otherwise SHARED_INFRA receives resolver-only protection.",
         "- RIR RU+BY+KZ selected origins protect against the resolver-only layer, not hard blocks.",
