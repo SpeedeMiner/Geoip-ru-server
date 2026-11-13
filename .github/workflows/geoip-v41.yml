@@ -8,7 +8,7 @@ on:
         required: false
         type: string
   pull_request:
-    branches: [main]
+    branches: [main, hardening/v41-release-integrity]
     paths:
       - ".github/workflows/geoip-v41.yml"
       - ".github/scripts/build_rir_rukzby_prefixes.py"
@@ -672,12 +672,12 @@ jobs:
             --output "$COMPANY_ASN_PREFIXES" \
             --core-output "$CORE_COMPANY_PREFIXES" \
             --shared-output "$SHARED_INFRASTRUCTURE_PREFIXES"
-          # Reuse the verified v39 exact-origin RIR-RU/curated company extractor;
-          # v41 records its own immutable sidecar instead of dropping those patches.
+          # Preserve the published sidecar filename while adding BY/KZ RIR origins.
           python3 .github/scripts/build_company_asn_prefixes.py \
             --selected-prefixes "$RU_PREFIX_INPUT" \
             --company-asns "$COMPANY_ASN_REGISTRY" \
             --rir-ru-asns "$RU_ASN_REGISTRY" \
+            --rir-by-kz-asns "$BY_KZ_ASN_REGISTRY" \
             --output "$REGIONAL_ORIGIN_PREFIXES"
           for file in "$RU_PREFIX_INPUT" "$GLOBAL_BGP_PREFIX_INPUT" "$ASN_MANIFEST" "$COMPANY_ASN_MANIFEST" "$COMPANY_ASN_PREFIXES" "$CORE_COMPANY_PREFIXES" "$SHARED_INFRASTRUCTURE_PREFIXES" "$COMPANY_ASN_POLICY" "$REGIONAL_ORIGIN_PREFIXES" "$ASN_STATS" "$BY_KZ_ASN_REGISTRY"; do
             test -s "$file" || { echo "::error::Missing BGP artifact: $file"; exit 1; }
@@ -1404,14 +1404,14 @@ jobs:
             - CORE_CORPORATE exact origin prefixes are protected from all approved RKN-derived inputs.
             - SHARED_INFRA origins are protected only from current resolver-derived ipresolve candidates; exact ip.lst, bounded subnet.lst and unclassified v38 baseline blocks still carve them.
             - MOAS receives CORE_CORPORATE precedence when any exact origin is CORE; otherwise a SHARED_INFRA origin receives resolver-only protection.
-            - RIR-RU registration alone is not proof of corporate ownership and does not create a blanket DIRECT exception.
+            - RIR RU/BY/KZ registration is not proof of corporate ownership and does not create a blanket block exception.
             - PRIVATE retains absolute precedence for both classes.
 
             ## Regional resource and BGP layers
             - v37 geographic/ASN sources remain the trusted starting point.
             - v41 additionally imports allocated/assigned/legacy RU, BY and KZ address resources from the five RIR delegated-stat snapshots.
             - RIR country is resource-registration evidence, not physical geolocation or proof of current BGP reachability; route observation remains separately reported.
-            - Curated company-ASN origin prefixes are retained in DIRECT even when a blocked feed lists addresses inside those exact prefixes; non-corporate blocked addresses are carved.
+            - Only CORE company prefixes and eligible literal service hosts can override hard blocks; SHARED and selected RIR origins can override only the ipresolve layer.
 
             ## Service DIRECT outside geolocation
             - Kyoresuas `ru-standard` service prefixes are imported with per-service category/name/ASN/domain provenance.
@@ -1440,7 +1440,7 @@ jobs:
             ## Attribution and limitations
             - Preserve v2fly/geoip CC-BY-SA-4.0 and DB-IP CC-BY-4.0 notices, plus upstream licenses/attributions for service feeds.
             - RIR registration, BGP announcements, service association and RKN block evidence are distinct signals and are reported separately.
-            - RIR-RU selected origin prefixes receive resolver-only exception unless covered by first-party CORE or verified service policy; this avoids promoting whole shared providers over exact/legacy blocks.
+            - RIR RU/BY/KZ selected origin prefixes receive an ipresolve-only exception. Only CORE and explicitly listed service hosts can override hard blocks.
 
       - name: Purge jsDelivr compatibility URLs
         shell: bash
