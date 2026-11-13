@@ -3,7 +3,10 @@ from pathlib import Path
 import tempfile
 import unittest
 
-from build_v41_overlay import parse_reviewed_operator_prefixes, reviewed_operator_provenance
+from build_v41_overlay import (
+    assert_reviewed_operator_coverage, class_aware_effective_block_set,
+    parse_reviewed_operator_prefixes, reviewed_operator_provenance, subtract_networks,
+)
 
 
 class ReviewedOperatorPrefixesTests(unittest.TestCase):
@@ -42,3 +45,31 @@ class ReviewedOperatorPrefixesTests(unittest.TestCase):
         for extra in (row, "BY\t153.52.151.0/24\tAS207957\n"):
             with self.subTest(extra=extra), self.assertRaises(ValueError):
                 self.parse(row + extra)
+
+
+    def test_resolver_only_protection_does_not_extend_to_neighbors_or_hard(self):
+        def nets(*rows):
+            return {ipaddress.ip_network(row) for row in rows}
+
+        reviewed = set(self.parse(
+            "RU\t153.52.151.0/24\tAS402931\nRU\t2001:ad0:2000:1::/64\tAS3327\n"
+        ))
+        inside = nets("153.52.151.3/32", "2001:ad0:2000:1::3/128")
+        outside = nets("153.52.152.3/32", "2001:ad0:2000:2::3/128")
+        hard = nets("153.52.151.5/32", "2001:ad0:2000:1::5/128")
+        unconditional = nets("153.52.151.6/32")
+        effective, _ = class_aware_effective_block_set(
+            hard, inside | outside | hard, set(), set(), non_exempt=unconditional,
+            reviewed_operator_prefixes=reviewed,
+        )
+        self.assertEqual(effective, outside | hard | unconditional)
+        private = nets("153.52.151.7/32")
+        admission = nets("153.52.151.128/25")
+        hard |= unconditional
+        direct = subtract_networks(reviewed, private, hard | admission)
+        assert_reviewed_operator_coverage(direct, private, hard, admission, reviewed)
+        for host in inside:
+            with self.subTest(host=host), self.assertRaisesRegex(ValueError, "Reviewed operator"):
+                assert_reviewed_operator_coverage(
+                    subtract_networks(direct, {host}), private, hard, admission, reviewed,
+                )

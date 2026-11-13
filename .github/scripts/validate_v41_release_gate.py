@@ -25,6 +25,7 @@ SOURCE_KEYS = {
     "shared": "shared_infrastructure_prefixes",
     "rir": "regional_rir_inventory",
     "regional_admission_exclusions": "regional_admission_exclusions",
+    "reviewed_operator_prefixes": "reviewed_operator_prefixes",
     "kyoresuas_v4": "kyoresuas_standard_ipv4",
     "kyoresuas_v6": "kyoresuas_standard_ipv6",
     "kyoresuas_services": "kyoresuas_services_json",
@@ -197,6 +198,7 @@ def main() -> int:
     p.add_argument("--current-subnet-feed", type=Path, required=True)
     p.add_argument("--confirmed-ip-records", type=Path, required=True)
     p.add_argument("--regional-admission-exclusions", type=Path, required=True)
+    p.add_argument("--reviewed-operator-prefixes", type=Path, required=True)
     a = p.parse_args()
     try:
         manifest = json.loads(a.manifest.read_text(encoding="utf-8"))
@@ -221,6 +223,10 @@ def main() -> int:
         service = literal_service_exceptions(regions, sources)
         hard_rows = read_hard_sources(a.hard)
         verify_hard_evidence(hard_rows, a.current_subnet_feed, a.confirmed_ip_records)
+        reviewed = builder.parse_reviewed_operator_prefixes(a.reviewed_operator_prefixes)
+        builder.assert_reviewed_operator_coverage(
+            categories["RU"], categories["PRIVATE"], {prefix for prefix, _ in hard_rows}, admission, reviewed
+        )
         result = inspect_policy(categories["RU"], categories["PRIVATE"], effective,
                                 hard_rows, core, shared, service)
 

@@ -4,6 +4,12 @@ set -euo pipefail
 # Create-only. Do not fall back to a command that edits an existing release
 # or replaces its assets. The Git tag has already been pushed atomically.
 [[ "$SNAPSHOT_TAG" =~ ^(v41\.(0|[1-9][0-9]{0,5})|geoip-v41-snapshot-[0-9]+\.[0-9]+)$ ]]
+for asset in "$V41_OUTPUT_FILE" "$OUTPUT_SHA_FILE" "$V41_MANIFEST" "$V41_QUALITY_REPORT"; do
+  if [[ ! -f "$asset" || ! -r "$asset" || ! -s "$asset" ]]; then
+    printf 'Missing, unreadable or empty snapshot asset: %s\n' "$asset" >&2
+    exit 1
+  fi
+done
 gh release create "$SNAPSHOT_TAG" \
   "$V41_OUTPUT_FILE" "$OUTPUT_SHA_FILE" "$V41_MANIFEST" "$V41_QUALITY_REPORT" \
   --repo "$GITHUB_REPOSITORY" --verify-tag --latest=false \

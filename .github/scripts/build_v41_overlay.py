@@ -177,6 +177,14 @@ def assert_regional_admission_disjoint(ru, exclusions):
             raise ValueError(f"IPv{v} DIRECT intersects reviewed regional admission exclusions")
 
 
+def assert_reviewed_operator_coverage(ru, private, hard, admission, reviewed):
+    """All reviewed coverage survives except higher-priority exact exclusions."""
+    expected = subtract_networks(set(reviewed), set(private), set(hard) | set(admission))
+    for version in (4, 6):
+        if subtract(intervals(expected, version), intervals(ru, version)):
+            raise ValueError(f"Reviewed operator resolver-only protection lost in IPv{version}")
+
+
 def parse_rir_tsv(path: Path):
     result = defaultdict(set)
     records = 0
@@ -547,6 +555,8 @@ def class_aware_effective_block_set(
     service_exact_hosts: set | None = None,
     service_resolver_prefixes: set | None = None,
     non_exempt: set | None = None,
+    *,
+    reviewed_operator_prefixes: set | None = None,
 ):
     """Hard IP evidence wins over every origin and service protection mask."""
     if core_company_prefixes & shared_infrastructure_prefixes:
@@ -562,6 +572,7 @@ def class_aware_effective_block_set(
     effective_resolved = subtract_networks(
         resolved_only,
         core_company_prefixes | shared_infrastructure_prefixes | regional | service_resolver
+        | (reviewed_operator_prefixes or set())
     )
     return set(collapse(effective_exact | effective_resolved)), resolved_only
 
@@ -681,7 +692,7 @@ def main():
     parser.add_argument("--core-company-prefixes", type=Path, required=True)
     parser.add_argument("--shared-infrastructure-prefixes", type=Path, required=True)
     parser.add_argument("--regional-origin-prefixes", type=Path, required=True)
-    parser.add_argument("--reviewed-operator-prefixes", type=Path)
+    parser.add_argument("--reviewed-operator-prefixes", type=Path, required=True)
     parser.add_argument("--regional-admission-exclusions", type=Path, required=True)
     parser.add_argument("--ipsum", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
@@ -738,15 +749,18 @@ def main():
     if len(ipsum) < 1000:
         raise ValueError(f"Antifilter ipsum review feed unexpectedly small: {len(ipsum)} /24 prefixes")
 
-    # DNS and unverified history cannot cut any registered regional resource.
+    reviewed = parse_reviewed_operator_prefixes(args.reviewed_operator_prefixes)
+    reviewed_prefixes = set(reviewed)
+    # DNS and unverified history cannot cut registered regional resources or exact reviewed operator routes.
     # Explicit subnet/IP evidence and Telegram remain unconditional.
     blocked, resolved_only = class_aware_effective_block_set(
         blocked_exact, blocked_resolved, core_company_prefixes,
         shared_infrastructure_prefixes, regional_only | regional_union, service_exact, service_resolver,
-        non_exempt=telegram,
+        non_exempt=telegram, reviewed_operator_prefixes=reviewed_prefixes,
     )
     ipsum_effective = subtract_networks(
-        ipsum, core_company_prefixes | shared_infrastructure_prefixes | regional_only | regional_union | service_resolver
+        ipsum, core_company_prefixes | shared_infrastructure_prefixes | regional_only | regional_union
+        | service_resolver | reviewed_prefixes
     )
 
     # Hydra's DIRECT and WHITELIST signal user-requested routes, not geography or
@@ -777,18 +791,15 @@ def main():
                 "domains": "",
                 "prefix": str(net),
             })
-    reviewed = parse_reviewed_operator_prefixes(args.reviewed_operator_prefixes) if args.reviewed_operator_prefixes else {}
     reviewed_source = "reviewed-operator-prefixes"
-    if args.reviewed_operator_prefixes:
-        source_stats[reviewed_source] = {
-            "raw_files": [args.reviewed_operator_prefixes.name],
-            "valid_rows": len(reviewed),
-            "input_sha256": sha256(args.reviewed_operator_prefixes.read_bytes()),
-            "protection": "none",
-        }
-        prefix_rows.extend(reviewed_operator_provenance(reviewed, reviewed_source))
-    # Reviewed networks contribute coverage only. They do not enter any block exemption mask.
-    additions.update(reviewed)
+    source_stats[reviewed_source] = {
+        "raw_files": [args.reviewed_operator_prefixes.name],
+        "valid_rows": len(reviewed),
+        "input_sha256": sha256(args.reviewed_operator_prefixes.read_bytes()),
+        "protection": "resolver_only_no_hard_override",
+    }
+    prefix_rows.extend(reviewed_operator_provenance(reviewed, reviewed_source))
+    additions.update(reviewed_prefixes)
     admission_exclusions = parse_regional_admission_exclusions(args.regional_admission_exclusions)
     for row in admission_exclusions.values():
         prefix_rows.append({
@@ -805,6 +816,7 @@ def main():
     regional_resource_iv = {v: intervals(regional_union, v) for v in (4, 6)}
     service_exact_iv = {v: intervals(service_exact, v) for v in (4, 6)}
     service_resolver_iv = {v: intervals(service_resolver, v) for v in (4, 6)}
+    reviewed_operator_iv = {v: intervals(reviewed_prefixes, v) for v in (4, 6)}
     blocked_iv = {v: intervals(blocked, v) for v in (4, 6)}
     resolved_only_iv = {v: intervals(resolved_only, v) for v in (4, 6)}
     # CIDR set difference is not address-space subtraction: e.g. removing
@@ -871,8 +883,7 @@ def main():
         ("verified-service-exact-hosts", service_exact),
         ("verified-service-resolver-protected", service_resolver),
     ]
-    if args.reviewed_operator_prefixes:
-        measured_sources.append((reviewed_source, reviewed))
+    measured_sources.append((reviewed_source, reviewed_prefixes))
     for source_id, networks in measured_sources + list(service_sources.items()) + list(hydra_sources.items()):
         row = {"source_id":source_id,"unique_cidrs":len(networks)}
         for v in (4, 6):
@@ -920,7 +931,7 @@ def main():
         for v in (4, 6):
             protect = normalize_interval_union(
                 core_company_iv[v], service_resolver_iv[v], service_exact_iv[v],
-                shared_infrastructure_iv[v], regional_only_iv[v], regional_resource_iv[v],
+                shared_infrastructure_iv[v], regional_only_iv[v], regional_resource_iv[v], reviewed_operator_iv[v],
             ) if shared_allowed else []
             eligible_impact_iv[shared_allowed][v] = subtract(unblocked_direct_iv[v], protect)
 
@@ -971,7 +982,7 @@ def main():
     for v in (4,6):
         company_expected = normalize_interval_union(
             core_company_iv[v], shared_infrastructure_iv[v], regional_only_iv[v],
-            regional_resource_iv[v], service_resolver_iv[v], service_exact_iv[v],
+            regional_resource_iv[v], service_resolver_iv[v], service_exact_iv[v], reviewed_operator_iv[v],
         )
         company_expected = subtract(subtract(company_expected, private_iv[v]), blocked_iv[v])
         company_missing = subtract(subtract(company_expected, admission_iv[v]), final_iv[v])
@@ -1199,6 +1210,7 @@ def main():
             "hydra_geoip":sha256(args.hydra.read_bytes()),
             "regional_rir_inventory":sha256(args.rir.read_bytes()),
             "regional_admission_exclusions":sha256(args.regional_admission_exclusions.read_bytes()),
+            "reviewed_operator_prefixes":source_stats[reviewed_source]["input_sha256"],
             "kyoresuas_standard_ipv4":sha256(args.kyoresuas_v4.read_bytes()),
             "kyoresuas_standard_ipv6":sha256(args.kyoresuas_v6.read_bytes()),
             "kyoresuas_services_json":sha256(args.kyoresuas_services.read_bytes()),

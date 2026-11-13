@@ -12,7 +12,7 @@ else
   snapshot="geoip-v41-snapshot-${GITHUB_RUN_ID}.${GITHUB_RUN_ATTEMPT}"
 fi
 
-source_dir="$PWD"
+source_dir="$(pwd -P)"
 dest="$(mktemp -d)"
 trap 'rm -rf -- "$dest"' EXIT
 git -C "$dest" init

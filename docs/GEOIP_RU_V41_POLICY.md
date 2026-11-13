@@ -24,7 +24,7 @@ v41 imports from v40:
 
 1. PRIVATE always wins. The pinned official Telegram set remains non-exempt.
 2. Current bounded Antifilter `subnet.lst` entries and separately reviewed direct IP/subnet registry records are hard. They cannot be overridden by CORE, SHARED, regional origin, or service masks. The subnet feed is an upstream signal, not a verified direct lookup of every row in the official registry.
-3. Antifilter [documents](https://antifilter.download/) `ip.lst` and `ipresolve.lst` as DNS-derived. They, and unverified historical v38 entries, remain in the source union and advisory layer. They cannot carve selected RU/BY/KZ origins, registered RU/BY/KZ resource ranges, corporate/shared origins, or the existing service resolver masks. Outside those protections, prior resolver filtering still applies. `ipsum.lst` remains review-only.
+3. Antifilter [documents](https://antifilter.download/) `ip.lst` and `ipresolve.lst` as DNS-derived. They, and unverified historical v38 entries, remain in the source union and advisory layer. They cannot carve selected RU/BY/KZ origins, registered RU/BY/KZ resource ranges, corporate/shared origins, the existing service resolver masks, or the exact reviewed operator CIDRs. Outside those protections, prior resolver filtering still applies. `ipsum.lst` remains review-only.
 4. `.github/data/v41-reviewed-rkn-ip-records.tsv` accepts only manually reviewed direct IP or subnet records with canonical CIDR, review date and evidence URL. Domain/URL-only evidence is not sufficient. The 2026-11-13 [reviewed evidence extract](v41-pr26-direct-ip-evidence-20261113.json) ties the exact host rows to individual decision metadata in a dated registry mirror snapshot. The extract is not an official signed export, and the snapshot is not a rolling build input. Automatic size limits stay in place.
 5. REG.RU AS197695 is classified as SHARED_INFRA and is admitted only by the existing regional ASN selection, not by its new classification. The same class already covers the reviewed origins of Timeweb, Selectel and DDoS-Guard. No recursive import of peer/upstream/tenant ASNs. Registration is routing evidence, not a per-tenant reachability guarantee.
 
@@ -48,6 +48,12 @@ All received but unverified `RPKI/RDAP/IRR` audit candidates remain review-only.
 ## Publication boundary
 
 The existing v41 production workflow runs on main pushes and a daily schedule. Pull-request builds cannot publish. Main builds compare the candidate independently with the prior release before updating the rolling artifact and creating a run-specific snapshot. Use a run-specific snapshot, not the rolling link, for rollback.
+
+## Reviewed operator prefixes and geography-only inputs
+
+The four exact CIDRs in [the reviewed operator table](../.github/data/v41-reviewed-operator-prefixes.tsv) are independently reviewed regional routes. They receive resolver-only protection, not an ASN-wide exemption. Confirmed direct IP/subnet evidence, official Telegram ranges, PRIVATE and explicit regional admission exclusions still take precedence. Both validators check the table's SHA-256 and require coverage of every eligible reviewed address.
+
+v2fly and Loyalsoldier country labels alone do not create a resolver exemption. The v37 geographic baseline and the v41 regional and service restoration layers are distinct. Restoring all geography-only coverage would change DIRECT policy and could restore foreign/shared networks. Review exact assignments separately.
 
 ## Reviewed regional admission conflicts
 
