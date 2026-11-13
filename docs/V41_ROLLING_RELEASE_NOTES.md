@@ -16,7 +16,7 @@
 
 ## RKN blocked destinations
 - DNS-derived host lists and historical inputs remain preserved for provenance. A domain/URL entry or shared DNS address does not establish a hard IP block.
-- The reviewed direct-IP input includes 742 exact IPv4 hosts cross-checked against a dated public registry mirror. This is not a signed official export. Only the recorded IP scope is used, without expanding it to adjacent networks.
+- The reviewed direct-IP input includes 746 exact IPv4 hosts cross-checked against a dated public registry mirror. This is not a signed official export. Only the recorded IP scope is used, without expanding it to adjacent networks.
 - Antifilter and Re-filter `ipsum.lst` and community suggestions remain review-only. The build does not automatically carve a /24 containing unrelated tenants.
 - The [v41 public-source cross-check](https://github.com/SpeedeMiner/Geoip-ru-server/blob/feature/geoip-direct-rukzby-v41-integration/docs/V39_PUBLIC_RKN_SOURCE_CROSSCHECK.md) documents the pinned input lineage and its limitations. The workflow does not claim Antifilter community 65444:210 membership.
 - GeoIP cannot distinguish unrelated domains on the same IP. Domain-only rules remain a separate client GeoSite layer.

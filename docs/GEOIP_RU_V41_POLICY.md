@@ -51,9 +51,23 @@ The existing v41 production workflow runs on main pushes and a daily schedule. P
 
 ## Reviewed operator prefixes and geography-only inputs
 
-The four exact CIDRs in [the reviewed operator table](../.github/data/v41-reviewed-operator-prefixes.tsv) are independently reviewed regional routes. They receive resolver-only protection, not an ASN-wide exemption. Confirmed direct IP/subnet evidence, official Telegram ranges, PRIVATE and explicit regional admission exclusions still take precedence. Both validators check the table's SHA-256 and require coverage of every eligible reviewed address.
+The exact CIDRs in [the reviewed operator table](../.github/data/v41-reviewed-operator-prefixes.tsv) are independently reviewed regional routes. They receive resolver-only protection, not an ASN-wide exemption. Confirmed direct IP/subnet evidence, official Telegram ranges, PRIVATE and explicit regional admission exclusions still take precedence. Both validators check the table's SHA-256 and require coverage of every eligible reviewed address.
 
 v2fly and Loyalsoldier country labels alone do not create a resolver exemption. The v37 geographic baseline and the v41 regional and service restoration layers are distinct. Restoring all geography-only coverage would change DIRECT policy and could restore foreign/shared networks. Review exact assignments separately.
+
+Six exact reviewed entries recover 110 IPv4 addresses in the 2026-11-13 fixed-input replay. No address beyond the explicit rows is restored.
+
+| Prefix | Origin | Independent registration and routing evidence | IPv4 restored |
+|---|---|---|---:|
+| `2.26.8.0/24` | `AS207957` | [Exact RU assignment](https://rdap.db.ripe.net/ip/2.26.8.0/24), [RIS](https://stat.ripe.net/data/routing-status/data.json?resource=2.26.8.0%2F24) | 2 |
+| `31.76.71.0/24` | `AS207957` | [Exact RU assignment](https://rdap.db.ripe.net/ip/31.76.71.0/24), [RIS](https://stat.ripe.net/data/routing-status/data.json?resource=31.76.71.0%2F24) | 1 |
+| `77.239.107.0/24` | `AS207957` | [Exact RU assignment](https://rdap.db.ripe.net/ip/77.239.107.0/24), [RIS](https://stat.ripe.net/data/routing-status/data.json?resource=77.239.107.0%2F24) | 4 |
+| `178.250.186.0/24` | `AS207957` | [Exact RU assignment](https://rdap.db.ripe.net/ip/178.250.186.0/24), [RIS](https://stat.ripe.net/data/routing-status/data.json?resource=178.250.186.0%2F24) | 2 |
+| `193.109.246.0/23` | `AS204343` | [Exact RU assignment](https://rdap.db.ripe.net/ip/193.109.246.0/23), [RIS](https://stat.ripe.net/data/routing-status/data.json?resource=193.109.246.0%2F23) | 48 |
+| `195.216.243.0/24` | `AS204343` | [Exact RU assignment](https://rdap.db.ripe.net/ip/195.216.243.0/24), [RIS](https://stat.ripe.net/data/routing-status/data.json?resource=195.216.243.0%2F24) | 53 |
+
+
+The [SERV.HOST geofeed](https://status.serv.host/geofeed/subnet.csv) corroborates the four AS207957 entries. The two Compubyte ranges are exact RU assignments to the origin holder, with the UCOZ-NET /23 covered by two same-origin /24s and COMPUBYTE-NET announced as a /24. The larger historical ipverse aggregates do not widen the approved scope.
 
 ## Reviewed regional admission conflicts
 
