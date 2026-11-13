@@ -17,3 +17,10 @@ classification, including 88 in current Antifilter ip.lst. These are source
 overlaps, not proven live IP blocks. Selected BY/KZ origin protection against
 only the resolver layer would restore up to 696 IPv4 on the same snapshot.
 Do not sum the estimates with the earlier current-ip.lst DNS-only scenario.
+
+## v41.3 snapshot publication
+
+- Routine builds keep the unique tag format `geoip-v41-snapshot-<run>.<attempt>`. A manual dispatch on `main` can set `snapshot_version` to a one-time version such as `v41.3`. An existing tag is rejected before the branch/tag push. There is no automatic move or overwrite of a version tag.
+- The release branch and selected tag still update with one atomic fast-forward push against the checked previous tip. The GitHub snapshot Release is then created with `gh release create --verify-tag`. The create-only path cannot edit an existing Release. It does not mark the snapshot Latest or change the rolling download URL.
+- Git references and GitHub Release assets are still separate operations. If GitHub Release upload fails after the push, the Git snapshot contains the validated DAT and checksum. A published snapshot is protected from external updates or deletion only if the repository has appropriate GitHub immutability or tag protection configured. No repository settings are changed here.
+- Source acquisition, IANA conversion, legacy RIR extraction, v37 artifact validation and publication logic now live in separate files under `.github/scripts/`. The workflow still owns permissions, step order and artifact lists. Go and the ipverse ASN extractor remain the files previously extracted in #17.
