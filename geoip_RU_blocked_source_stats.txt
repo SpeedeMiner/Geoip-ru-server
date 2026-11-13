@@ -14,3 +14,4 @@ runetfreedom-static-telegram	CURATED	12	12	12	0	0
 TOTAL_APPROVED_UNIQUE	-	-	200172	200172	-	-
 TOTAL_REVIEW_ROWS	-	-	-	0	28572	-
 v38-historical-only-regional-resolver	APPLIED	-	268	268	0	0
+reviewed-ip-list-hosts	APPLIED	63	63	63	0	0

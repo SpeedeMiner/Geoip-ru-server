@@ -1,4 +1,4 @@
-# v41 hard blocks: current ip.lst, bounded subnet.lst, Telegram, and pinned legacy blocks not eligible for resolver-only status.
+# v41 hard blocks: unreviewed current ip.lst, bounded subnet.lst, Telegram, and pinned legacy hard records.
 1.2.3.4/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 1.3.50.249/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 1.78.218.156/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
@@ -3543,7 +3543,6 @@
 5.181.2.173/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 5.181.80.165/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 5.181.110.221/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
-5.181.111.138/32 # sources=antifilter-ip.lst
 5.181.111.200/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 5.181.156.67/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 5.181.156.124/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
@@ -3622,7 +3621,6 @@
 5.188.31.162/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 5.188.31.244/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 5.188.57.172/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
-5.188.60.114/32 # sources=antifilter-ip.lst
 5.188.75.42/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 5.188.116.135/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 5.188.116.204/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
@@ -8865,7 +8863,6 @@
 31.31.198.170/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 31.31.198.180/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 31.31.198.187/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
-31.31.198.192/32 # sources=antifilter-ip.lst
 31.31.198.201/32 # sources=v38-baseline-hard-or-unclassified
 31.31.198.205/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 31.31.198.208/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
@@ -9020,12 +9017,10 @@
 31.129.107.53/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 31.129.107.105/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 31.129.108.163/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
-31.129.110.19/32 # sources=antifilter-ip.lst
 31.130.133.229/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 31.130.135.158/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 31.130.135.182/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 31.130.144.51/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
-31.130.144.220/32 # sources=antifilter-ip.lst
 31.130.148.237/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 31.130.149.220/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 31.130.207.31/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
@@ -10931,7 +10926,6 @@
 45.10.41.162/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 45.10.41.249/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 45.10.43.93/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
-45.10.53.60/32 # sources=antifilter-ip.lst
 45.10.182.74/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 45.10.243.5/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 45.10.243.9/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
@@ -11283,7 +11277,6 @@
 45.81.224.238/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 45.81.225.34/32 # sources=v38-baseline-hard-or-unclassified
 45.81.227.192/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
-45.81.253.81/32 # sources=antifilter-ip.lst
 45.81.254.240/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 45.82.13.151/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 45.82.64.55/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
@@ -13233,7 +13226,6 @@
 46.137.80.175/32 # sources=v38-baseline-hard-or-unclassified
 46.137.99.15/32 # sources=antifilter-ip.lst
 46.138.242.243/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
-46.138.249.118/32 # sources=antifilter-ip.lst
 46.146.234.6/32 # sources=antifilter-ip.lst
 46.148.26.135/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 46.148.26.145/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
@@ -15833,7 +15825,6 @@
 62.76.25.156/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 62.76.75.106/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 62.76.75.110/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
-62.76.100.180/32 # sources=antifilter-ip.lst
 62.76.234.104/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 62.76.239.134/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 62.77.79.174/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
@@ -17919,7 +17910,6 @@
 72.56.8.32/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 72.56.8.136/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 72.56.8.144/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
-72.56.8.238/32 # sources=antifilter-ip.lst
 72.56.15.21/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 72.56.15.247/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 72.56.26.125/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
@@ -19171,7 +19161,6 @@
 77.246.145.18/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 77.246.148.61/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 77.246.157.112/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
-77.246.157.217/32 # sources=antifilter-ip.lst
 77.246.158.142/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 77.246.247.201/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 77.247.78.2/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
@@ -19555,7 +19544,6 @@
 79.137.88.105/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 79.137.89.102/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 79.137.192.170/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
-79.137.197.127/32 # sources=antifilter-ip.lst
 79.137.204.197/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 79.137.221.149/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 79.139.59.115/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
@@ -19581,7 +19569,6 @@
 79.170.188.132/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 79.174.70.242/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 79.174.75.29/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
-79.174.75.70/32 # sources=antifilter-ip.lst
 79.174.75.189/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 79.174.78.21/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 79.174.78.119/32 # sources=antifilter-ip.lst
@@ -20005,7 +19992,6 @@
 81.16.30.22/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 81.16.141.77/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 81.16.141.191/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
-81.16.141.205/32 # sources=antifilter-ip.lst
 81.16.148.31/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 81.17.17.214/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 81.17.19.8/32 # sources=antifilter-ip.lst
@@ -20412,7 +20398,6 @@
 82.112.243.114/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 82.112.249.192/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 82.112.250.208/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
-82.114.226.146/32 # sources=antifilter-ip.lst
 82.115.6.140/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 82.115.7.129/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 82.115.43.45/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
@@ -20495,7 +20480,6 @@
 82.118.23.121/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 82.118.227.168/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 82.135.145.70/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
-82.138.26.245/32 # sources=antifilter-ip.lst
 82.142.110.173/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 82.144.223.78/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 82.146.32.127/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
@@ -23387,14 +23371,12 @@
 89.108.104.24/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 89.108.105.71/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 89.108.113.90/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
-89.108.113.179/32 # sources=antifilter-ip.lst
 89.108.118.65/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 89.108.119.171/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 89.108.122.113/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 89.108.123.201/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 89.108.124.118/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 89.108.126.25/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
-89.108.126.176/32 # sources=antifilter-ip.lst
 89.109.8.127/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 89.110.39.21/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 89.110.68.240/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
@@ -24313,7 +24295,6 @@
 91.106.207.106/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 91.107.86.73/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 91.107.121.108/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
-91.107.123.174/32 # sources=antifilter-ip.lst
 91.107.155.18/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 91.107.181.80/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 91.107.202.34/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
@@ -25487,7 +25468,6 @@
 91.201.52.151/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 91.201.52.159/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 91.201.52.163/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
-91.201.52.205/32 # sources=antifilter-ip.lst
 91.201.52.229/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 91.201.52.238/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 91.201.53.2/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
@@ -25742,7 +25722,6 @@
 91.219.148.45/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 91.219.148.181/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 91.219.149.92/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
-91.219.150.28/32 # sources=antifilter-ip.lst
 91.219.150.62/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 91.219.150.72/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 91.219.151.16/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
@@ -25969,7 +25948,6 @@
 91.236.136.138/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 91.236.136.139/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 91.236.136.157/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
-91.236.197.229/32 # sources=antifilter-ip.lst
 91.237.52.78/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 91.237.124.86/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 91.237.124.134/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
@@ -26955,10 +26933,8 @@
 93.93.202.69/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 93.95.97.84/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 93.95.98.51/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
-93.95.100.219/32 # sources=antifilter-ip.lst
 93.95.102.28/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 93.95.102.42/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
-93.95.102.77/32 # sources=antifilter-ip.lst
 93.95.102.237/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 93.95.229.215/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 93.95.231.38/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
@@ -27727,7 +27703,6 @@
 94.154.1.179/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 94.154.1.246/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 94.154.11.20/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
-94.154.11.91/32 # sources=antifilter-ip.lst
 94.154.35.56/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 94.154.35.200/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 94.154.35.201/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
@@ -28154,7 +28129,6 @@
 95.171.58.215/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 95.173.136.70/32 # sources=antifilter-ip.lst
 95.173.136.71/32 # sources=antifilter-ip.lst
-95.173.136.72/32 # sources=antifilter-ip.lst
 95.173.177.114/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 95.173.189.40/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 95.173.216.195/32 # sources=v38-baseline-hard-or-unclassified
@@ -28216,7 +28190,6 @@
 95.211.246.219/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 95.213.139.6/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 95.213.139.11/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
-95.213.173.131/32 # sources=antifilter-ip.lst
 95.213.179.126/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 95.213.196.122/32 # sources=antifilter-ip.lst
 95.213.255.83/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
@@ -29505,7 +29478,6 @@
 104.168.229.83/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 104.168.248.80/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 104.171.133.107/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
-104.171.138.7/32 # sources=antifilter-ip.lst
 104.192.42.14/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 104.192.42.32/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 104.192.42.37/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
@@ -30627,7 +30599,6 @@
 109.61.83.249/32 # sources=antifilter-ip.lst
 109.61.83.250/32 # sources=v38-baseline-hard-or-unclassified
 109.61.111.34/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
-109.63.151.238/32 # sources=antifilter-ip.lst
 109.66.241.26/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 109.69.16.248/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 109.69.17.236/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
@@ -32064,7 +32035,6 @@
 135.106.153.82/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 135.106.161.145/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 135.106.163.137/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
-135.106.164.116/32 # sources=antifilter-ip.lst
 135.106.165.78/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 135.106.167.80/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 135.106.174.127/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
@@ -32375,7 +32345,6 @@
 138.16.180.114/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 138.16.180.122/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 138.16.181.15/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
-138.16.181.21/32 # sources=antifilter-ip.lst
 138.16.181.148/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 138.16.181.178/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 138.16.181.199/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
@@ -32419,7 +32388,6 @@
 138.16.191.223/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 138.16.226.12/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 138.16.226.27/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
-138.16.226.35/32 # sources=antifilter-ip.lst
 138.16.226.134/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 138.68.2.119/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 138.68.19.218/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
@@ -32481,7 +32449,6 @@
 138.124.7.9/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 138.124.9.239/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 138.124.13.136/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
-138.124.26.62/32 # sources=antifilter-ip.lst
 138.124.28.114/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 138.124.29.213/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 138.124.49.211/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
@@ -32780,7 +32747,6 @@
 141.8.192.36/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 141.8.192.58/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 141.8.192.100/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
-141.8.192.119/32 # sources=antifilter-ip.lst
 141.8.192.166/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 141.8.192.169/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 141.8.192.170/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
@@ -32788,7 +32754,6 @@
 141.8.192.186/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 141.8.192.187/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 141.8.192.192/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
-141.8.192.215/32 # sources=antifilter-ip.lst
 141.8.192.217/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 141.8.192.230/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 141.8.193.52/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
@@ -36544,13 +36509,11 @@
 157.22.193.81/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 157.22.197.115/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 157.22.198.165/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
-157.22.198.203/32 # sources=antifilter-ip.lst
 157.22.199.108/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 157.22.202.229/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 157.22.203.23/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 157.22.203.119/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 157.22.203.170/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
-157.22.206.77/32 # sources=antifilter-ip.lst
 157.22.207.61/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 157.22.207.206/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 157.22.229.146/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
@@ -36863,9 +36826,7 @@
 159.194.204.94/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 159.194.204.180/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 159.194.214.235/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
-159.194.215.70/32 # sources=antifilter-ip.lst
 159.194.216.3/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
-159.194.216.18/32 # sources=antifilter-ip.lst
 159.194.216.31/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 159.194.216.57/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 159.194.217.68/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
@@ -36873,7 +36834,6 @@
 159.194.218.53/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 159.194.218.99/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 159.194.218.125/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
-159.194.219.87/32 # sources=antifilter-ip.lst
 159.194.219.137/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 159.194.220.60/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 159.194.221.95/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
@@ -38842,7 +38802,6 @@
 170.168.15.145/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 170.168.49.2/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 170.168.49.3/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
-170.168.101.214/32 # sources=antifilter-ip.lst
 170.168.112.126/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 170.168.191.135/32 # sources=v38-baseline-hard-or-unclassified
 170.178.174.249/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
@@ -39731,7 +39690,6 @@
 176.98.40.96/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 176.98.40.113/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 176.98.40.173/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
-176.98.177.90/32 # sources=antifilter-ip.lst
 176.98.178.215/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 176.98.182.64/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 176.98.182.68/32 # sources=v38-baseline-hard-or-unclassified
@@ -39772,7 +39730,6 @@
 176.114.10.82/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 176.114.10.85/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 176.114.12.45/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
-176.114.65.232/32 # sources=antifilter-ip.lst
 176.114.86.240/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 176.114.92.115/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 176.114.128.135/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
@@ -39944,7 +39901,6 @@
 176.182.197.130/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 176.186.182.21/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 176.199.69.41/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
-176.213.150.93/32 # sources=antifilter-ip.lst
 176.222.67.244/32 # sources=antifilter-ip.lst
 176.223.109.61/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 176.223.109.135/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
@@ -40245,7 +40201,6 @@
 178.72.149.123/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 178.72.152.138/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 178.72.184.89/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
-178.72.184.120/32 # sources=antifilter-ip.lst
 178.72.185.192/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 178.79.143.207/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 178.79.146.41/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
@@ -40329,7 +40284,6 @@
 178.130.131.169/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 178.132.2.172/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 178.132.2.201/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
-178.132.201.54/32 # sources=antifilter-ip.lst
 178.156.21.117/32 # sources=antifilter-ip.lst
 178.156.154.103/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 178.156.171.169/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
@@ -40398,9 +40352,7 @@
 178.208.68.27/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 178.208.83.15/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 178.208.91.231/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
-178.208.92.128/32 # sources=antifilter-ip.lst
 178.208.92.143/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
-178.208.92.161/32 # sources=antifilter-ip.lst
 178.208.94.173/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 178.208.94.205/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 178.209.127.50/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
@@ -42745,7 +42697,6 @@
 185.20.184.241/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 185.20.205.11/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 185.20.205.56/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
-185.20.224.10/32 # sources=antifilter-ip.lst
 185.21.8.212/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 185.21.14.111/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 185.21.14.210/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
@@ -42781,7 +42732,6 @@
 185.25.23.240/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 185.25.51.250/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 185.25.60.4/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
-185.25.60.147/32 # sources=antifilter-ip.lst
 185.25.117.3/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 185.25.117.29/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 185.25.117.236/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
@@ -42843,7 +42793,6 @@
 185.31.93.73/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 185.31.114.248/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 185.31.164.209/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
-185.31.166.176/32 # sources=antifilter-ip.lst
 185.31.208.103/32 # sources=v38-baseline-hard-or-unclassified
 185.31.208.210/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 185.31.209.68/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
@@ -44244,7 +44193,6 @@
 185.84.108.7/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 185.84.108.18/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 185.84.108.230/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
-185.84.108.232/32 # sources=antifilter-ip.lst
 185.84.110.84/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 185.84.110.85/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 185.84.110.97/32 # sources=v38-baseline-hard-or-unclassified
@@ -44879,7 +44827,6 @@
 185.135.9.129/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 185.135.9.192/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 185.135.80.100/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
-185.135.80.231/32 # sources=antifilter-ip.lst
 185.135.83.3/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 185.135.83.132/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 185.135.86.253/32 # sources=antifilter-ip.lst
@@ -46654,7 +46601,6 @@
 185.231.154.198/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 185.231.154.210/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 185.231.155.89/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
-185.231.155.106/32 # sources=antifilter-ip.lst
 185.231.155.151/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 185.231.155.210/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 185.231.155.242/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
@@ -47099,14 +47045,12 @@
 186.244.243.113/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 186.244.247.73/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 186.246.1.239/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
-186.246.3.24/32 # sources=antifilter-ip.lst
 186.246.4.96/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 186.246.5.21/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 186.246.12.29/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 186.246.14.164/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 186.246.27.87/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 186.246.27.240/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
-186.246.28.158/32 # sources=antifilter-ip.lst
 186.246.28.216/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 186.246.30.101/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 186.246.44.121/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
@@ -49824,7 +49768,6 @@
 193.124.64.76/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 193.124.64.82/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 193.124.64.92/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
-193.124.64.123/32 # sources=antifilter-ip.lst
 193.124.64.173/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 193.124.64.191/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 193.124.64.244/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
@@ -50861,7 +50804,6 @@
 194.67.106.221/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 194.67.109.113/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 194.67.110.200/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
-194.67.113.31/32 # sources=antifilter-ip.lst
 194.67.113.72/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 194.67.115.130/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 194.67.117.144/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
@@ -51145,7 +51087,6 @@
 194.156.117.147/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 194.156.118.127/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 194.156.119.4/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
-194.156.125.103/32 # sources=antifilter-ip.lst
 194.163.34.43/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 194.163.41.150/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 194.163.42.23/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
@@ -51950,7 +51891,6 @@
 195.133.50.57/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 195.133.52.28/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 195.133.52.183/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
-195.133.52.192/32 # sources=antifilter-ip.lst
 195.133.56.20/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 195.133.56.30/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 195.133.56.42/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
@@ -52143,7 +52083,6 @@
 195.208.220.91/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 195.209.208.105/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 195.209.211.131/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
-195.209.212.72/32 # sources=antifilter-ip.lst
 195.209.214.9/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 195.209.215.122/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 195.210.46.3/32 # sources=antifilter-ip.lst
@@ -56877,7 +56816,6 @@
 213.154.226.24/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 213.154.226.35/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 213.155.20.38/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
-213.155.20.47/32 # sources=antifilter-ip.lst
 213.155.21.204/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 213.155.22.217/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 213.155.23.143/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
@@ -57556,7 +57494,6 @@
 217.23.134.49/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 217.23.143.225/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 217.25.13.55/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
-217.25.90.147/32 # sources=antifilter-ip.lst
 217.25.95.210/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 217.25.236.6/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
 217.26.25.66/32 # sources=antifilter-ip.lst,v38-baseline-hard-or-unclassified
