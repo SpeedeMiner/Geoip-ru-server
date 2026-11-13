@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Extract exact prefixes announced by the curated corporate ASN allowlist and RIR-RU ASNs."""
+"""Extract exact prefixes announced by curated corporate and selected RIR ASNs."""
 from __future__ import annotations
 
 import argparse
@@ -47,7 +47,7 @@ def read_company_asns(path: Path) -> dict[int, dict[str, str]]:
     return result
 
 
-def read_rir_ru_asns(path: Path, minimum: int = 10) -> set[int]:
+def read_rir_ru_asns(path: Path, minimum: int = 10, *, label: str = "RIR-RU") -> set[int]:
     result: set[int] = set()
     with path.open(encoding="utf-8-sig", newline="") as stream:
         for line_no, raw in enumerate(stream, 1):
@@ -58,13 +58,13 @@ def read_rir_ru_asns(path: Path, minimum: int = 10) -> set[int]:
             if token.startswith("AS"):
                 token = token[2:]
             if not token.isdigit():
-                raise ValueError(f"Invalid RIR-RU ASN on line {line_no}: {line!r}")
+                raise ValueError(f"Invalid {label} ASN on line {line_no}: {line!r}")
             asn = int(token)
             if not 0 < asn <= 4294967295:
-                raise ValueError(f"RIR-RU ASN out of range on line {line_no}: {asn}")
+                raise ValueError(f"{label} ASN out of range on line {line_no}: {asn}")
             result.add(asn)
     if len(result) < minimum:
-        raise ValueError(f"RIR-RU ASN registry unexpectedly small: {len(result)} entries")
+        raise ValueError(f"{label} ASN registry unexpectedly small: {len(result)} entries")
     return result
 
 
@@ -73,12 +73,17 @@ def build_company_prefixes(
     company_registry: Path,
     output: Path,
     rir_ru_registry: Path | None = None,
+    rir_by_kz_registry: Path | None = None,
 ) -> dict[str, Any]:
     companies = read_company_asns(company_registry)
     rir_ru_asns = read_rir_ru_asns(rir_ru_registry) if rir_ru_registry is not None else set()
+    rir_by_kz_asns = (
+        read_rir_ru_asns(rir_by_kz_registry, label="RIR-BY/KZ") if rir_by_kz_registry is not None else set()
+    )
     prefixes: dict[str, set[int]] = {}
     active_company_asns: set[int] = set()
     active_rir_ru_asns: set[int] = set()
+    active_rir_by_kz_asns: set[int] = set()
 
     with selected_prefixes.open(encoding="utf-8-sig") as stream:
         for line_no, raw in enumerate(stream, 1):
@@ -100,7 +105,8 @@ def build_company_prefixes(
 
             corporate = origin_asns & companies.keys()
             rir_ru = origin_asns & rir_ru_asns
-            protected_origins = corporate | rir_ru
+            rir_by_kz = origin_asns & rir_by_kz_asns
+            protected_origins = corporate | rir_ru | rir_by_kz
             if protected_origins:
                 key = str(network)
                 if key in prefixes:
@@ -108,18 +114,24 @@ def build_company_prefixes(
                 prefixes[key] = protected_origins
                 active_company_asns.update(corporate)
                 active_rir_ru_asns.update(rir_ru)
+                active_rir_by_kz_asns.update(rir_by_kz)
 
     if not prefixes:
-        raise ValueError("No selected prefixes originate from the curated corporate or RIR-RU ASN sets")
+        raise ValueError("No selected prefixes originate from the curated corporate or selected RIR ASN sets")
 
     output.parent.mkdir(parents=True, exist_ok=True)
     with output.open("w", encoding="utf-8", newline="\n") as stream:
-        stream.write("# v39 exact BGP prefixes whose origin set includes an ASN in geoip_RU_company_asns.txt or RIR-RU registry\n")
+        if rir_by_kz_registry is None:
+            stream.write("# v39 exact BGP prefixes whose origin set includes an ASN in geoip_RU_company_asns.txt or RIR-RU registry\n")
+        else:
+            stream.write("# v41.1 exact BGP prefixes with a curated corporate or RIR-RU/BY/KZ origin ASN\n")
         stream.write("# Prefixes come from the same pinned ipverse archive-derived selected-origin input used by the v37 base build.\n")
         stream.write(f"# selected_origin_input_sha256={sha256(selected_prefixes)}\n")
         stream.write(f"# company_asn_registry_sha256={sha256(company_registry)}\n")
         if rir_ru_registry is not None:
             stream.write(f"# rir_ru_asn_registry_sha256={sha256(rir_ru_registry)}\n")
+        if rir_by_kz_registry is not None:
+            stream.write(f"# rir_by_kz_asn_registry_sha256={sha256(rir_by_kz_registry)}\n")
         for prefix in sorted(prefixes, key=lambda value: (
             ipaddress.ip_network(value).version,
             int(ipaddress.ip_network(value).network_address),
@@ -153,6 +165,12 @@ def build_company_prefixes(
     }
     if rir_ru_registry is not None:
         result["rir_ru_asn_registry_sha256"] = sha256(rir_ru_registry)
+    if rir_by_kz_registry is not None:
+        result.update(
+            rir_by_kz_asn_registry_entries=len(rir_by_kz_asns),
+            active_rir_by_kz_asns=len(active_rir_by_kz_asns),
+            rir_by_kz_asn_registry_sha256=sha256(rir_by_kz_registry),
+        )
     print(result)
     return result
 
@@ -162,10 +180,13 @@ def main() -> int:
     parser.add_argument("--selected-prefixes", type=Path, required=True)
     parser.add_argument("--company-asns", type=Path, required=True)
     parser.add_argument("--rir-ru-asns", type=Path, required=False, default=None)
+    parser.add_argument("--rir-by-kz-asns", type=Path, required=False, default=None)
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
     try:
-        build_company_prefixes(args.selected_prefixes, args.company_asns, args.output, args.rir_ru_asns)
+        build_company_prefixes(
+            args.selected_prefixes, args.company_asns, args.output, args.rir_ru_asns, args.rir_by_kz_asns,
+        )
     except (OSError, ValueError) as exc:
         parser.exit(1, f"ERROR: {exc}\n")
     return 0

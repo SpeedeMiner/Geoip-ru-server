@@ -1,4 +1,5 @@
 import csv
+import hashlib
 import json
 import tempfile
 import unittest
@@ -17,19 +18,6 @@ from build_priority_prefix_evidence import (
     sample_addresses,
     select_priority_rows,
 )
-
-
-class FakeResponse:
-    status = 200
-
-    def __enter__(self):
-        return self
-
-    def __exit__(self, exc_type, exc, tb):
-        return False
-
-    def read(self):
-        return b'{"test":"bootstrap-bytes"}'
 
 
 def make_row(prefix, company_asn, origins, moas, basis):
@@ -282,10 +270,19 @@ class PriorityPrefixEvidenceTests(unittest.TestCase):
                 writer.writerows(rows)
             output = root / "out"
 
+            def fake_bootstrap(url):
+                status, payload, error = fake_request_json(url)
+                return status, payload, error, json.dumps(payload).encode()
+
             with patch("build_priority_prefix_evidence.request_json", side_effect=fake_request_json), \
-                 patch("build_priority_prefix_evidence.urllib.request.urlopen", return_value=FakeResponse()):
+                 patch("build_priority_prefix_evidence.request_json_with_bytes", side_effect=fake_bootstrap) as bootstrap_calls:
                 result = build_evidence(company_review, output, max_workers=4)
 
+            self.assertEqual(bootstrap_calls.call_count, 2)
+            self.assertEqual(result["bootstrap_sha256"], {
+                family: hashlib.sha256(json.dumps(payload).encode()).hexdigest()
+                for family, payload in ((4, bootstrap4), (6, bootstrap6))
+            })
             self.assertEqual(result["priority_prefixes"], 56)
             self.assertEqual(result["moas_prefixes"], 52)
             self.assertEqual(result["company_only_prefixes"], 4)

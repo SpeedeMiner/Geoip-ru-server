@@ -78,6 +78,29 @@ class CompanyASNPrefixTests(unittest.TestCase):
             self.assertEqual(result["active_company_asns"], 1)
             self.assertIn("192.0.2.0/24 # AS105", output.read_text(encoding="utf-8"))
 
+    def test_regional_origin_uses_both_registries_and_not_provenance_labels(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            company, ru, by_kz, selected, output = (root / x for x in ("company", "ru", "by-kz", "input", "out"))
+            self._write_registry(company)
+            self._write_rir_ru(ru)
+            by_kz.write_text("".join(f"AS{asn}\n" for asn in range(65000, 65012)), encoding="utf-8")
+            selected.write_text(
+                "192.0.2.0/24 # AS65000[RIR-BY/KZ]\n"
+                "198.51.100.0/24 # AS64500[RIR-RU],AS65001[RIR-BY/KZ]\n"
+                "203.0.113.0/24 # AS60000[RIR-BY/KZ]\n"
+                "2001:db8::/48 # AS65002[RIR-BY/KZ]\n",
+                encoding="utf-8",
+            )
+            result = build_company_prefixes(selected, company, output, ru, by_kz)
+            body = output.read_text(encoding="utf-8")
+            self.assertEqual(result["active_rir_by_kz_asns"], 3)
+            self.assertIn("rir_by_kz_asn_registry_sha256=", body)
+            self.assertIn("192.0.2.0/24 # AS65000", body)
+            self.assertIn("198.51.100.0/24 # AS64500,AS65001", body)
+            self.assertIn("2001:db8::/48 # AS65002", body)
+            self.assertNotIn("203.0.113.0/24", body)
+
     def test_static_direct_company_origin_is_supported(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)

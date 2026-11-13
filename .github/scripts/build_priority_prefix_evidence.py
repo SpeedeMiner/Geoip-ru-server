@@ -39,7 +39,7 @@ def sha256_bytes(value: bytes) -> str:
     return hashlib.sha256(value).hexdigest()
 
 
-def request_json(url: str, timeout: int = 30, retries: int = 3) -> tuple[int, dict[str, Any] | None, str]:
+def request_json_with_bytes(url: str, timeout: int = 30, retries: int = 3) -> tuple[int, dict[str, Any] | None, str, bytes | None]:
     """Fetch JSON with bounded retries; HTTP/API failures remain explicit."""
     for attempt in range(retries + 1):
         request = urllib.request.Request(
@@ -56,10 +56,10 @@ def request_json(url: str, timeout: int = 30, retries: int = 3) -> tuple[int, di
                 try:
                     payload = json.loads(payload_bytes.decode("utf-8"))
                 except (UnicodeDecodeError, json.JSONDecodeError) as exc:
-                    return status, None, f"INVALID_JSON:{type(exc).__name__}"
+                    return status, None, f"INVALID_JSON:{type(exc).__name__}", None
                 if not isinstance(payload, dict):
-                    return status, None, "INVALID_JSON_ROOT"
-                return status, payload, ""
+                    return status, None, "INVALID_JSON_ROOT", None
+                return status, payload, "", payload_bytes
         except urllib.error.HTTPError as exc:
             code = int(exc.code)
             if code in RETRYABLE_HTTP and attempt < retries:
@@ -70,14 +70,19 @@ def request_json(url: str, timeout: int = 30, retries: int = 3) -> tuple[int, di
                     delay = min(20.0, 2.0 ** attempt)
                 time.sleep(delay)
                 continue
-            return code, None, f"HTTP_{code}"
+            return code, None, f"HTTP_{code}", None
         except (urllib.error.URLError, TimeoutError, ConnectionError) as exc:
             if attempt < retries:
                 time.sleep(min(20.0, 2.0 ** attempt))
                 continue
             reason = getattr(exc, "reason", exc)
-            return 0, None, f"NETWORK_ERROR:{type(reason).__name__}:{reason}"
-    return 0, None, "RETRY_EXHAUSTED"
+            return 0, None, f"NETWORK_ERROR:{type(reason).__name__}:{reason}", None
+    return 0, None, "RETRY_EXHAUSTED", None
+
+
+def request_json(url: str, timeout: int = 30, retries: int = 3) -> tuple[int, dict[str, Any] | None, str]:
+    status, payload, error, _ = request_json_with_bytes(url, timeout, retries)
+    return status, payload, error
 
 
 def read_company_queue(path: Path) -> tuple[list[dict[str, str]], str]:
@@ -538,17 +543,15 @@ def build_evidence(company_queue: Path, output_dir: Path, max_workers: int = 5) 
     bootstrap_hashes: dict[int, str] = {}
     bootstrap_errors: dict[int, str] = {}
     for family, url in BOOTSTRAP_URLS.items():
-        status, payload, error = request_json(url)
+        status, payload, error, raw = request_json_with_bytes(url)
         if status != 200 or payload is None:
             bootstraps[family] = []
             bootstrap_hashes[family] = "UNAVAILABLE"
             bootstrap_errors[family] = error or f"HTTP_{status}"
             continue
         try:
-            # Preserve exact registry bytes separately from parsed JSON for digesting.
-            request = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
-            with urllib.request.urlopen(request, timeout=30) as response:
-                raw = response.read()
+            if raw is None:
+                raise ValueError("successful bootstrap response missing its raw bytes")
             bootstraps[family] = parse_bootstrap(family, payload)
             bootstrap_hashes[family] = sha256_bytes(raw)
         except Exception as exc:
