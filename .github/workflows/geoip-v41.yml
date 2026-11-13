@@ -691,7 +691,7 @@ jobs:
             cd .github/scripts/geoip-v37-builder
             test -z "$(gofmt -l main.go main_test.go)"
             GOTOOLCHAIN=local go test -mod=readonly ./...
-            GOTOOLCHAIN=local go build -mod=readonly -o /tmp/geoip-direct-ru-by-kz-v37-builder .
+            GOTOOLCHAIN=local go build -mod=readonly -buildvcs=false -o /tmp/geoip-direct-ru-by-kz-v37-builder .
           )
           python3 -m unittest discover -s .github/scripts -p 'test_*.py' -v
 
