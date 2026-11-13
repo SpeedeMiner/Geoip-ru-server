@@ -170,3 +170,9 @@ See [v41 release hardening](V41_RELEASE_HARDENING.md). Routing-policy changes ar
 - Screened 19,402 observed IPv4 routes overlapping the regional inventory. The most-specific route screen found 993 prefix/region pairs covering 573,952 addresses in the previous draft. Foreign origin metadata alone is insufficient. HOSTKEY AS50867 is a counterexample with RU records and Moscow infrastructure. No bulk or ASN-wide exclusion is applied.
 - Checked the first 35 candidates against RIPE RDAP and RIS. Promote only the three independently corroborated exact assignments inside `145.249.0.0/16` in this batch. SY and DE records and matching current origins are documented in the policy. Remaining candidates are unchanged.
 - Previous draft head `5b15ef8`. Expected exact delta to its DAT: IPv4 -26,624 only. Preserve 38,912 other addresses in the /16, including all 32,768 addresses in the Kazakhstan /17, plus IPv6, PRIVATE, RIR inventory and all block policy masks. No merge or publication.
+
+## 2026-11-13 — Exact US assignments in RU and KZ parent allocations
+
+- Draft PR #26 head before this check: `3319960`. RIPE RDAP child records and the RIS 2026-11-13T08:00Z view support only `31.204.8.0/21` (RU parent, US-FIXED, AS209372) and `109.238.168.0/21` (KZ parent, IPXO with two covering US /22 assignments, AS26548) in this batch. Both exact routes were seen by 319/319 RIS peers without more-specifics.
+- Preserve `31.204.2.0/24` (RU assignment, same origin), `109.238.160.0/21` and all other IPv4 coverage outside the two /21s. Leave `212.124.96.0/19` unchanged: a DE value on the allocation and a CH origin do not settle the relationship to the RU registrant MnogoByte at child level.
+- Fixed-input replay expectation: IPv4 -4,096 only relative to the previous draft, and IPv4 +7,223 / -33,162 versus the published DAT. No changes to IPv6, PRIVATE, RIR inventory or hard/resolver/effective block masks. No merge or publication.

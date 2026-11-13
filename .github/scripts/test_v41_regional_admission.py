@@ -29,10 +29,27 @@ class RegionalAdmissionTests(unittest.TestCase):
         path = Path(__file__).resolve().parent.parent / "data/v41-regional-admission-exclusions.tsv"
         rows = parse_regional_admission_exclusions(path)
         self.assertEqual({str(n) for n in rows}, {
+            "31.204.8.0/21", "109.238.168.0/21",
             "145.249.0.0/18", "145.249.64.0/19", "145.249.96.0/21",
             "185.17.120.0/22", "185.49.68.0/22", "195.54.32.0/23",
         })
-        self.assertEqual({row["origin_asn"] for row in rows.values()}, {"AS28753", "AS29256", "AS211095"})
+        for prefix, delegated, origin in (
+            ("31.204.8.0/21", "RU", "AS209372"),
+            ("109.238.168.0/21", "KZ", "AS26548"),
+        ):
+            self.assertEqual(rows[ipaddress.ip_network(prefix)], {
+                "prefix": prefix, "delegated_country": delegated, "assignment_country": "US",
+                "origin_asn": origin, "checked_on": "2026-11-13",
+            })
+
+    def test_us_assignments_do_not_remove_other_routes_from_same_parent(self):
+        before = {ipaddress.ip_network(p) for p in ("31.204.0.0/18", "109.238.160.0/20")}
+        excluded = {ipaddress.ip_network(p) for p in ("31.204.8.0/21", "109.238.168.0/21")}
+        after = subtract_networks(before, excluded)
+        self.assertEqual(after, {ipaddress.ip_network(p) for p in (
+            "31.204.0.0/21", "31.204.16.0/20", "31.204.32.0/19", "109.238.160.0/21",
+        )})
+        assert_regional_admission_disjoint(after, excluded)
 
     def test_invalid_row_cannot_widen_mask(self):
         row = "185.49.68.0/22\tBY\tDE\tAS28753\t2026-11-13\n"
