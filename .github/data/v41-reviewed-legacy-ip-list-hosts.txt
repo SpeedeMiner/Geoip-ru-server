@@ -1,5 +1,4 @@
 # Reviewed current and pinned v38 ip.lst IPv4 /32, without an independent hard source.
-# Evidence and scope: docs/V41_EXECUTION_JOURNAL.md, MVS Bank.
-195.161.62.167/32
-
+# Evidence and scope: docs/V41_EXECUTION_JOURNAL.md, exact IPv4 review entries.
 78.108.80.175/32
+195.161.62.167/32
