@@ -12,6 +12,7 @@ on:
       - ".github/scripts/build_company_asn_prefix_classes_v41.py"
       - ".github/scripts/prepare_blocked_sources_v41.py"
       - ".github/scripts/validate_v41_overlay.py"
+      - ".github/scripts/validate_v41_release_gate.py"
       - ".github/scripts/test_*.py"
       - ".github/data/geoip_RU_company_asns.tsv"
       - ".github/data/geoip_RU_company_asn_policy.tsv"
@@ -3450,6 +3451,39 @@ jobs:
           echo "=== SHA256 ==="
           sha256sum -c "$OUTPUT_SHA_FILE"
           cat "$OUTPUT_SHA_FILE"
+
+      - name: Enforce current-build v41 hard/DIRECT policy before release publication
+        shell: bash
+        run: |
+          set -euo pipefail
+          # Fatal invariants run against this job's *freshly built* outputs.
+          python3 -m unittest discover -s .github/scripts -p 'test_validate_v41_release_gate.py' -v
+          sha256sum -c "$OUTPUT_SHA_FILE"
+          sha256sum -c "$V41_BLOCKED_SHA"
+          python3 .github/scripts/validate_v41_release_gate.py \
+            --geoip "$V41_OUTPUT_FILE" \
+            --manifest "$V41_MANIFEST" \
+            --quality "$V41_QUALITY_REPORT" \
+            --hard "$BLOCKED_IP_EXACT_INPUT" \
+            --effective "$V41_BLOCKED_FILE" \
+            --core "$CORE_COMPANY_PREFIXES" \
+            --shared "$SHARED_INFRASTRUCTURE_PREFIXES" \
+            --rir "$RIR_RUKZBY_PREFIX_INPUT" \
+            --kyoresuas-v4 "$KY_STANDARD_V4_INPUT" \
+            --kyoresuas-v6 "$KY_STANDARD_V6_INPUT" \
+            --kyoresuas-services "$KY_SERVICES_INPUT" \
+            --w1zardz "$W1ZARDZ_INPUT" \
+            --hxehex-ip "$HXEHEX_IP_INPUT" \
+            --escapingworm "$ESCAPINGWORM_OPERATOR_INPUT"
+          # This is the existing quality report shipped both as a Release
+          # asset and in the generated release branch; no extra audit files.
+          grep -q '^PRE_PUBLICATION_V41_HARD_POLICY_GATE$' "$V41_QUALITY_REPORT"
+          {
+            echo '### Pre-publication v41 DIRECT/hard quality gate'
+            echo 'Current-build SHA-256 and routing invariants: PASS'
+            echo 'Hard-source exceptions: see geoip_RU_quality_report.txt'
+          } >> "$GITHUB_STEP_SUMMARY"
+          tail -n 17 "$V41_QUALITY_REPORT"
 
       - name: Upload v41 candidate build artifact
         if: github.ref != 'refs/heads/main'
