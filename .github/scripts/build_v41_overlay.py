@@ -13,8 +13,9 @@ import csv
 import hashlib
 import ipaddress
 import json
+import re
 from collections import defaultdict
-from datetime import datetime, timezone
+from datetime import date, datetime, timezone
 from pathlib import Path
 from typing import Iterable
 
@@ -138,6 +139,42 @@ def reviewed_operator_provenance(reviewed, source_id):
     return [{"source_id": source_id, "category": reviewed[net][0],
              "service": "", "tier": "", "asn_list": reviewed[net][1], "domains": "",
              "prefix": str(net)} for net in ordered]
+
+
+def parse_regional_admission_exclusions(path: Path):
+    """Load reviewed exact prefixes, not ASN-wide or rolling geographic exclusions."""
+    rows = {}
+    header = ["prefix", "delegated_country", "assignment_country", "origin_asn", "checked_on"]
+    with path.open(encoding="utf-8", newline="") as stream:
+        reader = csv.DictReader(stream, delimiter="\t")
+        if reader.fieldnames != header:
+            raise ValueError(f"{path}: invalid regional admission exclusions header")
+        for row in reader:
+            try:
+                prefix, delegated, assignment, asn, checked = (row[key] for key in header)
+                if None in row or not all((prefix, delegated, assignment, asn, checked)):
+                    raise ValueError
+                net = ipaddress.ip_network(prefix, strict=True)
+                if (net.version != 4 or str(net) != prefix or net.prefixlen < 16
+                        or not net.is_global or net.is_multicast
+                        or delegated not in {"RU", "BY", "KZ"}
+                        or not re.fullmatch(r"[A-Z]{2}", assignment)
+                        or assignment in {"RU", "BY", "KZ"}
+                        or not re.fullmatch(r"AS[1-9][0-9]{0,9}", asn)
+                        or int(asn[2:]) > 4294967295
+                        or date.fromisoformat(checked).isoformat() != checked
+                        or any(net.overlaps(other) for other in rows)):
+                    raise ValueError
+            except (ValueError, TypeError) as exc:
+                raise ValueError(f"{path}:{reader.line_num}: invalid regional admission exclusion") from exc
+            rows[net] = {key: row[key] for key in header}
+    return rows
+
+
+def assert_regional_admission_disjoint(ru, exclusions):
+    for v in (4, 6):
+        if intersect(intervals(ru, v), intervals(exclusions, v)):
+            raise ValueError(f"IPv{v} DIRECT intersects reviewed regional admission exclusions")
 
 
 def parse_rir_tsv(path: Path):
@@ -645,6 +682,7 @@ def main():
     parser.add_argument("--shared-infrastructure-prefixes", type=Path, required=True)
     parser.add_argument("--regional-origin-prefixes", type=Path, required=True)
     parser.add_argument("--reviewed-operator-prefixes", type=Path)
+    parser.add_argument("--regional-admission-exclusions", type=Path, required=True)
     parser.add_argument("--ipsum", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--categories", type=Path, required=True)
@@ -751,6 +789,14 @@ def main():
         prefix_rows.extend(reviewed_operator_provenance(reviewed, reviewed_source))
     # Reviewed networks contribute coverage only. They do not enter any block exemption mask.
     additions.update(reviewed)
+    admission_exclusions = parse_regional_admission_exclusions(args.regional_admission_exclusions)
+    for row in admission_exclusions.values():
+        prefix_rows.append({
+            "source_id": "regional-admission-exclusion",
+            "category": "Reviewed foreign assignment",
+            "service": row["delegated_country"] + " -> " + row["assignment_country"],
+            "tier": "", "asn_list": row["origin_asn"], "domains": "", "prefix": row["prefix"],
+        })
     preblock = base_ru | additions
     preblock_iv = {v: intervals(preblock, v) for v in (4, 6)}
     core_company_iv = {v: intervals(core_company_prefixes, v) for v in (4, 6)}
@@ -764,9 +810,14 @@ def main():
     # CIDR set difference is not address-space subtraction: e.g. removing
     # 203.0.113.128/25 from a covering 203.0.113.0/24 must retain only the /25.
     # Convert to exact intervals before subtracting PRIVATE and RKN block prefixes.
-    final = subtract_networks(preblock, private, blocked)
-    final = set(collapse(final))
-    hydra_expected = hydra_expected_after_policy(hydra_sources, private, blocked)
+    routing_exclusions = blocked | set(admission_exclusions)
+    final = set(collapse(subtract_networks(preblock, private, routing_exclusions)))
+    admission_iv = {v: intervals(admission_exclusions, v) for v in (4, 6)}
+    admission_removed = {
+        v: interval_size(intersect(subtract(subtract(preblock_iv[v], private_iv[v]), blocked_iv[v]), admission_iv[v]))
+        for v in (4, 6)
+    }
+    hydra_expected = hydra_expected_after_policy(hydra_sources, private, routing_exclusions)
     if any(subtract(intervals(hydra_expected, v), intervals(final, v)) for v in (4, 6)):
         raise ValueError("Hydra DIRECT/WHITELIST coverage missing after PRIVATE/block policy")
     final_iv = {v: intervals(final, v) for v in (4, 6)}
@@ -776,7 +827,7 @@ def main():
     for v in (4, 6):
         source_iv = intervals(additions, v)
         new_vs_base[v] = subtract(subtract(source_iv, private_iv[v]), blocked_iv[v])
-        new_vs_base[v] = subtract(new_vs_base[v], base_ru_iv[v])
+        new_vs_base[v] = subtract(subtract(new_vs_base[v], admission_iv[v]), base_ru_iv[v])
 
     # RIR prefix attribution, including country and registry. These rows are
     # separate from service-derived source provenance and do not infer geography.
@@ -788,7 +839,7 @@ def main():
             last = int(net.broadcast_address)
             overlap_base = interval_size(intersect_one_range(first, last, base_ru_iv[v]))
             after_policy = subtract_one_range(first, last, private_iv[v])
-            after_policy = subtract_ranges(after_policy, blocked_iv[v])
+            after_policy = subtract_ranges(subtract_ranges(after_policy, blocked_iv[v]), admission_iv[v])
             new_only = subtract_ranges(after_policy, base_ru_iv[v])
             rir_provenance.append({
                 "source_id":"rir-resource-"+country,
@@ -829,7 +880,7 @@ def main():
             row[f"ipv{v}_addresses"] = interval_size(src_iv)
             row[f"ipv{v}_already_in_v37"] = interval_size(intersect(src_iv, base_ru_iv[v]))
             eligible = subtract(src_iv, private_iv[v])
-            eligible = subtract(eligible, blocked_iv[v])
+            eligible = subtract(subtract(eligible, blocked_iv[v]), admission_iv[v])
             row[f"ipv{v}_new_after_policy"] = interval_size(subtract(eligible, base_ru_iv[v]))
         row.update({k:str(v) for k,v in source_stats.get(source_id,{}).items() if isinstance(v,(str,int))})
         metrics_rows.append(row)
@@ -916,15 +967,16 @@ def main():
         raise ValueError("PRIVATE precedence violation in v41")
     if any(intersect(intervals(decoded["RU"],v),blocked_iv[v]) for v in (4,6)):
         raise ValueError("Non-corporate RKN blocked destination remains in DIRECT v41")
+    assert_regional_admission_disjoint(decoded["RU"], admission_exclusions)
     for v in (4,6):
         company_expected = normalize_interval_union(
             core_company_iv[v], shared_infrastructure_iv[v], regional_only_iv[v],
             regional_resource_iv[v], service_resolver_iv[v], service_exact_iv[v],
         )
         company_expected = subtract(subtract(company_expected, private_iv[v]), blocked_iv[v])
-        company_missing = subtract(company_expected, final_iv[v])
+        company_missing = subtract(subtract(company_expected, admission_iv[v]), final_iv[v])
         if company_missing:
-            raise ValueError(f"Class-aware company-ASN coverage lost in IPv{v} beyond PRIVATE/hard-block precedence")
+            raise ValueError(f"Class-aware company-ASN coverage lost in IPv{v} beyond PRIVATE/hard-block/admission precedence")
 
     with args.metrics.open("w",encoding="utf-8",newline="") as f:
         fields = sorted({k for row in metrics_rows for k in row})
@@ -967,7 +1019,9 @@ def main():
         "v41 GeoIP SHA-256: "+sha256(payload),
         "",
         "POLICY",
-        "- RU+BY+KZ registered resource prefixes and named service destinations are DIRECT regardless of geolocation.",
+        "- Regional registration and service sources remain DIRECT except for explicitly reviewed admission conflicts.",
+        "- Regional admission exclusions (not RKN): " + ", ".join(row["prefix"] for row in admission_exclusions.values()),
+        f"- IPv4 removed by regional admission exclusions after PRIVATE and block policy: {admission_removed[4]}",
         "- PRIVATE has absolute precedence.",
         "- CORE_CORPORATE exact origin prefixes are protected from the resolver layer only.",
         "- SHARED_INFRA exact origin prefixes are protected only against the resolver-only layer.",
@@ -1058,6 +1112,10 @@ def main():
         "sources":SOURCE_REFS,
         "telegram_official": {"cidrs": len(telegram), "input_sha256": sha256(PINNED_FEED.read_bytes())},
         "rir_inventory":{"rows":rir_rows,"countries":{c:len(rir[c]) for c in ("RU","BY","KZ")}},
+        "regional_admission_exclusions": {
+            "records": list(admission_exclusions.values()),
+            "removed_after_block_policy": {f"ipv{v}": count for v, count in admission_removed.items()},
+        },
         "service_sources":source_stats,
         "hydra_routing_intent": {
             "direct_cidrs": len(hydra_sources["hydra-direct"]),
@@ -1140,6 +1198,7 @@ def main():
             "base_v37_geoip":sha256(args.base.read_bytes()),
             "hydra_geoip":sha256(args.hydra.read_bytes()),
             "regional_rir_inventory":sha256(args.rir.read_bytes()),
+            "regional_admission_exclusions":sha256(args.regional_admission_exclusions.read_bytes()),
             "kyoresuas_standard_ipv4":sha256(args.kyoresuas_v4.read_bytes()),
             "kyoresuas_standard_ipv6":sha256(args.kyoresuas_v6.read_bytes()),
             "kyoresuas_services_json":sha256(args.kyoresuas_services.read_bytes()),

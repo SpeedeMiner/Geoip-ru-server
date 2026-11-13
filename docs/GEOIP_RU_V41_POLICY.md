@@ -48,3 +48,10 @@ All received but unverified `RPKI/RDAP/IRR` audit candidates remain review-only.
 ## Publication boundary
 
 The existing v41 production workflow runs on main pushes and a daily schedule. This Hydra change is isolated in a PR: production remains unchanged until reviewed and merged. The released v41 tag remains available as a rollback point; publication of the expanded dataset requires a green candidate and explicit address-delta review.
+
+## Reviewed regional admission conflicts
+
+The v41 overlay excludes exact IPv4 prefixes in [the reviewed admission table](../.github/data/v41-regional-admission-exclusions.tsv) from the emitted RU category after candidate assembly. This does not modify RIR inventories, select or reject an entire ASN, add an output category, or alter RKN, Telegram or resolver block inputs and masks. The list is local and reviewed. It is not populated by a country feed or automated geographic filtering. A regional parent allocation alone is not enough for the listed cases because exact or more-specific assignment records and the observed origin point outside the region.
+
+- `185.49.68.0/22` has BY delegated registration. Its six [more-specific RIPE assignments](https://rdap.db.ripe.net/ip/185.49.70.0/25) cover the whole block and show DE. [RIPE RIS](https://stat.ripe.net/data/routing-status/data.json?resource=185.49.68.0%2F22) sees AS28753 for the /22 and all four /24s.
+- `185.17.120.0/22` and `195.54.32.0/23` have RU delegated registration. Their exact [RDAP /22](https://rdap.db.ripe.net/ip/185.17.120.0/22) and [RDAP /23](https://rdap.db.ripe.net/ip/195.54.32.0/23) objects show DE and [RIPE RIS](https://stat.ripe.net/data/prefix-overview/data.json?resource=195.54.32.0%2F23) observes AS28753 for the /23, as for the /22. This is prefix-specific operational evidence, not physical geolocation of every IP.

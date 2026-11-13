@@ -31,6 +31,7 @@ on:
       - ".github/scripts/prepare_blocked_sources_v41.py"
       - ".github/data/v41-reviewed-rkn-ip-records.tsv"
       - ".github/data/v41-reviewed-operator-prefixes.tsv"
+      - ".github/data/v41-regional-admission-exclusions.tsv"
       - ".github/scripts/validate_v41_overlay.py"
       - ".github/scripts/validate_v41_release_gate.py"
       - ".github/scripts/validate_v41_telegram.py"
@@ -296,6 +297,7 @@ jobs:
             --core-company-prefixes "$CORE_COMPANY_PREFIXES" \
             --shared-infrastructure-prefixes "$SHARED_INFRASTRUCTURE_PREFIXES" \
             --regional-origin-prefixes "$REGIONAL_ORIGIN_PREFIXES" \
+            --regional-admission-exclusions .github/data/v41-regional-admission-exclusions.tsv \
             --reviewed-operator-prefixes .github/data/v41-reviewed-operator-prefixes.tsv \
             --ipsum "$BLOCKED_IPSUM_INPUT" \
             --output "$V41_OUTPUT_FILE" \
@@ -357,6 +359,7 @@ jobs:
             --w1zardz "$W1ZARDZ_INPUT" \
             --hxehex-ip "$HXEHEX_IP_INPUT" \
             --escapingworm "$ESCAPINGWORM_OPERATOR_INPUT" \
+            --regional-admission-exclusions .github/data/v41-regional-admission-exclusions.tsv \
             --effective-blocked "$V41_BLOCKED_FILE" \
             --manifest "$V41_MANIFEST" \
             --quality "$V41_QUALITY_REPORT" \
@@ -404,6 +407,7 @@ jobs:
             --hard "$BLOCKED_IP_EXACT_INPUT" \
             --current-subnet-feed "$BLOCKED_SUBNET_INPUT" \
             --confirmed-ip-records .github/data/v41-reviewed-rkn-ip-records.tsv \
+            --regional-admission-exclusions .github/data/v41-regional-admission-exclusions.tsv \
             --effective "$V41_BLOCKED_FILE" \
             --core "$CORE_COMPANY_PREFIXES" \
             --shared "$SHARED_INFRASTRUCTURE_PREFIXES" \

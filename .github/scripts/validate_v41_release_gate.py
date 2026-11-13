@@ -24,6 +24,7 @@ SOURCE_KEYS = {
     "core": "corporate_core_prefixes",
     "shared": "shared_infrastructure_prefixes",
     "rir": "regional_rir_inventory",
+    "regional_admission_exclusions": "regional_admission_exclusions",
     "kyoresuas_v4": "kyoresuas_standard_ipv4",
     "kyoresuas_v6": "kyoresuas_standard_ipv6",
     "kyoresuas_services": "kyoresuas_services_json",
@@ -195,6 +196,7 @@ def main() -> int:
         p.add_argument("--" + field.replace("_", "-"), type=Path, required=True)
     p.add_argument("--current-subnet-feed", type=Path, required=True)
     p.add_argument("--confirmed-ip-records", type=Path, required=True)
+    p.add_argument("--regional-admission-exclusions", type=Path, required=True)
     a = p.parse_args()
     try:
         manifest = json.loads(a.manifest.read_text(encoding="utf-8"))
@@ -202,6 +204,8 @@ def main() -> int:
         categories = builder.parse_geoip_dat(a.geoip)
         if set(categories) != {"RU", "PRIVATE"}:
             raise ValueError("Expected GeoIP categories RU and PRIVATE only")
+        admission = builder.parse_regional_admission_exclusions(a.regional_admission_exclusions)
+        builder.assert_regional_admission_disjoint(categories["RU"], admission)
         effective = builder.parse_cidr_file(a.effective)[0]
         core = builder.parse_cidr_file(a.core, allow_hosts=False)[0]
         shared = builder.parse_cidr_file(a.shared, allow_hosts=False)[0]

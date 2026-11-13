@@ -62,11 +62,14 @@ def validate(args: argparse.Namespace) -> dict:
     if output_blocked != effective:
         raise ValueError("Published v41 effective block output differs from the class-aware policy calculation")
 
+    admission = builder.parse_regional_admission_exclusions(args.regional_admission_exclusions)
+    builder.assert_regional_admission_disjoint(decoded["RU"], admission)
     for version in (4, 6):
         ru_iv = builder.intervals(decoded["RU"], version)
         private_iv = builder.intervals(decoded["PRIVATE"], version)
         blocked_iv = builder.intervals(output_blocked, version)
         exact_iv = builder.intervals(blocked_exact | telegram, version)
+        admission_iv = builder.intervals(admission, version)
         core_iv = builder.intervals(company_core, version)
         shared_iv = builder.intervals(shared, version)
         regional_iv = builder.intervals(regional_only | regional_resources, version)
@@ -77,22 +80,22 @@ def validate(args: argparse.Namespace) -> dict:
             raise ValueError(f"RU intersects effective blocked set in IPv{version}")
 
         core_expected = builder.subtract(core_iv, private_iv)
-        core_missing = builder.subtract(builder.subtract(core_expected, exact_iv), ru_iv)
+        core_missing = builder.subtract(builder.subtract(builder.subtract(core_expected, exact_iv), admission_iv), ru_iv)
         if core_missing:
             raise ValueError(f"CORE_CORPORATE prefix coverage lost in IPv{version}")
 
         shared_expected = builder.subtract(shared_iv, private_iv)
         shared_expected = builder.subtract(shared_expected, exact_iv)
-        shared_missing = builder.subtract(shared_expected, ru_iv)
+        shared_missing = builder.subtract(builder.subtract(shared_expected, admission_iv), ru_iv)
         if shared_missing:
             raise ValueError(f"SHARED_INFRA resolver-only protection coverage lost in IPv{version}")
         regional_expected = builder.subtract(regional_iv, private_iv)
         regional_expected = builder.subtract(regional_expected, exact_iv)
-        if builder.subtract(regional_expected, ru_iv):
+        if builder.subtract(builder.subtract(regional_expected, admission_iv), ru_iv):
             raise ValueError(f"RIR RU+BY+KZ selected origin resolver-only protection lost in IPv{version}")
         service_expected = builder.subtract(service_resolver_iv, private_iv)
         service_expected = builder.subtract(service_expected, exact_iv)
-        if builder.subtract(service_expected, ru_iv):
+        if builder.subtract(builder.subtract(service_expected, admission_iv), ru_iv):
             raise ValueError(f"Verified RU service protection lost in IPv{version}")
 
         # A shared provider may overlap an exact/legacy hard block, but no
@@ -105,12 +108,15 @@ def validate(args: argparse.Namespace) -> dict:
     # Independent full set inclusion check: all Hydra DIRECT/WHITELIST entries
     # must survive except PRIVATE and the effective v41 blocked set.
     hydra_sources = builder.parse_hydra_direct_whitelist(args.hydra)
-    expected_hydra = builder.hydra_expected_after_policy(hydra_sources, decoded["PRIVATE"], output_blocked)
+    expected_hydra = builder.hydra_expected_after_policy(hydra_sources, decoded["PRIVATE"], output_blocked | set(admission))
     for version in (4, 6):
         if builder.subtract(builder.intervals(expected_hydra, version), builder.intervals(decoded["RU"], version)):
             raise ValueError(f"Hydra DIRECT/WHITELIST IPv{version} eligible coverage missing")
 
     manifest = json.loads(args.manifest.read_text(encoding="utf-8"))
+    if (manifest.get("input_sha256", {}).get("regional_admission_exclusions") != sha256(args.regional_admission_exclusions)
+            or manifest.get("regional_admission_exclusions", {}).get("records") != list(admission.values())):
+        raise ValueError("Regional admission exclusion provenance mismatch")
     if manifest.get("input_sha256", {}).get("hydra_geoip") != sha256(args.hydra):
         raise ValueError("Hydra input SHA-256 mismatch")
     if manifest.get("hydra_routing_intent", {}).get("input_sha256") != sha256(args.hydra):
@@ -203,7 +209,7 @@ def main() -> int:
         "company_all", "company_core", "company_shared", "regional_origin_prefixes",
         "kyoresuas_v4", "kyoresuas_v6", "kyoresuas_services", "w1zardz",
         "hxehex_ip", "escapingworm", "effective_blocked",
-        "manifest", "quality", "rir",
+        "manifest", "quality", "rir", "regional_admission_exclusions",
     ):
         parser.add_argument("--" + name.replace("_", "-"), type=Path, required=True)
     args = parser.parse_args()
