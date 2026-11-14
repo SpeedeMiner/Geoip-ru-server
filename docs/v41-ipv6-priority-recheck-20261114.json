@@ -1,0 +1,1929 @@
+{
+  "priority": {
+    "as-overview:200625": {
+      "url": "https://stat.ripe.net/data/as-overview/data.json?resource=AS200625",
+      "http": 200,
+      "sha256": "c9ded1a51eaf2c70516f04c63276bda627278d25f3a2c41189b7164cc8e3b582",
+      "data": {
+        "type": "as",
+        "resource": "200625",
+        "block": {
+          "resource": "200192-201215",
+          "desc": "Assigned by RIPE NCC",
+          "name": "IANA 32-bit Autonomous System (AS) Numbers Registry"
+        },
+        "holder": "MA-P-NET Maciej Peczyk",
+        "announced": true,
+        "query_starttime": "2026-11-14T00:00:00",
+        "query_endtime": "2026-11-14T00:00:00"
+      }
+    },
+    "as-overview:205563": {
+      "url": "https://stat.ripe.net/data/as-overview/data.json?resource=AS205563",
+      "http": 200,
+      "sha256": "89b7f116d11c2d27e6c7e377bc57679eae4430e9948e277d1d2b7fbb752f8163",
+      "data": {
+        "type": "as",
+        "resource": "205563",
+        "block": {
+          "resource": "205212-206235",
+          "desc": "Assigned by RIPE NCC",
+          "name": "IANA 32-bit Autonomous System (AS) Numbers Registry"
+        },
+        "holder": "zGato Marc Gomez",
+        "announced": true,
+        "query_starttime": "2026-11-14T00:00:00",
+        "query_endtime": "2026-11-14T00:00:00"
+      }
+    },
+    "as-overview:3327": {
+      "url": "https://stat.ripe.net/data/as-overview/data.json?resource=AS3327",
+      "http": 200,
+      "sha256": "f62d8fbb82c05d3fcd4993ba81ff5558941be381853520174fb5889916eaa51f",
+      "data": {
+        "type": "as",
+        "resource": "3327",
+        "block": {
+          "resource": "3154-3353",
+          "desc": "Assigned by RIPE NCC",
+          "name": "IANA 16-bit Autonomous System (AS) Numbers Registry"
+        },
+        "holder": "CITIC CITIC Telecom CPC Netherlands B.V.",
+        "announced": true,
+        "query_starttime": "2026-11-14T00:00:00",
+        "query_endtime": "2026-11-14T00:00:00"
+      }
+    },
+    "citic-history": {
+      "url": "https://stat.ripe.net/data/routing-history/data.json?resource=2001%3Aad0%3A%3A%2F32&starttime=2026-08-16T00%3A00%3A00&endtime=2026-11-14T00%3A00%3A00&min_peers=1",
+      "sha256": "c3759bcf2518c62885e72dada785e103698c937071bd0a4736711383be299725",
+      "http": 200,
+      "query_starttime": "2026-08-16T00:00:00",
+      "query_endtime": "2026-11-14T00:00:00",
+      "routes": [
+        {
+          "asn": "3327",
+          "prefix": "2001:ad0::/32",
+          "first_seen": "2026-08-16T00:00:00",
+          "last_seen": "2026-11-14T00:00:00",
+          "timeline_intervals": 44
+        },
+        {
+          "asn": "3327",
+          "prefix": "2001:ad0:5000::/40",
+          "first_seen": "2026-08-16T00:00:00",
+          "last_seen": "2026-11-14T00:00:00",
+          "timeline_intervals": 44
+        },
+        {
+          "asn": "25145",
+          "prefix": "2000::/3",
+          "first_seen": "2026-08-24T16:00:00",
+          "last_seen": "2026-08-25T15:59:59",
+          "timeline_intervals": 1
+        },
+        {
+          "asn": "29632",
+          "prefix": "2000::/6",
+          "first_seen": "2026-08-16T00:00:00",
+          "last_seen": "2026-11-14T00:00:00",
+          "timeline_intervals": 1
+        },
+        {
+          "asn": "39249",
+          "prefix": "2000::/6",
+          "first_seen": "2026-08-16T00:00:00",
+          "last_seen": "2026-08-26T15:59:59",
+          "timeline_intervals": 2
+        }
+      ]
+    },
+    "citic-parent": {
+      "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=2001%3Aad0%3A%3A%2F32&timestamp=2026-11-14T08%3A00%3A00",
+      "http": 200,
+      "sha256": "b707b385dbfd426b5fb8f3cabe4f05080b51000b661079af251895eda50861d2",
+      "data": {
+        "timestamp": "2026-11-14T07:59:49",
+        "origins": [
+          {
+            "prefix": "2001:ad0::/32",
+            "asn": 3327,
+            "paths": 341
+          }
+        ]
+      }
+    },
+    "citic-registry": {
+      "url": "https://stat.ripe.net/data/whois/data.json?resource=2001%3Aad0%3Acff%3A%3A%2F48",
+      "http": 200,
+      "sha256": "ac0fcb8a938dc66c38a796eeb470f03d6b9ea624c2ee6abbe51cdbbbdfcfcadb",
+      "data": [
+        [
+          {
+            "key": "inet6num",
+            "value": "2001:ad0:c00::/40"
+          },
+          {
+            "key": "netname",
+            "value": "LINX-NETWORK-INFRA"
+          },
+          {
+            "key": "descr",
+            "value": "CITIC Telecom CPC network infrastructure"
+          },
+          {
+            "key": "country",
+            "value": "EE"
+          },
+          {
+            "key": "country",
+            "value": "DE"
+          },
+          {
+            "key": "country",
+            "value": "SE"
+          },
+          {
+            "key": "country",
+            "value": "RU"
+          },
+          {
+            "key": "country",
+            "value": "LT"
+          },
+          {
+            "key": "country",
+            "value": "LV"
+          },
+          {
+            "key": "country",
+            "value": "PL"
+          },
+          {
+            "key": "country",
+            "value": "FI"
+          },
+          {
+            "key": "country",
+            "value": "NL"
+          },
+          {
+            "key": "country",
+            "value": "GE"
+          },
+          {
+            "key": "country",
+            "value": "GB"
+          },
+          {
+            "key": "status",
+            "value": "AGGREGATED-BY-LIR"
+          },
+          {
+            "key": "assignment-size",
+            "value": "48"
+          },
+          {
+            "key": "last-modified",
+            "value": "2019-06-14T08:00:35Z"
+          },
+          {
+            "key": "source",
+            "value": "RIPE"
+          }
+        ]
+      ]
+    },
+    "citic-rpki": {
+      "url": "https://stat.ripe.net/data/rpki-validation/data.json?resource=AS3327&prefix=2001%3Aad0%3A%3A%2F32",
+      "http": 200,
+      "sha256": "06f0a285bd29c151c220e73dfdab4edd2c0ffcd359193c3aaa8684e0fd116d57",
+      "data": {
+        "resource": "3327",
+        "prefix": "2001:ad0::/32",
+        "validating_roas": [
+          {
+            "origin": "3327",
+            "prefix": "2001:ad0::/32",
+            "validity": "valid",
+            "max_length": 32
+          }
+        ],
+        "status": "valid",
+        "validator": "routinator"
+      }
+    },
+    "dns:as200625.net": {
+      "url": "https://dns.google/resolve?name=as200625.net&type=A&do=true",
+      "http": 200,
+      "sha256": "9a9c8fe69033a62cc7a4b87afa23e71240e2152b87f95d16c5f21e9c0932d3d9",
+      "data": {
+        "Status": 2,
+        "AD": false,
+        "Question": [
+          {
+            "name": "as200625.net.",
+            "type": 1
+          }
+        ],
+        "Answer": null,
+        "Authority": null
+      }
+    },
+    "dns:data.ee": {
+      "url": "https://dns.google/resolve?name=data.ee&type=A&do=true",
+      "http": 200,
+      "sha256": "0b1b37b55cfdad367d25153d920c9a186389604849f43625be45d4b812e0a926",
+      "data": {
+        "Status": 0,
+        "AD": false,
+        "Question": [
+          {
+            "name": "data.ee.",
+            "type": 1
+          }
+        ],
+        "Answer": null,
+        "Authority": [
+          {
+            "name": "data.ee.",
+            "type": 6,
+            "TTL": 1800,
+            "data": "ns.eunet.ee. hostmaster.eunet.ee. 2026093000 28800 7200 604800 86400"
+          }
+        ]
+      }
+    },
+    "dns:gf.data.ee": {
+      "url": "https://dns.google/resolve?name=gf.data.ee&type=A&do=true",
+      "http": 200,
+      "sha256": "2da73e7894d22cb35da1a3962d4dedf52d3575b1755eb9cb5f3b4a8b8edc687a",
+      "data": {
+        "Status": 0,
+        "AD": false,
+        "Question": [
+          {
+            "name": "gf.data.ee.",
+            "type": 1
+          }
+        ],
+        "Answer": [
+          {
+            "name": "gf.data.ee.",
+            "type": 1,
+            "TTL": 21600,
+            "data": "195.222.0.7"
+          }
+        ],
+        "Authority": null
+      }
+    },
+    "dns:perfprod.com": {
+      "url": "https://dns.google/resolve?name=perfprod.com&type=A&do=true",
+      "http": 200,
+      "sha256": "29667bb8a83000f53f512cb7c174d061b15d31e28f6ee7ab6d46e356afb0e988",
+      "data": {
+        "Status": 0,
+        "AD": false,
+        "Question": [
+          {
+            "name": "perfprod.com.",
+            "type": 1
+          }
+        ],
+        "Answer": [
+          {
+            "name": "perfprod.com.",
+            "type": 1,
+            "TTL": 300,
+            "data": "104.21.79.247"
+          },
+          {
+            "name": "perfprod.com.",
+            "type": 1,
+            "TTL": 300,
+            "data": "172.67.150.83"
+          }
+        ],
+        "Authority": null
+      }
+    },
+    "dns:www.data.ee": {
+      "url": "https://dns.google/resolve?name=www.data.ee&type=A&do=true",
+      "http": 200,
+      "sha256": "8fdbabc0d53ae3a29017d666f3b9c13908ca7a7b715fa7a3f43ade44c2fcf3ae",
+      "data": {
+        "Status": 0,
+        "AD": false,
+        "Question": [
+          {
+            "name": "www.data.ee.",
+            "type": 1
+          }
+        ],
+        "Answer": [
+          {
+            "name": "www.data.ee.",
+            "type": 5,
+            "TTL": 21600,
+            "data": "www.linxtelecom.com."
+          },
+          {
+            "name": "www.linxtelecom.com.",
+            "type": 1,
+            "TTL": 300,
+            "data": "195.222.0.9"
+          }
+        ],
+        "Authority": null
+      }
+    },
+    "dns:www.perfprod.com": {
+      "url": "https://dns.google/resolve?name=www.perfprod.com&type=A&do=true",
+      "http": 200,
+      "sha256": "ca86c6aa21964b46f4b2d07d731d2ae33d35b9bdc8b2c62e95666394bba63d2f",
+      "data": {
+        "Status": 0,
+        "AD": false,
+        "Question": [
+          {
+            "name": "www.perfprod.com.",
+            "type": 1
+          }
+        ],
+        "Answer": [
+          {
+            "name": "www.perfprod.com.",
+            "type": 1,
+            "TTL": 300,
+            "data": "172.67.150.83"
+          },
+          {
+            "name": "www.perfprod.com.",
+            "type": 1,
+            "TTL": 300,
+            "data": "104.21.79.247"
+          }
+        ],
+        "Authority": null
+      }
+    },
+    "dns:zgato.net": {
+      "url": "https://dns.google/resolve?name=zgato.net&type=A&do=true",
+      "http": 200,
+      "sha256": "459c5d7078cfcf826241525d37d9d7868bb50e72eb9461d88ad78d24c4644832",
+      "data": {
+        "Status": 3,
+        "AD": false,
+        "Question": [
+          {
+            "name": "zgato.net.",
+            "type": 1
+          }
+        ],
+        "Answer": null,
+        "Authority": [
+          {
+            "name": "net.",
+            "type": 6,
+            "TTL": 900,
+            "data": "a.gtld-servers.net. nstld.verisign-grs.com. 1794655686 1800 900 604800 900"
+          },
+          {
+            "name": "net.",
+            "type": 46,
+            "TTL": 900,
+            "data": "soa 13 1 900 1795260486 1794651486 3840 net. snQaU3mxdGQtmDw52wZmszVjQ/QjGCOKIq7kNM+PnBGMZqRFSjuhEIuJutz7wP++06uK+4FQN4sB0afDp/hG5A=="
+          },
+          {
+            "name": "A1RT98BS5QGC9NFI51S9HCI47ULJG6JH.net.",
+            "type": 50,
+            "TTL": 900,
+            "data": "1 1 0 - A1RTLNPGULOGN7B9A62SHJE1U3TTP8DR NS SOA RRSIG DNSKEY NSEC3PARAM"
+          },
+          {
+            "name": "A1RT98BS5QGC9NFI51S9HCI47ULJG6JH.net.",
+            "type": 46,
+            "TTL": 900,
+            "data": "nsec3 13 2 900 1794974566 1794365566 3840 net. LwkC9Lt9lVYnml/aJ9iUH4++kY+TXiO1mulnnJQ1zso1sOnfWJkHVRpJbZJLK3z80nWxa5ex5NfB1fzuhtgatg=="
+          },
+          {
+            "name": "05RLNV0H67RFLT0M48MLEUEVQ923C5S4.net.",
+            "type": 50,
+            "TTL": 900,
+            "data": "1 1 0 - 05RMIK63ED1GQ8CLKAB2J5V77KS8C949 NS DS RRSIG"
+          },
+          {
+            "name": "05RLNV0H67RFLT0M48MLEUEVQ923C5S4.net.",
+            "type": 46,
+            "TTL": 900,
+            "data": "nsec3 13 2 900 1795234260 1794625260 3840 net. V8DYM0eKdEDO9fo2yK1cm9NklR4fji2/+4fmbn9JWJ8swCyCKhf2w+/7cly3PtbvB53UUlO1rc3BNXqCLujQbw=="
+          },
+          {
+            "name": "EEQ7FCTPKIC8JM4K2P8O7FN33R4RKQM7.net.",
+            "type": 50,
+            "TTL": 900,
+            "data": "1 1 0 - EEQDD204UP05K12R8FHD5QTEUL4VVFIJ NS DS RRSIG"
+          },
+          {
+            "name": "EEQ7FCTPKIC8JM4K2P8O7FN33R4RKQM7.net.",
+            "type": 46,
+            "TTL": 900,
+            "data": "nsec3 13 2 900 1795233987 1794624987 3840 net. 9dC6fqaela/Qe52KtEv3gxnPAGybb0et+9RVIxoNIIK6CjWe/ZeoPW5VpfpnuPjcMccOdESt520/4HNsPQEYPQ=="
+          }
+        ]
+      }
+    },
+    "hist:2001:3786:2929:600::/56": {
+      "url": "https://stat.ripe.net/data/routing-history/data.json?resource=2001%3A3786%3A2929%3A600%3A%3A%2F56&starttime=2026-08-16T00%3A00%3A00&endtime=2026-11-14T00%3A00%3A00&min_peers=1",
+      "sha256": "d6ff459b825004a1a8527fe56800dae883d23611da3bd3666086a4ae51a1f021",
+      "http": 200,
+      "query_starttime": "2026-08-16T00:00:00",
+      "query_endtime": "2026-11-14T00:00:00",
+      "routes": [
+        {
+          "asn": "25145",
+          "prefix": "2000::/3",
+          "first_seen": "2026-08-24T16:00:00",
+          "last_seen": "2026-08-25T15:59:59",
+          "timeline_intervals": 1
+        },
+        {
+          "asn": "29632",
+          "prefix": "2000::/6",
+          "first_seen": "2026-08-16T00:00:00",
+          "last_seen": "2026-11-14T00:00:00",
+          "timeline_intervals": 1
+        },
+        {
+          "asn": "39249",
+          "prefix": "2000::/6",
+          "first_seen": "2026-08-16T00:00:00",
+          "last_seen": "2026-08-26T15:59:59",
+          "timeline_intervals": 2
+        },
+        {
+          "asn": "205563",
+          "prefix": "2001:3786:2929::/48",
+          "first_seen": "2026-09-01T00:00:00",
+          "last_seen": "2026-11-14T00:00:00",
+          "timeline_intervals": 27
+        }
+      ]
+    },
+    "hist:2001:3786:2929::/48": {
+      "url": "https://stat.ripe.net/data/routing-history/data.json?resource=2001%3A3786%3A2929%3A%3A%2F48&starttime=2026-08-16T00%3A00%3A00&endtime=2026-11-14T00%3A00%3A00&min_peers=1",
+      "sha256": "41c114b2ca13864153fcf29d3fd6e8dcd916efa6452f7a030a00d17818649049",
+      "http": 200,
+      "query_starttime": "2026-08-16T00:00:00",
+      "query_endtime": "2026-11-14T00:00:00",
+      "routes": [
+        {
+          "asn": "25145",
+          "prefix": "2000::/3",
+          "first_seen": "2026-08-24T16:00:00",
+          "last_seen": "2026-08-25T15:59:59",
+          "timeline_intervals": 1
+        },
+        {
+          "asn": "29632",
+          "prefix": "2000::/6",
+          "first_seen": "2026-08-16T00:00:00",
+          "last_seen": "2026-11-14T00:00:00",
+          "timeline_intervals": 1
+        },
+        {
+          "asn": "39249",
+          "prefix": "2000::/6",
+          "first_seen": "2026-08-16T00:00:00",
+          "last_seen": "2026-08-26T15:59:59",
+          "timeline_intervals": 2
+        },
+        {
+          "asn": "205563",
+          "prefix": "2001:3786:2929::/48",
+          "first_seen": "2026-09-01T00:00:00",
+          "last_seen": "2026-11-14T00:00:00",
+          "timeline_intervals": 27
+        }
+      ]
+    },
+    "hist:2001:3786:5002:300::/56": {
+      "url": "https://stat.ripe.net/data/routing-history/data.json?resource=2001%3A3786%3A5002%3A300%3A%3A%2F56&starttime=2026-08-16T00%3A00%3A00&endtime=2026-11-14T00%3A00%3A00&min_peers=1",
+      "sha256": "9ab5506bad9515d6eb8188d3a254673d3620cec744299c2dd38d9e301798cbd0",
+      "http": 200,
+      "query_starttime": "2026-08-16T00:00:00",
+      "query_endtime": "2026-11-14T00:00:00",
+      "routes": [
+        {
+          "asn": "25145",
+          "prefix": "2000::/3",
+          "first_seen": "2026-08-24T16:00:00",
+          "last_seen": "2026-08-25T15:59:59",
+          "timeline_intervals": 1
+        },
+        {
+          "asn": "29632",
+          "prefix": "2000::/6",
+          "first_seen": "2026-08-16T00:00:00",
+          "last_seen": "2026-11-14T00:00:00",
+          "timeline_intervals": 1
+        },
+        {
+          "asn": "39249",
+          "prefix": "2000::/6",
+          "first_seen": "2026-08-16T00:00:00",
+          "last_seen": "2026-08-26T15:59:59",
+          "timeline_intervals": 2
+        },
+        {
+          "asn": "205563",
+          "prefix": "2001:3786:5002::/48",
+          "first_seen": "2026-10-13T16:00:00",
+          "last_seen": "2026-11-14T00:00:00",
+          "timeline_intervals": 15
+        }
+      ]
+    },
+    "hist:2001:3786:5002::/48": {
+      "url": "https://stat.ripe.net/data/routing-history/data.json?resource=2001%3A3786%3A5002%3A%3A%2F48&starttime=2026-08-16T00%3A00%3A00&endtime=2026-11-14T00%3A00%3A00&min_peers=1",
+      "sha256": "2fdd866ae265880e16254c9300058e5d657d5d778620aa2fe10c7dcb8514617f",
+      "http": 200,
+      "query_starttime": "2026-08-16T00:00:00",
+      "query_endtime": "2026-11-14T00:00:00",
+      "routes": [
+        {
+          "asn": "25145",
+          "prefix": "2000::/3",
+          "first_seen": "2026-08-24T16:00:00",
+          "last_seen": "2026-08-25T15:59:59",
+          "timeline_intervals": 1
+        },
+        {
+          "asn": "29632",
+          "prefix": "2000::/6",
+          "first_seen": "2026-08-16T00:00:00",
+          "last_seen": "2026-11-14T00:00:00",
+          "timeline_intervals": 1
+        },
+        {
+          "asn": "39249",
+          "prefix": "2000::/6",
+          "first_seen": "2026-08-16T00:00:00",
+          "last_seen": "2026-08-26T15:59:59",
+          "timeline_intervals": 2
+        },
+        {
+          "asn": "205563",
+          "prefix": "2001:3786:5002::/48",
+          "first_seen": "2026-10-13T16:00:00",
+          "last_seen": "2026-11-14T00:00:00",
+          "timeline_intervals": 15
+        }
+      ]
+    },
+    "hist:2001:3786:5005:600::/56": {
+      "url": "https://stat.ripe.net/data/routing-history/data.json?resource=2001%3A3786%3A5005%3A600%3A%3A%2F56&starttime=2026-08-16T00%3A00%3A00&endtime=2026-11-14T00%3A00%3A00&min_peers=1",
+      "sha256": "a39aaa01088e43192d42ee712a4b92547b84fee000f74886470f8477e20c1808",
+      "http": 200,
+      "query_starttime": "2026-08-16T00:00:00",
+      "query_endtime": "2026-11-14T00:00:00",
+      "routes": [
+        {
+          "asn": "25145",
+          "prefix": "2000::/3",
+          "first_seen": "2026-08-24T16:00:00",
+          "last_seen": "2026-08-25T15:59:59",
+          "timeline_intervals": 1
+        },
+        {
+          "asn": "29632",
+          "prefix": "2000::/6",
+          "first_seen": "2026-08-16T00:00:00",
+          "last_seen": "2026-11-14T00:00:00",
+          "timeline_intervals": 1
+        },
+        {
+          "asn": "39249",
+          "prefix": "2000::/6",
+          "first_seen": "2026-08-16T00:00:00",
+          "last_seen": "2026-08-26T15:59:59",
+          "timeline_intervals": 2
+        },
+        {
+          "asn": "205563",
+          "prefix": "2001:3786:5005::/48",
+          "first_seen": "2026-08-28T16:00:00",
+          "last_seen": "2026-11-14T00:00:00",
+          "timeline_intervals": 34
+        }
+      ]
+    },
+    "hist:2001:3786:5005::/48": {
+      "url": "https://stat.ripe.net/data/routing-history/data.json?resource=2001%3A3786%3A5005%3A%3A%2F48&starttime=2026-08-16T00%3A00%3A00&endtime=2026-11-14T00%3A00%3A00&min_peers=1",
+      "sha256": "dbe867b5548e81aedb8b39006ab347f54fa6bd49d9ee0b8761f2d698acfaf959",
+      "http": 200,
+      "query_starttime": "2026-08-16T00:00:00",
+      "query_endtime": "2026-11-14T00:00:00",
+      "routes": [
+        {
+          "asn": "25145",
+          "prefix": "2000::/3",
+          "first_seen": "2026-08-24T16:00:00",
+          "last_seen": "2026-08-25T15:59:59",
+          "timeline_intervals": 1
+        },
+        {
+          "asn": "29632",
+          "prefix": "2000::/6",
+          "first_seen": "2026-08-16T00:00:00",
+          "last_seen": "2026-11-14T00:00:00",
+          "timeline_intervals": 1
+        },
+        {
+          "asn": "39249",
+          "prefix": "2000::/6",
+          "first_seen": "2026-08-16T00:00:00",
+          "last_seen": "2026-08-26T15:59:59",
+          "timeline_intervals": 2
+        },
+        {
+          "asn": "205563",
+          "prefix": "2001:3786:5005::/48",
+          "first_seen": "2026-08-28T16:00:00",
+          "last_seen": "2026-11-14T00:00:00",
+          "timeline_intervals": 34
+        }
+      ]
+    },
+    "peeringdb:200625": {
+      "url": "https://www.peeringdb.com/api/net?asn=200625",
+      "error": "<urlopen error _ssl.c:993: The handshake operation timed out>"
+    },
+    "peeringdb:205563": {
+      "url": "https://www.peeringdb.com/api/net?asn=205563",
+      "error": "<urlopen error _ssl.c:993: The handshake operation timed out>"
+    },
+    "peeringdb:3327": {
+      "url": "https://www.peeringdb.com/api/net?asn=3327",
+      "error": "<urlopen error _ssl.c:993: The handshake operation timed out>"
+    },
+    "ptr:2001:ad0:cff::18": {
+      "url": "https://dns.google/resolve?name=8.1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.f.f.c.0.0.d.a.0.1.0.0.2.ip6.arpa&type=PTR&do=true",
+      "http": 200,
+      "sha256": "c380e98b340c95457ad512541416327657d059342629886a887541261ded6a87",
+      "data": {
+        "Status": 0,
+        "AD": false,
+        "Question": [
+          {
+            "name": "8.1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.f.f.c.0.0.d.a.0.1.0.0.2.ip6.arpa.",
+            "type": 12
+          }
+        ],
+        "Answer": [
+          {
+            "name": "8.1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.f.f.c.0.0.d.a.0.1.0.0.2.ip6.arpa.",
+            "type": 12,
+            "TTL": 21600,
+            "data": "r8-lo0-0-Mow-M9-RU.bb.citictel-cpc.com."
+          }
+        ],
+        "Authority": null
+      }
+    },
+    "ptr:2001:ad0:cff::19": {
+      "url": "https://dns.google/resolve?name=9.1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.f.f.c.0.0.d.a.0.1.0.0.2.ip6.arpa&type=PTR&do=true",
+      "http": 200,
+      "sha256": "01feed30ed3272ac2890d5f258c0e75cad9c6e5e3aef2376ed974342f980fbc4",
+      "data": {
+        "Status": 0,
+        "AD": false,
+        "Question": [
+          {
+            "name": "9.1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.f.f.c.0.0.d.a.0.1.0.0.2.ip6.arpa.",
+            "type": 12
+          }
+        ],
+        "Answer": [
+          {
+            "name": "9.1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.f.f.c.0.0.d.a.0.1.0.0.2.ip6.arpa.",
+            "type": 12,
+            "TTL": 21600,
+            "data": "r4-lo0-0-Spb-Rep-RU.bb.citictel-cpc.com."
+          }
+        ],
+        "Authority": null
+      }
+    },
+    "ptr:2001:ad0:cff::21": {
+      "url": "https://dns.google/resolve?name=1.2.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.f.f.c.0.0.d.a.0.1.0.0.2.ip6.arpa&type=PTR&do=true",
+      "http": 200,
+      "sha256": "cc882e8ad2b1b0f0d9244c9bcced754b1eec50eb1cc24c5ac608519429dbcebf",
+      "data": {
+        "Status": 0,
+        "AD": false,
+        "Question": [
+          {
+            "name": "1.2.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.f.f.c.0.0.d.a.0.1.0.0.2.ip6.arpa.",
+            "type": 12
+          }
+        ],
+        "Answer": [
+          {
+            "name": "1.2.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.f.f.c.0.0.d.a.0.1.0.0.2.ip6.arpa.",
+            "type": 12,
+            "TTL": 21600,
+            "data": "r8-lo0-0-Spb-Rep-RU.bb.citictel-cpc.com."
+          }
+        ],
+        "Authority": null
+      }
+    },
+    "ptr:2001:ad0:cff::253": {
+      "url": "https://dns.google/resolve?name=3.5.2.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.f.f.c.0.0.d.a.0.1.0.0.2.ip6.arpa&type=PTR&do=true",
+      "http": 200,
+      "sha256": "90983b2e1e570f723b263214a96119ac72d6c1c19316e86aa50fa708621054a0",
+      "data": {
+        "Status": 0,
+        "AD": false,
+        "Question": [
+          {
+            "name": "3.5.2.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.f.f.c.0.0.d.a.0.1.0.0.2.ip6.arpa.",
+            "type": 12
+          }
+        ],
+        "Answer": [
+          {
+            "name": "3.5.2.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.f.f.c.0.0.d.a.0.1.0.0.2.ip6.arpa.",
+            "type": 12,
+            "TTL": 21600,
+            "data": "rr1-lo0-0-Mow-M9-RU.bb.citictel-cpc.com."
+          }
+        ],
+        "Authority": null
+      }
+    },
+    "ptr:2001:ad0:cff::31": {
+      "url": "https://dns.google/resolve?name=1.3.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.f.f.c.0.0.d.a.0.1.0.0.2.ip6.arpa&type=PTR&do=true",
+      "http": 200,
+      "sha256": "b9f268321418128228b662bf8930b51176a021b29da8a92b412769976c85ca26",
+      "data": {
+        "Status": 0,
+        "AD": false,
+        "Question": [
+          {
+            "name": "1.3.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.f.f.c.0.0.d.a.0.1.0.0.2.ip6.arpa.",
+            "type": 12
+          }
+        ],
+        "Answer": [
+          {
+            "name": "1.3.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.f.f.c.0.0.d.a.0.1.0.0.2.ip6.arpa.",
+            "type": 12,
+            "TTL": 21600,
+            "data": "r4-lo0-0-Mow-M9-RU.bb.citictel-cpc.com."
+          }
+        ],
+        "Authority": null
+      }
+    },
+    "ptr:2001:ad0:cff::6": {
+      "url": "https://dns.google/resolve?name=6.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.f.f.c.0.0.d.a.0.1.0.0.2.ip6.arpa&type=PTR&do=true",
+      "http": 200,
+      "sha256": "f11571800c75e0eb3088194f1a7b51212d92b9a1bb6bec96604279abf54516db",
+      "data": {
+        "Status": 0,
+        "AD": false,
+        "Question": [
+          {
+            "name": "6.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.f.f.c.0.0.d.a.0.1.0.0.2.ip6.arpa.",
+            "type": 12
+          }
+        ],
+        "Answer": [
+          {
+            "name": "6.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.f.f.c.0.0.d.a.0.1.0.0.2.ip6.arpa.",
+            "type": 12,
+            "TTL": 21600,
+            "data": "r9-lo0-0-Mow-M9-RU.bb.citictel-cpc.com."
+          }
+        ],
+        "Authority": null
+      }
+    },
+    "ptr:2001:ad0:cff::76": {
+      "url": "https://dns.google/resolve?name=6.7.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.f.f.c.0.0.d.a.0.1.0.0.2.ip6.arpa&type=PTR&do=true",
+      "http": 200,
+      "sha256": "7d18461b9c2d1e077b9c286c0f4e6ab0512cf2b3b7f09c812efe028505040e31",
+      "data": {
+        "Status": 0,
+        "AD": false,
+        "Question": [
+          {
+            "name": "6.7.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.f.f.c.0.0.d.a.0.1.0.0.2.ip6.arpa.",
+            "type": 12
+          }
+        ],
+        "Answer": [
+          {
+            "name": "6.7.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.f.f.c.0.0.d.a.0.1.0.0.2.ip6.arpa.",
+            "type": 12,
+            "TTL": 21600,
+            "data": "r8-lo0-0-Mow-Mar8-RU.bb.citictel-cpc.com."
+          }
+        ],
+        "Authority": null
+      }
+    },
+    "ptr:2001:ad0:cff::77": {
+      "url": "https://dns.google/resolve?name=7.7.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.f.f.c.0.0.d.a.0.1.0.0.2.ip6.arpa&type=PTR&do=true",
+      "http": 200,
+      "sha256": "be492f28edee63a6c079f146683a6f1b9d2756d9067e41c94a1a52e58f1cd63f",
+      "data": {
+        "Status": 0,
+        "AD": false,
+        "Question": [
+          {
+            "name": "7.7.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.f.f.c.0.0.d.a.0.1.0.0.2.ip6.arpa.",
+            "type": 12
+          }
+        ],
+        "Answer": [
+          {
+            "name": "7.7.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.f.f.c.0.0.d.a.0.1.0.0.2.ip6.arpa.",
+            "type": 12,
+            "TTL": 21600,
+            "data": "r9-lo0-0-Mow-Mar8-RU.bb.citictel-cpc.com."
+          }
+        ],
+        "Authority": null
+      }
+    },
+    "ptr:2001:ad0:cff::78": {
+      "url": "https://dns.google/resolve?name=8.7.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.f.f.c.0.0.d.a.0.1.0.0.2.ip6.arpa&type=PTR&do=true",
+      "http": 200,
+      "sha256": "ff5eac42eab5aa2069198fbd094d45791427288e6f45f8e456b244955ec3c5db",
+      "data": {
+        "Status": 0,
+        "AD": false,
+        "Question": [
+          {
+            "name": "8.7.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.f.f.c.0.0.d.a.0.1.0.0.2.ip6.arpa.",
+            "type": 12
+          }
+        ],
+        "Answer": [
+          {
+            "name": "8.7.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.f.f.c.0.0.d.a.0.1.0.0.2.ip6.arpa.",
+            "type": 12,
+            "TTL": 21600,
+            "data": "r14-lo0-0-Mow-Mar8-RU.bb.citictel-cpc.com."
+          }
+        ],
+        "Authority": null
+      }
+    },
+    "ptr:2001:ad0:cff::8": {
+      "url": "https://dns.google/resolve?name=8.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.f.f.c.0.0.d.a.0.1.0.0.2.ip6.arpa&type=PTR&do=true",
+      "http": 200,
+      "sha256": "7458b48cb749fd7d92ecf55403172e6784ec634f1a8a862e9f920e0a0dbeb1ee",
+      "data": {
+        "Status": 0,
+        "AD": false,
+        "Question": [
+          {
+            "name": "8.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.f.f.c.0.0.d.a.0.1.0.0.2.ip6.arpa.",
+            "type": 12
+          }
+        ],
+        "Answer": [
+          {
+            "name": "8.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.f.f.c.0.0.d.a.0.1.0.0.2.ip6.arpa.",
+            "type": 12,
+            "TTL": 21600,
+            "data": "r9-lo0-0-Spb-K12-RU.bb.citictel-cpc.com."
+          }
+        ],
+        "Authority": null
+      }
+    },
+    "whois:2001:3786:2929:600::/56": {
+      "url": "https://stat.ripe.net/data/whois/data.json?resource=2001%3A3786%3A2929%3A600%3A%3A%2F56",
+      "http": 200,
+      "sha256": "b76d8b44d150cc5742372ede9b6941a7ddb0762c1ef5df3d4e6674c717b73192",
+      "data": [
+        [
+          {
+            "key": "inet6num",
+            "value": "2001:3786:2929::/48"
+          },
+          {
+            "key": "netname",
+            "value": "ZGATO-EU-IPV6"
+          },
+          {
+            "key": "descr",
+            "value": "zGato Global Network"
+          },
+          {
+            "key": "country",
+            "value": "EU"
+          },
+          {
+            "key": "geofeed",
+            "value": "https://perfprod.com/geofeed.csv"
+          },
+          {
+            "key": "assignment-size",
+            "value": "56"
+          },
+          {
+            "key": "status",
+            "value": "AGGREGATED-BY-LIR"
+          },
+          {
+            "key": "last-modified",
+            "value": "2025-10-09T22:33:26Z"
+          },
+          {
+            "key": "source",
+            "value": "RIPE"
+          }
+        ]
+      ]
+    },
+    "whois:2001:3786:2929::/48": {
+      "url": "https://stat.ripe.net/data/whois/data.json?resource=2001%3A3786%3A2929%3A%3A%2F48",
+      "http": 200,
+      "sha256": "fd692ea9d9612b88f8e1709f79bd1a187f47c44f821c1ab7686f45623dcf3c39",
+      "data": [
+        [
+          {
+            "key": "inet6num",
+            "value": "2001:3786:2929::/48"
+          },
+          {
+            "key": "netname",
+            "value": "ZGATO-EU-IPV6"
+          },
+          {
+            "key": "descr",
+            "value": "zGato Global Network"
+          },
+          {
+            "key": "country",
+            "value": "EU"
+          },
+          {
+            "key": "geofeed",
+            "value": "https://perfprod.com/geofeed.csv"
+          },
+          {
+            "key": "assignment-size",
+            "value": "56"
+          },
+          {
+            "key": "status",
+            "value": "AGGREGATED-BY-LIR"
+          },
+          {
+            "key": "last-modified",
+            "value": "2025-10-09T22:33:26Z"
+          },
+          {
+            "key": "source",
+            "value": "RIPE"
+          }
+        ]
+      ]
+    },
+    "whois:2001:3786:5002:300::/56": {
+      "url": "https://stat.ripe.net/data/whois/data.json?resource=2001%3A3786%3A5002%3A300%3A%3A%2F56",
+      "http": 200,
+      "sha256": "9dc6f1e410213520b2c669cb56436f90d8abbeb24dd8c2b72d66afdd8b9e1751",
+      "data": [
+        [
+          {
+            "key": "inet6num",
+            "value": "2001:3786:5002::/48"
+          },
+          {
+            "key": "netname",
+            "value": "ZGATO-EU-IPV6"
+          },
+          {
+            "key": "descr",
+            "value": "zGato Global Network"
+          },
+          {
+            "key": "country",
+            "value": "EU"
+          },
+          {
+            "key": "geofeed",
+            "value": "https://perfprod.com/geofeed.csv"
+          },
+          {
+            "key": "assignment-size",
+            "value": "56"
+          },
+          {
+            "key": "status",
+            "value": "AGGREGATED-BY-LIR"
+          },
+          {
+            "key": "last-modified",
+            "value": "2025-10-24T01:28:05Z"
+          },
+          {
+            "key": "source",
+            "value": "RIPE"
+          }
+        ]
+      ]
+    },
+    "whois:2001:3786:5002::/48": {
+      "url": "https://stat.ripe.net/data/whois/data.json?resource=2001%3A3786%3A5002%3A%3A%2F48",
+      "http": 200,
+      "sha256": "6a7c97233d33ffaad4bfe498931f786c100ae318d13097aa7e2b624a301d02c3",
+      "data": [
+        [
+          {
+            "key": "inet6num",
+            "value": "2001:3786:5002::/48"
+          },
+          {
+            "key": "netname",
+            "value": "ZGATO-EU-IPV6"
+          },
+          {
+            "key": "descr",
+            "value": "zGato Global Network"
+          },
+          {
+            "key": "country",
+            "value": "EU"
+          },
+          {
+            "key": "geofeed",
+            "value": "https://perfprod.com/geofeed.csv"
+          },
+          {
+            "key": "assignment-size",
+            "value": "56"
+          },
+          {
+            "key": "status",
+            "value": "AGGREGATED-BY-LIR"
+          },
+          {
+            "key": "last-modified",
+            "value": "2025-10-24T01:28:05Z"
+          },
+          {
+            "key": "source",
+            "value": "RIPE"
+          }
+        ]
+      ]
+    },
+    "whois:2001:3786:5005:600::/56": {
+      "url": "https://stat.ripe.net/data/whois/data.json?resource=2001%3A3786%3A5005%3A600%3A%3A%2F56",
+      "http": 200,
+      "sha256": "1eb08de292c50123deef1229216e642eb26378a3b0dc2f94fc5904d603cccb18",
+      "data": [
+        [
+          {
+            "key": "inet6num",
+            "value": "2001:3786:5005::/48"
+          },
+          {
+            "key": "netname",
+            "value": "ZGATO-EU-IPV6"
+          },
+          {
+            "key": "descr",
+            "value": "zGato Global Network"
+          },
+          {
+            "key": "country",
+            "value": "EU"
+          },
+          {
+            "key": "geofeed",
+            "value": "https://perfprod.com/geofeed.csv"
+          },
+          {
+            "key": "assignment-size",
+            "value": "56"
+          },
+          {
+            "key": "status",
+            "value": "AGGREGATED-BY-LIR"
+          },
+          {
+            "key": "last-modified",
+            "value": "2025-10-24T01:25:54Z"
+          },
+          {
+            "key": "source",
+            "value": "RIPE"
+          }
+        ]
+      ]
+    },
+    "whois:2001:3786:5005::/48": {
+      "url": "https://stat.ripe.net/data/whois/data.json?resource=2001%3A3786%3A5005%3A%3A%2F48",
+      "http": 200,
+      "sha256": "fa2641b3deec133d0d86e8a4ba2aac846c8a8df4fcbf8da133b5b0e7b0e8ae19",
+      "data": [
+        [
+          {
+            "key": "inet6num",
+            "value": "2001:3786:5005::/48"
+          },
+          {
+            "key": "netname",
+            "value": "ZGATO-EU-IPV6"
+          },
+          {
+            "key": "descr",
+            "value": "zGato Global Network"
+          },
+          {
+            "key": "country",
+            "value": "EU"
+          },
+          {
+            "key": "geofeed",
+            "value": "https://perfprod.com/geofeed.csv"
+          },
+          {
+            "key": "assignment-size",
+            "value": "56"
+          },
+          {
+            "key": "status",
+            "value": "AGGREGATED-BY-LIR"
+          },
+          {
+            "key": "last-modified",
+            "value": "2025-10-24T01:25:54Z"
+          },
+          {
+            "key": "source",
+            "value": "RIPE"
+          }
+        ]
+      ]
+    }
+  },
+  "citic_exact_forward_dns": {
+    "2001:ad0:cff::18": {
+      "name": "r8-lo0-0-Mow-M9-RU.bb.citictel-cpc.com.",
+      "url": "https://dns.google/resolve?name=r8-lo0-0-Mow-M9-RU.bb.citictel-cpc.com.&type=AAAA&do=true",
+      "sha256": "e82b5639d035eeb882beb579ddaab29d7e84c65a5d6b55bee8a377977c5fa296",
+      "dns_status": 0,
+      "AD": false,
+      "answers": [
+        "2001:ad0:cff::18"
+      ],
+      "matches_exact_address": true
+    },
+    "2001:ad0:cff::19": {
+      "name": "r4-lo0-0-Spb-Rep-RU.bb.citictel-cpc.com.",
+      "url": "https://dns.google/resolve?name=r4-lo0-0-Spb-Rep-RU.bb.citictel-cpc.com.&type=AAAA&do=true",
+      "sha256": "ea4fda7cb16dfd0a5b12aab0f0097366277eaa9c68ff6e82779177067369b38a",
+      "dns_status": 0,
+      "AD": false,
+      "answers": [
+        "2001:ad0:cff::19"
+      ],
+      "matches_exact_address": true
+    },
+    "2001:ad0:cff::21": {
+      "name": "r8-lo0-0-Spb-Rep-RU.bb.citictel-cpc.com.",
+      "url": "https://dns.google/resolve?name=r8-lo0-0-Spb-Rep-RU.bb.citictel-cpc.com.&type=AAAA&do=true",
+      "sha256": "9e894dd4973724c6a57975ebb5e98410e736ec848a4c9a2db5604c5c2cbe75da",
+      "dns_status": 0,
+      "AD": false,
+      "answers": [
+        "2001:ad0:cff::21"
+      ],
+      "matches_exact_address": true
+    },
+    "2001:ad0:cff::253": {
+      "name": "rr1-lo0-0-Mow-M9-RU.bb.citictel-cpc.com.",
+      "url": "https://dns.google/resolve?name=rr1-lo0-0-Mow-M9-RU.bb.citictel-cpc.com.&type=AAAA&do=true",
+      "sha256": "8fd43f5619928c4b587c04cc8c15109441d9e5f2802d1f638d2ba434a7a09a92",
+      "dns_status": 0,
+      "AD": false,
+      "answers": [
+        "2001:ad0:cff::253"
+      ],
+      "matches_exact_address": true
+    },
+    "2001:ad0:cff::31": {
+      "name": "r4-lo0-0-Mow-M9-RU.bb.citictel-cpc.com.",
+      "url": "https://dns.google/resolve?name=r4-lo0-0-Mow-M9-RU.bb.citictel-cpc.com.&type=AAAA&do=true",
+      "sha256": "7ddce43cc846a708977c319ae1ff7c714bed6a60ffbbd056b3a9bd54d0a61287",
+      "dns_status": 0,
+      "AD": false,
+      "answers": [
+        "2001:ad0:cff::31"
+      ],
+      "matches_exact_address": true
+    },
+    "2001:ad0:cff::6": {
+      "name": "r9-lo0-0-Mow-M9-RU.bb.citictel-cpc.com.",
+      "url": "https://dns.google/resolve?name=r9-lo0-0-Mow-M9-RU.bb.citictel-cpc.com.&type=AAAA&do=true",
+      "sha256": "31f8e8d2bb65ffe88c6ab273076eea06ddb97651d3544b3a16433fba36bf8d2b",
+      "dns_status": 0,
+      "AD": false,
+      "answers": [
+        "2001:ad0:cff::6"
+      ],
+      "matches_exact_address": true
+    },
+    "2001:ad0:cff::76": {
+      "name": "r8-lo0-0-Mow-Mar8-RU.bb.citictel-cpc.com.",
+      "url": "https://dns.google/resolve?name=r8-lo0-0-Mow-Mar8-RU.bb.citictel-cpc.com.&type=AAAA&do=true",
+      "sha256": "0284ebfbc26585b8c8180eb9645cadf42a89dd538d6d7047d0712c2d2698c7ad",
+      "dns_status": 0,
+      "AD": false,
+      "answers": [
+        "2001:ad0:cff::76"
+      ],
+      "matches_exact_address": true
+    },
+    "2001:ad0:cff::77": {
+      "name": "r9-lo0-0-Mow-Mar8-RU.bb.citictel-cpc.com.",
+      "url": "https://dns.google/resolve?name=r9-lo0-0-Mow-Mar8-RU.bb.citictel-cpc.com.&type=AAAA&do=true",
+      "sha256": "502c884989170113c7978247b9a040b500fb0191db377897b789d9064130b6d1",
+      "dns_status": 0,
+      "AD": false,
+      "answers": [
+        "2001:ad0:cff::77"
+      ],
+      "matches_exact_address": true
+    },
+    "2001:ad0:cff::78": {
+      "name": "r14-lo0-0-Mow-Mar8-RU.bb.citictel-cpc.com.",
+      "url": "https://dns.google/resolve?name=r14-lo0-0-Mow-Mar8-RU.bb.citictel-cpc.com.&type=AAAA&do=true",
+      "sha256": "9a1568880d2c3eb2ca232f8f7dcd21f9c16d92ff89716b3766d7c05fb8addf92",
+      "dns_status": 0,
+      "AD": false,
+      "answers": [
+        "2001:ad0:cff::78"
+      ],
+      "matches_exact_address": true
+    },
+    "2001:ad0:cff::8": {
+      "name": "r9-lo0-0-Spb-K12-RU.bb.citictel-cpc.com.",
+      "url": "https://dns.google/resolve?name=r9-lo0-0-Spb-K12-RU.bb.citictel-cpc.com.&type=AAAA&do=true",
+      "sha256": "4a66c434183202bee39f6d98b48f8d19b9627b6ec155bacec3b3a26dde0271fb",
+      "dns_status": 0,
+      "AD": false,
+      "answers": [
+        "2001:ad0:cff::8"
+      ],
+      "matches_exact_address": true
+    }
+  },
+  "ripe_coverage_summary": {
+    "completed_covering_objects": 26,
+    "completed_previously_failed_child_scopes": 10,
+    "method": "RIPEstat address-space-hierarchy recursive for candidate-overlap children. Parents retained to most-specific relevant match."
+  },
+  "ripe_hierarchy_priority": {
+    "2001:3786:2929:600::/56": {
+      "address-space-hierarchy": {
+        "url": "https://stat.ripe.net/data/address-space-hierarchy/data.json?resource=2001%3A3786%3A2929%3A600%3A%3A%2F56",
+        "sha256": "475337a0ef5e71332960a9f877bd1aa3069296c822d1456ebe1582e32ee6e11e",
+        "query_time": "2026-11-14T11:29:56",
+        "message": [],
+        "data": {
+          "exact": [],
+          "less_specific": [
+            {
+              "inet6num": "2001:3786:2929::/48",
+              "netname": "ZGATO-EU-IPV6",
+              "country": "EU",
+              "geofeed": "https://perfprod.com/geofeed.csv",
+              "assignment-size": "56",
+              "status": "AGGREGATED-BY-LIR",
+              "last-modified": "2025-10-09T22:33:26Z",
+              "source": "RIPE"
+            }
+          ],
+          "more_specific": []
+        }
+      }
+    },
+    "2001:3786:2929::/48": {
+      "address-space-hierarchy": {
+        "url": "https://stat.ripe.net/data/address-space-hierarchy/data.json?resource=2001%3A3786%3A2929%3A%3A%2F48",
+        "sha256": "1b7d1dedb535d5a90fc2691fcb27fd644eec857575d67674eb4d0d637db99145",
+        "query_time": "2026-11-14T11:28:49",
+        "message": [],
+        "data": {
+          "exact": [
+            {
+              "inet6num": "2001:3786:2929::/48",
+              "netname": "ZGATO-EU-IPV6",
+              "country": "EU",
+              "geofeed": "https://perfprod.com/geofeed.csv",
+              "assignment-size": "56",
+              "status": "AGGREGATED-BY-LIR",
+              "last-modified": "2025-10-09T22:33:26Z",
+              "source": "RIPE"
+            }
+          ],
+          "less_specific": [
+            {
+              "inet6num": "2001:3786::/32",
+              "org": "ORG-MG391-RIPE",
+              "netname": "IPv6-zGato",
+              "country": "AL",
+              "geofeed": "https://perfprod.com/geofeed.csv",
+              "status": "ALLOCATED-BY-LIR",
+              "last-modified": "2025-08-14T01:04:34Z",
+              "source": "RIPE"
+            }
+          ],
+          "more_specific": []
+        }
+      },
+      "address-space-usage": {
+        "url": "https://stat.ripe.net/data/address-space-usage/data.json?resource=2001%3A3786%3A2929%3A%3A%2F48",
+        "sha256": "88c6ab284fd332bb772cf2773400c3fa496f6379df742d10854586d4b37cd057",
+        "query_time": "2026-11-14T10:00:11",
+        "message": [],
+        "data": {
+          "assignments": [
+            {
+              "address_range": "2001:3786:2929::/48",
+              "asn_name": "ZGATO-EU-IPV6",
+              "status": "AGGREGATED-BY-LIR",
+              "parent_allocation": "2001:3786::/32"
+            }
+          ],
+          "allocations": [
+            {
+              "allocation": "2001:3780::/29",
+              "asn_name": "AL-ALBHOSTING-20240814",
+              "status": "ALLOCATED-BY-RIR",
+              "assignments": 0
+            },
+            {
+              "allocation": "2001:3786::/32",
+              "asn_name": "IPv6-zGato",
+              "status": "ALLOCATED-BY-LIR",
+              "assignments": 1
+            }
+          ],
+          "ip_stats": [
+            {
+              "status": "AGGREGATED-BY-LIR",
+              "ips": 1208925819614629174706176
+            }
+          ]
+        }
+      }
+    },
+    "2001:3786:5002:300::/56": {
+      "address-space-hierarchy": {
+        "url": "https://stat.ripe.net/data/address-space-hierarchy/data.json?resource=2001%3A3786%3A5002%3A300%3A%3A%2F56",
+        "sha256": "cc9db1054127df7021c19ad398cc099ee72ae25fbcc39b4f2792cd0721b97cf0",
+        "query_time": "2026-11-14T11:29:56",
+        "message": [],
+        "data": {
+          "exact": [],
+          "less_specific": [
+            {
+              "inet6num": "2001:3786:5002::/48",
+              "netname": "ZGATO-EU-IPV6",
+              "country": "EU",
+              "geofeed": "https://perfprod.com/geofeed.csv",
+              "assignment-size": "56",
+              "status": "AGGREGATED-BY-LIR",
+              "last-modified": "2025-10-24T01:28:05Z",
+              "source": "RIPE"
+            }
+          ],
+          "more_specific": []
+        }
+      }
+    },
+    "2001:3786:5002::/48": {
+      "address-space-hierarchy": {
+        "url": "https://stat.ripe.net/data/address-space-hierarchy/data.json?resource=2001%3A3786%3A5002%3A%3A%2F48",
+        "sha256": "e35ec4666fdcb671b1ebacba145e4d0c93145bfe81509988aa11e236a54667ff",
+        "query_time": "2026-11-14T11:29:57",
+        "message": [],
+        "data": {
+          "exact": [
+            {
+              "inet6num": "2001:3786:5002::/48",
+              "netname": "ZGATO-EU-IPV6",
+              "country": "EU",
+              "geofeed": "https://perfprod.com/geofeed.csv",
+              "assignment-size": "56",
+              "status": "AGGREGATED-BY-LIR",
+              "last-modified": "2025-10-24T01:28:05Z",
+              "source": "RIPE"
+            }
+          ],
+          "less_specific": [
+            {
+              "inet6num": "2001:3786::/32",
+              "org": "ORG-MG391-RIPE",
+              "netname": "IPv6-zGato",
+              "country": "AL",
+              "geofeed": "https://perfprod.com/geofeed.csv",
+              "status": "ALLOCATED-BY-LIR",
+              "last-modified": "2025-08-14T01:04:34Z",
+              "source": "RIPE"
+            }
+          ],
+          "more_specific": []
+        }
+      },
+      "address-space-usage": {
+        "url": "https://stat.ripe.net/data/address-space-usage/data.json?resource=2001%3A3786%3A5002%3A%3A%2F48",
+        "sha256": "203b721ae65ddd1ab7c34926916ec696d5a82a26be725f98c4e0535507a16c8f",
+        "query_time": "2026-11-14T10:00:11",
+        "message": [],
+        "data": {
+          "assignments": [
+            {
+              "address_range": "2001:3786:5002::/48",
+              "asn_name": "ZGATO-EU-IPV6",
+              "status": "AGGREGATED-BY-LIR",
+              "parent_allocation": "2001:3786::/32"
+            }
+          ],
+          "allocations": [
+            {
+              "allocation": "2001:3780::/29",
+              "asn_name": "AL-ALBHOSTING-20240814",
+              "status": "ALLOCATED-BY-RIR",
+              "assignments": 0
+            },
+            {
+              "allocation": "2001:3786::/32",
+              "asn_name": "IPv6-zGato",
+              "status": "ALLOCATED-BY-LIR",
+              "assignments": 1
+            }
+          ],
+          "ip_stats": [
+            {
+              "status": "AGGREGATED-BY-LIR",
+              "ips": 1208925819614629174706176
+            }
+          ]
+        }
+      }
+    },
+    "2001:3786:5005:600::/56": {
+      "address-space-hierarchy": {
+        "url": "https://stat.ripe.net/data/address-space-hierarchy/data.json?resource=2001%3A3786%3A5005%3A600%3A%3A%2F56",
+        "sha256": "2ca412c734a0462869a5a3a175f32dd67889b5b9f255226409d5787990c036c2",
+        "query_time": "2026-11-14T11:29:55",
+        "message": [],
+        "data": {
+          "exact": [],
+          "less_specific": [
+            {
+              "inet6num": "2001:3786:5005::/48",
+              "netname": "ZGATO-EU-IPV6",
+              "country": "EU",
+              "geofeed": "https://perfprod.com/geofeed.csv",
+              "assignment-size": "56",
+              "status": "AGGREGATED-BY-LIR",
+              "last-modified": "2025-10-24T01:25:54Z",
+              "source": "RIPE"
+            }
+          ],
+          "more_specific": []
+        }
+      }
+    },
+    "2001:3786:5005::/48": {
+      "address-space-hierarchy": {
+        "url": "https://stat.ripe.net/data/address-space-hierarchy/data.json?resource=2001%3A3786%3A5005%3A%3A%2F48",
+        "sha256": "211bdd619044edf6b6b52dc564a095b101f1449d9122e75a6fa9e0e6dfe74d84",
+        "query_time": "2026-11-14T11:30:01",
+        "message": [],
+        "data": {
+          "exact": [
+            {
+              "inet6num": "2001:3786:5005::/48",
+              "netname": "ZGATO-EU-IPV6",
+              "country": "EU",
+              "geofeed": "https://perfprod.com/geofeed.csv",
+              "assignment-size": "56",
+              "status": "AGGREGATED-BY-LIR",
+              "last-modified": "2025-10-24T01:25:54Z",
+              "source": "RIPE"
+            }
+          ],
+          "less_specific": [
+            {
+              "inet6num": "2001:3786::/32",
+              "org": "ORG-MG391-RIPE",
+              "netname": "IPv6-zGato",
+              "country": "AL",
+              "geofeed": "https://perfprod.com/geofeed.csv",
+              "status": "ALLOCATED-BY-LIR",
+              "last-modified": "2025-08-14T01:04:34Z",
+              "source": "RIPE"
+            }
+          ],
+          "more_specific": []
+        }
+      },
+      "address-space-usage": {
+        "url": "https://stat.ripe.net/data/address-space-usage/data.json?resource=2001%3A3786%3A5005%3A%3A%2F48",
+        "sha256": "712dec08c09796f6d062cd041a0ebfc545ecb5e40a1747b2733f231d72585946",
+        "query_time": "2026-11-14T10:00:11",
+        "message": [],
+        "data": {
+          "assignments": [
+            {
+              "address_range": "2001:3786:5005::/48",
+              "asn_name": "ZGATO-EU-IPV6",
+              "status": "AGGREGATED-BY-LIR",
+              "parent_allocation": "2001:3786::/32"
+            }
+          ],
+          "allocations": [
+            {
+              "allocation": "2001:3780::/29",
+              "asn_name": "AL-ALBHOSTING-20240814",
+              "status": "ALLOCATED-BY-RIR",
+              "assignments": 0
+            },
+            {
+              "allocation": "2001:3786::/32",
+              "asn_name": "IPv6-zGato",
+              "status": "ALLOCATED-BY-LIR",
+              "assignments": 1
+            }
+          ],
+          "ip_stats": [
+            {
+              "status": "AGGREGATED-BY-LIR",
+              "ips": 1208925819614629174706176
+            }
+          ]
+        }
+      }
+    },
+    "2001:ad0:2000:1::/64": {
+      "address-space-hierarchy": {
+        "url": "https://stat.ripe.net/data/address-space-hierarchy/data.json?resource=2001%3Aad0%3A2000%3A1%3A%3A%2F64",
+        "sha256": "befe508fd64abcacda02ddd5af5051a131c323515b8f04acc8855547d8931b95",
+        "query_time": "2026-11-14T11:30:03",
+        "message": [],
+        "data": {
+          "exact": [],
+          "less_specific": [
+            {
+              "inet6num": "2001:ad0:2000::/48",
+              "netname": "LINX-POP-MOW-M9-RU",
+              "country": "RU",
+              "status": "ASSIGNED",
+              "last-modified": "2019-06-14T07:58:44Z",
+              "source": "RIPE"
+            }
+          ],
+          "more_specific": []
+        }
+      }
+    },
+    "2001:ad0:c00::/40": {
+      "address-space-hierarchy": {
+        "url": "https://stat.ripe.net/data/address-space-hierarchy/data.json?resource=2001%3Aad0%3Ac00%3A%3A%2F40",
+        "sha256": "c1edf6d48b5417645b9704170a5b2cfcbd24b5a938b8176ae1820bc924acc260",
+        "query_time": "2026-11-14T11:30:01",
+        "message": [],
+        "data": {
+          "exact": [
+            {
+              "inet6num": "2001:ad0:c00::/40",
+              "netname": "LINX-NETWORK-INFRA",
+              "country": "EE, DE, SE, RU, LT, LV, PL, FI, NL, GE, GB",
+              "status": "AGGREGATED-BY-LIR",
+              "assignment-size": "48",
+              "last-modified": "2019-06-14T08:00:35Z",
+              "source": "RIPE"
+            }
+          ],
+          "less_specific": [
+            {
+              "inet6num": "2001:ad0::/32",
+              "netname": "NL-CITICTEL-CPC-20030203",
+              "geofeed": "https://gf.data.ee/geofeed.csv",
+              "country": "EE, DE, SE, RU, LT, LV, PL",
+              "org": "ORG-LTB1-RIPE",
+              "status": "ALLOCATED-BY-RIR",
+              "last-modified": "2022-11-18T13:05:12Z",
+              "source": "RIPE"
+            }
+          ],
+          "more_specific": []
+        }
+      }
+    },
+    "2001:ad0:cff::/48": {
+      "address-space-hierarchy": {
+        "url": "https://stat.ripe.net/data/address-space-hierarchy/data.json?resource=2001%3Aad0%3Acff%3A%3A%2F48",
+        "sha256": "0f8625f8c70f9fcbaee709fe2d843b8c49cfc1c2c74ab68d2aa8e890b3b691d1",
+        "query_time": "2026-11-14T11:29:45",
+        "message": [],
+        "data": {
+          "exact": [],
+          "less_specific": [
+            {
+              "inet6num": "2001:ad0:c00::/40",
+              "netname": "LINX-NETWORK-INFRA",
+              "country": "EE, DE, SE, RU, LT, LV, PL, FI, NL, GE, GB",
+              "status": "AGGREGATED-BY-LIR",
+              "assignment-size": "48",
+              "last-modified": "2019-06-14T08:00:35Z",
+              "source": "RIPE"
+            }
+          ],
+          "more_specific": []
+        }
+      },
+      "address-space-usage": {
+        "url": "https://stat.ripe.net/data/address-space-usage/data.json?resource=2001%3Aad0%3Acff%3A%3A%2F48",
+        "sha256": "bbc73925203198938206bb5d185ef8ab17228969b0d02b3aeb0cd8af27d0b2af",
+        "query_time": "2026-11-14T10:00:11",
+        "message": [],
+        "data": {
+          "assignments": [
+            {
+              "address_range": "2001:ad0:c00::/40",
+              "asn_name": "LINX-NETWORK-INFRA",
+              "status": "AGGREGATED-BY-LIR",
+              "parent_allocation": "2001:ad0::/32"
+            }
+          ],
+          "allocations": [
+            {
+              "allocation": "2001:ad0::/32",
+              "asn_name": "NL-CITICTEL-CPC-20030203",
+              "status": "ALLOCATED-BY-RIR",
+              "assignments": 1
+            }
+          ],
+          "ip_stats": [
+            {
+              "status": "AGGREGATED-BY-LIR",
+              "ips": 1208925819614629174706176
+            }
+          ]
+        }
+      }
+    },
+    "2001:ad0:cff::18/128": {
+      "address-space-hierarchy": {
+        "url": "https://stat.ripe.net/data/address-space-hierarchy/data.json?resource=2001%3Aad0%3Acff%3A%3A18%2F128",
+        "sha256": "8bbc0d0803ed40c82796d3899246070cd5540e5a99045a8e130685d223dd66e2",
+        "query_time": "2026-11-14T11:29:45",
+        "message": [],
+        "data": {
+          "exact": [],
+          "less_specific": [
+            {
+              "inet6num": "2001:ad0:c00::/40",
+              "netname": "LINX-NETWORK-INFRA",
+              "country": "EE, DE, SE, RU, LT, LV, PL, FI, NL, GE, GB",
+              "status": "AGGREGATED-BY-LIR",
+              "assignment-size": "48",
+              "last-modified": "2019-06-14T08:00:35Z",
+              "source": "RIPE"
+            }
+          ],
+          "more_specific": []
+        }
+      }
+    },
+    "2001:ad0:cff::19/128": {
+      "address-space-hierarchy": {
+        "url": "https://stat.ripe.net/data/address-space-hierarchy/data.json?resource=2001%3Aad0%3Acff%3A%3A19%2F128",
+        "sha256": "fc966f2d5b99a6cd1f54f7d4c4139541253d3516f5abdc12d5c5561110863023",
+        "query_time": "2026-11-14T11:29:50",
+        "message": [],
+        "data": {
+          "exact": [],
+          "less_specific": [
+            {
+              "inet6num": "2001:ad0:c00::/40",
+              "netname": "LINX-NETWORK-INFRA",
+              "country": "EE, DE, SE, RU, LT, LV, PL, FI, NL, GE, GB",
+              "status": "AGGREGATED-BY-LIR",
+              "assignment-size": "48",
+              "last-modified": "2019-06-14T08:00:35Z",
+              "source": "RIPE"
+            }
+          ],
+          "more_specific": []
+        }
+      }
+    },
+    "2001:ad0:cff::21/128": {
+      "address-space-hierarchy": {
+        "url": "https://stat.ripe.net/data/address-space-hierarchy/data.json?resource=2001%3Aad0%3Acff%3A%3A21%2F128",
+        "sha256": "bc86f815c0d1c33bb486c8b26aba045b082e0715b134c920dbcc91f09b0d2f6c",
+        "query_time": "2026-11-14T11:29:50",
+        "message": [],
+        "data": {
+          "exact": [],
+          "less_specific": [
+            {
+              "inet6num": "2001:ad0:c00::/40",
+              "netname": "LINX-NETWORK-INFRA",
+              "country": "EE, DE, SE, RU, LT, LV, PL, FI, NL, GE, GB",
+              "status": "AGGREGATED-BY-LIR",
+              "assignment-size": "48",
+              "last-modified": "2019-06-14T08:00:35Z",
+              "source": "RIPE"
+            }
+          ],
+          "more_specific": []
+        }
+      }
+    },
+    "2001:ad0:cff::253/128": {
+      "address-space-hierarchy": {
+        "url": "https://stat.ripe.net/data/address-space-hierarchy/data.json?resource=2001%3Aad0%3Acff%3A%3A253%2F128",
+        "sha256": "05de676910deeea5192d17959b5eaae118a24e0be0d6eddf8af6f7bbbc5e4a10",
+        "query_time": "2026-11-14T11:29:55",
+        "message": [],
+        "data": {
+          "exact": [],
+          "less_specific": [
+            {
+              "inet6num": "2001:ad0:c00::/40",
+              "netname": "LINX-NETWORK-INFRA",
+              "country": "EE, DE, SE, RU, LT, LV, PL, FI, NL, GE, GB",
+              "status": "AGGREGATED-BY-LIR",
+              "assignment-size": "48",
+              "last-modified": "2019-06-14T08:00:35Z",
+              "source": "RIPE"
+            }
+          ],
+          "more_specific": []
+        }
+      }
+    },
+    "2001:ad0:cff::31/128": {
+      "address-space-hierarchy": {
+        "url": "https://stat.ripe.net/data/address-space-hierarchy/data.json?resource=2001%3Aad0%3Acff%3A%3A31%2F128",
+        "sha256": "21c24583a616754a4dbf0a79fc4476cb95c1399ed159250af2a60a25bf6a7fe2",
+        "query_time": "2026-11-14T11:29:50",
+        "message": [],
+        "data": {
+          "exact": [],
+          "less_specific": [
+            {
+              "inet6num": "2001:ad0:c00::/40",
+              "netname": "LINX-NETWORK-INFRA",
+              "country": "EE, DE, SE, RU, LT, LV, PL, FI, NL, GE, GB",
+              "status": "AGGREGATED-BY-LIR",
+              "assignment-size": "48",
+              "last-modified": "2019-06-14T08:00:35Z",
+              "source": "RIPE"
+            }
+          ],
+          "more_specific": []
+        }
+      }
+    },
+    "2001:ad0:cff::6/128": {
+      "address-space-hierarchy": {
+        "url": "https://stat.ripe.net/data/address-space-hierarchy/data.json?resource=2001%3Aad0%3Acff%3A%3A6%2F128",
+        "sha256": "3f774aac971119f5b9a17f59f85a17d12915736920ec1dc04ad539223ea42827",
+        "query_time": "2026-11-14T11:29:45",
+        "message": [],
+        "data": {
+          "exact": [],
+          "less_specific": [
+            {
+              "inet6num": "2001:ad0:c00::/40",
+              "netname": "LINX-NETWORK-INFRA",
+              "country": "EE, DE, SE, RU, LT, LV, PL, FI, NL, GE, GB",
+              "status": "AGGREGATED-BY-LIR",
+              "assignment-size": "48",
+              "last-modified": "2019-06-14T08:00:35Z",
+              "source": "RIPE"
+            }
+          ],
+          "more_specific": []
+        }
+      }
+    },
+    "2001:ad0:cff::76/128": {
+      "address-space-hierarchy": {
+        "url": "https://stat.ripe.net/data/address-space-hierarchy/data.json?resource=2001%3Aad0%3Acff%3A%3A76%2F128",
+        "sha256": "1dbaa83ea16a5a3001786960fead5c01ad62ec9fed51cbbddb31a6216be896ee",
+        "query_time": "2026-11-14T11:29:50",
+        "message": [],
+        "data": {
+          "exact": [],
+          "less_specific": [
+            {
+              "inet6num": "2001:ad0:c00::/40",
+              "netname": "LINX-NETWORK-INFRA",
+              "country": "EE, DE, SE, RU, LT, LV, PL, FI, NL, GE, GB",
+              "status": "AGGREGATED-BY-LIR",
+              "assignment-size": "48",
+              "last-modified": "2019-06-14T08:00:35Z",
+              "source": "RIPE"
+            }
+          ],
+          "more_specific": []
+        }
+      }
+    },
+    "2001:ad0:cff::77/128": {
+      "address-space-hierarchy": {
+        "url": "https://stat.ripe.net/data/address-space-hierarchy/data.json?resource=2001%3Aad0%3Acff%3A%3A77%2F128",
+        "sha256": "3ce071257111819dd5e3fe3dd89330ce5f3cb56f1343f4994dcf30833c8c7a18",
+        "query_time": "2026-11-14T11:29:49",
+        "message": [],
+        "data": {
+          "exact": [],
+          "less_specific": [
+            {
+              "inet6num": "2001:ad0:c00::/40",
+              "netname": "LINX-NETWORK-INFRA",
+              "country": "EE, DE, SE, RU, LT, LV, PL, FI, NL, GE, GB",
+              "status": "AGGREGATED-BY-LIR",
+              "assignment-size": "48",
+              "last-modified": "2019-06-14T08:00:35Z",
+              "source": "RIPE"
+            }
+          ],
+          "more_specific": []
+        }
+      }
+    },
+    "2001:ad0:cff::78/128": {
+      "address-space-hierarchy": {
+        "url": "https://stat.ripe.net/data/address-space-hierarchy/data.json?resource=2001%3Aad0%3Acff%3A%3A78%2F128",
+        "sha256": "c55256b934a04cf85a3b312dcdc2fdbfe76af9e48b6e555e5bf2a254b2e13a17",
+        "query_time": "2026-11-14T11:29:50",
+        "message": [],
+        "data": {
+          "exact": [],
+          "less_specific": [
+            {
+              "inet6num": "2001:ad0:c00::/40",
+              "netname": "LINX-NETWORK-INFRA",
+              "country": "EE, DE, SE, RU, LT, LV, PL, FI, NL, GE, GB",
+              "status": "AGGREGATED-BY-LIR",
+              "assignment-size": "48",
+              "last-modified": "2019-06-14T08:00:35Z",
+              "source": "RIPE"
+            }
+          ],
+          "more_specific": []
+        }
+      }
+    },
+    "2001:ad0:cff::8/128": {
+      "address-space-hierarchy": {
+        "url": "https://stat.ripe.net/data/address-space-hierarchy/data.json?resource=2001%3Aad0%3Acff%3A%3A8%2F128",
+        "sha256": "ce7f893c25df1f40bb9457825007b04cac31c12a09663a27f312c04400571c44",
+        "query_time": "2026-11-14T11:29:45",
+        "message": [],
+        "data": {
+          "exact": [],
+          "less_specific": [
+            {
+              "inet6num": "2001:ad0:c00::/40",
+              "netname": "LINX-NETWORK-INFRA",
+              "country": "EE, DE, SE, RU, LT, LV, PL, FI, NL, GE, GB",
+              "status": "AGGREGATED-BY-LIR",
+              "assignment-size": "48",
+              "last-modified": "2019-06-14T08:00:35Z",
+              "source": "RIPE"
+            }
+          ],
+          "more_specific": []
+        }
+      }
+    }
+  },
+  "archive_flag_producer": {
+    "commit": "9edfd7d20313313fc640712d689b9c47614b4c17",
+    "code": "https://github.com/ipanalytics/GeoFeed-Harvester/blob/9edfd7d20313313fc640712d689b9c47614b4c17/geofeed_harvester/validate.py"
+  }
+}
