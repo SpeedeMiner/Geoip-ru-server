@@ -26,6 +26,7 @@ on:
       - ".github/scripts/validate_v41_base_artifacts.py"
       - ".github/scripts/validate_v41_publication_bounds.py"
       - ".github/scripts/verify_v41_ipverse_archive.py"
+      - ".github/scripts/bundle_v41_registry_inputs.py"
       - ".github/data/v41-source-lock.json"
       - ".github/scripts/build_company_asn_prefixes.py"
       - ".github/scripts/build_company_asn_prefix_classes_v41.py"
@@ -90,6 +91,8 @@ env:
   LACNIC_STATS: delegated-lacnic-latest
   RIPENCC_STATS: delegated-ripencc-latest
   IPVERSE_BGP_ARCHIVE: as-ip-blocks.tar.gz
+  REGISTRY_INPUTS_ARCHIVE: v41-registry-inputs.tar.gz
+  REGISTRY_INPUTS_SHA: geoip_RU_v41_registry_inputs.sha256sum
   RU_PREFIX_INPUT: geoip_RU_BY_KZ_asn_bgp_prefixes.txt
   RIR_PREFIX_INPUT: geoip_RU_rir_registered_prefixes.txt
   RIR_STATS: geoip_RU_rir_stats.txt
@@ -453,12 +456,22 @@ jobs:
           python3 .github/scripts/verify_v41_ipverse_archive.py \
             --provenance "$INPUT_PROVENANCE" --archive "$IPVERSE_BGP_ARCHIVE"
 
+      - name: Retain the exact RIR and IANA build inputs
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 .github/scripts/bundle_v41_registry_inputs.py create \
+            "$INPUT_PROVENANCE" . "$REGISTRY_INPUTS_ARCHIVE"
+          sha256sum "$REGISTRY_INPUTS_ARCHIVE" > "$REGISTRY_INPUTS_SHA"
+
       - name: Upload v41 validated build artifact
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
           name: geoip-direct-rukzby-v41-candidate
           path: |
             as-ip-blocks.tar.gz
+            v41-registry-inputs.tar.gz
+            geoip_RU_v41_registry_inputs.sha256sum
             antifilter-community.lst
             antifilter-ip.lst
             antifilter-ipresolve.lst
@@ -564,7 +577,7 @@ jobs:
           SNAPSHOT_TAG: ${{ steps.snapshot_ref.outputs.snapshot }}
         run: bash ../.github/scripts/publish_v41_snapshot_release.sh
 
-      - name: Verify the published archive and promote the release branch
+      - name: Verify the published input archives and promote the release branch
         shell: bash
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
