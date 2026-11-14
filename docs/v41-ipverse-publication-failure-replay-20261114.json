@@ -1,0 +1,36 @@
+{
+  "source_pr": 32,
+  "source_head": "d7cda35ed06fa85de6519d535225d81fe0711347",
+  "fixture": "Local bare Git remote and simulated GitHub CLI/curl responses",
+  "release_ref_advanced_before_upload": true,
+  "snapshot_tag_points_to_same_marker_commit": true,
+  "simulated_snapshot_upload_returncode": 1,
+  "release_ref_unchanged_after_upload_failure": true,
+  "pinned_marker_without_asset_audit_returncode": 22,
+  "no_legacy_fallback_when_marker_exists": true,
+  "previous_commit_legacy_exact_hash_readback_returncode": 0,
+  "same_new_commit_with_restored_asset_readback_returncode": 0,
+  "remote_writes": false,
+  "focus": "Publication workflow has two transactions with a fail-closed audit reader",
+  "production": {
+    "main": "b98980c6181c3bfda35445f345ae83777f7d18f3",
+    "release": "de20de628d85062c8161b3da99fc7b0c94622919",
+    "geoip_dat_sha256": "2735053560ebd598cbdcd71ccf858806d4b955a17e2eac512a7baf249d43653a",
+    "legacy_snapshot_tag": "geoip-v41-snapshot-43583581379.1",
+    "legacy_snapshot_has_retained_archive": false
+  },
+  "original_focused_tests_passed": 9,
+  "snapshot_first_local_git_model": [
+    {
+      "simulated_asset_upload": "failed",
+      "release_advanced": false,
+      "snapshot_tag_exists": true
+    },
+    {
+      "simulated_asset_upload": "ok",
+      "release_advanced": true,
+      "snapshot_tag_exists": true
+    }
+  ],
+  "external_asset_publication_tested": false
+}
