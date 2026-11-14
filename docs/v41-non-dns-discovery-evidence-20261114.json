@@ -4098,5 +4098,1417 @@
       ]
     }
   },
-  "policy": "Discovery and provenance only. No DIRECT or other production change."
+  "policy": "Discovery and provenance only. No DIRECT or other production change.",
+  "later_exact_rib_checks": {
+    "bgp-state:160.79.121.0/24": {
+      "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=160.79.121.0%2F24&timestamp=2026-11-14T08%3A00%3A00",
+      "sha256": "74c4db11109290ad3738b6d264210e2bee71716bcbb051eb613c875279c41524",
+      "data": {
+        "timestamp": "2026-11-14T07:59:49",
+        "paths": []
+      }
+    },
+    "history:160.79.121.0/24": {
+      "url": "https://stat.ripe.net/data/routing-history/data.json?resource=160.79.121.0%2F24&starttime=2026-11-01T00%3A00%3A00&endtime=2026-11-14T08%3A00%3A00&min_peers=1",
+      "sha256": "09fcc95a9a7252dba8d58eb3d47a8817e1ce9e926c462944154f118bdfcc1830",
+      "data": {
+        "by_origin": [],
+        "query_starttime": "2026-11-01T00:00:00",
+        "query_endtime": "2026-11-14T00:00:00",
+        "resource": "160.79.121.0/24"
+      }
+    },
+    "bgp-state:160.79.122.0/24": {
+      "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=160.79.122.0%2F24&timestamp=2026-11-14T08%3A00%3A00",
+      "sha256": "71f27061041ae80c8853b490838a7c25baa2140e99eb34212b4dbe811123049d",
+      "data": {
+        "timestamp": "2026-11-14T07:59:49",
+        "paths": []
+      }
+    },
+    "history:160.79.122.0/24": {
+      "url": "https://stat.ripe.net/data/routing-history/data.json?resource=160.79.122.0%2F24&starttime=2026-11-01T00%3A00%3A00&endtime=2026-11-14T08%3A00%3A00&min_peers=1",
+      "sha256": "f56b1157e3ff8e88b3c18eaa6bafb70954fb45f2d9e62a698c38aa33c46bb09f",
+      "data": {
+        "by_origin": [],
+        "query_starttime": "2026-11-01T00:00:00",
+        "query_endtime": "2026-11-14T00:00:00",
+        "resource": "160.79.122.0/24"
+      }
+    },
+    "bgp-state:198.41.163.0/24": {
+      "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=198.41.163.0%2F24&timestamp=2026-11-14T08%3A00%3A00",
+      "sha256": "df2d98a0a12ec519187ecae6fcb4b52d5bbaf6076d600a5656182681700a2b53",
+      "data": {
+        "timestamp": "2026-11-14T07:59:49",
+        "paths": []
+      }
+    },
+    "history:198.41.163.0/24": {
+      "url": "https://stat.ripe.net/data/routing-history/data.json?resource=198.41.163.0%2F24&starttime=2026-11-01T00%3A00%3A00&endtime=2026-11-14T08%3A00%3A00&min_peers=1",
+      "sha256": "b385363ae8c91506063e1a3cbc4fa5ab6ebe7e2209d25906ab782531eaffc010",
+      "data": {
+        "by_origin": [],
+        "query_starttime": "2026-11-01T00:00:00",
+        "query_endtime": "2026-11-14T00:00:00",
+        "resource": "198.41.163.0/24"
+      }
+    },
+    "bgp-state:185.121.241.0/24": {
+      "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=185.121.241.0%2F24&timestamp=2026-11-14T08%3A00%3A00",
+      "sha256": "b4acdf79e69b11ebaed2cb1267735dd23b23343f4d102cdcb926d3c2018a84c5",
+      "data": {
+        "timestamp": "2026-11-14T07:59:49",
+        "paths": [
+          {
+            "prefix": "185.121.241.0/24",
+            "origin": 59796,
+            "count": 326
+          }
+        ]
+      }
+    },
+    "history:185.121.241.0/24": {
+      "url": "https://stat.ripe.net/data/routing-history/data.json?resource=185.121.241.0%2F24&starttime=2026-11-01T00%3A00%3A00&endtime=2026-11-14T08%3A00%3A00&min_peers=1",
+      "sha256": "c902a292507eee34cf4e5be088cf06aa45c3e0a8c4a8e6b4b99c552a2bb6f981",
+      "data": {
+        "by_origin": [
+          {
+            "origin": "59796",
+            "prefixes": [
+              {
+                "prefix": "185.121.241.0/24",
+                "timelines": [
+                  {
+                    "starttime": "2026-11-01T00:00:00",
+                    "endtime": "2026-11-05T07:59:59",
+                    "full_peers_seeing": 324.0
+                  },
+                  {
+                    "starttime": "2026-11-05T08:00:00",
+                    "endtime": "2026-11-06T23:59:59",
+                    "full_peers_seeing": 322.0
+                  },
+                  {
+                    "starttime": "2026-11-07T00:00:00",
+                    "endtime": "2026-11-08T15:59:59",
+                    "full_peers_seeing": 320.0
+                  },
+                  {
+                    "starttime": "2026-11-08T16:00:00",
+                    "endtime": "2026-11-11T23:59:59",
+                    "full_peers_seeing": 322.0
+                  },
+                  {
+                    "starttime": "2026-11-12T00:00:00",
+                    "endtime": "2026-11-12T23:59:59",
+                    "full_peers_seeing": 320.0
+                  },
+                  {
+                    "starttime": "2026-11-13T00:00:00",
+                    "endtime": "2026-11-13T07:59:59",
+                    "full_peers_seeing": 318
+                  },
+                  {
+                    "starttime": "2026-11-13T08:00:00",
+                    "endtime": "2026-11-14T00:00:00",
+                    "full_peers_seeing": 320.0
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "query_starttime": "2026-11-01T00:00:00",
+        "query_endtime": "2026-11-14T00:00:00",
+        "resource": "185.121.241.0/24"
+      }
+    },
+    "bgp-state:31.135.179.0/24": {
+      "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=31.135.179.0%2F24&timestamp=2026-11-14T08%3A00%3A00",
+      "sha256": "9f6cda227f18a1c86a854d4942ffd386ebec04029e5ccec2aea04d146bd3c517",
+      "data": {
+        "timestamp": "2026-11-14T07:59:49",
+        "paths": [
+          {
+            "prefix": "31.135.179.0/24",
+            "origin": 200467,
+            "count": 366
+          }
+        ]
+      }
+    },
+    "history:31.135.179.0/24": {
+      "url": "https://stat.ripe.net/data/routing-history/data.json?resource=31.135.179.0%2F24&starttime=2026-11-01T00%3A00%3A00&endtime=2026-11-14T08%3A00%3A00&min_peers=1",
+      "sha256": "545c6557b404ecc03799d365231fdf2e3f058a7c276bf0a2987e2f62aae32d1b",
+      "data": {
+        "by_origin": [
+          {
+            "origin": "200467",
+            "prefixes": [
+              {
+                "prefix": "31.135.179.0/24",
+                "timelines": [
+                  {
+                    "starttime": "2026-11-01T00:00:00",
+                    "endtime": "2026-11-05T07:59:59",
+                    "full_peers_seeing": 323.0
+                  },
+                  {
+                    "starttime": "2026-11-05T08:00:00",
+                    "endtime": "2026-11-06T23:59:59",
+                    "full_peers_seeing": 321.0
+                  },
+                  {
+                    "starttime": "2026-11-07T00:00:00",
+                    "endtime": "2026-11-08T15:59:59",
+                    "full_peers_seeing": 319.0
+                  },
+                  {
+                    "starttime": "2026-11-08T16:00:00",
+                    "endtime": "2026-11-11T23:59:59",
+                    "full_peers_seeing": 321.0
+                  },
+                  {
+                    "starttime": "2026-11-12T00:00:00",
+                    "endtime": "2026-11-12T23:59:59",
+                    "full_peers_seeing": 319.0
+                  },
+                  {
+                    "starttime": "2026-11-13T00:00:00",
+                    "endtime": "2026-11-13T07:59:59",
+                    "full_peers_seeing": 317
+                  },
+                  {
+                    "starttime": "2026-11-13T08:00:00",
+                    "endtime": "2026-11-14T00:00:00",
+                    "full_peers_seeing": 319.0
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "query_starttime": "2026-11-01T00:00:00",
+        "query_endtime": "2026-11-14T00:00:00",
+        "resource": "31.135.179.0/24"
+      }
+    },
+    "bgp-state:78.31.176.0/24": {
+      "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=78.31.176.0%2F24&timestamp=2026-11-14T08%3A00%3A00",
+      "sha256": "dbde63b8bb1b0ed5dd4537b00be9c6b705a5ee59d728ae5a3b6389a5bb3e4f4c",
+      "data": {
+        "timestamp": "2026-11-14T07:59:49",
+        "paths": [
+          {
+            "prefix": "78.31.176.0/24",
+            "origin": 197287,
+            "count": 364
+          }
+        ]
+      }
+    },
+    "history:78.31.176.0/24": {
+      "url": "https://stat.ripe.net/data/routing-history/data.json?resource=78.31.176.0%2F24&starttime=2026-11-01T00%3A00%3A00&endtime=2026-11-14T08%3A00%3A00&min_peers=1",
+      "sha256": "295fe7dbf4a7a1554b1104c0a7d5d60bede299b792b0bbc7a2f933c68f8f624e",
+      "data": {
+        "by_origin": [
+          {
+            "origin": "197287",
+            "prefixes": [
+              {
+                "prefix": "78.31.176.0/24",
+                "timelines": [
+                  {
+                    "starttime": "2026-11-01T00:00:00",
+                    "endtime": "2026-11-05T07:59:59",
+                    "full_peers_seeing": 324.0
+                  },
+                  {
+                    "starttime": "2026-11-05T08:00:00",
+                    "endtime": "2026-11-06T23:59:59",
+                    "full_peers_seeing": 322.0
+                  },
+                  {
+                    "starttime": "2026-11-07T00:00:00",
+                    "endtime": "2026-11-08T15:59:59",
+                    "full_peers_seeing": 320.0
+                  },
+                  {
+                    "starttime": "2026-11-08T16:00:00",
+                    "endtime": "2026-11-11T23:59:59",
+                    "full_peers_seeing": 322.0
+                  },
+                  {
+                    "starttime": "2026-11-12T00:00:00",
+                    "endtime": "2026-11-12T23:59:59",
+                    "full_peers_seeing": 320.0
+                  },
+                  {
+                    "starttime": "2026-11-13T00:00:00",
+                    "endtime": "2026-11-13T07:59:59",
+                    "full_peers_seeing": 318
+                  },
+                  {
+                    "starttime": "2026-11-13T08:00:00",
+                    "endtime": "2026-11-14T00:00:00",
+                    "full_peers_seeing": 320.0
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "query_starttime": "2026-11-01T00:00:00",
+        "query_endtime": "2026-11-14T00:00:00",
+        "resource": "78.31.176.0/24"
+      }
+    },
+    "bgp-state:45.142.122.0/24": {
+      "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=45.142.122.0%2F24&timestamp=2026-11-14T08%3A00%3A00",
+      "sha256": "4e21bac8d71af809df0a96f449d0f4e174b001a3eaba20597ae6dcec2c8027e6",
+      "data": {
+        "timestamp": "2026-11-14T07:59:49",
+        "paths": [
+          {
+            "prefix": "45.142.122.0/24",
+            "origin": 205090,
+            "count": 380
+          }
+        ]
+      }
+    },
+    "history:45.142.122.0/24": {
+      "url": "https://stat.ripe.net/data/routing-history/data.json?resource=45.142.122.0%2F24&starttime=2026-11-01T00%3A00%3A00&endtime=2026-11-14T08%3A00%3A00&min_peers=1",
+      "sha256": "fad432af251d17c42fac5356d8971a55cad1f355cfc53ba201d85147c82268d4",
+      "data": {
+        "by_origin": [
+          {
+            "origin": "205090",
+            "prefixes": [
+              {
+                "prefix": "45.142.122.0/24",
+                "timelines": [
+                  {
+                    "starttime": "2026-11-01T00:00:00",
+                    "endtime": "2026-11-05T07:59:59",
+                    "full_peers_seeing": 324.0
+                  },
+                  {
+                    "starttime": "2026-11-05T08:00:00",
+                    "endtime": "2026-11-06T23:59:59",
+                    "full_peers_seeing": 322.0
+                  },
+                  {
+                    "starttime": "2026-11-07T00:00:00",
+                    "endtime": "2026-11-08T15:59:59",
+                    "full_peers_seeing": 320.0
+                  },
+                  {
+                    "starttime": "2026-11-08T16:00:00",
+                    "endtime": "2026-11-11T23:59:59",
+                    "full_peers_seeing": 322.0
+                  },
+                  {
+                    "starttime": "2026-11-12T00:00:00",
+                    "endtime": "2026-11-12T23:59:59",
+                    "full_peers_seeing": 320.0
+                  },
+                  {
+                    "starttime": "2026-11-13T00:00:00",
+                    "endtime": "2026-11-13T07:59:59",
+                    "full_peers_seeing": 318
+                  },
+                  {
+                    "starttime": "2026-11-13T08:00:00",
+                    "endtime": "2026-11-14T00:00:00",
+                    "full_peers_seeing": 320.0
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "query_starttime": "2026-11-01T00:00:00",
+        "query_endtime": "2026-11-14T00:00:00",
+        "resource": "45.142.122.0/24"
+      }
+    },
+    "routing-status:193.84.78.0/24": {
+      "url": "https://stat.ripe.net/data/routing-status/data.json?resource=193.84.78.0%2F24",
+      "sha256": "46afd2e9e915b00c404c56323f3e3c4a70beac0f1f4341827fc7d5d9d6654618",
+      "data": {
+        "origins": [
+          {
+            "origin": 43298,
+            "route_objects": [
+              "RADB",
+              "RIPE"
+            ]
+          }
+        ],
+        "less_specifics": [],
+        "more_specifics": [],
+        "query_time": "2026-11-14T00:00:00"
+      }
+    },
+    "routing-status:193.84.90.0/24": {
+      "url": "https://stat.ripe.net/data/routing-status/data.json?resource=193.84.90.0%2F24",
+      "sha256": "2fb62a594b0867c1278e7a080fa1009b7615d7bac0631ab27500e91263863b39",
+      "data": {
+        "origins": [
+          {
+            "origin": 43298,
+            "route_objects": [
+              "RADB",
+              "RIPE"
+            ]
+          }
+        ],
+        "less_specifics": [],
+        "more_specifics": [],
+        "query_time": "2026-11-14T00:00:00"
+      }
+    },
+    "routing-status:37.140.192.0/24": {
+      "url": "https://stat.ripe.net/data/routing-status/data.json?resource=37.140.192.0%2F24",
+      "sha256": "700d5665557499cd41d41b0ac0bb8751de0c1fdfe4891dc1e5674a5c007325a4",
+      "data": {
+        "origins": [
+          {
+            "origin": 197695,
+            "route_objects": [
+              "RIPE"
+            ]
+          }
+        ],
+        "less_specifics": [],
+        "more_specifics": [],
+        "query_time": "2026-11-14T00:00:00"
+      }
+    },
+    "routing-status:57.84.0.0/20": {
+      "url": "https://stat.ripe.net/data/routing-status/data.json?resource=57.84.0.0%2F20",
+      "sha256": "1ecc15eadba4bad5c1dbdfd5d8fc33519e46fab52faa41f02140ee8f230df412",
+      "data": {
+        "origins": [],
+        "less_specifics": [
+          {
+            "prefix": "57.84.0.0/16",
+            "origin": 16509
+          }
+        ],
+        "more_specifics": [],
+        "query_time": "2026-11-14T00:00:00"
+      }
+    }
+  },
+  "narrower_ris_coverage": {
+    "initial_bucket_queries": {
+      "74.125.49.0/24": {
+        "url": "https://stat.ripe.net/data/routing-status/data.json?resource=74.125.49.0%2F24&timestamp=2026-11-14T00%3A00%3A00&min_peers_seeing=10",
+        "final_url": "https://stat.ripe.net/data/routing-status/data.json?resource=74.125.49.0%2F24&timestamp=2026-11-14T00%3A00%3A00&min_peers_seeing=10",
+        "sha256": "5aaea5931f390659802ac3c7cfc21ee766e3223ee0cae0fb073e66dfd8f8dfd4",
+        "origins": [],
+        "query_time": "2026-11-14T00:00:00",
+        "more_specifics": [],
+        "less_specifics": [
+          {
+            "prefix": "74.125.0.0/16",
+            "origin": 15169
+          }
+        ]
+      },
+      "74.125.52.0/24": {
+        "url": "https://stat.ripe.net/data/routing-status/data.json?resource=74.125.52.0%2F24&timestamp=2026-11-14T00%3A00%3A00&min_peers_seeing=10",
+        "final_url": "https://stat.ripe.net/data/routing-status/data.json?resource=74.125.52.0%2F24&timestamp=2026-11-14T00%3A00%3A00&min_peers_seeing=10",
+        "sha256": "0561c99180f3a8a38a1098991bc033bd1c94bd1c93e6d51422da39d4e7f6080a",
+        "origins": [],
+        "query_time": "2026-11-14T00:00:00",
+        "more_specifics": [],
+        "less_specifics": [
+          {
+            "prefix": "74.125.0.0/16",
+            "origin": 15169
+          }
+        ]
+      },
+      "74.125.153.0/24": {
+        "url": "https://stat.ripe.net/data/routing-status/data.json?resource=74.125.153.0%2F24&timestamp=2026-11-14T00%3A00%3A00&min_peers_seeing=10",
+        "final_url": "https://stat.ripe.net/data/routing-status/data.json?resource=74.125.153.0%2F24&timestamp=2026-11-14T00%3A00%3A00&min_peers_seeing=10",
+        "sha256": "5d94843da242fd1cc48fc036da857e48bb3a5d558b514a401e98c970cbb18f7b",
+        "origins": [],
+        "query_time": "2026-11-14T00:00:00",
+        "more_specifics": [],
+        "less_specifics": [
+          {
+            "prefix": "74.125.0.0/16",
+            "origin": 15169
+          },
+          {
+            "prefix": "74.125.152.0/21",
+            "origin": 15169
+          }
+        ]
+      },
+      "74.125.111.0/24": {
+        "url": "https://stat.ripe.net/data/routing-status/data.json?resource=74.125.111.0%2F24&timestamp=2026-11-14T00%3A00%3A00&min_peers_seeing=10",
+        "final_url": "https://stat.ripe.net/data/routing-status/data.json?resource=74.125.111.0%2F24&timestamp=2026-11-14T00%3A00%3A00&min_peers_seeing=10",
+        "sha256": "a32b17de6df26131fb072805d5d03701a12ac38f04a6e96028583c6bb9483d9f",
+        "origins": [],
+        "query_time": "2026-11-14T00:00:00",
+        "more_specifics": [],
+        "less_specifics": [
+          {
+            "prefix": "74.125.0.0/16",
+            "origin": 15169
+          }
+        ]
+      },
+      "74.125.253.0/24": {
+        "url": "https://stat.ripe.net/data/routing-status/data.json?resource=74.125.253.0%2F24&timestamp=2026-11-14T00%3A00%3A00&min_peers_seeing=10",
+        "final_url": "https://stat.ripe.net/data/routing-status/data.json?resource=74.125.253.0%2F24&timestamp=2026-11-14T00%3A00%3A00&min_peers_seeing=10",
+        "sha256": "9bd63c73d2df6d385421ed9fdae48cea169617562dfdb0cabfbc513591dff279",
+        "origins": [],
+        "query_time": "2026-11-14T00:00:00",
+        "more_specifics": [],
+        "less_specifics": [
+          {
+            "prefix": "74.125.0.0/16",
+            "origin": 15169
+          }
+        ]
+      },
+      "74.125.48.0/24": {
+        "url": "https://stat.ripe.net/data/routing-status/data.json?resource=74.125.48.0%2F24&timestamp=2026-11-14T00%3A00%3A00&min_peers_seeing=10",
+        "final_url": "https://stat.ripe.net/data/routing-status/data.json?resource=74.125.48.0%2F24&timestamp=2026-11-14T00%3A00%3A00&min_peers_seeing=10",
+        "sha256": "9f28c40d8433e2d543ea16e8787d96707c3023dde16a68730f165bd88f56bdb2",
+        "origins": [],
+        "query_time": "2026-11-14T00:00:00",
+        "more_specifics": [],
+        "less_specifics": [
+          {
+            "prefix": "74.125.0.0/16",
+            "origin": 15169
+          }
+        ]
+      },
+      "74.125.118.0/24": {
+        "url": "https://stat.ripe.net/data/routing-status/data.json?resource=74.125.118.0%2F24&timestamp=2026-11-14T00%3A00%3A00&min_peers_seeing=10",
+        "final_url": "https://stat.ripe.net/data/routing-status/data.json?resource=74.125.118.0%2F24&timestamp=2026-11-14T00%3A00%3A00&min_peers_seeing=10",
+        "sha256": "d32b5225fc6904aa9318b578b17db2301974c668427fab4514407043fee103ca",
+        "origins": [],
+        "query_time": "2026-11-14T00:00:00",
+        "more_specifics": [],
+        "less_specifics": [
+          {
+            "prefix": "74.125.0.0/16",
+            "origin": 15169
+          }
+        ]
+      },
+      "74.125.244.0/24": {
+        "url": "https://stat.ripe.net/data/routing-status/data.json?resource=74.125.244.0%2F24&timestamp=2026-11-14T00%3A00%3A00&min_peers_seeing=10",
+        "final_url": "https://stat.ripe.net/data/routing-status/data.json?resource=74.125.244.0%2F24&timestamp=2026-11-14T00%3A00%3A00&min_peers_seeing=10",
+        "sha256": "9c3a18fe2a2d581b386ea97546158d21bf472b14862778eb4e30b80878ba7625",
+        "origins": [],
+        "query_time": "2026-11-14T00:00:00",
+        "more_specifics": [],
+        "less_specifics": [
+          {
+            "prefix": "74.125.0.0/16",
+            "origin": 15169
+          }
+        ]
+      },
+      "172.253.64.0/24": {
+        "url": "https://stat.ripe.net/data/routing-status/data.json?resource=172.253.64.0%2F24&timestamp=2026-11-14T00%3A00%3A00&min_peers_seeing=10",
+        "final_url": "https://stat.ripe.net/data/routing-status/data.json?resource=172.253.64.0%2F24&timestamp=2026-11-14T00%3A00%3A00&min_peers_seeing=10",
+        "sha256": "c73112f8d717fb04f5c41b6e554fe4ab356bd9c400522b6378a45004f884bea9",
+        "origins": [],
+        "query_time": "2026-11-14T00:00:00",
+        "more_specifics": [],
+        "less_specifics": [
+          {
+            "prefix": "172.253.0.0/16",
+            "origin": 15169
+          }
+        ]
+      },
+      "172.217.130.0/24": {
+        "url": "https://stat.ripe.net/data/routing-status/data.json?resource=172.217.130.0%2F24&timestamp=2026-11-14T00%3A00%3A00&min_peers_seeing=10",
+        "final_url": "https://stat.ripe.net/data/routing-status/data.json?resource=172.217.130.0%2F24&timestamp=2026-11-14T00%3A00%3A00&min_peers_seeing=10",
+        "sha256": "df5b9b5fe587a6b46054fece02c2744a8ee1a2ba0dc7c6cf275af18740917a72",
+        "origins": [],
+        "query_time": "2026-11-14T00:00:00",
+        "more_specifics": [],
+        "less_specifics": [
+          {
+            "prefix": "172.217.0.0/16",
+            "origin": 15169
+          },
+          {
+            "prefix": "172.217.128.0/19",
+            "origin": 15169
+          }
+        ]
+      },
+      "74.125.51.0/24": {
+        "url": "https://stat.ripe.net/data/routing-status/data.json?resource=74.125.51.0%2F24&timestamp=2026-11-14T00%3A00%3A00&min_peers_seeing=10",
+        "final_url": "https://stat.ripe.net/data/routing-status/data.json?resource=74.125.51.0%2F24&timestamp=2026-11-14T00%3A00%3A00&min_peers_seeing=10",
+        "sha256": "0abf59c40df23c913803a97279bdcd3d074839f46315deca711310778b03bb29",
+        "origins": [],
+        "query_time": "2026-11-14T00:00:00",
+        "more_specifics": [],
+        "less_specifics": [
+          {
+            "prefix": "74.125.0.0/16",
+            "origin": 15169
+          }
+        ]
+      },
+      "74.125.119.0/24": {
+        "url": "https://stat.ripe.net/data/routing-status/data.json?resource=74.125.119.0%2F24&timestamp=2026-11-14T00%3A00%3A00&min_peers_seeing=10",
+        "final_url": "https://stat.ripe.net/data/routing-status/data.json?resource=74.125.119.0%2F24&timestamp=2026-11-14T00%3A00%3A00&min_peers_seeing=10",
+        "sha256": "a672a401e6753158afbfec1c4cd088067669498a46e4b402a96a60a7c2a5303f",
+        "origins": [],
+        "query_time": "2026-11-14T00:00:00",
+        "more_specifics": [],
+        "less_specifics": [
+          {
+            "prefix": "74.125.0.0/16",
+            "origin": 15169
+          }
+        ]
+      },
+      "74.125.37.0/24": {
+        "url": "https://stat.ripe.net/data/routing-status/data.json?resource=74.125.37.0%2F24&timestamp=2026-11-14T00%3A00%3A00&min_peers_seeing=10",
+        "final_url": "https://stat.ripe.net/data/routing-status/data.json?resource=74.125.37.0%2F24&timestamp=2026-11-14T00%3A00%3A00&min_peers_seeing=10",
+        "sha256": "6964fa79f40a1a24eda9363cbd31bc1dd142b828fced58bc5894f0df6d680030",
+        "origins": [],
+        "query_time": "2026-11-14T00:00:00",
+        "more_specifics": [],
+        "less_specifics": [
+          {
+            "prefix": "74.125.0.0/16",
+            "origin": 15169
+          }
+        ]
+      },
+      "172.253.68.0/24": {
+        "url": "https://stat.ripe.net/data/routing-status/data.json?resource=172.253.68.0%2F24&timestamp=2026-11-14T00%3A00%3A00&min_peers_seeing=10",
+        "final_url": "https://stat.ripe.net/data/routing-status/data.json?resource=172.253.68.0%2F24&timestamp=2026-11-14T00%3A00%3A00&min_peers_seeing=10",
+        "sha256": "ae88cde8a0082ad63050fa060866e7618bfa42ff783f26318af8ec1899675ec1",
+        "origins": [],
+        "query_time": "2026-11-14T00:00:00",
+        "more_specifics": [],
+        "less_specifics": [
+          {
+            "prefix": "172.253.0.0/16",
+            "origin": 15169
+          }
+        ]
+      },
+      "172.253.69.0/24": {
+        "url": "https://stat.ripe.net/data/routing-status/data.json?resource=172.253.69.0%2F24&timestamp=2026-11-14T00%3A00%3A00&min_peers_seeing=10",
+        "error": "<urlopen error timed out>"
+      },
+      "172.253.75.0/24": {
+        "url": "https://stat.ripe.net/data/routing-status/data.json?resource=172.253.75.0%2F24&timestamp=2026-11-14T00%3A00%3A00&min_peers_seeing=10",
+        "error": "<urlopen error timed out>"
+      },
+      "172.253.71.0/24": {
+        "url": "https://stat.ripe.net/data/routing-status/data.json?resource=172.253.71.0%2F24&timestamp=2026-11-14T00%3A00%3A00&min_peers_seeing=10",
+        "error": "<urlopen error timed out>"
+      },
+      "172.253.102.0/24": {
+        "url": "https://stat.ripe.net/data/routing-status/data.json?resource=172.253.102.0%2F24&timestamp=2026-11-14T00%3A00%3A00&min_peers_seeing=10",
+        "error": "<urlopen error timed out>"
+      },
+      "172.253.70.0/24": {
+        "url": "https://stat.ripe.net/data/routing-status/data.json?resource=172.253.70.0%2F24&timestamp=2026-11-14T00%3A00%3A00&min_peers_seeing=10",
+        "error": "<urlopen error timed out>"
+      },
+      "172.253.76.0/24": {
+        "url": "https://stat.ripe.net/data/routing-status/data.json?resource=172.253.76.0%2F24&timestamp=2026-11-14T00%3A00%3A00&min_peers_seeing=10",
+        "error": "<urlopen error timed out>"
+      },
+      "172.253.77.0/24": {
+        "url": "https://stat.ripe.net/data/routing-status/data.json?resource=172.253.77.0%2F24&timestamp=2026-11-14T00%3A00%3A00&min_peers_seeing=10",
+        "error": "<urlopen error timed out>"
+      },
+      "172.253.50.0/24": {
+        "url": "https://stat.ripe.net/data/routing-status/data.json?resource=172.253.50.0%2F24&timestamp=2026-11-14T00%3A00%3A00&min_peers_seeing=10",
+        "error": "<urlopen error timed out>"
+      },
+      "173.194.126.0/24": {
+        "url": "https://stat.ripe.net/data/routing-status/data.json?resource=173.194.126.0%2F24&timestamp=2026-11-14T00%3A00%3A00&min_peers_seeing=10",
+        "error": "<urlopen error timed out>"
+      },
+      "173.194.122.0/24": {
+        "url": "https://stat.ripe.net/data/routing-status/data.json?resource=173.194.122.0%2F24&timestamp=2026-11-14T00%3A00%3A00&min_peers_seeing=10",
+        "error": "<urlopen error timed out>"
+      },
+      "142.250.173.0/24": {
+        "url": "https://stat.ripe.net/data/routing-status/data.json?resource=142.250.173.0%2F24&timestamp=2026-11-14T00%3A00%3A00&min_peers_seeing=10",
+        "error": "<urlopen error timed out>"
+      },
+      "142.251.199.0/24": {
+        "url": "https://stat.ripe.net/data/routing-status/data.json?resource=142.251.199.0%2F24&timestamp=2026-11-14T00%3A00%3A00&min_peers_seeing=10",
+        "error": "<urlopen error timed out>"
+      },
+      "142.251.61.0/24": {
+        "url": "https://stat.ripe.net/data/routing-status/data.json?resource=142.251.61.0%2F24&timestamp=2026-11-14T00%3A00%3A00&min_peers_seeing=10",
+        "error": "<urlopen error timed out>"
+      },
+      "142.250.209.0/24": {
+        "url": "https://stat.ripe.net/data/routing-status/data.json?resource=142.250.209.0%2F24&timestamp=2026-11-14T00%3A00%3A00&min_peers_seeing=10",
+        "error": "<urlopen error timed out>"
+      },
+      "142.250.57.0/24": {
+        "url": "https://stat.ripe.net/data/routing-status/data.json?resource=142.250.57.0%2F24&timestamp=2026-11-14T00%3A00%3A00&min_peers_seeing=10",
+        "final_url": "https://stat.ripe.net/data/routing-status/data.json?resource=142.250.57.0%2F24&timestamp=2026-11-14T00%3A00%3A00&min_peers_seeing=10",
+        "sha256": "216e8cf00284b5aac91d9c2f39d2b0851a95185db2afd1f68b73a90609af210e",
+        "origins": [],
+        "query_time": "2026-11-14T00:00:00",
+        "more_specifics": [],
+        "less_specifics": [
+          {
+            "prefix": "142.250.0.0/15",
+            "origin": 15169
+          }
+        ]
+      },
+      "142.251.64.0/24": {
+        "url": "https://stat.ripe.net/data/routing-status/data.json?resource=142.251.64.0%2F24&timestamp=2026-11-14T00%3A00%3A00&min_peers_seeing=10",
+        "final_url": "https://stat.ripe.net/data/routing-status/data.json?resource=142.251.64.0%2F24&timestamp=2026-11-14T00%3A00%3A00&min_peers_seeing=10",
+        "sha256": "eb3345c77b874bf028c28202afeb107a5069bd532c3e28dd6e72d4332158b853",
+        "origins": [],
+        "query_time": "2026-11-14T00:00:00",
+        "more_specifics": [],
+        "less_specifics": [
+          {
+            "prefix": "142.250.0.0/15",
+            "origin": 15169
+          }
+        ]
+      },
+      "142.250.234.0/24": {
+        "url": "https://stat.ripe.net/data/routing-status/data.json?resource=142.250.234.0%2F24&timestamp=2026-11-14T00%3A00%3A00&min_peers_seeing=10",
+        "final_url": "https://stat.ripe.net/data/routing-status/data.json?resource=142.250.234.0%2F24&timestamp=2026-11-14T00%3A00%3A00&min_peers_seeing=10",
+        "sha256": "cdfcab8a1417a7560875a1733cc9e45a71d5eb8498d27989a4c91aa4babe7c2d",
+        "origins": [],
+        "query_time": "2026-11-14T00:00:00",
+        "more_specifics": [],
+        "less_specifics": [
+          {
+            "prefix": "142.250.0.0/15",
+            "origin": 15169
+          }
+        ]
+      },
+      "142.250.58.0/24": {
+        "url": "https://stat.ripe.net/data/routing-status/data.json?resource=142.250.58.0%2F24&timestamp=2026-11-14T00%3A00%3A00&min_peers_seeing=10",
+        "final_url": "https://stat.ripe.net/data/routing-status/data.json?resource=142.250.58.0%2F24&timestamp=2026-11-14T00%3A00%3A00&min_peers_seeing=10",
+        "sha256": "3ccb5a72d73a8e546071f910f5de5b3aa627339c4b581a3ffd16cbf36b6b5aaa",
+        "origins": [],
+        "query_time": "2026-11-14T00:00:00",
+        "more_specifics": [],
+        "less_specifics": [
+          {
+            "prefix": "142.250.0.0/15",
+            "origin": 15169
+          }
+        ]
+      },
+      "142.251.238.0/24": {
+        "url": "https://stat.ripe.net/data/routing-status/data.json?resource=142.251.238.0%2F24&timestamp=2026-11-14T00%3A00%3A00&min_peers_seeing=10",
+        "final_url": "https://stat.ripe.net/data/routing-status/data.json?resource=142.251.238.0%2F24&timestamp=2026-11-14T00%3A00%3A00&min_peers_seeing=10",
+        "sha256": "11adf461ca83fdc783d999796619599694d9d4acdc73e059eefb2863a36d5d87",
+        "origins": [],
+        "query_time": "2026-11-14T00:00:00",
+        "more_specifics": [],
+        "less_specifics": [
+          {
+            "prefix": "142.250.0.0/15",
+            "origin": 15169
+          }
+        ]
+      },
+      "142.250.160.0/24": {
+        "url": "https://stat.ripe.net/data/routing-status/data.json?resource=142.250.160.0%2F24&timestamp=2026-11-14T00%3A00%3A00&min_peers_seeing=10",
+        "final_url": "https://stat.ripe.net/data/routing-status/data.json?resource=142.250.160.0%2F24&timestamp=2026-11-14T00%3A00%3A00&min_peers_seeing=10",
+        "sha256": "13abdd5203adde103b9f666628e30bf1340545ac150df42e87c833c4cf4fd62d",
+        "origins": [],
+        "query_time": "2026-11-14T00:00:00",
+        "more_specifics": [],
+        "less_specifics": [
+          {
+            "prefix": "142.250.0.0/15",
+            "origin": 15169
+          }
+        ]
+      },
+      "142.251.68.0/24": {
+        "url": "https://stat.ripe.net/data/routing-status/data.json?resource=142.251.68.0%2F24&timestamp=2026-11-14T00%3A00%3A00&min_peers_seeing=10",
+        "final_url": "https://stat.ripe.net/data/routing-status/data.json?resource=142.251.68.0%2F24&timestamp=2026-11-14T00%3A00%3A00&min_peers_seeing=10",
+        "sha256": "90624021fa5c9426d11df6c1eff0e5a36df05d6de2368953592e11495bfc6cf3",
+        "origins": [],
+        "query_time": "2026-11-14T00:00:00",
+        "more_specifics": [],
+        "less_specifics": [
+          {
+            "prefix": "142.250.0.0/15",
+            "origin": 15169
+          }
+        ]
+      },
+      "142.250.238.0/24": {
+        "url": "https://stat.ripe.net/data/routing-status/data.json?resource=142.250.238.0%2F24&timestamp=2026-11-14T00%3A00%3A00&min_peers_seeing=10",
+        "final_url": "https://stat.ripe.net/data/routing-status/data.json?resource=142.250.238.0%2F24&timestamp=2026-11-14T00%3A00%3A00&min_peers_seeing=10",
+        "sha256": "27b8abd51463ca4b33c5da6c7c79e8ad93d8bc02b3ce69058272cad5fc60fc01",
+        "origins": [],
+        "query_time": "2026-11-14T00:00:00",
+        "more_specifics": [],
+        "less_specifics": [
+          {
+            "prefix": "142.250.0.0/15",
+            "origin": 15169
+          }
+        ]
+      },
+      "142.250.163.0/24": {
+        "url": "https://stat.ripe.net/data/routing-status/data.json?resource=142.250.163.0%2F24&timestamp=2026-11-14T00%3A00%3A00&min_peers_seeing=10",
+        "final_url": "https://stat.ripe.net/data/routing-status/data.json?resource=142.250.163.0%2F24&timestamp=2026-11-14T00%3A00%3A00&min_peers_seeing=10",
+        "sha256": "ed48989797cbd6424d394a19e5648ac59c6b629037603640fafd39110d53cc47",
+        "origins": [],
+        "query_time": "2026-11-14T00:00:00",
+        "more_specifics": [],
+        "less_specifics": [
+          {
+            "prefix": "142.250.0.0/15",
+            "origin": 15169
+          }
+        ]
+      },
+      "142.250.210.0/24": {
+        "url": "https://stat.ripe.net/data/routing-status/data.json?resource=142.250.210.0%2F24&timestamp=2026-11-14T00%3A00%3A00&min_peers_seeing=10",
+        "final_url": "https://stat.ripe.net/data/routing-status/data.json?resource=142.250.210.0%2F24&timestamp=2026-11-14T00%3A00%3A00&min_peers_seeing=10",
+        "sha256": "eea0ca6b1a12e45c456d48e430675d96d5f050e8e3e9cdad6774c70e34811744",
+        "origins": [],
+        "query_time": "2026-11-14T00:00:00",
+        "more_specifics": [],
+        "less_specifics": [
+          {
+            "prefix": "142.250.0.0/15",
+            "origin": 15169
+          }
+        ]
+      },
+      "142.250.47.0/24": {
+        "url": "https://stat.ripe.net/data/routing-status/data.json?resource=142.250.47.0%2F24&timestamp=2026-11-14T00%3A00%3A00&min_peers_seeing=10",
+        "final_url": "https://stat.ripe.net/data/routing-status/data.json?resource=142.250.47.0%2F24&timestamp=2026-11-14T00%3A00%3A00&min_peers_seeing=10",
+        "sha256": "69750115790ba090aee3153346b9e3dd8d7e4e961f419cdd4c16232b3d207051",
+        "origins": [],
+        "query_time": "2026-11-14T00:00:00",
+        "more_specifics": [],
+        "less_specifics": [
+          {
+            "prefix": "142.250.0.0/15",
+            "origin": 15169
+          }
+        ]
+      },
+      "142.250.162.0/24": {
+        "url": "https://stat.ripe.net/data/routing-status/data.json?resource=142.250.162.0%2F24&timestamp=2026-11-14T00%3A00%3A00&min_peers_seeing=10",
+        "final_url": "https://stat.ripe.net/data/routing-status/data.json?resource=142.250.162.0%2F24&timestamp=2026-11-14T00%3A00%3A00&min_peers_seeing=10",
+        "sha256": "1d07b9a3854aaca0de37721f1cc01f7234162258eaefbfc8409404bca86d7d4f",
+        "origins": [],
+        "query_time": "2026-11-14T00:00:00",
+        "more_specifics": [],
+        "less_specifics": [
+          {
+            "prefix": "142.250.0.0/15",
+            "origin": 15169
+          }
+        ]
+      },
+      "142.251.53.0/24": {
+        "url": "https://stat.ripe.net/data/routing-status/data.json?resource=142.251.53.0%2F24&timestamp=2026-11-14T00%3A00%3A00&min_peers_seeing=10",
+        "final_url": "https://stat.ripe.net/data/routing-status/data.json?resource=142.251.53.0%2F24&timestamp=2026-11-14T00%3A00%3A00&min_peers_seeing=10",
+        "sha256": "36f1478d3f38aaa91fdb924afffc01caaeb995a908c5319fac020767c863cfe5",
+        "origins": [
+          {
+            "origin": 15169,
+            "route_objects": [
+              "RADB"
+            ]
+          }
+        ],
+        "query_time": "2026-11-14T00:00:00",
+        "more_specifics": [],
+        "less_specifics": [
+          {
+            "prefix": "142.250.0.0/15",
+            "origin": 15169
+          }
+        ]
+      },
+      "142.251.67.0/24": {
+        "url": "https://stat.ripe.net/data/routing-status/data.json?resource=142.251.67.0%2F24&timestamp=2026-11-14T00%3A00%3A00&min_peers_seeing=10",
+        "final_url": "https://stat.ripe.net/data/routing-status/data.json?resource=142.251.67.0%2F24&timestamp=2026-11-14T00%3A00%3A00&min_peers_seeing=10",
+        "sha256": "de32a70ce618b2e3dfdd32d38d88ccfdd269914cbf9d0c51ed73457730481e58",
+        "origins": [],
+        "query_time": "2026-11-14T00:00:00",
+        "more_specifics": [],
+        "less_specifics": [
+          {
+            "prefix": "142.250.0.0/15",
+            "origin": 15169
+          }
+        ]
+      },
+      "142.250.237.0/24": {
+        "url": "https://stat.ripe.net/data/routing-status/data.json?resource=142.250.237.0%2F24&timestamp=2026-11-14T00%3A00%3A00&min_peers_seeing=10",
+        "final_url": "https://stat.ripe.net/data/routing-status/data.json?resource=142.250.237.0%2F24&timestamp=2026-11-14T00%3A00%3A00&min_peers_seeing=10",
+        "sha256": "07534045b347f18241a69ed1c6ea016943b93550ee85e1920cd42b7991c41843",
+        "origins": [],
+        "query_time": "2026-11-14T00:00:00",
+        "more_specifics": [],
+        "less_specifics": [
+          {
+            "prefix": "142.250.0.0/15",
+            "origin": 15169
+          }
+        ]
+      },
+      "142.251.253.0/24": {
+        "url": "https://stat.ripe.net/data/routing-status/data.json?resource=142.251.253.0%2F24&timestamp=2026-11-14T00%3A00%3A00&min_peers_seeing=10",
+        "final_url": "https://stat.ripe.net/data/routing-status/data.json?resource=142.251.253.0%2F24&timestamp=2026-11-14T00%3A00%3A00&min_peers_seeing=10",
+        "sha256": "1af2a67535c6c23fc4e4aba1a2df1052cc6e97c782c31dea9511c7170276f2a3",
+        "origins": [],
+        "query_time": "2026-11-14T00:00:00",
+        "more_specifics": [],
+        "less_specifics": [
+          {
+            "prefix": "142.250.0.0/15",
+            "origin": 15169
+          }
+        ]
+      },
+      "142.251.237.0/24": {
+        "url": "https://stat.ripe.net/data/routing-status/data.json?resource=142.251.237.0%2F24&timestamp=2026-11-14T00%3A00%3A00&min_peers_seeing=10",
+        "final_url": "https://stat.ripe.net/data/routing-status/data.json?resource=142.251.237.0%2F24&timestamp=2026-11-14T00%3A00%3A00&min_peers_seeing=10",
+        "sha256": "ba721b9c5aded06ab435eee160cbd5d2e233598ff448c969db6d96f747e2c2f1",
+        "origins": [],
+        "query_time": "2026-11-14T00:00:00",
+        "more_specifics": [],
+        "less_specifics": [
+          {
+            "prefix": "142.250.0.0/15",
+            "origin": 15169
+          }
+        ]
+      },
+      "142.250.233.0/24": {
+        "url": "https://stat.ripe.net/data/routing-status/data.json?resource=142.250.233.0%2F24&timestamp=2026-11-14T00%3A00%3A00&min_peers_seeing=10",
+        "final_url": "https://stat.ripe.net/data/routing-status/data.json?resource=142.250.233.0%2F24&timestamp=2026-11-14T00%3A00%3A00&min_peers_seeing=10",
+        "sha256": "c555e9d347650c6e39935626c16f6a306e363aeab0c07a68ff4fe3711cbe41b7",
+        "origins": [],
+        "query_time": "2026-11-14T00:00:00",
+        "more_specifics": [],
+        "less_specifics": [
+          {
+            "prefix": "142.250.0.0/15",
+            "origin": 15169
+          }
+        ]
+      },
+      "142.250.239.0/24": {
+        "url": "https://stat.ripe.net/data/routing-status/data.json?resource=142.250.239.0%2F24&timestamp=2026-11-14T00%3A00%3A00&min_peers_seeing=10",
+        "final_url": "https://stat.ripe.net/data/routing-status/data.json?resource=142.250.239.0%2F24&timestamp=2026-11-14T00%3A00%3A00&min_peers_seeing=10",
+        "sha256": "db5cee189d48829be10c0d9aee285f4734fb0abb5be125abffd734a7f9a2e9b2",
+        "origins": [],
+        "query_time": "2026-11-14T00:00:00",
+        "more_specifics": [],
+        "less_specifics": [
+          {
+            "prefix": "142.250.0.0/15",
+            "origin": 15169
+          }
+        ]
+      },
+      "192.178.241.0/24": {
+        "url": "https://stat.ripe.net/data/routing-status/data.json?resource=192.178.241.0%2F24&timestamp=2026-11-14T00%3A00%3A00&min_peers_seeing=10",
+        "final_url": "https://stat.ripe.net/data/routing-status/data.json?resource=192.178.241.0%2F24&timestamp=2026-11-14T00%3A00%3A00&min_peers_seeing=10",
+        "sha256": "95b1a115b7e72007a6950cb6808d6bbace445975b0c7fadb5833c53fc0a9cc35",
+        "origins": [],
+        "query_time": "2026-11-14T00:00:00",
+        "more_specifics": [],
+        "less_specifics": [
+          {
+            "prefix": "192.178.0.0/15",
+            "origin": 15169
+          }
+        ]
+      },
+      "192.178.107.0/24": {
+        "url": "https://stat.ripe.net/data/routing-status/data.json?resource=192.178.107.0%2F24&timestamp=2026-11-14T00%3A00%3A00&min_peers_seeing=10",
+        "final_url": "https://stat.ripe.net/data/routing-status/data.json?resource=192.178.107.0%2F24&timestamp=2026-11-14T00%3A00%3A00&min_peers_seeing=10",
+        "sha256": "7efe4e0334cfc15f6c7415c99d96eae48a5f736dae7db9f76031580725b16ca0",
+        "origins": [],
+        "query_time": "2026-11-14T00:00:00",
+        "more_specifics": [],
+        "less_specifics": [
+          {
+            "prefix": "192.178.0.0/15",
+            "origin": 15169
+          }
+        ]
+      },
+      "192.179.73.0/24": {
+        "url": "https://stat.ripe.net/data/routing-status/data.json?resource=192.179.73.0%2F24&timestamp=2026-11-14T00%3A00%3A00&min_peers_seeing=10",
+        "final_url": "https://stat.ripe.net/data/routing-status/data.json?resource=192.179.73.0%2F24&timestamp=2026-11-14T00%3A00%3A00&min_peers_seeing=10",
+        "sha256": "832ac59397f53d61bade46824d54facd3e23caf5f033e0c304e04646dce67f8f",
+        "origins": [],
+        "query_time": "2026-11-14T00:00:00",
+        "more_specifics": [],
+        "less_specifics": [
+          {
+            "prefix": "192.178.0.0/15",
+            "origin": 15169
+          }
+        ]
+      },
+      "142.250.236.0/24": {
+        "url": "https://stat.ripe.net/data/routing-status/data.json?resource=142.250.236.0%2F24&timestamp=2026-11-14T00%3A00%3A00&min_peers_seeing=10",
+        "final_url": "https://stat.ripe.net/data/routing-status/data.json?resource=142.250.236.0%2F24&timestamp=2026-11-14T00%3A00%3A00&min_peers_seeing=10",
+        "sha256": "a2ba87f773796d6ef8e167d18dd8339fc5ee14846f4a805701a523abcbf44ec7",
+        "origins": [],
+        "query_time": "2026-11-14T00:00:00",
+        "more_specifics": [],
+        "less_specifics": [
+          {
+            "prefix": "142.250.0.0/15",
+            "origin": 15169
+          }
+        ]
+      },
+      "192.178.70.0/24": {
+        "url": "https://stat.ripe.net/data/routing-status/data.json?resource=192.178.70.0%2F24&timestamp=2026-11-14T00%3A00%3A00&min_peers_seeing=10",
+        "final_url": "https://stat.ripe.net/data/routing-status/data.json?resource=192.178.70.0%2F24&timestamp=2026-11-14T00%3A00%3A00&min_peers_seeing=10",
+        "sha256": "9afd12278b2b656b76d5c7dedf484a4d4ca1585e3a00933a4ad42b46e53a3164",
+        "origins": [],
+        "query_time": "2026-11-14T00:00:00",
+        "more_specifics": [],
+        "less_specifics": [
+          {
+            "prefix": "192.178.0.0/15",
+            "origin": 15169
+          }
+        ]
+      },
+      "142.250.208.0/24": {
+        "url": "https://stat.ripe.net/data/routing-status/data.json?resource=142.250.208.0%2F24&timestamp=2026-11-14T00%3A00%3A00&min_peers_seeing=10",
+        "final_url": "https://stat.ripe.net/data/routing-status/data.json?resource=142.250.208.0%2F24&timestamp=2026-11-14T00%3A00%3A00&min_peers_seeing=10",
+        "sha256": "ca875173798d49b889a609fa49ea282b0657edac68aa7a8d622d243bdfebcf79",
+        "origins": [],
+        "query_time": "2026-11-14T00:00:00",
+        "more_specifics": [],
+        "less_specifics": [
+          {
+            "prefix": "142.250.0.0/15",
+            "origin": 15169
+          }
+        ]
+      },
+      "142.251.195.0/24": {
+        "url": "https://stat.ripe.net/data/routing-status/data.json?resource=142.251.195.0%2F24&timestamp=2026-11-14T00%3A00%3A00&min_peers_seeing=10",
+        "error": "The read operation timed out"
+      },
+      "192.178.243.0/24": {
+        "url": "https://stat.ripe.net/data/routing-status/data.json?resource=192.178.243.0%2F24&timestamp=2026-11-14T00%3A00%3A00&min_peers_seeing=10",
+        "final_url": "https://stat.ripe.net/data/routing-status/data.json?resource=192.178.243.0%2F24&timestamp=2026-11-14T00%3A00%3A00&min_peers_seeing=10",
+        "sha256": "b2c9516875316edd7d1565dc1b8805d969ab52b547ff2ea40c9bf2654dd24473",
+        "origins": [],
+        "query_time": "2026-11-14T00:00:00",
+        "more_specifics": [],
+        "less_specifics": [
+          {
+            "prefix": "192.178.0.0/15",
+            "origin": 15169
+          }
+        ]
+      },
+      "23.35.107.0/24": {
+        "url": "https://stat.ripe.net/data/routing-status/data.json?resource=23.35.107.0%2F24&timestamp=2026-11-14T00%3A00%3A00&min_peers_seeing=10",
+        "final_url": "https://stat.ripe.net/data/routing-status/data.json?resource=23.35.107.0%2F24&timestamp=2026-11-14T00%3A00%3A00&min_peers_seeing=10",
+        "sha256": "7b405db68d8dabe5584582abc2afbf2f20669062f1f12fcd78840c8c565a8fcf",
+        "origins": [],
+        "query_time": "2026-11-14T00:00:00",
+        "more_specifics": [],
+        "less_specifics": [
+          {
+            "prefix": "23.32.0.0/11",
+            "origin": 20940
+          }
+        ]
+      }
+    },
+    "fallback_bgp_state": {
+      "172.253.69.0/24": {
+        "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=172.253.69.0%2F24&timestamp=2026-11-14T00%3A00%3A00",
+        "sha256": "73cfb97e188e7201a450eefb3255ee97ee254e1d4b2b9d89916473b78374af09",
+        "timestamp": "2026-11-14T00:00:00",
+        "routes": []
+      },
+      "172.253.75.0/24": {
+        "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=172.253.75.0%2F24&timestamp=2026-11-14T00%3A00%3A00",
+        "sha256": "85e616f2d321e1e522bc01b96a0bcadb31cfbf31e08ad05fbb44dca4a7cf7b34",
+        "timestamp": "2026-11-14T00:00:00",
+        "routes": []
+      },
+      "172.253.71.0/24": {
+        "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=172.253.71.0%2F24&timestamp=2026-11-14T00%3A00%3A00",
+        "sha256": "b583e4a8f6fd8f227ee8e136d6f95df370c4b013b2d31ac521643495fbf628e4",
+        "timestamp": "2026-11-14T00:00:00",
+        "routes": []
+      },
+      "172.253.102.0/24": {
+        "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=172.253.102.0%2F24&timestamp=2026-11-14T00%3A00%3A00",
+        "sha256": "482cb9555b53b0c6800446320ee86e19090c6f79ebc340daad0b734496cf077d",
+        "timestamp": "2026-11-14T00:00:00",
+        "routes": []
+      },
+      "172.253.70.0/24": {
+        "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=172.253.70.0%2F24&timestamp=2026-11-14T00%3A00%3A00",
+        "sha256": "28e860cc6ede4ea3bf19795371a9b94932ce01d5c69f7f367c2de172b7e8b9f6",
+        "timestamp": "2026-11-14T00:00:00",
+        "routes": []
+      },
+      "172.253.76.0/24": {
+        "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=172.253.76.0%2F24&timestamp=2026-11-14T00%3A00%3A00",
+        "sha256": "3f8e1bd12c83f067b5739d75024d89c71f4db0bb5445546a8d715a63f61d1511",
+        "timestamp": "2026-11-14T00:00:00",
+        "routes": []
+      },
+      "172.253.77.0/24": {
+        "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=172.253.77.0%2F24&timestamp=2026-11-14T00%3A00%3A00",
+        "sha256": "a7cf583427d8dab0b6eaa34722895d901f2acdc7fdc076111fb63fb803cbed0e",
+        "timestamp": "2026-11-14T00:00:00",
+        "routes": []
+      },
+      "172.253.50.0/24": {
+        "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=172.253.50.0%2F24&timestamp=2026-11-14T00%3A00%3A00",
+        "sha256": "2a450c09e24518e131312c6830f09cb16def890fac6cbf628b4ab8dcb5a61f0a",
+        "timestamp": "2026-11-14T00:00:00",
+        "routes": []
+      },
+      "173.194.126.0/24": {
+        "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=173.194.126.0%2F24&timestamp=2026-11-14T00%3A00%3A00",
+        "sha256": "ed4934435c787b5337c4618a30e828b35ee6b06ad1e83ead659aab43da6e60fe",
+        "timestamp": "2026-11-14T00:00:00",
+        "routes": []
+      },
+      "173.194.122.0/24": {
+        "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=173.194.122.0%2F24&timestamp=2026-11-14T00%3A00%3A00",
+        "sha256": "f5eaa31d7ea2df39b3ae1976f55668041bee552a3e41e863495bbe607cd0b708",
+        "timestamp": "2026-11-14T00:00:00",
+        "routes": []
+      },
+      "142.250.173.0/24": {
+        "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=142.250.173.0%2F24&timestamp=2026-11-14T00%3A00%3A00",
+        "sha256": "826e85db2cf83c5bf514d331aa038780ec21a3d35d07a031bf66fbcc7781fa5d",
+        "timestamp": "2026-11-14T00:00:00",
+        "routes": []
+      },
+      "142.251.199.0/24": {
+        "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=142.251.199.0%2F24&timestamp=2026-11-14T00%3A00%3A00",
+        "sha256": "5e869254ca0dcb67b7eeadc55ae57990ff2510a9b8ba9ddea4c706c0e8bf6e56",
+        "timestamp": "2026-11-14T00:00:00",
+        "routes": []
+      },
+      "142.251.61.0/24": {
+        "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=142.251.61.0%2F24&timestamp=2026-11-14T00%3A00%3A00",
+        "sha256": "7a340ffe3b72b7ca126dfd618daf2c808d7266ae3da689c7f203b3b9f4e9209d",
+        "timestamp": "2026-11-14T00:00:00",
+        "routes": [
+          {
+            "prefix": "142.251.61.0/24",
+            "origin": 15169,
+            "paths": 365
+          }
+        ]
+      },
+      "142.250.209.0/24": {
+        "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=142.250.209.0%2F24&timestamp=2026-11-14T00%3A00%3A00",
+        "sha256": "7e65765c1876de616d876e7da568f943cc469332fec6474869d2e8e0625b3772",
+        "timestamp": "2026-11-14T00:00:00",
+        "routes": []
+      },
+      "142.251.195.0/24": {
+        "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=142.251.195.0%2F24&timestamp=2026-11-14T00%3A00%3A00",
+        "sha256": "8c0cc7df6abea73dba4a3cbf91460b3cd3851ca0028dd53fffe587e3600a66f5",
+        "timestamp": "2026-11-14T00:00:00",
+        "routes": []
+      }
+    }
+  },
+  "cross_registry_and_operator_dns": {
+    "whois:160.25.253.0/24": {
+      "url": "https://stat.ripe.net/data/whois/data.json?resource=160.25.253.0%2F24",
+      "sha256": "cf4654514f758965c9017b193b24fd16ecebdfe58a249007eb64c06e0a883f5b",
+      "data": {
+        "records": [
+          [
+            {
+              "key": "inetnum",
+              "value": "160.25.252.0/23"
+            },
+            {
+              "key": "netname",
+              "value": "IDNIC-VISUAL-ID"
+            },
+            {
+              "key": "descr",
+              "value": "PT Untaian Visual Inovasi"
+            },
+            {
+              "key": "descr",
+              "value": "Corporate / Direct Member IDNIC"
+            },
+            {
+              "key": "descr",
+              "value": "Industri Kreatif"
+            },
+            {
+              "key": "descr",
+              "value": "KP Cikembar, Kel/Kec. Cikembar"
+            },
+            {
+              "key": "descr",
+              "value": "Sukabumi, Jawa Barat, 43157"
+            },
+            {
+              "key": "country",
+              "value": "ID"
+            }
+          ]
+        ],
+        "irr_records": [
+          [
+            {
+              "key": "origin",
+              "value": "59796"
+            },
+            {
+              "key": "descr",
+              "value": "Proxy Registered Route Object"
+            }
+          ]
+        ]
+      }
+    },
+    "whois:160.79.121.0/24": {
+      "url": "https://stat.ripe.net/data/whois/data.json?resource=160.79.121.0%2F24",
+      "sha256": "59d7485f1f8ac8c181e2fb83d921cc7698616e58bf97b578e36a866a4b3ea66c",
+      "data": {
+        "records": [
+          [
+            {
+              "key": "inetnum",
+              "value": "160.79.121.0/24"
+            },
+            {
+              "key": "netname",
+              "value": "STORMWALL-SG"
+            },
+            {
+              "key": "country",
+              "value": "SG"
+            }
+          ]
+        ],
+        "irr_records": [
+          [
+            {
+              "key": "origin",
+              "value": "43298"
+            }
+          ],
+          [
+            {
+              "key": "origin",
+              "value": "59796"
+            }
+          ],
+          [
+            {
+              "key": "origin",
+              "value": "43298"
+            }
+          ],
+          [
+            {
+              "key": "origin",
+              "value": "59796"
+            }
+          ],
+          [
+            {
+              "key": "origin",
+              "value": "59796"
+            }
+          ]
+        ]
+      }
+    },
+    "prefix-overview:198.41.163.0/24": {
+      "url": "https://stat.ripe.net/data/prefix-overview/data.json?resource=198.41.163.0%2F24",
+      "sha256": "e733d943c572cd96017f18f32e189b313f9cb021b6a57a1ebf7020b5cad273bf",
+      "data": {
+        "asns": [],
+        "holder": null,
+        "announced": false,
+        "resource": "198.41.163.0/24",
+        "query_time": "2026-11-14T00:00:00"
+      }
+    },
+    "whois:57.84.0.0/20": {
+      "url": "https://stat.ripe.net/data/whois/data.json?resource=57.84.0.0%2F20",
+      "sha256": "b640e9ebf2f609ddad666f1c4399c31f600a1ac049c691b0ed8f6e58f7245543",
+      "data": {
+        "records": [
+          [
+            {
+              "key": "NetRange",
+              "value": "57.84.0.0 - 57.84.255.255"
+            },
+            {
+              "key": "CIDR",
+              "value": "57.84.0.0/16"
+            },
+            {
+              "key": "NetName",
+              "value": "AMAZO-4"
+            },
+            {
+              "key": "OriginAS",
+              "value": ""
+            }
+          ],
+          [],
+          [],
+          [],
+          [],
+          [],
+          [],
+          []
+        ],
+        "irr_records": []
+      }
+    },
+    "prefix-overview:57.84.0.0/20": {
+      "url": "https://stat.ripe.net/data/prefix-overview/data.json?resource=57.84.0.0%2F20",
+      "sha256": "dba09ded91a0b0508dce00fa45628f7ec6db04e546d087a11f12d290c24bf318",
+      "data": {
+        "asns": [
+          {
+            "asn": 16509,
+            "holder": "AMAZON-02 - Amazon.com, Inc."
+          }
+        ],
+        "holder": null,
+        "announced": true,
+        "resource": "57.84.0.0/16",
+        "query_time": "2026-11-14T00:00:00"
+      }
+    },
+    "dns:hkg": {
+      "url": "https://dns.google/resolve?name=hkg.stormwall.network&type=A&do=true",
+      "sha256": "cf494d35b9f18f22d5cdceb0eea4afd1a807c6e26ee9bedf4387ddec92d969c3",
+      "data": {
+        "Status": 0,
+        "AD": false,
+        "Answer": [
+          {
+            "name": "hkg.stormwall.network.",
+            "type": 1,
+            "TTL": 3600,
+            "data": "185.121.242.5"
+          }
+        ]
+      }
+    },
+    "dns:sg": {
+      "url": "https://dns.google/resolve?name=sg.stormwall.network&type=A&do=true",
+      "sha256": "cd4a5fc0c4b5dd51759f7db6cae9ee2e97eb59eefc762053e16853ee091425f2",
+      "data": {
+        "Status": 0,
+        "AD": false,
+        "Answer": [
+          {
+            "name": "sg.stormwall.network.",
+            "type": 1,
+            "TTL": 3600,
+            "data": "103.134.155.3"
+          }
+        ]
+      }
+    },
+    "dns:id": {
+      "url": "https://dns.google/resolve?name=id.stormwall.network&type=A&do=true",
+      "sha256": "3c8931ef8b24a2987bf7438d23c0a2b791d2e862b2038b8fce00ecbfaaae91ff",
+      "data": {
+        "Status": 0,
+        "AD": false,
+        "Answer": [
+          {
+            "name": "id.stormwall.network.",
+            "type": 1,
+            "TTL": 3600,
+            "data": "160.25.253.1"
+          }
+        ]
+      }
+    },
+    "dns:msk": {
+      "url": "https://dns.google/resolve?name=msk.stormwall.pro&type=A&do=true",
+      "sha256": "40bde5e6149e030203dcfaa5d1b31319376a46a5ed1d2795f1f727920b292100",
+      "data": {
+        "Status": 0,
+        "AD": false,
+        "Answer": [
+          {
+            "name": "msk.stormwall.pro.",
+            "type": 1,
+            "TTL": 3600,
+            "data": "193.84.78.1"
+          }
+        ]
+      }
+    },
+    "dns:spb": {
+      "url": "https://dns.google/resolve?name=spb.stormwall.pro&type=A&do=true",
+      "sha256": "0b04292549b50ed58d8517fd9634574357fc098a2bf574e15771508747db86d4",
+      "data": {
+        "Status": 0,
+        "AD": false,
+        "Answer": [
+          {
+            "name": "spb.stormwall.pro.",
+            "type": 1,
+            "TTL": 21600,
+            "data": "193.84.90.0"
+          }
+        ]
+      }
+    }
+  },
+  "decision_ledger_sha256": "f2ff135c56a452652898549bfa3decb5d1d77a1542da6a99b98243eab2e93faf",
+  "latest_release_crosscheck": {
+    "release_head_checked": "de20de628d85062c8161b3da99fc7b0c94622919",
+    "dat_sha256": "2735053560ebd598cbdcd71ccf858806d4b955a17e2eac512a7baf249d43653a"
+  },
+  "conclusion": "IPv4 fixed snapshot complete. No additional DIRECT admission supported."
 }
