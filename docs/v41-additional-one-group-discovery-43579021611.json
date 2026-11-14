@@ -2585,7 +2585,7 @@
       "regional_candidate": false
     }
   ],
-  "stage": "exact regional candidates and child screening collected; frozen origin and final decisions pending",
+  "stage": "nine exact prefixes independently corroborated and submitted to production PR #30",
   "exact_regional_recheck": [
     {
       "prefix": "104.128.130.0/24",
@@ -2650,7 +2650,28 @@
           "http": 200
         }
       ],
-      "preliminary_exact_registry_geofeed_and_ris_match": true
+      "preliminary_exact_registry_geofeed_and_ris_match": true,
+      "frozen_ipverse": [
+        {
+          "prefix": "104.128.130.0/24",
+          "asn": 205090,
+          "handle": "FIRST-SERVER-EUROPE"
+        }
+      ],
+      "independent_exact_bgp_state": {
+        "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=104.128.130.0%2F24&timestamp=2026-11-14T00%3A00%3A00",
+        "sha256": "9c41e8c41c03877121f8452b56d085f2d49e3c6dddfa3763e02139fbbf3cc65e",
+        "timestamp": "2026-11-14T00:00:00",
+        "routes": {
+          "104.128.130.0/24": {
+            "origins": [
+              205090
+            ],
+            "paths": 379
+          }
+        }
+      },
+      "decision": "approved_reviewed_operator_route"
     },
     {
       "prefix": "132.243.16.0/24",
@@ -2695,7 +2716,28 @@
           "http": 200
         }
       ],
-      "preliminary_exact_registry_geofeed_and_ris_match": true
+      "preliminary_exact_registry_geofeed_and_ris_match": true,
+      "frozen_ipverse": [
+        {
+          "prefix": "132.243.16.0/22",
+          "asn": 205090,
+          "handle": "FIRST-SERVER-EUROPE"
+        }
+      ],
+      "independent_exact_bgp_state": {
+        "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=132.243.16.0%2F24&timestamp=2026-11-14T00%3A00%3A00",
+        "sha256": "500bac2501dc9b4263fafc82ba5af0e802f76d3e551545b9ec9803ee736a66cc",
+        "timestamp": "2026-11-14T00:00:00",
+        "routes": {
+          "132.243.16.0/24": {
+            "origins": [
+              205090
+            ],
+            "paths": 377
+          }
+        }
+      },
+      "decision": "approved_reviewed_operator_route"
     },
     {
       "prefix": "132.243.18.0/24",
@@ -2750,7 +2792,28 @@
           "http": 200
         }
       ],
-      "preliminary_exact_registry_geofeed_and_ris_match": true
+      "preliminary_exact_registry_geofeed_and_ris_match": true,
+      "frozen_ipverse": [
+        {
+          "prefix": "132.243.16.0/22",
+          "asn": 205090,
+          "handle": "FIRST-SERVER-EUROPE"
+        }
+      ],
+      "independent_exact_bgp_state": {
+        "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=132.243.18.0%2F24&timestamp=2026-11-14T00%3A00%3A00",
+        "sha256": "c751d9c60ba5a50c8478e44df1511fb0c30596c31d9dcc9777aa3a73eba81fbe",
+        "timestamp": "2026-11-14T00:00:00",
+        "routes": {
+          "132.243.18.0/24": {
+            "origins": [
+              205090
+            ],
+            "paths": 377
+          }
+        }
+      },
+      "decision": "approved_reviewed_operator_route"
     },
     {
       "prefix": "132.243.19.0/24",
@@ -2805,7 +2868,28 @@
           "http": 200
         }
       ],
-      "preliminary_exact_registry_geofeed_and_ris_match": true
+      "preliminary_exact_registry_geofeed_and_ris_match": true,
+      "frozen_ipverse": [
+        {
+          "prefix": "132.243.16.0/22",
+          "asn": 205090,
+          "handle": "FIRST-SERVER-EUROPE"
+        }
+      ],
+      "independent_exact_bgp_state": {
+        "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=132.243.19.0%2F24&timestamp=2026-11-14T00%3A00%3A00",
+        "sha256": "71f53e47e760264bb3ad0037e0ec985f3d468214caf24cd8dfba864a4f5a08e6",
+        "timestamp": "2026-11-14T00:00:00",
+        "routes": {
+          "132.243.19.0/24": {
+            "origins": [
+              205090
+            ],
+            "paths": 377
+          }
+        }
+      },
+      "decision": "approved_reviewed_operator_route"
     },
     {
       "prefix": "135.136.190.0/24",
@@ -2860,7 +2944,28 @@
           "http": 200
         }
       ],
-      "preliminary_exact_registry_geofeed_and_ris_match": true
+      "preliminary_exact_registry_geofeed_and_ris_match": true,
+      "frozen_ipverse": [
+        {
+          "prefix": "135.136.190.0/24",
+          "asn": 205090,
+          "handle": "FIRST-SERVER-EUROPE"
+        }
+      ],
+      "independent_exact_bgp_state": {
+        "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=135.136.190.0%2F24&timestamp=2026-11-14T00%3A00%3A00",
+        "sha256": "983f398c6c80e1809d68a8648ed79a00a39ca31cdcd24b7080f26f3cdee24f2c",
+        "timestamp": "2026-11-14T00:00:00",
+        "routes": {
+          "135.136.190.0/24": {
+            "origins": [
+              205090
+            ],
+            "paths": 379
+          }
+        }
+      },
+      "decision": "approved_reviewed_operator_route"
     },
     {
       "prefix": "135.136.191.0/24",
@@ -2905,7 +3010,28 @@
           "http": 200
         }
       ],
-      "preliminary_exact_registry_geofeed_and_ris_match": true
+      "preliminary_exact_registry_geofeed_and_ris_match": true,
+      "frozen_ipverse": [
+        {
+          "prefix": "135.136.191.0/24",
+          "asn": 204997,
+          "handle": "FIRSTBYTE-AS"
+        }
+      ],
+      "independent_exact_bgp_state": {
+        "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=135.136.191.0%2F24&timestamp=2026-11-14T00%3A00%3A00",
+        "sha256": "3bf2e5abbd047c8548bd95607ac9f807cf16ad1fa5e8c4ffcfac45c7296709ca",
+        "timestamp": "2026-11-14T00:00:00",
+        "routes": {
+          "135.136.191.0/24": {
+            "origins": [
+              204997
+            ],
+            "paths": 380
+          }
+        }
+      },
+      "decision": "approved_reviewed_operator_route"
     },
     {
       "prefix": "157.228.145.0/24",
@@ -2950,7 +3076,28 @@
           "http": 200
         }
       ],
-      "preliminary_exact_registry_geofeed_and_ris_match": true
+      "preliminary_exact_registry_geofeed_and_ris_match": true,
+      "frozen_ipverse": [
+        {
+          "prefix": "157.228.144.0/23",
+          "asn": 209641,
+          "handle": "I-SERVERS-EAST"
+        }
+      ],
+      "independent_exact_bgp_state": {
+        "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=157.228.145.0%2F24&timestamp=2026-11-14T00%3A00%3A00",
+        "sha256": "bb8ca46565bdc32656dcd217aa39d23c0a612defcb4adb3320a29a6d226c77ba",
+        "timestamp": "2026-11-14T00:00:00",
+        "routes": {
+          "157.228.145.0/24": {
+            "origins": [
+              209641
+            ],
+            "paths": 379
+          }
+        }
+      },
+      "decision": "approved_reviewed_operator_route"
     },
     {
       "prefix": "157.228.191.0/24",
@@ -2995,7 +3142,28 @@
           "http": 200
         }
       ],
-      "preliminary_exact_registry_geofeed_and_ris_match": true
+      "preliminary_exact_registry_geofeed_and_ris_match": true,
+      "frozen_ipverse": [
+        {
+          "prefix": "157.228.191.0/24",
+          "asn": 205090,
+          "handle": "FIRST-SERVER-EUROPE"
+        }
+      ],
+      "independent_exact_bgp_state": {
+        "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=157.228.191.0%2F24&timestamp=2026-11-14T00%3A00%3A00",
+        "sha256": "5721a02f4b75d98b022f85865c2cfb165268199be44e927f7dcadf2d65a634d0",
+        "timestamp": "2026-11-14T00:00:00",
+        "routes": {
+          "157.228.191.0/24": {
+            "origins": [
+              205090
+            ],
+            "paths": 379
+          }
+        }
+      },
+      "decision": "approved_reviewed_operator_route"
     },
     {
       "prefix": "178.170.189.0/24",
@@ -3030,7 +3198,16 @@
           "http": 200
         }
       ],
-      "preliminary_exact_registry_geofeed_and_ris_match": false
+      "preliminary_exact_registry_geofeed_and_ris_match": false,
+      "frozen_ipverse": [],
+      "independent_exact_bgp_state": {
+        "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=178.170.189.0%2F24&timestamp=2026-11-14T00%3A00%3A00",
+        "sha256": "c1a76192eafaebc472d3abf3e3b8b7a785872366590d15f1a14d90aebd8c6cc7",
+        "timestamp": "2026-11-14T00:00:00",
+        "routes": {}
+      },
+      "decision": "hold",
+      "reason": "Only covering RDAP record; no matching exact route or geofeed."
     },
     {
       "prefix": "45.142.122.0/24",
@@ -3080,7 +3257,29 @@
           "http": 200
         }
       ],
-      "preliminary_exact_registry_geofeed_and_ris_match": false
+      "preliminary_exact_registry_geofeed_and_ris_match": false,
+      "frozen_ipverse": [
+        {
+          "prefix": "45.142.122.0/24",
+          "asn": 205090,
+          "handle": "FIRST-SERVER-EUROPE"
+        }
+      ],
+      "independent_exact_bgp_state": {
+        "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=45.142.122.0%2F24&timestamp=2026-11-14T00%3A00%3A00",
+        "sha256": "94ef30d36b42e710adc27ae42c2d2bd10ac4f7b076018d3e69342474b7276525",
+        "timestamp": "2026-11-14T00:00:00",
+        "routes": {
+          "45.142.122.0/24": {
+            "origins": [
+              205090
+            ],
+            "paths": 379
+          }
+        }
+      },
+      "decision": "hold",
+      "reason": "No exact operator geofeed row."
     },
     {
       "prefix": "45.86.78.0/24",
@@ -3135,7 +3334,28 @@
           "http": 200
         }
       ],
-      "preliminary_exact_registry_geofeed_and_ris_match": true
+      "preliminary_exact_registry_geofeed_and_ris_match": true,
+      "frozen_ipverse": [
+        {
+          "prefix": "45.86.78.0/23",
+          "asn": 203273,
+          "handle": "NETCRAFTERSOU"
+        }
+      ],
+      "independent_exact_bgp_state": {
+        "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=45.86.78.0%2F24&timestamp=2026-11-14T00%3A00%3A00",
+        "sha256": "649e22711658ec9f7e6385147cb60ab48b73133dd44bb81a1249a278ae021c3e",
+        "timestamp": "2026-11-14T00:00:00",
+        "routes": {
+          "45.86.78.0/24": {
+            "origins": [
+              203273
+            ],
+            "paths": 341
+          }
+        }
+      },
+      "decision": "approved_reviewed_operator_route"
     },
     {
       "prefix": "83.141.92.0/24",
@@ -3170,7 +3390,20 @@
           "http": 200
         }
       ],
-      "preliminary_exact_registry_geofeed_and_ris_match": false
+      "preliminary_exact_registry_geofeed_and_ris_match": false,
+      "frozen_ipverse": [
+        {
+          "prefix": "83.141.64.0/19",
+          "asn": 203273,
+          "handle": "NETCRAFTERSOU"
+        }
+      ],
+      "independent_exact_bgp_state": {
+        "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=83.141.92.0%2F24&timestamp=2026-11-14T00%3A00%3A00",
+        "error": "The read operation timed out"
+      },
+      "decision": "hold",
+      "reason": "No registry-linked geofeed for this assignment."
     }
   ],
   "ripe_child_recheck": {
@@ -3204,5 +3437,9 @@
   "preliminary_exact_matches": {
     "prefixes": 9,
     "addresses": 15
-  }
+  },
+  "release_pr": "https://github.com/SpeedeMiner/Geoip-ru-server/pull/30",
+  "release_ci": "https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43583331893",
+  "expected_fixed_input_added_ipv4": 15,
+  "expected_fixed_input_other_delta": 0
 }
