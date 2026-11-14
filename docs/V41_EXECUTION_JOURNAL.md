@@ -644,3 +644,8 @@ See [v41 release hardening](V41_RELEASE_HARDENING.md). Routing-policy changes ar
 - [PR #36](https://github.com/SpeedeMiner/Geoip-ru-server/pull/36) fixes annotated/comma-separated IANA CIDRs and the corporate per-family unique-address counts independently of PR #35. Unit suite 169/169 passed locally. Corporate IPv4 total now reports 19,617,024 rather than 20,076,544. Exact prefix files and origins are unchanged.
 - Production fixed-input replay restored three IANA IPv4 rows and matched production DAT, both SRS, PRIVATE, and the effective block mask byte for byte. Workflow runs [v41](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43628396435), [v39](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43628396489), and [lint](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43628396458). No main, release, W1ZARDZ, or PR #5 changes.
 - All three CI runs passed. PR #36 transitioned to ready for review without merging. PR #35 remains ready independently.
+
+## 2026-11-15 — Historical RIR freshness reference
+
+- [Draft PR #37](https://github.com/SpeedeMiner/Geoip-ru-server/pull/37), head `198bbe12`, adds a UTC date to both offline RIR inventory generators and records the reference in reports. Live builds still fetch current inputs and use the same UTC day and original age limits. No route selection change.
+- 166 local tests passed. The exact registry archive has been checked and restored. Full fixed-input replay and GitHub CI are in progress. No main, release, or PR #5 changes.
