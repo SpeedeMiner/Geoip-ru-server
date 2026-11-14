@@ -610,3 +610,8 @@ See [v41 release hardening](V41_RELEASE_HARDENING.md). Routing-policy changes ar
 - [Exact v34-only CIDRs by reason](v34-only-v41-full-20261114.tsv) and [hashes and coverage evidence](v41-full-v34-coverage-20261114.json).
 
 - CI closeout: v41, lint and [v39 compatibility](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43615422382) all passed. v41 logs show the replay Full DAT digest and successful SHA checks and coverage checks for both SRS exports. The publish job was skipped on the PR.
+
+### 2026-11-14 — restore rolling sources and retain per-release bytes
+
+- PR #34 head `f847048bd6a9c4d97300fc06831b5e6462f2e7b0` replaces the November source lock in production with a live upstream catalog. The lock remains as historical replay data. All 18 routing files resolve current published branches or stable releases once per publisher and verify Git blob IDs or release SHA-256/size. Telegram official input is live, fetched once and reused for validation. RIR/IANA/ipverse/current block feeds continue rolling. Reviewed policy and v38 historical block evidence remain fixed.
+- Exact resolved refs, file sizes and SHA-256 go into build provenance. The new versioned upstream archive is read back before promotion alongside the existing ipverse and registry archives. Local acquisition matched Hydra `202611141017` and 164 local tests passed. Candidate CI run `43617030785` is in progress. No action taken on PR #5.
