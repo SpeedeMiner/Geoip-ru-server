@@ -234,7 +234,8 @@ count_line = f"Curated Russian-company ASN allowlist entries: {expected_allowlis
 if count_line not in quality_text:
     raise SystemExit("Quality report is missing or disagrees with the curated company-ASN registry count")
 for marker in (
-    "Unique prefixes originated by curated Russian-company/affiliate ASNs:",
+    "Unique prefixes originated by curated Russian-company/affiliate ASNs (observed in ipverse):",
+    "Unique prefixes in DIRECT company-ASN layer (observed + static overrides):",
     "Company ASN ipverse countryCode distribution (audit only):",
     "Country handling: ipverse countryCode is not used as an inclusion filter",
     "Per-ASN evidence and prefix counts:",
