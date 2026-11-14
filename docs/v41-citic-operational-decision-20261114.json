@@ -156,9 +156,16 @@
       "UseIPv6": 10,
       "UseIP": 0
     },
-    "total_fixture_observations": 208,
+    "total_fixture_observations": 274,
     "status": "REPRODUCED",
-    "network_scope": "loopback only"
+    "network_scope": "loopback only",
+    "final_rule_variants": {
+      "cases": 66,
+      "queryStrategy": "UseIPv6",
+      "IPIfNonMatch_implicit_default_changes": 10,
+      "IPIfNonMatch_explicit_catchall_changes": 0,
+      "IPOnDemand_explicit_catchall_changes": 10
+    }
   },
   "public_service_controls": {
     "names": 15,
@@ -294,5 +301,6 @@
       "actual_bytes": 1738277,
       "actual_sha256": "2735053560ebd598cbdcd71ccf858806d4b955a17e2eac512a7baf249d43653a"
     }
-  }
+  },
+  "audit_tests_passed": 149
 }

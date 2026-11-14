@@ -1,0 +1,421 @@
+{
+  "engine": "Xray v26.7.28",
+  "queryStrategy": "UseIPv6",
+  "cases": 66,
+  "asset_sha256": {
+    "xray": "64d46afb80adea1bf97a0d467e83f4a9ac1ebd0995891e84bca3f1a1d1affb1d",
+    "fixed": "2735053560ebd598cbdcd71ccf858806d4b955a17e2eac512a7baf249d43653a",
+    "shadow": "4517a9b8e4dce647d0c7e43deca49dfed87f687a1cc111a7e006e35fe417495f",
+    "geosite": "75b79f1883e0ae7380621c41bdac89777dc1df660844d141ea98a400526728ec"
+  },
+  "scope": "Loopback SOCKS/DNS sinks only. Synthetic routing order and hostname targets, no live network measurements.",
+  "scenarios": {
+    "ip_if_non_match_implicit_proxy": {
+      "domainStrategy": "IPIfNonMatch",
+      "terminal_proxy_rule": false,
+      "changes": [
+        "r8-lo0-0-mow-m9-ru.bb.citictel-cpc.com",
+        "r4-lo0-0-spb-rep-ru.bb.citictel-cpc.com",
+        "r8-lo0-0-spb-rep-ru.bb.citictel-cpc.com",
+        "rr1-lo0-0-mow-m9-ru.bb.citictel-cpc.com",
+        "r4-lo0-0-mow-m9-ru.bb.citictel-cpc.com",
+        "r9-lo0-0-mow-m9-ru.bb.citictel-cpc.com",
+        "r8-lo0-0-mow-mar8-ru.bb.citictel-cpc.com",
+        "r9-lo0-0-mow-mar8-ru.bb.citictel-cpc.com",
+        "r14-lo0-0-mow-mar8-ru.bb.citictel-cpc.com",
+        "r9-lo0-0-spb-k12-ru.bb.citictel-cpc.com"
+      ],
+      "outcomes": {
+        "fixed": {
+          "r8-lo0-0-mow-m9-ru.bb.citictel-cpc.com": {
+            "route": "PROXY",
+            "questions": [
+              "AAAA"
+            ]
+          },
+          "r4-lo0-0-spb-rep-ru.bb.citictel-cpc.com": {
+            "route": "PROXY",
+            "questions": [
+              "AAAA"
+            ]
+          },
+          "r8-lo0-0-spb-rep-ru.bb.citictel-cpc.com": {
+            "route": "PROXY",
+            "questions": [
+              "AAAA"
+            ]
+          },
+          "rr1-lo0-0-mow-m9-ru.bb.citictel-cpc.com": {
+            "route": "PROXY",
+            "questions": [
+              "AAAA"
+            ]
+          },
+          "r4-lo0-0-mow-m9-ru.bb.citictel-cpc.com": {
+            "route": "PROXY",
+            "questions": [
+              "AAAA"
+            ]
+          },
+          "r9-lo0-0-mow-m9-ru.bb.citictel-cpc.com": {
+            "route": "PROXY",
+            "questions": [
+              "AAAA"
+            ]
+          },
+          "r8-lo0-0-mow-mar8-ru.bb.citictel-cpc.com": {
+            "route": "PROXY",
+            "questions": [
+              "AAAA"
+            ]
+          },
+          "r9-lo0-0-mow-mar8-ru.bb.citictel-cpc.com": {
+            "route": "PROXY",
+            "questions": [
+              "AAAA"
+            ]
+          },
+          "r14-lo0-0-mow-mar8-ru.bb.citictel-cpc.com": {
+            "route": "PROXY",
+            "questions": [
+              "AAAA"
+            ]
+          },
+          "r9-lo0-0-spb-k12-ru.bb.citictel-cpc.com": {
+            "route": "PROXY",
+            "questions": [
+              "AAAA"
+            ]
+          },
+          "r9-lo0-0-ala-abd66-kz.bb.citictel-cpc.com": {
+            "route": "PROXY",
+            "questions": [
+              "AAAA"
+            ]
+          }
+        },
+        "shadow": {
+          "r8-lo0-0-mow-m9-ru.bb.citictel-cpc.com": {
+            "route": "DIRECT",
+            "questions": [
+              "AAAA"
+            ]
+          },
+          "r4-lo0-0-spb-rep-ru.bb.citictel-cpc.com": {
+            "route": "DIRECT",
+            "questions": [
+              "AAAA"
+            ]
+          },
+          "r8-lo0-0-spb-rep-ru.bb.citictel-cpc.com": {
+            "route": "DIRECT",
+            "questions": [
+              "AAAA"
+            ]
+          },
+          "rr1-lo0-0-mow-m9-ru.bb.citictel-cpc.com": {
+            "route": "DIRECT",
+            "questions": [
+              "AAAA"
+            ]
+          },
+          "r4-lo0-0-mow-m9-ru.bb.citictel-cpc.com": {
+            "route": "DIRECT",
+            "questions": [
+              "AAAA"
+            ]
+          },
+          "r9-lo0-0-mow-m9-ru.bb.citictel-cpc.com": {
+            "route": "DIRECT",
+            "questions": [
+              "AAAA"
+            ]
+          },
+          "r8-lo0-0-mow-mar8-ru.bb.citictel-cpc.com": {
+            "route": "DIRECT",
+            "questions": [
+              "AAAA"
+            ]
+          },
+          "r9-lo0-0-mow-mar8-ru.bb.citictel-cpc.com": {
+            "route": "DIRECT",
+            "questions": [
+              "AAAA"
+            ]
+          },
+          "r14-lo0-0-mow-mar8-ru.bb.citictel-cpc.com": {
+            "route": "DIRECT",
+            "questions": [
+              "AAAA"
+            ]
+          },
+          "r9-lo0-0-spb-k12-ru.bb.citictel-cpc.com": {
+            "route": "DIRECT",
+            "questions": [
+              "AAAA"
+            ]
+          },
+          "r9-lo0-0-ala-abd66-kz.bb.citictel-cpc.com": {
+            "route": "PROXY",
+            "questions": [
+              "AAAA"
+            ]
+          }
+        }
+      }
+    },
+    "ip_if_non_match_terminal_proxy": {
+      "domainStrategy": "IPIfNonMatch",
+      "terminal_proxy_rule": true,
+      "changes": [],
+      "outcomes": {
+        "fixed": {
+          "r8-lo0-0-mow-m9-ru.bb.citictel-cpc.com": {
+            "route": "PROXY",
+            "questions": []
+          },
+          "r4-lo0-0-spb-rep-ru.bb.citictel-cpc.com": {
+            "route": "PROXY",
+            "questions": []
+          },
+          "r8-lo0-0-spb-rep-ru.bb.citictel-cpc.com": {
+            "route": "PROXY",
+            "questions": []
+          },
+          "rr1-lo0-0-mow-m9-ru.bb.citictel-cpc.com": {
+            "route": "PROXY",
+            "questions": []
+          },
+          "r4-lo0-0-mow-m9-ru.bb.citictel-cpc.com": {
+            "route": "PROXY",
+            "questions": []
+          },
+          "r9-lo0-0-mow-m9-ru.bb.citictel-cpc.com": {
+            "route": "PROXY",
+            "questions": []
+          },
+          "r8-lo0-0-mow-mar8-ru.bb.citictel-cpc.com": {
+            "route": "PROXY",
+            "questions": []
+          },
+          "r9-lo0-0-mow-mar8-ru.bb.citictel-cpc.com": {
+            "route": "PROXY",
+            "questions": []
+          },
+          "r14-lo0-0-mow-mar8-ru.bb.citictel-cpc.com": {
+            "route": "PROXY",
+            "questions": []
+          },
+          "r9-lo0-0-spb-k12-ru.bb.citictel-cpc.com": {
+            "route": "PROXY",
+            "questions": []
+          },
+          "r9-lo0-0-ala-abd66-kz.bb.citictel-cpc.com": {
+            "route": "PROXY",
+            "questions": []
+          }
+        },
+        "shadow": {
+          "r8-lo0-0-mow-m9-ru.bb.citictel-cpc.com": {
+            "route": "PROXY",
+            "questions": []
+          },
+          "r4-lo0-0-spb-rep-ru.bb.citictel-cpc.com": {
+            "route": "PROXY",
+            "questions": []
+          },
+          "r8-lo0-0-spb-rep-ru.bb.citictel-cpc.com": {
+            "route": "PROXY",
+            "questions": []
+          },
+          "rr1-lo0-0-mow-m9-ru.bb.citictel-cpc.com": {
+            "route": "PROXY",
+            "questions": []
+          },
+          "r4-lo0-0-mow-m9-ru.bb.citictel-cpc.com": {
+            "route": "PROXY",
+            "questions": []
+          },
+          "r9-lo0-0-mow-m9-ru.bb.citictel-cpc.com": {
+            "route": "PROXY",
+            "questions": []
+          },
+          "r8-lo0-0-mow-mar8-ru.bb.citictel-cpc.com": {
+            "route": "PROXY",
+            "questions": []
+          },
+          "r9-lo0-0-mow-mar8-ru.bb.citictel-cpc.com": {
+            "route": "PROXY",
+            "questions": []
+          },
+          "r14-lo0-0-mow-mar8-ru.bb.citictel-cpc.com": {
+            "route": "PROXY",
+            "questions": []
+          },
+          "r9-lo0-0-spb-k12-ru.bb.citictel-cpc.com": {
+            "route": "PROXY",
+            "questions": []
+          },
+          "r9-lo0-0-ala-abd66-kz.bb.citictel-cpc.com": {
+            "route": "PROXY",
+            "questions": []
+          }
+        }
+      }
+    },
+    "ip_on_demand_terminal_proxy": {
+      "domainStrategy": "IPOnDemand",
+      "terminal_proxy_rule": true,
+      "changes": [
+        "r8-lo0-0-mow-m9-ru.bb.citictel-cpc.com",
+        "r4-lo0-0-spb-rep-ru.bb.citictel-cpc.com",
+        "r8-lo0-0-spb-rep-ru.bb.citictel-cpc.com",
+        "rr1-lo0-0-mow-m9-ru.bb.citictel-cpc.com",
+        "r4-lo0-0-mow-m9-ru.bb.citictel-cpc.com",
+        "r9-lo0-0-mow-m9-ru.bb.citictel-cpc.com",
+        "r8-lo0-0-mow-mar8-ru.bb.citictel-cpc.com",
+        "r9-lo0-0-mow-mar8-ru.bb.citictel-cpc.com",
+        "r14-lo0-0-mow-mar8-ru.bb.citictel-cpc.com",
+        "r9-lo0-0-spb-k12-ru.bb.citictel-cpc.com"
+      ],
+      "outcomes": {
+        "fixed": {
+          "r8-lo0-0-mow-m9-ru.bb.citictel-cpc.com": {
+            "route": "PROXY",
+            "questions": [
+              "AAAA"
+            ]
+          },
+          "r4-lo0-0-spb-rep-ru.bb.citictel-cpc.com": {
+            "route": "PROXY",
+            "questions": [
+              "AAAA"
+            ]
+          },
+          "r8-lo0-0-spb-rep-ru.bb.citictel-cpc.com": {
+            "route": "PROXY",
+            "questions": [
+              "AAAA"
+            ]
+          },
+          "rr1-lo0-0-mow-m9-ru.bb.citictel-cpc.com": {
+            "route": "PROXY",
+            "questions": [
+              "AAAA"
+            ]
+          },
+          "r4-lo0-0-mow-m9-ru.bb.citictel-cpc.com": {
+            "route": "PROXY",
+            "questions": [
+              "AAAA"
+            ]
+          },
+          "r9-lo0-0-mow-m9-ru.bb.citictel-cpc.com": {
+            "route": "PROXY",
+            "questions": [
+              "AAAA"
+            ]
+          },
+          "r8-lo0-0-mow-mar8-ru.bb.citictel-cpc.com": {
+            "route": "PROXY",
+            "questions": [
+              "AAAA"
+            ]
+          },
+          "r9-lo0-0-mow-mar8-ru.bb.citictel-cpc.com": {
+            "route": "PROXY",
+            "questions": [
+              "AAAA"
+            ]
+          },
+          "r14-lo0-0-mow-mar8-ru.bb.citictel-cpc.com": {
+            "route": "PROXY",
+            "questions": [
+              "AAAA"
+            ]
+          },
+          "r9-lo0-0-spb-k12-ru.bb.citictel-cpc.com": {
+            "route": "PROXY",
+            "questions": [
+              "AAAA"
+            ]
+          },
+          "r9-lo0-0-ala-abd66-kz.bb.citictel-cpc.com": {
+            "route": "PROXY",
+            "questions": [
+              "AAAA"
+            ]
+          }
+        },
+        "shadow": {
+          "r8-lo0-0-mow-m9-ru.bb.citictel-cpc.com": {
+            "route": "DIRECT",
+            "questions": [
+              "AAAA"
+            ]
+          },
+          "r4-lo0-0-spb-rep-ru.bb.citictel-cpc.com": {
+            "route": "DIRECT",
+            "questions": [
+              "AAAA"
+            ]
+          },
+          "r8-lo0-0-spb-rep-ru.bb.citictel-cpc.com": {
+            "route": "DIRECT",
+            "questions": [
+              "AAAA"
+            ]
+          },
+          "rr1-lo0-0-mow-m9-ru.bb.citictel-cpc.com": {
+            "route": "DIRECT",
+            "questions": [
+              "AAAA"
+            ]
+          },
+          "r4-lo0-0-mow-m9-ru.bb.citictel-cpc.com": {
+            "route": "DIRECT",
+            "questions": [
+              "AAAA"
+            ]
+          },
+          "r9-lo0-0-mow-m9-ru.bb.citictel-cpc.com": {
+            "route": "DIRECT",
+            "questions": [
+              "AAAA"
+            ]
+          },
+          "r8-lo0-0-mow-mar8-ru.bb.citictel-cpc.com": {
+            "route": "DIRECT",
+            "questions": [
+              "AAAA"
+            ]
+          },
+          "r9-lo0-0-mow-mar8-ru.bb.citictel-cpc.com": {
+            "route": "DIRECT",
+            "questions": [
+              "AAAA"
+            ]
+          },
+          "r14-lo0-0-mow-mar8-ru.bb.citictel-cpc.com": {
+            "route": "DIRECT",
+            "questions": [
+              "AAAA"
+            ]
+          },
+          "r9-lo0-0-spb-k12-ru.bb.citictel-cpc.com": {
+            "route": "DIRECT",
+            "questions": [
+              "AAAA"
+            ]
+          },
+          "r9-lo0-0-ala-abd66-kz.bb.citictel-cpc.com": {
+            "route": "PROXY",
+            "questions": [
+              "AAAA"
+            ]
+          }
+        }
+      }
+    }
+  }
+}

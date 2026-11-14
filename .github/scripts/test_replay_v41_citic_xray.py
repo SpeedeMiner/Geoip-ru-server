@@ -58,3 +58,26 @@ class CiticXrayReplayTests(unittest.TestCase):
         for mode in replay.STRATEGIES:
             self.assertEqual(dns["targets"][kz][mode]["fixed"]["route"], "PROXY")
             self.assertEqual(dns["targets"][kz][mode]["shadow"]["route"], "PROXY")
+
+    def test_explicit_final_rule_stays_in_socks_fixture(self):
+        doc = replay.fixture("v41-citic-xray-final-rule-20261114.json")
+        sinks = [
+            SimpleNamespace(route="PROXY", server_address=("127.0.0.1", 49151)),
+            SimpleNamespace(route="DIRECT", server_address=("127.0.0.1", 49152)),
+        ]
+        self.assertEqual(doc["cases"], 66)
+        for name, scenario in doc["scenarios"].items():
+            with self.subTest(name=name):
+                cfg = replay.build_order_config(49153, sinks, 49154, scenario)
+                rules = cfg["routing"]["rules"]
+                self.assertEqual(cfg["dns"]["queryStrategy"], "UseIPv6")
+                self.assertEqual(cfg["routing"]["domainStrategy"], scenario["domainStrategy"])
+                self.assertEqual(cfg["outbounds"][0]["protocol"], "socks")
+                if scenario["terminal_proxy_rule"]:
+                    self.assertEqual(rules[-1], {
+                        "type": "field", "network": "tcp,udp", "outboundTag": "PROXY",
+                    })
+                else:
+                    self.assertEqual(rules[-1]["outboundTag"], "DIRECT")
+                expected = 0 if name == "ip_if_non_match_terminal_proxy" else 10
+                self.assertEqual(len(scenario["changes"]), expected)

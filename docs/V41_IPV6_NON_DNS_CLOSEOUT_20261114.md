@@ -30,3 +30,5 @@ Expected DAT SHA-256 is `4517a9b8e4dce647d0c7e43deca49dfed87f687a1cc111a7e006e35
 ## Next decision
 
 The ten RU infrastructure /128s are identified and the build delta is reproducible. Before any admission, decide whether this database should include router loopbacks as exact service destinations or continue to require evidence of useful direct reachability for them. The DNS and BGP evidence does not establish that policy, and no reachability measurement was run in this pass. Keep the Almaty control separate and require new exact evidence before reopening the zGato, IPXO, IHOR or other hold groups.
+
+See the [subsequent operational closeout](V41_CITIC_OPERATIONAL_CLOSEOUT_20261114.md) for exact ICMP, source parity and Xray routing evidence. The later pass did not change production.

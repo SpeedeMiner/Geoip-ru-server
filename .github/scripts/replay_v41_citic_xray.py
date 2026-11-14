@@ -183,11 +183,29 @@ def build_config(inbound, sinks, dns_port, strategy):
     return cfg
 
 
-def run_case(xray, assets, sinks, resolver, strategy, targets):
+def build_order_config(inbound, sinks, dns_port, scenario):
+    cfg = build_config(inbound, sinks, dns_port, "UseIPv6")
+    cfg["routing"]["domainStrategy"] = scenario["domainStrategy"]
+    if scenario["terminal_proxy_rule"]:
+        cfg["routing"]["rules"].append({
+            "type": "field", "network": "tcp,udp", "outboundTag": "PROXY",
+        })
+    return cfg
+
+
+def run_case(xray, assets, sinks, resolver, strategy, targets, scenario=None):
     with socket.socket() as reservation:
         reservation.bind(("127.0.0.1", 0))
         inbound = reservation.getsockname()[1]
-    cfg = build_config(inbound, sinks, resolver.server_address[1], strategy)
+    dns_port = resolver.server_address[1]
+    if scenario is None:
+        cfg = build_config(inbound, sinks, dns_port, strategy)
+        wanted = STRATEGIES.get(strategy, set())
+    else:
+        cfg = build_order_config(inbound, sinks, dns_port, scenario)
+        wanted = set() if (
+            scenario["domainStrategy"] == "IPIfNonMatch" and scenario["terminal_proxy_rule"]
+        ) else {"AAAA"}
     cfg_path = assets / "fixture.json"
     cfg_path.write_text(json.dumps(cfg))
     env = {**os.environ, "XRAY_LOCATION_ASSET": str(assets)}
@@ -219,7 +237,6 @@ def run_case(xray, assets, sinks, resolver, strategy, targets):
                 if len(hits) != 1 or hits[0][1:] != (target, PORT):
                     raise ValueError(f"unexpected outbound selections for {target}: {hits}")
                 questions = take_all(resolver.observed)
-                wanted = STRATEGIES.get(strategy, set())
                 if any(name != target for name, _ in questions) or {t for _, t in questions} != wanted:
                     raise ValueError(f"unexpected DNS questions for {target}: {questions}")
                 outcomes[target] = {"route": hits[0][0], "questions": sorted(t for _, t in questions)}
@@ -247,6 +264,7 @@ def main():
     as_is = fixture("v41-citic-xray-route-delta-20261114.json")["targets"]
     saved = fixture("v41-citic-xray-dns-strategies-20261114.json")["targets"]
     answers = fixture("v41-citic-loopback-dns-20261114.json")
+    order = fixture("v41-citic-xray-final-rule-20261114.json")["scenarios"]
     with ExitStack() as stack:
         temp = Path(stack.enter_context(tempfile.TemporaryDirectory(prefix="citic-xray-")))
         xray = temp / "xray"
@@ -282,7 +300,11 @@ def main():
                 found = run_case(xray, assets, sinks, resolver, strategy, resolver.entries)
                 if found != {n: a[strategy][label] for n, a in saved.items()}:
                     raise ValueError(f"{label} {strategy} differs from archived observations")
-    print("PASS: 142 AsIs and 66 IPOnDemand route observations reproduced locally.")
+            for name, scenario in order.items():
+                found = run_case(xray, assets, sinks, resolver, "UseIPv6", resolver.entries, scenario)
+                if found != scenario["outcomes"][label]:
+                    raise ValueError(f"{label} {name} differs from archived observations")
+    print("PASS: 142 AsIs, 66 DNS-strategy and 66 final-rule observations reproduced locally.")
 
 
 if __name__ == "__main__":

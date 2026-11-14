@@ -19,7 +19,9 @@
 | IPOnDemand and UseIP, 11 names | None |
 | IPOnDemand and UseIPv6, 11 names | Ten RU names change, PROXY to DIRECT. Almaty stays PROXY. |
 
-These are observations of a fixed rule order in the matcher. They are not a test of live outbound address selection, the user's full Xray config or public application reachability. Both route tags end at local SOCKS sinks. DNS lookups in the three IPOnDemand cases use the checked-in answers served on localhost.
+The [final-rule replay](v41-citic-xray-final-rule-20261114.json) tested a further 66 cases with `UseIPv6`. With `IPIfNonMatch`, the ten changes are visible if PROXY is the implicit default. An explicit terminal `tcp,udp → PROXY` rule matches in the first pass, so Xray does not resolve the names and no route changes. Under `IPOnDemand`, the ten changes still occur even with that terminal rule. This follows the [Xray routing contract](https://xtls.github.io/en/config/routing.html#routingobject).
+
+These are observations of fixed rule orders in the matcher. They are not a test of live outbound address selection, the user's full Xray config or public application reachability. Both route tags end at local SOCKS sinks. DNS lookups in the three IPOnDemand cases use the checked-in answers served on localhost.
 
 Recreate the shadow DAT as described in the [previous closeout](V41_IPV6_NON_DNS_CLOSEOUT_20261114.md). Use the fixed released v41 DAT, [Xray Linux x64 v26.7.28](https://github.com/XTLS/Xray-core/releases/tag/v26.7.28) and the [fixed GeoSite Light asset](https://github.com/SpeedeMiner/Geosite-ru-light/releases/tag/latest-optimized) with the digests recorded by the replay script. The script rejects changed inputs and uses only temporary files and local sockets.
 
@@ -31,6 +33,6 @@ python3 .github/scripts/replay_v41_citic_xray.py \
   --geosite /path/to/geosite_RU.dat
 ```
 
-Expected output is 142 AsIs and 66 IPOnDemand routing observations reproduced locally. The audit suite passed 148 tests. Production rolling and immutable releases and the release ref returned identical DAT bytes. No publication, branch merge, input or threshold change was made in this follow-up.
+Expected output is 142 AsIs, 66 DNS-strategy and 66 final-rule observations reproduced locally. The audit suite passed 149 tests. Production rolling and immutable releases and the release ref returned identical DAT bytes. No publication, branch merge, input or threshold change was made in this follow-up.
 
 If an actual user-facing service or an explicit routing requirement for operator management addresses appears, revisit just that destination with its exact address family. Additional ICMP alone would refine reachability coverage and would not establish such a requirement. The prior IPv4 and other IPv6 hold cohorts stay closed.
