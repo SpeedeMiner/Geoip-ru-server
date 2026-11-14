@@ -1,0 +1,182 @@
+{
+  "scope": "Only exact AS paths present in the earlier RIS state for the 19 historical seed prefixes. RIPEstat RPKI is a later observation, not a synchronized VRP capture.",
+  "ris_timestamp": "2026-11-14T08:00:00",
+  "pair_count": 19,
+  "status_counts": {
+    "valid": 18,
+    "invalid_asn": 1
+  },
+  "rows": [
+    {
+      "prefix": "109.61.128.0/17",
+      "asn": "AS41134",
+      "exact_ris_paths": 360,
+      "url": "https://stat.ripe.net/data/rpki-validation/data.json?resource=AS41134&prefix=109.61.128.0%2F17",
+      "status": "valid",
+      "sha256": "c1f0715e0905a0ce63bfb1439981b3c8f3b1e229f2b970ac5a61ce96f0a68bd8",
+      "observation_utc": "2026-11-14T12:53:53.228570"
+    },
+    {
+      "prefix": "177.1.199.0/24",
+      "asn": "AS401152",
+      "exact_ris_paths": 309,
+      "url": "https://stat.ripe.net/data/rpki-validation/data.json?resource=AS401152&prefix=177.1.199.0%2F24",
+      "status": "valid",
+      "sha256": "6ba1305464f4f702cd2c393110ba8616d40f8f77388c66a100f138782c97a6fd",
+      "observation_utc": "2026-11-14T12:53:53.218652"
+    },
+    {
+      "prefix": "177.1.199.0/24",
+      "asn": "AS49505",
+      "exact_ris_paths": 22,
+      "url": "https://stat.ripe.net/data/rpki-validation/data.json?resource=AS49505&prefix=177.1.199.0%2F24",
+      "status": "invalid_asn",
+      "sha256": "5ca1b5ce8fff2ffd6196752778a61614a929fef6228b4ad5559870f3a6e56997",
+      "observation_utc": "2026-11-14T12:53:53.220891"
+    },
+    {
+      "prefix": "178.75.64.0/18",
+      "asn": "AS13056",
+      "exact_ris_paths": 360,
+      "url": "https://stat.ripe.net/data/rpki-validation/data.json?resource=AS13056&prefix=178.75.64.0%2F18",
+      "status": "valid",
+      "sha256": "8f717f4387d2e3752eaf7a1f4296c802255766b3058a8116dd6749ba630948d1",
+      "observation_utc": "2026-11-14T12:53:57.689984"
+    },
+    {
+      "prefix": "185.3.32.0/22",
+      "asn": "AS31133",
+      "exact_ris_paths": 347,
+      "url": "https://stat.ripe.net/data/rpki-validation/data.json?resource=AS31133&prefix=185.3.32.0%2F22",
+      "status": "valid",
+      "sha256": "a2c23c45677b58d5bb52f2122240f5f9cff5e76f3f358b9dd704c64f101e9d02",
+      "observation_utc": "2026-11-14T12:53:57.645105"
+    },
+    {
+      "prefix": "195.225.160.0/22",
+      "asn": "AS12714",
+      "exact_ris_paths": 332,
+      "url": "https://stat.ripe.net/data/rpki-validation/data.json?resource=AS12714&prefix=195.225.160.0%2F22",
+      "status": "valid",
+      "sha256": "976214db2a84543776dd390d2ca1bdd92b0dac65d11684867f429a4ef92daf42",
+      "observation_utc": "2026-11-14T12:53:57.751506"
+    },
+    {
+      "prefix": "212.106.32.0/19",
+      "asn": "AS15468",
+      "exact_ris_paths": 360,
+      "url": "https://stat.ripe.net/data/rpki-validation/data.json?resource=AS15468&prefix=212.106.32.0%2F19",
+      "status": "valid",
+      "sha256": "313b717937c1d58917ff94abfd4a7590517f8c9135cfff3037eb51a6e15f5d9b",
+      "observation_utc": "2026-11-14T12:54:02.634179"
+    },
+    {
+      "prefix": "213.154.160.0/19",
+      "asn": "AS31133",
+      "exact_ris_paths": 347,
+      "url": "https://stat.ripe.net/data/rpki-validation/data.json?resource=AS31133&prefix=213.154.160.0%2F19",
+      "status": "valid",
+      "sha256": "9733996301736bef40f89fa6b12a45d4b0b8b87b2e071e170de214e66ca62943",
+      "observation_utc": "2026-11-14T12:54:02.569005"
+    },
+    {
+      "prefix": "31.172.192.0/19",
+      "asn": "AS15468",
+      "exact_ris_paths": 360,
+      "url": "https://stat.ripe.net/data/rpki-validation/data.json?resource=AS15468&prefix=31.172.192.0%2F19",
+      "status": "valid",
+      "sha256": "5dba3f876f6566e5585bb1836f31c930af43bb3fe7b520b8423a99999823c910",
+      "observation_utc": "2026-11-14T12:54:02.524743"
+    },
+    {
+      "prefix": "37.19.32.0/20",
+      "asn": "AS34267",
+      "exact_ris_paths": 360,
+      "url": "https://stat.ripe.net/data/rpki-validation/data.json?resource=AS34267&prefix=37.19.32.0%2F20",
+      "status": "valid",
+      "sha256": "c63853d2ec800e6dd18cc50d5bc595d7fe49d3ab3f1a552f4296aa538988f1ac",
+      "observation_utc": "2026-11-14T12:54:10.039481"
+    },
+    {
+      "prefix": "62.64.0.0/19",
+      "asn": "AS31133",
+      "exact_ris_paths": 347,
+      "url": "https://stat.ripe.net/data/rpki-validation/data.json?resource=AS31133&prefix=62.64.0.0%2F19",
+      "status": "valid",
+      "sha256": "ab46df4b6f6cd44a944020c488c6d7ccbf1d214e38bd41578ef98e935aadd167",
+      "observation_utc": "2026-11-14T12:54:09.929693"
+    },
+    {
+      "prefix": "77.234.0.0/19",
+      "asn": "AS13118",
+      "exact_ris_paths": 360,
+      "url": "https://stat.ripe.net/data/rpki-validation/data.json?resource=AS13118&prefix=77.234.0.0%2F19",
+      "status": "valid",
+      "sha256": "c79c767c672b330607773a89c72b3e45ab5828ed2463154be2a92db9ff128a91",
+      "observation_utc": "2026-11-14T12:54:09.935328"
+    },
+    {
+      "prefix": "77.45.128.0/17",
+      "asn": "AS21017",
+      "exact_ris_paths": 360,
+      "url": "https://stat.ripe.net/data/rpki-validation/data.json?resource=AS21017&prefix=77.45.128.0%2F17",
+      "status": "valid",
+      "sha256": "76d4be9711bab62a62bb0aa5cecac11a5065fc17234fa15b1eed290ed4358878",
+      "observation_utc": "2026-11-14T12:54:14.447547"
+    },
+    {
+      "prefix": "92.37.128.0/17",
+      "asn": "AS34584",
+      "exact_ris_paths": 360,
+      "url": "https://stat.ripe.net/data/rpki-validation/data.json?resource=AS34584&prefix=92.37.128.0%2F17",
+      "status": "valid",
+      "sha256": "c3dc94181239497c546d0a690d2af9ad1bb68b102742ea714401ebd1ae5b6b41",
+      "observation_utc": "2026-11-14T12:54:14.443752"
+    },
+    {
+      "prefix": "93.181.240.0/20",
+      "asn": "AS13118",
+      "exact_ris_paths": 360,
+      "url": "https://stat.ripe.net/data/rpki-validation/data.json?resource=AS13118&prefix=93.181.240.0%2F20",
+      "status": "valid",
+      "sha256": "24547c620913d8aea08074d166eb727c2a0fdc54b33d1661d4ed6dca8664c948",
+      "observation_utc": "2026-11-14T12:54:14.552430"
+    },
+    {
+      "prefix": "94.75.128.0/18",
+      "asn": "AS34267",
+      "exact_ris_paths": 360,
+      "url": "https://stat.ripe.net/data/rpki-validation/data.json?resource=AS34267&prefix=94.75.128.0%2F18",
+      "status": "valid",
+      "sha256": "8e19eb1377dbdbc927ceb7748e94b21cae05b12408dd1aff14d969ad4c084b0d",
+      "observation_utc": "2026-11-14T12:54:19.910099"
+    },
+    {
+      "prefix": "95.158.192.0/18",
+      "asn": "AS35125",
+      "exact_ris_paths": 360,
+      "url": "https://stat.ripe.net/data/rpki-validation/data.json?resource=AS35125&prefix=95.158.192.0%2F18",
+      "status": "valid",
+      "sha256": "92921baa0032bb8821d4186d7f583d9bb3660857396993c410e18904f3307924",
+      "observation_utc": "2026-11-14T12:54:19.915003"
+    },
+    {
+      "prefix": "95.179.0.0/17",
+      "asn": "AS12389",
+      "exact_ris_paths": 361,
+      "url": "https://stat.ripe.net/data/rpki-validation/data.json?resource=AS12389&prefix=95.179.0.0%2F17",
+      "status": "valid",
+      "sha256": "ac34f7618e0aaf5a65ddcc3390053af66af7f6273a72d9b38f7a274a5402d67f",
+      "observation_utc": "2026-11-14T12:54:19.662585"
+    },
+    {
+      "prefix": "95.32.0.0/16",
+      "asn": "AS12389",
+      "exact_ris_paths": 361,
+      "url": "https://stat.ripe.net/data/rpki-validation/data.json?resource=AS12389&prefix=95.32.0.0%2F16",
+      "status": "valid",
+      "sha256": "f985b8b40242b5bdf45f92334128fe0eaee558ae4cd160b73201a6076371f948",
+      "observation_utc": "2026-11-14T12:54:28.649696"
+    }
+  ]
+}

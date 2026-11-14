@@ -1,0 +1,56 @@
+{
+  "scope": "Synthetic-only DNS and hard-host markers in copies of the locked inputs; not live registry evidence.",
+  "fixed_source": "b98980c6181c3bfda35445f345ae83777f7d18f3",
+  "control_dat_sha256": "2735053560ebd598cbdcd71ccf858806d4b955a17e2eac512a7baf249d43653a",
+  "synthetic_dat_sha256": "c56ada0a2e539bee72e3c548b22bfc8f9857c49351047b3cc85dc1becc78fcdc",
+  "synthetic_effective_mask_sha256": "5e5dc0157e7e036b58f6cfe81c0daf95bb0529c59d4e8da308f049b0343a2df5",
+  "cases": [
+    {
+      "country": "RU",
+      "reviewed_prefix": "153.52.151.0/24",
+      "synthetic_resolver_host_preserved": "153.52.151.17/32",
+      "synthetic_hard_host_removed": "153.52.151.18/32"
+    },
+    {
+      "country": "BY",
+      "reviewed_prefix": "179.253.86.0/24",
+      "synthetic_resolver_host_preserved": "179.253.86.17/32",
+      "synthetic_hard_host_removed": "179.253.86.18/32"
+    },
+    {
+      "country": "KZ",
+      "reviewed_prefix": "178.92.244.0/23",
+      "synthetic_resolver_host_preserved": "178.92.244.17/32",
+      "synthetic_hard_host_removed": "178.92.244.18/32"
+    },
+    {
+      "country": "RU",
+      "reviewed_prefix": "2001:ad0:2000:1::/64",
+      "synthetic_resolver_host_preserved": "2001:ad0:2000:1::17/128",
+      "synthetic_hard_host_removed": "2001:ad0:2000:1::18/128"
+    }
+  ],
+  "ipv4_removed": 3,
+  "ipv6_removed": 1,
+  "addresses_added": 0,
+  "private_changed": false,
+  "gates": {
+    "build_v41_overlay": "7145c75a048297937c4420580470c91e675dddf2bbf43cd2c16ac591aef69b88",
+    "validate_v41_base_artifacts": "1b7c3fd80aa4c89ade0b837cde4dde3cc48046393954baf48630a78d47aefc2f",
+    "validate_v41_overlay": "a2073ee53a70fc4333f7553e1fc53886997d3a61000b3676da422a8cb30028c3",
+    "validate_v41_publication_bounds": "f7e930d481afb0c5b01031b1f9b330d5c73031997e77d89f24bf1b60b094c766",
+    "validate_v41_relative_bounds": "56343f392ca1fb2138efd0e7ede73795bdccdfcdcd5e4ccc377aa04835a23a0b",
+    "validate_v41_release_gate": "bc192e237ad69dc9f24545cc7889bf2c8e5838e4c163d0dfa3795dc3e81e4a7b",
+    "validate_v41_telegram": "5fa0c04012fa78f0dba8239cbbecedb3022571f55038f237fdbc746d91c4cc75"
+  },
+  "tampered_dat_negative_gates": {
+    "validate_v41_overlay": {
+      "status": "REJECTED_MISSING_REVIEWED_HOST",
+      "log_sha256": "f5ae9de1017347d073d744df93335fd1ce18a2ab5fe277fbfdc3c1b4efafd6ac"
+    },
+    "validate_v41_release_gate": {
+      "status": "REJECTED_MISSING_REVIEWED_HOST",
+      "log_sha256": "4ff247cbe94cc6bb032188b7787fb4622e261f582bd9e3a7f7ae6352846e97f9"
+    }
+  }
+}
