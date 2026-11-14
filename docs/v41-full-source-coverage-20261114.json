@@ -1,0 +1,1582 @@
+{
+  "snapshot": "geoip-v41-snapshot-43617500418.1",
+  "file_provenance": {
+    "davoyan-geoip.dat": {
+      "SOURCE": "ROLLING davoyan-geoip.dat",
+      "LOCAL_FILE": "davoyan-geoip.dat",
+      "FETCH_URL": "https://raw.githubusercontent.com/Davoyan/xray-routing/7023e1585a5a8ab6d440160052368446989fde8d/release/geoip.dat",
+      "SHA256": "14eb9adac8978ff5e91346fac0e44980cf310463266ec85d2f31b1a9a137bcf9",
+      "BYTES": "682282",
+      "STATUS": "downloaded",
+      "exact_bytes_verified": true
+    },
+    "digne-geoip.dat": {
+      "SOURCE": "ROLLING digne-geoip.dat",
+      "LOCAL_FILE": "digne-geoip.dat",
+      "FETCH_URL": "https://raw.githubusercontent.com/DigneZzZ/routing/3cc2df8d486dec518be70d53c9ef6cdb02047d7f/v2ray/geoip.dat",
+      "SHA256": "2afe2ccc7862c4557f42ee9e777c2f2985370e56b3f20839eafbdf02261158fa",
+      "BYTES": "809687",
+      "STATUS": "downloaded",
+      "exact_bytes_verified": true
+    },
+    "escapingworm-operator-cidr.txt": {
+      "SOURCE": "ROLLING escapingworm-operator-cidr.txt",
+      "LOCAL_FILE": "escapingworm-operator-cidr.txt",
+      "FETCH_URL": "https://raw.githubusercontent.com/escapingworm/russia-whitelist/2bb6c0788f21986b7928d986ea2577c6ebc11b36/ru-whitelist-cidr.txt",
+      "SHA256": "cb36cdc22acd9d177a1402b074f5180f1a3286cd856fb6aba7afbf6333a795e4",
+      "BYTES": "1395",
+      "STATUS": "downloaded",
+      "exact_bytes_verified": true
+    },
+    "golukon-geoip.dat": {
+      "SOURCE": "ROLLING golukon-geoip.dat",
+      "LOCAL_FILE": "golukon-geoip.dat",
+      "FETCH_URL": "https://raw.githubusercontent.com/golukon/russia-only-geoip/c9f8e811aa26e26c078d05c50b3d8e653e27b3ff/geoip.dat",
+      "SHA256": "22c60f68b6bdf2c5a24a18a46a9797d9467961f9c47b16c7bf5b10fed70c8f08",
+      "BYTES": "131218",
+      "STATUS": "downloaded",
+      "exact_bytes_verified": true
+    },
+    "grimbird-geoip.dat": {
+      "SOURCE": "ROLLING grimbird-geoip.dat",
+      "LOCAL_FILE": "grimbird-geoip.dat",
+      "FETCH_URL": "https://raw.githubusercontent.com/GrimbirdUsers/ru-routing-dat/bea48cd34166485ef8d999e1981d8cf3ca297253/geoip.dat",
+      "SHA256": "b0f063b499019ccafa95c692d803ab0ad47619a4a0aa0b0ab6bace7e9708fe1d",
+      "BYTES": "398808",
+      "STATUS": "downloaded",
+      "exact_bytes_verified": true
+    },
+    "hxehex-cidrwhitelist.txt": {
+      "SOURCE": "ROLLING hxehex-cidrwhitelist.txt",
+      "LOCAL_FILE": "hxehex-cidrwhitelist.txt",
+      "FETCH_URL": "https://raw.githubusercontent.com/hxehex/russia-mobile-internet-whitelist/fad3653ebd4b212643774a4d10af3eb33838e4ff/cidrwhitelist.txt",
+      "SHA256": "149d27a8e3502b95b9a378817854c87af6417c2a9bbf0b17eb8f7affef1f3868",
+      "BYTES": "470393",
+      "STATUS": "downloaded",
+      "exact_bytes_verified": true
+    },
+    "hxehex-ipwhitelist.txt": {
+      "SOURCE": "ROLLING hxehex-ipwhitelist.txt",
+      "LOCAL_FILE": "hxehex-ipwhitelist.txt",
+      "FETCH_URL": "https://raw.githubusercontent.com/hxehex/russia-mobile-internet-whitelist/fad3653ebd4b212643774a4d10af3eb33838e4ff/ipwhitelist.txt",
+      "SHA256": "8a3814375701decd9787718fc3ae769187aa4714e2a1b8fa5d96f94ad2bd4da0",
+      "BYTES": "1757478",
+      "STATUS": "downloaded",
+      "exact_bytes_verified": true
+    },
+    "hydra-geoip.dat": {
+      "SOURCE": "ROLLING hydra-geoip.dat",
+      "LOCAL_FILE": "hydra-geoip.dat",
+      "FETCH_URL": "https://github.com/hydraponique/roscomvpn-geoip/releases/download/202611141017/geoip.dat",
+      "SHA256": "8ff1c909905e6fc7ec38e821c7c55ccd71660f9f796d21a9c5a0e1fb9184eecf",
+      "BYTES": "440970",
+      "STATUS": "downloaded",
+      "exact_bytes_verified": true
+    },
+    "kirill-geoip.dat": {
+      "SOURCE": "ROLLING kirill-geoip.dat",
+      "LOCAL_FILE": "kirill-geoip.dat",
+      "FETCH_URL": "https://github.com/kirilllavrov/RU-domain-list-for-whitelist/releases/download/0.3.11/geoip.dat",
+      "SHA256": "81c8b59e121fa38e00fe6efaa0f2919bc2de174deff54e53a5c4c05681c03059",
+      "BYTES": "328405",
+      "STATUS": "downloaded",
+      "exact_bytes_verified": true
+    },
+    "kyoresuas-ru-standard-ipv4.txt": {
+      "SOURCE": "ROLLING kyoresuas-ru-standard-ipv4.txt",
+      "LOCAL_FILE": "kyoresuas-ru-standard-ipv4.txt",
+      "FETCH_URL": "https://raw.githubusercontent.com/kyoresuas/ru-direct/d2add16b44e8af105e363aa169db9354efa47785/ru-standard.ipv4.txt",
+      "SHA256": "2d3912d55ea4c2ad5e723da2943919874126345de70e0eadcc2536b05de0a588",
+      "BYTES": "10353",
+      "STATUS": "downloaded",
+      "exact_bytes_verified": true
+    },
+    "kyoresuas-ru-standard-ipv6.txt": {
+      "SOURCE": "ROLLING kyoresuas-ru-standard-ipv6.txt",
+      "LOCAL_FILE": "kyoresuas-ru-standard-ipv6.txt",
+      "FETCH_URL": "https://raw.githubusercontent.com/kyoresuas/ru-direct/d2add16b44e8af105e363aa169db9354efa47785/ru-standard.ipv6.txt",
+      "SHA256": "ad7bf0de43a7f1cf3b4c5e9ab996b4094a9fc8c96ec836af52125a42d0011079",
+      "BYTES": "1403",
+      "STATUS": "downloaded",
+      "exact_bytes_verified": true
+    },
+    "kyoresuas-services.json": {
+      "SOURCE": "ROLLING kyoresuas-services.json",
+      "LOCAL_FILE": "kyoresuas-services.json",
+      "FETCH_URL": "https://raw.githubusercontent.com/kyoresuas/ru-direct/d2add16b44e8af105e363aa169db9354efa47785/services.json",
+      "SHA256": "d7f1e5b8d9c0daab56f6088bc2cafb952654189d143da2b01512a6278047d648",
+      "BYTES": "63292",
+      "STATUS": "downloaded",
+      "exact_bytes_verified": true
+    },
+    "loyalsoldier-by.dat": {
+      "SOURCE": "ROLLING loyalsoldier-by.dat",
+      "LOCAL_FILE": "loyalsoldier-by.dat",
+      "FETCH_URL": "https://raw.githubusercontent.com/Loyalsoldier/geoip/ec6f8d0f6b5c6c6924d9230f2ed893f69585d38c/dat/by.dat",
+      "SHA256": "baac721e10f384222261b4fe9d8bed5572fb03300a5840ff015ce84b3705bd7e",
+      "BYTES": "11629",
+      "STATUS": "downloaded",
+      "exact_bytes_verified": true
+    },
+    "loyalsoldier-private.dat": {
+      "SOURCE": "ROLLING loyalsoldier-private.dat",
+      "LOCAL_FILE": "loyalsoldier-private.dat",
+      "FETCH_URL": "https://raw.githubusercontent.com/Loyalsoldier/geoip/ec6f8d0f6b5c6c6924d9230f2ed893f69585d38c/dat/private.dat",
+      "SHA256": "4acc277c0425871bf1171a06302a60fec1d7ced5db204bb5b4090a5b6e0efe99",
+      "BYTES": "436",
+      "STATUS": "downloaded",
+      "exact_bytes_verified": true
+    },
+    "loyalsoldier-ru.dat": {
+      "SOURCE": "ROLLING loyalsoldier-ru.dat",
+      "LOCAL_FILE": "loyalsoldier-ru.dat",
+      "FETCH_URL": "https://raw.githubusercontent.com/Loyalsoldier/geoip/ec6f8d0f6b5c6c6924d9230f2ed893f69585d38c/dat/ru.dat",
+      "SHA256": "72745d626cfec819b36221825bb05c3a27e086a7f48871265411827cc86ff9cb",
+      "BYTES": "398794",
+      "STATUS": "downloaded",
+      "exact_bytes_verified": true
+    },
+    "v2fly-geoip.dat": {
+      "SOURCE": "ROLLING v2fly-geoip.dat",
+      "LOCAL_FILE": "v2fly-geoip.dat",
+      "FETCH_URL": "https://github.com/v2fly/geoip/releases/download/202611080027/geoip.dat",
+      "SHA256": "eedb24b3b9fcba27e06b92c0428dab90d9496083091ae4cf39e11387fd99d0e2",
+      "BYTES": "23876117",
+      "STATUS": "downloaded",
+      "exact_bytes_verified": true
+    },
+    "v2fly-geoip.dat.sha256sum": {
+      "SOURCE": "ROLLING v2fly-geoip.dat.sha256sum",
+      "LOCAL_FILE": "v2fly-geoip.dat.sha256sum",
+      "FETCH_URL": "https://github.com/v2fly/geoip/releases/download/202611080027/geoip.dat.sha256sum",
+      "SHA256": "22b576c674dd9f2535bc90eb9c334431b400e3101ccb525be3e085bcf56bb8aa",
+      "BYTES": "76",
+      "STATUS": "downloaded",
+      "exact_bytes_verified": true
+    },
+    "w1zardz-ru-ipv4.txt": {
+      "SOURCE": "ROLLING w1zardz-ru-ipv4.txt",
+      "LOCAL_FILE": "w1zardz-ru-ipv4.txt",
+      "FETCH_URL": "https://raw.githubusercontent.com/w1zardz/amnezia-vpn-russia-split-tunneling/65587924e9dd583f796fac4c69f7380f5593c027/dist/ru-direct-ipv4.txt",
+      "SHA256": "32bad19c15af994db606300bb199b389662037bf958f956279a189a62e920c48",
+      "BYTES": "16224",
+      "STATUS": "downloaded",
+      "exact_bytes_verified": true
+    },
+    "telegram-official-cidrs.txt": {
+      "SOURCE": "TELEGRAM OFFICIAL CIDRS",
+      "LOCAL_FILE": "telegram-official-cidrs.txt",
+      "FETCH_URL": "https://core.telegram.org/resources/cidr.txt",
+      "SHA256": "3ecd072cedf72eceee6961b18a51e37f905d5ce4a656a5d24cf5fea63e6ec651",
+      "BYTES": "227",
+      "STATUS": "downloaded",
+      "exact_bytes_verified": true
+    },
+    "delegated-afrinic-latest": {
+      "SOURCE": "AFRINIC DELEGATED STATS",
+      "LOCAL_FILE": "delegated-afrinic-latest",
+      "FETCH_URL": "https://ftp.afrinic.net/pub/stats/afrinic/delegated-afrinic-latest",
+      "SHA256": "21b55a80a32138e0c7e037cb7327109dfeee95d2debb3453cdb62f3745b809ab",
+      "BYTES": "496308",
+      "STATUS": "downloaded",
+      "exact_bytes_verified": true
+    },
+    "delegated-apnic-latest": {
+      "SOURCE": "APNIC DELEGATED STATS",
+      "LOCAL_FILE": "delegated-apnic-latest",
+      "FETCH_URL": "https://ftp.apnic.net/pub/stats/apnic/delegated-apnic-latest",
+      "SHA256": "374e3b533b3b9cd0e7f10567e98c435517d62e44e64338176fb13d016f223c92",
+      "BYTES": "4357224",
+      "STATUS": "downloaded",
+      "exact_bytes_verified": true
+    },
+    "delegated-arin-extended-latest": {
+      "SOURCE": "ARIN DELEGATED STATS",
+      "LOCAL_FILE": "delegated-arin-extended-latest",
+      "FETCH_URL": "https://ftp.arin.net/pub/stats/arin/delegated-arin-extended-latest",
+      "SHA256": "9c0416f313cea614f6ee326f5f140e4991bb284022424caa173c33067f86566e",
+      "BYTES": "12918866",
+      "STATUS": "downloaded",
+      "exact_bytes_verified": true
+    },
+    "delegated-lacnic-latest": {
+      "SOURCE": "LACNIC DELEGATED STATS",
+      "LOCAL_FILE": "delegated-lacnic-latest",
+      "FETCH_URL": "https://ftp.lacnic.net/pub/stats/lacnic/delegated-lacnic-latest",
+      "SHA256": "dffcfc6b78649b6bce7aa93db0b0168c563a3da321510f5a86290041e9641b5b",
+      "BYTES": "2325551",
+      "STATUS": "downloaded",
+      "exact_bytes_verified": true
+    },
+    "delegated-ripencc-latest": {
+      "SOURCE": "RIPE NCC DELEGATED STATS",
+      "LOCAL_FILE": "delegated-ripencc-latest",
+      "FETCH_URL": "https://ftp.ripe.net/pub/stats/ripencc/delegated-ripencc-latest",
+      "SHA256": "371f55c784e03273a07f484c21f6601374632a014aec678b535c6cc0368ecb11",
+      "BYTES": "8314601",
+      "STATUS": "downloaded",
+      "exact_bytes_verified": true
+    },
+    "iana-ipv4-special-registry.csv": {
+      "SOURCE": "IANA IPV4 SPECIAL REGISTRY",
+      "LOCAL_FILE": "iana-ipv4-special-registry.csv",
+      "FETCH_URL": "https://www.iana.org/assignments/iana-ipv4-special-registry/iana-ipv4-special-registry-1.csv",
+      "SHA256": "cbc4b7653c8bc640ba1e8e5d4ebbf11e7c7a1d867e7f1593aad001d3f8632aac",
+      "BYTES": "2445",
+      "STATUS": "downloaded",
+      "exact_bytes_verified": true
+    },
+    "iana-ipv6-special-registry.csv": {
+      "SOURCE": "IANA IPV6 SPECIAL REGISTRY",
+      "LOCAL_FILE": "iana-ipv6-special-registry.csv",
+      "FETCH_URL": "https://www.iana.org/assignments/iana-ipv6-special-registry/iana-ipv6-special-registry-1.csv",
+      "SHA256": "bf56772aef97fbf9b4a27c98b8511f2bb1ba96da4b9ccc12ab203a2496faba66",
+      "BYTES": "2300",
+      "STATUS": "downloaded",
+      "exact_bytes_verified": true
+    },
+    "as-ip-blocks.tar.gz": {
+      "SOURCE": "IPVERSE ASN/BGP ARCHIVE",
+      "LOCAL_FILE": "as-ip-blocks.tar.gz",
+      "FETCH_URL": "https://codeload.github.com/ipverse/as-ip-blocks/tar.gz/refs/heads/master",
+      "SHA256": "d34d00d59ec419fec991d860af290b557a47b8e2f9596688b9bd11b0e4103d02",
+      "BYTES": "16268982",
+      "STATUS": "downloaded",
+      "exact_bytes_verified": true
+    },
+    "antifilter-ip.lst": {
+      "SOURCE": "ANTIFILTER EXACT BLOCKED IP LIST",
+      "LOCAL_FILE": "antifilter-ip.lst",
+      "FETCH_URL": "https://antifilter.download/list/ip.lst",
+      "SHA256": "f5b63e9200cd05d5e0440a208793783512bc436637c8570942dc4e78022b02fe",
+      "BYTES": "714779",
+      "STATUS": "downloaded",
+      "exact_bytes_verified": true
+    },
+    "antifilter-ipresolve.lst": {
+      "SOURCE": "ANTIFILTER IPRESOLVE LIST",
+      "LOCAL_FILE": "antifilter-ipresolve.lst",
+      "FETCH_URL": "https://antifilter.download/list/ipresolve.lst",
+      "SHA256": "8d8d11605a299da96006df6303a90b08b4ae25d35c1d1a199708cb83f84cdf44",
+      "BYTES": "2622450",
+      "STATUS": "downloaded",
+      "exact_bytes_verified": true
+    },
+    "geoip_RU_v38_approved_blocked_baseline.txt": {
+      "SOURCE": "PINNED V38 APPROVED BLOCKED BASELINE",
+      "LOCAL_FILE": "geoip_RU_v38_approved_blocked_baseline.txt",
+      "FETCH_URL": "https://raw.githubusercontent.com/SpeedeMiner/Geoip-ru-server/3033248ea54cb298bafded25ddcd2805d5f0e7ac/geoip_RU_v38_blocked_ip_exclusions.txt",
+      "SHA256": "df909b12b985b23080075821cedc5e2f73b7b1f89abcd9950293b400ce1e4a5d",
+      "BYTES": "3290594",
+      "STATUS": "downloaded",
+      "exact_bytes_verified": true
+    },
+    "geoip_RU_v38_pinned_antifilter-ip.lst": {
+      "SOURCE": "PINNED V38 EXACT IP SOURCE",
+      "LOCAL_FILE": "geoip_RU_v38_pinned_antifilter-ip.lst",
+      "FETCH_URL": "https://github.com/SpeedeMiner/Geoip-ru-server/releases/download/latest-geoip-client-v38/antifilter-ip.lst",
+      "SHA256": "c9c0656d0188f4afa740d71332b618d42b5606ab27e7561790f47b588781d1cb",
+      "BYTES": "716286",
+      "STATUS": "downloaded",
+      "exact_bytes_verified": true
+    },
+    "geoip_RU_v38_pinned_antifilter-ipresolve.lst": {
+      "SOURCE": "PINNED V38 RESOLVER SOURCE",
+      "LOCAL_FILE": "geoip_RU_v38_pinned_antifilter-ipresolve.lst",
+      "FETCH_URL": "https://github.com/SpeedeMiner/Geoip-ru-server/releases/download/latest-geoip-client-v38/antifilter-ipresolve.lst",
+      "SHA256": "8d8d11605a299da96006df6303a90b08b4ae25d35c1d1a199708cb83f84cdf44",
+      "BYTES": "2622450",
+      "STATUS": "downloaded",
+      "exact_bytes_verified": true
+    },
+    "geoip_RU_v38_pinned_antifilter-subnet.lst": {
+      "SOURCE": "PINNED V38 SUBNET SOURCE",
+      "LOCAL_FILE": "geoip_RU_v38_pinned_antifilter-subnet.lst",
+      "FETCH_URL": "https://github.com/SpeedeMiner/Geoip-ru-server/releases/download/latest-geoip-client-v38/antifilter-subnet.lst",
+      "SHA256": "2554552742bc0da516a321db66b36fa6cece28c4b3c64b66ff6d12320b33bdb6",
+      "BYTES": "1109",
+      "STATUS": "downloaded",
+      "exact_bytes_verified": true
+    },
+    "antifilter-subnet.lst": {
+      "SOURCE": "ANTIFILTER SUBNET LIST",
+      "LOCAL_FILE": "antifilter-subnet.lst",
+      "FETCH_URL": "https://antifilter.download/list/subnet.lst",
+      "SHA256": "2554552742bc0da516a321db66b36fa6cece28c4b3c64b66ff6d12320b33bdb6",
+      "BYTES": "1109",
+      "STATUS": "downloaded",
+      "exact_bytes_verified": true
+    },
+    "antifilter-ipsum.lst": {
+      "SOURCE": "ANTIFILTER IPSUM IPV4 /24 SUMMARY",
+      "LOCAL_FILE": "antifilter-ipsum.lst",
+      "FETCH_URL": "https://antifilter.download/list/ipsum.lst",
+      "SHA256": "fcc4b99f43032375c7ec652ab156575d4b7d7f48cd575239b6cf319366da6a1f",
+      "BYTES": "295168",
+      "STATUS": "downloaded",
+      "exact_bytes_verified": true
+    },
+    "antifilter-community.lst": {
+      "SOURCE": "ANTIFILTER COMMUNITY CANDIDATES",
+      "LOCAL_FILE": "antifilter-community.lst",
+      "FETCH_URL": "https://community.antifilter.download/list/community.lst",
+      "SHA256": "390a72ccaf30f6b7a25b29709f0e6dd3b9a4079873195e2333239d3790c2490f",
+      "BYTES": "15114",
+      "STATUS": "downloaded",
+      "exact_bytes_verified": true
+    },
+    "refilter-ipsum.lst": {
+      "SOURCE": "RE-FILTER CANDIDATES",
+      "LOCAL_FILE": "refilter-ipsum.lst",
+      "FETCH_URL": "https://raw.githubusercontent.com/1andrevich/Re-filter-lists/refs/heads/main/ipsum.lst",
+      "SHA256": "daef14e23e2dad9988c55917c0f3aea0dbc308244cfa6f790d3daf371f3303f7",
+      "BYTES": "473238",
+      "STATUS": "downloaded",
+      "exact_bytes_verified": true
+    }
+  },
+  "base_address_space": {
+    "IPv4": 52633211,
+    "IPv6": 1193154981391383862747328363364352
+  },
+  "sources": {
+    "v37 base": {
+      "IPv4": {
+        "input": 52633211,
+        "covered": 52633211,
+        "coverage_percent": 100.0,
+        "outside_source": 765829,
+        "not_covered": 0,
+        "role": "DIRECT",
+        "overlap_vs_v34_new": 3578064,
+        "covered_absent_v37": 0,
+        "admitted_v41_vs_v37": 0,
+        "overlay_only_in_this_layer": null
+      },
+      "IPv6": {
+        "input": 1193154981391383862747328363364352,
+        "covered": 1193154981391383862747328363364352,
+        "coverage_percent": 100.0,
+        "outside_source": 12721371577038048668188468576256,
+        "not_covered": 0,
+        "role": "DIRECT",
+        "overlap_vs_v34_new": 70299946651249711931337914449920,
+        "covered_absent_v37": 0,
+        "admitted_v41_vs_v37": 0,
+        "overlay_only_in_this_layer": null
+      }
+    },
+    "v2fly RU": {
+      "IPv4": {
+        "input": 46375796,
+        "covered": 46375534,
+        "coverage_percent": 99.9994350501283,
+        "outside_source": 7023506,
+        "not_covered": 262,
+        "role": "DIRECT",
+        "overlap_vs_v34_new": 0,
+        "covered_absent_v37": 7963,
+        "admitted_v41_vs_v37": 0,
+        "overlay_only_in_this_layer": null
+      },
+      "IPv6": {
+        "input": 1030301624548123477580345755303936,
+        "covered": 1030301624548123477580345755303936,
+        "coverage_percent": 100.0,
+        "outside_source": 175574728420298433835171076636672,
+        "not_covered": 0,
+        "role": "DIRECT",
+        "overlap_vs_v34_new": 0,
+        "covered_absent_v37": 0,
+        "admitted_v41_vs_v37": 0,
+        "overlay_only_in_this_layer": null
+      }
+    },
+    "v2fly BY": {
+      "IPv4": {
+        "input": 1901817,
+        "covered": 1901699,
+        "coverage_percent": 99.99379540723424,
+        "outside_source": 51497341,
+        "not_covered": 118,
+        "role": "DIRECT",
+        "overlap_vs_v34_new": 1792,
+        "covered_absent_v37": 133,
+        "admitted_v41_vs_v37": 0,
+        "overlay_only_in_this_layer": null
+      },
+      "IPv6": {
+        "input": 12913196146087951218258902777856,
+        "covered": 12913196146087951218258902777856,
+        "coverage_percent": 100.0,
+        "outside_source": 1192963156822333960197257929162752,
+        "not_covered": 0,
+        "role": "DIRECT",
+        "overlap_vs_v34_new": 12908199650953117473010196938752,
+        "covered_absent_v37": 0,
+        "admitted_v41_vs_v37": 0,
+        "overlay_only_in_this_layer": null
+      }
+    },
+    "v2fly KZ": {
+      "IPv4": {
+        "input": 3575561,
+        "covered": 3574929,
+        "coverage_percent": 99.98232445202305,
+        "outside_source": 49824111,
+        "not_covered": 632,
+        "role": "DIRECT",
+        "overlap_vs_v34_new": 3496502,
+        "covered_absent_v37": 932,
+        "admitted_v41_vs_v37": 0,
+        "overlay_only_in_this_layer": null
+      },
+      "IPv6": {
+        "input": 57871458036152274486470807388160,
+        "covered": 57871458036152274486470807388160,
+        "coverage_percent": 100.0,
+        "outside_source": 1148004894932269636929046024552448,
+        "not_covered": 0,
+        "role": "DIRECT",
+        "overlap_vs_v34_new": 57391085099870445298751754993664,
+        "covered_absent_v37": 0,
+        "admitted_v41_vs_v37": 0,
+        "overlay_only_in_this_layer": null
+      }
+    },
+    "Loyalsoldier RU": {
+      "IPv4": {
+        "input": 45732542,
+        "covered": 45732083,
+        "coverage_percent": 99.99899633831856,
+        "outside_source": 7666957,
+        "not_covered": 459,
+        "role": "DIRECT",
+        "overlap_vs_v34_new": 0,
+        "covered_absent_v37": 8580,
+        "admitted_v41_vs_v37": 0,
+        "overlay_only_in_this_layer": null
+      },
+      "IPv6": {
+        "input": 876217847907882949421221900451840,
+        "covered": 876217847907882949421221900451840,
+        "coverage_percent": 100.0,
+        "outside_source": 329658505060538961994294931488768,
+        "not_covered": 0,
+        "role": "DIRECT",
+        "overlap_vs_v34_new": 0,
+        "covered_absent_v37": 0,
+        "admitted_v41_vs_v37": 0,
+        "overlay_only_in_this_layer": null
+      }
+    },
+    "Loyalsoldier BY": {
+      "IPv4": {
+        "input": 1888625,
+        "covered": 1888619,
+        "coverage_percent": 99.99968230855781,
+        "outside_source": 51510421,
+        "not_covered": 6,
+        "role": "DIRECT",
+        "overlap_vs_v34_new": 1160,
+        "covered_absent_v37": 130,
+        "admitted_v41_vs_v37": 0,
+        "overlay_only_in_this_layer": null
+      },
+      "IPv6": {
+        "input": 12841117593025427430129742643200,
+        "covered": 12841117593025427430129742643200,
+        "coverage_percent": 100.0,
+        "outside_source": 1193035235375396483985387089297408,
+        "not_covered": 0,
+        "role": "DIRECT",
+        "overlap_vs_v34_new": 12761866460588549021255107346432,
+        "covered_absent_v37": 0,
+        "admitted_v41_vs_v37": 0,
+        "overlay_only_in_this_layer": null
+      }
+    },
+    "grimbird": {
+      "IPv4": {
+        "input": 45758097,
+        "covered": 45718209,
+        "coverage_percent": 99.91282854267301,
+        "outside_source": 7680831,
+        "not_covered": 39888,
+        "role": "DIRECT",
+        "overlap_vs_v34_new": 0,
+        "covered_absent_v37": 10355,
+        "admitted_v41_vs_v37": 0,
+        "overlay_only_in_this_layer": null
+      },
+      "IPv6": {
+        "input": 875425991824610363650682247970816,
+        "covered": 875425991824610363650682247970816,
+        "coverage_percent": 100.0,
+        "outside_source": 330450361143811547764834583969792,
+        "not_covered": 0,
+        "role": "DIRECT",
+        "overlap_vs_v34_new": 0,
+        "covered_absent_v37": 0,
+        "admitted_v41_vs_v37": 0,
+        "overlay_only_in_this_layer": null
+      }
+    },
+    "digne": {
+      "IPv4": {
+        "input": 45732542,
+        "covered": 45732083,
+        "coverage_percent": 99.99899633831856,
+        "outside_source": 7666957,
+        "not_covered": 459,
+        "role": "DIRECT",
+        "overlap_vs_v34_new": 0,
+        "covered_absent_v37": 8580,
+        "admitted_v41_vs_v37": 0,
+        "overlay_only_in_this_layer": null
+      },
+      "IPv6": {
+        "input": 876217847907882949421221900451840,
+        "covered": 876217847907882949421221900451840,
+        "coverage_percent": 100.0,
+        "outside_source": 329658505060538961994294931488768,
+        "not_covered": 0,
+        "role": "DIRECT",
+        "overlap_vs_v34_new": 0,
+        "covered_absent_v37": 0,
+        "admitted_v41_vs_v37": 0,
+        "overlay_only_in_this_layer": null
+      }
+    },
+    "davoyan": {
+      "IPv4": {
+        "input": 49088690,
+        "covered": 49048341,
+        "coverage_percent": 99.9178038770234,
+        "outside_source": 4350699,
+        "not_covered": 40349,
+        "role": "DIRECT",
+        "overlap_vs_v34_new": 356426,
+        "covered_absent_v37": 174046,
+        "admitted_v41_vs_v37": 0,
+        "overlay_only_in_this_layer": null
+      },
+      "IPv6": {
+        "input": 1060696135592603593340911127494508,
+        "covered": 1047289046380804081523904869302227,
+        "coverage_percent": 98.73601036508829,
+        "outside_source": 158587306587617829891611962638381,
+        "not_covered": 13407089211799511817006258192281,
+        "role": "DIRECT",
+        "overlap_vs_v34_new": 13268355941937879052874676174834,
+        "covered_absent_v37": 455557098772188226719888441344,
+        "admitted_v41_vs_v37": 0,
+        "overlay_only_in_this_layer": null
+      }
+    },
+    "golukon": {
+      "IPv4": {
+        "input": 45732540,
+        "covered": 45732081,
+        "coverage_percent": 99.99899633827468,
+        "outside_source": 7666959,
+        "not_covered": 459,
+        "role": "DIRECT",
+        "overlap_vs_v34_new": 0,
+        "covered_absent_v37": 8580,
+        "admitted_v41_vs_v37": 0,
+        "overlay_only_in_this_layer": null
+      },
+      "IPv6": {
+        "input": 0,
+        "covered": 0,
+        "coverage_percent": null,
+        "outside_source": 1205876352968421911415516831940608,
+        "not_covered": 0,
+        "role": "DIRECT",
+        "overlap_vs_v34_new": 0,
+        "covered_absent_v37": 0,
+        "admitted_v41_vs_v37": 0,
+        "overlay_only_in_this_layer": null
+      }
+    },
+    "Hydra DIRECT": {
+      "IPv4": {
+        "input": 49151834,
+        "covered": 49147588,
+        "coverage_percent": 99.99136146171067,
+        "outside_source": 4251452,
+        "not_covered": 4246,
+        "role": "DIRECT",
+        "overlap_vs_v34_new": 0,
+        "covered_absent_v37": 461142,
+        "admitted_v41_vs_v37": 461142,
+        "overlay_only_in_this_layer": 440869
+      },
+      "IPv6": {
+        "input": 2847563117644718645949551869952,
+        "covered": 2847563117644718645949551869952,
+        "coverage_percent": 100.0,
+        "outside_source": 1203028789850777192769567280070656,
+        "not_covered": 0,
+        "role": "DIRECT",
+        "overlap_vs_v34_new": 0,
+        "covered_absent_v37": 237898387132634593360586211328,
+        "admitted_v41_vs_v37": 237898387132634593360586211328,
+        "overlay_only_in_this_layer": 237898387132634593360586211328
+      }
+    },
+    "Hydra WHITELIST": {
+      "IPv4": {
+        "input": 219006,
+        "covered": 219005,
+        "coverage_percent": 99.99954339150526,
+        "outside_source": 53180035,
+        "not_covered": 1,
+        "role": "DIRECT",
+        "overlap_vs_v34_new": 0,
+        "covered_absent_v37": 874,
+        "admitted_v41_vs_v37": 874,
+        "overlay_only_in_this_layer": 767
+      },
+      "IPv6": {
+        "input": 0,
+        "covered": 0,
+        "coverage_percent": null,
+        "outside_source": 1205876352968421911415516831940608,
+        "not_covered": 0,
+        "role": "DIRECT",
+        "overlap_vs_v34_new": 0,
+        "covered_absent_v37": 0,
+        "admitted_v41_vs_v37": 0,
+        "overlay_only_in_this_layer": 0
+      }
+    },
+    "Kyoresuas Standard": {
+      "IPv4": {
+        "input": 757865,
+        "covered": 757865,
+        "coverage_percent": 100.0,
+        "outside_source": 52641175,
+        "not_covered": 0,
+        "role": "DIRECT",
+        "overlap_vs_v34_new": 0,
+        "covered_absent_v37": 164,
+        "admitted_v41_vs_v37": 164,
+        "overlay_only_in_this_layer": 0
+      },
+      "IPv6": {
+        "input": 3243489945586708573536284311558,
+        "covered": 3243489945586708573536284311558,
+        "coverage_percent": 100.0,
+        "outside_source": 1202632863022835202841980547629050,
+        "not_covered": 0,
+        "role": "DIRECT",
+        "overlap_vs_v34_new": 0,
+        "covered_absent_v37": 0,
+        "admitted_v41_vs_v37": 0,
+        "overlay_only_in_this_layer": 0
+      }
+    },
+    "W1ZARDZ DIRECT": {
+      "IPv4": {
+        "input": 495882,
+        "covered": 495876,
+        "coverage_percent": 99.998790034726,
+        "outside_source": 52903164,
+        "not_covered": 6,
+        "role": "DIRECT",
+        "overlap_vs_v34_new": 262,
+        "covered_absent_v37": 630,
+        "admitted_v41_vs_v37": 630,
+        "overlay_only_in_this_layer": 262
+      },
+      "IPv6": {
+        "input": 0,
+        "covered": 0,
+        "coverage_percent": null,
+        "outside_source": 1205876352968421911415516831940608,
+        "not_covered": 0,
+        "role": "DIRECT",
+        "overlap_vs_v34_new": 0,
+        "covered_absent_v37": 0,
+        "admitted_v41_vs_v37": 0,
+        "overlay_only_in_this_layer": 0
+      }
+    },
+    "Escapingworm operator": {
+      "IPv4": {
+        "input": 199424,
+        "covered": 199424,
+        "coverage_percent": 100.0,
+        "outside_source": 53199616,
+        "not_covered": 0,
+        "role": "DIRECT",
+        "overlap_vs_v34_new": 0,
+        "covered_absent_v37": 82,
+        "admitted_v41_vs_v37": 82,
+        "overlay_only_in_this_layer": 0
+      },
+      "IPv6": {
+        "input": 0,
+        "covered": 0,
+        "coverage_percent": null,
+        "outside_source": 1205876352968421911415516831940608,
+        "not_covered": 0,
+        "role": "DIRECT",
+        "overlap_vs_v34_new": 0,
+        "covered_absent_v37": 0,
+        "admitted_v41_vs_v37": 0,
+        "overlay_only_in_this_layer": 0
+      }
+    },
+    "RIR BY": {
+      "IPv4": {
+        "input": 1794048,
+        "covered": 1793021,
+        "coverage_percent": 99.94275515482306,
+        "outside_source": 51606019,
+        "not_covered": 1027,
+        "role": "DIRECT",
+        "overlap_vs_v34_new": 397,
+        "covered_absent_v37": 378,
+        "admitted_v41_vs_v37": 378,
+        "overlay_only_in_this_layer": 0
+      },
+      "IPv6": {
+        "input": 12597285093322947365148536340480,
+        "covered": 12597285093322947365148536340480,
+        "coverage_percent": 100.0,
+        "outside_source": 1193279067875098964050368295600128,
+        "not_covered": 0,
+        "role": "DIRECT",
+        "overlap_vs_v34_new": 12597282675471308135890186928128,
+        "covered_absent_v37": 0,
+        "admitted_v41_vs_v37": 0,
+        "overlay_only_in_this_layer": 0
+      }
+    },
+    "RIR KZ": {
+      "IPv4": {
+        "input": 3384576,
+        "covered": 3381917,
+        "coverage_percent": 99.92143772218441,
+        "outside_source": 50017123,
+        "not_covered": 2659,
+        "role": "DIRECT",
+        "overlap_vs_v34_new": 3352241,
+        "covered_absent_v37": 21710,
+        "admitted_v41_vs_v37": 21710,
+        "overlay_only_in_this_layer": 20645
+      },
+      "IPv6": {
+        "input": 44130093774000153727379028574208,
+        "covered": 44130093774000153727379028574208,
+        "coverage_percent": 100.0,
+        "outside_source": 1161746259194421757688137803366400,
+        "not_covered": 0,
+        "role": "DIRECT",
+        "overlap_vs_v34_new": 43179334063145781868857646907392,
+        "covered_absent_v37": 950746412651909353526750347264,
+        "admitted_v41_vs_v37": 950746412651909353526750347264,
+        "overlay_only_in_this_layer": 950746412651909353526750347264
+      }
+    },
+    "RIR RU": {
+      "IPv4": {
+        "input": 45259328,
+        "covered": 45220644,
+        "coverage_percent": 99.91452811672325,
+        "outside_source": 8178396,
+        "not_covered": 38684,
+        "role": "DIRECT",
+        "overlap_vs_v34_new": 295057,
+        "covered_absent_v37": 296727,
+        "admitted_v41_vs_v37": 296727,
+        "overlay_only_in_this_layer": 278225
+      },
+      "IPv6": {
+        "input": 854872272474432675461966877163520,
+        "covered": 854872272474432675461966877163520,
+        "coverage_percent": 100.0,
+        "outside_source": 351004080493989235953549954777088,
+        "not_covered": 0,
+        "role": "DIRECT",
+        "overlap_vs_v34_new": 11532730404012516821114946584576,
+        "covered_absent_v37": 11532726777235057977227422466048,
+        "admitted_v41_vs_v37": 11532726777235057977227422466048,
+        "overlay_only_in_this_layer": 11532726777235057977227422466048
+      }
+    },
+    "BGP selected (base v37)": {
+      "IPv4": {
+        "input": 49184768,
+        "covered": 49184248,
+        "coverage_percent": 99.99894276211693,
+        "outside_source": 4214792,
+        "not_covered": 520,
+        "role": "DIRECT",
+        "overlap_vs_v34_new": 3296127,
+        "covered_absent_v37": 8815,
+        "admitted_v41_vs_v37": 0,
+        "overlay_only_in_this_layer": null
+      },
+      "IPv6": {
+        "input": 215786249449309182065097469591552,
+        "covered": 215786249449309182065097469591552,
+        "coverage_percent": 100.0,
+        "outside_source": 990090103519112729350419362349056,
+        "not_covered": 0,
+        "role": "DIRECT",
+        "overlap_vs_v34_new": 14887497135573026807592526020608,
+        "covered_absent_v37": 0,
+        "admitted_v41_vs_v37": 0,
+        "overlay_only_in_this_layer": null
+      }
+    },
+    "BGP regional without companies": {
+      "IPv4": {
+        "input": 29567744,
+        "covered": 29567228,
+        "coverage_percent": 99.99825485502039,
+        "outside_source": 23831812,
+        "not_covered": 516,
+        "role": "DIRECT",
+        "overlap_vs_v34_new": 3292347,
+        "covered_absent_v37": 6362,
+        "admitted_v41_vs_v37": 6362,
+        "overlay_only_in_this_layer": 444
+      },
+      "IPv6": {
+        "input": 194255260050233703014884505026560,
+        "covered": 194255260050233703014884505026560,
+        "coverage_percent": 100.0,
+        "outside_source": 1011621092918188208400632326914048,
+        "not_covered": 0,
+        "role": "DIRECT",
+        "overlap_vs_v34_new": 14887472957056634515009031897088,
+        "covered_absent_v37": 0,
+        "admitted_v41_vs_v37": 0,
+        "overlay_only_in_this_layer": 0
+      }
+    },
+    "BGP companies": {
+      "IPv4": {
+        "input": 19617024,
+        "covered": 19617020,
+        "coverage_percent": 99.9999796095473,
+        "outside_source": 33782020,
+        "not_covered": 4,
+        "role": "DIRECT",
+        "overlap_vs_v34_new": 3780,
+        "covered_absent_v37": 2453,
+        "admitted_v41_vs_v37": 2453,
+        "overlay_only_in_this_layer": 70
+      },
+      "IPv6": {
+        "input": 21530989399075479050212964564992,
+        "covered": 21530989399075479050212964564992,
+        "coverage_percent": 100.0,
+        "outside_source": 1184345363569346432365303867375616,
+        "not_covered": 0,
+        "role": "DIRECT",
+        "overlap_vs_v34_new": 24178516392292583494123520,
+        "covered_absent_v37": 0,
+        "admitted_v41_vs_v37": 0,
+        "overlay_only_in_this_layer": 0
+      }
+    },
+    "BGP CORE_CORPORATE": {
+      "IPv4": {
+        "input": 463104,
+        "covered": 463104,
+        "coverage_percent": 100.0,
+        "outside_source": 52935936,
+        "not_covered": 0,
+        "role": "DIRECT",
+        "overlap_vs_v34_new": 3780,
+        "covered_absent_v37": 32,
+        "admitted_v41_vs_v37": 32,
+        "overlay_only_in_this_layer": null
+      },
+      "IPv6": {
+        "input": 3085014277745066064282401112064,
+        "covered": 3085014277745066064282401112064,
+        "coverage_percent": 100.0,
+        "outside_source": 1202791338690676845351234430828544,
+        "not_covered": 0,
+        "role": "DIRECT",
+        "overlap_vs_v34_new": 24178516392292583494123520,
+        "covered_absent_v37": 0,
+        "admitted_v41_vs_v37": 0,
+        "overlay_only_in_this_layer": null
+      }
+    },
+    "BGP SHARED_INFRA": {
+      "IPv4": {
+        "input": 19155456,
+        "covered": 19155452,
+        "coverage_percent": 99.99997911822093,
+        "outside_source": 34243588,
+        "not_covered": 4,
+        "role": "DIRECT",
+        "overlap_vs_v34_new": 0,
+        "covered_absent_v37": 2421,
+        "admitted_v41_vs_v37": 2421,
+        "overlay_only_in_this_layer": null
+      },
+      "IPv6": {
+        "input": 18445976330256232600559738159104,
+        "covered": 18445976330256232600559738159104,
+        "coverage_percent": 100.0,
+        "outside_source": 1187430376638165678814957093781504,
+        "not_covered": 0,
+        "role": "DIRECT",
+        "overlap_vs_v34_new": 0,
+        "covered_absent_v37": 0,
+        "admitted_v41_vs_v37": 0,
+        "overlay_only_in_this_layer": null
+      }
+    },
+    "Reviewed operators": {
+      "IPv4": {
+        "input": 33536,
+        "covered": 33535,
+        "coverage_percent": 99.99701812977099,
+        "outside_source": 53365505,
+        "not_covered": 1,
+        "role": "DIRECT",
+        "overlap_vs_v34_new": 3840,
+        "covered_absent_v37": 3674,
+        "admitted_v41_vs_v37": 3674,
+        "overlay_only_in_this_layer": 904
+      },
+      "IPv6": {
+        "input": 18446744073709551616,
+        "covered": 18446744073709551616,
+        "coverage_percent": 100.0,
+        "outside_source": 1205876352968403464671443122388992,
+        "not_covered": 0,
+        "role": "DIRECT",
+        "overlap_vs_v34_new": 18446744073709551616,
+        "covered_absent_v37": 18446744073709551616,
+        "admitted_v41_vs_v37": 18446744073709551616,
+        "overlay_only_in_this_layer": 18446744073709551616
+      }
+    },
+    "RIR ripencc RU": {
+      "IPv4": {
+        "input": 45259328,
+        "covered": 45220644,
+        "coverage_percent": 99.91452811672325,
+        "outside_source": 8178396,
+        "not_covered": 38684,
+        "role": "DIRECT",
+        "overlap_vs_v34_new": 295057,
+        "covered_absent_v37": 296727,
+        "admitted_v41_vs_v37": 296727,
+        "overlay_only_in_this_layer": null
+      },
+      "IPv6": {
+        "input": 854872272474432675461966877163520,
+        "covered": 854872272474432675461966877163520,
+        "coverage_percent": 100.0,
+        "outside_source": 351004080493989235953549954777088,
+        "not_covered": 0,
+        "role": "DIRECT",
+        "overlap_vs_v34_new": 11532730404012516821114946584576,
+        "covered_absent_v37": 11532726777235057977227422466048,
+        "admitted_v41_vs_v37": 11532726777235057977227422466048,
+        "overlay_only_in_this_layer": null
+      }
+    },
+    "RIR ripencc KZ": {
+      "IPv4": {
+        "input": 3384576,
+        "covered": 3381917,
+        "coverage_percent": 99.92143772218441,
+        "outside_source": 50017123,
+        "not_covered": 2659,
+        "role": "DIRECT",
+        "overlap_vs_v34_new": 3352241,
+        "covered_absent_v37": 21710,
+        "admitted_v41_vs_v37": 21710,
+        "overlay_only_in_this_layer": null
+      },
+      "IPv6": {
+        "input": 44130093774000153727379028574208,
+        "covered": 44130093774000153727379028574208,
+        "coverage_percent": 100.0,
+        "outside_source": 1161746259194421757688137803366400,
+        "not_covered": 0,
+        "role": "DIRECT",
+        "overlap_vs_v34_new": 43179334063145781868857646907392,
+        "covered_absent_v37": 950746412651909353526750347264,
+        "admitted_v41_vs_v37": 950746412651909353526750347264,
+        "overlay_only_in_this_layer": null
+      }
+    },
+    "RIR ripencc BY": {
+      "IPv4": {
+        "input": 1794048,
+        "covered": 1793021,
+        "coverage_percent": 99.94275515482306,
+        "outside_source": 51606019,
+        "not_covered": 1027,
+        "role": "DIRECT",
+        "overlap_vs_v34_new": 397,
+        "covered_absent_v37": 378,
+        "admitted_v41_vs_v37": 378,
+        "overlay_only_in_this_layer": null
+      },
+      "IPv6": {
+        "input": 12597285093322947365148536340480,
+        "covered": 12597285093322947365148536340480,
+        "coverage_percent": 100.0,
+        "outside_source": 1193279067875098964050368295600128,
+        "not_covered": 0,
+        "role": "DIRECT",
+        "overlap_vs_v34_new": 12597282675471308135890186928128,
+        "covered_absent_v37": 0,
+        "admitted_v41_vs_v37": 0,
+        "overlay_only_in_this_layer": null
+      }
+    },
+    "HXEHEX .1": {
+      "IPv4": {
+        "input": 141664,
+        "covered": 18965,
+        "coverage_percent": 13.387310819968375,
+        "outside_source": 53380075,
+        "not_covered": 122699,
+        "role": "diagnostic",
+        "overlap_vs_v34_new": 1602,
+        "covered_absent_v37": 269,
+        "admitted_v41_vs_v37": 0,
+        "overlay_only_in_this_layer": null
+      },
+      "IPv6": {
+        "input": 0,
+        "covered": 0,
+        "coverage_percent": null,
+        "outside_source": 1205876352968421911415516831940608,
+        "not_covered": 0,
+        "role": "diagnostic",
+        "overlap_vs_v34_new": 0,
+        "covered_absent_v37": 0,
+        "admitted_v41_vs_v37": 0,
+        "overlay_only_in_this_layer": null
+      }
+    },
+    "HXEHEX CIDR": {
+      "IPv4": {
+        "input": 36265984,
+        "covered": 4854951,
+        "coverage_percent": 13.387065410937147,
+        "outside_source": 48544089,
+        "not_covered": 31411033,
+        "role": "diagnostic",
+        "overlap_vs_v34_new": 409946,
+        "covered_absent_v37": 69538,
+        "admitted_v41_vs_v37": 0,
+        "overlay_only_in_this_layer": null
+      },
+      "IPv6": {
+        "input": 0,
+        "covered": 0,
+        "coverage_percent": null,
+        "outside_source": 1205876352968421911415516831940608,
+        "not_covered": 0,
+        "role": "diagnostic",
+        "overlap_vs_v34_new": 0,
+        "covered_absent_v37": 0,
+        "admitted_v41_vs_v37": 0,
+        "overlay_only_in_this_layer": null
+      }
+    },
+    "Kirill WHITELIST": {
+      "IPv4": {
+        "input": 57887,
+        "covered": 57887,
+        "coverage_percent": 100.0,
+        "outside_source": 53341153,
+        "not_covered": 0,
+        "role": "diagnostic",
+        "overlap_vs_v34_new": 0,
+        "covered_absent_v37": 52,
+        "admitted_v41_vs_v37": 0,
+        "overlay_only_in_this_layer": null
+      },
+      "IPv6": {
+        "input": 0,
+        "covered": 0,
+        "coverage_percent": null,
+        "outside_source": 1205876352968421911415516831940608,
+        "not_covered": 0,
+        "role": "diagnostic",
+        "overlap_vs_v34_new": 0,
+        "covered_absent_v37": 0,
+        "admitted_v41_vs_v37": 0,
+        "overlay_only_in_this_layer": null
+      }
+    },
+    "Grimbird candidates": {
+      "IPv4": {
+        "input": 0,
+        "covered": 0,
+        "coverage_percent": null,
+        "outside_source": 53399040,
+        "not_covered": 0,
+        "role": "diagnostic",
+        "overlap_vs_v34_new": 0,
+        "covered_absent_v37": 0,
+        "admitted_v41_vs_v37": 0,
+        "overlay_only_in_this_layer": null
+      },
+      "IPv6": {
+        "input": 0,
+        "covered": 0,
+        "coverage_percent": null,
+        "outside_source": 1205876352968421911415516831940608,
+        "not_covered": 0,
+        "role": "diagnostic",
+        "overlap_vs_v34_new": 0,
+        "covered_absent_v37": 0,
+        "admitted_v41_vs_v37": 0,
+        "overlay_only_in_this_layer": null
+      }
+    },
+    "Digne candidates": {
+      "IPv4": {
+        "input": 45732542,
+        "covered": 45732083,
+        "coverage_percent": 99.99899633831856,
+        "outside_source": 7666957,
+        "not_covered": 459,
+        "role": "diagnostic",
+        "overlap_vs_v34_new": 0,
+        "covered_absent_v37": 8580,
+        "admitted_v41_vs_v37": 0,
+        "overlay_only_in_this_layer": null
+      },
+      "IPv6": {
+        "input": 876217847907882949421221900451840,
+        "covered": 876217847907882949421221900451840,
+        "coverage_percent": 100.0,
+        "outside_source": 329658505060538961994294931488768,
+        "not_covered": 0,
+        "role": "diagnostic",
+        "overlap_vs_v34_new": 0,
+        "covered_absent_v37": 0,
+        "admitted_v41_vs_v37": 0,
+        "overlay_only_in_this_layer": null
+      }
+    },
+    "Davoyan candidates": {
+      "IPv4": {
+        "input": 199424,
+        "covered": 199424,
+        "coverage_percent": 100.0,
+        "outside_source": 53199616,
+        "not_covered": 0,
+        "role": "diagnostic",
+        "overlap_vs_v34_new": 0,
+        "covered_absent_v37": 82,
+        "admitted_v41_vs_v37": 0,
+        "overlay_only_in_this_layer": null
+      },
+      "IPv6": {
+        "input": 0,
+        "covered": 0,
+        "coverage_percent": null,
+        "outside_source": 1205876352968421911415516831940608,
+        "not_covered": 0,
+        "role": "diagnostic",
+        "overlap_vs_v34_new": 0,
+        "covered_absent_v37": 0,
+        "admitted_v41_vs_v37": 0,
+        "overlay_only_in_this_layer": null
+      }
+    },
+    "ipverse global BGP": {
+      "IPv4": {
+        "input": 3135516160,
+        "covered": 50939738,
+        "coverage_percent": 1.6246045435785603,
+        "outside_source": 2459302,
+        "not_covered": 3084576422,
+        "role": "diagnostic",
+        "overlap_vs_v34_new": 3637336,
+        "covered_absent_v37": 654493,
+        "admitted_v41_vs_v37": 0,
+        "overlay_only_in_this_layer": null
+      },
+      "IPv6": {
+        "input": 19383912117466505793496250396442624,
+        "covered": 381133560741490532921527393845248,
+        "coverage_percent": 1.966236528683277,
+        "outside_source": 824742792226931378493989438095360,
+        "not_covered": 19002778556725015260574723002597376,
+        "role": "diagnostic",
+        "overlap_vs_v34_new": 39849821711492323836318615339008,
+        "covered_absent_v37": 11394272049630269877025589166080,
+        "admitted_v41_vs_v37": 0,
+        "overlay_only_in_this_layer": null
+      }
+    },
+    "Official Telegram": {
+      "IPv4": {
+        "input": 11008,
+        "covered": 11008,
+        "coverage_percent": 100.0,
+        "outside_source": 564815,
+        "not_covered": 0,
+        "role": "BLOCK/REVIEW intersection",
+        "DIRECT_overlap": 0
+      },
+      "IPv6": {
+        "input": 79232998217542796110242775040,
+        "covered": 79232998217542796110242775040,
+        "coverage_percent": 100.0,
+        "outside_source": 0,
+        "not_covered": 0,
+        "role": "BLOCK/REVIEW intersection",
+        "DIRECT_overlap": 0
+      }
+    },
+    "Hard block union": {
+      "IPv4": {
+        "input": 387210,
+        "covered": 387210,
+        "coverage_percent": 100.0,
+        "outside_source": 188613,
+        "not_covered": 0,
+        "role": "BLOCK/REVIEW intersection",
+        "DIRECT_overlap": 0
+      },
+      "IPv6": {
+        "input": 79232998217542796110242775040,
+        "covered": 79232998217542796110242775040,
+        "coverage_percent": 100.0,
+        "outside_source": 0,
+        "not_covered": 0,
+        "role": "BLOCK/REVIEW intersection",
+        "DIRECT_overlap": 0
+      }
+    },
+    "Resolver / legacy advisory": {
+      "IPv4": {
+        "input": 586600,
+        "covered": 575823,
+        "coverage_percent": 98.16280259120354,
+        "outside_source": 0,
+        "not_covered": 10777,
+        "role": "BLOCK/REVIEW intersection",
+        "DIRECT_overlap": 10752
+      },
+      "IPv6": {
+        "input": 79232998217542796110242775040,
+        "covered": 79232998217542796110242775040,
+        "coverage_percent": 100.0,
+        "outside_source": 0,
+        "not_covered": 0,
+        "role": "BLOCK/REVIEW intersection",
+        "DIRECT_overlap": 0
+      }
+    },
+    "Effective block union": {
+      "IPv4": {
+        "input": 575823,
+        "covered": 575823,
+        "coverage_percent": 100.0,
+        "outside_source": 0,
+        "not_covered": 0,
+        "role": "BLOCK/REVIEW intersection",
+        "DIRECT_overlap": 0
+      },
+      "IPv6": {
+        "input": 79232998217542796110242775040,
+        "covered": 79232998217542796110242775040,
+        "coverage_percent": 100.0,
+        "outside_source": 0,
+        "not_covered": 0,
+        "role": "BLOCK/REVIEW intersection",
+        "DIRECT_overlap": 0
+      }
+    },
+    "Reviewed regional exclusions": {
+      "IPv4": {
+        "input": 41728,
+        "covered": 41728,
+        "coverage_percent": 100.0,
+        "outside_source": 0,
+        "not_covered": 0,
+        "role": "Admission exclusion (outside DIRECT)",
+        "DIRECT_overlap": 0
+      },
+      "IPv6": {
+        "input": 0,
+        "covered": 0,
+        "coverage_percent": null,
+        "outside_source": 0,
+        "not_covered": 0,
+        "role": "Admission exclusion (outside DIRECT)",
+        "DIRECT_overlap": 0
+      }
+    },
+    "Antifilter ip.lst": {
+      "IPv4": {
+        "input": 50727,
+        "covered": 44595,
+        "coverage_percent": 87.91176296646756,
+        "outside_source": 531228,
+        "not_covered": 6132,
+        "role": "BLOCK/REVIEW intersection",
+        "DIRECT_overlap": 6126
+      },
+      "IPv6": {
+        "input": 0,
+        "covered": 0,
+        "coverage_percent": null,
+        "outside_source": 79232998217542796110242775040,
+        "not_covered": 0,
+        "role": "BLOCK/REVIEW intersection",
+        "DIRECT_overlap": 0
+      }
+    },
+    "Antifilter ipresolve.lst": {
+      "IPv4": {
+        "input": 180905,
+        "covered": 175915,
+        "coverage_percent": 97.24164616787817,
+        "outside_source": 399908,
+        "not_covered": 4990,
+        "role": "BLOCK/REVIEW intersection",
+        "DIRECT_overlap": 4969
+      },
+      "IPv6": {
+        "input": 0,
+        "covered": 0,
+        "coverage_percent": null,
+        "outside_source": 79232998217542796110242775040,
+        "not_covered": 0,
+        "role": "BLOCK/REVIEW intersection",
+        "DIRECT_overlap": 0
+      }
+    },
+    "Antifilter subnet.lst": {
+      "IPv4": {
+        "input": 633504,
+        "covered": 371367,
+        "coverage_percent": 58.621097893620245,
+        "outside_source": 204456,
+        "not_covered": 262137,
+        "role": "BLOCK/REVIEW intersection",
+        "DIRECT_overlap": 0
+      },
+      "IPv6": {
+        "input": 0,
+        "covered": 0,
+        "coverage_percent": null,
+        "outside_source": 79232998217542796110242775040,
+        "not_covered": 0,
+        "role": "BLOCK/REVIEW intersection",
+        "DIRECT_overlap": 0
+      }
+    },
+    "Antifilter ipsum.lst": {
+      "IPv4": {
+        "input": 4835584,
+        "covered": 72929,
+        "coverage_percent": 1.5081735732436867,
+        "outside_source": 502894,
+        "not_covered": 4762655,
+        "role": "BLOCK/REVIEW intersection",
+        "DIRECT_overlap": 679176
+      },
+      "IPv6": {
+        "input": 0,
+        "covered": 0,
+        "coverage_percent": null,
+        "outside_source": 79232998217542796110242775040,
+        "not_covered": 0,
+        "role": "BLOCK/REVIEW intersection",
+        "DIRECT_overlap": 0
+      }
+    },
+    "Antifilter Community": {
+      "IPv4": {
+        "input": 893755,
+        "covered": 258051,
+        "coverage_percent": 28.87267763536987,
+        "outside_source": 317772,
+        "not_covered": 635704,
+        "role": "BLOCK/REVIEW intersection",
+        "DIRECT_overlap": 519
+      },
+      "IPv6": {
+        "input": 0,
+        "covered": 0,
+        "coverage_percent": null,
+        "outside_source": 79232998217542796110242775040,
+        "not_covered": 0,
+        "role": "BLOCK/REVIEW intersection",
+        "DIRECT_overlap": 0
+      }
+    },
+    "Re-filter ipsum.lst": {
+      "IPv4": {
+        "input": 4640862,
+        "covered": 301690,
+        "coverage_percent": 6.500731976085477,
+        "outside_source": 274133,
+        "not_covered": 4339172,
+        "role": "BLOCK/REVIEW intersection",
+        "DIRECT_overlap": 7558
+      },
+      "IPv6": {
+        "input": 0,
+        "covered": 0,
+        "coverage_percent": null,
+        "outside_source": 79232998217542796110242775040,
+        "not_covered": 0,
+        "role": "BLOCK/REVIEW intersection",
+        "DIRECT_overlap": 0
+      }
+    },
+    "v38 approved baseline": {
+      "IPv4": {
+        "input": 579521,
+        "covered": 569006,
+        "coverage_percent": 98.18557049701391,
+        "outside_source": 6817,
+        "not_covered": 10515,
+        "role": "BLOCK/REVIEW intersection",
+        "DIRECT_overlap": 10490
+      },
+      "IPv6": {
+        "input": 79232998217542796110242775040,
+        "covered": 79232998217542796110242775040,
+        "coverage_percent": 100.0,
+        "outside_source": 0,
+        "not_covered": 0,
+        "role": "BLOCK/REVIEW intersection",
+        "DIRECT_overlap": 0
+      }
+    },
+    "v38 historical ip.lst": {
+      "IPv4": {
+        "input": 50830,
+        "covered": 44617,
+        "coverage_percent": 87.77690340350186,
+        "outside_source": 531206,
+        "not_covered": 6213,
+        "role": "BLOCK/REVIEW intersection",
+        "DIRECT_overlap": 6206
+      },
+      "IPv6": {
+        "input": 0,
+        "covered": 0,
+        "coverage_percent": null,
+        "outside_source": 79232998217542796110242775040,
+        "not_covered": 0,
+        "role": "BLOCK/REVIEW intersection",
+        "DIRECT_overlap": 0
+      }
+    },
+    "v38 historical ipresolve.lst": {
+      "IPv4": {
+        "input": 180905,
+        "covered": 175915,
+        "coverage_percent": 97.24164616787817,
+        "outside_source": 399908,
+        "not_covered": 4990,
+        "role": "BLOCK/REVIEW intersection",
+        "DIRECT_overlap": 4969
+      },
+      "IPv6": {
+        "input": 0,
+        "covered": 0,
+        "coverage_percent": null,
+        "outside_source": 79232998217542796110242775040,
+        "not_covered": 0,
+        "role": "BLOCK/REVIEW intersection",
+        "DIRECT_overlap": 0
+      }
+    },
+    "v38 historical subnet.lst": {
+      "IPv4": {
+        "input": 633504,
+        "covered": 371367,
+        "coverage_percent": 58.621097893620245,
+        "outside_source": 204456,
+        "not_covered": 262137,
+        "role": "BLOCK/REVIEW intersection",
+        "DIRECT_overlap": 0
+      },
+      "IPv6": {
+        "input": 0,
+        "covered": 0,
+        "coverage_percent": null,
+        "outside_source": 79232998217542796110242775040,
+        "not_covered": 0,
+        "role": "BLOCK/REVIEW intersection",
+        "DIRECT_overlap": 0
+      }
+    },
+    "Loyalsoldier PRIVATE": {
+      "IPv4": {
+        "input": 592709376,
+        "covered": 592708862,
+        "coverage_percent": 99.99991327959016,
+        "outside_source": 0,
+        "not_covered": 514,
+        "role": "PRIVATE"
+      },
+      "IPv6": {
+        "input": 4325548445762957528983845422661369858,
+        "covered": 4325545831231176706621475573066629119,
+        "coverage_percent": 99.99993955606293,
+        "outside_source": 18446744078004518912,
+        "not_covered": 2614531780822362369849594740739,
+        "role": "PRIVATE"
+      }
+    },
+    "IANA non-global": {
+      "IPv4": {
+        "input": 324272906,
+        "covered": 324272906,
+        "coverage_percent": 100.0,
+        "outside_source": 268435956,
+        "not_covered": 0,
+        "role": "PRIVATE"
+      },
+      "IPv6": {
+        "input": 2996320449976832748707167806915870722,
+        "covered": 2996317835446260852164412590790803455,
+        "coverage_percent": 99.99991274195749,
+        "outside_source": 1329227995784915872903807060280344576,
+        "not_covered": 2614530571896542755216125067267,
+        "role": "PRIVATE"
+      }
+    },
+    "IANA globally reachable exceptions": {
+      "IPv4": {
+        "input": 770,
+        "covered": 770,
+        "coverage_percent": 100.0,
+        "outside_source": 0,
+        "not_covered": 0,
+        "role": "PRIVATE exception (outside PRIVATE)"
+      },
+      "IPv6": {
+        "input": 2614531780822362369849594740739,
+        "covered": 2614531780822362369849594740739,
+        "coverage_percent": 100.0,
+        "outside_source": 0,
+        "not_covered": 0,
+        "role": "PRIVATE exception (outside PRIVATE)"
+      }
+    }
+  }
+}

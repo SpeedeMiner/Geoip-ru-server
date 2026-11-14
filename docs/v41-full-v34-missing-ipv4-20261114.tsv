@@ -1,0 +1,496 @@
+reason	prefix	addresses	source_labels	evidence_urls	checked_on
+regional_reviewed	31.204.32.0/20	4096	RU->AU AS213541	https://rdap.db.ripe.net/ip/31.204.32.0/20 https://ws-sdn.net/feed/wssdnfeed.csv https://stat.ripe.net/data/routing-status/data.json?resource=31.204.32.0%2F20	2026-11-13
+hard	2.57.184.180/32	1	reviewed-rkn-ip-record:1	https://registry.ctreserve.de/api/v3/snapshot/	2026-11-13
+hard	5.45.82.43/32	1	reviewed-rkn-ip-record:1	https://registry.ctreserve.de/api/v3/snapshot/	2026-11-13
+hard	5.188.211.92/32	1	reviewed-rkn-ip-record:1	https://registry.ctreserve.de/api/v3/snapshot/	2026-11-13
+hard	37.19.5.139/32	1	reviewed-rkn-ip-record:1	https://registry.ctreserve.de/api/v3/snapshot/	2026-11-13
+hard	37.19.5.155/32	1	reviewed-rkn-ip-record:1	https://registry.ctreserve.de/api/v3/snapshot/	2026-11-13
+hard	45.87.154.4/32	1	reviewed-rkn-ip-record:1	https://registry.ctreserve.de/api/v3/snapshot/	2026-11-13
+hard	45.144.220.204/32	1	reviewed-rkn-ip-record:1	https://registry.ctreserve.de/api/v3/snapshot/	2026-11-13
+hard	62.76.75.106/32	1	reviewed-rkn-ip-record:1	https://registry.ctreserve.de/api/v3/snapshot/	2026-11-13
+hard	62.76.75.110/32	1	reviewed-rkn-ip-record:1	https://registry.ctreserve.de/api/v3/snapshot/	2026-11-13
+hard	77.91.229.218/32	1	reviewed-rkn-ip-record:1	https://registry.ctreserve.de/api/v3/snapshot/	2026-11-13
+hard	83.222.104.86/32	1	reviewed-rkn-ip-record:1	https://registry.ctreserve.de/api/v3/snapshot/	2026-11-13
+hard	83.222.114.94/32	1	reviewed-rkn-ip-record:1	https://registry.ctreserve.de/api/v3/snapshot/	2026-11-13
+hard	91.212.150.48/32	1	reviewed-rkn-ip-record:1	https://registry.ctreserve.de/api/v3/snapshot/	2026-11-13
+hard	92.53.124.171/32	1	reviewed-rkn-ip-record:1	https://registry.ctreserve.de/api/v3/snapshot/	2026-11-13
+hard	92.241.171.245/32	1	reviewed-rkn-ip-record:1	https://registry.ctreserve.de/api/v3/snapshot/	2026-11-13
+hard	94.228.203.1/32	1	reviewed-rkn-ip-record:1	https://registry.ctreserve.de/api/v3/snapshot/	2026-11-13
+hard	104.28.21.177/32	1	reviewed-rkn-ip-record:1	https://registry.ctreserve.de/api/v3/snapshot/	2026-11-13
+hard	185.12.95.225/32	1	reviewed-rkn-ip-record:1	https://registry.ctreserve.de/api/v3/snapshot/	2026-11-13
+hard	185.174.138.82/32	1	reviewed-rkn-ip-record:1	https://registry.ctreserve.de/api/v3/snapshot/	2026-11-13
+hard	185.178.208.129/32	1	reviewed-rkn-ip-record:1	https://registry.ctreserve.de/api/v3/snapshot/	2026-11-13
+hard	185.178.208.149/32	1	reviewed-rkn-ip-record:1	https://registry.ctreserve.de/api/v3/snapshot/	2026-11-13
+hard	185.195.144.172/32	1	reviewed-rkn-ip-record:1	https://registry.ctreserve.de/api/v3/snapshot/	2026-11-13
+hard	185.195.144.180/32	1	reviewed-rkn-ip-record:1	https://registry.ctreserve.de/api/v3/snapshot/	2026-11-13
+hard	185.248.102.124/32	1	reviewed-rkn-ip-record:1	https://registry.ctreserve.de/api/v3/snapshot/	2026-11-13
+hard	185.248.102.245/32	1	reviewed-rkn-ip-record:1	https://registry.ctreserve.de/api/v3/snapshot/	2026-11-13
+hard	193.106.93.196/32	1	reviewed-rkn-ip-record:1	https://registry.ctreserve.de/api/v3/snapshot/	2026-11-13
+hard	193.106.94.36/32	1	reviewed-rkn-ip-record:1	https://registry.ctreserve.de/api/v3/snapshot/	2026-11-13
+hard	195.208.220.76/32	1	reviewed-rkn-ip-record:1	https://registry.ctreserve.de/api/v3/snapshot/	2026-11-13
+hard	195.208.220.89/32	1	reviewed-rkn-ip-record:1	https://registry.ctreserve.de/api/v3/snapshot/	2026-11-13
+hard	195.208.220.90/31	2	reviewed-rkn-ip-record:2	https://registry.ctreserve.de/api/v3/snapshot/	2026-11-13
+dns_or_legacy	2.16.154.42/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	2.16.154.56/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	2.16.154.75/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	2.16.154.89/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	2.19.204.217/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	2.19.204.248/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	2.20.254.91/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	2.20.254.98/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	2.20.254.106/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	2.20.254.128/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	2.20.254.169/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	2.20.254.170/31	2	antifilter-ipresolve.lst:2; v38-historical-ipresolve.lst-dns:2		
+dns_or_legacy	2.20.254.178/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	2.20.254.186/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	2.20.255.65/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	2.20.255.136/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	14.0.37.136/32	1	v38-historical-ip.lst-dns:1		
+dns_or_legacy	23.35.104.8/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	23.35.104.10/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	23.35.104.16/31	2	antifilter-ipresolve.lst:2; v38-historical-ipresolve.lst-dns:2		
+dns_or_legacy	23.35.104.18/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	23.35.104.33/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	23.35.104.34/31	2	antifilter-ipresolve.lst:2; v38-historical-ipresolve.lst-dns:2		
+dns_or_legacy	23.35.104.41/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	23.35.104.42/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	23.35.104.48/31	2	antifilter-ipresolve.lst:2; v38-historical-ipresolve.lst-dns:2		
+dns_or_legacy	23.35.104.56/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	23.35.104.58/31	2	antifilter-ipresolve.lst:2; v38-historical-ipresolve.lst-dns:2		
+dns_or_legacy	23.35.104.64/31	2	antifilter-ipresolve.lst:2; v38-historical-ipresolve.lst-dns:2		
+dns_or_legacy	23.35.104.67/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	23.35.104.72/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	23.35.104.74/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	23.35.104.82/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	23.35.104.88/31	2	antifilter-ipresolve.lst:2; v38-historical-ipresolve.lst-dns:2		
+dns_or_legacy	23.35.104.91/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	23.35.104.105/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	23.35.104.241/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	23.35.105.24/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	23.35.105.56/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	23.196.236.66/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	23.196.236.80/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	23.196.236.97/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	23.196.236.121/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	31.57.152.6/32	1	antifilter-ip.lst:1; v38-historical-ip.lst-dns:1		
+dns_or_legacy	31.57.152.45/32	1	antifilter-ip.lst:1; v38-historical-ip.lst-dns:1		
+dns_or_legacy	31.57.152.58/32	1	antifilter-ip.lst:1; v38-historical-ip.lst-dns:1		
+dns_or_legacy	31.57.152.109/32	1	antifilter-ip.lst:1; v38-historical-ip.lst-dns:1		
+dns_or_legacy	31.57.152.112/32	1	antifilter-ip.lst:1; v38-historical-ip.lst-dns:1		
+dns_or_legacy	31.57.152.165/32	1	antifilter-ip.lst:1; v38-historical-ip.lst-dns:1		
+dns_or_legacy	31.57.152.167/32	1	antifilter-ip.lst:1; v38-historical-ip.lst-dns:1		
+dns_or_legacy	37.19.202.24/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	38.60.223.103/32	1	antifilter-ip.lst:1		
+dns_or_legacy	43.109.31.161/32	1	antifilter-ip.lst:1		
+dns_or_legacy	43.109.31.235/32	1	antifilter-ip.lst:1		
+dns_or_legacy	43.109.31.236/30	4	antifilter-ip.lst:4		
+dns_or_legacy	43.109.31.240/31	2	antifilter-ip.lst:2		
+dns_or_legacy	43.109.31.242/32	1	antifilter-ip.lst:1		
+dns_or_legacy	45.9.118.96/32	1	antifilter-ip.lst:1; v38-historical-ip.lst-dns:1		
+dns_or_legacy	45.86.46.51/32	1	antifilter-ip.lst:1; v38-historical-ip.lst-dns:1		
+dns_or_legacy	45.86.46.64/32	1	antifilter-ip.lst:1; v38-historical-ip.lst-dns:1		
+dns_or_legacy	45.95.201.33/32	1	antifilter-ip.lst:1; v38-historical-ip.lst-dns:1		
+dns_or_legacy	45.95.201.43/32	1	antifilter-ip.lst:1; v38-historical-ip.lst-dns:1		
+dns_or_legacy	45.135.132.251/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	45.136.199.5/32	1	antifilter-ip.lst:1; v38-historical-ip.lst-dns:1		
+dns_or_legacy	45.136.199.14/32	1	antifilter-ip.lst:1; v38-historical-ip.lst-dns:1		
+dns_or_legacy	45.136.199.25/32	1	antifilter-ip.lst:1; v38-historical-ip.lst-dns:1		
+dns_or_legacy	45.136.199.44/32	1	v38-historical-ip.lst-dns:1		
+dns_or_legacy	45.136.199.57/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1; antifilter-ip.lst:1; v38-historical-ip.lst-dns:1		
+dns_or_legacy	45.136.199.104/32	1	antifilter-ip.lst:1; v38-historical-ip.lst-dns:1		
+dns_or_legacy	45.136.199.140/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	45.136.199.166/32	1	antifilter-ip.lst:1; v38-historical-ip.lst-dns:1		
+dns_or_legacy	45.136.199.185/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1; antifilter-ip.lst:1; v38-historical-ip.lst-dns:1		
+dns_or_legacy	45.136.199.191/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	45.136.199.199/32	1	v38-historical-ip.lst-dns:1		
+dns_or_legacy	45.136.199.212/32	1	antifilter-ip.lst:1; v38-historical-ip.lst-dns:1		
+dns_or_legacy	45.136.199.215/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	45.140.19.23/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	45.140.19.126/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	45.140.19.161/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	45.140.19.206/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	45.140.19.220/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	45.140.19.249/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	45.153.231.115/32	1	antifilter-ip.lst:1; v38-historical-ip.lst-dns:1		
+dns_or_legacy	45.195.222.236/32	1	antifilter-ip.lst:1; v38-historical-ip.lst-dns:1		
+dns_or_legacy	62.3.58.89/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	62.3.58.109/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	62.3.58.174/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	62.3.58.201/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	62.3.58.219/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	62.3.58.229/32	1	antifilter-ip.lst:1; v38-historical-ip.lst-dns:1		
+dns_or_legacy	64.15.71.11/32	1	antifilter-ip.lst:1; v38-historical-ip.lst-dns:1		
+dns_or_legacy	77.73.67.52/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	77.73.67.212/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	77.73.68.65/32	1	antifilter-ip.lst:1; v38-historical-ip.lst-dns:1		
+dns_or_legacy	77.73.68.95/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	77.73.69.27/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	77.73.69.159/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	77.73.70.47/32	1	antifilter-ip.lst:1; v38-historical-ip.lst-dns:1		
+dns_or_legacy	77.73.70.210/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	77.110.104.131/32	1	antifilter-ip.lst:1; v38-historical-ip.lst-dns:1		
+dns_or_legacy	77.110.105.2/32	1	antifilter-ip.lst:1; v38-historical-ip.lst-dns:1		
+dns_or_legacy	77.110.105.77/32	1	antifilter-ip.lst:1; v38-historical-ip.lst-dns:1		
+dns_or_legacy	77.110.105.243/32	1	antifilter-ip.lst:1; v38-historical-ip.lst-dns:1		
+dns_or_legacy	80.92.206.92/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	80.92.206.101/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	80.92.206.147/32	1	antifilter-ip.lst:1; v38-historical-ip.lst-dns:1		
+dns_or_legacy	80.92.206.151/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	80.92.206.174/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	80.92.206.206/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	80.92.206.216/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	80.92.206.227/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	83.141.92.67/32	1	antifilter-ip.lst:1; v38-historical-ip.lst-dns:1		
+dns_or_legacy	83.243.64.229/32	1	antifilter-ip.lst:1; v38-historical-ip.lst-dns:1		
+dns_or_legacy	88.221.132.105/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	88.221.132.114/31	2	antifilter-ipresolve.lst:2; v38-historical-ipresolve.lst-dns:2		
+dns_or_legacy	88.221.132.129/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	88.221.132.166/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	88.221.132.207/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	88.221.133.70/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	91.134.166.113/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	91.134.166.209/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	91.200.217.86/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	91.209.70.79/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	91.209.70.161/32	1	antifilter-ip.lst:1		
+dns_or_legacy	91.231.255.55/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	91.236.79.161/32	1	antifilter-ip.lst:1; v38-historical-ip.lst-dns:1		
+dns_or_legacy	92.119.158.14/32	1	antifilter-ip.lst:1; v38-historical-ip.lst-dns:1		
+dns_or_legacy	92.119.158.152/32	1	antifilter-ip.lst:1; v38-historical-ip.lst-dns:1		
+dns_or_legacy	92.119.158.168/32	1	antifilter-ip.lst:1; v38-historical-ip.lst-dns:1		
+dns_or_legacy	92.119.158.172/32	1	antifilter-ip.lst:1; v38-historical-ip.lst-dns:1		
+dns_or_legacy	92.119.158.183/32	1	antifilter-ip.lst:1; v38-historical-ip.lst-dns:1		
+dns_or_legacy	92.119.158.186/32	1	antifilter-ip.lst:1; v38-historical-ip.lst-dns:1		
+dns_or_legacy	92.119.159.31/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	93.189.63.146/31	2	antifilter-ipresolve.lst:2; v38-historical-ipresolve.lst-dns:2		
+dns_or_legacy	93.189.63.148/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	94.127.66.202/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	94.142.141.190/32	1	antifilter-ip.lst:1; v38-historical-ip.lst-dns:1		
+dns_or_legacy	94.242.50.12/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	94.242.50.30/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1; antifilter-ip.lst:1; v38-historical-ip.lst-dns:1		
+dns_or_legacy	94.242.50.137/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	94.242.50.227/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1; antifilter-ip.lst:1; v38-historical-ip.lst-dns:1		
+dns_or_legacy	94.242.51.9/32	1	antifilter-ip.lst:1; v38-historical-ip.lst-dns:1		
+dns_or_legacy	94.242.52.61/32	1	antifilter-ip.lst:1; v38-historical-ip.lst-dns:1		
+dns_or_legacy	94.242.52.129/32	1	antifilter-ip.lst:1; v38-historical-ip.lst-dns:1		
+dns_or_legacy	94.242.53.121/32	1	antifilter-ip.lst:1; v38-historical-ip.lst-dns:1		
+dns_or_legacy	94.242.60.7/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	103.82.103.159/32	1	antifilter-ip.lst:1		
+dns_or_legacy	104.28.12.172/31	2	antifilter-ipresolve.lst:2; v38-historical-ipresolve.lst-dns:2		
+dns_or_legacy	104.28.12.176/31	2	antifilter-ipresolve.lst:2; v38-historical-ipresolve.lst-dns:2		
+dns_or_legacy	104.28.12.179/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	104.28.12.180/31	2	antifilter-ipresolve.lst:2; v38-historical-ipresolve.lst-dns:2		
+dns_or_legacy	104.28.12.183/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	104.28.12.190/31	2	antifilter-ipresolve.lst:2; v38-historical-ipresolve.lst-dns:2		
+dns_or_legacy	104.28.21.152/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	104.28.21.154/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	104.28.21.156/31	2	antifilter-ipresolve.lst:2; v38-historical-ipresolve.lst-dns:2		
+dns_or_legacy	104.28.21.158/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	104.28.21.171/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	104.28.21.172/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	104.28.21.174/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	104.28.21.176/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	104.28.21.178/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	104.28.24.96/30	4	antifilter-ipresolve.lst:4; v38-historical-ipresolve.lst-dns:4		
+dns_or_legacy	104.28.24.101/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	104.28.24.210/31	2	antifilter-ipresolve.lst:2; v38-historical-ipresolve.lst-dns:2		
+dns_or_legacy	104.28.24.213/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	104.28.24.215/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	104.28.26.229/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	104.28.26.230/31	2	antifilter-ipresolve.lst:2; v38-historical-ipresolve.lst-dns:2		
+dns_or_legacy	104.28.26.233/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	104.28.26.235/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	104.28.31.38/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	104.28.31.41/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	104.28.31.43/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	104.28.31.46/31	2	antifilter-ipresolve.lst:2; v38-historical-ipresolve.lst-dns:2		
+dns_or_legacy	104.28.31.48/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	104.28.31.52/31	2	antifilter-ipresolve.lst:2; v38-historical-ipresolve.lst-dns:2		
+dns_or_legacy	104.28.31.54/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	104.28.31.57/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	104.28.31.59/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	104.28.31.60/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	104.166.151.153/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	104.166.186.116/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	104.166.191.18/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	104.166.191.183/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	104.166.191.184/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	104.166.191.186/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	104.166.191.189/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	104.166.191.190/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	130.94.90.167/32	1	antifilter-ip.lst:1; v38-historical-ip.lst-dns:1		
+dns_or_legacy	138.226.234.25/32	1	antifilter-ip.lst:1; v38-historical-ip.lst-dns:1		
+dns_or_legacy	138.226.234.201/32	1	antifilter-ip.lst:1; v38-historical-ip.lst-dns:1		
+dns_or_legacy	144.31.129.167/32	1	v38-historical-ip.lst-dns:1		
+dns_or_legacy	144.31.131.171/32	1	v38-historical-ip.lst-dns:1		
+dns_or_legacy	144.31.131.178/32	1	antifilter-ip.lst:1; v38-historical-ip.lst-dns:1		
+dns_or_legacy	144.31.131.188/32	1	antifilter-ip.lst:1; v38-historical-ip.lst-dns:1		
+dns_or_legacy	144.31.131.191/32	1	antifilter-ip.lst:1		
+dns_or_legacy	144.124.219.224/32	1	v38-historical-ip.lst-dns:1		
+dns_or_legacy	144.124.223.1/32	1	antifilter-ip.lst:1; v38-historical-ip.lst-dns:1		
+dns_or_legacy	144.124.223.2/31	2	antifilter-ip.lst:2; v38-historical-ip.lst-dns:1		
+dns_or_legacy	151.243.132.253/32	1	antifilter-ip.lst:1; v38-historical-ip.lst-dns:1		
+dns_or_legacy	151.249.94.27/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	151.249.94.30/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	152.32.227.101/32	1	antifilter-ip.lst:1; v38-historical-ip.lst-dns:1		
+dns_or_legacy	156.227.199.10/32	1	v38-historical-ip.lst-dns:1		
+dns_or_legacy	163.171.142.159/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	163.171.149.248/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	163.171.149.252/31	2	antifilter-ipresolve.lst:2; v38-historical-ipresolve.lst-dns:2		
+dns_or_legacy	163.171.237.123/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	163.181.1.207/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	163.181.1.210/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	164.138.99.254/32	1	antifilter-ip.lst:1; v38-historical-ip.lst-dns:1		
+dns_or_legacy	176.126.103.71/32	1	antifilter-ip.lst:1; v38-historical-ip.lst-dns:1		
+dns_or_legacy	178.170.189.96/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	178.170.248.77/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1; antifilter-ip.lst:1; v38-historical-ip.lst-dns:1		
+dns_or_legacy	178.253.54.4/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	178.253.54.6/31	2	antifilter-ipresolve.lst:2; v38-historical-ipresolve.lst-dns:2		
+dns_or_legacy	178.253.54.15/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	178.253.54.32/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	178.253.54.39/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	178.253.54.40/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	178.253.54.43/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	178.253.54.44/31	2	antifilter-ipresolve.lst:2; v38-historical-ipresolve.lst-dns:2		
+dns_or_legacy	178.253.54.54/31	2	antifilter-ipresolve.lst:2; v38-historical-ipresolve.lst-dns:2		
+dns_or_legacy	178.253.54.62/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	178.253.54.104/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	178.253.54.113/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	178.253.54.117/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	178.253.54.126/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	178.253.54.133/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	178.253.54.134/31	2	antifilter-ipresolve.lst:2; v38-historical-ipresolve.lst-dns:2		
+dns_or_legacy	178.253.54.143/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	178.253.54.144/31	2	antifilter-ipresolve.lst:2; v38-historical-ipresolve.lst-dns:2		
+dns_or_legacy	178.253.54.148/30	4	antifilter-ipresolve.lst:4; v38-historical-ipresolve.lst-dns:4		
+dns_or_legacy	178.253.54.153/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	178.253.54.154/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	178.253.54.156/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	178.253.54.158/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	178.253.54.160/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	178.253.54.187/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	178.253.54.188/30	4	antifilter-ipresolve.lst:4; v38-historical-ipresolve.lst-dns:4		
+dns_or_legacy	178.253.54.192/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	178.253.54.254/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	185.36.100.61/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	185.36.100.108/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	185.42.15.176/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	185.110.132.96/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	185.125.216.241/32	1	antifilter-ip.lst:1; v38-historical-ip.lst-dns:1		
+dns_or_legacy	185.131.64.122/31	2	antifilter-ipresolve.lst:2; v38-historical-ipresolve.lst-dns:2; antifilter-ip.lst:2		
+dns_or_legacy	185.131.64.125/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	185.141.216.150/32	1	antifilter-ip.lst:1; v38-historical-ip.lst-dns:1		
+dns_or_legacy	185.159.82.133/32	1	antifilter-ip.lst:1; v38-historical-ip.lst-dns:1		
+dns_or_legacy	185.180.199.54/31	2	antifilter-ipresolve.lst:2; v38-historical-ipresolve.lst-dns:2		
+dns_or_legacy	185.180.199.209/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	185.180.230.130/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	185.180.230.157/32	1	antifilter-ip.lst:1; v38-historical-ip.lst-dns:1		
+dns_or_legacy	185.181.164.216/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	185.181.164.224/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	185.222.161.243/32	1	antifilter-ip.lst:1; v38-historical-ip.lst-dns:1		
+dns_or_legacy	185.234.247.70/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	185.234.247.87/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	185.234.247.182/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	185.234.247.219/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	186.2.161.175/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	186.2.166.23/32	1	antifilter-ip.lst:1; v38-historical-ip.lst-dns:1		
+dns_or_legacy	186.2.166.41/32	1	antifilter-ip.lst:1; v38-historical-ip.lst-dns:1		
+dns_or_legacy	186.2.166.61/32	1	antifilter-ip.lst:1; v38-historical-ip.lst-dns:1		
+dns_or_legacy	186.2.166.155/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	186.2.166.156/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	186.2.166.166/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	186.2.171.4/32	1	antifilter-ip.lst:1; v38-historical-ip.lst-dns:1		
+dns_or_legacy	186.2.171.29/32	1	antifilter-ip.lst:1; v38-historical-ip.lst-dns:1		
+dns_or_legacy	186.2.171.37/32	1	antifilter-ip.lst:1; v38-historical-ip.lst-dns:1		
+dns_or_legacy	186.2.171.43/32	1	antifilter-ip.lst:1; v38-historical-ip.lst-dns:1		
+dns_or_legacy	186.2.171.235/32	1	antifilter-ip.lst:1; v38-historical-ip.lst-dns:1		
+dns_or_legacy	186.2.175.15/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	186.2.175.61/32	1	antifilter-ip.lst:1; v38-historical-ip.lst-dns:1		
+dns_or_legacy	186.2.175.125/32	1	antifilter-ip.lst:1; v38-historical-ip.lst-dns:1		
+dns_or_legacy	192.162.101.128/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	193.0.201.76/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1; antifilter-ip.lst:1		
+dns_or_legacy	193.9.49.1/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	193.9.49.2/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	193.9.49.4/30	4	antifilter-ipresolve.lst:4; v38-historical-ipresolve.lst-dns:4; antifilter-ip.lst:1; v38-historical-ip.lst-dns:1		
+dns_or_legacy	193.9.49.8/31	2	antifilter-ipresolve.lst:2; v38-historical-ipresolve.lst-dns:2		
+dns_or_legacy	193.9.49.10/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	193.9.49.13/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	193.9.49.14/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	193.9.49.17/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	193.9.49.19/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	193.9.49.20/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	193.9.49.22/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	193.9.49.24/30	4	antifilter-ipresolve.lst:3; v38-historical-ipresolve.lst-dns:3; antifilter-ip.lst:1; v38-historical-ip.lst-dns:1		
+dns_or_legacy	193.9.49.28/31	2	antifilter-ipresolve.lst:2; v38-historical-ipresolve.lst-dns:2		
+dns_or_legacy	193.9.49.31/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	193.9.49.37/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	193.9.49.38/31	2	antifilter-ipresolve.lst:2; v38-historical-ipresolve.lst-dns:2		
+dns_or_legacy	193.9.49.41/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	193.9.49.43/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	193.9.49.44/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	193.9.49.46/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	193.9.49.48/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	193.9.49.51/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	193.9.49.53/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	193.9.49.55/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	193.9.49.58/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	193.9.49.62/31	2	antifilter-ipresolve.lst:2; v38-historical-ipresolve.lst-dns:2		
+dns_or_legacy	193.9.49.66/31	2	antifilter-ipresolve.lst:2; v38-historical-ipresolve.lst-dns:2		
+dns_or_legacy	193.9.49.69/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	193.9.49.72/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	193.9.49.74/31	2	antifilter-ipresolve.lst:2; v38-historical-ipresolve.lst-dns:2		
+dns_or_legacy	193.9.49.79/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	193.9.49.83/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	193.9.49.85/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	193.9.49.88/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	193.9.49.90/31	2	antifilter-ipresolve.lst:2; v38-historical-ipresolve.lst-dns:2		
+dns_or_legacy	193.9.49.92/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	193.9.49.95/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	193.9.49.96/30	4	antifilter-ipresolve.lst:4; v38-historical-ipresolve.lst-dns:4		
+dns_or_legacy	193.9.49.100/31	2	antifilter-ipresolve.lst:2; v38-historical-ipresolve.lst-dns:2		
+dns_or_legacy	193.9.49.102/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	193.9.49.105/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	193.9.49.108/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	193.9.49.111/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	193.9.49.112/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	193.9.49.114/31	2	antifilter-ipresolve.lst:2; v38-historical-ipresolve.lst-dns:2		
+dns_or_legacy	193.9.49.117/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	193.9.49.120/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	193.9.49.124/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	193.9.49.126/31	2	antifilter-ipresolve.lst:2; v38-historical-ipresolve.lst-dns:2		
+dns_or_legacy	193.9.49.128/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	193.9.49.131/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	193.9.49.133/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	193.9.49.136/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	193.9.49.138/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	193.9.49.140/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	193.9.49.142/31	2	antifilter-ipresolve.lst:2; v38-historical-ipresolve.lst-dns:2		
+dns_or_legacy	193.9.49.147/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	193.9.49.149/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	193.9.49.150/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	193.9.49.154/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	193.9.49.156/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	193.9.49.158/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	193.9.49.160/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	193.9.49.162/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	193.9.49.165/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	193.9.49.168/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	193.9.49.172/31	2	antifilter-ipresolve.lst:2; v38-historical-ipresolve.lst-dns:2		
+dns_or_legacy	193.9.49.174/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	193.9.49.176/31	2	antifilter-ipresolve.lst:2; v38-historical-ipresolve.lst-dns:2		
+dns_or_legacy	193.9.49.179/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	193.9.49.180/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	193.9.49.182/31	2	antifilter-ipresolve.lst:2; v38-historical-ipresolve.lst-dns:2		
+dns_or_legacy	193.9.49.184/29	8	antifilter-ipresolve.lst:8; v38-historical-ipresolve.lst-dns:8		
+dns_or_legacy	193.9.49.192/28	16	antifilter-ipresolve.lst:16; v38-historical-ipresolve.lst-dns:16		
+dns_or_legacy	193.9.49.208/29	8	antifilter-ipresolve.lst:8; v38-historical-ipresolve.lst-dns:8		
+dns_or_legacy	193.9.49.217/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	193.9.49.218/31	2	antifilter-ipresolve.lst:2; v38-historical-ipresolve.lst-dns:2		
+dns_or_legacy	193.9.49.220/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	193.9.49.224/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	193.9.49.226/31	2	antifilter-ipresolve.lst:2; v38-historical-ipresolve.lst-dns:2		
+dns_or_legacy	193.9.49.228/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	193.9.49.231/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	193.9.49.233/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	193.9.49.237/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	193.9.49.238/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	193.9.49.240/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	193.9.49.242/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	193.9.49.244/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	193.9.49.249/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	193.9.49.251/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	193.9.49.252/31	2	antifilter-ipresolve.lst:2; v38-historical-ipresolve.lst-dns:2		
+dns_or_legacy	193.9.49.254/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	193.32.188.139/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	193.33.171.105/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	193.33.171.126/32	1	antifilter-ip.lst:1; v38-historical-ip.lst-dns:1		
+dns_or_legacy	193.42.108.29/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1; antifilter-ip.lst:1; v38-historical-ip.lst-dns:1		
+dns_or_legacy	193.42.108.46/31	2	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1; antifilter-ip.lst:2; v38-historical-ip.lst-dns:2		
+dns_or_legacy	193.42.108.71/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1; antifilter-ip.lst:1; v38-historical-ip.lst-dns:1		
+dns_or_legacy	193.42.108.82/32	1	antifilter-ip.lst:1; v38-historical-ip.lst-dns:1		
+dns_or_legacy	193.42.109.72/32	1	antifilter-ip.lst:1; v38-historical-ip.lst-dns:1		
+dns_or_legacy	193.118.61.54/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	193.124.191.67/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1; antifilter-ip.lst:1; v38-historical-ip.lst-dns:1		
+dns_or_legacy	194.67.193.1/32	1	antifilter-ip.lst:1; v38-historical-ip.lst-dns:1		
+dns_or_legacy	194.67.193.2/31	2	antifilter-ip.lst:2; v38-historical-ip.lst-dns:2		
+dns_or_legacy	194.67.193.36/32	1	antifilter-ip.lst:1; v38-historical-ip.lst-dns:1		
+dns_or_legacy	194.67.193.38/32	1	antifilter-ip.lst:1; v38-historical-ip.lst-dns:1		
+dns_or_legacy	194.67.193.40/31	2	antifilter-ip.lst:2; v38-historical-ip.lst-dns:2		
+dns_or_legacy	194.67.193.46/32	1	antifilter-ip.lst:1; v38-historical-ip.lst-dns:1		
+dns_or_legacy	194.67.193.48/31	2	antifilter-ip.lst:2; v38-historical-ip.lst-dns:2		
+dns_or_legacy	194.67.193.51/32	1	antifilter-ip.lst:1; v38-historical-ip.lst-dns:1		
+dns_or_legacy	194.67.193.52/31	2	antifilter-ip.lst:2; v38-historical-ip.lst-dns:2		
+dns_or_legacy	194.67.193.69/32	1	antifilter-ip.lst:1; v38-historical-ip.lst-dns:1		
+dns_or_legacy	194.67.193.70/31	2	antifilter-ip.lst:2; v38-historical-ip.lst-dns:2		
+dns_or_legacy	194.67.193.72/29	8	antifilter-ip.lst:8; v38-historical-ip.lst-dns:8		
+dns_or_legacy	194.67.193.80/29	8	antifilter-ip.lst:8; v38-historical-ip.lst-dns:8		
+dns_or_legacy	194.67.193.88/32	1	v38-historical-ip.lst-dns:1		
+dns_or_legacy	194.67.193.131/32	1	v38-historical-ip.lst-dns:1		
+dns_or_legacy	194.67.193.135/32	1	antifilter-ip.lst:1; v38-historical-ip.lst-dns:1		
+dns_or_legacy	194.67.193.138/32	1	antifilter-ip.lst:1; v38-historical-ip.lst-dns:1		
+dns_or_legacy	194.67.193.140/32	1	antifilter-ip.lst:1; v38-historical-ip.lst-dns:1		
+dns_or_legacy	194.67.193.163/32	1	antifilter-ip.lst:1; v38-historical-ip.lst-dns:1		
+dns_or_legacy	194.67.193.167/32	1	antifilter-ip.lst:1; v38-historical-ip.lst-dns:1		
+dns_or_legacy	194.67.193.168/32	1	antifilter-ip.lst:1; v38-historical-ip.lst-dns:1		
+dns_or_legacy	194.67.193.199/32	1	antifilter-ip.lst:1; v38-historical-ip.lst-dns:1		
+dns_or_legacy	194.67.193.200/32	1	antifilter-ip.lst:1; v38-historical-ip.lst-dns:1		
+dns_or_legacy	194.67.193.214/32	1	antifilter-ip.lst:1; v38-historical-ip.lst-dns:1		
+dns_or_legacy	194.67.193.247/32	1	antifilter-ip.lst:1; v38-historical-ip.lst-dns:1		
+dns_or_legacy	194.67.193.251/32	1	antifilter-ip.lst:1; v38-historical-ip.lst-dns:1		
+dns_or_legacy	194.67.196.31/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	194.67.196.63/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	194.67.196.103/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	194.67.201.123/32	1	antifilter-ip.lst:1; v38-historical-ip.lst-dns:1		
+dns_or_legacy	194.67.207.162/32	1	antifilter-ip.lst:1; v38-historical-ip.lst-dns:1		
+dns_or_legacy	194.67.208.30/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	194.67.214.196/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	194.87.148.158/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	194.147.78.118/32	1	antifilter-ip.lst:1; v38-historical-ip.lst-dns:1		
+dns_or_legacy	195.211.222.2/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1; antifilter-ip.lst:1; v38-historical-ip.lst-dns:1		
+dns_or_legacy	195.211.222.7/32	1	antifilter-ip.lst:1; v38-historical-ip.lst-dns:1		
+dns_or_legacy	212.23.202.5/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	212.23.202.19/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	212.23.202.20/31	2	antifilter-ipresolve.lst:2; v38-historical-ipresolve.lst-dns:2		
+dns_or_legacy	212.23.202.25/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	212.23.202.26/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	213.152.43.251/32	1	antifilter-ip.lst:1; v38-historical-ip.lst-dns:1		
+dns_or_legacy	213.183.41.144/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	213.183.45.22/32	1	antifilter-ip.lst:1; v38-historical-ip.lst-dns:1		
+dns_or_legacy	213.183.48.14/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+dns_or_legacy	213.183.48.64/32	1	antifilter-ip.lst:1; v38-historical-ip.lst-dns:1		
+dns_or_legacy	213.183.48.170/32	1	antifilter-ipresolve.lst:1; v38-historical-ipresolve.lst-dns:1		
+hxehex_only_removed	185.97.184.1/32	1	AS30972[Gazprombank]	https://bgp.he.net/AS30972 https://bgp.he.net/AS35022	
+hxehex_only_removed	185.97.186.1/32	1	AS30972[Gazprombank]	https://bgp.he.net/AS30972 https://bgp.he.net/AS35022	
+hxehex_only_removed	185.97.187.1/32	1	AS30972[Gazprombank]	https://bgp.he.net/AS30972 https://bgp.he.net/AS35022	
+v34_only_asn_AS30972	141.138.88.0/21	2048	AS30972[Gazprombank]	https://bgp.he.net/AS30972 https://bgp.he.net/AS35022	
+v34_only_asn_AS30972	185.97.184.0/32	1	AS30972[Gazprombank]	https://bgp.he.net/AS30972 https://bgp.he.net/AS35022	
+v34_only_asn_AS30972	185.97.184.2/31	2	AS30972[Gazprombank]	https://bgp.he.net/AS30972 https://bgp.he.net/AS35022	
+v34_only_asn_AS30972	185.97.184.4/30	4	AS30972[Gazprombank]	https://bgp.he.net/AS30972 https://bgp.he.net/AS35022	
+v34_only_asn_AS30972	185.97.184.8/29	8	AS30972[Gazprombank]	https://bgp.he.net/AS30972 https://bgp.he.net/AS35022	
+v34_only_asn_AS30972	185.97.184.16/28	16	AS30972[Gazprombank]	https://bgp.he.net/AS30972 https://bgp.he.net/AS35022	
+v34_only_asn_AS30972	185.97.184.32/27	32	AS30972[Gazprombank]	https://bgp.he.net/AS30972 https://bgp.he.net/AS35022	
+v34_only_asn_AS30972	185.97.184.64/26	64	AS30972[Gazprombank]	https://bgp.he.net/AS30972 https://bgp.he.net/AS35022	
+v34_only_asn_AS30972	185.97.184.128/25	128	AS30972[Gazprombank]	https://bgp.he.net/AS30972 https://bgp.he.net/AS35022	
+v34_only_asn_AS30972	185.97.185.0/24	256	AS30972[Gazprombank]	https://bgp.he.net/AS30972 https://bgp.he.net/AS35022	
+v34_only_asn_AS30972	185.97.186.0/32	1	AS30972[Gazprombank]	https://bgp.he.net/AS30972 https://bgp.he.net/AS35022	
+v34_only_asn_AS30972	185.97.186.2/31	2	AS30972[Gazprombank]	https://bgp.he.net/AS30972 https://bgp.he.net/AS35022	
+v34_only_asn_AS30972	185.97.186.4/30	4	AS30972[Gazprombank]	https://bgp.he.net/AS30972 https://bgp.he.net/AS35022	
+v34_only_asn_AS30972	185.97.186.8/29	8	AS30972[Gazprombank]	https://bgp.he.net/AS30972 https://bgp.he.net/AS35022	
+v34_only_asn_AS30972	185.97.186.16/28	16	AS30972[Gazprombank]	https://bgp.he.net/AS30972 https://bgp.he.net/AS35022	
+v34_only_asn_AS30972	185.97.186.32/27	32	AS30972[Gazprombank]	https://bgp.he.net/AS30972 https://bgp.he.net/AS35022	
+v34_only_asn_AS30972	185.97.186.64/26	64	AS30972[Gazprombank]	https://bgp.he.net/AS30972 https://bgp.he.net/AS35022	
+v34_only_asn_AS30972	185.97.186.128/25	128	AS30972[Gazprombank]	https://bgp.he.net/AS30972 https://bgp.he.net/AS35022	
+v34_only_asn_AS30972	185.97.187.0/32	1	AS30972[Gazprombank]	https://bgp.he.net/AS30972 https://bgp.he.net/AS35022	
+v34_only_asn_AS30972	185.97.187.2/31	2	AS30972[Gazprombank]	https://bgp.he.net/AS30972 https://bgp.he.net/AS35022	
+v34_only_asn_AS30972	185.97.187.4/30	4	AS30972[Gazprombank]	https://bgp.he.net/AS30972 https://bgp.he.net/AS35022	
+v34_only_asn_AS30972	185.97.187.8/29	8	AS30972[Gazprombank]	https://bgp.he.net/AS30972 https://bgp.he.net/AS35022	
+v34_only_asn_AS30972	185.97.187.16/28	16	AS30972[Gazprombank]	https://bgp.he.net/AS30972 https://bgp.he.net/AS35022	
+v34_only_asn_AS30972	185.97.187.32/27	32	AS30972[Gazprombank]	https://bgp.he.net/AS30972 https://bgp.he.net/AS35022	
+v34_only_asn_AS30972	185.97.187.64/26	64	AS30972[Gazprombank]	https://bgp.he.net/AS30972 https://bgp.he.net/AS35022	
+v34_only_asn_AS30972	185.97.187.128/25	128	AS30972[Gazprombank]	https://bgp.he.net/AS30972 https://bgp.he.net/AS35022	
+v34_only_asn_AS30972	193.22.143.0/24	256	AS30972[Gazprombank]	https://bgp.he.net/AS30972 https://bgp.he.net/AS35022	
+v34_only_asn_AS30972	193.242.217.0/24	256	AS30972[Gazprombank]	https://bgp.he.net/AS30972 https://bgp.he.net/AS35022	
+v34_only_asn_AS30972	195.88.194.0/23	512	AS30972[Gazprombank]	https://bgp.he.net/AS30972 https://bgp.he.net/AS35022	
+v34_only_asn_AS50952	95.161.252.0/24	256	AS50952[2GIS]	https://rpki-monitor.nist.gov/ROAs/20260801.12/Rpx4HQdm_Lv2L2oX4w-BgC8T1jE.roa https://whois.ipip.net/AS50952	
+v34_only_asn_AS50952	178.18.235.0/24	256	AS50952[2GIS]	https://rpki-monitor.nist.gov/ROAs/20260801.12/Rpx4HQdm_Lv2L2oX4w-BgC8T1jE.roa https://whois.ipip.net/AS50952	
