@@ -1,0 +1,63 @@
+{
+  "workflow_run": 43607261245,
+  "main": "e11fbcdb47480bc273e10a768a4ac2d1950d0c7f",
+  "release_ref": "213220f384d1350a641094c49c9491170051fa35",
+  "tag": "geoip-v41-snapshot-43607261245.1",
+  "dat_verified_equal": [
+    "pinned_git",
+    "versioned_release",
+    "rolling_release"
+  ],
+  "dat_sha256": "2735053560ebd598cbdcd71ccf858806d4b955a17e2eac512a7baf249d43653a",
+  "effective_block_mask_sha256": "da3949ad119013db9a8237d322c63411234c201079f8506af3e51dc6051b0b6a",
+  "retained_ipverse": {
+    "bytes": 16268982,
+    "sha256": "d34d00d59ec419fec991d860af290b557a47b8e2f9596688b9bd11b0e4103d02"
+  },
+  "registry_archive": {
+    "bundle_bytes": 4812329,
+    "bundle_sha256": "3110ca53dae3ad1945c16569bc166004b3b0eaaabb8804b6f63e518977e2aa7b",
+    "files": {
+      "delegated-afrinic-latest": {
+        "sha256": "21b55a80a32138e0c7e037cb7327109dfeee95d2debb3453cdb62f3745b809ab",
+        "size": 496308
+      },
+      "delegated-apnic-latest": {
+        "sha256": "e75f6589f995071cefee1db4e1507481ee36ba433d0c0a102230291e423cd242",
+        "size": 4357224
+      },
+      "delegated-arin-extended-latest": {
+        "sha256": "9c0416f313cea614f6ee326f5f140e4991bb284022424caa173c33067f86566e",
+        "size": 12918866
+      },
+      "delegated-lacnic-latest": {
+        "sha256": "dffcfc6b78649b6bce7aa93db0b0168c563a3da321510f5a86290041e9641b5b",
+        "size": 2325551
+      },
+      "delegated-ripencc-latest": {
+        "sha256": "371f55c784e03273a07f484c21f6601374632a014aec678b535c6cc0368ecb11",
+        "size": 8314601
+      },
+      "iana-ipv4-special-registry.csv": {
+        "sha256": "cbc4b7653c8bc640ba1e8e5d4ebbf11e7c7a1d867e7f1593aad001d3f8632aac",
+        "size": 2445
+      },
+      "iana-ipv6-special-registry.csv": {
+        "sha256": "bf56772aef97fbf9b4a27c98b8511f2bb1ba96da4b9ccc12ab203a2496faba66",
+        "size": 2300
+      }
+    },
+    "input_bytes": 28417295,
+    "provenance_sha256": "305896518bf243b74a9ee2d4e1d9a17b2aea0ba4c5d4fa38b95aea3efaccff22",
+    "schema": 1
+  },
+  "regenerated_and_compared_rir_outputs": {
+    "geoip_RU_registered_asns.txt": "fae1b8aa4b8064f5948f5e57ef5277d26a1209d62edaf7bf2423bc560bae25e5",
+    "geoip_RU_rir_registered_prefixes.txt": "cb52abbd865634b81af2a705f7fe418b5f2a4ee8a6214c3713974997b840496e",
+    "geoip_BY_KZ_registered_asns.txt": "0a9aff6e579a860b1f7ce94cfa5a8fb664330f8710817652e542c15cb6bf7e07",
+    "geoip_RU_BY_KZ_rir_registered_prefixes.tsv": "7d196717b138f817c6896ca6b25c26e7a0d92947af438c8115e56be3afba3e16"
+  },
+  "rolling_asset_metadata_matches": 59,
+  "snapshot_asset_metadata_matches": 6,
+  "production_bounds": {"candidate_sha256": "2735053560ebd598cbdcd71ccf858806d4b955a17e2eac512a7baf249d43653a", "delta": {"4": {"added": 0, "after": 53497424, "before": 53497424, "limit": 267487, "removed": 0}, "6": {"added": 0, "after": 1205876352968421911415516831940608, "before": 1205876352968421911415516831940608, "limit": 12058763529684219114155168319406, "removed": 0}}, "needs_review": false, "private_changed": false}
+}

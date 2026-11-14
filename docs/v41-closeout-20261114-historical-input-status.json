@@ -1,0 +1,9 @@
+{
+  "historical_release": "de20de628d85062c8161b3da99fc7b0c94622919",
+  "historical_exact_inputs_recovered": 35,
+  "historical_exact_inputs_missing": [
+    "delegated-arin-extended-latest"
+  ],
+  "new_release": "213220f384d1350a641094c49c9491170051fa35",
+  "new_release_exact_inputs_recovered": 36
+}

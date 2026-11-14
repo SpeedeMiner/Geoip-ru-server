@@ -1,0 +1,218 @@
+[
+  {
+    "name": "davoyan-geoip.dat",
+    "size": 681978,
+    "sha256": "2de5cced2e69a668fb75f1a96387e2cb939562897f98a822e76f44f68e848a7e",
+    "source": "https://raw.githubusercontent.com/Davoyan/xray-routing/a5f9f127f5c9aa7bfb0da9bf2acf199cba714aa2/release/geoip.dat"
+  },
+  {
+    "name": "digne-geoip.dat",
+    "size": 809687,
+    "sha256": "2afe2ccc7862c4557f42ee9e777c2f2985370e56b3f20839eafbdf02261158fa",
+    "source": "https://raw.githubusercontent.com/DigneZzZ/routing/0dd4a18e4400fe69955151acbcdc7388848f9250/v2ray/geoip.dat"
+  },
+  {
+    "name": "escapingworm-operator-cidr.txt",
+    "size": 1395,
+    "sha256": "cb36cdc22acd9d177a1402b074f5180f1a3286cd856fb6aba7afbf6333a795e4",
+    "source": "https://raw.githubusercontent.com/escapingworm/russia-whitelist/2bb6c0788f21986b7928d986ea2577c6ebc11b36/ru-whitelist-cidr.txt"
+  },
+  {
+    "name": "golukon-geoip.dat",
+    "size": 131218,
+    "sha256": "22c60f68b6bdf2c5a24a18a46a9797d9467961f9c47b16c7bf5b10fed70c8f08",
+    "source": "https://raw.githubusercontent.com/golukon/russia-only-geoip/48b948a48774dff736212d82bd369dec449be54c/geoip.dat"
+  },
+  {
+    "name": "grimbird-geoip.dat",
+    "size": 398808,
+    "sha256": "b0f063b499019ccafa95c692d803ab0ad47619a4a0aa0b0ab6bace7e9708fe1d",
+    "source": "https://raw.githubusercontent.com/GrimbirdUsers/ru-routing-dat/bea48cd34166485ef8d999e1981d8cf3ca297253/geoip.dat"
+  },
+  {
+    "name": "hxehex-cidrwhitelist.txt",
+    "size": 470393,
+    "sha256": "149d27a8e3502b95b9a378817854c87af6417c2a9bbf0b17eb8f7affef1f3868",
+    "source": "https://raw.githubusercontent.com/hxehex/russia-mobile-internet-whitelist/fad3653ebd4b212643774a4d10af3eb33838e4ff/cidrwhitelist.txt"
+  },
+  {
+    "name": "hxehex-ipwhitelist.txt",
+    "size": 1757478,
+    "sha256": "8a3814375701decd9787718fc3ae769187aa4714e2a1b8fa5d96f94ad2bd4da0",
+    "source": "https://raw.githubusercontent.com/hxehex/russia-mobile-internet-whitelist/fad3653ebd4b212643774a4d10af3eb33838e4ff/ipwhitelist.txt"
+  },
+  {
+    "name": "hydra-geoip.dat",
+    "size": 440492,
+    "sha256": "2ed3df4a369de869ce1b2def14ff1aef7135b7e056bb8faf1c9c45ac40cc2999",
+    "source": "https://github.com/hydraponique/roscomvpn-geoip/releases/download/202611121058/geoip.dat"
+  },
+  {
+    "name": "kirill-geoip.dat",
+    "size": 328405,
+    "sha256": "81c8b59e121fa38e00fe6efaa0f2919bc2de174deff54e53a5c4c05681c03059",
+    "source": "https://github.com/kirilllavrov/RU-domain-list-for-whitelist/releases/download/0.3.11/geoip.dat"
+  },
+  {
+    "name": "kyoresuas-ru-standard-ipv4.txt",
+    "size": 10305,
+    "sha256": "867de404e49974c1711ba199dfd82537927a6812fbe28d0db8f46bcbecb3cecc",
+    "source": "https://raw.githubusercontent.com/kyoresuas/ru-direct/0781793a159f9a53c5e68da2f46b0a64855f8cb6/ru-standard.ipv4.txt"
+  },
+  {
+    "name": "kyoresuas-ru-standard-ipv6.txt",
+    "size": 1401,
+    "sha256": "ccad517f54f8d33989fb9303f8c1489308d0b091e0b3e6cc7b6df81b8e0b8d23",
+    "source": "https://raw.githubusercontent.com/kyoresuas/ru-direct/0781793a159f9a53c5e68da2f46b0a64855f8cb6/ru-standard.ipv6.txt"
+  },
+  {
+    "name": "kyoresuas-services.json",
+    "size": 63100,
+    "sha256": "97a9ad1438bfc4f501664e57f7ee294d42c10954744fc5c9ed925b602061ba9d",
+    "source": "https://raw.githubusercontent.com/kyoresuas/ru-direct/0781793a159f9a53c5e68da2f46b0a64855f8cb6/services.json"
+  },
+  {
+    "name": "loyalsoldier-by.dat",
+    "size": 11629,
+    "sha256": "baac721e10f384222261b4fe9d8bed5572fb03300a5840ff015ce84b3705bd7e",
+    "source": "https://raw.githubusercontent.com/Loyalsoldier/geoip/ec6f8d0f6b5c6c6924d9230f2ed893f69585d38c/dat/by.dat"
+  },
+  {
+    "name": "loyalsoldier-private.dat",
+    "size": 436,
+    "sha256": "4acc277c0425871bf1171a06302a60fec1d7ced5db204bb5b4090a5b6e0efe99",
+    "source": "https://raw.githubusercontent.com/Loyalsoldier/geoip/ec6f8d0f6b5c6c6924d9230f2ed893f69585d38c/dat/private.dat"
+  },
+  {
+    "name": "loyalsoldier-ru.dat",
+    "size": 398794,
+    "sha256": "72745d626cfec819b36221825bb05c3a27e086a7f48871265411827cc86ff9cb",
+    "source": "https://raw.githubusercontent.com/Loyalsoldier/geoip/ec6f8d0f6b5c6c6924d9230f2ed893f69585d38c/dat/ru.dat"
+  },
+  {
+    "name": "v2fly-geoip.dat",
+    "size": 23876117,
+    "sha256": "eedb24b3b9fcba27e06b92c0428dab90d9496083091ae4cf39e11387fd99d0e2",
+    "source": "https://github.com/v2fly/geoip/releases/download/202611080027/geoip.dat"
+  },
+  {
+    "name": "v2fly-geoip.dat.sha256sum",
+    "size": 76,
+    "sha256": "22b576c674dd9f2535bc90eb9c334431b400e3101ccb525be3e085bcf56bb8aa",
+    "source": "https://github.com/v2fly/geoip/releases/download/202611080027/geoip.dat.sha256sum"
+  },
+  {
+    "name": "w1zardz-ru-ipv4.txt",
+    "size": 16217,
+    "sha256": "eb4e35274762494acbee235e75413046ddb9e83d838095ecd71e647648cd7e7c",
+    "source": "https://raw.githubusercontent.com/w1zardz/amnezia-vpn-russia-split-tunneling/6157cdfb55f1748c98cab121cde008b5f69d325d/dist/ru-direct-ipv4.txt"
+  },
+  {
+    "name": "delegated-afrinic-latest",
+    "size": 496308,
+    "sha256": "21b55a80a32138e0c7e037cb7327109dfeee95d2debb3453cdb62f3745b809ab",
+    "source": "https://ftp.afrinic.net/pub/stats/afrinic/delegated-afrinic-latest"
+  },
+  {
+    "name": "delegated-apnic-latest",
+    "size": 4357224,
+    "sha256": "e75f6589f995071cefee1db4e1507481ee36ba433d0c0a102230291e423cd242",
+    "source": "https://ftp.apnic.net/pub/stats/apnic/delegated-apnic-latest"
+  },
+  {
+    "name": "delegated-arin-extended-latest",
+    "size": 12918866,
+    "sha256": "9c0416f313cea614f6ee326f5f140e4991bb284022424caa173c33067f86566e",
+    "source": "https://ftp.arin.net/pub/stats/arin/delegated-arin-extended-latest"
+  },
+  {
+    "name": "delegated-lacnic-latest",
+    "size": 2325551,
+    "sha256": "dffcfc6b78649b6bce7aa93db0b0168c563a3da321510f5a86290041e9641b5b",
+    "source": "https://ftp.lacnic.net/pub/stats/lacnic/delegated-lacnic-latest"
+  },
+  {
+    "name": "delegated-ripencc-latest",
+    "size": 8314601,
+    "sha256": "371f55c784e03273a07f484c21f6601374632a014aec678b535c6cc0368ecb11",
+    "source": "https://ftp.ripe.net/pub/stats/ripencc/delegated-ripencc-latest"
+  },
+  {
+    "name": "iana-ipv4-special-registry.csv",
+    "size": 2445,
+    "sha256": "cbc4b7653c8bc640ba1e8e5d4ebbf11e7c7a1d867e7f1593aad001d3f8632aac",
+    "source": "https://www.iana.org/assignments/iana-ipv4-special-registry/iana-ipv4-special-registry-1.csv"
+  },
+  {
+    "name": "iana-ipv6-special-registry.csv",
+    "size": 2300,
+    "sha256": "bf56772aef97fbf9b4a27c98b8511f2bb1ba96da4b9ccc12ab203a2496faba66",
+    "source": "https://www.iana.org/assignments/iana-ipv6-special-registry/iana-ipv6-special-registry-1.csv"
+  },
+  {
+    "name": "as-ip-blocks.tar.gz",
+    "size": 16268982,
+    "sha256": "d34d00d59ec419fec991d860af290b557a47b8e2f9596688b9bd11b0e4103d02",
+    "source": "https://codeload.github.com/ipverse/as-ip-blocks/tar.gz/refs/heads/master"
+  },
+  {
+    "name": "antifilter-ip.lst",
+    "size": 715838,
+    "sha256": "80c4e9d0c82aee4071d67ddcb149e579340252a8df7885488976c68023063222",
+    "source": "https://antifilter.download/list/ip.lst"
+  },
+  {
+    "name": "antifilter-ipresolve.lst",
+    "size": 2622450,
+    "sha256": "8d8d11605a299da96006df6303a90b08b4ae25d35c1d1a199708cb83f84cdf44",
+    "source": "https://antifilter.download/list/ipresolve.lst"
+  },
+  {
+    "name": "geoip_RU_v38_approved_blocked_baseline.txt",
+    "size": 3290594,
+    "sha256": "df909b12b985b23080075821cedc5e2f73b7b1f89abcd9950293b400ce1e4a5d",
+    "source": "https://raw.githubusercontent.com/SpeedeMiner/Geoip-ru-server/3033248ea54cb298bafded25ddcd2805d5f0e7ac/geoip_RU_v38_blocked_ip_exclusions.txt"
+  },
+  {
+    "name": "geoip_RU_v38_pinned_antifilter-ip.lst",
+    "size": 716286,
+    "sha256": "c9c0656d0188f4afa740d71332b618d42b5606ab27e7561790f47b588781d1cb",
+    "source": "https://github.com/SpeedeMiner/Geoip-ru-server/releases/download/latest-geoip-client-v38/antifilter-ip.lst"
+  },
+  {
+    "name": "geoip_RU_v38_pinned_antifilter-ipresolve.lst",
+    "size": 2622450,
+    "sha256": "8d8d11605a299da96006df6303a90b08b4ae25d35c1d1a199708cb83f84cdf44",
+    "source": "https://github.com/SpeedeMiner/Geoip-ru-server/releases/download/latest-geoip-client-v38/antifilter-ipresolve.lst"
+  },
+  {
+    "name": "geoip_RU_v38_pinned_antifilter-subnet.lst",
+    "size": 1109,
+    "sha256": "2554552742bc0da516a321db66b36fa6cece28c4b3c64b66ff6d12320b33bdb6",
+    "source": "https://github.com/SpeedeMiner/Geoip-ru-server/releases/download/latest-geoip-client-v38/antifilter-subnet.lst"
+  },
+  {
+    "name": "antifilter-subnet.lst",
+    "size": 1109,
+    "sha256": "2554552742bc0da516a321db66b36fa6cece28c4b3c64b66ff6d12320b33bdb6",
+    "source": "https://antifilter.download/list/subnet.lst"
+  },
+  {
+    "name": "antifilter-ipsum.lst",
+    "size": 294584,
+    "sha256": "037c30f578aeb0fd427d634a8f5eb5469da25ce6fa46c9ca74afab532db968d7",
+    "source": "https://antifilter.download/list/ipsum.lst"
+  },
+  {
+    "name": "antifilter-community.lst",
+    "size": 15114,
+    "sha256": "390a72ccaf30f6b7a25b29709f0e6dd3b9a4079873195e2333239d3790c2490f",
+    "source": "https://community.antifilter.download/list/community.lst"
+  },
+  {
+    "name": "refilter-ipsum.lst",
+    "size": 473238,
+    "sha256": "daef14e23e2dad9988c55917c0f3aea0dbc308244cfa6f790d3daf371f3303f7",
+    "source": "https://raw.githubusercontent.com/1andrevich/Re-filter-lists/refs/heads/main/ipsum.lst"
+  }
+]
