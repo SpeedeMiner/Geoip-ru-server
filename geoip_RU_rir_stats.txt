@@ -1,4 +1,4 @@
-Generated UTC: 2026-11-14T14:54:37.766138+00:00
+Generated UTC: 2026-11-14T16:47:50.820388+00:00
 Unique RU-registered ASNs: 5772
 Unique BY-registered ASNs: 116
 Unique KZ-registered ASNs: 271
