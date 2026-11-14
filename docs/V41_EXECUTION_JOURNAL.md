@@ -556,3 +556,4 @@ See [v41 release hardening](V41_RELEASE_HARDENING.md). Routing-policy changes ar
 ### 2026-11-14 — Close out the remaining v41 release work
 
 - User requested completion of the remaining work. Starting state: production main `b98980c6`, release `de20de62`, PR #31 `169f6bcd`, PR #32 `9d063520`; both drafts had green head checks, no production publication in progress, and the combined local tree matched released routing bytes. Roll out #32 first to verify its real retained ipverse asset and then #31 independently. The separate registry-retention change must not alter routing policy. Do not touch PR #5, its branch, or the unrelated historical drafts.
+- Merged PR #32 at `f99cc9a9` after checking its exact head and green checks. [Production run 43606606267](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43606606267) is underway. Do not merge #31 until the live ipverse snapshot has been checked.
