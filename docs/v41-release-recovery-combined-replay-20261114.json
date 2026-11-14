@@ -1,0 +1,58 @@
+{
+  "input_candidate_sha256": "257aecb9a9b639273afcdec0b8f2b8f32b0e8c80e5b5ff91c17ffa7a7f0e30e7",
+  "scope": "frozen v37 base and candidate inputs; Python v41 replay",
+  "passed": [
+    "base",
+    "overlay",
+    "validate_overlay",
+    "release_gate",
+    "telegram",
+    "bounds",
+    "ipverse"
+  ],
+  "telegram_feed": "fresh download",
+  "byte_identical": {
+    "geoip_RU.dat": "2735053560ebd598cbdcd71ccf858806d4b955a17e2eac512a7baf249d43653a",
+    "geoip_RU_v41_blocked_ip_exclusions.txt": "da3949ad119013db9a8237d322c63411234c201079f8506af3e51dc6051b0b6a",
+    "geoip_RU_v41_prefix_provenance.tsv": "7212d5259da9ae68574e564393e59bc9b5a6d44c91482829764cab811c961336",
+    "geoip_RU_v41_blocked_provenance.tsv": "d7e1921d26c177d2d00604b16b325386b7bb0c8dfd2787750760d0b888baffac",
+    "geoip_RU_v41_source_metrics.tsv": "48d011bcf0649ac2cad98a4f07c8290168614cd0b7a35cd6b9779aaf6a6a7a4f",
+    "as-ip-blocks.tar.gz": "d34d00d59ec419fec991d860af290b557a47b8e2f9596688b9bd11b0e4103d02"
+  },
+  "logs_sha256": {
+    "base": "1b7c3fd80aa4c89ade0b837cde4dde3cc48046393954baf48630a78d47aefc2f",
+    "overlay": "9963b7affa69e9a9bf3d8ce0a4c91ea677559beb57f843c4750b2594526c4e79",
+    "validate_overlay": "c7555435e2653f6cbb9c42ba82070b94bb0f824031aa7d74be749ae2659d2020",
+    "release_gate": "4f1979b5a8bbdde9a66069f341f6537d8a20518c41f729b8a6b183ecb58df738",
+    "telegram": "5fa0c04012fa78f0dba8239cbbecedb3022571f55038f237fdbc746d91c4cc75",
+    "bounds": "63843fc1df170b2acd6e9e2390c5e3852e9bf338da024e8e5489e8efd21bb494",
+    "ipverse": "f11f16c308865a8045f8a822d21158a77534e215f190384ce457ef78cf417488"
+  },
+  "merge_tree": "79c00c6a9bb8581c22838ab3bbe1350b832cedc5",
+  "draft_heads": {
+    "pr31": "169f6bcd0617517e47a86543be84f2226b01048e",
+    "pr32": "9d063520be81cec04903012d252a3a6ca25141b3"
+  },
+  "production_ref": "de20de628d85062c8161b3da99fc7b0c94622919",
+  "independent_publication_bounds": {
+    "candidate_sha256": "2735053560ebd598cbdcd71ccf858806d4b955a17e2eac512a7baf249d43653a",
+    "delta": {
+      "4": {
+        "added": 0,
+        "after": 53497424,
+        "before": 53497424,
+        "limit": 267487,
+        "removed": 0
+      },
+      "6": {
+        "added": 0,
+        "after": 1.2058763529684219e+33,
+        "before": 1.2058763529684219e+33,
+        "limit": 1.205876352968422e+31,
+        "removed": 0
+      }
+    },
+    "needs_review": false,
+    "private_changed": false
+  }
+}
