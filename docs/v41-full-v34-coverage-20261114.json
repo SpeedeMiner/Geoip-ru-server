@@ -1,0 +1,261 @@
+{
+  "source_sha256": {
+    "v34": "778acd9da7b13b18c4942b626f09f809d3a23fd05d4d29bb404439a7eb0b5152",
+    "v41_full": "6d31a3dfe1e5dbb8c4782db00426544a3d5270004f4b0be38af1c346660f55cf"
+  },
+  "private_equal": true,
+  "families": {
+    "IPv4": {
+      "v34_addresses": 49530207,
+      "v41_full_addresses": 53374733,
+      "shared_addresses": 49494558,
+      "v34_only_addresses": 35649,
+      "v41_full_only_addresses": 3880175,
+      "v34_only_cidrs": 517,
+      "v41_full_only_cidrs": 2570,
+      "v34_coverage_percent": 99.92802573992877,
+      "v41_full_only_RIR_overlap": {
+        "BY": 397,
+        "KZ": 3352241,
+        "RU": 295057
+      },
+      "reasons": {
+        "reviewed-regional-exclusion": {
+          "addresses": 4096,
+          "cidrs": 1,
+          "source_overlap": {
+            "BY": 0,
+            "KZ": 0,
+            "RU": 4096,
+            "v34-selected-bgp": 0,
+            "v41-v37-base": 0,
+            "v41-selected-bgp": 0,
+            "hydra-v41": 4096,
+            "v41-effective-blocks": 0,
+            "v2fly-geoip.dat": 0,
+            "loyalsoldier-ru.dat": 0
+          }
+        },
+        "hard-IP-subnet": {
+          "addresses": 31,
+          "cidrs": 30,
+          "source_overlap": {
+            "BY": 0,
+            "KZ": 0,
+            "RU": 28,
+            "v34-selected-bgp": 23,
+            "v41-v37-base": 0,
+            "v41-selected-bgp": 23,
+            "hydra-v41": 0,
+            "v41-effective-blocks": 31,
+            "v2fly-geoip.dat": 27,
+            "loyalsoldier-ru.dat": 30
+          }
+        },
+        "DNS-or-unverified-legacy": {
+          "addresses": 538,
+          "cidrs": 426,
+          "source_overlap": {
+            "BY": 0,
+            "KZ": 0,
+            "RU": 0,
+            "v34-selected-bgp": 0,
+            "v41-v37-base": 0,
+            "v41-selected-bgp": 0,
+            "hydra-v41": 143,
+            "v41-effective-blocks": 538,
+            "v2fly-geoip.dat": 227,
+            "loyalsoldier-ru.dat": 421
+          }
+        },
+        "HXEHEX-only-admission-removed": {
+          "addresses": 3,
+          "cidrs": 3,
+          "source_overlap": {
+            "BY": 0,
+            "KZ": 0,
+            "RU": 0,
+            "v34-selected-bgp": 3,
+            "v41-v37-base": 0,
+            "v41-selected-bgp": 0,
+            "hydra-v41": 0,
+            "v41-effective-blocks": 0,
+            "v2fly-geoip.dat": 0,
+            "loyalsoldier-ru.dat": 0
+          }
+        },
+        "no-admitted-source": {
+          "addresses": 30981,
+          "cidrs": 85,
+          "source_overlap": {
+            "BY": 0,
+            "KZ": 0,
+            "RU": 0,
+            "v34-selected-bgp": 4605,
+            "v41-v37-base": 0,
+            "v41-selected-bgp": 0,
+            "hydra-v41": 0,
+            "v41-effective-blocks": 0,
+            "v2fly-geoip.dat": 0,
+            "loyalsoldier-ru.dat": 0
+          }
+        }
+      },
+      "v34_only_still_in_previous_full": 4,
+      "disjoint_reason_address_counts": {
+        "reviewed-regional-exclusion": 4096,
+        "hard-IP-subnet": 31,
+        "DNS-or-unverified-legacy": 538,
+        "HXEHEX-only-admission-removed": 3,
+        "Hydra-v34-only-snapshot": 26376,
+        "v34-ASN-not-selected-in-v41": 4605
+      },
+      "v34_ASN_not_selected_breakdown": {
+        "AS50952[2GIS]": 512,
+        "AS30972[Gazprombank]": 4093
+      }
+    },
+    "IPv6": {
+      "v34_addresses": 1124360594607827391342510310686720,
+      "v41_full_addresses": 1205876352968421911415516831940608,
+      "shared_addresses": 1123092933127266785409351035125760,
+      "v34_only_addresses": 1267661480560605933159275560960,
+      "v41_full_only_addresses": 82783419841155126006165796814848,
+      "v34_only_cidrs": 9,
+      "v41_full_only_cidrs": 1125,
+      "v34_coverage_percent": 99.88725489966119,
+      "v41_full_only_RIR_overlap": {
+        "BY": 12597282675471308135890186928128,
+        "KZ": 43179334063145781868857646907392,
+        "RU": 11532730404012516821114946584576
+      },
+      "reasons": {
+        "reviewed-regional-exclusion": {
+          "addresses": 0,
+          "cidrs": 0,
+          "source_overlap": {
+            "BY": 0,
+            "KZ": 0,
+            "RU": 0,
+            "v34-selected-bgp": 0,
+            "v41-v37-base": 0,
+            "v41-selected-bgp": 0,
+            "hydra-v41": 0,
+            "v41-effective-blocks": 0,
+            "v2fly-geoip.dat": 0,
+            "loyalsoldier-ru.dat": 0
+          }
+        },
+        "hard-IP-subnet": {
+          "addresses": 0,
+          "cidrs": 0,
+          "source_overlap": {
+            "BY": 0,
+            "KZ": 0,
+            "RU": 0,
+            "v34-selected-bgp": 0,
+            "v41-v37-base": 0,
+            "v41-selected-bgp": 0,
+            "hydra-v41": 0,
+            "v41-effective-blocks": 0,
+            "v2fly-geoip.dat": 0,
+            "loyalsoldier-ru.dat": 0
+          }
+        },
+        "DNS-or-unverified-legacy": {
+          "addresses": 0,
+          "cidrs": 0,
+          "source_overlap": {
+            "BY": 0,
+            "KZ": 0,
+            "RU": 0,
+            "v34-selected-bgp": 0,
+            "v41-v37-base": 0,
+            "v41-selected-bgp": 0,
+            "hydra-v41": 0,
+            "v41-effective-blocks": 0,
+            "v2fly-geoip.dat": 0,
+            "loyalsoldier-ru.dat": 0
+          }
+        },
+        "HXEHEX-only-admission-removed": {
+          "addresses": 0,
+          "cidrs": 0,
+          "source_overlap": {
+            "BY": 0,
+            "KZ": 0,
+            "RU": 0,
+            "v34-selected-bgp": 0,
+            "v41-v37-base": 0,
+            "v41-selected-bgp": 0,
+            "hydra-v41": 0,
+            "v41-effective-blocks": 0,
+            "v2fly-geoip.dat": 0,
+            "loyalsoldier-ru.dat": 0
+          }
+        },
+        "no-admitted-source": {
+          "addresses": 1267661480560605933159275560960,
+          "cidrs": 9,
+          "source_overlap": {
+            "BY": 0,
+            "KZ": 0,
+            "RU": 0,
+            "v34-selected-bgp": 1267661480560605933159275560960,
+            "v41-v37-base": 0,
+            "v41-selected-bgp": 0,
+            "hydra-v41": 0,
+            "v41-effective-blocks": 0,
+            "v2fly-geoip.dat": 0,
+            "loyalsoldier-ru.dat": 0
+          }
+        }
+      },
+      "v34_only_still_in_previous_full": 0,
+      "disjoint_reason_address_counts": {
+        "v34-ASN-not-selected-in-v41": 1267661480560605933159275560960
+      },
+      "v34_ASN_not_selected_breakdown": {
+        "AS30972[Gazprombank]": 1267650600228229401496703205376,
+        "AS50952[2GIS]": 2417851639229258349412352,
+        "AS200676[T-Bank]": 8462480737302404222943232
+      }
+    }
+  },
+  "hydra_comparison": {
+    "v34": {
+      "tag": "202611141017",
+      "sha256": "8ff1c909905e6fc7ec38e821c7c55ccd71660f9f796d21a9c5a0e1fb9184eecf",
+      "source_run": 43590389453,
+      "inference": "same dated latest release, byte size and exact after-PRIVATE counts match workflow logs and release report"
+    },
+    "v41": {
+      "tag": "202611121058",
+      "sha256": "2ed3df4a369de869ce1b2def14ff1aef7135b7e056bb8faf1c9c45ac40cc2999"
+    },
+    "counterfactual_update_snapshot_only": {
+      "IPv4": {
+        "full_addresses_added": 26376,
+        "full_addresses_removed": 2060,
+        "v34_gap_recovered": 26376,
+        "v34_coverage_lost": 0,
+        "v34_gap_remaining": 9273
+      },
+      "IPv6": {
+        "full_addresses_added": 0,
+        "full_addresses_removed": 0,
+        "v34_gap_recovered": 0,
+        "v34_coverage_lost": 0,
+        "v34_gap_remaining": 1267661480560605933159275560960
+      }
+    }
+  },
+  "v41_release_snapshot_inputs": "geoip-v41-snapshot-43607261245.1",
+  "v34_tag": "latest-geoip-client-v34",
+  "v41_only_binary_profile": {
+    "ru_cidrs": 32705,
+    "dat_bytes": 511377,
+    "ru_srs_bytes": 128073,
+    "ru_srs_sha256": "61add9f8b412332a4796dfb1330f95198b4fde8baa8fb961a85fc655bd3ce1b5"
+  }
+}
