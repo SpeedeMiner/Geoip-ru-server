@@ -1,0 +1,36 @@
+{
+  "method": "wait4 max RSS of sing-box 1.13.12 check on x86-64 Linux; not a runtime memory measurement",
+  "samples_kib": {
+    "full": [
+      45488,
+      45416,
+      46060,
+      45864,
+      45168,
+      45040,
+      45360,
+      45168,
+      46244
+    ],
+    "light": [
+      39148,
+      38824,
+      39468,
+      38440,
+      38764,
+      39460,
+      38448,
+      38956,
+      38832
+    ]
+  },
+  "median_kib": {
+    "full": 45416,
+    "light": 38832
+  },
+  "live_run": "unavailable: route netlink subscription denied by sandbox",
+  "srs_bytes": {
+    "full": 331512,
+    "light": 126777
+  }
+}
