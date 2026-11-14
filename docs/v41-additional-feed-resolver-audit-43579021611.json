@@ -1960,7 +1960,637 @@
         "url": "https://yandex.com/ips",
         "claim": "Yandex official currently published owned-and-used ranges omit all three TeleTech parents."
       }
-    ]
+    ],
+    "registry_refinement": {
+      "allocation_country_is_not_child_assignment_country": true,
+      "address_totals_by_most_specific_registry_country": {
+        "DE": 64,
+        "FI": 64,
+        "NL": 64,
+        "RS": 320,
+        "RS_PARENT_ONLY": 7236,
+        "RU": 184,
+        "SG": 256,
+        "US": 356
+      },
+      "parents": [
+        {
+          "parent": "100.43.64.0/19",
+          "all_more_url": "https://rest.db.ripe.net/search.json?source=RIPE&query-string=100.43.64.0%2F19&flags=all-more&type-filter=inetnum",
+          "registry_child_objects_returned": 89,
+          "address_totals_by_most_specific_registry_country": {
+            "RS_PARENT_ONLY": 6932,
+            "RU": 128,
+            "US": 356
+          },
+          "intersecting_children": [
+            {
+              "inetnum": "100.43.64.2 - 100.43.64.3",
+              "netname": "TELETECH-100-43-64-2",
+              "country": "RU",
+              "org": "ORG-TDB4-RIPE",
+              "status": "ASSIGNED PA",
+              "intersecting_addresses": 2,
+              "intersecting_cidrs": [
+                "100.43.64.2/31"
+              ]
+            },
+            {
+              "inetnum": "100.43.64.4 - 100.43.64.5",
+              "netname": "TELETECH-100-43-64-4",
+              "country": "RU",
+              "org": "ORG-TDB4-RIPE",
+              "status": "ASSIGNED PA",
+              "intersecting_addresses": 2,
+              "intersecting_cidrs": [
+                "100.43.64.4/31"
+              ]
+            },
+            {
+              "inetnum": "100.43.64.40 - 100.43.64.41",
+              "netname": "TELETECH-100-43-64-40",
+              "country": "RU",
+              "org": "ORG-TDB4-RIPE",
+              "status": "ASSIGNED PA",
+              "intersecting_addresses": 2,
+              "intersecting_cidrs": [
+                "100.43.64.40/31"
+              ]
+            },
+            {
+              "inetnum": "100.43.64.42 - 100.43.64.43",
+              "netname": "TELETECH-100-43-64-42",
+              "country": "RU",
+              "org": "ORG-TDB4-RIPE",
+              "status": "ASSIGNED PA",
+              "intersecting_addresses": 2,
+              "intersecting_cidrs": [
+                "100.43.64.42/31"
+              ]
+            },
+            {
+              "inetnum": "100.43.64.44 - 100.43.64.45",
+              "netname": "TELETECH-100-43-64-44",
+              "country": "RU",
+              "org": "ORG-TDB4-RIPE",
+              "status": "ASSIGNED PA",
+              "intersecting_addresses": 2,
+              "intersecting_cidrs": [
+                "100.43.64.44/31"
+              ]
+            },
+            {
+              "inetnum": "100.43.64.46 - 100.43.64.47",
+              "netname": "TELETECH-100-43-64-46",
+              "country": "RU",
+              "org": "ORG-TDB4-RIPE",
+              "status": "ASSIGNED PA",
+              "intersecting_addresses": 2,
+              "intersecting_cidrs": [
+                "100.43.64.46/31"
+              ]
+            },
+            {
+              "inetnum": "100.43.64.88 - 100.43.64.89",
+              "netname": "TELETECH-100-43-64-88",
+              "country": "RU",
+              "org": "ORG-TDB4-RIPE",
+              "status": "ASSIGNED PA",
+              "intersecting_addresses": 2,
+              "intersecting_cidrs": [
+                "100.43.64.88/31"
+              ]
+            },
+            {
+              "inetnum": "100.43.64.90 - 100.43.64.91",
+              "netname": "TELETECH-100-43-64-90",
+              "country": "RU",
+              "org": "ORG-TDB4-RIPE",
+              "status": "ASSIGNED PA",
+              "intersecting_addresses": 2,
+              "intersecting_cidrs": [
+                "100.43.64.90/31"
+              ]
+            },
+            {
+              "inetnum": "100.43.73.24 - 100.43.73.25",
+              "netname": "TELETECH-100-43-73-24",
+              "country": "RU",
+              "org": "ORG-TDB4-RIPE",
+              "status": "ASSIGNED PA",
+              "intersecting_addresses": 2,
+              "intersecting_cidrs": [
+                "100.43.73.24/31"
+              ]
+            },
+            {
+              "inetnum": "100.43.73.26 - 100.43.73.27",
+              "netname": "TELETECH-100-43-73-26",
+              "country": "RU",
+              "org": "ORG-TDB4-RIPE",
+              "status": "ASSIGNED PA",
+              "intersecting_addresses": 2,
+              "intersecting_cidrs": [
+                "100.43.73.26/31"
+              ]
+            },
+            {
+              "inetnum": "100.43.73.30 - 100.43.73.31",
+              "netname": "TELETECH-100-43-73-30",
+              "country": "RU",
+              "org": "ORG-TDB4-RIPE",
+              "status": "ASSIGNED PA",
+              "intersecting_addresses": 2,
+              "intersecting_cidrs": [
+                "100.43.73.30/31"
+              ]
+            },
+            {
+              "inetnum": "100.43.73.40 - 100.43.73.41",
+              "netname": "TELETECH-100-43-73-40",
+              "country": "RU",
+              "org": "ORG-TDB4-RIPE",
+              "status": "ASSIGNED PA",
+              "intersecting_addresses": 2,
+              "intersecting_cidrs": [
+                "100.43.73.40/31"
+              ]
+            },
+            {
+              "inetnum": "100.43.73.44 - 100.43.73.45",
+              "netname": "TELETECH-100-43-73-44",
+              "country": "RU",
+              "org": "ORG-TDB4-RIPE",
+              "status": "ASSIGNED PA",
+              "intersecting_addresses": 2,
+              "intersecting_cidrs": [
+                "100.43.73.44/31"
+              ]
+            },
+            {
+              "inetnum": "100.43.73.46 - 100.43.73.47",
+              "netname": "TELETECH-100-43-73-46",
+              "country": "RU",
+              "org": "ORG-TDB4-RIPE",
+              "status": "ASSIGNED PA",
+              "intersecting_addresses": 2,
+              "intersecting_cidrs": [
+                "100.43.73.46/31"
+              ]
+            },
+            {
+              "inetnum": "100.43.73.82 - 100.43.73.83",
+              "netname": "TELETECH-100-43-73-82",
+              "country": "RU",
+              "org": "ORG-TDB4-RIPE",
+              "status": "ASSIGNED PA",
+              "intersecting_addresses": 2,
+              "intersecting_cidrs": [
+                "100.43.73.82/31"
+              ]
+            },
+            {
+              "inetnum": "100.43.73.84 - 100.43.73.85",
+              "netname": "TELETECH-100-43-73-84",
+              "country": "RU",
+              "org": "ORG-TDB4-RIPE",
+              "status": "ASSIGNED PA",
+              "intersecting_addresses": 2,
+              "intersecting_cidrs": [
+                "100.43.73.84/31"
+              ]
+            },
+            {
+              "inetnum": "100.43.92.140 - 100.43.92.141",
+              "netname": "TELETECH-100-43-92-140",
+              "country": "US",
+              "org": "ORG-TDB4-RIPE",
+              "status": "ASSIGNED PA",
+              "intersecting_addresses": 2,
+              "intersecting_cidrs": [
+                "100.43.92.140/31"
+              ]
+            },
+            {
+              "inetnum": "100.43.92.142 - 100.43.92.143",
+              "netname": "TELETECH-100-43-92-142",
+              "country": "US",
+              "org": "ORG-TDB4-RIPE",
+              "status": "ASSIGNED PA",
+              "intersecting_addresses": 2,
+              "intersecting_cidrs": [
+                "100.43.92.142/31"
+              ]
+            },
+            {
+              "inetnum": "100.43.64.8 - 100.43.64.15",
+              "netname": "TELETECH-100-43-64-8",
+              "country": "RU",
+              "org": "ORG-TDB4-RIPE",
+              "status": "ASSIGNED PA",
+              "intersecting_addresses": 8,
+              "intersecting_cidrs": [
+                "100.43.64.8/29"
+              ]
+            },
+            {
+              "inetnum": "100.43.73.8 - 100.43.73.15",
+              "netname": "TELETECH-100-43-73-8",
+              "country": "RU",
+              "org": "ORG-TDB4-RIPE",
+              "status": "ASSIGNED PA",
+              "intersecting_addresses": 8,
+              "intersecting_cidrs": [
+                "100.43.73.8/29"
+              ]
+            },
+            {
+              "inetnum": "100.43.73.16 - 100.43.73.23",
+              "netname": "TELETECH-100-43-73-16",
+              "country": "RU",
+              "org": "ORG-TDB4-RIPE",
+              "status": "ASSIGNED PA",
+              "intersecting_addresses": 8,
+              "intersecting_cidrs": [
+                "100.43.73.16/29"
+              ]
+            },
+            {
+              "inetnum": "100.43.73.32 - 100.43.73.39",
+              "netname": "TELETECH-100-43-73-32",
+              "country": "RU",
+              "org": "ORG-TDB4-RIPE",
+              "status": "ASSIGNED PA",
+              "intersecting_addresses": 8,
+              "intersecting_cidrs": [
+                "100.43.73.32/29"
+              ]
+            },
+            {
+              "inetnum": "100.43.73.48 - 100.43.73.55",
+              "netname": "TELETECH-100-43-73-48",
+              "country": "RU",
+              "org": "ORG-TDB4-RIPE",
+              "status": "ASSIGNED PA",
+              "intersecting_addresses": 8,
+              "intersecting_cidrs": [
+                "100.43.73.48/29"
+              ]
+            },
+            {
+              "inetnum": "100.43.73.56 - 100.43.73.63",
+              "netname": "TELETECH-100-43-73-56",
+              "country": "RU",
+              "org": "ORG-TDB4-RIPE",
+              "status": "ASSIGNED PA",
+              "intersecting_addresses": 8,
+              "intersecting_cidrs": [
+                "100.43.73.56/29"
+              ]
+            },
+            {
+              "inetnum": "100.43.73.64 - 100.43.73.71",
+              "netname": "TELETECH-100-43-73-64",
+              "country": "RU",
+              "org": "ORG-TDB4-RIPE",
+              "status": "ASSIGNED PA",
+              "intersecting_addresses": 8,
+              "intersecting_cidrs": [
+                "100.43.73.64/29"
+              ]
+            },
+            {
+              "inetnum": "100.43.73.72 - 100.43.73.79",
+              "netname": "TELETECH-100-43-73-72",
+              "country": "RU",
+              "org": "ORG-TDB4-RIPE",
+              "status": "ASSIGNED PA",
+              "intersecting_addresses": 8,
+              "intersecting_cidrs": [
+                "100.43.73.72/29"
+              ]
+            },
+            {
+              "inetnum": "100.43.73.88 - 100.43.73.95",
+              "netname": "TELETECH-100-43-73-88",
+              "country": "RU",
+              "org": "ORG-TDB4-RIPE",
+              "status": "ASSIGNED PA",
+              "intersecting_addresses": 8,
+              "intersecting_cidrs": [
+                "100.43.73.88/29"
+              ]
+            },
+            {
+              "inetnum": "100.43.73.192 - 100.43.73.199",
+              "netname": "TELETECH-100-43-73-192",
+              "country": "RU",
+              "org": "ORG-TDB4-RIPE",
+              "status": "ASSIGNED PA",
+              "intersecting_addresses": 8,
+              "intersecting_cidrs": [
+                "100.43.73.192/29"
+              ]
+            },
+            {
+              "inetnum": "100.43.73.112 - 100.43.73.127",
+              "netname": "TELETECH-100-43-73-112",
+              "country": "RU",
+              "org": "ORG-TDB4-RIPE",
+              "status": "ASSIGNED PA",
+              "intersecting_addresses": 16,
+              "intersecting_cidrs": [
+                "100.43.73.112/28"
+              ]
+            },
+            {
+              "inetnum": "100.43.86.16 - 100.43.86.31",
+              "netname": "TELETECH-100-43-86-16",
+              "country": "US",
+              "org": "ORG-TDB4-RIPE",
+              "status": "ASSIGNED PA",
+              "intersecting_addresses": 16,
+              "intersecting_cidrs": [
+                "100.43.86.16/28"
+              ]
+            },
+            {
+              "inetnum": "100.43.92.144 - 100.43.92.159",
+              "netname": "TELETECH-100-43-92-144",
+              "country": "US",
+              "org": "ORG-TDB4-RIPE",
+              "status": "ASSIGNED PA",
+              "intersecting_addresses": 16,
+              "intersecting_cidrs": [
+                "100.43.92.144/28"
+              ]
+            },
+            {
+              "inetnum": "100.43.92.0 - 100.43.92.31",
+              "netname": "TELETECH-100-43-92-0",
+              "country": "US",
+              "org": "ORG-TDB4-RIPE",
+              "status": "ASSIGNED PA",
+              "intersecting_addresses": 32,
+              "intersecting_cidrs": [
+                "100.43.92.0/27"
+              ]
+            },
+            {
+              "inetnum": "100.43.92.32 - 100.43.92.63",
+              "netname": "TELETECH-100-43-92-32",
+              "country": "US",
+              "org": "ORG-TDB4-RIPE",
+              "status": "ASSIGNED PA",
+              "intersecting_addresses": 32,
+              "intersecting_cidrs": [
+                "100.43.92.32/27"
+              ]
+            },
+            {
+              "inetnum": "100.43.87.0 - 100.43.87.255",
+              "netname": "TELETECH-100-43-87-0",
+              "country": "US",
+              "org": "ORG-TDB4-RIPE",
+              "status": "ASSIGNED PA",
+              "intersecting_addresses": 256,
+              "intersecting_cidrs": [
+                "100.43.87.0/24"
+              ]
+            }
+          ]
+        },
+        {
+          "parent": "199.21.96.0/22",
+          "all_more_url": "https://rest.db.ripe.net/search.json?source=RIPE&query-string=199.21.96.0%2F22&flags=all-more&type-filter=inetnum",
+          "registry_child_objects_returned": 18,
+          "address_totals_by_most_specific_registry_country": {
+            "DE": 64,
+            "FI": 64,
+            "NL": 64,
+            "RS": 64,
+            "RS_PARENT_ONLY": 256,
+            "SG": 256
+          },
+          "intersecting_children": [
+            {
+              "inetnum": "199.21.98.0 - 199.21.98.63",
+              "netname": "TELETECH-199-21-98-0",
+              "country": "FI",
+              "org": "ORG-TDB4-RIPE",
+              "status": "ASSIGNED PA",
+              "intersecting_addresses": 64,
+              "intersecting_cidrs": [
+                "199.21.98.0/26"
+              ]
+            },
+            {
+              "inetnum": "199.21.98.64 - 199.21.98.127",
+              "netname": "TELETECH-199-21-98-64",
+              "country": "DE",
+              "org": "ORG-TDB4-RIPE",
+              "status": "ASSIGNED PA",
+              "intersecting_addresses": 64,
+              "intersecting_cidrs": [
+                "199.21.98.64/26"
+              ]
+            },
+            {
+              "inetnum": "199.21.98.128 - 199.21.98.191",
+              "netname": "TELETECH-199-21-98-128",
+              "country": "NL",
+              "org": "ORG-TDB4-RIPE",
+              "status": "ASSIGNED PA",
+              "intersecting_addresses": 64,
+              "intersecting_cidrs": [
+                "199.21.98.128/26"
+              ]
+            },
+            {
+              "inetnum": "199.21.98.192 - 199.21.98.255",
+              "netname": "TELETECH-199-21-98-192",
+              "country": "RS",
+              "org": "ORG-TDB4-RIPE",
+              "status": "ASSIGNED PA",
+              "intersecting_addresses": 64,
+              "intersecting_cidrs": [
+                "199.21.98.192/26"
+              ]
+            },
+            {
+              "inetnum": "199.21.96.0 - 199.21.96.255",
+              "netname": "TELETECH-199-21-96-0",
+              "country": "SG",
+              "org": "ORG-TDB4-RIPE",
+              "status": "ASSIGNED PA",
+              "intersecting_addresses": 256,
+              "intersecting_cidrs": [
+                "199.21.96.0/24"
+              ]
+            }
+          ]
+        },
+        {
+          "parent": "199.36.240.0/22",
+          "all_more_url": "https://rest.db.ripe.net/search.json?source=RIPE&query-string=199.36.240.0%2F22&flags=all-more&type-filter=inetnum",
+          "registry_child_objects_returned": 29,
+          "address_totals_by_most_specific_registry_country": {
+            "RS": 256,
+            "RS_PARENT_ONLY": 48,
+            "RU": 56
+          },
+          "intersecting_children": [
+            {
+              "inetnum": "199.36.242.44 - 199.36.242.45",
+              "netname": "TELETECH-199-36-242-44",
+              "country": "RU",
+              "org": "ORG-TDB4-RIPE",
+              "status": "ASSIGNED PA",
+              "intersecting_addresses": 2,
+              "intersecting_cidrs": [
+                "199.36.242.44/31"
+              ]
+            },
+            {
+              "inetnum": "199.36.242.46 - 199.36.242.47",
+              "netname": "TELETECH-199-36-242-46",
+              "country": "RU",
+              "org": "ORG-TDB4-RIPE",
+              "status": "ASSIGNED PA",
+              "intersecting_addresses": 2,
+              "intersecting_cidrs": [
+                "199.36.242.46/31"
+              ]
+            },
+            {
+              "inetnum": "199.36.242.66 - 199.36.242.67",
+              "netname": "TELETECH-199-36-242-66",
+              "country": "RU",
+              "org": "ORG-TDB4-RIPE",
+              "status": "ASSIGNED PA",
+              "intersecting_addresses": 2,
+              "intersecting_cidrs": [
+                "199.36.242.66/31"
+              ]
+            },
+            {
+              "inetnum": "199.36.242.68 - 199.36.242.69",
+              "netname": "TELETECH-199-36-242-68",
+              "country": "RU",
+              "org": "ORG-TDB4-RIPE",
+              "status": "ASSIGNED PA",
+              "intersecting_addresses": 2,
+              "intersecting_cidrs": [
+                "199.36.242.68/31"
+              ]
+            },
+            {
+              "inetnum": "199.36.242.96 - 199.36.242.97",
+              "netname": "TELETECH-199-36-242-96",
+              "country": "RU",
+              "org": "ORG-TDB4-RIPE",
+              "status": "ASSIGNED PA",
+              "intersecting_addresses": 2,
+              "intersecting_cidrs": [
+                "199.36.242.96/31"
+              ]
+            },
+            {
+              "inetnum": "199.36.242.98 - 199.36.242.99",
+              "netname": "TELETECH-199-36-242-98",
+              "country": "RU",
+              "org": "ORG-TDB4-RIPE",
+              "status": "ASSIGNED PA",
+              "intersecting_addresses": 2,
+              "intersecting_cidrs": [
+                "199.36.242.98/31"
+              ]
+            },
+            {
+              "inetnum": "199.36.242.102 - 199.36.242.103",
+              "netname": "TELETECH-199-36-242-102",
+              "country": "RU",
+              "org": "ORG-TDB4-RIPE",
+              "status": "ASSIGNED PA",
+              "intersecting_addresses": 2,
+              "intersecting_cidrs": [
+                "199.36.242.102/31"
+              ]
+            },
+            {
+              "inetnum": "199.36.242.104 - 199.36.242.105",
+              "netname": "TELETECH-199-36-242-104",
+              "country": "RU",
+              "org": "ORG-TDB4-RIPE",
+              "status": "ASSIGNED PA",
+              "intersecting_addresses": 2,
+              "intersecting_cidrs": [
+                "199.36.242.104/31"
+              ]
+            },
+            {
+              "inetnum": "199.36.242.72 - 199.36.242.79",
+              "netname": "TELETECH-199-36-242-72",
+              "country": "RU",
+              "org": "ORG-TDB4-RIPE",
+              "status": "ASSIGNED PA",
+              "intersecting_addresses": 8,
+              "intersecting_cidrs": [
+                "199.36.242.72/29"
+              ]
+            },
+            {
+              "inetnum": "199.36.242.48 - 199.36.242.63",
+              "netname": "TELETECH-199-36-242-48",
+              "country": "RU",
+              "org": "ORG-TDB4-RIPE",
+              "status": "ASSIGNED PA",
+              "intersecting_addresses": 16,
+              "intersecting_cidrs": [
+                "199.36.242.48/28"
+              ]
+            },
+            {
+              "inetnum": "199.36.242.80 - 199.36.242.95",
+              "netname": "TELETECH-199-36-242-80",
+              "country": "RU",
+              "org": "ORG-TDB4-RIPE",
+              "status": "ASSIGNED PA",
+              "intersecting_addresses": 16,
+              "intersecting_cidrs": [
+                "199.36.242.80/28"
+              ]
+            },
+            {
+              "inetnum": "199.36.240.0 - 199.36.240.255",
+              "netname": "TELETECH-199-36-240-0",
+              "country": "RS",
+              "org": "ORG-TDB4-RIPE",
+              "status": "ASSIGNED PA",
+              "intersecting_addresses": 256,
+              "intersecting_cidrs": [
+                "199.36.240.0/24"
+              ]
+            }
+          ]
+        }
+      ],
+      "decision": "184 addresses have RU children, but no exact matching regional origin or registry-linked child geofeed was established. No current resolver loss or route change. Do not remove the mixed-allocation parents wholesale."
+    },
+    "source_lineage": {
+      "grimbird_matching_category_addresses": {
+        "RU": 0,
+        "RU-YANDEX": 8544
+      },
+      "grimbird_exact_pinned_manual_yandex_input": {
+        "url": "https://github.com/GrimbirdUsers/ru-routing-dat/blob/bea48cd34166485ef8d999e1981d8cf3ca297253/data-geoip/ru-yandex.txt",
+        "git_blob_sha1": "6d1e7835e9c2bea2874054c21b629a2391b20677",
+        "sha256": "bbe8e1aad34290d9ede1669196db635c27ecb4caa20ad28bca8fdabbc51a62a8"
+      },
+      "davoyan_exact_pinned_workflow": "https://github.com/Davoyan/xray-routing/blob/a5f9f127f5c9aa7bfb0da9bf2acf199cba714aa2/.github/workflows/build.yml",
+      "davoyan_upstream": "https://github.com/Davoyan/mihomo-rule-sets#\u0441\u043f\u0438\u0441\u043e\u043a-ip-\u0430\u0434\u0440\u0435\u0441\u043e\u0432-\u0434\u043b\u044f-\u043c\u0430\u0440\u0448\u0440\u0443\u0442\u0438\u0437\u0430\u0446\u0438\u0438-\u0432\u043d\u0443\u0442\u0440\u0438-\u0440\u043e\u0441\u0441\u0438\u0438",
+      "note": "The two feeds are independent publisher groups in v37, not independent current operator assignments. Grimbird manually labels all three parent prefixes ru-yandex."
+    }
   },
   "independent_replay": {
     "source_main": "2ef37c489b2dc25c4f168c0d7299bb985b02d15a",
@@ -2025,5 +2655,11 @@
       "overlap_final_direct_addresses": 0,
       "hard_excluded_addresses": 4096
     }
+  },
+  "removed_after_v37_registry": {
+    "parent": "31.204.56.0/21",
+    "all_more_url": "https://rest.db.ripe.net/search.json?source=RIPE&query-string=31.204.56.0%2F21&flags=all-more&type-filter=inetnum",
+    "all_more_response": 404,
+    "interpretation": "RIPE returns no matching more-specific inetnum records"
   }
 }
