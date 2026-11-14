@@ -1,0 +1,228 @@
+{
+  "run": 43583581379,
+  "dat_sha256": "2735053560ebd598cbdcd71ccf858806d4b955a17e2eac512a7baf249d43653a",
+  "scope": "45.142.122.0/24",
+  "already_direct_ipv4": 251,
+  "absent_rows": {
+    "45.142.122.40/32": {
+      "upstream_feeds": [
+        "davoyan"
+      ],
+      "eligible_v37_pre_carve": false,
+      "v37_approved_carve": true,
+      "in_v37_base_direct": false,
+      "v41_admission_layer": false,
+      "v41_raw_resolver": true,
+      "v41_effective_resolver": true
+    },
+    "45.142.122.45/32": {
+      "upstream_feeds": [
+        "davoyan"
+      ],
+      "eligible_v37_pre_carve": false,
+      "v37_approved_carve": true,
+      "in_v37_base_direct": false,
+      "v41_admission_layer": false,
+      "v41_raw_resolver": true,
+      "v41_effective_resolver": true
+    },
+    "45.142.122.86/32": {
+      "upstream_feeds": [
+        "davoyan"
+      ],
+      "eligible_v37_pre_carve": false,
+      "v37_approved_carve": false,
+      "in_v37_base_direct": false,
+      "v41_admission_layer": false,
+      "v41_raw_resolver": false,
+      "v41_effective_resolver": false
+    },
+    "45.142.122.93/32": {
+      "upstream_feeds": [
+        "davoyan"
+      ],
+      "eligible_v37_pre_carve": false,
+      "v37_approved_carve": false,
+      "in_v37_base_direct": false,
+      "v41_admission_layer": false,
+      "v41_raw_resolver": false,
+      "v41_effective_resolver": false
+    },
+    "45.142.122.151/32": {
+      "upstream_feeds": [
+        "davoyan"
+      ],
+      "eligible_v37_pre_carve": false,
+      "v37_approved_carve": false,
+      "in_v37_base_direct": false,
+      "v41_admission_layer": false,
+      "v41_raw_resolver": false,
+      "v41_effective_resolver": false
+    }
+  },
+  "admission_source_coverages": {
+    "hydra-direct": [
+      "45.142.122.0/27",
+      "45.142.122.32/29",
+      "45.142.122.41/32",
+      "45.142.122.42/31",
+      "45.142.122.44/32",
+      "45.142.122.46/31",
+      "45.142.122.48/28",
+      "45.142.122.64/28",
+      "45.142.122.80/30",
+      "45.142.122.84/31",
+      "45.142.122.87/32",
+      "45.142.122.88/30",
+      "45.142.122.92/32",
+      "45.142.122.94/31",
+      "45.142.122.96/27",
+      "45.142.122.128/28",
+      "45.142.122.144/30",
+      "45.142.122.148/31",
+      "45.142.122.150/32",
+      "45.142.122.152/29",
+      "45.142.122.160/27",
+      "45.142.122.192/26"
+    ]
+  },
+  "counterfactual": {
+    "current_exact_reviewed_operator_slash24_would_add": [
+      "45.142.122.40/32",
+      "45.142.122.45/32",
+      "45.142.122.86/32",
+      "45.142.122.93/32",
+      "45.142.122.151/32"
+    ],
+    "current_exact_reviewed_operator_slash24_would_remove_from_effective_block": [
+      "45.142.122.40/32",
+      "45.142.122.45/32"
+    ],
+    "other_missing_without_any_checked_mask": [
+      "45.142.122.86/32",
+      "45.142.122.93/32",
+      "45.142.122.151/32"
+    ]
+  },
+  "whole_ipv4_snapshot_discovery_only": {
+    "one_group_no_checked_mask_and_not_direct": 73758,
+    "distinct_cidrs": 2413,
+    "policy": "discovery only; no mass admission and no inference of reachability"
+  },
+  "routing_registry_and_geofeed_recheck": {
+    "alt-firstbyte": {
+      "url": "https://firstbyte.pro/geo/fb_geoloc.csv",
+      "error": "<urlopen error _ssl.c:993: The handshake operation timed out>"
+    },
+    "linked-firstbyte": {
+      "url": "https://geofeed.first-server.net/fb_geofeed.csv",
+      "final_url": "https://geofeed.first-server.net/fb_geofeed.csv",
+      "sha256": "3721f92fd09917143e01ec9117b46de301a289ecaaec0965ca1d8d2e0dd9ae89",
+      "valid_cidr_rows": 220,
+      "matching_rows": []
+    },
+    "rpki": {
+      "url": "https://stat.ripe.net/data/rpki-validation/data.json?resource=AS205090&prefix=45.142.122.0%2F24",
+      "final_url": "https://stat.ripe.net/data/rpki-validation/data.json?resource=AS205090&prefix=45.142.122.0%2F24",
+      "sha256": "9c1f343a0aff3303c07704f3671f3d394cf6a9e917bae77574cc0a8c5e465645",
+      "status": "valid"
+    },
+    "route-object": {
+      "url": "https://rest.db.ripe.net/ripe/route/45.142.122.0/24AS205090.json",
+      "final_url": "https://rest.db.ripe.net/ripe/route/45.142.122.0/24AS205090.json",
+      "sha256": "1063b6ce1d07a64f3fca9470430fadcc3584629ebb0b28664ba2b865fd09948f",
+      "objects": [
+        {
+          "route": "45.142.122.0/24",
+          "origin": "AS205090"
+        }
+      ]
+    },
+    "current-bgp-state": {
+      "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=45.142.122.0%2F24&timestamp=2026-11-14T08%3A00%3A00",
+      "final_url": "https://stat.ripe.net/data/bgp-state/data.json?resource=45.142.122.0%2F24&timestamp=2026-11-14T08%3A00%3A00",
+      "sha256": "2a8e869c5ee22057e2886cde4057efccf3a3eafcbece5076fa865157e9190fc2",
+      "query_time": "2026-11-14T07:59:49",
+      "exact_paths": 380,
+      "origins": [
+        205090
+      ],
+      "other_prefixes": []
+    },
+    "covering-registry": {
+      "url": "https://rest.db.ripe.net/search.json?source=RIPE&query-string=45.142.122.0%2F24&flags=all-less&type-filter=inetnum",
+      "final_url": "https://rest.db.ripe.net/search.json?source=RIPE&query-string=45.142.122.0%2F24&flags=all-less&type-filter=inetnum",
+      "sha256": "46de47f8b46bc26cf3cec1046da13a99e11fc4f499f403ba1facbf6bb811f6ca",
+      "objects": [
+        {
+          "inetnum": "0.0.0.0 - 255.255.255.255",
+          "country": "EU",
+          "org": "ORG-IANA1-RIPE"
+        },
+        {
+          "inetnum": "45.142.120.0 - 45.142.123.255",
+          "country": "VG",
+          "org": "ORG-AL1047-RIPE"
+        },
+        {
+          "inetnum": "45.142.122.0 - 45.142.122.255",
+          "org": "ORG-FSSL4-RIPE",
+          "geofeed": "https://geofeed.first-server.net/fb_geofeed.csv",
+          "country": "RU"
+        }
+      ]
+    },
+    "rdap-45.142.122.40": {
+      "url": "https://rdap.db.ripe.net/ip/45.142.122.40",
+      "final_url": "https://rdap.db.ripe.net/ip/45.142.122.40",
+      "sha256": "e548228618efcf8a1449ea911067b797a0d6666464a396dc9e5b1df956f42f24",
+      "startAddress": "45.142.122.0",
+      "endAddress": "45.142.122.255",
+      "name": "FIRSTSERVER",
+      "country": "RU",
+      "parentHandle": "45.142.120.0 - 45.142.123.255"
+    },
+    "rdap-45.142.122.45": {
+      "url": "https://rdap.db.ripe.net/ip/45.142.122.45",
+      "final_url": "https://rdap.db.ripe.net/ip/45.142.122.45",
+      "sha256": "6410531d88d55b1eddb6c27cd103ce60d59f37fae91c891754371a1b4c077a2f",
+      "startAddress": "45.142.122.0",
+      "endAddress": "45.142.122.255",
+      "name": "FIRSTSERVER",
+      "country": "RU",
+      "parentHandle": "45.142.120.0 - 45.142.123.255"
+    },
+    "rdap-45.142.122.86": {
+      "url": "https://rdap.db.ripe.net/ip/45.142.122.86",
+      "final_url": "https://rdap.db.ripe.net/ip/45.142.122.86",
+      "sha256": "e41cc4e4c3302fe3426f092913817e8db3ac0306f07bd7f2d170526a5136a41e",
+      "startAddress": "45.142.122.0",
+      "endAddress": "45.142.122.255",
+      "name": "FIRSTSERVER",
+      "country": "RU",
+      "parentHandle": "45.142.120.0 - 45.142.123.255"
+    },
+    "rdap-45.142.122.93": {
+      "url": "https://rdap.db.ripe.net/ip/45.142.122.93",
+      "final_url": "https://rdap.db.ripe.net/ip/45.142.122.93",
+      "sha256": "fb04b46021bee2c2bc2a7b8be9f9e4eff0a6098faa3f348dff6486af7fccc342",
+      "startAddress": "45.142.122.0",
+      "endAddress": "45.142.122.255",
+      "name": "FIRSTSERVER",
+      "country": "RU",
+      "parentHandle": "45.142.120.0 - 45.142.123.255"
+    },
+    "rdap-45.142.122.151": {
+      "url": "https://rdap.db.ripe.net/ip/45.142.122.151",
+      "final_url": "https://rdap.db.ripe.net/ip/45.142.122.151",
+      "sha256": "2c5d355c4f1d8d4ef85206508ec62096cb51f63ad951b81a16e6cbc892f78f73",
+      "startAddress": "45.142.122.0",
+      "endAddress": "45.142.122.255",
+      "name": "FIRSTSERVER",
+      "country": "RU",
+      "parentHandle": "45.142.120.0 - 45.142.123.255"
+    }
+  },
+  "decision": "Hold the /24. The linked geofeed has no matching row. The extra three hosts were never admitted; they were not removed by a block. Neither the policy nor the released artifacts changed.",
+  "production_changes": false
+}
