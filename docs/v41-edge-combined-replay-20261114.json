@@ -1,0 +1,22 @@
+{
+  "tree": "9d84b0c37570d64962a55965dc6eafe9ab9d734c",
+  "base": "b98980c6181c3bfda35445f345ae83777f7d18f3",
+  "draft_prs": [
+    31,
+    32
+  ],
+  "no_merge_or_ref_write": true,
+  "candidate_dat_sha256": "2735053560ebd598cbdcd71ccf858806d4b955a17e2eac512a7baf249d43653a",
+  "effective_mask_sha256": "da3949ad119013db9a8237d322c63411234c201079f8506af3e51dc6051b0b6a",
+  "original_ipverse_sha256": "d34d00d59ec419fec991d860af290b557a47b8e2f9596688b9bd11b0e4103d02",
+  "gate_log_digests": {
+    "validate_v41_base_artifacts": "1b7c3fd80aa4c89ade0b837cde4dde3cc48046393954baf48630a78d47aefc2f",
+    "validate_v41_publication_bounds": "63843fc1df170b2acd6e9e2390c5e3852e9bf338da024e8e5489e8efd21bb494",
+    "validate_v41_telegram": "5fa0c04012fa78f0dba8239cbbecedb3022571f55038f237fdbc746d91c4cc75",
+    "validate_v41_relative_bounds": "63843fc1df170b2acd6e9e2390c5e3852e9bf338da024e8e5489e8efd21bb494",
+    "build_v41_overlay": "9963b7affa69e9a9bf3d8ce0a4c91ea677559beb57f843c4750b2594526c4e79",
+    "validate_v41_overlay": "c7555435e2653f6cbb9c42ba82070b94bb0f824031aa7d74be749ae2659d2020",
+    "validate_v41_release_gate": "3fd151723938a9bb8c1a2f2a8f430d76f10ffa3e738dd33d62e5cf04495ccca0"
+  },
+  "additional_ipverse_verification_log_sha256": "f11f16c308865a8045f8a822d21158a77534e215f190384ce457ef78cf417488"
+}
