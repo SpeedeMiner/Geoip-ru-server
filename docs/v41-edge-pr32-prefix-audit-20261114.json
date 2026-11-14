@@ -1,0 +1,12 @@
+{
+  "artifact": 14114996581,
+  "zip_sha256": "4083a9f8ece38776eb37d2ca558d943ae124ba0a4c563960aa588e0288fad0ed",
+  "prefix_audit_run": 43596627172,
+  "status": "success",
+  "release_commit": "de20de628d85062c8161b3da99fc7b0c94622919",
+  "company_rows": 3378,
+  "selected_rows": 23603,
+  "historical_invalid_prefixes": 19,
+  "historical_invalid_pairs": 20,
+  "unseeded_invalid_review_rows": 0
+}
