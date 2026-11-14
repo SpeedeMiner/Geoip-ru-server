@@ -2655,7 +2655,13 @@
       "non_canonical_ipverse_rows": 0,
       "non_canonical_legacy_RU_RIR_ipv6_rows_in_published_report": 0,
       "observed_company_prefixes": 3378,
-      "selected_company_prefixes_including_pins": 3378
+      "selected_company_prefixes_including_pins": 3378,
+      "derived_masks_exact_parity": {
+        "geoip_RU_company_asn_bgp_prefixes.txt": "5cb0722a57cef47399fdd02a2a90663d5c332574d11d51d23be0da1bdd67ef0b",
+        "geoip_RU_company_asn_core_bgp_prefixes.txt": "0bfa8f824e1129afe0f1640a90f2ea528e38f2975d1bc984f27a646c438133e9",
+        "geoip_RU_shared_infrastructure_bgp_prefixes.txt": "60289e356007769d1dd538c90dc1146877a48233a8e4e4f97eadf5de4f342d09",
+        "geoip_RU_v41_rir_ru_and_company_origin_prefixes.txt": "bd657dedf8ca9b1f3652b81a7da3e20f3396bf730926050236e19461452cc6ad"
+      }
     },
     "earlier_pr28_controls": [
       {
@@ -2670,7 +2676,14 @@
         "input_provenance_sha256": "44ba33521f2a5657596582af8ddcd7918edddd7c08a80988df8f7a02ace11d93",
         "exact_cohort_result": "identical"
       }
-    ]
+    ],
+    "rkn_classifier_exact_parity": {
+      "geoip_RU_blocked_ipresolve_resolver_only.txt": "1026597df528de59ccda9fddd5e9721709f7c8953b309a8ebbb1548d49975ee6",
+      "geoip_RU_blocked_ip_exact_and_legacy_hard.txt": "d34d01aa2007a1da68eab9c4b7d8ac838ff58a1238bce254d392e7a1d04d424d",
+      "geoip_RU_blocked_ip_exclusions.txt": "82e595f197cb2c27eacd86e83ce8f65a02456c5dfcc3371dd5338688248202cd",
+      "geoip_RU_blocked_review_candidates.tsv": "46d59d8f33b141ab91793a4363f174ab40d449bcbdb1c0e5f5f777591938df65",
+      "geoip_RU_blocked_source_stats.txt": "e35b831eed7e0821588f8cad1d0f1fa96fa5f8d3d572bdff2bd6da3ca81f41d0"
+    }
   },
   "telegram_transport_observation": {
     "url": "https://core.telegram.org/resources/cidr.txt",
@@ -2725,7 +2738,13 @@
     "publish_job": {
       "job": 132400189848,
       "result": "success"
-    }
+    },
+    "binary_comparison_sources": [
+      "actions artifact 14107254490",
+      "rolling release",
+      "versioned snapshot",
+      "release branch"
+    ]
   },
   "synthetic_fixed_input_dns_and_hard_replay": {
     "classification": "synthetic input perturbation, not live RKN evidence",
