@@ -32,5 +32,22 @@
     "historical_invalid_prefixes": 19,
     "historical_invalid_pairs": 20,
     "unseeded_invalid_review_rows": 0
+  },
+  "all_pr_ci": {
+    "v41": 43596627218,
+    "v39": 43596627184,
+    "lint": 43596627180,
+    "prefix_audit": 43596627172,
+    "conclusion": "success"
+  },
+  "read_only_publication_preflight": {
+    "valid_inputs_passed": true,
+    "shortened_archive_rejected": true,
+    "ipv4_added": 0,
+    "ipv4_removed": 0,
+    "ipv6_added": 0,
+    "ipv6_removed": 0,
+    "private_changed": false,
+    "log_sha256": "66d96092982114b4d1c8a57c2729b8934cdc725fb35cc9f9910b3d985306cabb"
   }
 }
