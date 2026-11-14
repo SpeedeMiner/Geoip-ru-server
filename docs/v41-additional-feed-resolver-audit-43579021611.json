@@ -1546,7 +1546,13 @@
             }
           ],
           "rpki_url": "https://stat.ripe.net/data/rpki-validation/data.json?resource=AS208398&prefix=100.43.64.0%2F19",
-          "rpki": "valid"
+          "rpki": "valid",
+          "exact_bgp_state": {
+            "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=100.43.64.0%2F19&timestamp=2026-11-14T00%3A00%3A00",
+            "observed_paths": 328,
+            "origin": "AS208398",
+            "sha256": "711046a8a0e624603d88db178b7d6922b9ec87a560cc555d2608379de47326bb"
+          }
         },
         "prefixes": [
           {
@@ -1807,7 +1813,13 @@
           },
           "more_specifics": [],
           "rpki_url": "https://stat.ripe.net/data/rpki-validation/data.json?resource=AS208398&prefix=199.21.96.0%2F22",
-          "rpki": "valid"
+          "rpki": "valid",
+          "exact_bgp_state": {
+            "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=199.21.96.0%2F22&timestamp=2026-11-14T00%3A00%3A00",
+            "observed_paths": 328,
+            "origin": "AS208398",
+            "sha256": "c0ca4fc7c984995d5686c1dd774c19e897575be613026882967667b862a61591"
+          }
         },
         "prefixes": [
           {
@@ -1876,7 +1888,13 @@
           },
           "more_specifics": [],
           "rpki_url": "https://stat.ripe.net/data/rpki-validation/data.json?resource=AS208398&prefix=199.36.240.0%2F22",
-          "rpki": "valid"
+          "rpki": "valid",
+          "exact_bgp_state": {
+            "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=199.36.240.0%2F22&timestamp=2026-11-14T00%3A00%3A00",
+            "observed_paths": 328,
+            "origin": "AS208398",
+            "sha256": "bf65ad5bc94ae2a188ce06d210a9fe95bbaa9e3f06f90d82930bd061bf2d4fab"
+          }
         },
         "prefixes": [
           {
@@ -2623,6 +2641,21 @@
       "ipv6": 2417851639229258349412352,
       "cidrs": 69,
       "sha256": "1a982458b882f436e1c84a103b698a1a35972cf03f07c6c8e1636b7d0e0f5af1"
+    },
+    "frozen_ipverse_extraction": {
+      "same_bytes": [
+        "geoip_RU_BY_KZ_asn_bgp_prefixes.txt",
+        "geoip_RU_global_bgp_prefixes.txt",
+        "geoip_RU_BY_KZ_asn_manifest.txt",
+        "geoip_RU_company_asn_manifest.tsv"
+      ],
+      "only_timestamp_differs": [
+        "geoip_RU_BY_KZ_asn_stats.txt"
+      ],
+      "non_canonical_ipverse_rows": 0,
+      "non_canonical_legacy_RU_RIR_ipv6_rows_in_published_report": 0,
+      "observed_company_prefixes": 3378,
+      "selected_company_prefixes_including_pins": 3378
     }
   },
   "telegram_transport_observation": {
@@ -2661,5 +2694,58 @@
     "all_more_url": "https://rest.db.ripe.net/search.json?source=RIPE&query-string=31.204.56.0%2F21&flags=all-more&type-filter=inetnum",
     "all_more_response": 404,
     "interpretation": "RIPE returns no matching more-specific inetnum records"
+  },
+  "publication_verification": {
+    "rolling_tag": "latest-geoip-client-v41",
+    "snapshot_tag": "geoip-v41-snapshot-43579021611.1",
+    "published_sha256": "8d807b8d6069791b2e006bc561c4c69cc1a3172521cde0271c62b9305ce1c391",
+    "published_size_bytes": 1739157,
+    "production_workflow_conclusion": "success",
+    "main": "2ef37c489b2dc25c4f168c0d7299bb985b02d15a",
+    "release": "c605a380dd68efd77d6a0592b18a5dd473e63186"
+  },
+  "synthetic_fixed_input_dns_and_hard_replay": {
+    "classification": "synthetic input perturbation, not live RKN evidence",
+    "advisory_resolver_hosts": [
+      "100.43.64.1/32",
+      "199.21.96.1/32",
+      "199.36.240.1/32",
+      "2a01:e5c0:8001::10/128",
+      "5.101.37.0/32"
+    ],
+    "hard_hosts": [
+      "5.101.37.1/32"
+    ],
+    "v37_pre_to_post_carve_removed_hosts": [
+      "100.43.64.1/32",
+      "199.21.96.1/32",
+      "199.36.240.1/32",
+      "2a01:e5c0:8001::10/128",
+      "5.101.37.0/32",
+      "5.101.37.1/32"
+    ],
+    "v41_restored_or_preserved_against_resolver_only": [
+      "5.101.37.0/32",
+      "2a01:e5c0:8001::10/128"
+    ],
+    "v41_removed_from_direct": [
+      "100.43.64.1/32",
+      "199.21.96.1/32",
+      "199.36.240.1/32",
+      "5.101.37.1/32"
+    ],
+    "v41_new_effective_blocks": [
+      "100.43.64.1/32",
+      "199.21.96.1/32",
+      "199.36.240.1/32",
+      "5.101.37.1/32"
+    ],
+    "v41_other_delta": "zero; PRIVATE unchanged",
+    "canary_dat_sha256": "4d074b87a636be3ff813aaa939e99727d55b7f8aa6703b213a18f62bfb4b63e5",
+    "checks": {
+      "overlay_validator": "PASS",
+      "release_gate_with_schema_valid_synthetic_subnet_source": "PASS",
+      "release_gate_with_unrecognized_hard_evidence": "FAIL AS EXPECTED"
+    }
   }
 }
