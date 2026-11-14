@@ -1,0 +1,22 @@
+{
+  "fixed_dat_sha256": "2735053560ebd598cbdcd71ccf858806d4b955a17e2eac512a7baf249d43653a",
+  "overlap_ipv4_between_cohorts": 0,
+  "geo_only_614": {
+    "address_counts": {
+      "hold_outside_DIRECT": 612,
+      "admitted_DIRECT": 2
+    },
+    "held_addresses_found_in_direct": []
+  },
+  "additional_one_group_811": {
+    "address_counts": {
+      "hold_outside_DIRECT": 796,
+      "admitted_DIRECT": 15
+    },
+    "held_addresses_found_in_direct": []
+  },
+  "source_ledgers": {
+    "v41-geo-only-queue-decisions-20261114.tsv": "b8e31204afcfd7546c8d8d955f501e7bef977554a4d97528b345b6bc572d8e6d",
+    "v41-additional-one-group-decisions-43579021611.tsv": "606c2fc98aa7b615f87cd51bc2b4e4d4c94ae2b514b104c3b6d94c5d731a5d79"
+  }
+}
