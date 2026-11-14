@@ -1,0 +1,60 @@
+{
+  "legacy": {
+    "ipverse_provenance": {
+      "sha256": "d34d00d59ec419fec991d860af290b557a47b8e2f9596688b9bd11b0e4103d02",
+      "size": 16268982
+    },
+    "phase": "legacy_snapshot",
+    "release_sha": "de20de628d85062c8161b3da99fc7b0c94622919",
+    "rolling": {
+      "assets": {
+        "geoip_RU.dat": "metadata_match",
+        "geoip_RU.dat.sha256sum": "metadata_match",
+        "geoip_RU_input_provenance.tsv": "metadata_match",
+        "geoip_RU_quality_report.txt": "metadata_match",
+        "geoip_RU_v41_blocked_ip_exclusions.txt.sha256sum": "metadata_match",
+        "geoip_RU_v41_manifest.json": "metadata_match"
+      },
+      "id": 443012073,
+      "immutable": false,
+      "state": "metadata_match"
+    },
+    "snapshot": {
+      "assets": {
+        "geoip_RU.dat": "metadata_match",
+        "geoip_RU.dat.sha256sum": "metadata_match",
+        "geoip_RU_quality_report.txt": "metadata_match",
+        "geoip_RU_v41_manifest.json": "metadata_match"
+      },
+      "id": 445228163,
+      "immutable": false,
+      "state": "metadata_match"
+    },
+    "snapshot_sha": "de20de628d85062c8161b3da99fc7b0c94622919",
+    "snapshot_tag": "geoip-v41-snapshot-43587602958.1",
+    "tagged_parents": [
+      "70ddc80575f70dadd67fd592716ff8da460b8fe5"
+    ],
+    "verification": "metadata_only"
+  },
+  "missing_tag": {
+    "phase": "no_snapshot_tag",
+    "release_sha": "de20de628d85062c8161b3da99fc7b0c94622919",
+    "rolling": {
+      "assets": {
+        "geoip_RU.dat": "metadata_match",
+        "geoip_RU.dat.sha256sum": "metadata_match",
+        "geoip_RU_input_provenance.tsv": "metadata_match",
+        "geoip_RU_quality_report.txt": "metadata_match",
+        "geoip_RU_v41_blocked_ip_exclusions.txt.sha256sum": "metadata_match",
+        "geoip_RU_v41_manifest.json": "metadata_match"
+      },
+      "id": 443012073,
+      "immutable": false,
+      "state": "metadata_match"
+    },
+    "snapshot_sha": null,
+    "snapshot_tag": "v41.4",
+    "verification": "metadata_only"
+  }
+}
