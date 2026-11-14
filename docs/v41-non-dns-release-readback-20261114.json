@@ -79,5 +79,12 @@
         "updated_at": "2026-11-14T07:58:03Z"
       }
     ]
-  }
+  },
+  "verified_downloaded_dat_sha256": {
+    "final-latest-asset.dat": "2735053560ebd598cbdcd71ccf858806d4b955a17e2eac512a7baf249d43653a",
+    "final-immutable-asset.dat": "2735053560ebd598cbdcd71ccf858806d4b955a17e2eac512a7baf249d43653a",
+    "latest-release-head.dat": "2735053560ebd598cbdcd71ccf858806d4b955a17e2eac512a7baf249d43653a"
+  },
+  "verified_actual_size_bytes": 1738277,
+  "byte_identical": true
 }
