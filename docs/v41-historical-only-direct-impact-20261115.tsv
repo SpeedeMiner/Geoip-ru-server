@@ -1,0 +1,11 @@
+PREFIX	IN_FROZEN_V37_OVERLAY_ESTIMATE	HYDRA_DIRECT	ADDED_WHEN_REBUILDING_V37	VERDICT
+14.0.37.136/32	1	1	0	review-only-not-proof-of-reachability
+45.136.199.44/32	0	0	1	review-only-not-proof-of-reachability
+45.136.199.199/32	0	0	1	review-only-not-proof-of-reachability
+46.174.142.215/32	0	0	1	review-only-not-proof-of-reachability
+144.31.129.167/32	1	1	1	review-only-not-proof-of-reachability
+144.31.131.171/32	1	1	1	review-only-not-proof-of-reachability
+144.124.219.224/32	1	1	0	review-only-not-proof-of-reachability
+156.227.199.10/32	1	1	1	review-only-not-proof-of-reachability
+194.67.193.88/32	1	1	1	review-only-not-proof-of-reachability
+194.67.193.131/32	0	0	1	review-only-not-proof-of-reachability
