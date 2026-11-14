@@ -134,16 +134,18 @@ download_file "IANA IPV6 SPECIAL REGISTRY" "$IANA_V6_CSV" \
 # Extract RU-registered ASNs AND RU-registered IPv4/IPv6 resources from
 # the five authoritative RIR delegated-stat snapshots. IP registration
 # country is a corroborating registry signal, not proof of server location.
+# Evaluate both inventories against the same UTC date, even at midnight.
+rir_reference_utc="$(date -u +%F)"
 python3 .github/scripts/build_v41_rir_legacy_inventory.py "$AFRINIC_STATS" "$APNIC_STATS" "$ARIN_STATS" \
   "$LACNIC_STATS" "$RIPENCC_STATS" "$RU_ASN_REGISTRY" \
-  "$RIR_PREFIX_INPUT" "$RIR_STATS" "$BY_KZ_ASN_REGISTRY"
+  "$RIR_PREFIX_INPUT" "$RIR_STATS" "$BY_KZ_ASN_REGISTRY" --as-of "$rir_reference_utc"
 
 # v41 separately inventories the full RU+BY+KZ public address-resource
 # set. Registration is DIRECT evidence here, not a physical-geolocation claim.
 python3 .github/scripts/build_rir_rukzby_prefixes.py \
   --afrinic "$AFRINIC_STATS" --apnic "$APNIC_STATS" --arin "$ARIN_STATS" \
   --lacnic "$LACNIC_STATS" --ripencc "$RIPENCC_STATS" \
-  --output "$RIR_RUKZBY_PREFIX_INPUT" --stats "$RIR_RUKZBY_STATS"
+  --output "$RIR_RUKZBY_PREFIX_INPUT" --stats "$RIR_RUKZBY_STATS" --as-of "$rir_reference_utc"
 
 # Convert the official IANA registries into exact non-globally-reachable
 # prefixes and explicit globally-reachable exceptions.
