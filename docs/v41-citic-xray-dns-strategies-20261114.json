@@ -1,0 +1,522 @@
+{
+  "engine": "Xray 26.7.28 (Xray, Penetrates Everything.) 5ca6f4b (go1.26.5 linux/amd64)",
+  "fixed_dat_sha256": "2735053560ebd598cbdcd71ccf858806d4b955a17e2eac512a7baf249d43653a",
+  "shadow_dat_sha256": "4517a9b8e4dce647d0c7e43deca49dfed87f687a1cc111a7e006e35fe417495f",
+  "geosite_dat_sha256": "75b79f1883e0ae7380621c41bdac89777dc1df660844d141ea98a400526728ec",
+  "scope": "Xray routing IPOnDemand, authoritative loopback DNS with fixed public A/AAAA answers, no live DNS, both outbounds terminate at local SOCKS sinks. This tests route selection, not the dialed address or application reachability.",
+  "names": 11,
+  "cases": 66,
+  "route_changes_by_dns_strategy": {
+    "UseIPv4": 0,
+    "UseIPv6": 10,
+    "UseIP": 0
+  },
+  "targets": {
+    "r8-lo0-0-mow-m9-ru.bb.citictel-cpc.com": {
+      "UseIPv4": {
+        "fixed": {
+          "route": "DIRECT",
+          "questions": [
+            "A"
+          ]
+        },
+        "shadow": {
+          "route": "DIRECT",
+          "questions": [
+            "A"
+          ]
+        }
+      },
+      "UseIPv6": {
+        "fixed": {
+          "route": "PROXY",
+          "questions": [
+            "AAAA"
+          ]
+        },
+        "shadow": {
+          "route": "DIRECT",
+          "questions": [
+            "AAAA"
+          ]
+        }
+      },
+      "UseIP": {
+        "fixed": {
+          "route": "DIRECT",
+          "questions": [
+            "A",
+            "AAAA"
+          ]
+        },
+        "shadow": {
+          "route": "DIRECT",
+          "questions": [
+            "A",
+            "AAAA"
+          ]
+        }
+      }
+    },
+    "r4-lo0-0-spb-rep-ru.bb.citictel-cpc.com": {
+      "UseIPv4": {
+        "fixed": {
+          "route": "DIRECT",
+          "questions": [
+            "A"
+          ]
+        },
+        "shadow": {
+          "route": "DIRECT",
+          "questions": [
+            "A"
+          ]
+        }
+      },
+      "UseIPv6": {
+        "fixed": {
+          "route": "PROXY",
+          "questions": [
+            "AAAA"
+          ]
+        },
+        "shadow": {
+          "route": "DIRECT",
+          "questions": [
+            "AAAA"
+          ]
+        }
+      },
+      "UseIP": {
+        "fixed": {
+          "route": "DIRECT",
+          "questions": [
+            "A",
+            "AAAA"
+          ]
+        },
+        "shadow": {
+          "route": "DIRECT",
+          "questions": [
+            "A",
+            "AAAA"
+          ]
+        }
+      }
+    },
+    "r8-lo0-0-spb-rep-ru.bb.citictel-cpc.com": {
+      "UseIPv4": {
+        "fixed": {
+          "route": "DIRECT",
+          "questions": [
+            "A"
+          ]
+        },
+        "shadow": {
+          "route": "DIRECT",
+          "questions": [
+            "A"
+          ]
+        }
+      },
+      "UseIPv6": {
+        "fixed": {
+          "route": "PROXY",
+          "questions": [
+            "AAAA"
+          ]
+        },
+        "shadow": {
+          "route": "DIRECT",
+          "questions": [
+            "AAAA"
+          ]
+        }
+      },
+      "UseIP": {
+        "fixed": {
+          "route": "DIRECT",
+          "questions": [
+            "A",
+            "AAAA"
+          ]
+        },
+        "shadow": {
+          "route": "DIRECT",
+          "questions": [
+            "A",
+            "AAAA"
+          ]
+        }
+      }
+    },
+    "rr1-lo0-0-mow-m9-ru.bb.citictel-cpc.com": {
+      "UseIPv4": {
+        "fixed": {
+          "route": "DIRECT",
+          "questions": [
+            "A"
+          ]
+        },
+        "shadow": {
+          "route": "DIRECT",
+          "questions": [
+            "A"
+          ]
+        }
+      },
+      "UseIPv6": {
+        "fixed": {
+          "route": "PROXY",
+          "questions": [
+            "AAAA"
+          ]
+        },
+        "shadow": {
+          "route": "DIRECT",
+          "questions": [
+            "AAAA"
+          ]
+        }
+      },
+      "UseIP": {
+        "fixed": {
+          "route": "DIRECT",
+          "questions": [
+            "A",
+            "AAAA"
+          ]
+        },
+        "shadow": {
+          "route": "DIRECT",
+          "questions": [
+            "A",
+            "AAAA"
+          ]
+        }
+      }
+    },
+    "r4-lo0-0-mow-m9-ru.bb.citictel-cpc.com": {
+      "UseIPv4": {
+        "fixed": {
+          "route": "DIRECT",
+          "questions": [
+            "A"
+          ]
+        },
+        "shadow": {
+          "route": "DIRECT",
+          "questions": [
+            "A"
+          ]
+        }
+      },
+      "UseIPv6": {
+        "fixed": {
+          "route": "PROXY",
+          "questions": [
+            "AAAA"
+          ]
+        },
+        "shadow": {
+          "route": "DIRECT",
+          "questions": [
+            "AAAA"
+          ]
+        }
+      },
+      "UseIP": {
+        "fixed": {
+          "route": "DIRECT",
+          "questions": [
+            "A",
+            "AAAA"
+          ]
+        },
+        "shadow": {
+          "route": "DIRECT",
+          "questions": [
+            "A",
+            "AAAA"
+          ]
+        }
+      }
+    },
+    "r9-lo0-0-mow-m9-ru.bb.citictel-cpc.com": {
+      "UseIPv4": {
+        "fixed": {
+          "route": "DIRECT",
+          "questions": [
+            "A"
+          ]
+        },
+        "shadow": {
+          "route": "DIRECT",
+          "questions": [
+            "A"
+          ]
+        }
+      },
+      "UseIPv6": {
+        "fixed": {
+          "route": "PROXY",
+          "questions": [
+            "AAAA"
+          ]
+        },
+        "shadow": {
+          "route": "DIRECT",
+          "questions": [
+            "AAAA"
+          ]
+        }
+      },
+      "UseIP": {
+        "fixed": {
+          "route": "DIRECT",
+          "questions": [
+            "A",
+            "AAAA"
+          ]
+        },
+        "shadow": {
+          "route": "DIRECT",
+          "questions": [
+            "A",
+            "AAAA"
+          ]
+        }
+      }
+    },
+    "r8-lo0-0-mow-mar8-ru.bb.citictel-cpc.com": {
+      "UseIPv4": {
+        "fixed": {
+          "route": "DIRECT",
+          "questions": [
+            "A"
+          ]
+        },
+        "shadow": {
+          "route": "DIRECT",
+          "questions": [
+            "A"
+          ]
+        }
+      },
+      "UseIPv6": {
+        "fixed": {
+          "route": "PROXY",
+          "questions": [
+            "AAAA"
+          ]
+        },
+        "shadow": {
+          "route": "DIRECT",
+          "questions": [
+            "AAAA"
+          ]
+        }
+      },
+      "UseIP": {
+        "fixed": {
+          "route": "DIRECT",
+          "questions": [
+            "A",
+            "AAAA"
+          ]
+        },
+        "shadow": {
+          "route": "DIRECT",
+          "questions": [
+            "A",
+            "AAAA"
+          ]
+        }
+      }
+    },
+    "r9-lo0-0-mow-mar8-ru.bb.citictel-cpc.com": {
+      "UseIPv4": {
+        "fixed": {
+          "route": "DIRECT",
+          "questions": [
+            "A"
+          ]
+        },
+        "shadow": {
+          "route": "DIRECT",
+          "questions": [
+            "A"
+          ]
+        }
+      },
+      "UseIPv6": {
+        "fixed": {
+          "route": "PROXY",
+          "questions": [
+            "AAAA"
+          ]
+        },
+        "shadow": {
+          "route": "DIRECT",
+          "questions": [
+            "AAAA"
+          ]
+        }
+      },
+      "UseIP": {
+        "fixed": {
+          "route": "DIRECT",
+          "questions": [
+            "A",
+            "AAAA"
+          ]
+        },
+        "shadow": {
+          "route": "DIRECT",
+          "questions": [
+            "A",
+            "AAAA"
+          ]
+        }
+      }
+    },
+    "r14-lo0-0-mow-mar8-ru.bb.citictel-cpc.com": {
+      "UseIPv4": {
+        "fixed": {
+          "route": "DIRECT",
+          "questions": [
+            "A"
+          ]
+        },
+        "shadow": {
+          "route": "DIRECT",
+          "questions": [
+            "A"
+          ]
+        }
+      },
+      "UseIPv6": {
+        "fixed": {
+          "route": "PROXY",
+          "questions": [
+            "AAAA"
+          ]
+        },
+        "shadow": {
+          "route": "DIRECT",
+          "questions": [
+            "AAAA"
+          ]
+        }
+      },
+      "UseIP": {
+        "fixed": {
+          "route": "DIRECT",
+          "questions": [
+            "A",
+            "AAAA"
+          ]
+        },
+        "shadow": {
+          "route": "DIRECT",
+          "questions": [
+            "A",
+            "AAAA"
+          ]
+        }
+      }
+    },
+    "r9-lo0-0-spb-k12-ru.bb.citictel-cpc.com": {
+      "UseIPv4": {
+        "fixed": {
+          "route": "DIRECT",
+          "questions": [
+            "A"
+          ]
+        },
+        "shadow": {
+          "route": "DIRECT",
+          "questions": [
+            "A"
+          ]
+        }
+      },
+      "UseIPv6": {
+        "fixed": {
+          "route": "PROXY",
+          "questions": [
+            "AAAA"
+          ]
+        },
+        "shadow": {
+          "route": "DIRECT",
+          "questions": [
+            "AAAA"
+          ]
+        }
+      },
+      "UseIP": {
+        "fixed": {
+          "route": "DIRECT",
+          "questions": [
+            "A",
+            "AAAA"
+          ]
+        },
+        "shadow": {
+          "route": "DIRECT",
+          "questions": [
+            "A",
+            "AAAA"
+          ]
+        }
+      }
+    },
+    "r9-lo0-0-ala-abd66-kz.bb.citictel-cpc.com": {
+      "UseIPv4": {
+        "fixed": {
+          "route": "PROXY",
+          "questions": [
+            "A"
+          ]
+        },
+        "shadow": {
+          "route": "PROXY",
+          "questions": [
+            "A"
+          ]
+        }
+      },
+      "UseIPv6": {
+        "fixed": {
+          "route": "PROXY",
+          "questions": [
+            "AAAA"
+          ]
+        },
+        "shadow": {
+          "route": "PROXY",
+          "questions": [
+            "AAAA"
+          ]
+        }
+      },
+      "UseIP": {
+        "fixed": {
+          "route": "PROXY",
+          "questions": [
+            "A",
+            "AAAA"
+          ]
+        },
+        "shadow": {
+          "route": "PROXY",
+          "questions": [
+            "A",
+            "AAAA"
+          ]
+        }
+      }
+    }
+  }
+}
