@@ -2585,5 +2585,624 @@
       "regional_candidate": false
     }
   ],
-  "stage": "representative screening complete; priority regional /24s and more-specific records pending"
+  "stage": "exact regional candidates and child screening collected; frozen origin and final decisions pending",
+  "exact_regional_recheck": [
+    {
+      "prefix": "104.128.130.0/24",
+      "affected_hosts": [
+        "104.128.130.205",
+        "104.128.130.208",
+        "104.128.130.236"
+      ],
+      "registry_prefixes": [
+        "104.128.130.0/24"
+      ],
+      "country": "RU",
+      "name": "FirstServer",
+      "registry_orgs": [
+        "ORG-FSSL4-RIPE"
+      ],
+      "registry_url": "https://rest.db.ripe.net/ripe/inetnum/104.128.130.0%20-%20104.128.130.255.json",
+      "registry_status": 200,
+      "ris_origins": [
+        205090
+      ],
+      "ris_more_specifics": [],
+      "children_http": 404,
+      "rpki": "valid",
+      "registry_linked_geofeeds": {
+        "https://geofeed.first-server.net/fb_geofeed.csv": {
+          "matching_rows": [
+            [
+              "104.128.130.0/24",
+              "RU"
+            ]
+          ],
+          "sha256": "3721f92fd09917143e01ec9117b46de301a289ecaaec0965ca1d8d2e0dd9ae89"
+        }
+      },
+      "host_assignments": [
+        {
+          "ip": "104.128.130.205",
+          "url": "https://rdap.db.ripe.net/ip/104.128.130.205",
+          "country": "RU",
+          "name": "FirstServer",
+          "start": "104.128.130.0",
+          "end": "104.128.130.255",
+          "http": 200
+        },
+        {
+          "ip": "104.128.130.208",
+          "url": "https://rdap.db.ripe.net/ip/104.128.130.208",
+          "country": "RU",
+          "name": "FirstServer",
+          "start": "104.128.130.0",
+          "end": "104.128.130.255",
+          "http": 200
+        },
+        {
+          "ip": "104.128.130.236",
+          "url": "https://rdap.db.ripe.net/ip/104.128.130.236",
+          "country": "RU",
+          "name": "FirstServer",
+          "start": "104.128.130.0",
+          "end": "104.128.130.255",
+          "http": 200
+        }
+      ],
+      "preliminary_exact_registry_geofeed_and_ris_match": true
+    },
+    {
+      "prefix": "132.243.16.0/24",
+      "affected_hosts": [
+        "132.243.16.12"
+      ],
+      "registry_prefixes": [
+        "132.243.16.0/24"
+      ],
+      "country": "RU",
+      "name": "ORG-FSSL4-RIPE",
+      "registry_orgs": [
+        "ORG-FSSL4-RIPE"
+      ],
+      "registry_url": "https://rest.db.ripe.net/ripe/inetnum/132.243.16.0%20-%20132.243.16.255.json",
+      "registry_status": 200,
+      "ris_origins": [
+        205090
+      ],
+      "ris_more_specifics": [],
+      "children_http": 404,
+      "rpki": "valid",
+      "registry_linked_geofeeds": {
+        "https://geofeed.first-server.net/rf_fs_geofeed.csv": {
+          "matching_rows": [
+            [
+              "132.243.16.0/24",
+              "RU"
+            ]
+          ],
+          "sha256": "77ffc9362d46db07c3a9d302c7ab8a3dfb2c5ebada3c443aa88acc3bcbb1f9eb"
+        }
+      },
+      "host_assignments": [
+        {
+          "ip": "132.243.16.12",
+          "url": "https://rdap.db.ripe.net/ip/132.243.16.12",
+          "country": "RU",
+          "name": "ORG-FSSL4-RIPE",
+          "start": "132.243.16.0",
+          "end": "132.243.16.255",
+          "http": 200
+        }
+      ],
+      "preliminary_exact_registry_geofeed_and_ris_match": true
+    },
+    {
+      "prefix": "132.243.18.0/24",
+      "affected_hosts": [
+        "132.243.18.18",
+        "132.243.18.34"
+      ],
+      "registry_prefixes": [
+        "132.243.18.0/24"
+      ],
+      "country": "RU",
+      "name": "ORG-FSSL4-RIPE",
+      "registry_orgs": [
+        "ORG-FSSL4-RIPE"
+      ],
+      "registry_url": "https://rest.db.ripe.net/ripe/inetnum/132.243.18.0%20-%20132.243.18.255.json",
+      "registry_status": 200,
+      "ris_origins": [
+        205090
+      ],
+      "ris_more_specifics": [],
+      "children_http": 404,
+      "rpki": "valid",
+      "registry_linked_geofeeds": {
+        "https://geofeed.first-server.net/rf_fs_geofeed.csv": {
+          "matching_rows": [
+            [
+              "132.243.18.0/24",
+              "RU"
+            ]
+          ],
+          "sha256": "77ffc9362d46db07c3a9d302c7ab8a3dfb2c5ebada3c443aa88acc3bcbb1f9eb"
+        }
+      },
+      "host_assignments": [
+        {
+          "ip": "132.243.18.18",
+          "url": "https://rdap.db.ripe.net/ip/132.243.18.18",
+          "country": "RU",
+          "name": "ORG-FSSL4-RIPE",
+          "start": "132.243.18.0",
+          "end": "132.243.18.255",
+          "http": 200
+        },
+        {
+          "ip": "132.243.18.34",
+          "url": "https://rdap.db.ripe.net/ip/132.243.18.34",
+          "country": "RU",
+          "name": "ORG-FSSL4-RIPE",
+          "start": "132.243.18.0",
+          "end": "132.243.18.255",
+          "http": 200
+        }
+      ],
+      "preliminary_exact_registry_geofeed_and_ris_match": true
+    },
+    {
+      "prefix": "132.243.19.0/24",
+      "affected_hosts": [
+        "132.243.19.137",
+        "132.243.19.140"
+      ],
+      "registry_prefixes": [
+        "132.243.19.0/24"
+      ],
+      "country": "RU",
+      "name": "ORG-FSSL4-RIPE",
+      "registry_orgs": [
+        "ORG-FSSL4-RIPE"
+      ],
+      "registry_url": "https://rest.db.ripe.net/ripe/inetnum/132.243.19.0%20-%20132.243.19.255.json",
+      "registry_status": 200,
+      "ris_origins": [
+        205090
+      ],
+      "ris_more_specifics": [],
+      "children_http": 404,
+      "rpki": "valid",
+      "registry_linked_geofeeds": {
+        "https://geofeed.first-server.net/rf_fs_geofeed.csv": {
+          "matching_rows": [
+            [
+              "132.243.19.0/24",
+              "RU"
+            ]
+          ],
+          "sha256": "77ffc9362d46db07c3a9d302c7ab8a3dfb2c5ebada3c443aa88acc3bcbb1f9eb"
+        }
+      },
+      "host_assignments": [
+        {
+          "ip": "132.243.19.137",
+          "url": "https://rdap.db.ripe.net/ip/132.243.19.137",
+          "country": "RU",
+          "name": "ORG-FSSL4-RIPE",
+          "start": "132.243.19.0",
+          "end": "132.243.19.255",
+          "http": 200
+        },
+        {
+          "ip": "132.243.19.140",
+          "url": "https://rdap.db.ripe.net/ip/132.243.19.140",
+          "country": "RU",
+          "name": "ORG-FSSL4-RIPE",
+          "start": "132.243.19.0",
+          "end": "132.243.19.255",
+          "http": 200
+        }
+      ],
+      "preliminary_exact_registry_geofeed_and_ris_match": true
+    },
+    {
+      "prefix": "135.136.190.0/24",
+      "affected_hosts": [
+        "135.136.190.63",
+        "135.136.190.120"
+      ],
+      "registry_prefixes": [
+        "135.136.190.0/24"
+      ],
+      "country": "RU",
+      "name": "FIRSTSERVER",
+      "registry_orgs": [
+        "ORG-FSSL4-RIPE"
+      ],
+      "registry_url": "https://rest.db.ripe.net/ripe/inetnum/135.136.190.0%20-%20135.136.190.255.json",
+      "registry_status": 200,
+      "ris_origins": [
+        205090
+      ],
+      "ris_more_specifics": [],
+      "children_http": 404,
+      "rpki": "valid",
+      "registry_linked_geofeeds": {
+        "https://geofeed.first-server.net/fb_geofeed.csv": {
+          "matching_rows": [
+            [
+              "135.136.190.0/24",
+              "RU"
+            ]
+          ],
+          "sha256": "3721f92fd09917143e01ec9117b46de301a289ecaaec0965ca1d8d2e0dd9ae89"
+        }
+      },
+      "host_assignments": [
+        {
+          "ip": "135.136.190.63",
+          "url": "https://rdap.db.ripe.net/ip/135.136.190.63",
+          "country": "RU",
+          "name": "FIRSTSERVER",
+          "start": "135.136.190.0",
+          "end": "135.136.190.255",
+          "http": 200
+        },
+        {
+          "ip": "135.136.190.120",
+          "url": "https://rdap.db.ripe.net/ip/135.136.190.120",
+          "country": "RU",
+          "name": "FIRSTSERVER",
+          "start": "135.136.190.0",
+          "end": "135.136.190.255",
+          "http": 200
+        }
+      ],
+      "preliminary_exact_registry_geofeed_and_ris_match": true
+    },
+    {
+      "prefix": "135.136.191.0/24",
+      "affected_hosts": [
+        "135.136.191.186"
+      ],
+      "registry_prefixes": [
+        "135.136.191.0/24"
+      ],
+      "country": "RU",
+      "name": "FIRSTSERVER",
+      "registry_orgs": [
+        "ORG-FSSL4-RIPE"
+      ],
+      "registry_url": "https://rest.db.ripe.net/ripe/inetnum/135.136.191.0%20-%20135.136.191.255.json",
+      "registry_status": 200,
+      "ris_origins": [
+        204997
+      ],
+      "ris_more_specifics": [],
+      "children_http": 404,
+      "rpki": "valid",
+      "registry_linked_geofeeds": {
+        "https://geofeed.first-server.net/fb_geofeed.csv": {
+          "matching_rows": [
+            [
+              "135.136.191.0/24",
+              "RU"
+            ]
+          ],
+          "sha256": "3721f92fd09917143e01ec9117b46de301a289ecaaec0965ca1d8d2e0dd9ae89"
+        }
+      },
+      "host_assignments": [
+        {
+          "ip": "135.136.191.186",
+          "url": "https://rdap.db.ripe.net/ip/135.136.191.186",
+          "country": "RU",
+          "name": "FIRSTSERVER",
+          "start": "135.136.191.0",
+          "end": "135.136.191.255",
+          "http": 200
+        }
+      ],
+      "preliminary_exact_registry_geofeed_and_ris_match": true
+    },
+    {
+      "prefix": "157.228.145.0/24",
+      "affected_hosts": [
+        "157.228.145.100"
+      ],
+      "registry_prefixes": [
+        "157.228.145.0/24"
+      ],
+      "country": "RU",
+      "name": "PSERVERS-CLOUD-HOSTING",
+      "registry_orgs": [
+        "ORG-IP78-RIPE"
+      ],
+      "registry_url": "https://rest.db.ripe.net/ripe/inetnum/157.228.145.0%20-%20157.228.145.255.json",
+      "registry_status": 200,
+      "ris_origins": [
+        209641
+      ],
+      "ris_more_specifics": [],
+      "children_http": 404,
+      "rpki": "valid",
+      "registry_linked_geofeeds": {
+        "https://geofeed.power-servers.net/rf_pws_geofeed.csv": {
+          "matching_rows": [
+            [
+              "157.228.145.0/24",
+              "RU"
+            ]
+          ],
+          "sha256": "074ce0e86adf508b7627988a27545260e68cf051b68c5293dbb9ecb9ffbe2b4c"
+        }
+      },
+      "host_assignments": [
+        {
+          "ip": "157.228.145.100",
+          "url": "https://rdap.db.ripe.net/ip/157.228.145.100",
+          "country": "RU",
+          "name": "PSERVERS-CLOUD-HOSTING",
+          "start": "157.228.145.0",
+          "end": "157.228.145.255",
+          "http": 200
+        }
+      ],
+      "preliminary_exact_registry_geofeed_and_ris_match": true
+    },
+    {
+      "prefix": "157.228.191.0/24",
+      "affected_hosts": [
+        "157.228.191.39"
+      ],
+      "registry_prefixes": [
+        "157.228.191.0/24"
+      ],
+      "country": "RU",
+      "name": "FIRST-SERVER",
+      "registry_orgs": [
+        "ORG-FSSL4-RIPE"
+      ],
+      "registry_url": "https://rest.db.ripe.net/ripe/inetnum/157.228.191.0%20-%20157.228.191.255.json",
+      "registry_status": 200,
+      "ris_origins": [
+        205090
+      ],
+      "ris_more_specifics": [],
+      "children_http": 404,
+      "rpki": "valid",
+      "registry_linked_geofeeds": {
+        "https://geofeed.first-server.net/rf_fs_geofeed.csv": {
+          "matching_rows": [
+            [
+              "157.228.191.0/24",
+              "RU"
+            ]
+          ],
+          "sha256": "77ffc9362d46db07c3a9d302c7ab8a3dfb2c5ebada3c443aa88acc3bcbb1f9eb"
+        }
+      },
+      "host_assignments": [
+        {
+          "ip": "157.228.191.39",
+          "url": "https://rdap.db.ripe.net/ip/157.228.191.39",
+          "country": "RU",
+          "name": "FIRST-SERVER",
+          "start": "157.228.191.0",
+          "end": "157.228.191.255",
+          "http": 200
+        }
+      ],
+      "preliminary_exact_registry_geofeed_and_ris_match": true
+    },
+    {
+      "prefix": "178.170.189.0/24",
+      "affected_hosts": [
+        "178.170.189.96"
+      ],
+      "registry_prefixes": [
+        "178.170.186.0/23",
+        "178.170.188.0/23",
+        "178.170.190.0/24"
+      ],
+      "country": "RU",
+      "name": "Sub-allocation_LeaderTelecomLTD",
+      "registry_orgs": [
+        "ORG-LL38-RIPE"
+      ],
+      "registry_url": "https://rest.db.ripe.net/ripe/inetnum/178.170.186.0%20-%20178.170.190.255.json",
+      "registry_status": 200,
+      "ris_origins": [],
+      "ris_more_specifics": [],
+      "children_http": 404,
+      "rpki": null,
+      "registry_linked_geofeeds": {},
+      "host_assignments": [
+        {
+          "ip": "178.170.189.96",
+          "url": "https://rdap.db.ripe.net/ip/178.170.189.96",
+          "country": "RU",
+          "name": "Sub-allocation_LeaderTelecomLTD",
+          "start": "178.170.186.0",
+          "end": "178.170.190.255",
+          "http": 200
+        }
+      ],
+      "preliminary_exact_registry_geofeed_and_ris_match": false
+    },
+    {
+      "prefix": "45.142.122.0/24",
+      "affected_hosts": [
+        "45.142.122.40",
+        "45.142.122.45"
+      ],
+      "registry_prefixes": [
+        "45.142.122.0/24"
+      ],
+      "country": "RU",
+      "name": "FIRSTSERVER",
+      "registry_orgs": [
+        "ORG-FSSL4-RIPE"
+      ],
+      "registry_url": "https://rest.db.ripe.net/ripe/inetnum/45.142.122.0%20-%2045.142.122.255.json",
+      "registry_status": 200,
+      "ris_origins": [
+        205090
+      ],
+      "ris_more_specifics": [],
+      "children_http": 404,
+      "rpki": "valid",
+      "registry_linked_geofeeds": {
+        "https://geofeed.first-server.net/fb_geofeed.csv": {
+          "matching_rows": [],
+          "sha256": "3721f92fd09917143e01ec9117b46de301a289ecaaec0965ca1d8d2e0dd9ae89"
+        }
+      },
+      "host_assignments": [
+        {
+          "ip": "45.142.122.40",
+          "url": "https://rdap.db.ripe.net/ip/45.142.122.40",
+          "country": "RU",
+          "name": "FIRSTSERVER",
+          "start": "45.142.122.0",
+          "end": "45.142.122.255",
+          "http": 200
+        },
+        {
+          "ip": "45.142.122.45",
+          "url": "https://rdap.db.ripe.net/ip/45.142.122.45",
+          "country": "RU",
+          "name": "FIRSTSERVER",
+          "start": "45.142.122.0",
+          "end": "45.142.122.255",
+          "http": 200
+        }
+      ],
+      "preliminary_exact_registry_geofeed_and_ris_match": false
+    },
+    {
+      "prefix": "45.86.78.0/24",
+      "affected_hosts": [
+        "45.86.78.168",
+        "45.86.78.173"
+      ],
+      "registry_prefixes": [
+        "45.86.78.0/24"
+      ],
+      "country": "RU",
+      "name": "NetCrafters",
+      "registry_orgs": [
+        "ORG-NO63-RIPE"
+      ],
+      "registry_url": "https://rest.db.ripe.net/ripe/inetnum/45.86.78.0%20-%2045.86.78.255.json",
+      "registry_status": 200,
+      "ris_origins": [
+        203273
+      ],
+      "ris_more_specifics": [],
+      "children_http": 404,
+      "rpki": "valid",
+      "registry_linked_geofeeds": {
+        "https://netcrafters.tech/geofeed.csv": {
+          "matching_rows": [
+            [
+              "45.86.78.0/24",
+              "RU"
+            ]
+          ],
+          "sha256": "ea20a6f8ab2613c370413ff00333336679a4719cd2cab07a849fe8060748df84"
+        }
+      },
+      "host_assignments": [
+        {
+          "ip": "45.86.78.168",
+          "url": "https://rdap.db.ripe.net/ip/45.86.78.168",
+          "country": "RU",
+          "name": "NetCrafters",
+          "start": "45.86.78.0",
+          "end": "45.86.78.255",
+          "http": 200
+        },
+        {
+          "ip": "45.86.78.173",
+          "url": "https://rdap.db.ripe.net/ip/45.86.78.173",
+          "country": "RU",
+          "name": "NetCrafters",
+          "start": "45.86.78.0",
+          "end": "45.86.78.255",
+          "http": 200
+        }
+      ],
+      "preliminary_exact_registry_geofeed_and_ris_match": true
+    },
+    {
+      "prefix": "83.141.92.0/24",
+      "affected_hosts": [
+        "83.141.92.67"
+      ],
+      "registry_prefixes": [
+        "83.141.92.0/24"
+      ],
+      "country": "RU",
+      "name": "NetCrafters",
+      "registry_orgs": [
+        "ORG-NO63-RIPE"
+      ],
+      "registry_url": "https://rest.db.ripe.net/ripe/inetnum/83.141.92.0%20-%2083.141.92.255.json",
+      "registry_status": 200,
+      "ris_origins": [
+        203273
+      ],
+      "ris_more_specifics": [],
+      "children_http": 404,
+      "rpki": "valid",
+      "registry_linked_geofeeds": {},
+      "host_assignments": [
+        {
+          "ip": "83.141.92.67",
+          "url": "https://rdap.db.ripe.net/ip/83.141.92.67",
+          "country": "RU",
+          "name": "NetCrafters",
+          "start": "83.141.92.0",
+          "end": "83.141.92.255",
+          "http": 200
+        }
+      ],
+      "preliminary_exact_registry_geofeed_and_ris_match": false
+    }
+  ],
+  "ripe_child_recheck": {
+    "buckets": 70,
+    "status_counts": {
+      "404": 64,
+      "200": 6
+    },
+    "intersecting_regional_children": {
+      "144.124.219.0/24": {
+        "url": "https://rest.db.ripe.net/search.json?source=RIPE&query-string=144.124.219.0%2F24&flags=all-more&type-filter=inetnum",
+        "http": 200,
+        "rows_found": 1,
+        "intersecting_rows": [
+          {
+            "inetnum": "144.124.219.224 - 144.124.219.239",
+            "netname": "NETRU",
+            "country": "RU",
+            "org": "ORG-PC1728-RIPE",
+            "status": "LEGACY",
+            "matching_hosts": [
+              "144.124.219.224"
+            ]
+          }
+        ],
+        "first_registry": "whois.ripe.net",
+        "first_country": "AE"
+      }
+    }
+  },
+  "preliminary_exact_matches": {
+    "prefixes": 9,
+    "addresses": 15
+  }
 }
