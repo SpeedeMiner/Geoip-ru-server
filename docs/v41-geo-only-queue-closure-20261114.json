@@ -1,0 +1,221 @@
+{
+  "base_pr_head": "0cda10ea9b998bd0d725af51732d1237cd21246c",
+  "base_artifact": "https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43569285126/artifacts/14104086134",
+  "base_dat_sha256": "d163e934c89519e3812552fb2ca842b7498db13e9615672f71d4ed141ee2122b",
+  "pinned_ipverse_sha256": "d34d00d59ec419fec991d860af290b557a47b8e2f9596688b9bd11b0e4103d02",
+  "scope": "Frozen resolver-only geography cohort reconstructed from the CI DAT and policy inputs. Decisions apply to this snapshot and policy, not to all future route observations or live reachability.",
+  "ris_query_time": "2026-11-14T00:00:00",
+  "buckets_reviewed": 109,
+  "ipv4_reviewed": 614,
+  "host_level_registry_lookups": 126,
+  "addresses_by_decision": {
+    "admitted": 2,
+    "confirmed_but_wider_than_policy": 13,
+    "linked_feed_unavailable": 11,
+    "multiple_observed_origins": 2,
+    "no_observed_route": 63,
+    "no_regional_assignment_evidence": 2,
+    "non_canonical_regional_assignment": 25,
+    "nonregional_registry_record": 86,
+    "regional_child_under_covering_route": 6,
+    "regional_label_without_corroboration": 46,
+    "shared_network_no_regional_assignment": 358
+  },
+  "unclassified_ipv4": 0,
+  "admitted": {
+    "prefix": "193.162.143.0/24",
+    "country": "RU",
+    "origin": "AS205090",
+    "registry_parent": "https://rdap.db.ripe.net/ip/193.162.143.0%2F24",
+    "registry_children_search": "https://rest.db.ripe.net/search.json?query-string=193.162.143.0%2F24&type-filter=inetnum&flags=M&source=RIPE",
+    "registry_children": [
+      {
+        "inetnum": "193.162.143.0 - 193.162.143.127",
+        "netname": [
+          "FirstServer"
+        ],
+        "country": [
+          "RU"
+        ],
+        "org": [
+          "ORG-FSSL4-RIPE"
+        ],
+        "geofeed": [
+          "https://geofeed.first-server.net/fb_geofeed.csv"
+        ],
+        "geofeed_remarks": [],
+        "ips": [
+          "193.162.143.13"
+        ]
+      },
+      {
+        "inetnum": "193.162.143.128 - 193.162.143.255",
+        "netname": [
+          "FirstServer"
+        ],
+        "country": [
+          "RU"
+        ],
+        "org": [
+          "ORG-FSSL4-RIPE"
+        ],
+        "geofeed": [
+          "https://geofeed.first-server.net/fb_geofeed.csv"
+        ],
+        "geofeed_remarks": [],
+        "ips": [
+          "193.162.143.254"
+        ]
+      }
+    ],
+    "linked_geofeed": "https://geofeed.first-server.net/fb_geofeed.csv",
+    "geofeed_sha256": "3721f92fd09917143e01ec9117b46de301a289ecaaec0965ca1d8d2e0dd9ae89",
+    "matching_geofeed_rows": {
+      "193.162.143.0/25": [
+        "RU",
+        "RU-MOW",
+        "Moscow"
+      ],
+      "193.162.143.128/25": [
+        "RU",
+        "RU-MOW",
+        "Moscow"
+      ]
+    },
+    "exact_ris": "https://stat.ripe.net/data/routing-status/data.json?resource=193.162.143.0%2F24",
+    "bgp_and_rpki": {
+      "bgp": {
+        "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=193.162.143.0%2F24&timestamp=2026-11-14T00%3A00%3A00",
+        "timestamp": "2026-11-14T00:00:00",
+        "observations": [
+          {
+            "prefix": "193.162.143.0/24",
+            "origin": 205090,
+            "paths": 379
+          }
+        ]
+      },
+      "rpki": {
+        "url": "https://stat.ripe.net/data/rpki-validation/data.json?resource=AS205090&prefix=193.162.143.0%2F24",
+        "resource": "205090",
+        "prefix": "193.162.143.0/24",
+        "validating_roas": [
+          {
+            "origin": "205090",
+            "prefix": "193.162.143.0/24",
+            "validity": "valid",
+            "max_length": 24
+          }
+        ],
+        "status": "valid",
+        "validator": "routinator"
+      }
+    },
+    "pinned_ipverse_coverage": {
+      "193.162.143.13": {
+        "193.162.143.0/24": [
+          205090
+        ]
+      },
+      "193.162.143.254": {
+        "193.162.143.0/24": [
+          205090
+        ]
+      }
+    },
+    "restored_ipv4": [
+      "193.162.143.13",
+      "193.162.143.254"
+    ]
+  },
+  "held_examples": {
+    "firstserver_multiple_origins": {
+      "prefix": "185.180.230.0/24",
+      "ris_bgp_state": "https://stat.ripe.net/data/bgp-state/data.json?resource=185.180.230.0%2F24&timestamp=2026-11-14T00%3A00%3A00",
+      "exact_paths_by_origin": {
+        "AS204997": 371,
+        "AS50113": 8
+      },
+      "rpki": [
+        {
+          "url": "https://stat.ripe.net/data/rpki-validation/data.json?resource=AS204997&prefix=185.180.230.0%2F24",
+          "data": {
+            "resource": "204997",
+            "prefix": "185.180.230.0/24",
+            "validating_roas": [
+              {
+                "origin": "204997",
+                "prefix": "185.180.230.0/24",
+                "validity": "valid",
+                "max_length": 24
+              },
+              {
+                "origin": "50113",
+                "prefix": "185.180.230.0/24",
+                "validity": "invalid_asn",
+                "max_length": 24
+              }
+            ],
+            "status": "valid",
+            "validator": "routinator"
+          }
+        },
+        {
+          "url": "https://stat.ripe.net/data/rpki-validation/data.json?resource=AS50113&prefix=185.180.230.0%2F24",
+          "data": {
+            "resource": "50113",
+            "prefix": "185.180.230.0/24",
+            "validating_roas": [
+              {
+                "origin": "50113",
+                "prefix": "185.180.230.0/24",
+                "validity": "valid",
+                "max_length": 24
+              },
+              {
+                "origin": "204997",
+                "prefix": "185.180.230.0/24",
+                "validity": "invalid_asn",
+                "max_length": 24
+              }
+            ],
+            "status": "valid",
+            "validator": "routinator"
+          }
+        }
+      ],
+      "routing_history": "https://stat.ripe.net/data/routing-history/data.json?resource=185.180.230.0%2F24&starttime=2026-08-15&endtime=2026-11-14&min_peers=10&normalise_visibility=true"
+    },
+    "h2nexus": {
+      "geofeed": "https://h2.nexus/media/geofeed.csv",
+      "geofeed_sha256": "f735530e0833692e8803119d1d30a4da967d0d34533bcef2f0fe280fafb59700",
+      "assignments": [
+        "144.31.129.160/27",
+        "144.31.131.160/27"
+      ],
+      "covering_routes": [
+        "144.31.128.0/23",
+        "144.31.130.0/23"
+      ],
+      "risk": "The feed locates neighboring /27s in several other countries. Do not add the encompassing /23s."
+    },
+    "ihor": {
+      "assignment": "185.125.216.0/23",
+      "covering_route": "185.125.216.0/22",
+      "geofeed": "https://geofeed.power-servers.net/ih_geofeed.csv",
+      "geofeed_sha256": "e3ab163fce08d816cd398a59134b715f341ca4f444566f4ef8f0b97b9c2e5269"
+    }
+  },
+  "verified_result": {
+    "table_rows": 112,
+    "table_limit": 112,
+    "ipv4_added_vs_pr_base": 2,
+    "ipv4_added_vs_published": 59,
+    "ipv4_removed": 0,
+    "ipv6_changed": false,
+    "private_changed": false,
+    "ipv4_left_outside_direct": 612,
+    "dat_sha256": "8d807b8d6069791b2e006bc561c4c69cc1a3172521cde0271c62b9305ce1c391",
+    "effective_block_sha256": "525125b2a06fb912e743bfbbfaa5420c161873dc0eafb28ec1c38cc45ed9774f"
+  }
+}
