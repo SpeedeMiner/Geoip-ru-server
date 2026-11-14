@@ -19,7 +19,12 @@ The four unavailable raw files are not interchangeable with the older
 snapshots. The older inputs regenerate the same regional RIR table,
 RU prefix table and BY/KZ ASN registry, but the RU ASN registry differs
 by three additions and two removals in the current release. This is a
-registry change, not by itself a routing-coverage claim.
+registry change, not by itself a routing-coverage claim. A separate
+Go+v41 counterfactual replacing only the RU ASN table reproduced an
+undesired addition of 1,024 IPv4 addresses in four /24s, all from
+AS218621 in the frozen ipverse evidence. No IPv6, PRIVATE or effective
+mask change resulted. See the [counterfactual DAT difference](v41-prior-ru-asn-counterfactual-dat-20261114.json). This was not
+published or proposed for DIRECT.
 
 ## Optional follow-up, separate from PR #32
 

@@ -1,0 +1,78 @@
+{
+  "status": "counterfactual_only",
+  "release_changed": false,
+  "delta": {
+    "RU": {
+      "4": {
+        "added_to_counterfactual": 1024,
+        "removed_from_counterfactual": 0,
+        "added_cidrs": [
+          "48.103.138.0/24",
+          "169.128.68.0/24",
+          "177.202.118.0/24",
+          "179.236.128.0/24"
+        ],
+        "removed_cidrs": []
+      },
+      "6": {
+        "added_to_counterfactual": 0,
+        "removed_from_counterfactual": 0,
+        "added_cidrs": [],
+        "removed_cidrs": []
+      }
+    },
+    "PRIVATE": {
+      "4": {
+        "added_to_counterfactual": 0,
+        "removed_from_counterfactual": 0,
+        "added_cidrs": [],
+        "removed_cidrs": []
+      },
+      "6": {
+        "added_to_counterfactual": 0,
+        "removed_from_counterfactual": 0,
+        "added_cidrs": [],
+        "removed_cidrs": []
+      }
+    }
+  },
+  "changed_input_only": "geoip_RU_registered_asns.txt",
+  "original_sha256": "fae1b8aa4b8064f5948f5e57ef5277d26a1209d62edaf7bf2423bc560bae25e5",
+  "counterfactual_sha256": "04c81301f5299c84a5aa5e83bd04cc7c3338392e2dc556336edcd7ea2cc815f4",
+  "reference_dat_sha256": "2735053560ebd598cbdcd71ccf858806d4b955a17e2eac512a7baf249d43653a",
+  "counterfactual_dat_sha256": "9b55821a0f72ba9cb30dca6d5655aa7f9909f585564e983962061a3cea5e1e4e",
+  "effective_mask_unchanged": true,
+  "origin_in_frozen_ipverse": "AS218621",
+  "coverage": {
+    "31.77.222.0/24": {
+      "current": "256",
+      "counterfactual": "256",
+      "total": "256"
+    },
+    "48.103.138.0/24": {
+      "current": "0",
+      "counterfactual": "256",
+      "total": "256"
+    },
+    "169.128.68.0/24": {
+      "current": "0",
+      "counterfactual": "256",
+      "total": "256"
+    },
+    "177.202.118.0/24": {
+      "current": "0",
+      "counterfactual": "256",
+      "total": "256"
+    },
+    "179.236.128.0/24": {
+      "current": "0",
+      "counterfactual": "256",
+      "total": "256"
+    },
+    "2a0e:e001:20::/44": {
+      "current": "19342813113834066795298816",
+      "counterfactual": "19342813113834066795298816",
+      "total": "19342813113834066795298816"
+    }
+  }
+}
