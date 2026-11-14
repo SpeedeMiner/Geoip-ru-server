@@ -32,6 +32,12 @@
 - The final client file remains `geoip_RU.dat` with `geoip:RU` and `geoip:PRIVATE` only.
 - `geoip_RU_company_asn_bgp_prefixes.txt` lists exact prefix-level company exceptions; it does not exempt whole ASNs outside the selected-origin snapshot.
 
+## Source refresh and replay
+
+- Each build resolves the latest stable asset or published branch for all routing feed publishers. Related files are fetched from the same resolved version.
+- The versioned release retains the exact routing and official Telegram inputs in `v41-upstream-inputs.tar.gz`. The input provenance records resolved URLs, byte counts and SHA-256. Existing RIR/IANA and ipverse retention remains separate.
+- Reviewed policy tables and the historical v38 evidence baseline are not rolling feeds.
+
 ## Xray and sing-box files
 
 - `geoip_RU.dat` is the sole GeoIP profile, with `RU` and `PRIVATE`.

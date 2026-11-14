@@ -46,16 +46,10 @@ def main() -> None:
     if not (a.geoip or a.official_feed):
         p.error("provide --geoip, --official-feed, or both")
     try:
-        pinned = read_telegram_feed(PINNED_FEED)
-        if a.official_feed:
-            official = read_telegram_feed(a.official_feed)
-            if official != pinned:
-                added = ", ".join(sorted(map(str, official - pinned))) or "-"
-                removed = ", ".join(sorted(map(str, pinned - official))) or "-"
-                raise ValueError(f"official Telegram feed changed (added: {added}; removed: {removed}); review the pinned snapshot")
+        official = read_telegram_feed(a.official_feed or PINNED_FEED)
         if a.geoip:
-            assert_disjoint(a.geoip, pinned)
-        print(f"Telegram check: PASS ({len(pinned)} CIDRs)")
+            assert_disjoint(a.geoip, official)
+        print(f"Telegram check: PASS ({len(official)} CIDRs)")
     except (OSError, ValueError) as exc:
         p.exit(1, f"ERROR: {exc}\n")
 

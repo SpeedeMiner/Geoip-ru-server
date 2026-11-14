@@ -24,26 +24,22 @@ from validate_v41_telegram import PINNED_FEED, read_telegram_feed
 SOURCE_REFS = {
     "kyoresuas-standard": {
         "repository": "kyoresuas/ru-direct",
-        "commit": "0781793a159f9a53c5e68da2f46b0a64855f8cb6",
         "files": ["ru-standard.ipv4.txt", "ru-standard.ipv6.txt", "services.json"],
         "license": "Owner waived separate license verification; preserve upstream data attributions",
     },
     "w1zardz-service-direct": {
         "repository": "w1zardz/amnezia-vpn-russia-split-tunneling",
-        "commit": "6157cdfb55f1748c98cab121cde008b5f69d325d",
         "files": ["dist/ru-direct-ipv4.txt"],
         "license": "MIT",
     },
     "hxehex-mobile-hosts": {
         "role": "diagnostic-only",
         "repository": "hxehex/russia-mobile-internet-whitelist",
-        "commit": "fad3653ebd4b212643774a4d10af3eb33838e4ff",
         "files": ["ipwhitelist.txt"],
         "license": "MIT",
     },
     "operator-whitelist": {
         "repository": "escapingworm/russia-whitelist",
-        "commit": "2bb6c0788f21986b7928d986ea2577c6ebc11b36",
         "files": ["ru-whitelist-cidr.txt"],
         "license": "MIT",
     },
@@ -697,6 +693,8 @@ def main():
     parser.add_argument("--reviewed-operator-prefixes", type=Path, required=True)
     parser.add_argument("--regional-admission-exclusions", type=Path, required=True)
     parser.add_argument("--ipsum", type=Path, required=True)
+    parser.add_argument("--telegram-feed", type=Path, default=PINNED_FEED)
+    parser.add_argument("--input-provenance", type=Path)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--categories", type=Path, required=True)
     parser.add_argument("--quality", type=Path, required=True)
@@ -715,7 +713,7 @@ def main():
     private_iv = {v: intervals(private, v) for v in (4, 6)}
 
     rir, rir_rows = parse_rir_tsv(args.rir)
-    telegram = read_telegram_feed(PINNED_FEED)
+    telegram = read_telegram_feed(args.telegram_feed)
     service_sources, source_stats, prefix_rows = load_service_inputs(args)
     hxehex_diagnostics, hxehex_stats, hxehex_rows = load_hxehex_diagnostics(args.hxehex_ip)
     prefix_rows.extend(hxehex_rows)
@@ -1139,7 +1137,8 @@ def main():
         "output_sha256":sha256(payload),
         "output_bytes":len(payload),
         "sources":SOURCE_REFS,
-        "telegram_official": {"cidrs": len(telegram), "input_sha256": sha256(PINNED_FEED.read_bytes())},
+        "input_provenance_sha256": sha256(args.input_provenance.read_bytes()) if args.input_provenance else None,
+        "telegram_official": {"cidrs": len(telegram), "input_sha256": sha256(args.telegram_feed.read_bytes())},
         "rir_inventory":{"rows":rir_rows,"countries":{c:len(rir[c]) for c in ("RU","BY","KZ")}},
         "regional_admission_exclusions": {
             "records": list(admission_exclusions.values()),

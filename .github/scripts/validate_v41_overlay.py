@@ -52,7 +52,7 @@ def validate(args: argparse.Namespace) -> dict:
     feeds.kyoresuas_services = args.kyoresuas_services
     feeds.w1zardz = args.w1zardz
     feeds.escapingworm = args.escapingworm
-    telegram = read_telegram_feed(PINNED_FEED)
+    telegram = read_telegram_feed(args.telegram_feed)
     service_sources, _, _ = builder.load_service_inputs(feeds)
     rir_resources, _ = builder.parse_rir_tsv(args.rir)
     service_exact, service_resolver = builder.build_service_protection_masks(rir_resources, service_sources)
@@ -168,7 +168,7 @@ def validate(args: argparse.Namespace) -> dict:
     if manifest.get("input_sha256", {}).get("regional_origin_prefixes") != sha256(args.regional_origin_prefixes):
         raise ValueError("Manifest selected regional origin SHA-256 mismatch")
 
-    if manifest.get("telegram_official") != {"cidrs": len(telegram), "input_sha256": sha256(PINNED_FEED)}:
+    if manifest.get("telegram_official") != {"cidrs": len(telegram), "input_sha256": sha256(args.telegram_feed)}:
         raise ValueError("Manifest official Telegram snapshot mismatch")
 
     safety = manifest.get("safety", {})
@@ -242,6 +242,7 @@ def main() -> int:
         "manifest", "quality", "rir", "regional_admission_exclusions", "reviewed_operator_prefixes",
     ):
         parser.add_argument("--" + name.replace("_", "-"), type=Path, required=True)
+    parser.add_argument("--telegram-feed", type=Path, default=PINNED_FEED)
     args = parser.parse_args()
     try:
         validate(args)

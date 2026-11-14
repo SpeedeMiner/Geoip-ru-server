@@ -20,7 +20,7 @@ on:
       - ".github/scripts/build_v41_srs.py"
       - ".github/scripts/extract_ru_asn_prefixes_v41.py"
       - ".github/scripts/geoip-v37-builder/**"
-      - ".github/scripts/download_v41_locked_sources.py"
+      - ".github/scripts/download_v41_upstream_sources.py"
       - ".github/scripts/*v41*.sh"
       - ".github/scripts/build_v41_rir_legacy_inventory.py"
       - ".github/scripts/build_v41_iana_special_prefixes.py"
@@ -28,7 +28,7 @@ on:
       - ".github/scripts/validate_v41_publication_bounds.py"
       - ".github/scripts/verify_v41_ipverse_archive.py"
       - ".github/scripts/bundle_v41_registry_inputs.py"
-      - ".github/data/v41-source-lock.json"
+      - ".github/data/v41-upstream-sources.json"
       - ".github/scripts/build_company_asn_prefixes.py"
       - ".github/scripts/build_company_asn_prefix_classes_v41.py"
       - ".github/scripts/prepare_blocked_sources_v41.py"
@@ -145,6 +145,9 @@ env:
   BLOCKED_STATS_INPUT: geoip_RU_blocked_source_stats.txt
   BLOCKED_CHECKSUMS_INPUT: geoip_RU_blocked_sources.sha256
   INPUT_PROVENANCE: geoip_RU_input_provenance.tsv
+  TELEGRAM_OFFICIAL_INPUT: telegram-official-cidrs.txt
+  UPSTREAM_INPUTS_ARCHIVE: v41-upstream-inputs.tar.gz
+  UPSTREAM_INPUTS_SHA: geoip_RU_v41_upstream_inputs.sha256sum
   INPUT_PROVENANCE_SHA: geoip_RU_input_provenance.tsv.sha256sum
 
 jobs:
@@ -170,6 +173,8 @@ jobs:
 
       - name: Download RU/BY/KZ GeoIP sources, blocked-IP snapshot, RIR, IANA and BGP data
         shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: bash .github/scripts/download_v41_build_inputs.sh
 
       - name: Extract RU/BY/KZ registered ASN prefixes and global ipverse BGP observation set
@@ -287,7 +292,9 @@ jobs:
           # named service-direct routes, then apply only the already approved exact/bounded RKN set.
           python3 .github/scripts/build_v41_overlay.py \
             --base "$OUTPUT_FILE" \
+            --input-provenance "$INPUT_PROVENANCE" \
             --hydra "$HYDRA_INPUT" \
+            --telegram-feed "$TELEGRAM_OFFICIAL_INPUT" \
             --rir "$RIR_RUKZBY_PREFIX_INPUT" \
             --kyoresuas-v4 "$KY_STANDARD_V4_INPUT" \
             --kyoresuas-v6 "$KY_STANDARD_V6_INPUT" \
@@ -352,6 +359,7 @@ jobs:
             --base "$OUTPUT_FILE" \
             --geoip "$V41_OUTPUT_FILE" \
             --hydra "$HYDRA_INPUT" \
+            --telegram-feed "$TELEGRAM_OFFICIAL_INPUT" \
             --blocked-union "$BLOCKED_IP_INPUT" \
             --blocked-exact "$BLOCKED_IP_EXACT_INPUT" \
             --blocked-resolved "$BLOCKED_IPRESOLVE_ONLY_INPUT" \
@@ -440,11 +448,8 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          curl --fail --silent --show-error --location --proto '=https' --proto-redir '=https' \
-            --connect-timeout 10 --max-time 25 --retry 2 --max-filesize 16384 \
-            https://core.telegram.org/resources/cidr.txt -o "$RUNNER_TEMP/telegram-cidrs.txt"
           python3 .github/scripts/validate_v41_telegram.py \
-            --geoip "$V41_OUTPUT_FILE" --official-feed "$RUNNER_TEMP/telegram-cidrs.txt"
+            --geoip "$V41_OUTPUT_FILE" --official-feed "$TELEGRAM_OFFICIAL_INPUT"
 
       - name: Verify absolute publication bounds independently
         shell: bash
@@ -465,6 +470,15 @@ jobs:
           python3 .github/scripts/bundle_v41_registry_inputs.py create \
             "$INPUT_PROVENANCE" . "$REGISTRY_INPUTS_ARCHIVE"
           sha256sum "$REGISTRY_INPUTS_ARCHIVE" > "$REGISTRY_INPUTS_SHA"
+
+      - name: Archive the exact rolling routing feeds
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 .github/scripts/bundle_v41_registry_inputs.py \
+            --upstream-catalog .github/data/v41-upstream-sources.json create \
+            "$INPUT_PROVENANCE" . "$UPSTREAM_INPUTS_ARCHIVE"
+          sha256sum "$UPSTREAM_INPUTS_ARCHIVE" > "$UPSTREAM_INPUTS_SHA"
 
       - name: Compile and verify sing-box rule-sets from the Full DAT
         shell: bash
@@ -490,6 +504,9 @@ jobs:
           path: |
             as-ip-blocks.tar.gz
             v41-registry-inputs.tar.gz
+            v41-upstream-inputs.tar.gz
+            geoip_RU_v41_upstream_inputs.sha256sum
+            telegram-official-cidrs.txt
             geoip_RU_v41_registry_inputs.sha256sum
             antifilter-community.lst
             antifilter-ip.lst
@@ -664,6 +681,7 @@ jobs:
             candidate/geoip_RU_blocked_sources.sha256
             candidate/geoip_RU_input_provenance.tsv
             candidate/geoip_RU_input_provenance.tsv.sha256sum
+            candidate/geoip_RU_v41_upstream_inputs.sha256sum
             candidate/antifilter-ip.lst
             candidate/antifilter-ipresolve.lst
             candidate/geoip_RU_v38_approved_blocked_baseline.txt

@@ -1,0 +1,14 @@
+[
+  {"repository":"Davoyan/xray-routing","branch":"main","files":{"davoyan-geoip.dat":"release/geoip.dat"}},
+  {"repository":"DigneZzZ/routing","branch":"main","files":{"digne-geoip.dat":"v2ray/geoip.dat"}},
+  {"repository":"escapingworm/russia-whitelist","branch":"main","files":{"escapingworm-operator-cidr.txt":"ru-whitelist-cidr.txt"}},
+  {"repository":"golukon/russia-only-geoip","branch":"release","files":{"golukon-geoip.dat":"geoip.dat"}},
+  {"repository":"GrimbirdUsers/ru-routing-dat","branch":"main","files":{"grimbird-geoip.dat":"geoip.dat"}},
+  {"repository":"hxehex/russia-mobile-internet-whitelist","branch":"main","files":{"hxehex-cidrwhitelist.txt":"cidrwhitelist.txt","hxehex-ipwhitelist.txt":"ipwhitelist.txt"}},
+  {"repository":"hydraponique/roscomvpn-geoip","release":"latest","files":{"hydra-geoip.dat":"geoip.dat"}},
+  {"repository":"kirilllavrov/RU-domain-list-for-whitelist","release":"latest","files":{"kirill-geoip.dat":"geoip.dat"}},
+  {"repository":"kyoresuas/ru-direct","branch":"release","files":{"kyoresuas-ru-standard-ipv4.txt":"ru-standard.ipv4.txt","kyoresuas-ru-standard-ipv6.txt":"ru-standard.ipv6.txt","kyoresuas-services.json":"services.json"}},
+  {"repository":"Loyalsoldier/geoip","branch":"release","files":{"loyalsoldier-by.dat":"dat/by.dat","loyalsoldier-private.dat":"dat/private.dat","loyalsoldier-ru.dat":"dat/ru.dat"}},
+  {"repository":"v2fly/geoip","release":"latest","files":{"v2fly-geoip.dat":"geoip.dat","v2fly-geoip.dat.sha256sum":"geoip.dat.sha256sum"}},
+  {"repository":"w1zardz/amnezia-vpn-russia-split-tunneling","branch":"master","files":{"w1zardz-ru-ipv4.txt":"dist/ru-direct-ipv4.txt"}}
+]

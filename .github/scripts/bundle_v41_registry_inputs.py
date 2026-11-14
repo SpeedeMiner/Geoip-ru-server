@@ -42,14 +42,14 @@ def read_small(path, cap):
     return data
 
 
-def metadata(provenance):
+def metadata(provenance, members=MEMBERS):
     raw = read_small(provenance, MAX_PROVENANCE)
     table = csv.DictReader(io.StringIO(raw.decode("utf-8"), newline=""), delimiter="\t")
     if table.fieldnames != HEADER:
         raise ValueError("unexpected input provenance header")
     rows = {}
     for row in table:
-        if row["LOCAL_FILE"] not in MEMBERS:
+        if row["LOCAL_FILE"] not in members:
             continue
         name = row["LOCAL_FILE"]
         if name in rows or None in row or row["STATUS"] != "downloaded":
@@ -60,7 +60,7 @@ def metadata(provenance):
         if not 0 < size <= MAX_MEMBER:
             raise ValueError(f"out-of-bounds size for {name}")
         rows[name] = {"size": size, "sha256": row["SHA256"]}
-    if rows.keys() != set(MEMBERS) or sum(r["size"] for r in rows.values()) > MAX_PAYLOAD:
+    if rows.keys() != set(members) or sum(r["size"] for r in rows.values()) > MAX_PAYLOAD:
         raise ValueError("registry inputs missing or too large")
     return {"schema": 1, "provenance_sha256": sha(raw), "files": rows}
 
@@ -69,15 +69,15 @@ def manifest_bytes(meta):
     return (json.dumps(meta, sort_keys=True, separators=(",", ":")) + "\n").encode("ascii")
 
 
-def create(provenance, source, out):
-    meta = metadata(provenance)
+def create(provenance, source, out, *, members=MEMBERS):
+    meta = metadata(provenance, members)
     out.parent.mkdir(parents=True, exist_ok=True)
     fd, name = tempfile.mkstemp(dir=out.parent, prefix=out.name + ".")
     part = Path(name)
     try:
         with os.fdopen(fd, "wb") as f, gzip.GzipFile(filename="", fileobj=f, mode="wb", mtime=0, compresslevel=6) as gz:
             with tarfile.open(fileobj=gz, mode="w|", format=tarfile.USTAR_FORMAT) as tar:
-                for key in (MANIFEST, *MEMBERS):
+                for key in (MANIFEST, *members):
                     if key == MANIFEST:
                         data = manifest_bytes(meta)
                     else:
@@ -91,7 +91,7 @@ def create(provenance, source, out):
                     member = tarfile.TarInfo(key)
                     member.size, member.mode, member.mtime = len(data), 0o644, 0
                     tar.addfile(member, io.BytesIO(data))
-        result, _ = checked_members(provenance, part)
+        result, _ = checked_members(provenance, part, members=members)
         # No pre-existing output can be overwritten, even after a successful replay.
         os.link(part, out)
     finally:
@@ -99,10 +99,10 @@ def create(provenance, source, out):
     return result
 
 
-def checked_members(provenance, archive):
-    meta = metadata(provenance)
+def checked_members(provenance, archive, *, members=MEMBERS):
+    meta = metadata(provenance, members)
     expected_manifest = manifest_bytes(meta)
-    names = (MANIFEST, *MEMBERS)
+    names = (MANIFEST, *members)
     expected_payload = sum(x["size"] for x in meta["files"].values()) + len(expected_manifest)
     cap = expected_payload + len(names) * 1024 + 10240
     compressed = read_small(archive, min(MAX_PAYLOAD, cap + 1024 * 1024))
@@ -135,17 +135,17 @@ def checked_members(provenance, archive):
             "input_bytes": sum(v["size"] for v in meta["files"].values()), **meta}, seen
 
 
-def verify(provenance, archive):
-    result, _ = checked_members(provenance, archive)
+def verify(provenance, archive, *, members=MEMBERS):
+    result, _ = checked_members(provenance, archive, members=members)
     return result
 
 
-def restore(provenance, archive, output):
-    result, files = checked_members(provenance, archive)
+def restore(provenance, archive, output, *, members=MEMBERS):
+    result, files = checked_members(provenance, archive, members=members)
     # Verify every byte before writing. Never touch an existing directory.
     output.mkdir()
     try:
-        for name in MEMBERS:
+        for name in members:
             with (output / name).open("xb") as f:
                 f.write(files[name])
     except OSError:
@@ -168,14 +168,26 @@ def main():
     unpack.add_argument("provenance", type=Path)
     unpack.add_argument("archive", type=Path)
     unpack.add_argument("output", type=Path)
+    p.add_argument("--upstream-catalog", type=Path,
+                   help="Use the rolling routing-feed corpus instead of the seven registries")
     a = p.parse_args()
     try:
+        members = MEMBERS
+        if a.upstream_catalog:
+            groups = json.loads(a.upstream_catalog.read_bytes())
+            members = tuple(sorted(name for group in groups for name in group["files"])) + ("telegram-official-cidrs.txt",)
+            if len(members) != len(set(members)) or any(
+                not re.fullmatch(r"[A-Za-z0-9_.-]+", name) or name in (".", "..", MANIFEST)
+                for name in members
+            ):
+                raise ValueError("invalid or duplicate rolling source member")
+
         if a.mode == "create":
-            result = create(a.provenance, a.source, a.archive)
+            result = create(a.provenance, a.source, a.archive, members=members)
         elif a.mode == "restore":
-            result = restore(a.provenance, a.archive, a.output)
+            result = restore(a.provenance, a.archive, a.output, members=members)
         else:
-            result = verify(a.provenance, a.archive)
+            result = verify(a.provenance, a.archive, members=members)
     except (OSError, ValueError, EOFError, tarfile.TarError, zlib.error) as err:
         p.exit(2, f"registry bundle rejected: {err}\n")
     print(json.dumps(result, indent=2, sort_keys=True))

@@ -46,6 +46,19 @@ printf '%s  %s\n' "$registry_sha" "$dest/v41-registry-inputs.tar.gz" | sha256sum
 python3 "$scripts/bundle_v41_registry_inputs.py" verify \
   "$dest/provenance.tsv" "$dest/v41-registry-inputs.tar.gz"
 
+git -C "$dest" show "$SNAPSHOT_SHA:geoip_RU_v41_upstream_inputs.sha256sum" > "$dest/upstream.sha256"
+IFS= read -r upstream_checksum < "$dest/upstream.sha256"
+[[ "$upstream_checksum" =~ ^([0-9a-f]{64})\ \ v41-upstream-inputs\.tar\.gz$ ]]
+upstream_sha="${BASH_REMATCH[1]}"
+curl --fail --silent --show-error --location --proto '=https' --proto-redir '=https' \
+  --retry 3 --retry-all-errors --connect-timeout 15 --max-time 120 --max-filesize 134217728 \
+  --output "$dest/v41-upstream-inputs.tar.gz" \
+  "https://github.com/$GITHUB_REPOSITORY/releases/download/$SNAPSHOT_TAG/v41-upstream-inputs.tar.gz"
+printf '%s  %s\n' "$upstream_sha" "$dest/v41-upstream-inputs.tar.gz" | sha256sum -c -
+python3 "$scripts/bundle_v41_registry_inputs.py" \
+  --upstream-catalog "$scripts/../data/v41-upstream-sources.json" verify \
+  "$dest/provenance.tsv" "$dest/v41-upstream-inputs.tar.gz"
+
 # Require the exact checked parent to still be current when the server updates
 # the ref. The direct-parent check above guarantees this is a fast-forward.
 GIT_TERMINAL_PROMPT=0 git -C "$dest" "${auth[@]}" push \
