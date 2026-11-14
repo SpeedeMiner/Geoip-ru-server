@@ -85,5 +85,12 @@
     "iana": "b2f8fa2181667309b86559474053e9582bbf2a396e5a6a848c4e8c3764d0515a",
     "ipverse_and_asns": "7e1ecfba2bf2a0d14ef1f911196809a1f7c19f45d7eb6802ac4615004e6906dd",
     "validate": "d578c7513490dd62b9b69797c8919d8765d159166555b430579d9401ecf88279"
-  }
+  },
+  "compiler_distribution_sha256": "ccfe7ae822d2c2f41f4fe7c956199967a4dac22d0ee0d2b2bfdb440aab3b20c5",
+  "compiler_official_manifest": "https://go.dev/dl/?mode=json&include=all",
+  "source_tree_identity_check": "local Git tree and separately recalculated archive tree SHA-1 match",
+  "original_production_build_artifact_id": 14111415093,
+  "original_production_build_artifact_sha256": "7e28ff6b87dfef32ed39dc5129523d1554278123f0b186be69ee02b02c818ed0",
+  "original_production_v37_base_same": true,
+  "original_production_v41_dat_same": true
 }

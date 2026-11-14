@@ -40,6 +40,28 @@ def sha(p):
         return hashlib.file_digest(f, "sha256").hexdigest()
 
 
+def git_tree_oid(root):
+    def oid(kind, data):
+        header = f"{kind} {len(data)}\0".encode("ascii")
+        return hashlib.sha1(header + data, usedforsecurity=False).digest()
+
+    entries = []
+    for path in root.iterdir():
+        name = os.fsencode(path.name)
+        if path.is_symlink():
+            mode, digest = b"120000", oid("blob", os.fsencode(os.readlink(path)))
+        elif path.is_dir():
+            name += b"/"
+            mode, digest = b"40000", bytes.fromhex(git_tree_oid(path))
+        else:
+            mode = b"100755" if path.stat().st_mode & 0o111 else b"100644"
+            digest = oid("blob", path.read_bytes())
+        entries.append((name, mode, digest))
+    encoded = b"".join(mode + b" " + name.rstrip(b"/") + b"\0" + digest
+                       for name, mode, digest in sorted(entries))
+    return oid("tree", encoded).hex()
+
+
 def exact_provenance(root, primitives, raw_rir):
     src = root / "geoip_RU_input_provenance.tsv"
     with src.open(newline="") as f:
@@ -61,6 +83,8 @@ def exact_provenance(root, primitives, raw_rir):
 
 
 def run(tree, artifact, primitives, compiler, gocache, gopath, out, raw_rir=False):
+    if git_tree_oid(tree) != TREE_SHA:
+        raise ValueError("the replay requires a fresh archive of the pinned Git source tree")
     if sha(artifact) != ZIP_SHA:
         raise ValueError("wrong Actions artifact")
     with zipfile.ZipFile(artifact) as z:
