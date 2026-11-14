@@ -31,3 +31,20 @@ class NonDnsDiscoveryTest(unittest.TestCase):
             matches, _ = match_archive(path, scope)
         self.assertEqual(dict(matches), {ip_network("192.0.2.0/25"): {2, 3},
                                          ip_network("192.0.2.192/26"): {3}})
+
+    def test_ipv6_archive_uses_intervals_and_ignores_default_and_ipv4(self):
+        scope = intervals({ip_network("2001:db8::/32"), ip_network("2001:db9::/48")}, 6)
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "snapshot.tar.gz"
+            data = json.dumps({"asn": 42, "prefixes": {
+                "ipv4": ["0.0.0.0/0"], "ipv6": ["::/0", "2001:db8::/33"]
+            }}).encode()
+            with tarfile.open(path, "w:gz") as archive:
+                info = tarfile.TarInfo("archive/42/aggregated.json")
+                info.size = len(data)
+                archive.addfile(info, io.BytesIO(data))
+            matches, _ = match_archive(path, scope, 6)
+        rows = list(partition(scope, matches, 6))
+        self.assertEqual(dict(matches), {ip_network("2001:db8::/33"): {42}})
+        self.assertEqual([(str(n), asns, interval_size(win)) for n, asns, win in rows],
+                         [("2001:db8::/33", [42], 2**95), ("None", [], 2**95 + 2**80)])

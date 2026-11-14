@@ -1,0 +1,348 @@
+{
+  "baseline_dat_sha256": "2735053560ebd598cbdcd71ccf858806d4b955a17e2eac512a7baf249d43653a",
+  "reviewed_operator_rows": 121,
+  "mode": "Set arithmetic only. No table entries or production changes.",
+  "priority": {
+    "31.135.179.0/24": {
+      "coverage_by_existing_masks": {
+        "current_direct": 0,
+        "private": 0,
+        "reviewed_operator": 0,
+        "explicit_admission_exclusions": 0,
+        "v41_regional_registered": 0,
+        "telegram": 0,
+        "v37_approved": 0,
+        "exact_hard": 0,
+        "dns_resolver_raw": 0,
+        "v41_effective_exclusions": 0,
+        "selected_bgp": 0,
+        "regional_bgp": 0,
+        "company_bgp": 0
+      },
+      "current_discovery_addresses": 256,
+      "positive_build_provenance": {},
+      "fixed_geoip_source_overlaps": {
+        "davoyan": 256
+      },
+      "hypothetical_exact_prefix_allow_count": 256,
+      "hypothetical_effective_mask_removed_count": 0
+    },
+    "78.31.176.0/24": {
+      "coverage_by_existing_masks": {
+        "current_direct": 0,
+        "private": 0,
+        "reviewed_operator": 0,
+        "explicit_admission_exclusions": 0,
+        "v41_regional_registered": 0,
+        "telegram": 0,
+        "v37_approved": 0,
+        "exact_hard": 0,
+        "dns_resolver_raw": 0,
+        "v41_effective_exclusions": 0,
+        "selected_bgp": 0,
+        "regional_bgp": 0,
+        "company_bgp": 0
+      },
+      "current_discovery_addresses": 256,
+      "positive_build_provenance": {},
+      "fixed_geoip_source_overlaps": {
+        "davoyan": 256
+      },
+      "hypothetical_exact_prefix_allow_count": 256,
+      "hypothetical_effective_mask_removed_count": 0
+    },
+    "185.121.241.0/24": {
+      "coverage_by_existing_masks": {
+        "current_direct": 0,
+        "private": 0,
+        "reviewed_operator": 0,
+        "explicit_admission_exclusions": 0,
+        "v41_regional_registered": 0,
+        "telegram": 0,
+        "v37_approved": 0,
+        "exact_hard": 0,
+        "dns_resolver_raw": 0,
+        "v41_effective_exclusions": 0,
+        "selected_bgp": 0,
+        "regional_bgp": 0,
+        "company_bgp": 0
+      },
+      "current_discovery_addresses": 256,
+      "positive_build_provenance": {},
+      "fixed_geoip_source_overlaps": {
+        "davoyan": 256
+      },
+      "hypothetical_exact_prefix_allow_count": 256,
+      "hypothetical_effective_mask_removed_count": 0
+    },
+    "45.142.122.0/24": {
+      "coverage_by_existing_masks": {
+        "current_direct": 251,
+        "private": 0,
+        "reviewed_operator": 0,
+        "explicit_admission_exclusions": 0,
+        "v41_regional_registered": 0,
+        "telegram": 0,
+        "v37_approved": 2,
+        "exact_hard": 0,
+        "dns_resolver_raw": 2,
+        "v41_effective_exclusions": 2,
+        "selected_bgp": 0,
+        "regional_bgp": 0,
+        "company_bgp": 0
+      },
+      "current_discovery_addresses": 3,
+      "positive_build_provenance": {
+        "hydra-direct": 251
+      },
+      "fixed_geoip_source_overlaps": {
+        "davoyan": 256
+      },
+      "hypothetical_exact_prefix_allow_count": 5,
+      "hypothetical_effective_mask_removed_count": 2
+    }
+  },
+  "neighbor_controls": {
+    "31.135.176.0/21": {
+      "coverage_by_existing_masks": {
+        "current_direct": 768,
+        "private": 0,
+        "reviewed_operator": 0,
+        "explicit_admission_exclusions": 0,
+        "v41_regional_registered": 0,
+        "telegram": 0,
+        "v37_approved": 0,
+        "exact_hard": 0,
+        "dns_resolver_raw": 0,
+        "v41_effective_exclusions": 0,
+        "selected_bgp": 512,
+        "regional_bgp": 512,
+        "company_bgp": 0
+      },
+      "current_discovery_addresses": 256,
+      "positive_build_provenance": {
+        "hydra-direct": 256,
+        "rir-rukzby-selected-origin-protected": 512
+      },
+      "fixed_geoip_source_overlaps": {
+        "davoyan": 768,
+        "v2fly": 256
+      },
+      "hypothetical_exact_prefix_allow_count": 1280,
+      "hypothetical_effective_mask_removed_count": 0
+    },
+    "178.213.104.0/21": {
+      "coverage_by_existing_masks": {
+        "current_direct": 2048,
+        "private": 0,
+        "reviewed_operator": 0,
+        "explicit_admission_exclusions": 0,
+        "v41_regional_registered": 0,
+        "telegram": 0,
+        "v37_approved": 0,
+        "exact_hard": 0,
+        "dns_resolver_raw": 0,
+        "v41_effective_exclusions": 0,
+        "selected_bgp": 0,
+        "regional_bgp": 0,
+        "company_bgp": 0
+      },
+      "current_discovery_addresses": 0,
+      "positive_build_provenance": {
+        "hydra-direct": 2048
+      },
+      "fixed_geoip_source_overlaps": {
+        "davoyan": 2048,
+        "v2fly": 2048
+      },
+      "hypothetical_exact_prefix_allow_count": 0,
+      "hypothetical_effective_mask_removed_count": 0
+    },
+    "185.121.240.0/24": {
+      "coverage_by_existing_masks": {
+        "current_direct": 256,
+        "private": 0,
+        "reviewed_operator": 0,
+        "explicit_admission_exclusions": 0,
+        "v41_regional_registered": 0,
+        "telegram": 0,
+        "v37_approved": 0,
+        "exact_hard": 0,
+        "dns_resolver_raw": 0,
+        "v41_effective_exclusions": 0,
+        "selected_bgp": 0,
+        "regional_bgp": 0,
+        "company_bgp": 0
+      },
+      "current_discovery_addresses": 0,
+      "positive_build_provenance": {
+        "hydra-direct": 256
+      },
+      "fixed_geoip_source_overlaps": {
+        "davoyan": 256,
+        "v2fly": 256
+      },
+      "hypothetical_exact_prefix_allow_count": 0,
+      "hypothetical_effective_mask_removed_count": 0
+    },
+    "185.121.242.0/24": {
+      "coverage_by_existing_masks": {
+        "current_direct": 256,
+        "private": 0,
+        "reviewed_operator": 0,
+        "explicit_admission_exclusions": 0,
+        "v41_regional_registered": 0,
+        "telegram": 0,
+        "v37_approved": 0,
+        "exact_hard": 0,
+        "dns_resolver_raw": 0,
+        "v41_effective_exclusions": 0,
+        "selected_bgp": 0,
+        "regional_bgp": 0,
+        "company_bgp": 0
+      },
+      "current_discovery_addresses": 0,
+      "positive_build_provenance": {
+        "hydra-direct": 256
+      },
+      "fixed_geoip_source_overlaps": {
+        "davoyan": 256,
+        "v2fly": 256
+      },
+      "hypothetical_exact_prefix_allow_count": 0,
+      "hypothetical_effective_mask_removed_count": 0
+    },
+    "185.121.243.0/24": {
+      "coverage_by_existing_masks": {
+        "current_direct": 256,
+        "private": 0,
+        "reviewed_operator": 0,
+        "explicit_admission_exclusions": 0,
+        "v41_regional_registered": 0,
+        "telegram": 0,
+        "v37_approved": 1,
+        "exact_hard": 0,
+        "dns_resolver_raw": 1,
+        "v41_effective_exclusions": 0,
+        "selected_bgp": 256,
+        "regional_bgp": 256,
+        "company_bgp": 0
+      },
+      "current_discovery_addresses": 0,
+      "positive_build_provenance": {
+        "hydra-direct": 255,
+        "rir-rukzby-selected-origin-protected": 256
+      },
+      "fixed_geoip_source_overlaps": {
+        "davoyan": 256,
+        "v2fly": 256
+      },
+      "hypothetical_exact_prefix_allow_count": 0,
+      "hypothetical_effective_mask_removed_count": 0
+    },
+    "193.84.78.0/24": {
+      "coverage_by_existing_masks": {
+        "current_direct": 256,
+        "private": 0,
+        "reviewed_operator": 0,
+        "explicit_admission_exclusions": 0,
+        "v41_regional_registered": 256,
+        "telegram": 0,
+        "v37_approved": 0,
+        "exact_hard": 0,
+        "dns_resolver_raw": 0,
+        "v41_effective_exclusions": 0,
+        "selected_bgp": 256,
+        "regional_bgp": 256,
+        "company_bgp": 0
+      },
+      "current_discovery_addresses": 0,
+      "positive_build_provenance": {
+        "hydra-direct": 256,
+        "rir-rukzby-selected-origin-protected": 256,
+        "rir-resource-RU": 256
+      },
+      "fixed_geoip_source_overlaps": {
+        "grimbird": 256,
+        "digne": 256,
+        "davoyan": 256,
+        "golukon": 256,
+        "v2fly": 256,
+        "loyalsoldier": 256
+      },
+      "hypothetical_exact_prefix_allow_count": 0,
+      "hypothetical_effective_mask_removed_count": 0
+    },
+    "193.84.90.0/24": {
+      "coverage_by_existing_masks": {
+        "current_direct": 256,
+        "private": 0,
+        "reviewed_operator": 0,
+        "explicit_admission_exclusions": 0,
+        "v41_regional_registered": 256,
+        "telegram": 0,
+        "v37_approved": 0,
+        "exact_hard": 0,
+        "dns_resolver_raw": 0,
+        "v41_effective_exclusions": 0,
+        "selected_bgp": 256,
+        "regional_bgp": 256,
+        "company_bgp": 0
+      },
+      "current_discovery_addresses": 0,
+      "positive_build_provenance": {
+        "hydra-direct": 256,
+        "rir-rukzby-selected-origin-protected": 256,
+        "rir-resource-RU": 256
+      },
+      "fixed_geoip_source_overlaps": {
+        "grimbird": 256,
+        "digne": 256,
+        "davoyan": 256,
+        "golukon": 256,
+        "v2fly": 256,
+        "loyalsoldier": 256
+      },
+      "hypothetical_exact_prefix_allow_count": 0,
+      "hypothetical_effective_mask_removed_count": 0
+    },
+    "37.140.192.0/24": {
+      "coverage_by_existing_masks": {
+        "current_direct": 256,
+        "private": 0,
+        "reviewed_operator": 0,
+        "explicit_admission_exclusions": 0,
+        "v41_regional_registered": 256,
+        "telegram": 0,
+        "v37_approved": 85,
+        "exact_hard": 0,
+        "dns_resolver_raw": 85,
+        "v41_effective_exclusions": 0,
+        "selected_bgp": 256,
+        "regional_bgp": 256,
+        "company_bgp": 256
+      },
+      "current_discovery_addresses": 0,
+      "positive_build_provenance": {
+        "w1zardz-service-direct": 1,
+        "hxehex-mobile-hosts": 1,
+        "hydra-direct": 245,
+        "all-company-asn-origins": 256,
+        "shared-infrastructure-asn-origins": 256,
+        "verified-service-exact-hosts": 2,
+        "verified-service-resolver-protected": 2,
+        "rir-resource-RU": 256
+      },
+      "fixed_geoip_source_overlaps": {
+        "grimbird": 256,
+        "digne": 256,
+        "davoyan": 256,
+        "golukon": 256,
+        "v2fly": 256,
+        "loyalsoldier": 256
+      },
+      "hypothetical_exact_prefix_allow_count": 0,
+      "hypothetical_effective_mask_removed_count": 0
+    }
+  }
+}
