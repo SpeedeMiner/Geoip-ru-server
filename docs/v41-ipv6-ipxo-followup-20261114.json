@@ -1,0 +1,770 @@
+{
+  "archived_ipxo_ipv6_parent": "2a13:9500:1e4::/48",
+  "all_exact_archive_rows_in_ipxo_parent": 6781,
+  "archive_row_country_distribution": {
+    "AD": 1,
+    "AE": 3,
+    "AF": 3,
+    "AG": 1,
+    "AI": 1,
+    "AL": 1,
+    "AM": 1,
+    "AO": 1,
+    "AQ": 1,
+    "AR": 13,
+    "AS": 1,
+    "AT": 3,
+    "AU": 102,
+    "AW": 1,
+    "AX": 1,
+    "AZ": 3,
+    "BA": 1,
+    "BB": 1,
+    "BD": 6,
+    "BE": 6,
+    "BF": 1,
+    "BG": 3,
+    "BH": 3,
+    "BI": 1,
+    "BJ": 1,
+    "BL": 1,
+    "BM": 1,
+    "BN": 1,
+    "BO": 3,
+    "BQ": 1,
+    "BR": 336,
+    "BS": 1,
+    "BT": 1,
+    "BW": 1,
+    "BY": 3,
+    "BZ": 1,
+    "CA": 421,
+    "CD": 3,
+    "CF": 1,
+    "CG": 1,
+    "CH": 32,
+    "CI": 2,
+    "CK": 1,
+    "CL": 7,
+    "CM": 2,
+    "CN": 252,
+    "CO": 18,
+    "CR": 1,
+    "CU": 3,
+    "CV": 1,
+    "CW": 1,
+    "CY": 2,
+    "CZ": 4,
+    "DE": 269,
+    "DJ": 1,
+    "DK": 3,
+    "DM": 1,
+    "DO": 3,
+    "DZ": 5,
+    "EC": 4,
+    "EE": 2,
+    "EG": 4,
+    "ER": 1,
+    "ES": 24,
+    "ET": 1,
+    "FI": 4,
+    "FJ": 1,
+    "FK": 1,
+    "FM": 2,
+    "FO": 1,
+    "FR": 150,
+    "GA": 1,
+    "GB": 60,
+    "GD": 1,
+    "GE": 1,
+    "GF": 1,
+    "GG": 1,
+    "GH": 2,
+    "GI": 1,
+    "GL": 4,
+    "GM": 1,
+    "GN": 1,
+    "GP": 1,
+    "GQ": 1,
+    "GR": 4,
+    "GT": 2,
+    "GU": 1,
+    "GW": 1,
+    "GY": 1,
+    "HK": 2,
+    "HN": 4,
+    "HR": 1,
+    "HT": 1,
+    "HU": 3,
+    "ID": 16,
+    "IE": 4,
+    "IL": 8,
+    "IM": 1,
+    "IN": 209,
+    "IO": 1,
+    "IQ": 15,
+    "IR": 2,
+    "IS": 3,
+    "IT": 25,
+    "JE": 1,
+    "JM": 1,
+    "JO": 3,
+    "JP": 120,
+    "KE": 5,
+    "KG": 1,
+    "KH": 1,
+    "KI": 3,
+    "KM": 1,
+    "KN": 1,
+    "KP": 1,
+    "KR": 19,
+    "KW": 2,
+    "KY": 1,
+    "KZ": 9,
+    "LA": 1,
+    "LB": 3,
+    "LC": 1,
+    "LI": 1,
+    "LK": 2,
+    "LR": 2,
+    "LS": 1,
+    "LT": 2,
+    "LU": 1,
+    "LV": 1,
+    "LY": 1,
+    "MA": 5,
+    "MC": 1,
+    "MD": 2,
+    "ME": 1,
+    "MF": 1,
+    "MG": 1,
+    "MH": 1,
+    "MK": 2,
+    "ML": 1,
+    "MM": 3,
+    "MN": 3,
+    "MO": 1,
+    "MP": 1,
+    "MQ": 1,
+    "MR": 1,
+    "MS": 1,
+    "MT": 1,
+    "MU": 2,
+    "MV": 1,
+    "MW": 2,
+    "MX": 103,
+    "MY": 14,
+    "MZ": 1,
+    "NA": 1,
+    "NC": 2,
+    "NE": 1,
+    "NF": 1,
+    "NG": 19,
+    "NI": 1,
+    "NL": 6,
+    "NO": 3,
+    "NP": 2,
+    "NR": 1,
+    "NU": 1,
+    "NZ": 11,
+    "OM": 2,
+    "PA": 2,
+    "PE": 10,
+    "PF": 3,
+    "PG": 2,
+    "PH": 15,
+    "PK": 9,
+    "PL": 4,
+    "PM": 1,
+    "PR": 2,
+    "PS": 2,
+    "PT": 6,
+    "PW": 1,
+    "PY": 2,
+    "QA": 1,
+    "RE": 1,
+    "RO": 2,
+    "RS": 3,
+    "RU": 21,
+    "RW": 1,
+    "SA": 10,
+    "SB": 1,
+    "SC": 1,
+    "SD": 2,
+    "SE": 113,
+    "SG": 1,
+    "SI": 1,
+    "SK": 1,
+    "SL": 1,
+    "SM": 1,
+    "SN": 1,
+    "SO": 1,
+    "SR": 2,
+    "SS": 1,
+    "ST": 1,
+    "SV": 2,
+    "SX": 1,
+    "SY": 4,
+    "SZ": 1,
+    "TC": 1,
+    "TD": 1,
+    "TG": 1,
+    "TH": 55,
+    "TJ": 1,
+    "TK": 1,
+    "TL": 1,
+    "TM": 1,
+    "TN": 2,
+    "TO": 1,
+    "TR": 4,
+    "TT": 2,
+    "TV": 1,
+    "TW": 7,
+    "TZ": 2,
+    "UA": 12,
+    "UG": 1,
+    "US": 3885,
+    "UY": 2,
+    "UZ": 3,
+    "VA": 1,
+    "VC": 1,
+    "VE": 15,
+    "VG": 1,
+    "VI": 1,
+    "VN": 14,
+    "VU": 1,
+    "WF": 1,
+    "WS": 1,
+    "YE": 4,
+    "YT": 1,
+    "ZA": 14,
+    "ZM": 1,
+    "ZW": 2
+  },
+  "archived_regional_rows_in_frozen_queue": 24,
+  "ripe_exact_ipxo": {
+    "2a13:9500:1e4:127b::/64": {
+      "url": "https://stat.ripe.net/data/address-space-hierarchy/data.json?resource=2a13%3A9500%3A1e4%3A127b%3A%3A%2F64",
+      "sha256": "176f04dc3df78fda55d8c431075c25a04a8e94d943ef424f63694c1c4cf485e3",
+      "query_time": "2026-11-14T11:49:22",
+      "data": {
+        "exact": [],
+        "more_specific": [],
+        "less_specific": [
+          {
+            "inet6num": "2a13:9500:1e4::/48",
+            "netname": "Customer-IPv6",
+            "country": "US",
+            "status": "ASSIGNED",
+            "geofeed": "https://geofeed.ipxo.com/geofeed.txt",
+            "source": "RIPE"
+          }
+        ]
+      }
+    },
+    "2a13:9500:1e4:13a8::/64": {
+      "url": "https://stat.ripe.net/data/address-space-hierarchy/data.json?resource=2a13%3A9500%3A1e4%3A13a8%3A%3A%2F64",
+      "sha256": "eb7ec82a84c008982e9f2842a128581c748a17ffd100fc82ebd9eaeb4f86b852",
+      "query_time": "2026-11-14T11:49:22",
+      "data": {
+        "exact": [],
+        "more_specific": [],
+        "less_specific": [
+          {
+            "inet6num": "2a13:9500:1e4::/48",
+            "netname": "Customer-IPv6",
+            "country": "US",
+            "status": "ASSIGNED",
+            "geofeed": "https://geofeed.ipxo.com/geofeed.txt",
+            "source": "RIPE"
+          }
+        ]
+      }
+    },
+    "2a13:9500:1e4:1417::/64": {
+      "url": "https://stat.ripe.net/data/address-space-hierarchy/data.json?resource=2a13%3A9500%3A1e4%3A1417%3A%3A%2F64",
+      "sha256": "2a9c2a59c87dbd1dc80db6f9c9606b9c2ad04d77a6a53ff3f389d100d07bb265",
+      "query_time": "2026-11-14T11:49:23",
+      "data": {
+        "exact": [],
+        "more_specific": [],
+        "less_specific": [
+          {
+            "inet6num": "2a13:9500:1e4::/48",
+            "netname": "Customer-IPv6",
+            "country": "US",
+            "status": "ASSIGNED",
+            "geofeed": "https://geofeed.ipxo.com/geofeed.txt",
+            "source": "RIPE"
+          }
+        ]
+      }
+    },
+    "2a13:9500:1e4:1474::/64": {
+      "url": "https://stat.ripe.net/data/address-space-hierarchy/data.json?resource=2a13%3A9500%3A1e4%3A1474%3A%3A%2F64",
+      "sha256": "a413f51e70dd4857aa98233beca3196db8e7cb52f939102d46d901c6d6c69950",
+      "query_time": "2026-11-14T11:49:28",
+      "data": {
+        "exact": [],
+        "more_specific": [],
+        "less_specific": [
+          {
+            "inet6num": "2a13:9500:1e4::/48",
+            "netname": "Customer-IPv6",
+            "country": "US",
+            "status": "ASSIGNED",
+            "geofeed": "https://geofeed.ipxo.com/geofeed.txt",
+            "source": "RIPE"
+          }
+        ]
+      }
+    },
+    "2a13:9500:1e4:14b9::/64": {
+      "url": "https://stat.ripe.net/data/address-space-hierarchy/data.json?resource=2a13%3A9500%3A1e4%3A14b9%3A%3A%2F64",
+      "sha256": "1e2273bc3869b3660f188dfc99c26cebf69d8fdd24f655feaf88a3a0a2e64f1f",
+      "query_time": "2026-11-14T11:49:27",
+      "data": {
+        "exact": [],
+        "more_specific": [],
+        "less_specific": [
+          {
+            "inet6num": "2a13:9500:1e4::/48",
+            "netname": "Customer-IPv6",
+            "country": "US",
+            "status": "ASSIGNED",
+            "geofeed": "https://geofeed.ipxo.com/geofeed.txt",
+            "source": "RIPE"
+          }
+        ]
+      }
+    },
+    "2a13:9500:1e4:1669::/64": {
+      "url": "https://stat.ripe.net/data/address-space-hierarchy/data.json?resource=2a13%3A9500%3A1e4%3A1669%3A%3A%2F64",
+      "sha256": "065ded6f768288e28f541d3975bbfa098c34c5d433a7e4cdb0288520668df993",
+      "query_time": "2026-11-14T11:49:30",
+      "data": {
+        "exact": [],
+        "more_specific": [],
+        "less_specific": [
+          {
+            "inet6num": "2a13:9500:1e4::/48",
+            "netname": "Customer-IPv6",
+            "country": "US",
+            "status": "ASSIGNED",
+            "geofeed": "https://geofeed.ipxo.com/geofeed.txt",
+            "source": "RIPE"
+          }
+        ]
+      }
+    },
+    "2a13:9500:1e4:1690::/64": {
+      "url": "https://stat.ripe.net/data/address-space-hierarchy/data.json?resource=2a13%3A9500%3A1e4%3A1690%3A%3A%2F64",
+      "sha256": "20d262e52d52c2920dd4d8690458f0d19155eb19e93ad587efd0643667e9d22b",
+      "query_time": "2026-11-14T11:49:32",
+      "data": {
+        "exact": [],
+        "more_specific": [],
+        "less_specific": [
+          {
+            "inet6num": "2a13:9500:1e4::/48",
+            "netname": "Customer-IPv6",
+            "country": "US",
+            "status": "ASSIGNED",
+            "geofeed": "https://geofeed.ipxo.com/geofeed.txt",
+            "source": "RIPE"
+          }
+        ]
+      }
+    },
+    "2a13:9500:1e4:1702::/64": {
+      "url": "https://stat.ripe.net/data/address-space-hierarchy/data.json?resource=2a13%3A9500%3A1e4%3A1702%3A%3A%2F64",
+      "sha256": "d0da3520a25f4faa983ac52fbeae94ae2d1a0de21dac48a326e3f42e3104a171",
+      "query_time": "2026-11-14T11:49:36",
+      "data": {
+        "exact": [],
+        "more_specific": [],
+        "less_specific": [
+          {
+            "inet6num": "2a13:9500:1e4::/48",
+            "netname": "Customer-IPv6",
+            "country": "US",
+            "status": "ASSIGNED",
+            "geofeed": "https://geofeed.ipxo.com/geofeed.txt",
+            "source": "RIPE"
+          }
+        ]
+      }
+    },
+    "2a13:9500:1e4:1791::/64": {
+      "url": "https://stat.ripe.net/data/address-space-hierarchy/data.json?resource=2a13%3A9500%3A1e4%3A1791%3A%3A%2F64",
+      "sha256": "06f5cd9756bdc5143048f8e7bdcb3977c282dbb78a640fe3fb7e0daf2d5f4bf9",
+      "query_time": "2026-11-14T11:49:35",
+      "data": {
+        "exact": [],
+        "more_specific": [],
+        "less_specific": [
+          {
+            "inet6num": "2a13:9500:1e4::/48",
+            "netname": "Customer-IPv6",
+            "country": "US",
+            "status": "ASSIGNED",
+            "geofeed": "https://geofeed.ipxo.com/geofeed.txt",
+            "source": "RIPE"
+          }
+        ]
+      }
+    },
+    "2a13:9500:1e4:1851::/64": {
+      "url": "https://stat.ripe.net/data/address-space-hierarchy/data.json?resource=2a13%3A9500%3A1e4%3A1851%3A%3A%2F64",
+      "sha256": "3ba4bc78f1faa976eae4e3bb78de8a43734a1c8019b73555aecc882fd9b76cfb",
+      "query_time": "2026-11-14T11:49:38",
+      "data": {
+        "exact": [],
+        "more_specific": [],
+        "less_specific": [
+          {
+            "inet6num": "2a13:9500:1e4::/48",
+            "netname": "Customer-IPv6",
+            "country": "US",
+            "status": "ASSIGNED",
+            "geofeed": "https://geofeed.ipxo.com/geofeed.txt",
+            "source": "RIPE"
+          }
+        ]
+      }
+    },
+    "2a13:9500:1e4:18c9::/64": {
+      "url": "https://stat.ripe.net/data/address-space-hierarchy/data.json?resource=2a13%3A9500%3A1e4%3A18c9%3A%3A%2F64",
+      "sha256": "f9198db669102e86bbae63a7a1324b397b751ebab983fceb46a5f4d4d8d993de",
+      "query_time": "2026-11-14T11:49:37",
+      "data": {
+        "exact": [],
+        "more_specific": [],
+        "less_specific": [
+          {
+            "inet6num": "2a13:9500:1e4::/48",
+            "netname": "Customer-IPv6",
+            "country": "US",
+            "status": "ASSIGNED",
+            "geofeed": "https://geofeed.ipxo.com/geofeed.txt",
+            "source": "RIPE"
+          }
+        ]
+      }
+    },
+    "2a13:9500:1e4:590::/64": {
+      "url": "https://stat.ripe.net/data/address-space-hierarchy/data.json?resource=2a13%3A9500%3A1e4%3A590%3A%3A%2F64",
+      "sha256": "3ccd4fb56a861ee954f91645b98b00227cb400487b94ed8c8090c6e1a9d19ad8",
+      "query_time": "2026-11-14T11:49:38",
+      "data": {
+        "exact": [],
+        "more_specific": [],
+        "less_specific": [
+          {
+            "inet6num": "2a13:9500:1e4::/48",
+            "netname": "Customer-IPv6",
+            "country": "US",
+            "status": "ASSIGNED",
+            "geofeed": "https://geofeed.ipxo.com/geofeed.txt",
+            "source": "RIPE"
+          }
+        ]
+      }
+    },
+    "2a13:9500:1e4:59d::/64": {
+      "url": "https://stat.ripe.net/data/address-space-hierarchy/data.json?resource=2a13%3A9500%3A1e4%3A59d%3A%3A%2F64",
+      "sha256": "c965130854f2f045d92ceaef0e043d387d89bb1c809b926600af61670b3d347f",
+      "query_time": "2026-11-14T11:49:38",
+      "data": {
+        "exact": [],
+        "more_specific": [],
+        "less_specific": [
+          {
+            "inet6num": "2a13:9500:1e4::/48",
+            "netname": "Customer-IPv6",
+            "country": "US",
+            "status": "ASSIGNED",
+            "geofeed": "https://geofeed.ipxo.com/geofeed.txt",
+            "source": "RIPE"
+          }
+        ]
+      }
+    },
+    "2a13:9500:1e4:7ab::/64": {
+      "url": "https://stat.ripe.net/data/address-space-hierarchy/data.json?resource=2a13%3A9500%3A1e4%3A7ab%3A%3A%2F64",
+      "sha256": "73546b8f615c74db1de01f44c7da22fcbc8b84385dd3e939f1e1cca55475499e",
+      "query_time": "2026-11-14T11:49:44",
+      "data": {
+        "exact": [],
+        "more_specific": [],
+        "less_specific": [
+          {
+            "inet6num": "2a13:9500:1e4::/48",
+            "netname": "Customer-IPv6",
+            "country": "US",
+            "status": "ASSIGNED",
+            "geofeed": "https://geofeed.ipxo.com/geofeed.txt",
+            "source": "RIPE"
+          }
+        ]
+      }
+    },
+    "2a13:9500:1e4:7b3::/64": {
+      "url": "https://stat.ripe.net/data/address-space-hierarchy/data.json?resource=2a13%3A9500%3A1e4%3A7b3%3A%3A%2F64",
+      "sha256": "9ccba0532e226bd5181ab56dee0c4a37b0079c6339cff6c0668db44e13e418f6",
+      "query_time": "2026-11-14T11:49:44",
+      "data": {
+        "exact": [],
+        "more_specific": [],
+        "less_specific": [
+          {
+            "inet6num": "2a13:9500:1e4::/48",
+            "netname": "Customer-IPv6",
+            "country": "US",
+            "status": "ASSIGNED",
+            "geofeed": "https://geofeed.ipxo.com/geofeed.txt",
+            "source": "RIPE"
+          }
+        ]
+      }
+    },
+    "2a13:9500:1e4:7ed::/64": {
+      "url": "https://stat.ripe.net/data/address-space-hierarchy/data.json?resource=2a13%3A9500%3A1e4%3A7ed%3A%3A%2F64",
+      "sha256": "555a4993040342647eff9c85326bbec2d33204822106c458ed670104081cb8a9",
+      "query_time": "2026-11-14T11:49:44",
+      "data": {
+        "exact": [],
+        "more_specific": [],
+        "less_specific": [
+          {
+            "inet6num": "2a13:9500:1e4::/48",
+            "netname": "Customer-IPv6",
+            "country": "US",
+            "status": "ASSIGNED",
+            "geofeed": "https://geofeed.ipxo.com/geofeed.txt",
+            "source": "RIPE"
+          }
+        ]
+      }
+    },
+    "2a13:9500:1e4:811::/64": {
+      "url": "https://stat.ripe.net/data/address-space-hierarchy/data.json?resource=2a13%3A9500%3A1e4%3A811%3A%3A%2F64",
+      "sha256": "51a6cb6de12e661b5ff54b8e5d7a439340eb03c8a2e1cbe0ca70eb6a7d6da54f",
+      "query_time": "2026-11-14T11:49:45",
+      "data": {
+        "exact": [],
+        "more_specific": [],
+        "less_specific": [
+          {
+            "inet6num": "2a13:9500:1e4::/48",
+            "netname": "Customer-IPv6",
+            "country": "US",
+            "status": "ASSIGNED",
+            "geofeed": "https://geofeed.ipxo.com/geofeed.txt",
+            "source": "RIPE"
+          }
+        ]
+      }
+    },
+    "2a13:9500:1e4:94c::/64": {
+      "url": "https://stat.ripe.net/data/address-space-hierarchy/data.json?resource=2a13%3A9500%3A1e4%3A94c%3A%3A%2F64",
+      "sha256": "dae7ee105ea00a76fbaf0f26a662aaa1dbd016aaad38b508dcf806b8fcb1ec46",
+      "query_time": "2026-11-14T11:49:50",
+      "data": {
+        "exact": [],
+        "more_specific": [],
+        "less_specific": [
+          {
+            "inet6num": "2a13:9500:1e4::/48",
+            "netname": "Customer-IPv6",
+            "country": "US",
+            "status": "ASSIGNED",
+            "geofeed": "https://geofeed.ipxo.com/geofeed.txt",
+            "source": "RIPE"
+          }
+        ]
+      }
+    },
+    "2a13:9500:1e4:970::/64": {
+      "url": "https://stat.ripe.net/data/address-space-hierarchy/data.json?resource=2a13%3A9500%3A1e4%3A970%3A%3A%2F64",
+      "sha256": "ebe01220f1d72598572f6903a6d9f75ed3f64601206147132ed462611953ffab",
+      "query_time": "2026-11-14T11:49:50",
+      "data": {
+        "exact": [],
+        "more_specific": [],
+        "less_specific": [
+          {
+            "inet6num": "2a13:9500:1e4::/48",
+            "netname": "Customer-IPv6",
+            "country": "US",
+            "status": "ASSIGNED",
+            "geofeed": "https://geofeed.ipxo.com/geofeed.txt",
+            "source": "RIPE"
+          }
+        ]
+      }
+    },
+    "2a13:9500:1e4:ab7::/64": {
+      "url": "https://stat.ripe.net/data/address-space-hierarchy/data.json?resource=2a13%3A9500%3A1e4%3Aab7%3A%3A%2F64",
+      "sha256": "88770919e42effa3eb5b8a9077378a14a80c54fdccd79e004470068b7a86539f",
+      "query_time": "2026-11-14T11:49:49",
+      "data": {
+        "exact": [],
+        "more_specific": [],
+        "less_specific": [
+          {
+            "inet6num": "2a13:9500:1e4::/48",
+            "netname": "Customer-IPv6",
+            "country": "US",
+            "status": "ASSIGNED",
+            "geofeed": "https://geofeed.ipxo.com/geofeed.txt",
+            "source": "RIPE"
+          }
+        ]
+      }
+    },
+    "2a13:9500:1e4:cc2::/64": {
+      "url": "https://stat.ripe.net/data/address-space-hierarchy/data.json?resource=2a13%3A9500%3A1e4%3Acc2%3A%3A%2F64",
+      "sha256": "42889cc14e728aeb073b7f00d27b502349db7dc06f98ca83eda8eab7a8483eca",
+      "query_time": "2026-11-14T11:49:49",
+      "data": {
+        "exact": [],
+        "more_specific": [],
+        "less_specific": [
+          {
+            "inet6num": "2a13:9500:1e4::/48",
+            "netname": "Customer-IPv6",
+            "country": "US",
+            "status": "ASSIGNED",
+            "geofeed": "https://geofeed.ipxo.com/geofeed.txt",
+            "source": "RIPE"
+          }
+        ]
+      }
+    },
+    "2a13:9500:1e4:ccc::/64": {
+      "url": "https://stat.ripe.net/data/address-space-hierarchy/data.json?resource=2a13%3A9500%3A1e4%3Accc%3A%3A%2F64",
+      "sha256": "389d1f8555a1e054d88af55796ad7531be962d5b8befab730b9ebf2c33f6facd",
+      "query_time": "2026-11-14T11:49:54",
+      "data": {
+        "exact": [],
+        "more_specific": [],
+        "less_specific": [
+          {
+            "inet6num": "2a13:9500:1e4::/48",
+            "netname": "Customer-IPv6",
+            "country": "US",
+            "status": "ASSIGNED",
+            "geofeed": "https://geofeed.ipxo.com/geofeed.txt",
+            "source": "RIPE"
+          }
+        ]
+      }
+    },
+    "2a13:9500:1e4:d2a::/64": {
+      "url": "https://stat.ripe.net/data/address-space-hierarchy/data.json?resource=2a13%3A9500%3A1e4%3Ad2a%3A%3A%2F64",
+      "sha256": "ab11705d6edb34200c3871fa53da965c77e4ef322d0f6a24af5c840ccd8a377f",
+      "query_time": "2026-11-14T11:49:55",
+      "data": {
+        "exact": [],
+        "more_specific": [],
+        "less_specific": [
+          {
+            "inet6num": "2a13:9500:1e4::/48",
+            "netname": "Customer-IPv6",
+            "country": "US",
+            "status": "ASSIGNED",
+            "geofeed": "https://geofeed.ipxo.com/geofeed.txt",
+            "source": "RIPE"
+          }
+        ]
+      }
+    },
+    "2a13:9500:1e4:dfc::/64": {
+      "url": "https://stat.ripe.net/data/address-space-hierarchy/data.json?resource=2a13%3A9500%3A1e4%3Adfc%3A%3A%2F64",
+      "sha256": "01b07ee7709797717c837fbdc7a382d4aef64cb60c64739248ed7bb836326e8e",
+      "query_time": "2026-11-14T11:49:54",
+      "data": {
+        "exact": [],
+        "more_specific": [],
+        "less_specific": [
+          {
+            "inet6num": "2a13:9500:1e4::/48",
+            "netname": "Customer-IPv6",
+            "country": "US",
+            "status": "ASSIGNED",
+            "geofeed": "https://geofeed.ipxo.com/geofeed.txt",
+            "source": "RIPE"
+          }
+        ]
+      }
+    }
+  },
+  "operator_model_reference": "https://developers.cloudflare.com/byoip/",
+  "ipxo_source_archive_sha256": "3f95fca2bb9692f8be7de5c513ea97c667ff9a32ebb3208b59582d311e3ceb4f",
+  "additional_kz_second_resolver": {
+    "2001:ad0:cff::81/128": {
+      "reverse": {
+        "url": "https://cloudflare-dns.com/dns-query?name=1.8.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.f.f.c.0.0.d.a.0.1.0.0.2.ip6.arpa&type=PTR",
+        "error": "<urlopen error _ssl.c:993: The handshake operation timed out>"
+      },
+      "status": "unavailable"
+    }
+  },
+  "additional_kz_google_confirmation": {
+    "ptr": {
+      "url": "https://dns.google/resolve?name=1.8.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.f.f.c.0.0.d.a.0.1.0.0.2.ip6.arpa&type=PTR&do=true",
+      "sha256": "2ead87c98dd070df3b8e72aef36deaa749860954be74391317a46e8ee11ced97",
+      "data": {
+        "Status": 0,
+        "TC": false,
+        "RD": true,
+        "RA": true,
+        "AD": false,
+        "CD": false,
+        "Question": [
+          {
+            "name": "1.8.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.f.f.c.0.0.d.a.0.1.0.0.2.ip6.arpa.",
+            "type": 12
+          }
+        ],
+        "Answer": [
+          {
+            "name": "1.8.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.f.f.c.0.0.d.a.0.1.0.0.2.ip6.arpa.",
+            "type": 12,
+            "TTL": 21600,
+            "data": "r9-lo0-0-Ala-Abd66-KZ.bb.citictel-cpc.com."
+          }
+        ],
+        "Comment": "Response from 195.222.0.1."
+      }
+    },
+    "aaaa": {
+      "url": "https://dns.google/resolve?name=r9-lo0-0-Ala-Abd66-KZ.bb.citictel-cpc.com.&type=AAAA&do=true",
+      "sha256": "95dd740f1b5f1f3d398b8f3e31879f9d8dbbe22bb05c51706f3a0fa938021a8d",
+      "data": {
+        "Status": 0,
+        "TC": false,
+        "RD": true,
+        "RA": true,
+        "AD": false,
+        "CD": false,
+        "Question": [
+          {
+            "name": "r9-lo0-0-Ala-Abd66-KZ.bb.citictel-cpc.com.",
+            "type": 28
+          }
+        ],
+        "Answer": [
+          {
+            "name": "r9-lo0-0-Ala-Abd66-KZ.bb.citictel-cpc.com.",
+            "type": 28,
+            "TTL": 3600,
+            "data": "2001:ad0:cff::81"
+          }
+        ],
+        "Comment": "Response from 2403:2c00:d003::2."
+      }
+    }
+  }
+}
