@@ -59,6 +59,31 @@ python3 "$scripts/bundle_v41_registry_inputs.py" \
   --upstream-catalog "$scripts/../data/v41-upstream-sources.json" verify \
   "$dest/provenance.tsv" "$dest/v41-upstream-inputs.tar.gz"
 
+git -C "$dest" show "$SNAPSHOT_SHA:geoip_RU_v41_block_inputs.sha256sum" > "$dest/block.sha256"
+IFS= read -r block_checksum < "$dest/block.sha256"
+[[ "$block_checksum" =~ ^([0-9a-f]{64})\ \ v41-block-inputs\.tar\.gz$ ]]
+block_sha="${BASH_REMATCH[1]}"
+curl --fail --silent --show-error --location --proto '=https' --proto-redir '=https' \
+  --retry 3 --retry-all-errors --connect-timeout 15 --max-time 120 --max-filesize 134217728 \
+  --output "$dest/v41-block-inputs.tar.gz" \
+  "https://github.com/$GITHUB_REPOSITORY/releases/download/$SNAPSHOT_TAG/v41-block-inputs.tar.gz"
+printf '%s  %s\n' "$block_sha" "$dest/v41-block-inputs.tar.gz" | sha256sum -c -
+python3 "$scripts/bundle_v41_registry_inputs.py" --block-inputs verify \
+  "$dest/provenance.tsv" "$dest/v41-block-inputs.tar.gz"
+
+# Compare the actual public release files against the manifest in the staged Git tree.
+git -C "$dest" show "$SNAPSHOT_SHA:geoip_RU_v41_release_manifest.json" > "$dest/staged-manifest.json"
+for name in geoip_RU.dat geoip_RU.dat.sha256sum geoip_RU.srs geoip_RU.srs.sha256sum \
+            geoip_PRIVATE.srs geoip_PRIVATE.srs.sha256sum geoip_RU_v41_manifest.json \
+            geoip_RU_quality_report.txt geoip_RU_input_provenance.tsv geoip_RU_v41_release_manifest.json; do
+  curl --fail --silent --show-error --location --proto '=https' --proto-redir '=https' \
+    --retry 3 --retry-all-errors --connect-timeout 15 --max-time 60 --max-filesize 8388608 \
+    --output "$dest/$name" \
+    "https://github.com/$GITHUB_REPOSITORY/releases/download/$SNAPSHOT_TAG/$name"
+done
+cmp "$dest/staged-manifest.json" "$dest/geoip_RU_v41_release_manifest.json"
+python3 "$scripts/v41_release_manifest.py" verify "$dest" --manifest "$dest/staged-manifest.json"
+
 # Require the exact checked parent to still be current when the server updates
 # the ref. The direct-parent check above guarantees this is a fast-forward.
 GIT_TERMINAL_PROMPT=0 git -C "$dest" "${auth[@]}" push \

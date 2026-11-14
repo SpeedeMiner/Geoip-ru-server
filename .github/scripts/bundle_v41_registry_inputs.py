@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Audit-only prototype for retaining exact delegated RIR and IANA registry bytes."""
+"""Retain checksummed snapshots of the exact inputs consumed by the v41 builder."""
 from __future__ import annotations
 
 import argparse
@@ -22,6 +22,17 @@ MEMBERS = (
     "delegated-ripencc-latest", "iana-ipv4-special-registry.csv",
     "iana-ipv6-special-registry.csv",
 )
+BLOCK_MEMBERS = (
+    "antifilter-ip.lst", "antifilter-ipresolve.lst", "antifilter-subnet.lst",
+    "antifilter-ipsum.lst", "antifilter-community.lst", "refilter-ipsum.lst",
+    "geoip_RU_v38_approved_blocked_baseline.txt",
+    "geoip_RU_v38_pinned_antifilter-ip.lst",
+    "geoip_RU_v38_pinned_antifilter-ipresolve.lst",
+    "geoip_RU_v38_pinned_antifilter-subnet.lst",
+)
+OPTIONAL_BLOCK_MEMBERS = {
+    "antifilter-ipresolve.lst", "antifilter-community.lst", "refilter-ipsum.lst",
+}
 MANIFEST = "registry-inputs.json"
 HEADER = ["SOURCE", "LOCAL_FILE", "FETCH_URL", "SHA256", "BYTES", "STATUS"]
 MAX_MEMBER = 32 * 1024 * 1024
@@ -52,8 +63,18 @@ def metadata(provenance, members=MEMBERS):
         if row["LOCAL_FILE"] not in members:
             continue
         name = row["LOCAL_FILE"]
-        if name in rows or None in row or row["STATUS"] != "downloaded":
-            raise ValueError(f"duplicate, malformed or unavailable registry input: {name}")
+        if name in rows or None in row:
+            raise ValueError(f"duplicate or malformed input: {name}")
+        if row["STATUS"] == "unavailable" and members == BLOCK_MEMBERS and name in OPTIONAL_BLOCK_MEMBERS:
+            # Match the exact failover bytes consumed by the build, not an empty download.
+            url = row["FETCH_URL"]
+            if (row["SHA256"], row["BYTES"]) != ("-", "0") or not re.fullmatch(r"https://[^\s]+", url or ""):
+                raise ValueError(f"invalid unavailable input provenance: {name}")
+            placeholder = f"# Optional source unavailable during this build: {url}\n".encode("utf-8")
+            rows[name] = {"size": len(placeholder), "sha256": sha(placeholder), "status": "unavailable"}
+            continue
+        if row["STATUS"] != "downloaded":
+            raise ValueError(f"required input unavailable: {name}")
         if not SHA.fullmatch(row["SHA256"] or "") or not re.fullmatch(r"[0-9]{1,8}", row["BYTES"] or ""):
             raise ValueError(f"invalid size or digest for {name}")
         size = int(row["BYTES"])
@@ -168,11 +189,14 @@ def main():
     unpack.add_argument("provenance", type=Path)
     unpack.add_argument("archive", type=Path)
     unpack.add_argument("output", type=Path)
-    p.add_argument("--upstream-catalog", type=Path,
-                   help="Use the rolling routing-feed corpus instead of the seven registries")
+    scope = p.add_mutually_exclusive_group()
+    scope.add_argument("--upstream-catalog", type=Path,
+                       help="Use rolling routing feeds instead of the seven registries")
+    scope.add_argument("--block-inputs", action="store_true",
+                       help="Use the current and historical block feed corpus")
     a = p.parse_args()
     try:
-        members = MEMBERS
+        members = BLOCK_MEMBERS if a.block_inputs else MEMBERS
         if a.upstream_catalog:
             groups = json.loads(a.upstream_catalog.read_bytes())
             members = tuple(sorted(name for group in groups for name in group["files"])) + ("telegram-official-cidrs.txt",)

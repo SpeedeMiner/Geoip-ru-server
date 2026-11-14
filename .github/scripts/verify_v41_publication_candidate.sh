@@ -4,6 +4,10 @@ sha256sum -c "$OUTPUT_SHA_FILE"
 sha256sum -c geoip_RU.srs.sha256sum geoip_PRIVATE.srs.sha256sum
 python3 ../.github/scripts/build_v41_srs.py
 sha256sum -c "$V41_BLOCKED_SHA"
+sha256sum -c "$BLOCK_INPUTS_SHA"
+python3 ../.github/scripts/bundle_v41_registry_inputs.py --block-inputs verify \
+  "$INPUT_PROVENANCE" "$BLOCK_INPUTS_ARCHIVE"
+python3 ../.github/scripts/v41_release_manifest.py verify . --manifest "$RELEASE_MANIFEST"
 sha256sum -c "$REGISTRY_INPUTS_SHA"
 python3 ../.github/scripts/bundle_v41_registry_inputs.py verify \
   "$INPUT_PROVENANCE" "$REGISTRY_INPUTS_ARCHIVE"

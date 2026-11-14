@@ -28,6 +28,7 @@ on:
       - ".github/scripts/validate_v41_publication_bounds.py"
       - ".github/scripts/verify_v41_ipverse_archive.py"
       - ".github/scripts/bundle_v41_registry_inputs.py"
+      - ".github/scripts/v41_release_manifest.py"
       - ".github/data/v41-upstream-sources.json"
       - ".github/scripts/build_company_asn_prefixes.py"
       - ".github/scripts/build_company_asn_prefix_classes_v41.py"
@@ -149,6 +150,9 @@ env:
   UPSTREAM_INPUTS_ARCHIVE: v41-upstream-inputs.tar.gz
   UPSTREAM_INPUTS_SHA: geoip_RU_v41_upstream_inputs.sha256sum
   INPUT_PROVENANCE_SHA: geoip_RU_input_provenance.tsv.sha256sum
+  BLOCK_INPUTS_ARCHIVE: v41-block-inputs.tar.gz
+  BLOCK_INPUTS_SHA: geoip_RU_v41_block_inputs.sha256sum
+  RELEASE_MANIFEST: geoip_RU_v41_release_manifest.json
 
 jobs:
   build:
@@ -480,6 +484,14 @@ jobs:
             "$INPUT_PROVENANCE" . "$UPSTREAM_INPUTS_ARCHIVE"
           sha256sum "$UPSTREAM_INPUTS_ARCHIVE" > "$UPSTREAM_INPUTS_SHA"
 
+      - name: Archive the exact current and historical block inputs
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 .github/scripts/bundle_v41_registry_inputs.py --block-inputs create \
+            "$INPUT_PROVENANCE" . "$BLOCK_INPUTS_ARCHIVE"
+          sha256sum "$BLOCK_INPUTS_ARCHIVE" > "$BLOCK_INPUTS_SHA"
+
       - name: Compile and verify sing-box rule-sets from the Full DAT
         shell: bash
         run: |
@@ -497,6 +509,13 @@ jobs:
           python3 .github/scripts/build_v41_srs.py --sing-box "$compiler_dir/sing-box-${version}-linux-amd64/sing-box"
           sha256sum -c geoip_RU.srs.sha256sum geoip_PRIVATE.srs.sha256sum
 
+      - name: Bind validated files to this build
+        shell: bash
+        run: |
+          python3 .github/scripts/v41_release_manifest.py create . \
+            --source-sha "$GITHUB_SHA" --repository "$GITHUB_REPOSITORY" \
+            --run-id "$GITHUB_RUN_ID" --run-attempt "$GITHUB_RUN_ATTEMPT"
+
       - name: Upload v41 validated build artifact
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
@@ -505,6 +524,9 @@ jobs:
             as-ip-blocks.tar.gz
             v41-registry-inputs.tar.gz
             v41-upstream-inputs.tar.gz
+            v41-block-inputs.tar.gz
+            geoip_RU_v41_block_inputs.sha256sum
+            geoip_RU_v41_release_manifest.json
             geoip_RU_v41_upstream_inputs.sha256sum
             telegram-official-cidrs.txt
             geoip_RU_v41_registry_inputs.sha256sum
@@ -617,7 +639,7 @@ jobs:
           SNAPSHOT_TAG: ${{ steps.snapshot_ref.outputs.snapshot }}
         run: bash ../.github/scripts/publish_v41_snapshot_release.sh
 
-      - name: Verify the published input archives and promote the release branch
+      - name: Verify public snapshot files and promote the release branch
         shell: bash
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -646,6 +668,8 @@ jobs:
             candidate/geoip_RU_category_audit.tsv
             candidate/geoip_RU_quality_report.txt
             candidate/geoip_RU_v41_manifest.json
+            candidate/geoip_RU_v41_release_manifest.json
+            candidate/geoip_RU_v41_block_inputs.sha256sum
             candidate/hydra-geoip.dat
             candidate/geoip_RU_v41_source_metrics.tsv
             candidate/geoip_RU_v41_prefix_provenance.tsv
@@ -699,6 +723,18 @@ jobs:
             candidate/geoip_RU_rir_stats.txt
             candidate/geoip_RU_global_bgp_prefixes.txt
           body_path: docs/V41_ROLLING_RELEASE_NOTES.md
+
+      - name: Verify public rolling files against the release commit
+        shell: bash
+        env:
+          SNAPSHOT_SHA: ${{ steps.snapshot_ref.outputs.snapshot_sha }}
+        run: bash ../.github/scripts/verify_v41_rolling_release.sh
+
+      - name: Report an incomplete rolling update
+        if: failure() && steps.snapshot_ref.outcome == 'success'
+        shell: bash
+        run: |
+          echo "::warning::Check the versioned snapshot, release ref, and rolling assets separately before retrying publication."
 
       - name: Purge jsDelivr compatibility URLs
         shell: bash
