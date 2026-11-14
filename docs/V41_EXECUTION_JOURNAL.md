@@ -370,3 +370,8 @@ See [v41 release hardening](V41_RELEASE_HARDENING.md). Routing-policy changes ar
 - Only `.40` and `.45` overlap the approved DNS-derived masks. The three other hosts `.86`, `.93` and `.151` were never admitted and do not overlap the approved, resolver, hard, PRIVATE or reviewed admission masks. An exact reviewed /24 would add five IPs and remove just two from the effective block mask.
 - RIPE RDAP again returns the same exact RU assignment for all five. At 07:59:49 UTC RIS reports 380 exact paths, all AS205090, and the route passes RPKI validation. The linked CSV has 220 parseable CIDR rows with zero overlaps. The alternate FirstByte URL timed out and was not treated as evidence. [Machine-readable FirstServer trace](v41-firstserver-45-142-122-trace-20261114.json).
 - Discovery only: 73,758 IPv4 (2,413 disjoint CIDRs) have a single-group geographic signal but are outside DIRECT, v37 base, and all the checked masks on the fixed snapshot. This set is separate from the DNS recovery queue and is not a list of verified regional assignments. No production, source-policy or PR #5 change.
+
+### 2026-11-14 — Start the non-DNS discovery pass
+
+- Continue from the fixed production run `43583581379` and its 73,758 one-group IPv4 outside the v37 base, final DIRECT and all checked exclusion masks. Keep this separate from the closed DNS recovery queue.
+- Next checkpoints: reconstruct the exact set from the locked inputs, classify it by longest observed ipverse prefix while preserving same-prefix multiple origins, then independently check a bounded high-priority shortlist. Registry labels, BGP origin and service reachability are separate facts. Do not modify main, release, routing or PR #5 during discovery.
