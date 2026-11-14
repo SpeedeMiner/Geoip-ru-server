@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 sha256sum -c "$OUTPUT_SHA_FILE"
-sha256sum -c geoip_RU_light.dat.sha256sum geoip_RU_light.srs.sha256sum geoip_PRIVATE.srs.sha256sum
-python3 ../.github/scripts/build_v41_light_srs.py
+sha256sum -c geoip_RU.srs.sha256sum geoip_PRIVATE.srs.sha256sum
+python3 ../.github/scripts/build_v41_srs.py
 sha256sum -c "$V41_BLOCKED_SHA"
 sha256sum -c "$REGISTRY_INPUTS_SHA"
 python3 ../.github/scripts/bundle_v41_registry_inputs.py verify \

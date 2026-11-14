@@ -31,8 +31,8 @@ for file in \
   "$BLOCKED_IP_INPUT" "$BLOCKED_IP_SHA_FILE" "$BLOCKED_BASELINE_INPUT" "$BLOCKED_REVIEW_INPUT" "$BLOCKED_STATS_INPUT" "$BLOCKED_CHECKSUMS_INPUT" "$INPUT_PROVENANCE" "$INPUT_PROVENANCE_SHA" "$KY_STANDARD_V4_INPUT" "$KY_STANDARD_V6_INPUT" "$KY_SERVICES_INPUT" "$W1ZARDZ_INPUT" "$HXEHEX_IP_INPUT" "$ESCAPINGWORM_OPERATOR_INPUT" "$BLOCKED_IPSUM_INPUT" "$REGISTRY_INPUTS_SHA"; do
   cp "$source_dir/$file" "$dest/$(basename "$file")"
 done
-# Copy Light outputs only as a complete set.
-for file in geoip_RU_light.dat geoip_RU_light.dat.sha256sum geoip_RU_light.srs geoip_RU_light.srs.sha256sum geoip_PRIVATE.srs geoip_PRIVATE.srs.sha256sum; do
+# Copy sing-box outputs only as a complete set.
+for file in geoip_RU.srs geoip_RU.srs.sha256sum geoip_PRIVATE.srs geoip_PRIVATE.srs.sha256sum; do
   cp "$source_dir/$file" "$dest/$file"
 done
 # The small marker links this exact release tree to its create-only snapshot

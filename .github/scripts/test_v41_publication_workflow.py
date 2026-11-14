@@ -39,8 +39,8 @@ class PublicationWorkflowTests(unittest.TestCase):
     def git(*args, cwd):
         return subprocess.check_output(["git", *args], cwd=cwd, text=True, stderr=subprocess.PIPE).strip()
 
-    def prepare_light_assets(self):
-        for name in ("geoip_RU_light.dat", "geoip_RU_light.srs", "geoip_PRIVATE.srs"):
+    def prepare_srs_assets(self):
+        for name in ("geoip_RU.srs", "geoip_PRIVATE.srs"):
             (self.candidate / name).write_text(name, encoding="ascii")
             (self.candidate / (name + ".sha256sum")).write_text("fixture", encoding="ascii")
 
@@ -62,7 +62,7 @@ class PublicationWorkflowTests(unittest.TestCase):
             self.env[name] = filename
             (self.candidate / filename).write_text(filename, encoding="utf-8")
         (self.candidate / "geoip_RU_company_asn_registry.sha256sum").write_text("test", encoding="utf-8")
-        self.prepare_light_assets()
+        self.prepare_srs_assets()
 
     def invoke(self, script, **env):
         return subprocess.run(["bash", str(SCRIPTS / script)], cwd=self.candidate,
@@ -276,7 +276,7 @@ class PublicationWorkflowTests(unittest.TestCase):
         archive_bytes = gzip.compress(random.Random(42).randbytes(5_000_000), compresslevel=1, mtime=0)
         (self.candidate / env["IPVERSE_BGP_ARCHIVE"]).write_bytes(archive_bytes)
         self.prepare_registry(env["INPUT_PROVENANCE"], archive_bytes)
-        self.prepare_light_assets()
+        self.prepare_srs_assets()
         missing = self.invoke("publish_v41_snapshot_release.sh", **env)
         self.assertNotEqual(missing.returncode, 0)
         self.assertIn("quality.txt", missing.stderr)
@@ -298,8 +298,8 @@ class PublicationWorkflowTests(unittest.TestCase):
         self.assertEqual(command[:3], ["release", "create", "v41.3"])
         self.assertIn("as-ip-blocks.tar.gz", command)
         self.assertIn("v41-registry-inputs.tar.gz", command)
-        self.assertIn("geoip_RU_light.dat", command)
-        self.assertIn("geoip_RU_light.srs", command)
+        self.assertIn("geoip_RU.dat", command)
+        self.assertIn("geoip_RU.srs", command)
         self.assertIn("geoip_PRIVATE.srs", command)
         self.assertIn("--verify-tag", command)
         self.assertIn("--latest=false", command)

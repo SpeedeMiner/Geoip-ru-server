@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Compile the Light DAT categories and verify sing-box address coverage."""
+"""Compile the Full DAT categories and verify sing-box address coverage."""
 import argparse
 import hashlib
 import ipaddress
@@ -8,32 +8,29 @@ from pathlib import Path
 import subprocess
 from tempfile import TemporaryDirectory
 
-from build_v41_overlay import (collapse, intersect, interval_size, intervals,
-                               parse_geoip_dat, subtract)
+from build_v41_overlay import (collapse, intersect, intervals,
+                               parse_geoip_dat)
 
 
-SRS_NAMES = {"RU": "geoip_RU_light.srs", "PRIVATE": "geoip_PRIVATE.srs"}
+SRS_NAMES = {"RU": "geoip_RU.srs", "PRIVATE": "geoip_PRIVATE.srs"}
 
 
-def check_dat(full, light, manifest):
+def check_dat(path, manifest):
+    payload = path.read_bytes()
     document = json.loads(manifest.read_bytes())
-    light_info = document["light_output"]
-    for path, info in ((full, document["output_sha256"]), (light, light_info["sha256"])):
-        if hashlib.sha256(path.read_bytes()).hexdigest() != info:
-            raise ValueError(f"GeoIP DAT SHA-256 mismatch: {path.name}")
-    f, l = parse_geoip_dat(full), parse_geoip_dat(light)
-    if set(f) != set(SRS_NAMES) or set(l) != set(SRS_NAMES) or l["PRIVATE"] != f["PRIVATE"]:
-        raise ValueError("Light DAT must have exactly RU and unchanged PRIVATE")
+    if hashlib.sha256(payload).hexdigest() != document["output_sha256"]:
+        raise ValueError(f"GeoIP DAT SHA-256 mismatch: {path.name}")
+    categories = parse_geoip_dat(path)
+    if set(categories) != set(SRS_NAMES) or not all(categories.values()):
+        raise ValueError("Full DAT must contain non-empty RU and PRIVATE categories only")
     for version in (4, 6):
-        a, b = intervals(f["RU"], version), intervals(l["RU"], version)
-        if (subtract(b, a) or intersect(b, intervals(l["PRIVATE"], version))
-                or interval_size(subtract(a, b)) != light_info["removed_address_space"][f"ipv{version}"]):
-            raise ValueError(f"Invalid IPv{version} Light DAT coverage")
-    return l
+        if intersect(intervals(categories["RU"], version), intervals(categories["PRIVATE"], version)):
+            raise ValueError(f"IPv{version} RU and PRIVATE overlap in the Full DAT")
+    return categories
 
 
 def compile_and_verify(sing_box, output, categories):
-    with TemporaryDirectory(prefix=".v41-light-srs-", dir=output) as tmp:
+    with TemporaryDirectory(prefix=".v41-srs-", dir=output) as tmp:
         work = Path(tmp)
         results = []
         for category, name in SRS_NAMES.items():
@@ -55,7 +52,7 @@ def compile_and_verify(sing_box, output, categories):
                 raise ValueError(f"Unexpected decompiled rule structure: {name}")
             actual = [ipaddress.ip_network(cidr) for cidr in rules[0]["ip_cidr"]]
             if any(intervals(actual, v) != intervals(networks, v) for v in (4, 6)):
-                raise ValueError(f"SRS coverage differs from the Light DAT: {name}")
+                raise ValueError(f"SRS coverage differs from the Full DAT: {name}")
             checksum = work / (name + ".sha256sum")
             checksum.write_text(f"{hashlib.sha256(binary.read_bytes()).hexdigest()}  {name}\n")
             results.extend((binary, checksum))
@@ -67,13 +64,12 @@ def compile_and_verify(sing_box, output, categories):
 def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("--full", type=Path, default=Path("geoip_RU.dat"))
-    p.add_argument("--light", type=Path, default=Path("geoip_RU_light.dat"))
     p.add_argument("--manifest", type=Path, default=Path("geoip_RU_v41_manifest.json"))
     p.add_argument("--sing-box", help="Compile and decompile with this binary. Omit for DAT checks only.")
     a = p.parse_args()
-    categories = check_dat(a.full, a.light, a.manifest)
+    categories = check_dat(a.full, a.manifest)
     if a.sing_box:
-        compile_and_verify(a.sing_box, a.light.parent, categories)
+        compile_and_verify(a.sing_box, a.full.parent, categories)
 
 
 if __name__ == "__main__":
