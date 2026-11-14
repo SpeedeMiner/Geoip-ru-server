@@ -1,0 +1,83 @@
+{
+  "main": {
+    "url": "https://api.github.com/repos/SpeedeMiner/Geoip-ru-server/git/ref/heads/main",
+    "metadata_sha256": "2b582fbd834018010542de474a9eb8ecb453d7b091228af8fb1cf3946c7278e6",
+    "sha": "b98980c6181c3bfda35445f345ae83777f7d18f3"
+  },
+  "release": {
+    "url": "https://api.github.com/repos/SpeedeMiner/Geoip-ru-server/git/ref/heads/release",
+    "metadata_sha256": "773e66e75e00fa68386b40c966f674b53deb7a5ad103941c40ac37170716a5ae",
+    "sha": "de20de628d85062c8161b3da99fc7b0c94622919"
+  },
+  "audit": {
+    "url": "https://api.github.com/repos/SpeedeMiner/Geoip-ru-server/git/ref/heads/audit/v41-additional-feed-resolver-losses",
+    "metadata_sha256": "793d4941f654261c9a097119b029f24941c82074dea80f77ef2530c9f590fb71",
+    "sha": "1b324d875c820d2db3e3d9cb0f51220e797f815d"
+  },
+  "latest": {
+    "url": "https://api.github.com/repos/SpeedeMiner/Geoip-ru-server/releases/latest",
+    "metadata_sha256": "f0cfa94a8da78377b69d3cba31ed513a4dfdb9c287a828e4379327f7405ef149",
+    "tag_name": "latest-geoip-client-v41",
+    "dat_asset": {
+      "id": 747202202,
+      "digest": "sha256:2735053560ebd598cbdcd71ccf858806d4b955a17e2eac512a7baf249d43653a",
+      "size": 1738277,
+      "browser_download_url": "https://github.com/SpeedeMiner/Geoip-ru-server/releases/download/latest-geoip-client-v41/geoip_RU.dat",
+      "updated_at": "2026-11-14T10:58:54Z"
+    }
+  },
+  "snapshot": {
+    "url": "https://api.github.com/repos/SpeedeMiner/Geoip-ru-server/releases/tags/geoip-v41-snapshot-43583581379.1",
+    "metadata_sha256": "acc18b495cf501aa03cda84913b9b40ecb76e3b65fb962fc95c8a00add718179",
+    "tag_name": "geoip-v41-snapshot-43583581379.1",
+    "dat_asset": {
+      "id": 747073904,
+      "digest": "sha256:2735053560ebd598cbdcd71ccf858806d4b955a17e2eac512a7baf249d43653a",
+      "size": 1738277,
+      "browser_download_url": "https://github.com/SpeedeMiner/Geoip-ru-server/releases/download/geoip-v41-snapshot-43583581379.1/geoip_RU.dat",
+      "updated_at": "2026-11-14T10:08:00Z"
+    }
+  },
+  "recent_production": {
+    "url": "https://api.github.com/repos/SpeedeMiner/Geoip-ru-server/actions/workflows/geoip-v41.yml/runs?branch=main&per_page=4",
+    "metadata_sha256": "2287fd494fa552e461deef82509903cd38fd4d795c69282e5cf4fddf8f999eb3",
+    "recent_runs": [
+      {
+        "id": 43587602958,
+        "event": "schedule",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "b98980c6181c3bfda35445f345ae83777f7d18f3",
+        "html_url": "https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43587602958",
+        "updated_at": "2026-11-14T10:59:11Z"
+      },
+      {
+        "id": 43583581379,
+        "event": "push",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "b98980c6181c3bfda35445f345ae83777f7d18f3",
+        "html_url": "https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43583581379",
+        "updated_at": "2026-11-14T10:08:15Z"
+      },
+      {
+        "id": 43579021611,
+        "event": "push",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "2ef37c489b2dc25c4f168c0d7299bb985b02d15a",
+        "html_url": "https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43579021611",
+        "updated_at": "2026-11-14T09:10:27Z"
+      },
+      {
+        "id": 43573290667,
+        "event": "push",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "e6cfcda7c71011c5b92bea591ca3ca44731cff8e",
+        "html_url": "https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43573290667",
+        "updated_at": "2026-11-14T07:58:03Z"
+      }
+    ]
+  }
+}

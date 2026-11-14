@@ -6348,5 +6348,250 @@
       },
       "outside_current_DIRECT_decimal": "1208925819614629174706176"
     }
+  },
+  "zgato_exact_route_and_roa_followup": {
+    "rpki:2001:3786:2929:600::/56": {
+      "url": "https://stat.ripe.net/data/rpki-validation/data.json?resource=AS205563&prefix=2001%3A3786%3A2929%3A600%3A%3A%2F56",
+      "sha256": "4ce19445d7ba4a10031dd8ac42def4f8b83a761d3e41be1cdae647d2c38b6527",
+      "data": {
+        "status": "invalid_length",
+        "resource": "205563",
+        "validator": "routinator",
+        "validating_roas": [
+          {
+            "origin": "205563",
+            "prefix": "2001:3786::/32",
+            "validity": "invalid_length",
+            "max_length": 48
+          }
+        ]
+      }
+    },
+    "route:2001:3786:2929:600::/56": {
+      "url": "https://stat.ripe.net/data/routing-status/data.json?resource=2001%3A3786%3A2929%3A600%3A%3A%2F56&min_peers_seeing=1",
+      "sha256": "727a5dda4f8f2516496ec5f8dad497672cda346302db918831e7902c8f29cd23",
+      "data": {
+        "origins": [],
+        "less_specifics": [
+          {
+            "prefix": "2000::/6",
+            "origin": 29632
+          },
+          {
+            "prefix": "2001:3786:2929::/48",
+            "origin": 205563
+          }
+        ],
+        "more_specifics": [],
+        "query_time": "2026-11-14T00:00:00",
+        "resource": "2001:3786:2929:600::/56"
+      }
+    },
+    "rpki:2001:3786:2929::/48": {
+      "url": "https://stat.ripe.net/data/rpki-validation/data.json?resource=AS205563&prefix=2001%3A3786%3A2929%3A%3A%2F48",
+      "sha256": "a41785f89a4f8623cd3b9d5a991e81c2011bc678a7be5bb37d1f3531f5ed15f4",
+      "data": {
+        "status": "valid",
+        "resource": "205563",
+        "validator": "routinator",
+        "validating_roas": [
+          {
+            "origin": "205563",
+            "prefix": "2001:3786::/32",
+            "validity": "valid",
+            "max_length": 48
+          }
+        ]
+      }
+    },
+    "route:2001:3786:2929::/48": {
+      "url": "https://stat.ripe.net/data/routing-status/data.json?resource=2001%3A3786%3A2929%3A%3A%2F48&min_peers_seeing=1",
+      "sha256": "30ad3f885fee6974f87cb091cdf956cebb2faa0e589a721bd270a20f8a51db7c",
+      "data": {
+        "origins": [
+          {
+            "origin": 205563,
+            "route_objects": [
+              "RIPE"
+            ]
+          }
+        ],
+        "less_specifics": [
+          {
+            "prefix": "2000::/6",
+            "origin": 29632
+          }
+        ],
+        "more_specifics": [],
+        "query_time": "2026-11-14T00:00:00",
+        "resource": "2001:3786:2929::/48"
+      }
+    },
+    "rdap:2001:3786:2929:600::/56": {
+      "url": "https://rdap.db.ripe.net/ip/2001:3786:2929:600::",
+      "error": "HTTP Error 429: Too Many Requests"
+    },
+    "rpki:2001:3786:5002:300::/56": {
+      "url": "https://stat.ripe.net/data/rpki-validation/data.json?resource=AS205563&prefix=2001%3A3786%3A5002%3A300%3A%3A%2F56",
+      "sha256": "d2bbd4525d0c0b20f9ee1a52563ff2705da321070b2666446cd2a255b760f077",
+      "data": {
+        "status": "invalid_length",
+        "resource": "205563",
+        "validator": "routinator",
+        "validating_roas": [
+          {
+            "origin": "205563",
+            "prefix": "2001:3786::/32",
+            "validity": "invalid_length",
+            "max_length": 48
+          }
+        ]
+      }
+    },
+    "route:2001:3786:5002:300::/56": {
+      "url": "https://stat.ripe.net/data/routing-status/data.json?resource=2001%3A3786%3A5002%3A300%3A%3A%2F56&min_peers_seeing=1",
+      "sha256": "17e097b88ed3b63362c6c7816241912af4c8df0ff24009de520d5af8760b830e",
+      "data": {
+        "origins": [],
+        "less_specifics": [
+          {
+            "prefix": "2000::/6",
+            "origin": 29632
+          },
+          {
+            "prefix": "2001:3786:5002::/48",
+            "origin": 205563
+          }
+        ],
+        "more_specifics": [],
+        "query_time": "2026-11-14T00:00:00",
+        "resource": "2001:3786:5002:300::/56"
+      }
+    },
+    "rpki:2001:3786:5002::/48": {
+      "url": "https://stat.ripe.net/data/rpki-validation/data.json?resource=AS205563&prefix=2001%3A3786%3A5002%3A%3A%2F48",
+      "sha256": "24f9876834e4161845bf2a09dc089ac555df8b4e5f03b915e96674e24a5ff1ae",
+      "data": {
+        "status": "valid",
+        "resource": "205563",
+        "validator": "routinator",
+        "validating_roas": [
+          {
+            "origin": "205563",
+            "prefix": "2001:3786::/32",
+            "validity": "valid",
+            "max_length": 48
+          }
+        ]
+      }
+    },
+    "route:2001:3786:5002::/48": {
+      "url": "https://stat.ripe.net/data/routing-status/data.json?resource=2001%3A3786%3A5002%3A%3A%2F48&min_peers_seeing=1",
+      "sha256": "ecef2b1a4eade595b179e59467d7338280abf486cdb5e6bc4ea89431bda65af0",
+      "data": {
+        "origins": [
+          {
+            "origin": 205563,
+            "route_objects": [
+              "RIPE"
+            ]
+          }
+        ],
+        "less_specifics": [
+          {
+            "prefix": "2000::/6",
+            "origin": 29632
+          }
+        ],
+        "more_specifics": [],
+        "query_time": "2026-11-14T00:00:00",
+        "resource": "2001:3786:5002::/48"
+      }
+    },
+    "rdap:2001:3786:5002:300::/56": {
+      "url": "https://rdap.db.ripe.net/ip/2001:3786:5002:300::",
+      "error": "HTTP Error 429: Too Many Requests"
+    },
+    "rpki:2001:3786:5005:600::/56": {
+      "url": "https://stat.ripe.net/data/rpki-validation/data.json?resource=AS205563&prefix=2001%3A3786%3A5005%3A600%3A%3A%2F56",
+      "sha256": "839b1ff53f3700e7b7264c5078b3192a18d594fa5215270f819ab9abbdd029d8",
+      "data": {
+        "status": "invalid_length",
+        "resource": "205563",
+        "validator": "routinator",
+        "validating_roas": [
+          {
+            "origin": "205563",
+            "prefix": "2001:3786::/32",
+            "validity": "invalid_length",
+            "max_length": 48
+          }
+        ]
+      }
+    },
+    "route:2001:3786:5005:600::/56": {
+      "url": "https://stat.ripe.net/data/routing-status/data.json?resource=2001%3A3786%3A5005%3A600%3A%3A%2F56&min_peers_seeing=1",
+      "sha256": "6703b8759e55a851a7204e2f528f9488f3b98cab8ca8413413a7ff707fd20ae8",
+      "data": {
+        "origins": [],
+        "less_specifics": [
+          {
+            "prefix": "2000::/6",
+            "origin": 29632
+          },
+          {
+            "prefix": "2001:3786:5005::/48",
+            "origin": 205563
+          }
+        ],
+        "more_specifics": [],
+        "query_time": "2026-11-14T00:00:00",
+        "resource": "2001:3786:5005:600::/56"
+      }
+    },
+    "rpki:2001:3786:5005::/48": {
+      "url": "https://stat.ripe.net/data/rpki-validation/data.json?resource=AS205563&prefix=2001%3A3786%3A5005%3A%3A%2F48",
+      "sha256": "4dd6f8e0ae50ba2a1622cc52fcb63da33a21a3c73d60c70b5aaf03537e6f7a1d",
+      "data": {
+        "status": "valid",
+        "resource": "205563",
+        "validator": "routinator",
+        "validating_roas": [
+          {
+            "origin": "205563",
+            "prefix": "2001:3786::/32",
+            "validity": "valid",
+            "max_length": 48
+          }
+        ]
+      }
+    },
+    "route:2001:3786:5005::/48": {
+      "url": "https://stat.ripe.net/data/routing-status/data.json?resource=2001%3A3786%3A5005%3A%3A%2F48&min_peers_seeing=1",
+      "sha256": "7f5360c13ef4a91dc9ee5f17e3115672f64c2c0f3b8c407ea580d22c26d6f194",
+      "data": {
+        "origins": [
+          {
+            "origin": 205563,
+            "route_objects": [
+              "RIPE"
+            ]
+          }
+        ],
+        "less_specifics": [
+          {
+            "prefix": "2000::/6",
+            "origin": 29632
+          }
+        ],
+        "more_specifics": [],
+        "query_time": "2026-11-14T00:00:00",
+        "resource": "2001:3786:5005::/48"
+      }
+    },
+    "rdap:2001:3786:5005:600::/56": {
+      "url": "https://rdap.db.ripe.net/ip/2001:3786:5005:600::",
+      "error": "<urlopen error timed out>"
+    }
   }
 }
