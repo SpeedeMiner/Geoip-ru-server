@@ -1,0 +1,53 @@
+{
+  "mode": "prior verified RIR bytes versus exact current derived outputs",
+  "production_raw_recovered": false,
+  "raw": {
+    "delegated-afrinic-latest": {
+      "prior_sha256": "21b55a80a32138e0c7e037cb7327109dfeee95d2debb3453cdb62f3745b809ab",
+      "target_sha256": "21b55a80a32138e0c7e037cb7327109dfeee95d2debb3453cdb62f3745b809ab",
+      "exact_target_bytes": true
+    },
+    "delegated-apnic-latest": {
+      "prior_sha256": "ddf23b8b3315cd810952d464a900c8c3642f0c6e04033f8c063db65ba7fde9c6",
+      "target_sha256": "e75f6589f995071cefee1db4e1507481ee36ba433d0c0a102230291e423cd242",
+      "exact_target_bytes": false
+    },
+    "delegated-arin-extended-latest": {
+      "prior_sha256": "181a2f71061541e70282880056c9ee2d2ab05fe6c31d3efed242a14d67d0c23a",
+      "target_sha256": "7c52d91c888d40befbc530a2c4d3e51b9589cd0842f20b6680ed24c00b1c788a",
+      "exact_target_bytes": false
+    },
+    "delegated-lacnic-latest": {
+      "prior_sha256": "e20a8c5e3e8d754f4a011ccd148d749a7d53cc73df86b8381efd42cf8eb73ae2",
+      "target_sha256": "dffcfc6b78649b6bce7aa93db0b0168c563a3da321510f5a86290041e9641b5b",
+      "exact_target_bytes": false
+    },
+    "delegated-ripencc-latest": {
+      "prior_sha256": "625378fa5a610dcc9c0b3d85c3cf342d0bbba7d37389bd3c474ae63c2cc7182b",
+      "target_sha256": "371f55c784e03273a07f484c21f6601374632a014aec678b535c6cc0368ecb11",
+      "exact_target_bytes": false
+    }
+  },
+  "derived": {
+    "geoip_RU_registered_asns.txt": {
+      "prior_recomputed_sha256": "04c81301f5299c84a5aa5e83bd04cc7c3338392e2dc556336edcd7ea2cc815f4",
+      "target_sha256": "fae1b8aa4b8064f5948f5e57ef5277d26a1209d62edaf7bf2423bc560bae25e5",
+      "exact_target_bytes": false
+    },
+    "geoip_BY_KZ_registered_asns.txt": {
+      "prior_recomputed_sha256": "0a9aff6e579a860b1f7ce94cfa5a8fb664330f8710817652e542c15cb6bf7e07",
+      "target_sha256": "0a9aff6e579a860b1f7ce94cfa5a8fb664330f8710817652e542c15cb6bf7e07",
+      "exact_target_bytes": true
+    },
+    "geoip_RU_rir_registered_prefixes.txt": {
+      "prior_recomputed_sha256": "cb52abbd865634b81af2a705f7fe418b5f2a4ee8a6214c3713974997b840496e",
+      "target_sha256": "cb52abbd865634b81af2a705f7fe418b5f2a4ee8a6214c3713974997b840496e",
+      "exact_target_bytes": true
+    },
+    "geoip_RU_BY_KZ_rir_registered_prefixes.tsv": {
+      "prior_recomputed_sha256": "7d196717b138f817c6896ca6b25c26e7a0d92947af438c8115e56be3afba3e16",
+      "target_sha256": "7d196717b138f817c6896ca6b25c26e7a0d92947af438c8115e56be3afba3e16",
+      "exact_target_bytes": true
+    }
+  }
+}
