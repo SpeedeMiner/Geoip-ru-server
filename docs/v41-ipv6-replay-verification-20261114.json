@@ -1,0 +1,120 @@
+{
+  "split_90_day_history": [
+    {
+      "resource": "2a0f:85c1:81b:f130::/60",
+      "url": "https://stat.ripe.net/data/routing-history/data.json?resource=2a0f%3A85c1%3A81b%3Af130%3A%3A%2F60&starttime=2026-08-16T00%3A00%3A00&endtime=2026-09-15T00%3A00%3A00&min_peers=1",
+      "sha256": "a4bc555fe4de85c7a5075bcc7da58311fe41de0930b9c9decba78ad9c188acdf",
+      "range": [
+        "2026-08-16T00:00:00",
+        "2026-09-15T00:00:00"
+      ],
+      "routes": []
+    },
+    {
+      "resource": "2a0f:85c1:81b:f130::/60",
+      "url": "https://stat.ripe.net/data/routing-history/data.json?resource=2a0f%3A85c1%3A81b%3Af130%3A%3A%2F60&starttime=2026-09-15T00%3A00%3A00&endtime=2026-10-15T00%3A00%3A00&min_peers=1",
+      "sha256": "24dd75a0829c89c698ac4ea1f100ed5c518be978ccfc93306dc2391aabea8bd0",
+      "range": [
+        "2026-09-15T00:00:00",
+        "2026-10-15T00:00:00"
+      ],
+      "routes": []
+    },
+    {
+      "resource": "2a0f:85c1:81b:f130::/60",
+      "url": "https://stat.ripe.net/data/routing-history/data.json?resource=2a0f%3A85c1%3A81b%3Af130%3A%3A%2F60&starttime=2026-10-15T00%3A00%3A00&endtime=2026-11-14T00%3A00%3A00&min_peers=1",
+      "sha256": "fa36a8ebff5ed8d8f31c3825468c764309445a9c595047e662536083eb0b00ce",
+      "range": [
+        "2026-10-15T00:00:00",
+        "2026-11-14T00:00:00"
+      ],
+      "routes": []
+    },
+    {
+      "resource": "2a0f:85c1:81b::/48",
+      "url": "https://stat.ripe.net/data/routing-history/data.json?resource=2a0f%3A85c1%3A81b%3A%3A%2F48&starttime=2026-08-16T00%3A00%3A00&endtime=2026-09-15T00%3A00%3A00&min_peers=1",
+      "sha256": "3ffbc6977419cd42a7a7e56f7021dd5cd9c8262ee2d790c0e069f25e0842fde5",
+      "range": [
+        "2026-08-16T00:00:00",
+        "2026-09-15T00:00:00"
+      ],
+      "routes": []
+    },
+    {
+      "resource": "2a0f:85c1:81b::/48",
+      "url": "https://stat.ripe.net/data/routing-history/data.json?resource=2a0f%3A85c1%3A81b%3A%3A%2F48&starttime=2026-09-15T00%3A00%3A00&endtime=2026-10-15T00%3A00%3A00&min_peers=1",
+      "sha256": "29320c5802780eea57c47d9a4b54c1cf63c40d9cdfa1d005f9c2cb641a214afd",
+      "range": [
+        "2026-09-15T00:00:00",
+        "2026-10-15T00:00:00"
+      ],
+      "routes": []
+    },
+    {
+      "resource": "2a0f:85c1:81b::/48",
+      "url": "https://stat.ripe.net/data/routing-history/data.json?resource=2a0f%3A85c1%3A81b%3A%3A%2F48&starttime=2026-10-15T00%3A00%3A00&endtime=2026-11-14T00%3A00%3A00&min_peers=1",
+      "sha256": "f94043a9dd65bcd45ca636993d720de5eb42db30b5895d787c65cee905d50b38",
+      "range": [
+        "2026-10-15T00:00:00",
+        "2026-11-14T00:00:00"
+      ],
+      "routes": []
+    }
+  ],
+  "standalone_replay": {
+    "baseline_sha256": "2735053560ebd598cbdcd71ccf858806d4b955a17e2eac512a7baf249d43653a",
+    "shadow_sha256": "4517a9b8e4dce647d0c7e43deca49dfed87f687a1cc111a7e006e35fe417495f",
+    "ipv6_added": [
+      "2001:ad0:cff::18/128",
+      "2001:ad0:cff::19/128",
+      "2001:ad0:cff::21/128",
+      "2001:ad0:cff::253/128",
+      "2001:ad0:cff::31/128",
+      "2001:ad0:cff::6/128",
+      "2001:ad0:cff::76/128",
+      "2001:ad0:cff::77/128",
+      "2001:ad0:cff::78/128",
+      "2001:ad0:cff::8/128"
+    ],
+    "ipv6_removed": 0,
+    "ipv4_changed": false,
+    "private_changed": false,
+    "effective_block_mask_sha256": "da3949ad119013db9a8237d322c63411234c201079f8506af3e51dc6051b0b6a"
+  },
+  "gate_log_sha256": {
+    "control": {
+      "build_v41_overlay": "9963b7affa69e9a9bf3d8ce0a4c91ea677559beb57f843c4750b2594526c4e79",
+      "validate_v41_base_artifacts": "1b7c3fd80aa4c89ade0b837cde4dde3cc48046393954baf48630a78d47aefc2f",
+      "validate_v41_overlay": "c7555435e2653f6cbb9c42ba82070b94bb0f824031aa7d74be749ae2659d2020",
+      "validate_v41_publication_bounds": "63843fc1df170b2acd6e9e2390c5e3852e9bf338da024e8e5489e8efd21bb494",
+      "validate_v41_relative_bounds": "63843fc1df170b2acd6e9e2390c5e3852e9bf338da024e8e5489e8efd21bb494",
+      "validate_v41_release_gate": "6595f0d0df9ec7bae09e352543581d030867f2025b95293972b905e3294bb6eb",
+      "validate_v41_telegram": "5fa0c04012fa78f0dba8239cbbecedb3022571f55038f237fdbc746d91c4cc75"
+    },
+    "candidate": {
+      "build_v41_overlay": "c05848ad8c4f6d39e9c83b02fa855bea578886bfe01c668e776602a4b8cefe89",
+      "validate_v41_base_artifacts": "1b7c3fd80aa4c89ade0b837cde4dde3cc48046393954baf48630a78d47aefc2f",
+      "validate_v41_overlay": "fa98c9ca39aa5f3cfd61e7968e6278e38cf08636bb3408635392306af0bf9365",
+      "validate_v41_publication_bounds": "9a65f697eb011af66be4c932f9915a684d09880cf1633b983f7cf39e3886c830",
+      "validate_v41_relative_bounds": "9251796c214476e3207942b30c86e77162d96dda00857cc1d3930972000b8dbc",
+      "validate_v41_release_gate": "5cd134c2e1a81bce2852fc51a1599a91f43aeac357b219dda8698e6393ff4f5c",
+      "validate_v41_telegram": "5fa0c04012fa78f0dba8239cbbecedb3022571f55038f237fdbc746d91c4cc75"
+    }
+  },
+  "rpki_negative_cases": [
+    {
+      "fixture": "removed historical prefix 94.131.190.0/23 from triage",
+      "expected": "rejected",
+      "observed": "rejected"
+    },
+    {
+      "fixture": "changed archived 94.131.190.0/23 AS215013 invalid_asn to valid",
+      "expected": "rejected",
+      "observed": "rejected"
+    }
+  ],
+  "test_suite": {
+    "passed": 145,
+    "failed": 0
+  }
+}
