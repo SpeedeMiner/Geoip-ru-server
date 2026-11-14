@@ -7,7 +7,7 @@ The policy below describes the v41 publisher and the regional/block-provenance r
 v41 branches from PR #12's corrected v39 head, preserving:
 - Corrected Russian-company ASN registry (removes 13 falsely attributed or unverified ASN names).
 - RIR-RU **selected-origin** routes from the pinned ipverse observation file, not loose GeoIP geolocation assumptions.
-- Kyoresuas Standard, HXEHEX host IPs and Escapingworm operator-service DIRECT inputs.
+- Kyoresuas Standard and Escapingworm operator-service DIRECT inputs.
 - W1ZARDZ DIRECT prefixes only where they overlap RIR-RU address resources.
 - Approved Antifilter ip.lst / ipresolve.lst / bounded subnet.lst and curated Telegram sources, with `ipsum.lst` review-only.
 - v37 base GeoIP RU/PRIVATE, PRIVATE precedence, full provenance and independent read-back validation.
@@ -29,6 +29,15 @@ v41 imports from v40:
 5. REG.RU AS197695 is classified as SHARED_INFRA and is admitted only by the existing regional ASN selection, not by its new classification. The same class already covers the reviewed origins of Timeweb, Selectel and DDoS-Guard. No recursive import of peer/upstream/tenant ASNs. Registration is routing evidence, not a per-tenant reachability guarantee.
 
 The v37 base and approved-union filenames remain unchanged. The base still subtracts the full union. The v41 overlay restores eligible regional/service coverage against advisory evidence and re-applies the effective exclusions. No source is removed, no GeoSite policy is edited and no checked domain is treated as a direct IP block. The historical raw feeds are retained for attribution, not as current confirmation.
+
+## HXEHEX mobile-whitelist diagnostics
+
+The pinned HXEHEX `ipwhitelist.txt` remains available for comparison and source
+provenance. Its `.1` representatives are not evidence of named service
+endpoints. It supplies neither standalone DIRECT routes nor exceptions to
+resolver-derived blocks. The companion `cidrwhitelist.txt` stays diagnostic
+in the v37 base. Coverage independently admitted by other sources is not
+removed simply because an address also appears in HXEHEX.
 
 ## Hydra DIRECT / WHITELIST expansion
 

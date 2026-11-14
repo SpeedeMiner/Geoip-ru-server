@@ -349,6 +349,7 @@ jobs:
           test -s "$RIR_RUKZBY_PREFIX_INPUT"
           test -s "$RIR_RUKZBY_STATS"
           python3 .github/scripts/validate_v41_overlay.py \
+            --base "$OUTPUT_FILE" \
             --geoip "$V41_OUTPUT_FILE" \
             --hydra "$HYDRA_INPUT" \
             --blocked-union "$BLOCKED_IP_INPUT" \

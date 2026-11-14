@@ -53,7 +53,7 @@ class ReleaseGateTests(unittest.TestCase):
         }
         self.assertEqual(
             literal_service_exceptions(regions, sources),
-            nets("192.0.2.4/32", "192.0.2.8/32", "2001:db8::6/128"),
+            nets("192.0.2.4/32", "192.0.2.8/32"),
         )
 
     def test_effective_and_private_precedence_are_fatal(self):

@@ -9,10 +9,11 @@ Run the same full v41 policy first, including exact hard evidence, Telegram,
 PRIVATE and reviewed regional admission exclusions. Preserve all address
 coverage of the v37 base, registered regional resources, selected regional
 BGP origins, curated company origins, reviewed operator prefixes and all
-current service feeds other than HXEHEX. Keep only coverage eligible under
-the full policy; no mask is weakened or recomputed.
+current DIRECT service feeds. HXEHEX is diagnostic-only in both profiles and
+does not supply DIRECT routes or resolver exemptions. Keep only coverage
+eligible under the full policy; Light does not recompute or weaken the mask.
 
-In the remaining coverage unique to HXEHEX and Hydra, remove host-size CIDR
+In the remaining coverage unique to Hydra, remove host-size CIDR
 fragments (/32 for IPv4, /128 for IPv6) after forming their union and subtracting
 both the effective policy exclusions and protected coverage. Keep compact
 broader fragments. The Light set must be a subset of full DIRECT, must retain
@@ -30,7 +31,7 @@ statistics separately.
 
 - Xray/Happ: use `geoip_RU_light.dat` as an external DAT with `RU` and
   `PRIVATE`. Keep the full DAT if your IP-only rules rely on its broader
-  HXEHEX/Hydra host coverage.
+  Hydra host coverage.
 - sing-box: load `geoip_RU_light.srs` and `geoip_PRIVATE.srs`. Both are
   binary rule-sets v1, compiled from the validated Light DAT and decompiled
   in CI to check exact IPv4/IPv6 equality with their source categories.
@@ -39,14 +40,12 @@ statistics separately.
   rule order, DNS, sniffing and fallback. Domain and IP rules are not
   interchangeable.
 
-## Measured frozen production run
+## Measured frozen production inputs
 
-The fixed inputs for snapshot `geoip-v41-snapshot-43607261245.1` give
-155,395 RU CIDRs and 1,738,277 bytes for the full DAT, versus 32,041 RU CIDRs
-and 504,737 bytes for Light. Light removes 123,383 IPv4 addresses and no
-IPv6 addresses for this build. Protected eligible coverage and PRIVATE
-are unchanged. File size and CIDR count are measurements; runtime RSS
-for Happ, Xray and routers is not inferred from them.
+The source inputs from snapshot `geoip-v41-snapshot-43607261245.1` are used
+to check the HXEHEX policy change. The full and Light address differences are
+reported in the build manifest. File size and CIDR count are measurements;
+runtime RSS for Happ, Xray and routers is not inferred from them.
 
 Expanding the six proposed partially blocked /24s would remove another
 927 currently eligible IPv4 addresses while saving only 192 net IPv4
