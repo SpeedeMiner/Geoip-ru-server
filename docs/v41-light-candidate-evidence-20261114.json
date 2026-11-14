@@ -1,0 +1,97 @@
+{
+  "production_input_snapshot": "geoip-v41-snapshot-43607261245.1",
+  "pr": 34,
+  "candidate_run": 43609640040,
+  "candidate_artifact": 14119319983,
+  "verified_identical_candidate_and_local": {
+    "geoip_RU.dat": {
+      "bytes": 1738277,
+      "sha256": "2735053560ebd598cbdcd71ccf858806d4b955a17e2eac512a7baf249d43653a"
+    },
+    "geoip_RU_light.dat": {
+      "bytes": 504737,
+      "sha256": "3fd29b69e5be1a7c90658e4bbcbc53726be0fe84573854638f2e1238485dafd5"
+    },
+    "geoip_RU_light.srs": {
+      "bytes": 126777,
+      "sha256": "aadc14225147248fd62a25f9bb070934136abdfb97b63565dac9a7ed47c18d90"
+    },
+    "geoip_PRIVATE.srs": {
+      "bytes": 228,
+      "sha256": "b9ea6381ea61e286298aea76c10cb85a252ff0d20c49d6de3527be1353c107c4"
+    },
+    "geoip_RU_v41_blocked_ip_exclusions.txt": {
+      "bytes": 2021103,
+      "sha256": "da3949ad119013db9a8237d322c63411234c201079f8506af3e51dc6051b0b6a"
+    }
+  },
+  "light_metrics": {
+    "filename": "geoip_RU_light.dat",
+    "policy": "drop_optional_only_post_policy_host_fragments",
+    "sha256": "3fd29b69e5be1a7c90658e4bbcbc53726be0fe84573854638f2e1238485dafd5",
+    "bytes": "504737",
+    "full_output_bytes": "1738277",
+    "bytes_saved": "1233540",
+    "full_cidr_breakdown": {
+      "total_cidrs": "155395",
+      "ipv4_cidrs": "140292",
+      "ipv4_host_32_cidrs": "124144",
+      "ipv6_cidrs": "15103",
+      "ipv6_host_128_cidrs": "0"
+    },
+    "light_cidr_breakdown": {
+      "total_cidrs": "32041",
+      "ipv4_cidrs": "16938",
+      "ipv4_host_32_cidrs": "779",
+      "ipv6_cidrs": "15103",
+      "ipv6_host_128_cidrs": "0"
+    },
+    "removed_address_space": {
+      "ipv4": "123383",
+      "ipv6": "0"
+    },
+    "address_space": {
+      "ipv4": "53374041",
+      "ipv6": "1205876352968421911415516831940608"
+    },
+    "private_unchanged": true
+  },
+  "six_slash24_counterfactual": {
+    "reviewed_ipv4_hosts_total": 746,
+    "six_subnets": [
+      {
+        "prefix": "91.132.150.0/24",
+        "reviewed_hosts": 209,
+        "direct_addresses_lost": 47
+      },
+      {
+        "prefix": "91.132.151.0/24",
+        "reviewed_hosts": 185,
+        "direct_addresses_lost": 71
+      },
+      {
+        "prefix": "195.245.221.0/24",
+        "reviewed_hosts": 117,
+        "direct_addresses_lost": 139
+      },
+      {
+        "prefix": "188.124.247.0/24",
+        "reviewed_hosts": 39,
+        "direct_addresses_lost": 217
+      },
+      {
+        "prefix": "188.124.238.0/24",
+        "reviewed_hosts": 32,
+        "direct_addresses_lost": 224
+      },
+      {
+        "prefix": "188.124.237.0/24",
+        "reviewed_hosts": 27,
+        "direct_addresses_lost": 229
+      }
+    ],
+    "direct_ipv4_addresses_lost": 927,
+    "net_ipv4_cidrs_removed": 192
+  },
+  "publish_in_pr": "skipped"
+}
