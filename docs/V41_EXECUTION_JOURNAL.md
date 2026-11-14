@@ -649,3 +649,11 @@ See [v41 release hardening](V41_RELEASE_HARDENING.md). Routing-policy changes ar
 
 - [Draft PR #37](https://github.com/SpeedeMiner/Geoip-ru-server/pull/37), head `198bbe12`, adds a UTC date to both offline RIR inventory generators and records the reference in reports. Live builds still fetch current inputs and use the same UTC day and original age limits. No route selection change.
 - 166 local tests passed. The exact registry archive has been checked and restored. Full fixed-input replay and GitHub CI are in progress. No main, release, or PR #5 changes.
+
+- Full local replay used the 37 verified production inputs and matched DAT, both SRS, the effective block mask and all four RIR prefix/ASN data files byte for byte. At a simulated 2026-11-27 UTC, both default parsers rejected the 15-day-old AFRINIC input while replay against 2026-11-14 UTC passed without relaxing the age window. [v41 build](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43631163760) and [lint](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43631163718) passed, and publish was skipped. [v39 compatibility](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43631163725) was still running at this checkpoint. PR #37 is ready for review, not merged.
+
+## 2026-11-15 — Cross-check selected v41 ASN origins against the full ipverse aggregate
+
+- Re-read all 97,507 ASN JSON files in the exact snapshot archive, SHA-256 `d34d00d59ec419fec991d860af290b557a47b8e2f9596688b9bd11b0e4103d02`. Normalized CIDRs and compared identical keys, without treating adjacent, containing or contained ranges as identical. Input snapshot is `geoip-v41-snapshot-43617500418.1`.
+- Among 23,603 selected rows, 101 CIDRs have more than one selected ASN in the archive (92 IPv4, 9 IPv6). Another 44 (41 IPv4, 3 IPv6) have additional ASN labels only visible in the full archive, not in the selected row. No overlap between these cohorts. See [the 44-row review queue](v41-ipverse-equal-cidr-audit-20261115.tsv). Both Yandex pins were present under AS212066 in the matching archive.
+- Equal CIDRs in per-ASN aggregates are not confirmation of simultaneous MOAS or longest-prefix origin. Candidate rows remain diagnostic and need an unaggregated time-aligned RIB for policy changes. No routing, trigger, main, release or PR #5 changes.
