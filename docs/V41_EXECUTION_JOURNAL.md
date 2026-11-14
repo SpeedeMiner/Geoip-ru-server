@@ -633,3 +633,8 @@ See [v41 release hardening](V41_RELEASE_HARDENING.md). Routing-policy changes ar
 - Reviewed production main `596c93df` and published snapshot `geoip-v41-snapshot-43617500418.1`. Verified 164 Python tests, Go tests, all five workflow YAMLs and a fresh fixed-input replay using 37 hash-checked inputs. DAT, SRS, effective block and both generated input bundles matched published bytes.
 - Measured 262 IPv4 admitted only via W1ZARDZ outside regional RIR, 6,902 historical-only IPv4 still in the effective mask, and identified missing versioned block inputs, independent release endpoint drift, and BGP provenance limitations.
 - See [full repository audit](V41_FULL_REPOSITORY_AUDIT_20261114.md). Documentation only on this audit branch, no routing, workflow, publication or PR #5 changes.
+
+## 2026-11-14 — Release-hardening candidate ready for review
+
+- [PR #35](https://github.com/SpeedeMiner/Geoip-ru-server/pull/35), head `9998fc61`, passed [v41 build](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43625515502), [v39 compatibility](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43625515522) and [workflow lint](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43625515493). The publish job was skipped as intended for a PR. [Candidate artifact](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43625515502/artifacts/14125758771).
+- Local replay restored all 37 inputs without rolling downloads and reproduced the published DAT, both SRS files and effective block mask byte for byte. The 168-test suite passed. The PR is ready for review, not merged. No main, release, routing policy, or PR #5 changes.
