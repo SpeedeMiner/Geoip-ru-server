@@ -360,6 +360,7 @@ jobs:
             --hxehex-ip "$HXEHEX_IP_INPUT" \
             --escapingworm "$ESCAPINGWORM_OPERATOR_INPUT" \
             --regional-admission-exclusions .github/data/v41-regional-admission-exclusions.tsv \
+            --reviewed-operator-prefixes .github/data/v41-reviewed-operator-prefixes.tsv \
             --effective-blocked "$V41_BLOCKED_FILE" \
             --manifest "$V41_MANIFEST" \
             --quality "$V41_QUALITY_REPORT" \
@@ -408,6 +409,7 @@ jobs:
             --current-subnet-feed "$BLOCKED_SUBNET_INPUT" \
             --confirmed-ip-records .github/data/v41-reviewed-rkn-ip-records.tsv \
             --regional-admission-exclusions .github/data/v41-regional-admission-exclusions.tsv \
+            --reviewed-operator-prefixes .github/data/v41-reviewed-operator-prefixes.tsv \
             --effective "$V41_BLOCKED_FILE" \
             --core "$CORE_COMPANY_PREFIXES" \
             --shared "$SHARED_INFRASTRUCTURE_PREFIXES" \

@@ -1,0 +1,60 @@
+{
+  "source_url": "https://registry.ctreserve.de/api/v3/snapshot/",
+  "snapshot_date": "2026-11-13",
+  "snapshot_sha256": "893ca06a64e6440e5c627beb7dbb0fb812da7c0a1a3b8ce240ce72b6e468afa3",
+  "scope": "Four active exact IP-only entries intersecting the 961 address review cohort. Public mirror; not an official signed export.",
+  "records": [
+    {
+      "ip": "104.28.21.177",
+      "status": 1,
+      "ip_only": true,
+      "token": "104.28.21.177/32",
+      "id": 1640069,
+      "decision": "2-6-20/2017-01-24-117-АИ",
+      "authority": {
+        "id": 225,
+        "name": "Роскомнадзор, на основании ранее вынесенного решения (ФНС)"
+      },
+      "decision_date": "25-01-2017"
+    },
+    {
+      "ip": "104.28.31.24",
+      "status": 1,
+      "ip_only": true,
+      "token": "104.28.31.24/32",
+      "id": 2381030,
+      "decision": "1з-16719/2020",
+      "authority": {
+        "id": 810,
+        "name": "Минцифры"
+      },
+      "decision_date": "25-06-2020"
+    },
+    {
+      "ip": "104.28.31.185",
+      "status": 1,
+      "ip_only": true,
+      "token": "104.28.31.185/32",
+      "id": 312828,
+      "decision": "2-946/13",
+      "authority": {
+        "id": 8,
+        "name": "Октябрьский районный суд г. Ставрополя"
+      },
+      "decision_date": "10-06-2013"
+    },
+    {
+      "ip": "185.174.138.82",
+      "status": 1,
+      "ip_only": true,
+      "token": "185.174.138.82/32",
+      "id": 745574,
+      "decision": "2-6-27/115",
+      "authority": {
+        "id": 225,
+        "name": "Роскомнадзор, на основании ранее вынесенного решения (ФНС)"
+      },
+      "decision_date": "23-11-2015"
+    }
+  ]
+}

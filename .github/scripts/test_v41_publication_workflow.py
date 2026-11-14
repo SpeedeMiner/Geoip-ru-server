@@ -21,7 +21,7 @@ class PublicationWorkflowTests(unittest.TestCase):
         self.output = self.root / "output"
         self.repo = "example/geoip"
         self.env = {
-            **os.environ, "GIT_CONFIG_COUNT": "1",
+            **os.environ, "PWD": str(self.root), "GIT_CONFIG_COUNT": "1",
             "GIT_CONFIG_KEY_0": f"url.{self.remote.as_uri()}.insteadOf",
             "GIT_CONFIG_VALUE_0": f"https://github.com/{self.repo}.git",
             "GITHUB_REPOSITORY": self.repo, "GITHUB_TOKEN": "test-only",
@@ -92,12 +92,23 @@ class PublicationWorkflowTests(unittest.TestCase):
                       "with open(os.environ['CAPTURE'], 'a') as log: log.write(json.dumps(sys.argv[1:])+'\\n')\n"
                       "sys.exit(1)\n", encoding="utf-8")
         gh.chmod(0o755)
-        result = self.invoke(
-            "publish_v41_snapshot_release.sh", SNAPSHOT_TAG="v41.3", CAPTURE=str(capture),
+        env = dict( SNAPSHOT_TAG="v41.3", CAPTURE=str(capture),
             PATH=f"{self.root}:{os.environ['PATH']}", V41_OUTPUT_FILE="geoip_RU.dat",
             OUTPUT_SHA_FILE="geoip_RU.dat.sha256sum", V41_MANIFEST="manifest.json",
             V41_QUALITY_REPORT="quality.txt",
         )
+        for field in ("V41_OUTPUT_FILE", "OUTPUT_SHA_FILE", "V41_MANIFEST"):
+            (self.candidate / env[field]).write_text("asset", encoding="utf-8")
+        missing = self.invoke("publish_v41_snapshot_release.sh", **env)
+        self.assertNotEqual(missing.returncode, 0)
+        self.assertIn("quality.txt", missing.stderr)
+        self.assertFalse(capture.exists())
+        (self.candidate / env["V41_QUALITY_REPORT"]).touch()
+        empty = self.invoke("publish_v41_snapshot_release.sh", **env)
+        self.assertNotEqual(empty.returncode, 0)
+        self.assertFalse(capture.exists())
+        (self.candidate / env["V41_QUALITY_REPORT"]).write_text("asset", encoding="utf-8")
+        result = self.invoke("publish_v41_snapshot_release.sh", **env)
         self.assertNotEqual(result.returncode, 0)
         command, = [json.loads(row) for row in capture.read_text().splitlines()]
         self.assertEqual(command[:3], ["release", "create", "v41.3"])

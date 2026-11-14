@@ -1,0 +1,421 @@
+{
+  "base_pr_head": "84c48c764bb1e6b2850bfe5fddb13940de5b04bb",
+  "policy": "Exact RU RDAP assignment, matching registry-linked operator geofeed and full observed RIS coverage by the declared origin, without hard/PRIVATE/admission conflict or expansion outside the existing cohort.",
+  "records": [
+    {
+      "prefix": "185.188.183.0/24",
+      "origin": "AS204997",
+      "netname": "FIRSTSERVER",
+      "rdap_country": "RU",
+      "rdap": "https://rdap.db.ripe.net/ip/185.188.183.0/24",
+      "ris": "https://stat.ripe.net/data/routing-status/data.json?resource=185.188.183.0%2F24",
+      "ris_query_time": "2026-11-13T08:00:00",
+      "ris_coverage": "exact",
+      "ris_peers": {
+        "ris_peers_seeing": 318,
+        "total_ris_peers": 319
+      },
+      "ris_more_specifics": [],
+      "ris_less_specifics": [],
+      "geofeed": "https://geofeed.first-server.net/fb_geofeed.csv",
+      "geofeed_sha256": "3721f92fd09917143e01ec9117b46de301a289ecaaec0965ca1d8d2e0dd9ae89",
+      "matched_geofeed_cidrs": [
+        "185.188.183.0/24"
+      ],
+      "restored_ipv4": 1
+    },
+    {
+      "prefix": "185.195.27.0/24",
+      "origin": "AS204997",
+      "netname": "FIRSTSERVER",
+      "rdap_country": "RU",
+      "rdap": "https://rdap.db.ripe.net/ip/185.195.27.0/24",
+      "ris": "https://stat.ripe.net/data/routing-status/data.json?resource=185.195.27.0%2F24",
+      "ris_query_time": "2026-11-13T08:00:00",
+      "ris_coverage": "exact",
+      "ris_peers": {
+        "ris_peers_seeing": 318,
+        "total_ris_peers": 319
+      },
+      "ris_more_specifics": [],
+      "ris_less_specifics": [],
+      "geofeed": "https://geofeed.first-server.net/fb_geofeed.csv",
+      "geofeed_sha256": "3721f92fd09917143e01ec9117b46de301a289ecaaec0965ca1d8d2e0dd9ae89",
+      "matched_geofeed_cidrs": [
+        "185.195.27.0/24"
+      ],
+      "restored_ipv4": 1
+    },
+    {
+      "prefix": "185.252.147.0/24",
+      "origin": "AS204997",
+      "netname": "FIRSTSERVER",
+      "rdap_country": "RU",
+      "rdap": "https://rdap.db.ripe.net/ip/185.252.147.0/24",
+      "ris": "https://stat.ripe.net/data/routing-status/data.json?resource=185.252.147.0%2F24",
+      "ris_query_time": "2026-11-13T08:00:00",
+      "ris_coverage": "exact",
+      "ris_peers": {
+        "ris_peers_seeing": 318,
+        "total_ris_peers": 319
+      },
+      "ris_more_specifics": [],
+      "ris_less_specifics": [],
+      "geofeed": "https://geofeed.first-server.net/fb_geofeed.csv",
+      "geofeed_sha256": "3721f92fd09917143e01ec9117b46de301a289ecaaec0965ca1d8d2e0dd9ae89",
+      "matched_geofeed_cidrs": [
+        "185.252.147.0/24"
+      ],
+      "restored_ipv4": 1
+    },
+    {
+      "prefix": "185.255.132.0/24",
+      "origin": "AS204997",
+      "netname": "FIRSTSERVER",
+      "rdap_country": "RU",
+      "rdap": "https://rdap.db.ripe.net/ip/185.255.132.0/24",
+      "ris": "https://stat.ripe.net/data/routing-status/data.json?resource=185.255.132.0%2F24",
+      "ris_query_time": "2026-11-13T08:00:00",
+      "ris_coverage": "exact",
+      "ris_peers": {
+        "ris_peers_seeing": 318,
+        "total_ris_peers": 319
+      },
+      "ris_more_specifics": [],
+      "ris_less_specifics": [],
+      "geofeed": "https://geofeed.first-server.net/fb_geofeed.csv",
+      "geofeed_sha256": "3721f92fd09917143e01ec9117b46de301a289ecaaec0965ca1d8d2e0dd9ae89",
+      "matched_geofeed_cidrs": [
+        "185.255.132.0/24"
+      ],
+      "restored_ipv4": 1
+    },
+    {
+      "prefix": "185.255.133.0/24",
+      "origin": "AS204997",
+      "netname": "FIRSTSERVER",
+      "rdap_country": "RU",
+      "rdap": "https://rdap.db.ripe.net/ip/185.255.133.0/24",
+      "ris": "https://stat.ripe.net/data/routing-status/data.json?resource=185.255.133.0%2F24",
+      "ris_query_time": "2026-11-13T08:00:00",
+      "ris_coverage": "exact",
+      "ris_peers": {
+        "ris_peers_seeing": 318,
+        "total_ris_peers": 319
+      },
+      "ris_more_specifics": [],
+      "ris_less_specifics": [],
+      "geofeed": "https://geofeed.first-server.net/fb_geofeed.csv",
+      "geofeed_sha256": "3721f92fd09917143e01ec9117b46de301a289ecaaec0965ca1d8d2e0dd9ae89",
+      "matched_geofeed_cidrs": [
+        "185.255.133.0/24"
+      ],
+      "restored_ipv4": 1
+    },
+    {
+      "prefix": "193.109.79.0/24",
+      "origin": "AS204997",
+      "netname": "FIRSTSERVER",
+      "rdap_country": "RU",
+      "rdap": "https://rdap.db.ripe.net/ip/193.109.79.0/24",
+      "ris": "https://stat.ripe.net/data/routing-status/data.json?resource=193.109.79.0%2F24",
+      "ris_query_time": "2026-11-13T08:00:00",
+      "ris_coverage": "exact",
+      "ris_peers": {
+        "ris_peers_seeing": 318,
+        "total_ris_peers": 319
+      },
+      "ris_more_specifics": [],
+      "ris_less_specifics": [],
+      "geofeed": "https://geofeed.first-server.net/fb_geofeed.csv",
+      "geofeed_sha256": "3721f92fd09917143e01ec9117b46de301a289ecaaec0965ca1d8d2e0dd9ae89",
+      "matched_geofeed_cidrs": [
+        "193.109.79.0/24"
+      ],
+      "restored_ipv4": 1
+    },
+    {
+      "prefix": "185.105.116.0/23",
+      "origin": "AS209641",
+      "netname": "PSERVERS-CLOUD-HOSTING",
+      "rdap_country": "RU",
+      "rdap": "https://rdap.db.ripe.net/ip/185.105.116.0/23",
+      "ris": "https://stat.ripe.net/data/routing-status/data.json?resource=185.105.116.0%2F23",
+      "ris_query_time": "2026-11-13T08:00:00",
+      "ris_coverage": "fully_covered_by_more_specifics",
+      "ris_peers": {
+        "ris_peers_seeing": 0,
+        "total_ris_peers": 319
+      },
+      "ris_more_specifics": [
+        {
+          "prefix": "185.105.116.0/24",
+          "origin": 209641
+        },
+        {
+          "prefix": "185.105.117.0/24",
+          "origin": 209641
+        }
+      ],
+      "ris_less_specifics": [],
+      "geofeed": "https://geofeed.power-servers.net/ih_geofeed.csv",
+      "geofeed_sha256": "e3ab163fce08d816cd398a59134b715f341ca4f444566f4ef8f0b97b9c2e5269",
+      "matched_geofeed_cidrs": [
+        "185.105.116.0/24",
+        "185.105.117.0/24"
+      ],
+      "restored_ipv4": 3
+    },
+    {
+      "prefix": "185.5.248.0/23",
+      "origin": "AS209641",
+      "netname": "PSERVERS-CLOUD-HOSTING",
+      "rdap_country": "RU",
+      "rdap": "https://rdap.db.ripe.net/ip/185.5.248.0/23",
+      "ris": "https://stat.ripe.net/data/routing-status/data.json?resource=185.5.248.0%2F23",
+      "ris_query_time": "2026-11-13T08:00:00",
+      "ris_coverage": "exact",
+      "ris_peers": {
+        "ris_peers_seeing": 320,
+        "total_ris_peers": 320
+      },
+      "ris_more_specifics": [],
+      "ris_less_specifics": [
+        {
+          "prefix": "185.5.248.0/22",
+          "origin": 209641
+        }
+      ],
+      "geofeed": "https://geofeed.power-servers.net/ih_geofeed.csv",
+      "geofeed_sha256": "e3ab163fce08d816cd398a59134b715f341ca4f444566f4ef8f0b97b9c2e5269",
+      "matched_geofeed_cidrs": [
+        "185.5.248.0/23"
+      ],
+      "restored_ipv4": 1
+    },
+    {
+      "prefix": "185.5.250.0/23",
+      "origin": "AS209641",
+      "netname": "PSERVERS-CLOUD-HOSTING",
+      "rdap_country": "RU",
+      "rdap": "https://rdap.db.ripe.net/ip/185.5.250.0/23",
+      "ris": "https://stat.ripe.net/data/routing-status/data.json?resource=185.5.250.0%2F23",
+      "ris_query_time": "2026-11-13T08:00:00",
+      "ris_coverage": "exact",
+      "ris_peers": {
+        "ris_peers_seeing": 319,
+        "total_ris_peers": 319
+      },
+      "ris_more_specifics": [
+        {
+          "prefix": "185.5.250.0/24",
+          "origin": 209641
+        }
+      ],
+      "ris_less_specifics": [
+        {
+          "prefix": "185.5.248.0/22",
+          "origin": 209641
+        }
+      ],
+      "geofeed": "https://geofeed.power-servers.net/ih_geofeed.csv",
+      "geofeed_sha256": "e3ab163fce08d816cd398a59134b715f341ca4f444566f4ef8f0b97b9c2e5269",
+      "matched_geofeed_cidrs": [
+        "185.5.250.0/23"
+      ],
+      "restored_ipv4": 1
+    },
+    {
+      "prefix": "185.87.48.0/23",
+      "origin": "AS209641",
+      "netname": "PSERVERS-CLOUD-HOSTING",
+      "rdap_country": "RU",
+      "rdap": "https://rdap.db.ripe.net/ip/185.87.48.0/23",
+      "ris": "https://stat.ripe.net/data/routing-status/data.json?resource=185.87.48.0%2F23",
+      "ris_query_time": "2026-11-13T08:00:00",
+      "ris_coverage": "fully_covered_by_more_specifics",
+      "ris_peers": {
+        "ris_peers_seeing": 0,
+        "total_ris_peers": 319
+      },
+      "ris_more_specifics": [
+        {
+          "prefix": "185.87.48.0/24",
+          "origin": 209641
+        },
+        {
+          "prefix": "185.87.49.0/24",
+          "origin": 209641
+        }
+      ],
+      "ris_less_specifics": [
+        {
+          "prefix": "185.87.48.0/22",
+          "origin": 209641
+        }
+      ],
+      "geofeed": "https://geofeed.power-servers.net/ih_geofeed.csv",
+      "geofeed_sha256": "e3ab163fce08d816cd398a59134b715f341ca4f444566f4ef8f0b97b9c2e5269",
+      "matched_geofeed_cidrs": [
+        "185.87.48.0/23"
+      ],
+      "restored_ipv4": 1
+    },
+    {
+      "prefix": "185.87.50.0/23",
+      "origin": "AS209641",
+      "netname": "PSERVERS-CLOUD-HOSTING",
+      "rdap_country": "RU",
+      "rdap": "https://rdap.db.ripe.net/ip/185.87.50.0/23",
+      "ris": "https://stat.ripe.net/data/routing-status/data.json?resource=185.87.50.0%2F23",
+      "ris_query_time": "2026-11-13T08:00:00",
+      "ris_coverage": "fully_covered_by_more_specifics",
+      "ris_peers": {
+        "ris_peers_seeing": 0,
+        "total_ris_peers": 319
+      },
+      "ris_more_specifics": [
+        {
+          "prefix": "185.87.50.0/24",
+          "origin": 209641
+        },
+        {
+          "prefix": "185.87.51.0/24",
+          "origin": 209641
+        }
+      ],
+      "ris_less_specifics": [
+        {
+          "prefix": "185.87.48.0/22",
+          "origin": 209641
+        }
+      ],
+      "geofeed": "https://geofeed.power-servers.net/ih_geofeed.csv",
+      "geofeed_sha256": "e3ab163fce08d816cd398a59134b715f341ca4f444566f4ef8f0b97b9c2e5269",
+      "matched_geofeed_cidrs": [
+        "185.87.50.0/23"
+      ],
+      "restored_ipv4": 2
+    },
+    {
+      "prefix": "193.124.176.0/24",
+      "origin": "AS209641",
+      "netname": "PSERVERS-CLOUD-HOSTING",
+      "rdap_country": "RU",
+      "rdap": "https://rdap.db.ripe.net/ip/193.124.176.0/24",
+      "ris": "https://stat.ripe.net/data/routing-status/data.json?resource=193.124.176.0%2F24",
+      "ris_query_time": "2026-11-13T08:00:00",
+      "ris_coverage": "exact",
+      "ris_peers": {
+        "ris_peers_seeing": 319,
+        "total_ris_peers": 319
+      },
+      "ris_more_specifics": [],
+      "ris_less_specifics": [
+        {
+          "prefix": "193.124.176.0/22",
+          "origin": 209641
+        }
+      ],
+      "geofeed": "https://geofeed.power-servers.net/ih_geofeed.csv",
+      "geofeed_sha256": "e3ab163fce08d816cd398a59134b715f341ca4f444566f4ef8f0b97b9c2e5269",
+      "matched_geofeed_cidrs": [
+        "193.124.176.0/24"
+      ],
+      "restored_ipv4": 1
+    },
+    {
+      "prefix": "193.124.177.0/24",
+      "origin": "AS209641",
+      "netname": "PSERVERS-CLOUD-HOSTING",
+      "rdap_country": "RU",
+      "rdap": "https://rdap.db.ripe.net/ip/193.124.177.0/24",
+      "ris": "https://stat.ripe.net/data/routing-status/data.json?resource=193.124.177.0%2F24",
+      "ris_query_time": "2026-11-13T08:00:00",
+      "ris_coverage": "exact",
+      "ris_peers": {
+        "ris_peers_seeing": 319,
+        "total_ris_peers": 319
+      },
+      "ris_more_specifics": [],
+      "ris_less_specifics": [
+        {
+          "prefix": "193.124.176.0/22",
+          "origin": 209641
+        }
+      ],
+      "geofeed": "https://geofeed.power-servers.net/ih_geofeed.csv",
+      "geofeed_sha256": "e3ab163fce08d816cd398a59134b715f341ca4f444566f4ef8f0b97b9c2e5269",
+      "matched_geofeed_cidrs": [
+        "193.124.177.0/24"
+      ],
+      "restored_ipv4": 1
+    },
+    {
+      "prefix": "94.142.142.0/24",
+      "origin": "AS209641",
+      "netname": "PSERVERS-CLOUD-HOSTING",
+      "rdap_country": "RU",
+      "rdap": "https://rdap.db.ripe.net/ip/94.142.142.0/24",
+      "ris": "https://stat.ripe.net/data/routing-status/data.json?resource=94.142.142.0%2F24",
+      "ris_query_time": "2026-11-13T08:00:00",
+      "ris_coverage": "exact",
+      "ris_peers": {
+        "ris_peers_seeing": 319,
+        "total_ris_peers": 319
+      },
+      "ris_more_specifics": [],
+      "ris_less_specifics": [],
+      "geofeed": "https://geofeed.power-servers.net/ih_geofeed.csv",
+      "geofeed_sha256": "e3ab163fce08d816cd398a59134b715f341ca4f444566f4ef8f0b97b9c2e5269",
+      "matched_geofeed_cidrs": [
+        "94.142.142.0/24"
+      ],
+      "restored_ipv4": 1
+    },
+    {
+      "prefix": "95.81.114.0/24",
+      "origin": "AS209641",
+      "netname": "PSERVERS-CLOUD-HOSTING",
+      "rdap_country": "RU",
+      "rdap": "https://rdap.db.ripe.net/ip/95.81.114.0/24",
+      "ris": "https://stat.ripe.net/data/routing-status/data.json?resource=95.81.114.0%2F24",
+      "ris_query_time": "2026-11-13T08:00:00",
+      "ris_coverage": "exact",
+      "ris_peers": {
+        "ris_peers_seeing": 319,
+        "total_ris_peers": 319
+      },
+      "ris_more_specifics": [],
+      "ris_less_specifics": [],
+      "geofeed": "https://geofeed.power-servers.net/ih_geofeed.csv",
+      "geofeed_sha256": "e3ab163fce08d816cd398a59134b715f341ca4f444566f4ef8f0b97b9c2e5269",
+      "matched_geofeed_cidrs": [
+        "95.81.114.0/24"
+      ],
+      "restored_ipv4": 1
+    },
+    {
+      "prefix": "95.81.125.0/24",
+      "origin": "AS209641",
+      "netname": "PSERVERS-CLOUD-HOSTING",
+      "rdap_country": "RU",
+      "rdap": "https://rdap.db.ripe.net/ip/95.81.125.0/24",
+      "ris": "https://stat.ripe.net/data/routing-status/data.json?resource=95.81.125.0%2F24",
+      "ris_query_time": "2026-11-13T08:00:00",
+      "ris_coverage": "exact",
+      "ris_peers": {
+        "ris_peers_seeing": 319,
+        "total_ris_peers": 319
+      },
+      "ris_more_specifics": [],
+      "ris_less_specifics": [],
+      "geofeed": "https://geofeed.power-servers.net/ih_geofeed.csv",
+      "geofeed_sha256": "e3ab163fce08d816cd398a59134b715f341ca4f444566f4ef8f0b97b9c2e5269",
+      "matched_geofeed_cidrs": [
+        "95.81.125.0/24"
+      ],
+      "restored_ipv4": 1
+    }
+  ]
+}

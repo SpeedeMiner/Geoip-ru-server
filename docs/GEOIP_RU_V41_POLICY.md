@@ -24,7 +24,7 @@ v41 imports from v40:
 
 1. PRIVATE always wins. The pinned official Telegram set remains non-exempt.
 2. Current bounded Antifilter `subnet.lst` entries and separately reviewed direct IP/subnet registry records are hard. They cannot be overridden by CORE, SHARED, regional origin, or service masks. The subnet feed is an upstream signal, not a verified direct lookup of every row in the official registry.
-3. Antifilter [documents](https://antifilter.download/) `ip.lst` and `ipresolve.lst` as DNS-derived. They, and unverified historical v38 entries, remain in the source union and advisory layer. They cannot carve selected RU/BY/KZ origins, registered RU/BY/KZ resource ranges, corporate/shared origins, or the existing service resolver masks. Outside those protections, prior resolver filtering still applies. `ipsum.lst` remains review-only.
+3. Antifilter [documents](https://antifilter.download/) `ip.lst` and `ipresolve.lst` as DNS-derived. They, and unverified historical v38 entries, remain in the source union and advisory layer. They cannot carve selected RU/BY/KZ origins, registered RU/BY/KZ resource ranges, corporate/shared origins, the existing service resolver masks, or the exact reviewed operator CIDRs. Outside those protections, prior resolver filtering still applies. `ipsum.lst` remains review-only.
 4. `.github/data/v41-reviewed-rkn-ip-records.tsv` accepts only manually reviewed direct IP or subnet records with canonical CIDR, review date and evidence URL. Domain/URL-only evidence is not sufficient. The 2026-11-13 [reviewed evidence extract](v41-pr26-direct-ip-evidence-20261113.json) ties the exact host rows to individual decision metadata in a dated registry mirror snapshot. The extract is not an official signed export, and the snapshot is not a rolling build input. Automatic size limits stay in place.
 5. REG.RU AS197695 is classified as SHARED_INFRA and is admitted only by the existing regional ASN selection, not by its new classification. The same class already covers the reviewed origins of Timeweb, Selectel and DDoS-Guard. No recursive import of peer/upstream/tenant ASNs. Registration is routing evidence, not a per-tenant reachability guarantee.
 
@@ -48,6 +48,34 @@ All received but unverified `RPKI/RDAP/IRR` audit candidates remain review-only.
 ## Publication boundary
 
 The existing v41 production workflow runs on main pushes and a daily schedule. Pull-request builds cannot publish. Main builds compare the candidate independently with the prior release before updating the rolling artifact and creating a run-specific snapshot. Use a run-specific snapshot, not the rolling link, for rollback.
+
+## Reviewed operator prefixes and geography-only inputs
+
+The exact CIDRs in [the reviewed operator table](../.github/data/v41-reviewed-operator-prefixes.tsv) are independently reviewed regional routes. They receive resolver-only protection, not an ASN-wide exemption. Confirmed direct IP/subnet evidence, official Telegram ranges, PRIVATE and explicit regional admission exclusions still take precedence. Both validators check the table's SHA-256 and require coverage of every eligible reviewed address.
+
+v2fly and Loyalsoldier country labels alone do not create a resolver exemption. The v37 geographic baseline and the v41 regional and service restoration layers are distinct. Restoring all geography-only coverage would change DIRECT policy and could restore foreign/shared networks. Review exact assignments separately.
+
+Six exact reviewed entries recover 110 IPv4 addresses in the 2026-11-13 fixed-input replay. No address beyond the explicit rows is restored.
+
+| Prefix | Origin | Independent registration and routing evidence | IPv4 restored |
+|---|---|---|---:|
+| `2.26.8.0/24` | `AS207957` | [Exact RU assignment](https://rdap.db.ripe.net/ip/2.26.8.0/24), [RIS](https://stat.ripe.net/data/routing-status/data.json?resource=2.26.8.0%2F24) | 2 |
+| `31.76.71.0/24` | `AS207957` | [Exact RU assignment](https://rdap.db.ripe.net/ip/31.76.71.0/24), [RIS](https://stat.ripe.net/data/routing-status/data.json?resource=31.76.71.0%2F24) | 1 |
+| `77.239.107.0/24` | `AS207957` | [Exact RU assignment](https://rdap.db.ripe.net/ip/77.239.107.0/24), [RIS](https://stat.ripe.net/data/routing-status/data.json?resource=77.239.107.0%2F24) | 4 |
+| `178.250.186.0/24` | `AS207957` | [Exact RU assignment](https://rdap.db.ripe.net/ip/178.250.186.0/24), [RIS](https://stat.ripe.net/data/routing-status/data.json?resource=178.250.186.0%2F24) | 2 |
+| `193.109.246.0/23` | `AS204343` | [Exact RU assignment](https://rdap.db.ripe.net/ip/193.109.246.0/23), [RIS](https://stat.ripe.net/data/routing-status/data.json?resource=193.109.246.0%2F23) | 48 |
+| `195.216.243.0/24` | `AS204343` | [Exact RU assignment](https://rdap.db.ripe.net/ip/195.216.243.0/24), [RIS](https://stat.ripe.net/data/routing-status/data.json?resource=195.216.243.0%2F24) | 53 |
+
+
+The [SERV.HOST geofeed](https://status.serv.host/geofeed/subnet.csv) corroborates the four AS207957 entries. The two Compubyte ranges are exact RU assignments to the origin holder, with the UCOZ-NET /23 covered by two same-origin /24s and COMPUBYTE-NET announced as a /24. The larger historical ipverse aggregates do not widen the approved scope.
+
+The [second prefix review](v41-geo-only-operator-evidence-20261114.json) adds 22 exact RU rows (HOSTKEY, FIRSTSERVER, IHOR/PSERVERS and TIME-HOST). Every row has an exact RU registry object and a matching RIS announcement with no conflicting observed origins. The first three operators have matching exact geofeed entries. TIME-HOST has exact assignments to ORG-TH111-RIPE and matching RIS origins. No ASN-wide action. Keep the conflicting IHOR `94.142.141.0/24` and `193.124.191.0/24` out of this exception table. The existing exact hard entry `185.174.138.82/32` still takes precedence inside the reviewed FIRSTSERVER /24.
+
+The [third prefix review](v41-geo-only-operator-followup-20261114.json) adds 16 exact RU assignments (six FIRSTSERVER and ten IHOR/PSERVERS). Each assignment is corroborated by a registry-linked operator geofeed and a matching exact RIS route or same-origin more-specifics that cover the complete assignment. The current delta is +19 IPv4, all from the original review cohort. At that checkpoint the operator table allowed at most 64 rows, with the existing canonical, non-overlap and prefix-size rules unchanged. This is a cap for manually reviewed entries, not an automated import.
+
+The [fourth prefix review](v41-geo-only-operator-rukz-20261114.json) fills the 16 available slots under the unchanged 64-row cap with exact RU/KZ assignments. The checked evidence is RIPE RDAP, the registry-linked operator geofeed and an exact same-origin RIS route. It restores 59 IPv4 addresses already in the DNS-only review cohort. The evidence file also records 14 separately verified /24s that were initially deferred. The CY-assigned 194.67.193.0/24, mixed-country records and non-exact assignment ranges do not receive protection.
+
+The release admits all 14 deferred /24s from that same evidence file. The table has 78 manually reviewed rows under a limit of 80. The additional rows only exempt DNS-derived exclusions, never hard evidence, PRIVATE, Telegram, or explicit regional admission exclusions. The remaining unconfirmed geography-only candidates are not admitted.
 
 ## Reviewed regional admission conflicts
 

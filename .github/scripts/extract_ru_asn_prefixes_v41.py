@@ -69,19 +69,21 @@ def is_selected_asn(asn, rir_ru_asns, rir_by_kz_asns, company_asns):
 
 def parse_announced_prefixes(prefixes):
     parsed = []
-    invalid = 0
+    invalid = normalized = 0
     for family, version in (("ipv4", 4), ("ipv6", 6)):
         for raw_prefix in prefixes.get(family, []) or []:
             try:
-                network = ipaddress.ip_network(str(raw_prefix), strict=True)
+                token = str(raw_prefix)
+                network = ipaddress.ip_network(token, strict=False)
                 if network.version != version or network.prefixlen == 0:
                     invalid += 1
                     continue
             except ValueError:
                 invalid += 1
                 continue
+            normalized += ipaddress.ip_address(token.split("/", 1)[0]) != network.network_address
             parsed.append((family, network))
-    return parsed, invalid
+    return parsed, invalid, normalized
 
 
 def add_static_prefix_overrides(prefix_origins, overrides):
@@ -110,11 +112,14 @@ def self_test_selection():
     assert is_selected_asn(25106, rir_ru, rir_by_kz, companies)
     assert is_selected_asn(207304, rir_ru, rir_by_kz, companies)
     assert is_selected_asn(212066, rir_ru, rir_by_kz, companies)
-    sample, invalid = parse_announced_prefixes({
-        "ipv4": ["198.51.100.0/24"],
-        "ipv6": ["2001:db8:100::/48"],
+    sample, invalid, normalized = parse_announced_prefixes({
+        "ipv4": ["198.51.100.9/24", "0.0.0.1/0", "bad", "2001:db8::/32"],
+        "ipv6": ["2001:db8:100::1/48", "2001:0DB8:200::/48", "2001:db8::/129"],
     })
-    assert invalid == 0 and len(sample) == 2
+    assert (invalid, normalized) == (4, 2)
+    assert [str(net) for _, net in sample] == [
+        "198.51.100.0/24", "2001:db8:100::/48", "2001:db8:200::/48"
+    ]
     # A RIR-RU ASN is still selected even if its ASN metadata says a different country.
     assert is_selected_asn(12389, rir_ru, rir_by_kz, companies)
     # A foreign, unlisted ASN is not selected just because it appears in a non-RU country.
@@ -156,7 +161,7 @@ registered_ru_asns = read_rir_asns(registry_path, "RU")
 registered_by_kz_asns = read_rir_asns(by_kz_registry_path, "BY/KZ")
 company_asns = read_company_asns(company_registry_path)
 
-archive_json_files = malformed_json = invalid_prefixes = 0
+archive_json_files = malformed_json = invalid_prefixes = normalized_prefixes = 0
 rir_country_mismatch = collections.Counter()
 regional_country_mismatch = collections.Counter()
 company_ipverse_countries = collections.Counter()
@@ -203,8 +208,9 @@ with archive:
         is_company_asn = asn in company_asns
         selected = is_selected_asn(asn, registered_ru_asns, registered_by_kz_asns, company_asns)
 
-        parsed, invalid = parse_announced_prefixes(prefixes)
+        parsed, invalid, normalized = parse_announced_prefixes(prefixes)
         invalid_prefixes += invalid
+        normalized_prefixes += normalized
         if selected:
             row = active_selected_asns.setdefault(asn, {
                 "company_group": company_asns.get(asn, {}).get("group", "-"),
@@ -387,6 +393,7 @@ stats = [
     f"RIR-RU ASN ipverse countryCode mismatches (audit only): " + (", ".join(f"{key}={value}" for key, value in sorted(rir_country_mismatch.items())) or "none"),
     f"RIR-BY/KZ ASN ipverse countryCode mismatches (audit only): " + (", ".join(f"{key}={value}" for key, value in sorted(regional_country_mismatch.items())) or "none"),
     f"Invalid/default prefixes skipped: {invalid_prefixes}",
+    f"Non-canonical prefix rows normalized: {normalized_prefixes}",
     "Country handling: ipverse countryCode is not used as an inclusion filter for selected RIR-RU, RIR-BY/KZ or company-affiliate origin ASNs.",
     "Scope: announced prefixes present in ipverse aggregated.json observations (up to 90 days), not a real-time or historical-complete RIB.",
     "ASN allowlist semantics: only prefixes originated by the listed ASN are imported; peer/upstream ASNs are not recursively included.",

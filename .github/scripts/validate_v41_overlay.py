@@ -54,9 +54,10 @@ def validate(args: argparse.Namespace) -> dict:
     if any(builder.intervals(blocked_union, version) != builder.intervals(blocked_exact | blocked_resolved, version) for version in (4, 6)):
         raise ValueError("Approved blocked address-space union differs from exact + resolver sidecars")
 
+    reviewed = set(builder.parse_reviewed_operator_prefixes(args.reviewed_operator_prefixes))
     effective, resolved_only = builder.class_aware_effective_block_set(
         blocked_exact, blocked_resolved, company_core, shared, regional_only | regional_resources, service_exact, service_resolver,
-        non_exempt=telegram,
+        non_exempt=telegram, reviewed_operator_prefixes=reviewed,
     )
     output_blocked = builder.parse_cidr_file(args.effective_blocked)[0]
     if output_blocked != effective:
@@ -64,6 +65,7 @@ def validate(args: argparse.Namespace) -> dict:
 
     admission = builder.parse_regional_admission_exclusions(args.regional_admission_exclusions)
     builder.assert_regional_admission_disjoint(decoded["RU"], admission)
+    builder.assert_reviewed_operator_coverage(decoded["RU"], decoded["PRIVATE"], blocked_exact | telegram, admission, reviewed)
     for version in (4, 6):
         ru_iv = builder.intervals(decoded["RU"], version)
         private_iv = builder.intervals(decoded["PRIVATE"], version)
@@ -117,6 +119,8 @@ def validate(args: argparse.Namespace) -> dict:
     if (manifest.get("input_sha256", {}).get("regional_admission_exclusions") != sha256(args.regional_admission_exclusions)
             or manifest.get("regional_admission_exclusions", {}).get("records") != list(admission.values())):
         raise ValueError("Regional admission exclusion provenance mismatch")
+    if manifest.get("input_sha256", {}).get("reviewed_operator_prefixes") != sha256(args.reviewed_operator_prefixes):
+        raise ValueError("Reviewed operator prefix input SHA-256 mismatch")
     if manifest.get("input_sha256", {}).get("hydra_geoip") != sha256(args.hydra):
         raise ValueError("Hydra input SHA-256 mismatch")
     if manifest.get("hydra_routing_intent", {}).get("input_sha256") != sha256(args.hydra):
@@ -209,7 +213,7 @@ def main() -> int:
         "company_all", "company_core", "company_shared", "regional_origin_prefixes",
         "kyoresuas_v4", "kyoresuas_v6", "kyoresuas_services", "w1zardz",
         "hxehex_ip", "escapingworm", "effective_blocked",
-        "manifest", "quality", "rir", "regional_admission_exclusions",
+        "manifest", "quality", "rir", "regional_admission_exclusions", "reviewed_operator_prefixes",
     ):
         parser.add_argument("--" + name.replace("_", "-"), type=Path, required=True)
     args = parser.parse_args()

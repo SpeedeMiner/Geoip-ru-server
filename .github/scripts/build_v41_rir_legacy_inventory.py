@@ -24,7 +24,7 @@ rir_v6_prefixes = set()
 summaries = []
 today = datetime.date.today()
 raw_asn_records = raw_v4_records = raw_v6_records = 0
-generated_v4_cidr_components = generated_v6_cidr_components = 0
+generated_v4_cidr_components = generated_v6_cidr_components = normalized_v6_records = 0
 
 def prefix_sort(value):
     net = ipaddress.ip_network(value)
@@ -130,9 +130,9 @@ for expected_registry, path in inputs:
                 prefixlen = int(value)
                 if not 0 < prefixlen <= 128:
                     continue
-                net = ipaddress.ip_network(f"{start}/{prefixlen}", strict=True)
-                if net.version != 6 or net.prefixlen == 0:
-                    continue
+                address = ipaddress.IPv6Address(start)
+                net = ipaddress.IPv6Network((address, prefixlen), strict=False)
+                normalized_v6_records += address != net.network_address
                 value = str(net)
                 rir_prefixes.add(value)
                 rir_v6_prefixes.add(value)
@@ -198,6 +198,7 @@ stats_lines = [
     f"IPv4 CIDR components emitted before de-duplication: {generated_v4_cidr_components}",
     f"IPv4 CIDR expansion delta (components minus raw records): {generated_v4_cidr_components - raw_v4_records}",
     f"Raw IPv6 resource records: {raw_v6_records}",
+    f"Non-canonical RU IPv6 resource rows normalized: {normalized_v6_records}",
     f"IPv6 CIDR components emitted before de-duplication: {generated_v6_cidr_components}",
     f"IPv6 CIDR expansion delta (components minus raw records): {generated_v6_cidr_components - raw_v6_records}",
     f"Raw ASN resource records: {raw_asn_records}",
