@@ -21,7 +21,22 @@ from collections import defaultdict
 from pathlib import Path
 from typing import Iterable
 
-ASN_RE = re.compile(r"AS(?P<asn>[0-9]+)\[(?P<labels>[^\]]*)\]")
+ASN_RE = re.compile(r"AS(?P<asn>[0-9]+)(?P<brackets>(?:\[[^\[\]]*\])+)")
+LABEL_RE = re.compile(r"\[([^\[\]]*)\]")
+
+
+def parse_selected_origins(comment: str) -> list[tuple[int, set[str]]]:
+    """Read both ASn[group][STATIC-DIRECT] and ASn[group+STATIC-DIRECT]."""
+    return [
+        (int(match["asn"]), {
+            label.strip()
+            for block in LABEL_RE.findall(match["brackets"])
+            for label in block.split("+")
+            if label.strip()
+        })
+        for match in ASN_RE.finditer(comment)
+    ]
+
 COMPANY_HEADER = (
     "ASN", "COMPANY_GROUP", "LEGAL_ENTITY_OR_NOTE", "EVIDENCE",
     "ACTIVE_IN_IPVERSE", "IPVERSE_COUNTRY_CODE", "IPV4_PREFIXES",
@@ -287,11 +302,7 @@ def build_review(
         except ValueError as exc:
             raise ValueError(f"{regional_prefixes}:{line_no}: invalid prefix {prefix_token.strip()!r}") from exc
 
-        origins: list[tuple[int, set[str]]] = []
-        for match in ASN_RE.finditer(comment):
-            asn = int(match.group("asn"))
-            labels = {part.strip() for part in match.group("labels").split("+") if part.strip()}
-            origins.append((asn, labels))
+        origins = parse_selected_origins(comment)
         if not origins:
             continue
 

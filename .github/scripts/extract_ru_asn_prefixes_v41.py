@@ -100,6 +100,16 @@ def add_static_prefix_overrides(prefix_origins, overrides):
     return added
 
 
+def select_company_prefix_origins(selected_prefix_origins, company_asns):
+    """Count selected company origins, including pins, without changing observations."""
+    company_ids = set(company_asns)
+    return {
+        prefix: company_origins
+        for prefix, origins in selected_prefix_origins.items()
+        if (company_origins := origins & company_ids)
+    }
+
+
 def self_test_selection():
     rir_ru = {12389}
     rir_by_kz = {25106, 207304}
@@ -131,6 +141,13 @@ def self_test_selection():
     assert pinned_prefixes == {"45.148.65.0/24", "2a14:48c6::/48"}
     assert pinned["45.148.65.0/24"] == {212066}
     assert pinned["2a14:48c6::/48"] == {212066}
+    for observed_pins in (set(), {"45.148.65.0/24"}, pinned_prefixes):
+        observed = {prefix: {212066} for prefix in observed_pins}
+        selected = {"192.0.2.0/24": {12389}} | {prefix: set(origins) for prefix, origins in observed.items()}
+        add_static_prefix_overrides(selected, dict.fromkeys(pinned_prefixes, 212066))
+        assert select_company_prefix_origins(selected, companies) == pinned
+        assert set(observed) == observed_pins
+
 
 
 if len(sys.argv) == 4 and sys.argv[1] == "--self-test":
@@ -277,6 +294,7 @@ yandex_static_prefixes = add_static_prefix_overrides(
     selected_prefix_origins,
     {"45.148.65.0/24": 212066, "2a14:48c6::/48": 212066},
 )
+selected_company_prefix_origins = select_company_prefix_origins(selected_prefix_origins, company_asns)
 yandex_turkey_selected_prefixes = {
     prefix for prefix, origins in selected_prefix_origins.items() if 212066 in origins
 }
@@ -374,7 +392,8 @@ stats = [
     f"Active BY/KZ RIR ASNs with ipverse announcements: {active_by_kz_count}",
     f"Unique prefixes originated by RIR-RU ASNs: {len(rir_prefix_origins)}",
     f"Unique prefixes originated by RIR-BY/KZ ASNs: {len(regional_prefix_origins)}",
-    f"Unique prefixes originated by curated Russian-company/affiliate ASNs: {len(company_prefix_origins)}",
+    f"Unique prefixes originated by curated Russian-company/affiliate ASNs (observed in ipverse): {len(company_prefix_origins)}",
+    f"Unique prefixes in DIRECT company-ASN layer (observed + static overrides): {len(selected_company_prefix_origins)}",
     f"Yandex Turkey AS212066 static DIRECT overrides: {', '.join(sorted(yandex_static_prefixes, key=sort_key))}",
     f"Yandex Turkey AS212066 ipverse-observed prefixes at build time: {len(yandex_turkey_known_prefixes & yandex_turkey_observed_prefixes)} of {len(yandex_turkey_known_prefixes)}",
     f"Yandex Turkey AS212066 required DIRECT prefixes covered: {len(yandex_turkey_known_prefixes & yandex_turkey_selected_prefixes)} of {len(yandex_turkey_known_prefixes)}",

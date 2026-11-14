@@ -4,6 +4,7 @@ on:
   pull_request:
     branches: [main]
     paths:
+      - ".github/scripts/extract_ru_asn_prefixes_v41.py"
       - ".github/scripts/build_company_prefix_review.py"
       - ".github/scripts/build_selected_origin_prefix_review.py"
       - ".github/scripts/test_build_company_prefix_review.py"
@@ -290,6 +291,10 @@ jobs:
 
           report = Path("geoip_RU_v37_base_quality_report.txt").read_text(encoding="utf-8")
           expected_company = re.search(
+              r"^Unique prefixes in DIRECT company-ASN layer \(observed \+ static overrides\): ([0-9]+)$",
+              report, re.MULTILINE,
+          )
+          legacy_observed_company = re.search(
               r"^Unique prefixes originated by curated Russian-company/affiliate ASNs: ([0-9]+)$",
               report, re.MULTILINE,
           )
@@ -297,9 +302,8 @@ jobs:
               r"^Unique prefixes in DIRECT ASN-origin/pinned layer .+: ([0-9]+)$",
               report, re.MULTILINE,
           )
-          if not expected_company or not expected_selected:
+          if not (expected_company or legacy_observed_company) or not expected_selected:
               raise SystemExit("Could not find selected-prefix baselines in v37 production quality report")
-          expected_company_count = int(expected_company.group(1))
           expected_selected_count = int(expected_selected.group(1))
 
           def read_queue(path):
@@ -327,6 +331,21 @@ jobs:
 
           company_rows, company_prefixes = read_queue(Path("prefix-audit/company_origin_prefix_review.tsv"))
           selected_rows, selected_prefixes = read_queue(Path("prefix-audit/selected_origin_prefix_review.tsv"))
+
+          if expected_company:
+              expected_company_count = int(expected_company.group(1))
+          else:
+              # The currently published report predates the explicit selected-company metric.
+              # Count pins without a matching observed company origin (even if another ASN
+              # announced the same prefix). Do not count a pin twice when it was observed.
+              def asns(value):
+                  return {token.strip() for token in value.split(",") if token.strip()}
+              static_only = sum(
+                  "STATIC-DIRECT" in row["SELECTED_ORIGIN_LABELS"]
+                  and not asns(row["COMPANY_ASNS"]) & asns(row["GLOBAL_BGP_ORIGIN_ASNS"])
+                  for row in company_rows
+              )
+              expected_company_count = int(legacy_observed_company.group(1)) + static_only
 
           if len(company_rows) != expected_company_count:
               raise SystemExit(
@@ -757,6 +776,7 @@ jobs:
             --evidence-dir "$evidence" \
             --seed .github/audits/priority_prefix_rpki_invalid_assessment_v37.tsv \
             --output "$evidence/priority_prefix_rpki_invalid_reconciliation.tsv" \
+            --unseeded-output "$evidence/unseeded_rpki_invalid_review.tsv" \
             --stats "$evidence/priority_prefix_rpki_invalid_reconciliation_stats.txt"
 
           python3 - <<'PY'
@@ -774,10 +794,11 @@ jobs:
           triage = read_tsv(base / "priority_prefix_triage.tsv")
           worklist = read_tsv(base / "priority_prefix_review_worklist.tsv")
           result = read_tsv(base / "priority_prefix_rpki_invalid_reconciliation.tsv")
-          expected = {
-              row["PREFIX"] for row in triage
-              if "RPKI_INVALID_ASN" in {x.strip() for x in row["TRIAGE_FLAGS"].split("|")}
-          }
+          seed = read_tsv(Path(".github/audits/priority_prefix_rpki_invalid_assessment_v37.tsv"))
+          historical_by = {r["PREFIX"]: set(r["ARCHIVED_INVALID_RPKI_ORIGINS"].split("|")) for r in seed}
+          expected = set(historical_by)
+          if len(seed) != 19 or sum(map(len, historical_by.values())) != 20:
+              raise SystemExit("Unexpected historical RPKI seed inventory")
           actual = {row["PREFIX"] for row in result}
           if len(result) != 19 or len(actual) != 19 or actual != expected:
               raise SystemExit("RPKI reconciliation must contain exactly the 19 archived invalid prefixes")
@@ -791,7 +812,7 @@ jobs:
               triage_invalid = {
                   x.strip() for x in triage_by[prefix]["RPKI_INVALID_ORIGINS"].replace(",", "|").split("|") if x.strip()
               }
-              if archived_invalid != triage_invalid:
+              if archived_invalid != historical_by[prefix] or not archived_invalid <= triage_invalid:
                   raise SystemExit(f"Archived invalid-origin set drift for {prefix}")
               if row["EXTERNAL_NLRI_SCOPE_RELATION"] != worklist_by[prefix]["EXTERNAL_SPOT_CHECK_SCOPE_RELATION"]:
                   raise SystemExit(f"External NLRI scope mismatch for {prefix}")
@@ -799,6 +820,21 @@ jobs:
                   raise SystemExit(f"Incomplete RPKI reconciliation row: {prefix}")
               if row["EXTERNAL_NLRI_SCOPE_RELATION"] == "MORE_SPECIFIC_ONLY" and row["EXTERNAL_EXACT_ORIGIN_ASNS"]:
                   raise SystemExit(f"Child-route evidence was projected onto exact prefix {prefix}")
+          current_pairs = {
+              (r["PREFIX"], r["ORIGIN_ASN"]) for r in read_tsv(base / "rpki_by_origin.tsv")
+              if r["QUERY_STATUS"] == "OK" and r["RPKI_STATUS"] == "invalid_asn"
+          }
+          historical_pairs = {(prefix, asn) for prefix, asns in historical_by.items() for asn in asns}
+          unseeded = read_tsv(base / "unseeded_rpki_invalid_review.tsv")
+          actual_unseeded = {(r["PREFIX"], r["ORIGIN_ASN"]) for r in unseeded}
+          if (not historical_pairs <= current_pairs or len(unseeded) != len(actual_unseeded)
+                  or actual_unseeded != current_pairs - historical_pairs):
+              raise SystemExit("Unseeded RPKI review pairs do not match current minus historical evidence")
+          for row in unseeded:
+              if (row["STATUS"] != "REVIEW" or row["RPKI_STATUS"] != "invalid_asn"
+                      or row["RECONCILIATION_CLASS"] != "UNSEEDED_CURRENT_RPKI_INVALID_NEEDS_SPOT_CHECK"
+                      or not row["RPKI_URL"].startswith("https://") or not row["REQUIRED_NEXT_ACTION"]):
+                  raise SystemExit("Invalid unseeded RPKI review row")
           counts = Counter(row["RECONCILIATION_CLASS"] for row in result)
           expected_counts = {
               "EXACT_ORIGIN_SET_CHANGED": 16,
@@ -811,6 +847,7 @@ jobs:
           stats = (base / "priority_prefix_rpki_invalid_reconciliation_stats.txt").read_text(encoding="utf-8")
           for required in (
               "Archived invalid prefixes: 19",
+              f"Unseeded invalid prefix/origin pairs for REVIEW: {len(unseeded)}",
               "Rows with exact-scope external observations: 18",
               "Rows with more-specific-only observations: 1",
               "All rows: STATUS=REVIEW",
