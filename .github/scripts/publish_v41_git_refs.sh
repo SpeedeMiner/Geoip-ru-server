@@ -31,6 +31,9 @@ for file in \
   "$BLOCKED_IP_INPUT" "$BLOCKED_IP_SHA_FILE" "$BLOCKED_BASELINE_INPUT" "$BLOCKED_REVIEW_INPUT" "$BLOCKED_STATS_INPUT" "$BLOCKED_CHECKSUMS_INPUT" "$INPUT_PROVENANCE" "$INPUT_PROVENANCE_SHA" "$KY_STANDARD_V4_INPUT" "$KY_STANDARD_V6_INPUT" "$KY_SERVICES_INPUT" "$W1ZARDZ_INPUT" "$HXEHEX_IP_INPUT" "$ESCAPINGWORM_OPERATOR_INPUT" "$BLOCKED_IPSUM_INPUT"; do
   cp "$source_dir/$file" "$dest/$(basename "$file")"
 done
+# The small marker links this exact release tree to its create-only snapshot
+# asset. Do not commit the archive into rolling Git history.
+printf '%s\n' "$snapshot" > "$dest/geoip_RU_ipverse_snapshot_tag.txt"
 git -C "$dest" config user.name "github-actions[bot]"
 git -C "$dest" config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 git -C "$dest" add --all

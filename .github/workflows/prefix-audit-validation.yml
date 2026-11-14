@@ -6,6 +6,9 @@ on:
     paths:
       - ".github/scripts/extract_ru_asn_prefixes_v41.py"
       - ".github/scripts/build_company_prefix_review.py"
+      - ".github/scripts/fetch_v41_audit_ipverse.sh"
+      - ".github/scripts/verify_v41_ipverse_archive.py"
+      - ".github/scripts/test_verify_v41_ipverse_archive.py"
       - ".github/scripts/build_selected_origin_prefix_review.py"
       - ".github/scripts/test_build_company_prefix_review.py"
       - ".github/scripts/test_build_selected_origin_prefix_review.py"
@@ -57,6 +60,9 @@ jobs:
 
       - name: Run audit unit tests
         run: python3 -m unittest discover -s .github/scripts -p 'test_build_*prefix*.py' -v
+
+      - name: Test retained ipverse input handling
+        run: python3 -m unittest discover -s .github/scripts -p 'test_verify_v41_ipverse_archive.py' -v
 
       - name: Validate v37 legal-evidence additions TSV
         run: |
@@ -192,54 +198,8 @@ jobs:
             test -s "$file" || { echo "::error::Empty release input: $file"; exit 1; }
           done
 
-          read -r snapshot_url snapshot_sha snapshot_bytes < <(python3 - <<'PY'
-          import csv
-          import re
-
-          with open("geoip_RU_input_provenance.tsv", encoding="utf-8", newline="") as stream:
-              rows = list(csv.DictReader(stream, delimiter="\t"))
-          matches = [row for row in rows if row["LOCAL_FILE"] == "as-ip-blocks.tar.gz"]
-          if len(matches) != 1:
-              raise SystemExit("Expected exactly one ipverse archive row in release provenance")
-          row = matches[0]
-          if row["STATUS"] != "downloaded":
-              raise SystemExit(f"ipverse archive status is not downloaded: {row['STATUS']}")
-          if not re.fullmatch(r"[0-9a-f]{64}", row["SHA256"]):
-              raise SystemExit("Invalid ipverse archive SHA-256 in release provenance")
-          if not row["BYTES"].isdigit() or int(row["BYTES"]) < 5_000_000:
-              raise SystemExit("Invalid or implausible ipverse archive size in release provenance")
-          if not row["FETCH_URL"].startswith("https://"):
-              raise SystemExit("ipverse archive provenance URL must use HTTPS")
-          print(row["FETCH_URL"], row["SHA256"], row["BYTES"])
-          PY
-          )
-
-          curl --fail --location --silent --show-error \
-            --retry 3 --retry-all-errors --connect-timeout 15 --max-time 600 \
-            "$snapshot_url" -o as-ip-blocks.tar.gz
-
-          python3 - <<'PY'
-          import csv
-          import gzip
-          import hashlib
-          from pathlib import Path
-
-          with open("geoip_RU_input_provenance.tsv", encoding="utf-8", newline="") as stream:
-              rows = list(csv.DictReader(stream, delimiter="\t"))
-          row = next(item for item in rows if item["LOCAL_FILE"] == "as-ip-blocks.tar.gz")
-          archive = Path("as-ip-blocks.tar.gz").read_bytes()
-          if len(archive) != int(row["BYTES"]):
-              raise SystemExit(f"ipverse archive size mismatch: {len(archive)} != {row['BYTES']}")
-          digest = hashlib.sha256(archive).hexdigest()
-          if digest != row["SHA256"]:
-              raise SystemExit(f"ipverse archive SHA-256 mismatch: {digest} != {row['SHA256']}")
-          try:
-              with gzip.open("as-ip-blocks.tar.gz", "rb") as stream:
-                  stream.read(1)
-          except OSError as exc:
-              raise SystemExit(f"ipverse archive is not valid gzip: {exc}")
-          print(f"Verified ipverse archive: {len(archive)} bytes, SHA256={digest}")
-          PY
+          bash .github/scripts/fetch_v41_audit_ipverse.sh \
+            "$GITHUB_REPOSITORY" "$release_sha" geoip_RU_input_provenance.tsv as-ip-blocks.tar.gz
 
           sha256sum \
             geoip_RU_company_asns.txt \

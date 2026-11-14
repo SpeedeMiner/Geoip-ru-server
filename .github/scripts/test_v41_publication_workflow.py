@@ -1,4 +1,7 @@
+import gzip
+from hashlib import sha256
 import json
+import random
 import os
 from pathlib import Path
 import re
@@ -66,6 +69,8 @@ class PublicationWorkflowTests(unittest.TestCase):
         self.assertEqual(self.git("rev-parse", "v41.3", cwd=self.remote), target)
         self.assertEqual(self.git("rev-parse", "release^", cwd=self.remote), start)
         self.assertEqual(self.git("show", "v41.3:v41_output_file", cwd=self.remote), "v41_output_file")
+        self.assertEqual(self.git("show", "v41.3:geoip_RU_ipverse_snapshot_tag.txt",
+                                  cwd=self.remote), "v41.3")
         (self.candidate / "v41_output_file").write_text("other candidate", encoding="utf-8")
         duplicate = self.invoke("publish_v41_git_refs.sh", SNAPSHOT_VERSION="v41.3", PREVIOUS_RELEASE_SHA=target)
         self.assertNotEqual(duplicate.returncode, 0)
@@ -95,10 +100,18 @@ class PublicationWorkflowTests(unittest.TestCase):
         env = dict( SNAPSHOT_TAG="v41.3", CAPTURE=str(capture),
             PATH=f"{self.root}:{os.environ['PATH']}", V41_OUTPUT_FILE="geoip_RU.dat",
             OUTPUT_SHA_FILE="geoip_RU.dat.sha256sum", V41_MANIFEST="manifest.json",
+            IPVERSE_BGP_ARCHIVE="as-ip-blocks.tar.gz", INPUT_PROVENANCE="inputs.tsv",
             V41_QUALITY_REPORT="quality.txt",
         )
-        for field in ("V41_OUTPUT_FILE", "OUTPUT_SHA_FILE", "V41_MANIFEST"):
+        for field in ("V41_OUTPUT_FILE", "OUTPUT_SHA_FILE", "V41_MANIFEST", "IPVERSE_BGP_ARCHIVE"):
             (self.candidate / env[field]).write_text("asset", encoding="utf-8")
+        archive_bytes = gzip.compress(random.Random(42).randbytes(5_000_000), compresslevel=1, mtime=0)
+        (self.candidate / env["IPVERSE_BGP_ARCHIVE"]).write_bytes(archive_bytes)
+        (self.candidate / env["INPUT_PROVENANCE"]).write_text(
+            "SOURCE\tLOCAL_FILE\tFETCH_URL\tSHA256\tBYTES\tSTATUS\n"
+            "ipverse\tas-ip-blocks.tar.gz\thttps://example.test/archive\t"
+            f"{sha256(archive_bytes).hexdigest()}\t{len(archive_bytes)}\tdownloaded\n"
+        )
         missing = self.invoke("publish_v41_snapshot_release.sh", **env)
         self.assertNotEqual(missing.returncode, 0)
         self.assertIn("quality.txt", missing.stderr)
@@ -108,10 +121,17 @@ class PublicationWorkflowTests(unittest.TestCase):
         self.assertNotEqual(empty.returncode, 0)
         self.assertFalse(capture.exists())
         (self.candidate / env["V41_QUALITY_REPORT"]).write_text("asset", encoding="utf-8")
+        (self.candidate / env["IPVERSE_BGP_ARCHIVE"]).write_bytes(archive_bytes[:-1])
+        mismatch = self.invoke("publish_v41_snapshot_release.sh", **env)
+        self.assertNotEqual(mismatch.returncode, 0)
+        self.assertIn("size mismatch", mismatch.stderr)
+        self.assertFalse(capture.exists())
+        (self.candidate / env["IPVERSE_BGP_ARCHIVE"]).write_bytes(archive_bytes)
         result = self.invoke("publish_v41_snapshot_release.sh", **env)
         self.assertNotEqual(result.returncode, 0)
         command, = [json.loads(row) for row in capture.read_text().splitlines()]
         self.assertEqual(command[:3], ["release", "create", "v41.3"])
+        self.assertIn("as-ip-blocks.tar.gz", command)
         self.assertIn("--verify-tag", command)
         self.assertIn("--latest=false", command)
 
