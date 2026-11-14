@@ -19,6 +19,7 @@ from datetime import date, datetime, timezone
 from pathlib import Path
 from typing import Iterable
 
+from prepare_blocked_sources_v41 import TELEGRAM_PREFIXES
 from validate_v41_telegram import PINNED_FEED, read_telegram_feed
 
 SOURCE_REFS = {
@@ -653,14 +654,22 @@ def load_service_inputs(args, telegram=None):
     ):
         networks, stats = parse_cidr_file(path, allow_hosts=True)
         if source_id == "hxehex-mobile-hosts":
-            masks = {v: intervals(telegram, v) for v in (4, 6)}
-            # Filter raw rows before host classification. Never create a literal
-            # host exception by splitting a partially overlapping upstream CIDR.
-            conflicts = {
-                net for net in networks if intersect_one_range(
-                    int(net.network_address), int(net.broadcast_address), masks[net.version]
-                )
+            official = {v: intervals(telegram, v) for v in (4, 6)}
+            curated = {ipaddress.ip_network(cidr) for cidr in TELEGRAM_PREFIXES}
+            curated_only = {
+                v: subtract(intervals(curated, v), official[v]) for v in (4, 6)
             }
+            # Preserve existing official-feed handling. Also drop raw rows wholly
+            # inside the curated-only hard mask before attributing DIRECT input.
+            # A broader row keeps its original identity so unrelated addresses
+            # remain eligible. The hard mask still carves its blocked portion.
+            # Never split a service row into new literal hosts.
+            conflicts = set()
+            for net in networks:
+                start, end = int(net.network_address), int(net.broadcast_address)
+                if (intersect_one_range(start, end, official[net.version])
+                        or intersect_one_range(start, end, curated_only[net.version]) == [(start, end)]):
+                    conflicts.add(net)
             networks.difference_update(conflicts)
             stats["telegram_unique_prefixes_rejected"] = len(conflicts)
         sources[source_id] = networks
