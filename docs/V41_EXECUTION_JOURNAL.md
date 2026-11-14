@@ -552,3 +552,7 @@ See [v41 release hardening](V41_RELEASE_HARDENING.md). Routing-policy changes ar
 
 - 14:33 UTC closeout of the 20-minute pass. Complete production asset inventory is verified. The actual Go rebuild from pinned derived RIR tables and original non-RIR inputs reproduces the production v37 and v41 bytes, and all independent guards pass. The raw-RIR gap is limited to four exact historical files and has a tested, audit-only retention proposal for future runs. Do not claim that all 36 raw inputs of the present release have been recovered.
 - Final remote readback confirmed main `b98980c6`, release and production snapshot tag `de20de62`, rolling DAT SHA-256 `2735053560ebd598cbdcd71ccf858806d4b955a17e2eac512a7baf249d43653a`, and unchanged Draft PRs #31 and #32. No new routing policy, publication, production tags, or PR #5 actions. Next independent decision remains whether to merge the tested #32 publisher and verify its live snapshot; registry retention is a separate follow-up.
+
+### 2026-11-14 — Close out the remaining v41 release work
+
+- User requested completion of the remaining work. Starting state: production main `b98980c6`, release `de20de62`, PR #31 `169f6bcd`, PR #32 `9d063520`; both drafts had green head checks, no production publication in progress, and the combined local tree matched released routing bytes. Roll out #32 first to verify its real retained ipverse asset and then #31 independently. The separate registry-retention change must not alter routing policy. Do not touch PR #5, its branch, or the unrelated historical drafts.
