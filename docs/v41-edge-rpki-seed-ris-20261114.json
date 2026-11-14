@@ -1,0 +1,317 @@
+{
+  "scope": "Exact RIS paths at a fixed UTC timestamp. Validation status is a later RIPEstat observation, not synchronized VRP evidence. No policy change.",
+  "timestamp": "2026-11-14T08:00:00",
+  "prefixes": 19,
+  "attempted": 19,
+  "usable": 19,
+  "with_exact_paths": 18,
+  "historic_invalid_pairs_seen_in_exact_ris": 1,
+  "records": [
+    {
+      "prefix": "109.61.128.0/17",
+      "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=109.61.128.0%2F17&timestamp=2026-11-14T08%3A00%3A00",
+      "archived_invalid_origins": [
+        12389
+      ],
+      "status": "OK",
+      "timestamp": "2026-11-14T08:00:00",
+      "sha256": "04966536757303f76203ac182f9a58f73276a80a6462afbfb4bd226b91b79f4f",
+      "exact_paths_by_origin": {
+        "41134": 360
+      },
+      "exact_path_count": 360,
+      "more_specific_paths_not_used": 0,
+      "archived_invalid_origins_seen_exactly": []
+    },
+    {
+      "prefix": "177.1.199.0/24",
+      "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=177.1.199.0%2F24&timestamp=2026-11-14T08%3A00%3A00",
+      "archived_invalid_origins": [
+        49505
+      ],
+      "status": "OK",
+      "timestamp": "2026-11-14T08:00:00",
+      "sha256": "a5c285304ffa87b1efe39c5753be61ef1117125de22083d5c3f6f16f1bd1125c",
+      "exact_paths_by_origin": {
+        "401152": 309,
+        "49505": 22
+      },
+      "exact_path_count": 331,
+      "more_specific_paths_not_used": 0,
+      "archived_invalid_origins_seen_exactly": [
+        49505
+      ]
+    },
+    {
+      "prefix": "178.75.64.0/18",
+      "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=178.75.64.0%2F18&timestamp=2026-11-14T08%3A00%3A00",
+      "archived_invalid_origins": [
+        12389
+      ],
+      "status": "OK",
+      "timestamp": "2026-11-14T08:00:00",
+      "sha256": "3546e0eb5855bc05a9e894e38a1846eb4f7556657c2269852bf4bf8a93ee05a2",
+      "exact_paths_by_origin": {
+        "13056": 360
+      },
+      "exact_path_count": 360,
+      "more_specific_paths_not_used": 0,
+      "archived_invalid_origins_seen_exactly": []
+    },
+    {
+      "prefix": "185.3.32.0/22",
+      "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=185.3.32.0%2F22&timestamp=2026-11-14T08%3A00%3A00",
+      "archived_invalid_origins": [
+        31163
+      ],
+      "status": "OK",
+      "timestamp": "2026-11-14T08:00:00",
+      "sha256": "5214fb9a92d55e64e2220422da9121e80a5a954aeb0672b59174b5c9daa7d3b4",
+      "exact_paths_by_origin": {
+        "31133": 347
+      },
+      "exact_path_count": 347,
+      "more_specific_paths_not_used": 0,
+      "archived_invalid_origins_seen_exactly": []
+    },
+    {
+      "prefix": "195.225.160.0/22",
+      "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=195.225.160.0%2F22&timestamp=2026-11-14T08%3A00%3A00",
+      "archived_invalid_origins": [
+        31195
+      ],
+      "status": "OK",
+      "timestamp": "2026-11-14T08:00:00",
+      "sha256": "32a033a79e1a52113f0f120c0af9628baf9f3e1b854069d69b2f8140954c8b93",
+      "exact_paths_by_origin": {
+        "12714": 332
+      },
+      "exact_path_count": 332,
+      "more_specific_paths_not_used": 0,
+      "archived_invalid_origins_seen_exactly": []
+    },
+    {
+      "prefix": "212.106.32.0/19",
+      "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=212.106.32.0%2F19&timestamp=2026-11-14T08%3A00%3A00",
+      "archived_invalid_origins": [
+        12389
+      ],
+      "status": "OK",
+      "timestamp": "2026-11-14T08:00:00",
+      "sha256": "5738e9495611f1679ea1f6149d7846b75d29066c459c40926fcc52a70c55d35c",
+      "exact_paths_by_origin": {
+        "15468": 360
+      },
+      "exact_path_count": 360,
+      "more_specific_paths_not_used": 0,
+      "archived_invalid_origins_seen_exactly": []
+    },
+    {
+      "prefix": "213.154.160.0/19",
+      "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=213.154.160.0%2F19&timestamp=2026-11-14T08%3A00%3A00",
+      "archived_invalid_origins": [
+        20632
+      ],
+      "status": "OK",
+      "timestamp": "2026-11-14T08:00:00",
+      "sha256": "a7ab93e2688a22459020f09cccab6171f3089b2f582676b3231ec8e3759dedab",
+      "exact_paths_by_origin": {
+        "31133": 347
+      },
+      "exact_path_count": 347,
+      "more_specific_paths_not_used": 0,
+      "archived_invalid_origins_seen_exactly": []
+    },
+    {
+      "prefix": "31.172.192.0/19",
+      "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=31.172.192.0%2F19&timestamp=2026-11-14T08%3A00%3A00",
+      "archived_invalid_origins": [
+        12389
+      ],
+      "status": "OK",
+      "timestamp": "2026-11-14T08:00:00",
+      "sha256": "d46b1dd04cddc9f2cabca3ffe1291c37a481ddf0b198afdcbdcafa4a63946c69",
+      "exact_paths_by_origin": {
+        "15468": 360
+      },
+      "exact_path_count": 360,
+      "more_specific_paths_not_used": 0,
+      "archived_invalid_origins_seen_exactly": []
+    },
+    {
+      "prefix": "37.19.32.0/20",
+      "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=37.19.32.0%2F20&timestamp=2026-11-14T08%3A00%3A00",
+      "archived_invalid_origins": [
+        12389
+      ],
+      "status": "OK",
+      "timestamp": "2026-11-14T08:00:00",
+      "sha256": "90b4241c78ba68e00b8d311ff23b648f9013dee8970f8695afca1d18f5c3959d",
+      "exact_paths_by_origin": {
+        "34267": 360
+      },
+      "exact_path_count": 360,
+      "more_specific_paths_not_used": 0,
+      "archived_invalid_origins_seen_exactly": []
+    },
+    {
+      "prefix": "62.64.0.0/19",
+      "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=62.64.0.0%2F19&timestamp=2026-11-14T08%3A00%3A00",
+      "archived_invalid_origins": [
+        25159
+      ],
+      "status": "OK",
+      "timestamp": "2026-11-14T08:00:00",
+      "sha256": "a7523f0602df8c518a8e7f7242d0db1fb64a7b5842a4b086322d045616aea7f3",
+      "exact_paths_by_origin": {
+        "31133": 347
+      },
+      "exact_path_count": 347,
+      "more_specific_paths_not_used": 0,
+      "archived_invalid_origins_seen_exactly": []
+    },
+    {
+      "prefix": "77.234.0.0/19",
+      "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=77.234.0.0%2F19&timestamp=2026-11-14T08%3A00%3A00",
+      "archived_invalid_origins": [
+        12389
+      ],
+      "status": "OK",
+      "timestamp": "2026-11-14T08:00:00",
+      "sha256": "97deb64bc968cc1504d8c67af3883238cb6f74bde4442ee292da01f7b0bfe080",
+      "exact_paths_by_origin": {
+        "13118": 360
+      },
+      "exact_path_count": 360,
+      "more_specific_paths_not_used": 0,
+      "archived_invalid_origins_seen_exactly": []
+    },
+    {
+      "prefix": "77.45.128.0/17",
+      "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=77.45.128.0%2F17&timestamp=2026-11-14T08%3A00%3A00",
+      "archived_invalid_origins": [
+        12389
+      ],
+      "status": "OK",
+      "timestamp": "2026-11-14T08:00:00",
+      "sha256": "ead9a2cfb3d9bd3f9f31031788962ef8a2cd1ac1f7f88199ddb3843d062430e6",
+      "exact_paths_by_origin": {
+        "21017": 360
+      },
+      "exact_path_count": 360,
+      "more_specific_paths_not_used": 0,
+      "archived_invalid_origins_seen_exactly": []
+    },
+    {
+      "prefix": "92.37.128.0/17",
+      "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=92.37.128.0%2F17&timestamp=2026-11-14T08%3A00%3A00",
+      "archived_invalid_origins": [
+        12389
+      ],
+      "status": "OK",
+      "timestamp": "2026-11-14T08:00:00",
+      "sha256": "43c983d12322370427cdfbc0e69c07b6b2fdcaa7d487d66e724b00f4d141bd7d",
+      "exact_paths_by_origin": {
+        "34584": 360
+      },
+      "exact_path_count": 360,
+      "more_specific_paths_not_used": 0,
+      "archived_invalid_origins_seen_exactly": []
+    },
+    {
+      "prefix": "93.181.240.0/20",
+      "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=93.181.240.0%2F20&timestamp=2026-11-14T08%3A00%3A00",
+      "archived_invalid_origins": [
+        12389
+      ],
+      "status": "OK",
+      "timestamp": "2026-11-14T08:00:00",
+      "sha256": "1213be0567377112e284958767a690c0d3e8afae047aeeab782a10625e38cc2b",
+      "exact_paths_by_origin": {
+        "13118": 360
+      },
+      "exact_path_count": 360,
+      "more_specific_paths_not_used": 0,
+      "archived_invalid_origins_seen_exactly": []
+    },
+    {
+      "prefix": "94.131.190.0/23",
+      "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=94.131.190.0%2F23&timestamp=2026-11-14T08%3A00%3A00",
+      "archived_invalid_origins": [
+        215013,
+        219109
+      ],
+      "status": "OK",
+      "timestamp": "2026-11-14T08:00:00",
+      "sha256": "a32a5d82c0f1c6eeede599a74107ac9480610670c124345b59fea07708e439d6",
+      "exact_paths_by_origin": {},
+      "exact_path_count": 0,
+      "more_specific_paths_not_used": 0,
+      "archived_invalid_origins_seen_exactly": []
+    },
+    {
+      "prefix": "94.75.128.0/18",
+      "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=94.75.128.0%2F18&timestamp=2026-11-14T08%3A00%3A00",
+      "archived_invalid_origins": [
+        12389
+      ],
+      "status": "OK",
+      "timestamp": "2026-11-14T08:00:00",
+      "sha256": "9dae61b47f41156b408c5f83f910d8e33da71f1957400424f9c0e87c9a0523e9",
+      "exact_paths_by_origin": {
+        "34267": 360
+      },
+      "exact_path_count": 360,
+      "more_specific_paths_not_used": 0,
+      "archived_invalid_origins_seen_exactly": []
+    },
+    {
+      "prefix": "95.158.192.0/18",
+      "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=95.158.192.0%2F18&timestamp=2026-11-14T08%3A00%3A00",
+      "archived_invalid_origins": [
+        12389
+      ],
+      "status": "OK",
+      "timestamp": "2026-11-14T08:00:00",
+      "sha256": "b0b555ebda26aef068c317e10455d984dd920aa6007b497d556f1228953dd7bc",
+      "exact_paths_by_origin": {
+        "35125": 360
+      },
+      "exact_path_count": 360,
+      "more_specific_paths_not_used": 0,
+      "archived_invalid_origins_seen_exactly": []
+    },
+    {
+      "prefix": "95.179.0.0/17",
+      "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=95.179.0.0%2F17&timestamp=2026-11-14T08%3A00%3A00",
+      "archived_invalid_origins": [
+        8570
+      ],
+      "status": "OK",
+      "timestamp": "2026-11-14T08:00:00",
+      "sha256": "462ef4c9c4e06fcce8956c7c7a1a855412999d8b00079a6a5e1fefaa17cdc0c9",
+      "exact_paths_by_origin": {
+        "12389": 361
+      },
+      "exact_path_count": 361,
+      "more_specific_paths_not_used": 0,
+      "archived_invalid_origins_seen_exactly": []
+    },
+    {
+      "prefix": "95.32.0.0/16",
+      "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=95.32.0.0%2F16&timestamp=2026-11-14T08%3A00%3A00",
+      "archived_invalid_origins": [
+        21017
+      ],
+      "status": "OK",
+      "timestamp": "2026-11-14T08:00:00",
+      "sha256": "5ea2c7d3f1cfbadd9d796a457c31a82f6ebcb4b2ef64bbd36ba8ce89229e0017",
+      "exact_paths_by_origin": {
+        "12389": 361
+      },
+      "exact_path_count": 361,
+      "more_specific_paths_not_used": 0,
+      "archived_invalid_origins_seen_exactly": []
+    }
+  ]
+}

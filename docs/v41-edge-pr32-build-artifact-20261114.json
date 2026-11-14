@@ -1,0 +1,36 @@
+{
+  "pr": 32,
+  "source_sha": "d7cda35ed06fa85de6519d535225d81fe0711347",
+  "run": 43596627218,
+  "artifact": 14114373398,
+  "zip_sha256": "7a23bd22d370195a1d0b15b73fcfc07bfdeee024b1d87a39e70d72151b13f364",
+  "archive": {
+    "sha256": "d34d00d59ec419fec991d860af290b557a47b8e2f9596688b9bd11b0e4103d02",
+    "bytes": 16268982,
+    "matches_provenance": true,
+    "matches_recovered_production_input": true
+  },
+  "byte_identical_to_production": {
+    "geoip_RU.dat": "2735053560ebd598cbdcd71ccf858806d4b955a17e2eac512a7baf249d43653a",
+    "geoip_RU.dat.sha256sum": "8c5abbcf8a1505bfb637c4c9c939d663ba89b760562cf2ff23c37b5b71a3f7b3",
+    "geoip_RU_v41_blocked_ip_exclusions.txt": "da3949ad119013db9a8237d322c63411234c201079f8506af3e51dc6051b0b6a",
+    "geoip_RU_v41_blocked_ip_exclusions.txt.sha256sum": "63eca88110b7d6f15018304536d7d7c6cc5de373b1012b62f07150786e09b32e",
+    "geoip_RU_v41_prefix_provenance.tsv": "7212d5259da9ae68574e564393e59bc9b5a6d44c91482829764cab811c961336",
+    "geoip_RU_v41_blocked_provenance.tsv": "d7e1921d26c177d2d00604b16b325386b7bb0c8dfd2787750760d0b888baffac",
+    "geoip_RU_v41_source_metrics.tsv": "48d011bcf0649ac2cad98a4f07c8290168614cd0b7a35cd6b9779aaf6a6a7a4f",
+    "geoip_RU_input_provenance.tsv": "44ba33521f2a5657596582af8ddcd7918edddd7c08a80988df8f7a02ace11d93"
+  },
+  "publish_job": "skipped",
+  "prefix_audit": {
+    "artifact": 14114996581,
+    "zip_sha256": "4083a9f8ece38776eb37d2ca558d943ae124ba0a4c563960aa588e0288fad0ed",
+    "prefix_audit_run": 43596627172,
+    "status": "success",
+    "release_commit": "de20de628d85062c8161b3da99fc7b0c94622919",
+    "company_rows": 3378,
+    "selected_rows": 23603,
+    "historical_invalid_prefixes": 19,
+    "historical_invalid_pairs": 20,
+    "unseeded_invalid_review_rows": 0
+  }
+}
