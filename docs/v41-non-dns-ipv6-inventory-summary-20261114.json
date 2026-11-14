@@ -1,0 +1,442 @@
+{
+  "scope": "Non-DNS IPv6 discovery only, all from Davoyan",
+  "full_generated_report_sha256": "83afc88ed29b7f1f36b6ab9a6c58ef2a13c2323413ccb238af311b644923e84e",
+  "minimal_disjoint_candidate_CIDRs": 8886,
+  "partition_CIDRs_by_frozen_observation": {
+    "single_origin": {
+      "partition_CIDRs": 5605,
+      "address_count_decimal": "5395875553863286757229401735220"
+    },
+    "moas": {
+      "partition_CIDRs": 3,
+      "address_count_decimal": "2361183241434822606848"
+    },
+    "not_observed": {
+      "partition_CIDRs": 3279,
+      "address_count_decimal": "9674997814081805457083026505573"
+    }
+  },
+  "observed_prefix_count": 125,
+  "observed_ASN_count": 60,
+  "frozen_MOAS_rows": [
+    {
+      "observed_prefix": "2a01:d0:8000::/33",
+      "origins": [
+        29632,
+        42372
+      ],
+      "candidate_addresses": "2361183241434822606848",
+      "candidate_cidrs": [
+        "2a01:d0:ffff:2140::/59",
+        "2a01:d0:ffff:3280::/59",
+        "2a01:d0:ffff:34c0::/58"
+      ],
+      "source_groups": {
+        "grimbird+digne": "0",
+        "davoyan": "2361183241434822606848",
+        "golukon": "0"
+      }
+    }
+  ],
+  "addresses_by_ASN_ranking": [
+    {
+      "asn": 209641,
+      "candidate_addresses": "1426109343108397305942140518400",
+      "handle": "I-SERVERS-EAST",
+      "description": "IHOR HOSTING LTD",
+      "countryCode": "GB"
+    },
+    {
+      "asn": 30788,
+      "candidate_addresses": "792281625142643375935439503360",
+      "handle": "AS30788",
+      "description": "Seven Digital Network Services LLC",
+      "countryCode": "AE"
+    },
+    {
+      "asn": 402498,
+      "candidate_addresses": "713053462628379038341895553024",
+      "handle": "AS-CN-BYOIP",
+      "description": "Compatible Network",
+      "countryCode": "US"
+    },
+    {
+      "asn": 199353,
+      "candidate_addresses": "713052253702559423712720846848",
+      "handle": "YUHENG-NETWORK-AS",
+      "description": "Gao Yuheng",
+      "countryCode": "CN"
+    },
+    {
+      "asn": 8772,
+      "candidate_addresses": "633825300114114700748351602688",
+      "handle": "NLINELLC",
+      "description": "Netassist International EOOD",
+      "countryCode": "BG"
+    },
+    {
+      "asn": 34567,
+      "candidate_addresses": "633825300114114700748351602688",
+      "handle": "NEXT-AS",
+      "description": "Next Limited",
+      "countryCode": "HK"
+    },
+    {
+      "asn": 42375,
+      "candidate_addresses": "237684487542793012780631851008",
+      "handle": "INET-AS",
+      "description": "iNet Ltd",
+      "countryCode": "SC"
+    },
+    {
+      "asn": 219519,
+      "candidate_addresses": "158456325028528675187087900672",
+      "handle": "GDQY-NETWORK",
+      "description": "JiaYang Li",
+      "countryCode": "CN"
+    },
+    {
+      "asn": 205486,
+      "candidate_addresses": "79228162514264337593543950336",
+      "handle": "LKGF",
+      "description": "LUAN KLEBER GOMES FARIAS",
+      "countryCode": "BR"
+    },
+    {
+      "asn": 60735,
+      "candidate_addresses": "4951760157141521099596496896",
+      "handle": "DELIGHTVPS-AS",
+      "description": "Konstantin Verba",
+      "countryCode": "GB"
+    },
+    {
+      "asn": 6939,
+      "candidate_addresses": "1980751906332038012931670019",
+      "handle": "HURRICANE",
+      "description": "Hurricane Electric LLC",
+      "countryCode": "US"
+    },
+    {
+      "asn": 20940,
+      "candidate_addresses": "872340882542038140797845504",
+      "handle": "AKAMAI-ASN1",
+      "description": "Akamai International B.V.",
+      "countryCode": "NL"
+    },
+    {
+      "asn": 38230,
+      "candidate_addresses": "309485009821345068724781056",
+      "handle": "NAVICENET-AS-AP",
+      "description": "Navice Consulting",
+      "countryCode": "NL"
+    },
+    {
+      "asn": 201589,
+      "candidate_addresses": "116056878683004400771792896",
+      "handle": "EDGEAMLLC",
+      "description": "EDGEAM LLC",
+      "countryCode": "AM"
+    },
+    {
+      "asn": 15169,
+      "candidate_addresses": "87042695905741447997947921",
+      "handle": "GOOGLE",
+      "description": "Google LLC",
+      "countryCode": "US"
+    },
+    {
+      "asn": 13335,
+      "candidate_addresses": "8155840510565130346430464",
+      "handle": "CLOUDFLARENET",
+      "description": "Cloudflare Inc.",
+      "countryCode": "US"
+    },
+    {
+      "asn": 59796,
+      "candidate_addresses": "7253554917687775048237056",
+      "handle": "STORMWALL-AS",
+      "description": "StormWall s.r.o.",
+      "countryCode": "SK"
+    },
+    {
+      "asn": 205090,
+      "candidate_addresses": "3626777458843887524118528",
+      "handle": "FIRST-SERVER-EUROPE",
+      "description": "AI DATACENTER LIMITED",
+      "countryCode": "GB"
+    },
+    {
+      "asn": 50113,
+      "candidate_addresses": "3324546003940230230441984",
+      "handle": "SUPERSERVERSDATACENTER",
+      "description": "FIRST SERVER LIMITED",
+      "countryCode": "GB"
+    },
+    {
+      "asn": 3327,
+      "candidate_addresses": "3324379983243566844477450",
+      "handle": "CITIC",
+      "description": "CITIC Telecom CPC Netherlands B.V.",
+      "countryCode": "NL"
+    },
+    {
+      "asn": 204997,
+      "candidate_addresses": "2417851639229258349412352",
+      "handle": "FIRSTBYTE-AS",
+      "description": "AI DATACENTER LIMITED",
+      "countryCode": "GB"
+    },
+    {
+      "asn": 51601,
+      "candidate_addresses": "1208925819614629174706176",
+      "handle": "IPTP",
+      "description": "IPTP LTD",
+      "countryCode": "GB"
+    },
+    {
+      "asn": 200625,
+      "candidate_addresses": "1208925819614629174706176",
+      "handle": "MA-P-NET",
+      "description": "Maciej Peczyk",
+      "countryCode": "PL"
+    },
+    {
+      "asn": 208722,
+      "candidate_addresses": "1208925819614629174706176",
+      "handle": "GLOBAL-DC",
+      "description": "Nebius DC Oy",
+      "countryCode": "FI"
+    },
+    {
+      "asn": 219310,
+      "candidate_addresses": "1208925819614629174706176",
+      "handle": "R09TELECOM",
+      "description": "EMIRASLAN EMIRASLANOV",
+      "countryCode": "AZ"
+    },
+    {
+      "asn": 400522,
+      "candidate_addresses": "1208925819614629174706176",
+      "handle": "ROOTCLOUD",
+      "description": "rootcloud LLC",
+      "countryCode": "US"
+    },
+    {
+      "asn": 24429,
+      "candidate_addresses": "906694364710971881029632",
+      "handle": "TAOBAO",
+      "description": "Zhejiang Taobao Network Co. Ltd",
+      "countryCode": "CN"
+    },
+    {
+      "asn": 29757,
+      "candidate_addresses": "906694364710971881029632",
+      "handle": "WEBLINE19",
+      "description": "Webline Services Inc",
+      "countryCode": "US"
+    },
+    {
+      "asn": 139057,
+      "candidate_addresses": "906694364710971881029632",
+      "handle": "ELD-AS-AP",
+      "description": "Edgenext Legend Dynasty Pte. Ltd.",
+      "countryCode": "SG"
+    },
+    {
+      "asn": 200740,
+      "candidate_addresses": "906694364710971881029632",
+      "handle": "FIRST-SERVER-EU-AS",
+      "description": "FIRST SERVER LIMITED",
+      "countryCode": "GB"
+    },
+    {
+      "asn": 51044,
+      "candidate_addresses": "604462909807314587353089",
+      "handle": "RHE",
+      "description": "Kazuki Yamaguchi",
+      "countryCode": "JP"
+    },
+    {
+      "asn": 54994,
+      "candidate_addresses": "604462909807314587353088",
+      "handle": "ML-1432-54994",
+      "description": "Meteverse Limited",
+      "countryCode": "CA"
+    },
+    {
+      "asn": 211892,
+      "candidate_addresses": "604462909807314587353088",
+      "handle": "WAVEACCESS-NORDICS",
+      "description": "WaveAccess Nordics ApS",
+      "countryCode": "DK"
+    },
+    {
+      "asn": 214294,
+      "candidate_addresses": "604462909807314587353088",
+      "handle": "NOOBNET",
+      "description": "NOOB RP LTD",
+      "countryCode": "GB"
+    },
+    {
+      "asn": 1299,
+      "candidate_addresses": "304611084889165825835002",
+      "handle": "TWELVE99",
+      "description": "Arelion Sweden AB",
+      "countryCode": "SE"
+    },
+    {
+      "asn": 202306,
+      "candidate_addresses": "302231454903657293676546",
+      "handle": "HOSTGLOBALPLUS-AS",
+      "description": "HOSTGLOBAL.PLUS LTD",
+      "countryCode": "GB"
+    },
+    {
+      "asn": 49418,
+      "candidate_addresses": "302231454903657293676544",
+      "handle": "AS-NETSHIELD",
+      "description": "NETSHIELD LTD",
+      "countryCode": "GB"
+    },
+    {
+      "asn": 154320,
+      "candidate_addresses": "302231454903657293676544",
+      "handle": "ARRIGA-AS-AP",
+      "description": "Arriga International Limited",
+      "countryCode": "HK"
+    },
+    {
+      "asn": 216070,
+      "candidate_addresses": "302231454903657293676544",
+      "handle": "RCSTECHNOLOGIES",
+      "description": "RCS Technologies FZE LLC",
+      "countryCode": "AE"
+    },
+    {
+      "asn": 9002,
+      "candidate_addresses": "78306428592897046609923",
+      "handle": "RETN-AS",
+      "description": "RETN Limited",
+      "countryCode": "GB"
+    },
+    {
+      "asn": 54113,
+      "candidate_addresses": "39143990924411668529152",
+      "handle": "FASTLY",
+      "description": "Fastly Inc.",
+      "countryCode": "US"
+    },
+    {
+      "asn": 205563,
+      "candidate_addresses": "33056565380087516495872",
+      "handle": "ZGATO",
+      "description": "Marc Gomez",
+      "countryCode": "ES"
+    },
+    {
+      "asn": 28917,
+      "candidate_addresses": "110680464442257309700",
+      "handle": "FIORD-AS",
+      "description": "Fiord Networks UAB",
+      "countryCode": "LT"
+    },
+    {
+      "asn": 12297,
+      "candidate_addresses": "36893488147419103232",
+      "handle": "TELECOM-ARMENIA",
+      "description": "Telecom Armenia OJSC",
+      "countryCode": "AM"
+    },
+    {
+      "asn": 12703,
+      "candidate_addresses": "18446744073709551616",
+      "handle": "PULSANT-AS",
+      "description": "Pulsant (Scotland) Ltd",
+      "countryCode": "GB"
+    },
+    {
+      "asn": 214079,
+      "candidate_addresses": "18446744073709551616",
+      "handle": "LENDNODES",
+      "description": "LendNodes LTD",
+      "countryCode": "GB"
+    },
+    {
+      "asn": 6762,
+      "candidate_addresses": "7",
+      "handle": "SEABONE-NET",
+      "description": "TELECOM ITALIA SPARKLE S.p.A.",
+      "countryCode": "IT"
+    },
+    {
+      "asn": 58453,
+      "candidate_addresses": "2",
+      "handle": "CMI-INT-HK",
+      "description": "China Mobile International Limited",
+      "countryCode": "HK"
+    },
+    {
+      "asn": 174,
+      "candidate_addresses": "1",
+      "handle": "COGENT-174",
+      "description": "Cogent Communications LLC",
+      "countryCode": "US"
+    },
+    {
+      "asn": 6663,
+      "candidate_addresses": "1",
+      "handle": "TTI-NET",
+      "description": "Euroweb Romania S.R.L.",
+      "countryCode": "RO"
+    },
+    {
+      "asn": 8932,
+      "candidate_addresses": "1",
+      "handle": "UCOMINT",
+      "description": "Ucom CJSC",
+      "countryCode": "AM"
+    },
+    {
+      "asn": 25091,
+      "candidate_addresses": "1",
+      "handle": "IP-MAX",
+      "description": "IP-Max SA",
+      "countryCode": "CH"
+    },
+    {
+      "asn": 41095,
+      "candidate_addresses": "1",
+      "handle": "IPTP",
+      "description": "IPTP LTD",
+      "countryCode": "GB"
+    },
+    {
+      "asn": 44324,
+      "candidate_addresses": "1",
+      "handle": "MOEDOVE-AS",
+      "description": "MoeDove LLC",
+      "countryCode": "US"
+    },
+    {
+      "asn": 49800,
+      "candidate_addresses": "1",
+      "handle": "GNC-ALFA",
+      "description": "GNC-Alfa CJSC",
+      "countryCode": "AM"
+    },
+    {
+      "asn": 62255,
+      "candidate_addresses": "1",
+      "handle": "BEMYLINK",
+      "description": "BiMajLink d.o.o.",
+      "countryCode": "SI"
+    },
+    {
+      "asn": 213081,
+      "candidate_addresses": "1",
+      "handle": "UNGLEICH-PLACE10",
+      "description": "ungleich glarus ag",
+      "countryCode": "CH"
+    }
+  ]
+}
