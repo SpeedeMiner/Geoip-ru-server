@@ -25,6 +25,7 @@ on:
       - ".github/scripts/build_v41_iana_special_prefixes.py"
       - ".github/scripts/validate_v41_base_artifacts.py"
       - ".github/scripts/validate_v41_publication_bounds.py"
+      - ".github/scripts/verify_v41_ipverse_archive.py"
       - ".github/data/v41-source-lock.json"
       - ".github/scripts/build_company_asn_prefixes.py"
       - ".github/scripts/build_company_asn_prefix_classes_v41.py"
@@ -446,11 +447,18 @@ jobs:
           python3 .github/scripts/validate_v41_publication_bounds.py \
             --candidate "$V41_OUTPUT_FILE" --reference "$V41_OUTPUT_FILE"
 
+      - name: Verify and retain the exact ipverse build input
+        shell: bash
+        run: |
+          python3 .github/scripts/verify_v41_ipverse_archive.py \
+            --provenance "$INPUT_PROVENANCE" --archive "$IPVERSE_BGP_ARCHIVE"
+
       - name: Upload v41 validated build artifact
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
           name: geoip-direct-rukzby-v41-candidate
           path: |
+            as-ip-blocks.tar.gz
             antifilter-community.lst
             antifilter-ip.lst
             antifilter-ipresolve.lst
@@ -541,8 +549,8 @@ jobs:
           REVIEWED_SHA: ${{ inputs.reviewed_geoip_sha256 }}
         run: bash ../.github/scripts/verify_v41_publication_candidate.sh
 
-      - name: Publish release branch and versioned snapshot tag
-        id: release_ref
+      - name: Stage the versioned snapshot tag
+        id: snapshot_ref
         shell: bash
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -553,8 +561,16 @@ jobs:
         shell: bash
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SNAPSHOT_TAG: ${{ steps.release_ref.outputs.snapshot }}
+          SNAPSHOT_TAG: ${{ steps.snapshot_ref.outputs.snapshot }}
         run: bash ../.github/scripts/publish_v41_snapshot_release.sh
+
+      - name: Verify the published archive and promote the release branch
+        shell: bash
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SNAPSHOT_TAG: ${{ steps.snapshot_ref.outputs.snapshot }}
+          SNAPSHOT_SHA: ${{ steps.snapshot_ref.outputs.snapshot_sha }}
+        run: bash ../.github/scripts/promote_v41_release.sh
 
       - name: Publish GitHub Release
         # v3.0.3; pin the action implementation to an immutable commit.
