@@ -663,3 +663,8 @@ See [v41 release hardening](V41_RELEASE_HARDENING.md). Routing-policy changes ar
 - Pinned W1ZARDZ commit `65587924` places all seven literal routes in the game-server catalog. Five are shared Cloudflare /32s (four tagged to Grand Mobile API/CDN/support in the 14 Nov DNS snapshot, one historical CDN /32), one is a historically observed Grand Mobile launcher /32, and the 256-address Scalaxy/3NT FI-labeled hosting block has no confirmed current game host. See [DNS, BGP, and split-tunnel attribution](V41_W1ZARDZ_GAMING_AUDIT_20261115.md).
 - Offline counterfactual removing only seven rows leaves the v37 DAT and effective block mask byte-identical. Final v41 loses only those 262 IPv4 addresses, with no additions or IPv6/PRIVATE changes. Local validation, hard policy, Telegram, absolute bounds and both DAT/SRS parity checks passed.
 - Recommendation recorded for review: default GeoIP stays distinct from optional domain-based game routing. Raw IP or CIDR exceptions need independent service attribution and a direct-versus-VPN client test. Production policy, main, release, and PR #5 remain untouched.
+
+## 2026-11-15 — Implement reviewed source-scoped W1ZARDZ gaming exclusions
+
+- User approved excluding the reviewed gaming entries. [PR #38](https://github.com/SpeedeMiner/Geoip-ru-server/pull/38), head `38ee141`, subtracts seven reviewed prefixes only from the v41 W1ZARDZ service layer. The raw feed and archives are retained. Independent qualifying coverage, v37 and hard/RKN policy are not changed.
+- Local suite 168/168 passed. Fixed-input replay and GitHub Actions in progress. Main, release and PR #5 untouched.
