@@ -322,3 +322,8 @@ See [v41 release hardening](V41_RELEASE_HARDENING.md). Routing-policy changes ar
 - The actual production Actions job logged Telegram PASS for all 14 official CIDRs and the production publish job succeeded. No stale-feed issue affected this release.
 - Rebuilt the RKN classification directly from the frozen raw, historical and reviewed inputs. Hard, resolver-only, approved union, review candidates and statistics are byte-identical. The checksum entries match after normalizing local file paths. Rebuilt all four production company and regional origin masks from the verified ipverse extraction and matched their production bytes as well.
 - Independently compared the actual downloaded rolling asset, immutable snapshot, release-branch binary and Actions artifact. All four DATs and checksum sidecars match byte for byte. No retag or new publication is needed for a zero-DIRECT-delta audit.
+
+### Checkpoint — separate discovery queue, no change to accepted v37 cohort
+
+- The 811 one-group-only IPv4 occupy 70 /24 buckets, none of which overlaps the previous v2fly/Loyalsoldier queue. [Initial discovery screen](v41-additional-one-group-discovery-43579021611.json) records a representative registry lookup and RIPE RIS response for every bucket, including failures. 69 registry and 67 RIS responses were usable. Twelve buckets containing 19 of the addresses have a regional representative assignment. This does not establish the location of every address.
+- Keep this discovery queue separate from the completed zero-loss result. Check the 12 priority buckets by exact assignment, more-specific records, operator geofeed and route origin. No change to production or PR #5.
