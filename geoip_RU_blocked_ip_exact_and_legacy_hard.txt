@@ -442,6 +442,9 @@
 103.4.96.0/22 # sources=antifilter-subnet.lst
 103.246.200.0/22 # sources=antifilter-subnet.lst
 103.252.112.0/22 # sources=antifilter-subnet.lst
+104.28.21.177/32 # sources=reviewed-rkn-ip-record
+104.28.31.24/32 # sources=reviewed-rkn-ip-record
+104.28.31.185/32 # sources=reviewed-rkn-ip-record
 104.244.41.0/24 # sources=antifilter-subnet.lst
 104.244.42.0/23 # sources=antifilter-subnet.lst
 104.244.44.0/22 # sources=antifilter-subnet.lst
@@ -568,6 +571,7 @@
 185.76.151.0/24 # sources=runetfreedom-static-telegram
 185.89.216.0/22 # sources=antifilter-subnet.lst
 185.104.45.0/24 # sources=antifilter-subnet.lst
+185.174.138.82/32 # sources=reviewed-rkn-ip-record
 185.178.208.129/32 # sources=reviewed-rkn-ip-record
 185.178.208.149/32 # sources=reviewed-rkn-ip-record
 185.195.144.172/32 # sources=reviewed-rkn-ip-record

@@ -187764,7 +187764,6 @@ all-company-asn-origins	curated company ASN origin					5.8.192.0/21
 all-company-asn-origins	curated company ASN origin					5.8.200.0/21
 all-company-asn-origins	curated company ASN origin					5.8.208.0/23
 all-company-asn-origins	curated company ASN origin					5.8.212.0/22
-all-company-asn-origins	curated company ASN origin					5.8.217.0/24
 all-company-asn-origins	curated company ASN origin					5.8.218.0/23
 all-company-asn-origins	curated company ASN origin					5.8.220.0/23
 all-company-asn-origins	curated company ASN origin					5.8.222.0/23
@@ -187876,44 +187875,10 @@ all-company-asn-origins	curated company ASN origin					5.254.176.0/21
 all-company-asn-origins	curated company ASN origin					5.255.192.0/18
 all-company-asn-origins	curated company ASN origin					5.255.203.0/24
 all-company-asn-origins	curated company ASN origin					5.255.205.0/24
-all-company-asn-origins	curated company ASN origin					23.105.226.0/23
-all-company-asn-origins	curated company ASN origin					23.105.230.0/24
-all-company-asn-origins	curated company ASN origin					23.105.233.0/24
-all-company-asn-origins	curated company ASN origin					23.105.234.0/23
-all-company-asn-origins	curated company ASN origin					23.105.236.0/22
-all-company-asn-origins	curated company ASN origin					23.105.241.0/24
-all-company-asn-origins	curated company ASN origin					23.105.242.0/23
-all-company-asn-origins	curated company ASN origin					23.105.244.0/22
-all-company-asn-origins	curated company ASN origin					23.105.249.0/24
-all-company-asn-origins	curated company ASN origin					23.105.250.0/24
-all-company-asn-origins	curated company ASN origin					23.105.253.0/24
-all-company-asn-origins	curated company ASN origin					23.105.254.0/23
-all-company-asn-origins	curated company ASN origin					23.111.32.0/24
-all-company-asn-origins	curated company ASN origin					23.111.34.0/23
-all-company-asn-origins	curated company ASN origin					23.111.37.0/24
-all-company-asn-origins	curated company ASN origin					23.111.38.0/23
-all-company-asn-origins	curated company ASN origin					23.111.40.0/22
-all-company-asn-origins	curated company ASN origin					23.111.45.0/24
-all-company-asn-origins	curated company ASN origin					23.111.48.0/23
-all-company-asn-origins	curated company ASN origin					23.111.50.0/24
-all-company-asn-origins	curated company ASN origin					23.111.96.0/24
-all-company-asn-origins	curated company ASN origin					23.111.98.0/23
-all-company-asn-origins	curated company ASN origin					23.111.100.0/24
-all-company-asn-origins	curated company ASN origin					23.111.104.0/23
-all-company-asn-origins	curated company ASN origin					23.111.107.0/24
-all-company-asn-origins	curated company ASN origin					23.111.109.0/24
-all-company-asn-origins	curated company ASN origin					23.111.110.0/23
-all-company-asn-origins	curated company ASN origin					23.111.112.0/22
-all-company-asn-origins	curated company ASN origin					23.111.117.0/24
-all-company-asn-origins	curated company ASN origin					23.111.200.0/23
-all-company-asn-origins	curated company ASN origin					23.111.203.0/24
-all-company-asn-origins	curated company ASN origin					23.111.205.0/24
-all-company-asn-origins	curated company ASN origin					23.111.209.0/24
-all-company-asn-origins	curated company ASN origin					23.111.210.0/23
-all-company-asn-origins	curated company ASN origin					23.111.213.0/24
-all-company-asn-origins	curated company ASN origin					23.111.214.0/23
-all-company-asn-origins	curated company ASN origin					23.111.216.0/23
-all-company-asn-origins	curated company ASN origin					23.111.218.0/24
+all-company-asn-origins	curated company ASN origin					23.105.224.0/19
+all-company-asn-origins	curated company ASN origin					23.111.32.0/19
+all-company-asn-origins	curated company ASN origin					23.111.96.0/19
+all-company-asn-origins	curated company ASN origin					23.111.192.0/19
 all-company-asn-origins	curated company ASN origin					31.15.80.0/20
 all-company-asn-origins	curated company ASN origin					31.23.0.0/16
 all-company-asn-origins	curated company ASN origin					31.28.192.0/19
@@ -187952,7 +187917,7 @@ all-company-asn-origins	curated company ASN origin					31.172.192.0/19
 all-company-asn-origins	curated company ASN origin					31.173.0.0/16
 all-company-asn-origins	curated company ASN origin					31.177.104.0/22
 all-company-asn-origins	curated company ASN origin					31.180.0.0/15
-all-company-asn-origins	curated company ASN origin					31.184.204.0/23
+all-company-asn-origins	curated company ASN origin					31.184.204.0/24
 all-company-asn-origins	curated company ASN origin					31.184.208.0/20
 all-company-asn-origins	curated company ASN origin					31.184.212.0/23
 all-company-asn-origins	curated company ASN origin					31.184.216.0/23
@@ -189015,20 +188980,7 @@ all-company-asn-origins	curated company ASN origin					88.147.128.0/17
 all-company-asn-origins	curated company ASN origin					88.200.128.0/17
 all-company-asn-origins	curated company ASN origin					88.204.106.0/24
 all-company-asn-origins	curated company ASN origin					88.205.128.0/17
-all-company-asn-origins	curated company ASN origin					88.212.216.0/23
-all-company-asn-origins	curated company ASN origin					88.212.218.0/24
-all-company-asn-origins	curated company ASN origin					88.212.220.0/22
-all-company-asn-origins	curated company ASN origin					88.212.224.0/24
-all-company-asn-origins	curated company ASN origin					88.212.232.0/23
-all-company-asn-origins	curated company ASN origin					88.212.235.0/24
-all-company-asn-origins	curated company ASN origin					88.212.236.0/23
-all-company-asn-origins	curated company ASN origin					88.212.239.0/24
-all-company-asn-origins	curated company ASN origin					88.212.240.0/24
-all-company-asn-origins	curated company ASN origin					88.212.242.0/23
-all-company-asn-origins	curated company ASN origin					88.212.244.0/22
-all-company-asn-origins	curated company ASN origin					88.212.248.0/22
-all-company-asn-origins	curated company ASN origin					88.212.252.0/23
-all-company-asn-origins	curated company ASN origin					88.212.255.0/24
+all-company-asn-origins	curated company ASN origin					88.212.192.0/18
 all-company-asn-origins	curated company ASN origin					88.215.182.0/24
 all-company-asn-origins	curated company ASN origin					88.215.186.0/24
 all-company-asn-origins	curated company ASN origin					88.218.56.0/22
@@ -189272,7 +189224,8 @@ all-company-asn-origins	curated company ASN origin					91.243.86.0/24
 all-company-asn-origins	curated company ASN origin					92.37.128.0/17
 all-company-asn-origins	curated company ASN origin					92.38.42.0/24
 all-company-asn-origins	curated company ASN origin					92.38.128.0/22
-all-company-asn-origins	curated company ASN origin					92.38.136.0/22
+all-company-asn-origins	curated company ASN origin					92.38.136.0/24
+all-company-asn-origins	curated company ASN origin					92.38.138.0/23
 all-company-asn-origins	curated company ASN origin					92.38.152.0/23
 all-company-asn-origins	curated company ASN origin					92.38.156.0/24
 all-company-asn-origins	curated company ASN origin					92.38.188.0/22
@@ -189894,7 +189847,8 @@ all-company-asn-origins	curated company ASN origin					141.101.232.0/24
 all-company-asn-origins	curated company ASN origin					141.105.24.0/21
 all-company-asn-origins	curated company ASN origin					145.255.136.0/21
 all-company-asn-origins	curated company ASN origin					146.185.192.0/22
-all-company-asn-origins	curated company ASN origin					146.185.196.0/22
+all-company-asn-origins	curated company ASN origin					146.185.196.0/23
+all-company-asn-origins	curated company ASN origin					146.185.199.0/24
 all-company-asn-origins	curated company ASN origin					146.185.208.0/22
 all-company-asn-origins	curated company ASN origin					146.185.215.0/24
 all-company-asn-origins	curated company ASN origin					146.185.218.0/24
@@ -190258,6 +190212,7 @@ all-company-asn-origins	curated company ASN origin					185.201.0.0/22
 all-company-asn-origins	curated company ASN origin					185.201.44.0/24
 all-company-asn-origins	curated company ASN origin					185.201.47.0/24
 all-company-asn-origins	curated company ASN origin					185.205.128.0/22
+all-company-asn-origins	curated company ASN origin					185.206.100.0/22
 all-company-asn-origins	curated company ASN origin					185.206.164.0/22
 all-company-asn-origins	curated company ASN origin					185.207.64.0/23
 all-company-asn-origins	curated company ASN origin					185.207.66.0/24
@@ -190658,6 +190613,7 @@ all-company-asn-origins	curated company ASN origin					212.24.32.0/23
 all-company-asn-origins	curated company ASN origin					212.24.35.0/24
 all-company-asn-origins	curated company ASN origin					212.24.36.0/24
 all-company-asn-origins	curated company ASN origin					212.24.38.0/24
+all-company-asn-origins	curated company ASN origin					212.24.41.0/24
 all-company-asn-origins	curated company ASN origin					212.24.44.0/24
 all-company-asn-origins	curated company ASN origin					212.24.47.0/24
 all-company-asn-origins	curated company ASN origin					212.24.48.0/24
@@ -191469,7 +191425,6 @@ shared-infrastructure-asn-origins	SHARED_INFRA exact origin					5.8.192.0/21
 shared-infrastructure-asn-origins	SHARED_INFRA exact origin					5.8.200.0/21
 shared-infrastructure-asn-origins	SHARED_INFRA exact origin					5.8.208.0/23
 shared-infrastructure-asn-origins	SHARED_INFRA exact origin					5.8.212.0/22
-shared-infrastructure-asn-origins	SHARED_INFRA exact origin					5.8.217.0/24
 shared-infrastructure-asn-origins	SHARED_INFRA exact origin					5.8.218.0/23
 shared-infrastructure-asn-origins	SHARED_INFRA exact origin					5.8.220.0/23
 shared-infrastructure-asn-origins	SHARED_INFRA exact origin					5.8.222.0/23
@@ -191564,44 +191519,10 @@ shared-infrastructure-asn-origins	SHARED_INFRA exact origin					5.227.170.0/23
 shared-infrastructure-asn-origins	SHARED_INFRA exact origin					5.228.0.0/16
 shared-infrastructure-asn-origins	SHARED_INFRA exact origin					5.250.168.0/21
 shared-infrastructure-asn-origins	SHARED_INFRA exact origin					5.254.176.0/21
-shared-infrastructure-asn-origins	SHARED_INFRA exact origin					23.105.226.0/23
-shared-infrastructure-asn-origins	SHARED_INFRA exact origin					23.105.230.0/24
-shared-infrastructure-asn-origins	SHARED_INFRA exact origin					23.105.233.0/24
-shared-infrastructure-asn-origins	SHARED_INFRA exact origin					23.105.234.0/23
-shared-infrastructure-asn-origins	SHARED_INFRA exact origin					23.105.236.0/22
-shared-infrastructure-asn-origins	SHARED_INFRA exact origin					23.105.241.0/24
-shared-infrastructure-asn-origins	SHARED_INFRA exact origin					23.105.242.0/23
-shared-infrastructure-asn-origins	SHARED_INFRA exact origin					23.105.244.0/22
-shared-infrastructure-asn-origins	SHARED_INFRA exact origin					23.105.249.0/24
-shared-infrastructure-asn-origins	SHARED_INFRA exact origin					23.105.250.0/24
-shared-infrastructure-asn-origins	SHARED_INFRA exact origin					23.105.253.0/24
-shared-infrastructure-asn-origins	SHARED_INFRA exact origin					23.105.254.0/23
-shared-infrastructure-asn-origins	SHARED_INFRA exact origin					23.111.32.0/24
-shared-infrastructure-asn-origins	SHARED_INFRA exact origin					23.111.34.0/23
-shared-infrastructure-asn-origins	SHARED_INFRA exact origin					23.111.37.0/24
-shared-infrastructure-asn-origins	SHARED_INFRA exact origin					23.111.38.0/23
-shared-infrastructure-asn-origins	SHARED_INFRA exact origin					23.111.40.0/22
-shared-infrastructure-asn-origins	SHARED_INFRA exact origin					23.111.45.0/24
-shared-infrastructure-asn-origins	SHARED_INFRA exact origin					23.111.48.0/23
-shared-infrastructure-asn-origins	SHARED_INFRA exact origin					23.111.50.0/24
-shared-infrastructure-asn-origins	SHARED_INFRA exact origin					23.111.96.0/24
-shared-infrastructure-asn-origins	SHARED_INFRA exact origin					23.111.98.0/23
-shared-infrastructure-asn-origins	SHARED_INFRA exact origin					23.111.100.0/24
-shared-infrastructure-asn-origins	SHARED_INFRA exact origin					23.111.104.0/23
-shared-infrastructure-asn-origins	SHARED_INFRA exact origin					23.111.107.0/24
-shared-infrastructure-asn-origins	SHARED_INFRA exact origin					23.111.109.0/24
-shared-infrastructure-asn-origins	SHARED_INFRA exact origin					23.111.110.0/23
-shared-infrastructure-asn-origins	SHARED_INFRA exact origin					23.111.112.0/22
-shared-infrastructure-asn-origins	SHARED_INFRA exact origin					23.111.117.0/24
-shared-infrastructure-asn-origins	SHARED_INFRA exact origin					23.111.200.0/23
-shared-infrastructure-asn-origins	SHARED_INFRA exact origin					23.111.203.0/24
-shared-infrastructure-asn-origins	SHARED_INFRA exact origin					23.111.205.0/24
-shared-infrastructure-asn-origins	SHARED_INFRA exact origin					23.111.209.0/24
-shared-infrastructure-asn-origins	SHARED_INFRA exact origin					23.111.210.0/23
-shared-infrastructure-asn-origins	SHARED_INFRA exact origin					23.111.213.0/24
-shared-infrastructure-asn-origins	SHARED_INFRA exact origin					23.111.214.0/23
-shared-infrastructure-asn-origins	SHARED_INFRA exact origin					23.111.216.0/23
-shared-infrastructure-asn-origins	SHARED_INFRA exact origin					23.111.218.0/24
+shared-infrastructure-asn-origins	SHARED_INFRA exact origin					23.105.224.0/19
+shared-infrastructure-asn-origins	SHARED_INFRA exact origin					23.111.32.0/19
+shared-infrastructure-asn-origins	SHARED_INFRA exact origin					23.111.96.0/19
+shared-infrastructure-asn-origins	SHARED_INFRA exact origin					23.111.192.0/19
 shared-infrastructure-asn-origins	SHARED_INFRA exact origin					31.15.80.0/20
 shared-infrastructure-asn-origins	SHARED_INFRA exact origin					31.23.0.0/16
 shared-infrastructure-asn-origins	SHARED_INFRA exact origin					31.28.192.0/19
@@ -191639,7 +191560,7 @@ shared-infrastructure-asn-origins	SHARED_INFRA exact origin					31.172.134.0/23
 shared-infrastructure-asn-origins	SHARED_INFRA exact origin					31.172.192.0/19
 shared-infrastructure-asn-origins	SHARED_INFRA exact origin					31.173.0.0/16
 shared-infrastructure-asn-origins	SHARED_INFRA exact origin					31.180.0.0/15
-shared-infrastructure-asn-origins	SHARED_INFRA exact origin					31.184.204.0/23
+shared-infrastructure-asn-origins	SHARED_INFRA exact origin					31.184.204.0/24
 shared-infrastructure-asn-origins	SHARED_INFRA exact origin					31.184.208.0/20
 shared-infrastructure-asn-origins	SHARED_INFRA exact origin					31.184.212.0/23
 shared-infrastructure-asn-origins	SHARED_INFRA exact origin					31.184.216.0/23
@@ -192650,20 +192571,7 @@ shared-infrastructure-asn-origins	SHARED_INFRA exact origin					88.147.128.0/17
 shared-infrastructure-asn-origins	SHARED_INFRA exact origin					88.200.128.0/17
 shared-infrastructure-asn-origins	SHARED_INFRA exact origin					88.204.106.0/24
 shared-infrastructure-asn-origins	SHARED_INFRA exact origin					88.205.128.0/17
-shared-infrastructure-asn-origins	SHARED_INFRA exact origin					88.212.216.0/23
-shared-infrastructure-asn-origins	SHARED_INFRA exact origin					88.212.218.0/24
-shared-infrastructure-asn-origins	SHARED_INFRA exact origin					88.212.220.0/22
-shared-infrastructure-asn-origins	SHARED_INFRA exact origin					88.212.224.0/24
-shared-infrastructure-asn-origins	SHARED_INFRA exact origin					88.212.232.0/23
-shared-infrastructure-asn-origins	SHARED_INFRA exact origin					88.212.235.0/24
-shared-infrastructure-asn-origins	SHARED_INFRA exact origin					88.212.236.0/23
-shared-infrastructure-asn-origins	SHARED_INFRA exact origin					88.212.239.0/24
-shared-infrastructure-asn-origins	SHARED_INFRA exact origin					88.212.240.0/24
-shared-infrastructure-asn-origins	SHARED_INFRA exact origin					88.212.242.0/23
-shared-infrastructure-asn-origins	SHARED_INFRA exact origin					88.212.244.0/22
-shared-infrastructure-asn-origins	SHARED_INFRA exact origin					88.212.248.0/22
-shared-infrastructure-asn-origins	SHARED_INFRA exact origin					88.212.252.0/23
-shared-infrastructure-asn-origins	SHARED_INFRA exact origin					88.212.255.0/24
+shared-infrastructure-asn-origins	SHARED_INFRA exact origin					88.212.192.0/18
 shared-infrastructure-asn-origins	SHARED_INFRA exact origin					88.215.182.0/24
 shared-infrastructure-asn-origins	SHARED_INFRA exact origin					88.215.186.0/24
 shared-infrastructure-asn-origins	SHARED_INFRA exact origin					88.218.56.0/22
@@ -192876,7 +192784,8 @@ shared-infrastructure-asn-origins	SHARED_INFRA exact origin					91.243.86.0/24
 shared-infrastructure-asn-origins	SHARED_INFRA exact origin					92.37.128.0/17
 shared-infrastructure-asn-origins	SHARED_INFRA exact origin					92.38.42.0/24
 shared-infrastructure-asn-origins	SHARED_INFRA exact origin					92.38.128.0/22
-shared-infrastructure-asn-origins	SHARED_INFRA exact origin					92.38.136.0/22
+shared-infrastructure-asn-origins	SHARED_INFRA exact origin					92.38.136.0/24
+shared-infrastructure-asn-origins	SHARED_INFRA exact origin					92.38.138.0/23
 shared-infrastructure-asn-origins	SHARED_INFRA exact origin					92.38.152.0/23
 shared-infrastructure-asn-origins	SHARED_INFRA exact origin					92.38.156.0/24
 shared-infrastructure-asn-origins	SHARED_INFRA exact origin					92.38.188.0/22
@@ -193460,7 +193369,8 @@ shared-infrastructure-asn-origins	SHARED_INFRA exact origin					141.101.232.0/24
 shared-infrastructure-asn-origins	SHARED_INFRA exact origin					141.105.24.0/21
 shared-infrastructure-asn-origins	SHARED_INFRA exact origin					145.255.136.0/21
 shared-infrastructure-asn-origins	SHARED_INFRA exact origin					146.185.192.0/22
-shared-infrastructure-asn-origins	SHARED_INFRA exact origin					146.185.196.0/22
+shared-infrastructure-asn-origins	SHARED_INFRA exact origin					146.185.196.0/23
+shared-infrastructure-asn-origins	SHARED_INFRA exact origin					146.185.199.0/24
 shared-infrastructure-asn-origins	SHARED_INFRA exact origin					146.185.215.0/24
 shared-infrastructure-asn-origins	SHARED_INFRA exact origin					146.185.218.0/24
 shared-infrastructure-asn-origins	SHARED_INFRA exact origin					146.185.235.0/24
@@ -193770,6 +193680,7 @@ shared-infrastructure-asn-origins	SHARED_INFRA exact origin					185.200.240.0/22
 shared-infrastructure-asn-origins	SHARED_INFRA exact origin					185.201.44.0/24
 shared-infrastructure-asn-origins	SHARED_INFRA exact origin					185.201.47.0/24
 shared-infrastructure-asn-origins	SHARED_INFRA exact origin					185.205.128.0/22
+shared-infrastructure-asn-origins	SHARED_INFRA exact origin					185.206.100.0/22
 shared-infrastructure-asn-origins	SHARED_INFRA exact origin					185.206.164.0/22
 shared-infrastructure-asn-origins	SHARED_INFRA exact origin					185.207.64.0/23
 shared-infrastructure-asn-origins	SHARED_INFRA exact origin					185.207.66.0/24
@@ -194150,6 +194061,7 @@ shared-infrastructure-asn-origins	SHARED_INFRA exact origin					212.24.32.0/23
 shared-infrastructure-asn-origins	SHARED_INFRA exact origin					212.24.35.0/24
 shared-infrastructure-asn-origins	SHARED_INFRA exact origin					212.24.36.0/24
 shared-infrastructure-asn-origins	SHARED_INFRA exact origin					212.24.38.0/24
+shared-infrastructure-asn-origins	SHARED_INFRA exact origin					212.24.41.0/24
 shared-infrastructure-asn-origins	SHARED_INFRA exact origin					212.24.44.0/24
 shared-infrastructure-asn-origins	SHARED_INFRA exact origin					212.24.47.0/24
 shared-infrastructure-asn-origins	SHARED_INFRA exact origin					212.24.48.0/24
@@ -194676,6 +194588,7 @@ rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver excep
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					5.8.179.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					5.8.180.0/23
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					5.8.182.0/24
+rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					5.8.217.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					5.8.224.0/20
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					5.10.221.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					5.11.60.0/22
@@ -194953,31 +194866,6 @@ rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver excep
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					13.143.241.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					13.143.243.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					13.143.244.0/24
-rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					23.105.224.0/23
-rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					23.105.228.0/24
-rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					23.105.231.0/24
-rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					23.105.232.0/24
-rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					23.105.240.0/24
-rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					23.105.248.0/24
-rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					23.105.251.0/24
-rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					23.105.252.0/24
-rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					23.111.33.0/24
-rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					23.111.51.0/24
-rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					23.111.52.0/24
-rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					23.111.62.0/23
-rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					23.111.97.0/24
-rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					23.111.102.0/23
-rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					23.111.106.0/24
-rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					23.111.108.0/24
-rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					23.111.116.0/24
-rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					23.111.118.0/23
-rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					23.111.125.0/24
-rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					23.111.126.0/23
-rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					23.111.192.0/23
-rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					23.111.197.0/24
-rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					23.111.198.0/23
-rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					23.111.208.0/24
-rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					23.111.220.0/23
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					23.230.179.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					31.3.16.0/20
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					31.3.209.0/24
@@ -195096,7 +194984,6 @@ rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver excep
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					31.77.169.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					31.77.173.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					31.77.178.0/23
-rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					31.77.222.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					31.77.253.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					31.128.36.0/22
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					31.128.40.0/21
@@ -195134,6 +195021,7 @@ rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver excep
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					31.130.248.0/21
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					31.131.64.0/20
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					31.131.80.0/21
+rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					31.131.142.0/23
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					31.131.144.0/20
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					31.131.184.0/22
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					31.131.190.0/23
@@ -195465,6 +195353,7 @@ rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver excep
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					37.230.248.0/22
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					37.230.252.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					37.233.116.0/22
+rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					37.235.199.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					37.235.200.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					37.235.207.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					37.235.210.0/24
@@ -195513,6 +195402,7 @@ rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver excep
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					45.10.164.0/23
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					45.10.166.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					45.10.174.0/24
+rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					45.10.216.0/22
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					45.10.244.0/22
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					45.11.4.0/22
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					45.11.20.0/22
@@ -195546,6 +195436,7 @@ rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver excep
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					45.39.104.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					45.39.187.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					45.43.162.0/24
+rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					45.66.12.0/22
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					45.66.24.0/22
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					45.66.52.0/23
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					45.66.55.0/24
@@ -195665,8 +195556,7 @@ rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver excep
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					45.128.228.0/22
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					45.129.2.0/23
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					45.129.76.0/23
-rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					45.129.152.0/23
-rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					45.129.155.0/24
+rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					45.129.152.0/22
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					45.129.171.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					45.129.185.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					45.129.186.0/24
@@ -195791,7 +195681,8 @@ rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver excep
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					45.142.34.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					45.142.36.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					45.142.44.0/24
-rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					45.142.208.0/22
+rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					45.142.208.0/23
+rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					45.142.211.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					45.142.252.0/23
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					45.143.20.0/22
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					45.143.84.0/22
@@ -195916,7 +195807,7 @@ rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver excep
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					46.0.0.0/16
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					46.8.0.0/22
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					46.8.4.0/24
-rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					46.8.6.0/23
+rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					46.8.7.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					46.8.10.0/23
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					46.8.12.0/22
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					46.8.16.0/21
@@ -196337,13 +196228,16 @@ rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver excep
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					46.255.96.0/21
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					46.255.136.0/21
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					46.255.232.0/21
+rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					48.102.243.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					48.102.254.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					48.103.122.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					48.103.130.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					48.103.132.0/23
-rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					48.103.138.0/24
+rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					48.103.149.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					48.103.180.0/24
+rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					48.103.201.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					48.103.203.0/24
+rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					48.103.218.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					48.103.233.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					48.103.242.0/23
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					62.3.13.0/24
@@ -196396,7 +196290,10 @@ rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver excep
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					62.76.194.0/23
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					62.76.196.0/22
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					62.76.200.0/21
-rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					62.76.208.0/20
+rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					62.76.208.0/24
+rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					62.76.210.0/23
+rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					62.76.212.0/22
+rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					62.76.216.0/21
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					62.76.225.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					62.76.228.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					62.76.246.0/23
@@ -197489,7 +197386,10 @@ rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver excep
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					81.91.180.0/22
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					81.91.184.0/21
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					81.94.16.0/20
-rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					81.94.32.0/20
+rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					81.94.32.0/23
+rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					81.94.35.0/24
+rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					81.94.36.0/22
+rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					81.94.40.0/21
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					81.94.128.0/19
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					81.95.16.0/20
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					81.95.32.0/20
@@ -197892,7 +197792,7 @@ rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver excep
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					84.54.4.0/22
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					84.54.16.0/22
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					84.54.28.0/22
-rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					84.54.36.0/23
+rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					84.54.37.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					84.54.39.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					84.54.44.0/22
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					84.54.52.0/23
@@ -197927,7 +197827,6 @@ rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver excep
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					84.242.0.0/21
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					84.242.192.0/18
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					84.244.0.0/18
-rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					84.252.67.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					84.252.68.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					84.252.70.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					84.252.100.0/23
@@ -198463,14 +198362,6 @@ rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver excep
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					88.210.52.0/22
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					88.210.56.0/22
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					88.210.60.0/24
-rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					88.212.192.0/20
-rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					88.212.208.0/22
-rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					88.212.212.0/24
-rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					88.212.228.0/22
-rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					88.212.234.0/24
-rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					88.212.238.0/24
-rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					88.212.241.0/24
-rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					88.212.254.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					88.214.32.0/22
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					88.214.230.0/23
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					88.214.236.0/22
@@ -198595,6 +198486,7 @@ rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver excep
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					89.105.152.0/23
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					89.105.155.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					89.105.156.0/22
+rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					89.106.138.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					89.106.168.0/21
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					89.106.232.0/21
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					89.106.248.0/21
@@ -198905,6 +198797,8 @@ rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver excep
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					91.132.96.0/22
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					91.132.104.0/22
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					91.132.148.0/22
+rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					91.132.188.0/22
+rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					91.132.196.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					91.132.216.0/22
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					91.132.228.0/22
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					91.133.0.0/19
@@ -199085,7 +198979,6 @@ rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver excep
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					91.198.104.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					91.198.130.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					91.198.149.0/24
-rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					91.198.153.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					91.198.155.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					91.198.175.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					91.198.208.0/24
@@ -199716,6 +199609,7 @@ rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver excep
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					91.226.73.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					91.226.80.0/22
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					91.226.104.0/22
+rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					91.226.116.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					91.226.120.0/22
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					91.226.128.0/21
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					91.226.136.0/23
@@ -200123,6 +200017,8 @@ rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver excep
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					91.241.54.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					91.241.58.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					91.241.68.0/23
+rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					91.241.80.0/23
+rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					91.241.82.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					91.241.84.0/23
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					91.241.128.0/19
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					91.241.160.0/21
@@ -200292,7 +200188,7 @@ rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver excep
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					92.118.11.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					92.118.66.0/23
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					92.118.72.0/22
-rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					92.118.92.0/22
+rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					92.118.88.0/21
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					92.118.116.0/22
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					92.118.132.0/22
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					92.118.140.0/23
@@ -200594,7 +200490,6 @@ rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver excep
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					93.177.79.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					93.177.92.0/23
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					93.177.105.0/24
-rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					93.177.106.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					93.177.116.0/23
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					93.177.124.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					93.177.126.0/24
@@ -201119,7 +201014,7 @@ rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver excep
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					95.131.200.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					95.131.208.0/21
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					95.131.224.0/21
-rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					95.133.150.0/23
+rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					95.133.148.0/22
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					95.137.0.0/17
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					95.138.224.0/19
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					95.140.16.0/20
@@ -201624,6 +201519,7 @@ rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver excep
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					109.248.228.0/22
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					109.248.234.0/23
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					109.248.236.0/23
+rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					109.248.239.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					109.248.240.0/22
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					109.248.246.0/23
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					109.248.248.0/23
@@ -201765,8 +201661,7 @@ rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver excep
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					138.124.253.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					138.124.254.0/23
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					138.226.235.0/24
-rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					138.249.0.0/23
-rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					138.249.3.0/24
+rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					138.249.0.0/22
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					138.249.9.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					138.249.12.0/23
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					138.249.15.0/24
@@ -202080,9 +201975,7 @@ rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver excep
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					153.52.85.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					153.52.102.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					153.52.121.0/24
-rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					153.56.200.0/22
-rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					153.56.204.0/24
-rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					153.56.206.0/23
+rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					153.56.200.0/21
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					153.76.158.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					153.76.160.0/20
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					153.76.178.0/23
@@ -202152,7 +202045,7 @@ rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver excep
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					159.194.200.0/21
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					159.194.208.0/20
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					159.194.224.0/19
-rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					159.200.200.0/24
+rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					159.200.200.0/23
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					159.253.168.0/21
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					159.255.0.0/20
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					159.255.16.0/21
@@ -202215,7 +202108,6 @@ rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver excep
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					168.222.140.0/23
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					168.222.196.0/22
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					168.222.200.0/21
-rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					169.128.68.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					170.168.0.0/22
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					170.168.8.0/22
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					170.168.13.0/24
@@ -202326,7 +202218,7 @@ rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver excep
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					176.64.120.0/23
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					176.64.122.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					176.64.124.0/24
-rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					176.64.127.0/24
+rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					176.64.126.0/23
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					176.64.128.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					176.64.130.0/23
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					176.64.133.0/24
@@ -202610,16 +202502,9 @@ rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver excep
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					177.3.255.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					177.28.4.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					177.28.7.0/24
-rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					177.29.244.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					177.29.246.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					177.29.249.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					177.111.60.0/24
-rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					177.111.69.0/24
-rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					177.111.103.0/24
-rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					177.111.137.0/24
-rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					177.111.194.0/24
-rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					177.111.228.0/24
-rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					177.122.30.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					177.122.107.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					177.122.160.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					177.177.212.0/23
@@ -202627,7 +202512,6 @@ rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver excep
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					177.177.219.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					177.177.220.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					177.177.223.0/24
-rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					177.202.118.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					177.203.48.0/23
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					177.203.58.0/23
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					178.16.80.0/20
@@ -202954,6 +202838,7 @@ rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver excep
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					178.250.240.0/21
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					178.251.96.0/22
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					178.251.136.0/21
+rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					178.251.205.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					178.252.64.0/18
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					178.252.192.0/18
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					178.253.22.0/23
@@ -202964,7 +202849,7 @@ rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver excep
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					179.66.184.0/22
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					179.236.41.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					179.236.42.0/24
-rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					179.236.128.0/23
+rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					179.236.129.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					179.252.208.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					179.252.210.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					179.252.213.0/24
@@ -203296,7 +203181,8 @@ rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver excep
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					185.41.196.0/23
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					185.41.204.0/22
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					185.42.13.0/24
-rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					185.42.24.0/22
+rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					185.42.24.0/24
+rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					185.42.26.0/23
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					185.42.40.0/22
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					185.42.48.0/22
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					185.42.60.0/22
@@ -203354,7 +203240,6 @@ rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver excep
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					185.50.150.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					185.51.21.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					185.51.124.0/22
-rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					185.51.140.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					185.51.142.0/23
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					185.51.156.0/22
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					185.51.208.0/22
@@ -203618,6 +203503,7 @@ rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver excep
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					185.99.142.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					185.99.152.0/21
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					185.99.160.0/22
+rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					185.99.168.0/22
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					185.100.24.0/22
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					185.100.64.0/23
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					185.100.67.0/24
@@ -204032,6 +203918,7 @@ rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver excep
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					185.179.199.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					185.179.224.0/22
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					185.180.56.0/22
+rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					185.180.109.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					185.180.124.0/22
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					185.180.160.0/22
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					185.180.188.0/22
@@ -204182,7 +204069,6 @@ rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver excep
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					185.205.76.0/22
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					185.205.236.0/22
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					185.206.32.0/22
-rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					185.206.100.0/22
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					185.206.204.0/22
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					185.207.0.0/23
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					185.207.2.0/24
@@ -204291,7 +204177,7 @@ rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver excep
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					185.231.56.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					185.231.64.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					185.231.152.0/22
-rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					185.231.204.0/24
+rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					185.231.204.0/23
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					185.231.232.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					185.231.244.0/22
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					185.232.47.0/24
@@ -204559,7 +204445,8 @@ rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver excep
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					188.94.88.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					188.94.90.0/23
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					188.94.152.0/21
-rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					188.94.160.0/21
+rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					188.94.160.0/22
+rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					188.94.166.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					188.94.208.0/21
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					188.94.224.0/21
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					188.95.71.0/24
@@ -204627,6 +204514,7 @@ rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver excep
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					188.130.212.0/22
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					188.130.216.0/21
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					188.130.224.0/23
+rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					188.130.233.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					188.130.234.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					188.130.236.0/22
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					188.130.240.0/22
@@ -204724,6 +204612,7 @@ rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver excep
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					191.44.37.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					191.44.38.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					191.44.44.0/22
+rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					191.44.52.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					191.217.211.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					191.217.214.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					191.217.230.0/24
@@ -204743,6 +204632,7 @@ rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver excep
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					192.109.243.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					192.109.248.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					192.109.250.0/24
+rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					192.109.253.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					192.124.171.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					192.124.180.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					192.124.184.0/22
@@ -204800,6 +204690,7 @@ rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver excep
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					193.0.148.0/22
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					193.0.152.0/22
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					193.0.168.0/22
+rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					193.0.178.0/23
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					193.0.185.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					193.0.214.0/23
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					193.3.17.0/24
@@ -204834,6 +204725,7 @@ rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver excep
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					193.16.208.0/23
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					193.16.210.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					193.16.232.0/24
+rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					193.17.4.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					193.17.92.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					193.17.170.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					193.17.173.0/24
@@ -204993,7 +204885,7 @@ rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver excep
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					193.46.213.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					193.46.244.0/22
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					193.47.33.0/24
-rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					193.47.35.0/24
+rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					193.47.34.0/23
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					193.47.40.0/21
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					193.47.60.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					193.47.146.0/24
@@ -205289,7 +205181,6 @@ rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver excep
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					193.187.96.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					193.187.104.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					193.187.107.0/24
-rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					193.187.111.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					193.187.156.0/22
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					193.187.192.0/22
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					193.188.20.0/23
@@ -205379,7 +205270,8 @@ rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver excep
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					193.232.72.0/22
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					193.232.77.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					193.232.79.0/24
-rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					193.232.80.0/22
+rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					193.232.80.0/23
+rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					193.232.82.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					193.232.84.0/23
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					193.232.86.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					193.232.88.0/21
@@ -205458,6 +205350,7 @@ rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver excep
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					193.233.168.0/23
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					193.233.170.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					193.233.172.0/23
+rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					193.233.174.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					193.233.176.0/20
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					193.233.192.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					193.233.197.0/24
@@ -205726,6 +205619,7 @@ rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver excep
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					194.58.79.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					194.58.160.0/19
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					194.58.241.0/24
+rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					194.59.184.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					194.59.186.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					194.60.232.0/21
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					194.60.242.0/24
@@ -205801,11 +205695,8 @@ rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver excep
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					194.85.183.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					194.85.184.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					194.85.192.0/20
-rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					194.85.208.0/22
-rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					194.85.212.0/23
-rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					194.85.214.0/24
-rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					194.85.217.0/24
-rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					194.85.218.0/23
+rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					194.85.208.0/21
+rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					194.85.216.0/22
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					194.85.220.0/23
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					194.85.222.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					194.85.224.0/20
@@ -205835,6 +205726,7 @@ rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver excep
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					194.87.130.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					194.87.134.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					194.87.144.0/22
+rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					194.87.159.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					194.87.167.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					194.87.168.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					194.87.173.0/24
@@ -206456,7 +206348,7 @@ rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver excep
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					195.114.112.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					195.114.116.0/23
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					195.114.119.0/24
-rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					195.114.122.0/24
+rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					195.114.122.0/23
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					195.128.48.0/20
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					195.128.64.0/19
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					195.128.96.0/22
@@ -207469,6 +207361,7 @@ rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver excep
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					213.248.0.0/18
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					213.251.193.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					213.251.195.0/24
+rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					213.251.198.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					213.251.200.0/21
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					213.251.208.0/20
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					213.251.240.0/20
@@ -208309,7 +208202,6 @@ rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver excep
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a03:220::/32
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a03:6c0::/32
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a03:700::/32
-rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a03:e60::/34
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a03:e60:8000::/46
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a03:ec0::/47
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a03:13c0::/32
@@ -208355,10 +208247,10 @@ rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver excep
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a03:32c0:6000::/45
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a03:32c0:6008::/47
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a03:32c0:6012::/47
-rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a03:32c0:7000::/47
-rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a03:32c0:7002::/48
+rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a03:32c0:7000::/46
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a03:32c0:7008::/47
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a03:32c0:7012::/48
+rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a03:32c0:7014::/48
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a03:32c0:8000::/45
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a03:32c0:8008::/47
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a03:32c0:8012::/47
@@ -208560,6 +208452,7 @@ rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver excep
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a04:3b01:4800::/44
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a04:3b01:5800::/44
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a04:3b01:6000::/44
+rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a04:3b01:7800::/44
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a04:3b01:8000::/44
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a04:3b01:8800::/44
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a04:3b02:c20::/44
@@ -208631,7 +208524,6 @@ rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver excep
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a05:6d80::/29
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a05:7280::/32
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a05:7400::/34
-rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a05:7400:8000::/34
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a05:7e80::/29
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a05:81c0::/29
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a05:93c2::/32
@@ -208720,7 +208612,6 @@ rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver excep
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a07:e380::/29
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a07:e740::/29
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a07:ecc0::/29
-rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a07:f540::/29
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a07:f600:4010::/48
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a07:f8c0::/32
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a09:400:1000::/36
@@ -208731,7 +208622,7 @@ rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver excep
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a09:407:3000::/36
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a09:407:6000::/35
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a09:407:9000::/36
-rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a09:407:e000::/35
+rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a09:407:e000::/36
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a09:c80::/29
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a09:17c0:1312::/48
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a09:17c0:fbad::/48
@@ -208859,7 +208750,7 @@ rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver excep
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a0b:4e07:a60::/44
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a0b:4e07:6300::/47
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a0b:4e07:6310::/48
-rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a0b:4e07:63f0::/47
+rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a0b:4e07:63f1::/48
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a0b:4e07:63ff::/48
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a0b:5d40::/29
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a0b:6900::/48
@@ -208884,6 +208775,7 @@ rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver excep
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a0b:7ec0:1320::/48
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a0b:7ec0:7701::/48
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a0b:8fc1::/32
+rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a0b:9080::/48
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a0b:97c0::/29
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a0b:a8c0:1::/48
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a0b:a8c0:2::/48
@@ -209004,6 +208896,7 @@ rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver excep
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a0d:3842:1320::/48
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a0d:3842:1350::/48
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a0d:3842:1360::/48
+rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a0d:3842:1370::/48
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a0d:3843:3002::/47
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a0d:3843:3004::/48
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a0d:3843:3009::/48
@@ -209041,7 +208934,6 @@ rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver excep
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a0d:b1c0:abc0::/44
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a0d:b200::/31
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a0d:b600::/29
-rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a0d:b740::/29
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a0d:b843::/32
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a0d:b9c0::/32
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a0d:b9c7::/32
@@ -209083,7 +208975,6 @@ rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver excep
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a0d:d940:b230::/44
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a0d:d940:b250::/44
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a0d:d940:b260::/43
-rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a0d:d941:1600::/40
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a0d:df80::/31
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a0d:e244::/32
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a0d:e247::/32
@@ -209151,7 +209042,6 @@ rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver excep
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a0e:dfc2::/32
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a0e:dfc7:d8f3::/48
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a0e:e001:10::/48
-rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a0e:e001:20::/44
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a0e:e140::/48
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a0e:e5c0::/29
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a0e:e6c0:2000::/36
@@ -209250,7 +209140,6 @@ rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver excep
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a10:cbc7::/32
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a10:ccc1:10f::/48
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a10:ccc1:1333::/48
-rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a10:ccc1:1338::/47
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a10:d740:78::/48
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a10:e080::/32
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a10:fa00::/29
@@ -492876,9 +492765,83 @@ verified-service-resolver-protected	Verified service resolver protection					2a1
 verified-service-resolver-protected	Verified service resolver protection					2a14:25c0::/32
 verified-service-resolver-protected	Verified service resolver protection					2a14:25c5::/32
 verified-service-resolver-protected	Verified service resolver protection					2a14:25c6::/31
+reviewed-operator-prefixes	RU			AS207957		2.26.8.0/24
+reviewed-operator-prefixes	RU			AS207957		2.26.10.0/24
+reviewed-operator-prefixes	RU			AS207957		13.143.137.0/24
+reviewed-operator-prefixes	RU			AS207957		31.76.65.0/24
+reviewed-operator-prefixes	RU			AS207957		31.76.71.0/24
+reviewed-operator-prefixes	RU			AS207957		31.76.84.0/24
+reviewed-operator-prefixes	RU			AS48018		31.172.64.0/24
+reviewed-operator-prefixes	RU			AS48018		31.172.66.0/24
+reviewed-operator-prefixes	RU			AS48018		31.172.67.0/24
+reviewed-operator-prefixes	RU			AS48018		31.172.76.0/24
+reviewed-operator-prefixes	RU			AS205090		45.89.65.0/24
+reviewed-operator-prefixes	RU			AS209641		45.89.66.0/24
+reviewed-operator-prefixes	RU			AS209641		45.89.67.0/24
+reviewed-operator-prefixes	RU			AS212913		45.130.151.0/24
+reviewed-operator-prefixes	RU			AS212913		45.131.46.0/24
+reviewed-operator-prefixes	RU			AS207957		77.239.107.0/24
+reviewed-operator-prefixes	RU			AS48018		89.127.217.0/24
+reviewed-operator-prefixes	RU			AS205090		91.200.12.0/24
+reviewed-operator-prefixes	RU			AS212913		94.103.183.0/24
+reviewed-operator-prefixes	RU			AS209641		94.142.139.0/24
+reviewed-operator-prefixes	RU			AS209641		94.142.140.0/24
+reviewed-operator-prefixes	RU			AS209641		94.142.142.0/24
+reviewed-operator-prefixes	RU			AS209641		95.81.114.0/24
+reviewed-operator-prefixes	RU			AS205090		95.81.121.0/24
+reviewed-operator-prefixes	RU			AS209641		95.81.125.0/24
+reviewed-operator-prefixes	RU			AS205090		104.128.134.0/24
+reviewed-operator-prefixes	RU			AS204997		104.128.140.0/24
+reviewed-operator-prefixes	RU			AS48018		130.17.2.0/24
+reviewed-operator-prefixes	RU			AS204997		139.28.223.0/24
+reviewed-operator-prefixes	RU			AS207957		144.31.107.0/24
+reviewed-operator-prefixes	RU			AS207957		146.19.128.0/24
+reviewed-operator-prefixes	RU			AS204997		147.78.66.0/24
 reviewed-operator-prefixes	RU			AS402931		153.52.151.0/24
+reviewed-operator-prefixes	RU			AS204997		157.228.136.0/24
+reviewed-operator-prefixes	RU			AS204997		157.228.137.0/24
+reviewed-operator-prefixes	RU			AS205090		157.228.183.0/24
 reviewed-operator-prefixes	KZ			AS215294		178.92.244.0/23
+reviewed-operator-prefixes	RU			AS207957		178.250.186.0/24
 reviewed-operator-prefixes	BY			AS207957		179.253.86.0/24
+reviewed-operator-prefixes	RU			AS207957		179.254.190.0/24
+reviewed-operator-prefixes	RU			AS209641		185.5.248.0/23
+reviewed-operator-prefixes	RU			AS209641		185.5.250.0/23
+reviewed-operator-prefixes	RU			AS204997		185.17.0.0/24
+reviewed-operator-prefixes	RU			AS204343		185.86.95.0/24
+reviewed-operator-prefixes	RU			AS209641		185.87.48.0/23
+reviewed-operator-prefixes	RU			AS209641		185.87.50.0/23
+reviewed-operator-prefixes	RU			AS205090		185.103.109.0/24
+reviewed-operator-prefixes	RU			AS209641		185.105.116.0/23
+reviewed-operator-prefixes	RU			AS209641		185.125.218.0/23
+reviewed-operator-prefixes	RU			AS205090		185.128.104.0/24
+reviewed-operator-prefixes	RU			AS204997		185.139.68.0/24
+reviewed-operator-prefixes	RU			AS204997		185.139.70.0/24
+reviewed-operator-prefixes	RU			AS204997		185.174.138.0/24
+reviewed-operator-prefixes	RU			AS204997		185.188.183.0/24
+reviewed-operator-prefixes	RU			AS204997		185.189.15.0/24
+reviewed-operator-prefixes	RU			AS204997		185.195.26.0/24
+reviewed-operator-prefixes	RU			AS204997		185.195.27.0/24
+reviewed-operator-prefixes	RU			AS204997		185.212.148.0/24
+reviewed-operator-prefixes	RU			AS205090		185.232.169.0/24
+reviewed-operator-prefixes	RU			AS205090		185.233.83.0/24
+reviewed-operator-prefixes	RU			AS204997		185.244.173.0/24
+reviewed-operator-prefixes	RU			AS204997		185.252.147.0/24
+reviewed-operator-prefixes	RU			AS204997		185.255.132.0/24
+reviewed-operator-prefixes	RU			AS204997		185.255.133.0/24
+reviewed-operator-prefixes	KZ			AS58061		188.116.20.0/24
+reviewed-operator-prefixes	RU			AS212913		193.3.23.0/24
+reviewed-operator-prefixes	RU			AS207957		193.23.195.0/24
+reviewed-operator-prefixes	RU			AS204997		193.109.79.0/24
+reviewed-operator-prefixes	RU			AS204343		193.109.246.0/23
+reviewed-operator-prefixes	RU			AS209641		193.124.176.0/24
+reviewed-operator-prefixes	RU			AS209641		193.124.177.0/24
+reviewed-operator-prefixes	RU			AS209641		193.124.184.0/24
+reviewed-operator-prefixes	RU			AS50867		193.187.93.0/24
+reviewed-operator-prefixes	RU			AS50867		193.187.94.0/24
+reviewed-operator-prefixes	RU			AS204343		195.216.243.0/24
+reviewed-operator-prefixes	RU			AS197789		204.62.123.0/24
+reviewed-operator-prefixes	RU			AS48018		213.193.198.0/24
 reviewed-operator-prefixes	RU			AS3327		2001:ad0:2000:1::/64
 regional-admission-exclusion	Reviewed foreign assignment	RU -> US		AS209372		31.204.8.0/21
 regional-admission-exclusion	Reviewed foreign assignment	RU -> US		AS213541		31.204.16.0/21

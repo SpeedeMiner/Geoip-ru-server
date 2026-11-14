@@ -9,7 +9,7 @@ AS12686	T-Bank	TBANK JSC (Rosbank legacy ASN)	https://bgp.tools/as/12686	yes	RU	
 AS12714	MegaFon	PJSC MegaFon	https://asnbase.com/countries/ru	yes	RU	98	2	yes	no
 AS13238	Yandex	YANDEX LLC	https://iamroot.tech/asndatabase/?search=AS13238	yes	RU	14	1	yes	no
 AS15632	Alfa-Bank	JSC Alfa-Bank	https://bgp.tools/as/15632	yes	RU	6	1	yes	no
-AS15774	TransTelecom	TTK-Svyaz LLC	https://iptrust.co/tools/asn/country/RU	yes	RU	134	6	yes	no
+AS15774	TransTelecom	TTK-Svyaz LLC	https://iptrust.co/tools/asn/country/RU	yes	RU	133	6	yes	no
 AS20485	TransTelecom	JSC TransTeleCom	https://bgp.he.net/country/RU	yes	RU	75	2	yes	no
 AS25513	MGTS	PJSC Moscow City Telephone Network	https://ipcheckerpro.com/asn?cc=RU	yes	RU	39	3	yes	no
 AS28709	VK/Mail.ru	LLC VK	https://wbdt.ru/AS28709	yes	RU	15	3	yes	no
@@ -30,14 +30,14 @@ AS48858	ER-Telecom	JSC ER-Telecom Holding	https://bgp.he.net/country/RU	yes	RU	3
 AS49053	Wildberries	LLC Wildberries	https://wbdt.ru/AS49053	no	-	0	0	yes	no
 AS49505	Selectel	JSC Selectel	https://bgp.he.net/AS49505	yes	RU	189	2	yes	no
 AS49675	SKB Kontur	SKB Kontur Production JSC	https://www.peeringdb.com/asn/49675	yes	RU	3	1	yes	no
-AS50340	Selectel	JSC Selectel MSK	https://bgp.he.net/AS50340	yes	RU	333	10	yes	no
+AS50340	Selectel	JSC Selectel MSK	https://bgp.he.net/AS50340	yes	RU	287	10	yes	no
 AS51115	Qrator	HLL LLC (High Load Lab / Qrator)	https://bgp.tools/as/51115	yes	RU	7	1	yes	no
 AS57073	Wildberries	LLC Wildberries	https://wbdt.ru/AS57073	yes	RU	11	1	yes	no
 AS57724	DDoS-Guard	DDoS-Guard Ltd	https://bgp.he.net/AS57724	yes	RU	20	1	yes	no
 AS59840	Alfa-Bank	JSC Alfa-Bank (Baltbank legacy ASN; one current IPv4 route)	https://bgp.tools/as/59840	no	-	0	0	yes	no
 AS197068	Qrator	HLL LLC (High Load Lab / Qrator DDoS mitigation)	https://bgp.tools/as/197068	yes	RU	6	9	yes	no
 AS197482	2GIS	DoubleGIS LLC	https://bgp.tools/as/197482	yes	RU	2	0	yes	no
-AS197695	REG.RU	Domain names registrar REG.RU Ltd	https://rdap.db.ripe.net/autnum/197695	yes	RU	145	14	yes	no
+AS197695	REG.RU	Domain names registrar REG.RU Ltd	https://rdap.db.ripe.net/autnum/197695	yes	RU	146	14	yes	no
 AS200107	Kaspersky	Kaspersky Lab Switzerland GmbH (global KSN/update origin ASN)	https://bgp.tools/as/200107	yes	CH	15	16	no	no
 AS200350	Yandex	Yandex.Cloud LLC	https://wbdt.ru/AS200350	yes	RU	34	2	yes	no
 AS201012	Avito	KEH eCommerce LLC (Avito)	https://bgp.tools/as/201012	yes	RU	4	0	yes	no
@@ -50,7 +50,7 @@ AS208677	Cloud.ru	Cloud Technologies LLC / Cloud.ru	https://asn.ipinfo.app/AS208
 AS208795	Yandex	Cloud Services Kazakhstan LLP (Yandex Cloud public-connectivity ASN; KZ regional origin, not an ownership claim)	https://yandex.cloud/ru-kz/docs/interconnect/concepts/pub-con	yes	KZ	6	1	no	yes
 AS209030	Kaspersky	AO Kaspersky Lab	https://bgp.he.net/AS209030	yes	RU	3	0	yes	no
 AS210656	Yandex	Yandex.Cloud LLC	https://whois.ipip.net/AS210656	yes	RU	9	0	yes	no
-AS210756	EdgeCenter	EdgeCenter LLC	https://www.bigdatacloud.com/asn-lookup/AS210756	yes	RU	73	11	yes	no
+AS210756	EdgeCenter	EdgeCenter LLC	https://www.bigdatacloud.com/asn-lookup/AS210756	yes	RU	75	11	yes	no
 AS211517	Wildberries	LLC Wildberries (Georgia/affiliate ASN)	https://iamroot.tech/asndatabase/?search=AS211517	yes	RU	1	2	yes	no
 AS212066	Yandex	Buyuk Reklam Cozumleri LLC (Yandex Turkey; origin ASN, not upstream)	https://www.iplocate.io/AS212066	yes	TR	2	2	no	no
 AS213952	Yandex	Yandex.Telecom LLC	https://ipgeolocation.io/browse/asn/AS213952	no	-	0	0	yes	no
