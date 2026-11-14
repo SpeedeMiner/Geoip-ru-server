@@ -1,0 +1,599 @@
+{
+  "base_production_run": 43579021611,
+  "base_dat_sha256": "8d807b8d6069791b2e006bc561c4c69cc1a3172521cde0271c62b9305ce1c391",
+  "accepted_v37_additional_geoip_resolver_loss": {
+    "ipv4": 0,
+    "ipv6": 0
+  },
+  "scope": "Explicit reviewed-operator layer. Independent RIPE assignment, operator geofeed, exact live RIS and pinned same-origin route; no automatic admission from a single geographic list.",
+  "reviewed_operator_rows_before": 112,
+  "reviewed_operator_rows_after": 121,
+  "maximum_rows": 121,
+  "expected_fixed_input_delta": {
+    "direct_ipv4_added": 15,
+    "direct_ipv4_removed": 0,
+    "direct_ipv6_delta": 0,
+    "private_delta": 0
+  },
+  "excluded_review_candidates": {
+    "45.142.122.0/24": "No exact operator geofeed row.",
+    "83.141.92.0/24": "No registry-linked geofeed for this assignment.",
+    "178.170.189.0/24": "Only covering RDAP record; no matching exact route or geofeed.",
+    "144.124.219.224/28": "Regional registry child without matching exact BGP or linked geofeed; foreign /24 parent not admitted."
+  },
+  "approved": [
+    {
+      "country": "RU",
+      "prefix": "45.86.78.0/24",
+      "origin_asn": "AS203273",
+      "registry_url": "https://rest.db.ripe.net/ripe/inetnum/45.86.78.0%20-%2045.86.78.255.json",
+      "registry_orgs": [
+        "ORG-NO63-RIPE"
+      ],
+      "geofeeds": {
+        "https://netcrafters.tech/geofeed.csv": {
+          "matching_rows": [
+            [
+              "45.86.78.0/24",
+              "RU"
+            ]
+          ],
+          "sha256": "ea20a6f8ab2613c370413ff00333336679a4719cd2cab07a849fe8060748df84"
+        }
+      },
+      "rdap_host_evidence": [
+        {
+          "ip": "45.86.78.168",
+          "url": "https://rdap.db.ripe.net/ip/45.86.78.168",
+          "country": "RU",
+          "name": "NetCrafters",
+          "start": "45.86.78.0",
+          "end": "45.86.78.255",
+          "http": 200
+        },
+        {
+          "ip": "45.86.78.173",
+          "url": "https://rdap.db.ripe.net/ip/45.86.78.173",
+          "country": "RU",
+          "name": "NetCrafters",
+          "start": "45.86.78.0",
+          "end": "45.86.78.255",
+          "http": 200
+        }
+      ],
+      "ripe_more_specific_assignments_http": 404,
+      "bgp_state": {
+        "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=45.86.78.0%2F24&timestamp=2026-11-14T00%3A00%3A00",
+        "sha256": "649e22711658ec9f7e6385147cb60ab48b73133dd44bb81a1249a278ae021c3e",
+        "timestamp": "2026-11-14T00:00:00",
+        "routes": {
+          "45.86.78.0/24": {
+            "origins": [
+              203273
+            ],
+            "paths": 341
+          }
+        }
+      },
+      "frozen_ipverse": [
+        {
+          "prefix": "45.86.78.0/23",
+          "asn": 203273,
+          "handle": "NETCRAFTERSOU"
+        }
+      ],
+      "rpki": "valid",
+      "rpki_url": "https://stat.ripe.net/data/rpki-validation/data.json?resource=AS203273&prefix=45.86.78.0%2F24",
+      "expected_added_direct_ipv4": [
+        "45.86.78.168",
+        "45.86.78.173"
+      ]
+    },
+    {
+      "country": "RU",
+      "prefix": "104.128.130.0/24",
+      "origin_asn": "AS205090",
+      "registry_url": "https://rest.db.ripe.net/ripe/inetnum/104.128.130.0%20-%20104.128.130.255.json",
+      "registry_orgs": [
+        "ORG-FSSL4-RIPE"
+      ],
+      "geofeeds": {
+        "https://geofeed.first-server.net/fb_geofeed.csv": {
+          "matching_rows": [
+            [
+              "104.128.130.0/24",
+              "RU"
+            ]
+          ],
+          "sha256": "3721f92fd09917143e01ec9117b46de301a289ecaaec0965ca1d8d2e0dd9ae89"
+        }
+      },
+      "rdap_host_evidence": [
+        {
+          "ip": "104.128.130.205",
+          "url": "https://rdap.db.ripe.net/ip/104.128.130.205",
+          "country": "RU",
+          "name": "FirstServer",
+          "start": "104.128.130.0",
+          "end": "104.128.130.255",
+          "http": 200
+        },
+        {
+          "ip": "104.128.130.208",
+          "url": "https://rdap.db.ripe.net/ip/104.128.130.208",
+          "country": "RU",
+          "name": "FirstServer",
+          "start": "104.128.130.0",
+          "end": "104.128.130.255",
+          "http": 200
+        },
+        {
+          "ip": "104.128.130.236",
+          "url": "https://rdap.db.ripe.net/ip/104.128.130.236",
+          "country": "RU",
+          "name": "FirstServer",
+          "start": "104.128.130.0",
+          "end": "104.128.130.255",
+          "http": 200
+        }
+      ],
+      "ripe_more_specific_assignments_http": 404,
+      "bgp_state": {
+        "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=104.128.130.0%2F24&timestamp=2026-11-14T00%3A00%3A00",
+        "sha256": "9c41e8c41c03877121f8452b56d085f2d49e3c6dddfa3763e02139fbbf3cc65e",
+        "timestamp": "2026-11-14T00:00:00",
+        "routes": {
+          "104.128.130.0/24": {
+            "origins": [
+              205090
+            ],
+            "paths": 379
+          }
+        }
+      },
+      "frozen_ipverse": [
+        {
+          "prefix": "104.128.130.0/24",
+          "asn": 205090,
+          "handle": "FIRST-SERVER-EUROPE"
+        }
+      ],
+      "rpki": "valid",
+      "rpki_url": "https://stat.ripe.net/data/rpki-validation/data.json?resource=AS205090&prefix=104.128.130.0%2F24",
+      "expected_added_direct_ipv4": [
+        "104.128.130.205",
+        "104.128.130.208",
+        "104.128.130.236"
+      ]
+    },
+    {
+      "country": "RU",
+      "prefix": "132.243.16.0/24",
+      "origin_asn": "AS205090",
+      "registry_url": "https://rest.db.ripe.net/ripe/inetnum/132.243.16.0%20-%20132.243.16.255.json",
+      "registry_orgs": [
+        "ORG-FSSL4-RIPE"
+      ],
+      "geofeeds": {
+        "https://geofeed.first-server.net/rf_fs_geofeed.csv": {
+          "matching_rows": [
+            [
+              "132.243.16.0/24",
+              "RU"
+            ]
+          ],
+          "sha256": "77ffc9362d46db07c3a9d302c7ab8a3dfb2c5ebada3c443aa88acc3bcbb1f9eb"
+        }
+      },
+      "rdap_host_evidence": [
+        {
+          "ip": "132.243.16.12",
+          "url": "https://rdap.db.ripe.net/ip/132.243.16.12",
+          "country": "RU",
+          "name": "ORG-FSSL4-RIPE",
+          "start": "132.243.16.0",
+          "end": "132.243.16.255",
+          "http": 200
+        }
+      ],
+      "ripe_more_specific_assignments_http": 404,
+      "bgp_state": {
+        "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=132.243.16.0%2F24&timestamp=2026-11-14T00%3A00%3A00",
+        "sha256": "500bac2501dc9b4263fafc82ba5af0e802f76d3e551545b9ec9803ee736a66cc",
+        "timestamp": "2026-11-14T00:00:00",
+        "routes": {
+          "132.243.16.0/24": {
+            "origins": [
+              205090
+            ],
+            "paths": 377
+          }
+        }
+      },
+      "frozen_ipverse": [
+        {
+          "prefix": "132.243.16.0/22",
+          "asn": 205090,
+          "handle": "FIRST-SERVER-EUROPE"
+        }
+      ],
+      "rpki": "valid",
+      "rpki_url": "https://stat.ripe.net/data/rpki-validation/data.json?resource=AS205090&prefix=132.243.16.0%2F24",
+      "expected_added_direct_ipv4": [
+        "132.243.16.12"
+      ]
+    },
+    {
+      "country": "RU",
+      "prefix": "132.243.18.0/24",
+      "origin_asn": "AS205090",
+      "registry_url": "https://rest.db.ripe.net/ripe/inetnum/132.243.18.0%20-%20132.243.18.255.json",
+      "registry_orgs": [
+        "ORG-FSSL4-RIPE"
+      ],
+      "geofeeds": {
+        "https://geofeed.first-server.net/rf_fs_geofeed.csv": {
+          "matching_rows": [
+            [
+              "132.243.18.0/24",
+              "RU"
+            ]
+          ],
+          "sha256": "77ffc9362d46db07c3a9d302c7ab8a3dfb2c5ebada3c443aa88acc3bcbb1f9eb"
+        }
+      },
+      "rdap_host_evidence": [
+        {
+          "ip": "132.243.18.18",
+          "url": "https://rdap.db.ripe.net/ip/132.243.18.18",
+          "country": "RU",
+          "name": "ORG-FSSL4-RIPE",
+          "start": "132.243.18.0",
+          "end": "132.243.18.255",
+          "http": 200
+        },
+        {
+          "ip": "132.243.18.34",
+          "url": "https://rdap.db.ripe.net/ip/132.243.18.34",
+          "country": "RU",
+          "name": "ORG-FSSL4-RIPE",
+          "start": "132.243.18.0",
+          "end": "132.243.18.255",
+          "http": 200
+        }
+      ],
+      "ripe_more_specific_assignments_http": 404,
+      "bgp_state": {
+        "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=132.243.18.0%2F24&timestamp=2026-11-14T00%3A00%3A00",
+        "sha256": "c751d9c60ba5a50c8478e44df1511fb0c30596c31d9dcc9777aa3a73eba81fbe",
+        "timestamp": "2026-11-14T00:00:00",
+        "routes": {
+          "132.243.18.0/24": {
+            "origins": [
+              205090
+            ],
+            "paths": 377
+          }
+        }
+      },
+      "frozen_ipverse": [
+        {
+          "prefix": "132.243.16.0/22",
+          "asn": 205090,
+          "handle": "FIRST-SERVER-EUROPE"
+        }
+      ],
+      "rpki": "valid",
+      "rpki_url": "https://stat.ripe.net/data/rpki-validation/data.json?resource=AS205090&prefix=132.243.18.0%2F24",
+      "expected_added_direct_ipv4": [
+        "132.243.18.18",
+        "132.243.18.34"
+      ]
+    },
+    {
+      "country": "RU",
+      "prefix": "132.243.19.0/24",
+      "origin_asn": "AS205090",
+      "registry_url": "https://rest.db.ripe.net/ripe/inetnum/132.243.19.0%20-%20132.243.19.255.json",
+      "registry_orgs": [
+        "ORG-FSSL4-RIPE"
+      ],
+      "geofeeds": {
+        "https://geofeed.first-server.net/rf_fs_geofeed.csv": {
+          "matching_rows": [
+            [
+              "132.243.19.0/24",
+              "RU"
+            ]
+          ],
+          "sha256": "77ffc9362d46db07c3a9d302c7ab8a3dfb2c5ebada3c443aa88acc3bcbb1f9eb"
+        }
+      },
+      "rdap_host_evidence": [
+        {
+          "ip": "132.243.19.137",
+          "url": "https://rdap.db.ripe.net/ip/132.243.19.137",
+          "country": "RU",
+          "name": "ORG-FSSL4-RIPE",
+          "start": "132.243.19.0",
+          "end": "132.243.19.255",
+          "http": 200
+        },
+        {
+          "ip": "132.243.19.140",
+          "url": "https://rdap.db.ripe.net/ip/132.243.19.140",
+          "country": "RU",
+          "name": "ORG-FSSL4-RIPE",
+          "start": "132.243.19.0",
+          "end": "132.243.19.255",
+          "http": 200
+        }
+      ],
+      "ripe_more_specific_assignments_http": 404,
+      "bgp_state": {
+        "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=132.243.19.0%2F24&timestamp=2026-11-14T00%3A00%3A00",
+        "sha256": "71f53e47e760264bb3ad0037e0ec985f3d468214caf24cd8dfba864a4f5a08e6",
+        "timestamp": "2026-11-14T00:00:00",
+        "routes": {
+          "132.243.19.0/24": {
+            "origins": [
+              205090
+            ],
+            "paths": 377
+          }
+        }
+      },
+      "frozen_ipverse": [
+        {
+          "prefix": "132.243.16.0/22",
+          "asn": 205090,
+          "handle": "FIRST-SERVER-EUROPE"
+        }
+      ],
+      "rpki": "valid",
+      "rpki_url": "https://stat.ripe.net/data/rpki-validation/data.json?resource=AS205090&prefix=132.243.19.0%2F24",
+      "expected_added_direct_ipv4": [
+        "132.243.19.137",
+        "132.243.19.140"
+      ]
+    },
+    {
+      "country": "RU",
+      "prefix": "135.136.190.0/24",
+      "origin_asn": "AS205090",
+      "registry_url": "https://rest.db.ripe.net/ripe/inetnum/135.136.190.0%20-%20135.136.190.255.json",
+      "registry_orgs": [
+        "ORG-FSSL4-RIPE"
+      ],
+      "geofeeds": {
+        "https://geofeed.first-server.net/fb_geofeed.csv": {
+          "matching_rows": [
+            [
+              "135.136.190.0/24",
+              "RU"
+            ]
+          ],
+          "sha256": "3721f92fd09917143e01ec9117b46de301a289ecaaec0965ca1d8d2e0dd9ae89"
+        }
+      },
+      "rdap_host_evidence": [
+        {
+          "ip": "135.136.190.63",
+          "url": "https://rdap.db.ripe.net/ip/135.136.190.63",
+          "country": "RU",
+          "name": "FIRSTSERVER",
+          "start": "135.136.190.0",
+          "end": "135.136.190.255",
+          "http": 200
+        },
+        {
+          "ip": "135.136.190.120",
+          "url": "https://rdap.db.ripe.net/ip/135.136.190.120",
+          "country": "RU",
+          "name": "FIRSTSERVER",
+          "start": "135.136.190.0",
+          "end": "135.136.190.255",
+          "http": 200
+        }
+      ],
+      "ripe_more_specific_assignments_http": 404,
+      "bgp_state": {
+        "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=135.136.190.0%2F24&timestamp=2026-11-14T00%3A00%3A00",
+        "sha256": "983f398c6c80e1809d68a8648ed79a00a39ca31cdcd24b7080f26f3cdee24f2c",
+        "timestamp": "2026-11-14T00:00:00",
+        "routes": {
+          "135.136.190.0/24": {
+            "origins": [
+              205090
+            ],
+            "paths": 379
+          }
+        }
+      },
+      "frozen_ipverse": [
+        {
+          "prefix": "135.136.190.0/24",
+          "asn": 205090,
+          "handle": "FIRST-SERVER-EUROPE"
+        }
+      ],
+      "rpki": "valid",
+      "rpki_url": "https://stat.ripe.net/data/rpki-validation/data.json?resource=AS205090&prefix=135.136.190.0%2F24",
+      "expected_added_direct_ipv4": [
+        "135.136.190.63",
+        "135.136.190.120"
+      ]
+    },
+    {
+      "country": "RU",
+      "prefix": "135.136.191.0/24",
+      "origin_asn": "AS204997",
+      "registry_url": "https://rest.db.ripe.net/ripe/inetnum/135.136.191.0%20-%20135.136.191.255.json",
+      "registry_orgs": [
+        "ORG-FSSL4-RIPE"
+      ],
+      "geofeeds": {
+        "https://geofeed.first-server.net/fb_geofeed.csv": {
+          "matching_rows": [
+            [
+              "135.136.191.0/24",
+              "RU"
+            ]
+          ],
+          "sha256": "3721f92fd09917143e01ec9117b46de301a289ecaaec0965ca1d8d2e0dd9ae89"
+        }
+      },
+      "rdap_host_evidence": [
+        {
+          "ip": "135.136.191.186",
+          "url": "https://rdap.db.ripe.net/ip/135.136.191.186",
+          "country": "RU",
+          "name": "FIRSTSERVER",
+          "start": "135.136.191.0",
+          "end": "135.136.191.255",
+          "http": 200
+        }
+      ],
+      "ripe_more_specific_assignments_http": 404,
+      "bgp_state": {
+        "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=135.136.191.0%2F24&timestamp=2026-11-14T00%3A00%3A00",
+        "sha256": "3bf2e5abbd047c8548bd95607ac9f807cf16ad1fa5e8c4ffcfac45c7296709ca",
+        "timestamp": "2026-11-14T00:00:00",
+        "routes": {
+          "135.136.191.0/24": {
+            "origins": [
+              204997
+            ],
+            "paths": 380
+          }
+        }
+      },
+      "frozen_ipverse": [
+        {
+          "prefix": "135.136.191.0/24",
+          "asn": 204997,
+          "handle": "FIRSTBYTE-AS"
+        }
+      ],
+      "rpki": "valid",
+      "rpki_url": "https://stat.ripe.net/data/rpki-validation/data.json?resource=AS204997&prefix=135.136.191.0%2F24",
+      "expected_added_direct_ipv4": [
+        "135.136.191.186"
+      ]
+    },
+    {
+      "country": "RU",
+      "prefix": "157.228.145.0/24",
+      "origin_asn": "AS209641",
+      "registry_url": "https://rest.db.ripe.net/ripe/inetnum/157.228.145.0%20-%20157.228.145.255.json",
+      "registry_orgs": [
+        "ORG-IP78-RIPE"
+      ],
+      "geofeeds": {
+        "https://geofeed.power-servers.net/rf_pws_geofeed.csv": {
+          "matching_rows": [
+            [
+              "157.228.145.0/24",
+              "RU"
+            ]
+          ],
+          "sha256": "074ce0e86adf508b7627988a27545260e68cf051b68c5293dbb9ecb9ffbe2b4c"
+        }
+      },
+      "rdap_host_evidence": [
+        {
+          "ip": "157.228.145.100",
+          "url": "https://rdap.db.ripe.net/ip/157.228.145.100",
+          "country": "RU",
+          "name": "PSERVERS-CLOUD-HOSTING",
+          "start": "157.228.145.0",
+          "end": "157.228.145.255",
+          "http": 200
+        }
+      ],
+      "ripe_more_specific_assignments_http": 404,
+      "bgp_state": {
+        "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=157.228.145.0%2F24&timestamp=2026-11-14T00%3A00%3A00",
+        "sha256": "bb8ca46565bdc32656dcd217aa39d23c0a612defcb4adb3320a29a6d226c77ba",
+        "timestamp": "2026-11-14T00:00:00",
+        "routes": {
+          "157.228.145.0/24": {
+            "origins": [
+              209641
+            ],
+            "paths": 379
+          }
+        }
+      },
+      "frozen_ipverse": [
+        {
+          "prefix": "157.228.144.0/23",
+          "asn": 209641,
+          "handle": "I-SERVERS-EAST"
+        }
+      ],
+      "rpki": "valid",
+      "rpki_url": "https://stat.ripe.net/data/rpki-validation/data.json?resource=AS209641&prefix=157.228.145.0%2F24",
+      "expected_added_direct_ipv4": [
+        "157.228.145.100"
+      ]
+    },
+    {
+      "country": "RU",
+      "prefix": "157.228.191.0/24",
+      "origin_asn": "AS205090",
+      "registry_url": "https://rest.db.ripe.net/ripe/inetnum/157.228.191.0%20-%20157.228.191.255.json",
+      "registry_orgs": [
+        "ORG-FSSL4-RIPE"
+      ],
+      "geofeeds": {
+        "https://geofeed.first-server.net/rf_fs_geofeed.csv": {
+          "matching_rows": [
+            [
+              "157.228.191.0/24",
+              "RU"
+            ]
+          ],
+          "sha256": "77ffc9362d46db07c3a9d302c7ab8a3dfb2c5ebada3c443aa88acc3bcbb1f9eb"
+        }
+      },
+      "rdap_host_evidence": [
+        {
+          "ip": "157.228.191.39",
+          "url": "https://rdap.db.ripe.net/ip/157.228.191.39",
+          "country": "RU",
+          "name": "FIRST-SERVER",
+          "start": "157.228.191.0",
+          "end": "157.228.191.255",
+          "http": 200
+        }
+      ],
+      "ripe_more_specific_assignments_http": 404,
+      "bgp_state": {
+        "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=157.228.191.0%2F24&timestamp=2026-11-14T00%3A00%3A00",
+        "sha256": "5721a02f4b75d98b022f85865c2cfb165268199be44e927f7dcadf2d65a634d0",
+        "timestamp": "2026-11-14T00:00:00",
+        "routes": {
+          "157.228.191.0/24": {
+            "origins": [
+              205090
+            ],
+            "paths": 379
+          }
+        }
+      },
+      "frozen_ipverse": [
+        {
+          "prefix": "157.228.191.0/24",
+          "asn": 205090,
+          "handle": "FIRST-SERVER-EUROPE"
+        }
+      ],
+      "rpki": "valid",
+      "rpki_url": "https://stat.ripe.net/data/rpki-validation/data.json?resource=AS205090&prefix=157.228.191.0%2F24",
+      "expected_added_direct_ipv4": [
+        "157.228.191.39"
+      ]
+    }
+  ]
+}
