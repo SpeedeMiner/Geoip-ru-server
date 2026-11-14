@@ -77,6 +77,8 @@ The [fourth prefix review](v41-geo-only-operator-rukz-20261114.json) fills the 1
 
 The release admits all 14 deferred /24s from that same evidence file. The table has 78 manually reviewed rows under a limit of 80. The additional rows only exempt DNS-derived exclusions, never hard evidence, PRIVATE, Telegram, or explicit regional admission exclusions. The remaining unconfirmed geography-only candidates are not admitted.
 
+The [post-release review](v41-geo-only-operator-post-release-20261114.json) and [its follow-up](v41-geo-only-operator-deferred-confirmation-20261114.json) verify eight further exact RU assignments. The reviewed candidate has 86 rows under a limit of 96. Only exact assignments receive resolver-only protection, and all hard, PRIVATE, Telegram and regional admission rules retain precedence.
+
 ## Reviewed regional admission conflicts
 
 The v41 overlay excludes exact IPv4 prefixes in [the reviewed admission table](../.github/data/v41-regional-admission-exclusions.tsv) from the emitted RU category after candidate assembly. This does not modify RIR inventories, select or reject an entire ASN, add an output category, or alter RKN, Telegram or resolver block inputs and masks. The list is local and reviewed. It is not populated by a country feed or automated geographic filtering. A regional parent allocation alone is not enough for the listed cases because exact or more-specific assignment records and the observed origin point outside the region.
