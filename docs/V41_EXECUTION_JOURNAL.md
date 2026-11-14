@@ -638,3 +638,8 @@ See [v41 release hardening](V41_RELEASE_HARDENING.md). Routing-policy changes ar
 
 - [PR #35](https://github.com/SpeedeMiner/Geoip-ru-server/pull/35), head `9998fc61`, passed [v41 build](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43625515502), [v39 compatibility](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43625515522) and [workflow lint](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43625515493). The publish job was skipped as intended for a PR. [Candidate artifact](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43625515502/artifacts/14125758771).
 - Local replay restored all 37 inputs without rolling downloads and reproduced the published DAT, both SRS files and effective block mask byte for byte. The 168-test suite passed. The PR is ready for review, not merged. No main, release, routing policy, or PR #5 changes.
+
+## 2026-11-14 — IANA CSV and corporate address metrics
+
+- [PR #36](https://github.com/SpeedeMiner/Geoip-ru-server/pull/36) fixes annotated/comma-separated IANA CIDRs and the corporate per-family unique-address counts independently of PR #35. Unit suite 169/169 passed locally. Corporate IPv4 total now reports 19,617,024 rather than 20,076,544. Exact prefix files and origins are unchanged.
+- Production fixed-input replay restored three IANA IPv4 rows and matched production DAT, both SRS, PRIVATE, and the effective block mask byte for byte. Workflow runs [v41](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43628396435), [v39](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43628396489), and [lint](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43628396458). No main, release, W1ZARDZ, or PR #5 changes.
