@@ -3624,5 +3624,56 @@
       "UNVERIFIED": 1
     },
     "limitations": "Registry address ranges and checked more-specific records are assignment evidence, not measured service reachability. Hold decisions do not assert permanent exclusion."
+  },
+  "resume_recheck_20261114": {
+    "release": {
+      "tag": "latest-geoip-client-v41",
+      "run": 43583581379,
+      "run_status": "success",
+      "main": "b98980c6181c3bfda35445f345ae83777f7d18f3",
+      "release_commit": "70ddc80575f70dadd67fd592716ff8da460b8fe5",
+      "dat_sha256": "2735053560ebd598cbdcd71ccf858806d4b955a17e2eac512a7baf249d43653a",
+      "github_raw_matches": true,
+      "jsdelivr": "TLS timeout from this workspace; no conclusion about public CDN availability"
+    },
+    "holds": {
+      "83.141.92.67": {
+        "prefix": "83.141.92.0/24",
+        "ripe_country": "RU",
+        "ripe_org": "ORG-NO63-RIPE",
+        "ris_exact_origin": "AS203273",
+        "operator_geofeed": "https://netcrafters.tech/geofeed.csv",
+        "geofeed_sha256": "ea20a6f8ab2613c370413ff00333336679a4719cd2cab07a849fe8060748df84",
+        "geofeed_exact_row": "83.141.92.0/24,RU,RU-MOW,MOSCOW,",
+        "operator_geofeed_linked_from_same_org_existing_reviewed_prefix": "45.86.78.0/24",
+        "exact_ripe_inetnum": "https://rest.db.ripe.net/ripe/inetnum/83.141.92.0%20-%2083.141.92.255.json",
+        "existing_reviewed_ripe_inetnum": "https://rest.db.ripe.net/ripe/inetnum/45.86.78.0%20-%2045.86.78.255.json",
+        "decision": "Keep outside DIRECT under the same exact-assignment-linked geofeed criterion used in PR #30. The operator feed is corroboration, but the exact RIPE object and its covering parent do not link it."
+      },
+      "45.142.122.40,45.142.122.45": {
+        "prefix": "45.142.122.0/24",
+        "ris_exact_origin": "AS205090",
+        "decision": "Both checked FirstServer CSVs have no overlapping row for the prefix."
+      },
+      "144.124.219.224": {
+        "prefix": "144.124.219.224/28",
+        "ris_covering": "144.124.219.0/24 AS205634",
+        "decision": "No exact RIS route or linked geofeed for the RU child."
+      },
+      "178.170.189.96": {
+        "prefix": "178.170.189.0/24",
+        "decision": "No exact, covering or more-specific result in the checked RIS routing-status response."
+      },
+      "14.0.37.136": {
+        "ris_exact_origin": "AS54994",
+        "ris_network_info": "https://stat.ripe.net/data/network-info/data.json?resource=14.0.37.136",
+        "registry_rdap": "APNIC endpoint timed out",
+        "historical_apnic_delegation_row": "apnic|KR|ipv4|14.0.32.0|8192|20100912|allocated",
+        "historical_apnic_snapshot": "2026-11-13",
+        "historical_apnic_snapshot_sha256": "ddf23b8b3315cd810952d464a900c8c3642f0c6e04033f8c063db65ba7fde9c6",
+        "decision": "No confirmed regional assignment. Historical covering delegation and observed CDN route are not exact current RDAP or evidence of the physical location of this host."
+      }
+    },
+    "production_changes": false
   }
 }
