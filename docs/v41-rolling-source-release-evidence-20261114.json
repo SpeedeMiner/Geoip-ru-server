@@ -1,0 +1,57 @@
+{
+  "sha256": {
+    "production_previous": "2735053560ebd598cbdcd71ccf858806d4b955a17e2eac512a7baf249d43653a",
+    "v34": "778acd9da7b13b18c4942b626f09f809d3a23fd05d4d29bb404439a7eb0b5152",
+    "published": "5d7e9dd0eb66bd507eb5f695b83441493fb20b2307ef71125de16c8b3809fa7d"
+  },
+  "files": {
+    "geoip_RU.dat": {
+      "sha256": "5d7e9dd0eb66bd507eb5f695b83441493fb20b2307ef71125de16c8b3809fa7d",
+      "bytes": 512067
+    },
+    "geoip_RU.srs": {
+      "sha256": "21c54a6b83c7292ec51c8fff33f19e54cc869750cb6e3cea87d7662df87684e0",
+      "bytes": 128250
+    },
+    "geoip_PRIVATE.srs": {
+      "sha256": "b9ea6381ea61e286298aea76c10cb85a252ff0d20c49d6de3527be1353c107c4",
+      "bytes": 228
+    },
+    "v41-upstream-inputs.tar.gz": {
+      "sha256": "638fc3b38ffdb9ac6d782fb2581df86cbdcc878188520c3327df02c8f3d4cfbb",
+      "bytes": 5986966
+    }
+  },
+  "private_equal_v34": true,
+  "private_equal_previous": true,
+  "RU_CIDRs": 32774,
+  "IPv4": {
+    "total": 53399040,
+    "previous_added": 26378,
+    "previous_removed": 124762,
+    "v34_retained": 49520926,
+    "v34_missing": 9281,
+    "v34_total": 49530207,
+    "v34_coverage_percent": 99.98126193980978,
+    "v34_only_cidrs": 467
+  },
+  "IPv6": {
+    "total": 1.2058763529684219e+33,
+    "previous_added": 0,
+    "previous_removed": 0,
+    "v34_retained": 1.1230929331272668e+33,
+    "v34_missing": 1.267661480560606e+30,
+    "v34_total": 1.1243605946078274e+33,
+    "v34_coverage_percent": 99.88725489966119,
+    "v34_only_cidrs": 9
+  },
+  "snapshot": "geoip-v41-snapshot-43617500418.1",
+  "release_commit": "7eef1efcaafbdbe259f3aa4e56a07c38979afbfb",
+  "main_commit": "596c93df3b65b36b34ef9a8c5472b9e9ee660691",
+  "hydra": "202611141017",
+  "exact_readback": [
+    "versioned release",
+    "rolling release",
+    "Git tree"
+  ]
+}
