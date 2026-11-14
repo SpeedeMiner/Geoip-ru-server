@@ -17,6 +17,7 @@ on:
       - ".github/workflows/geoip-v41.yml"
       - ".github/scripts/build_rir_rukzby_prefixes.py"
       - ".github/scripts/build_v41_overlay.py"
+      - ".github/scripts/build_v41_light_srs.py"
       - ".github/scripts/extract_ru_asn_prefixes_v41.py"
       - ".github/scripts/geoip-v37-builder/**"
       - ".github/scripts/download_v41_locked_sources.py"
@@ -464,6 +465,23 @@ jobs:
             "$INPUT_PROVENANCE" . "$REGISTRY_INPUTS_ARCHIVE"
           sha256sum "$REGISTRY_INPUTS_ARCHIVE" > "$REGISTRY_INPUTS_SHA"
 
+      - name: Compile and verify sing-box Light rule-sets
+        shell: bash
+        run: |
+          set -euo pipefail
+          compiler_dir="$(mktemp -d)"
+          trap 'rm -rf "$compiler_dir"' EXIT
+          version="1.13.12"
+          archive="sing-box-${version}-linux-amd64.tar.gz"
+          digest="1540533adb3df24f5ad5f14b5c7ca3dbc2401b10a1c1eb278fcadcada47ec6c4"
+          curl --fail --location --silent --show-error --proto '=https' --proto-redir '=https' \
+            --retry 3 --connect-timeout 15 --max-time 120 --max-filesize 30000000 \
+            --output "$compiler_dir/$archive" "https://github.com/SagerNet/sing-box/releases/download/v${version}/$archive"
+          printf '%s  %s\n' "$digest" "$compiler_dir/$archive" | sha256sum -c -
+          tar -xzf "$compiler_dir/$archive" -C "$compiler_dir" "sing-box-${version}-linux-amd64/sing-box"
+          python3 .github/scripts/build_v41_light_srs.py --sing-box "$compiler_dir/sing-box-${version}-linux-amd64/sing-box"
+          sha256sum -c geoip_RU_light.dat.sha256sum geoip_RU_light.srs.sha256sum geoip_PRIVATE.srs.sha256sum
+
       - name: Upload v41 validated build artifact
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
@@ -481,6 +499,12 @@ jobs:
             geoip_BY_KZ_registered_asns.txt
             geoip_RU.dat
             geoip_RU.dat.sha256sum
+            geoip_RU_light.dat
+            geoip_RU_light.dat.sha256sum
+            geoip_RU_light.srs
+            geoip_RU_light.srs.sha256sum
+            geoip_PRIVATE.srs
+            geoip_PRIVATE.srs.sha256sum
             geoip_RU_BY_KZ_asn_bgp_prefixes.txt
             geoip_RU_BY_KZ_asn_manifest.txt
             geoip_RU_BY_KZ_asn_stats.txt
@@ -596,6 +620,12 @@ jobs:
           files: |
             candidate/geoip_RU.dat
             candidate/geoip_RU.dat.sha256sum
+            candidate/geoip_RU_light.dat
+            candidate/geoip_RU_light.dat.sha256sum
+            candidate/geoip_RU_light.srs
+            candidate/geoip_RU_light.srs.sha256sum
+            candidate/geoip_PRIVATE.srs
+            candidate/geoip_PRIVATE.srs.sha256sum
             candidate/geoip_RU_categories.txt
             candidate/geoip_RU_sources.txt
             candidate/geoip_RU_source_counts.txt

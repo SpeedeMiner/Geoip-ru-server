@@ -499,6 +499,65 @@ def subtract_networks(source, *masks):
         output.update(networks_from_intervals(remaining, version))
     return output
 
+def build_light_overlay(full, protected, optional, private, routing_exclusions):
+    """Drop only host fragments unique to optional sources after the full policy."""
+    light = set()
+    removed_counts = {}
+    for v, host_prefix in ((4, 32), (6, 128)):
+        excluded = intervals(private | routing_exclusions, v)
+        protected_iv = subtract(intervals(protected, v), excluded)
+        optional_iv = subtract(intervals(optional, v), excluded)
+        full_iv = intervals(full, v)
+        if normalize_interval_union(protected_iv, optional_iv) != full_iv:
+            raise ValueError(f"Light source partition does not reproduce full IPv{v} coverage")
+
+        # Use the union of both optional feeds, so adjacent hosts that can
+        # share a compact prefix and broader post-policy fragments survive.
+        fragments = networks_from_intervals(subtract(optional_iv, protected_iv), v)
+        hosts = {n for n in fragments if n.prefixlen == host_prefix}
+        kept = fragments - hosts
+        light_iv = normalize_interval_union(protected_iv, intervals(kept, v))
+        if (subtract(protected_iv, light_iv) or subtract(light_iv, full_iv)
+                or subtract(full_iv, light_iv) != intervals(hosts, v)):
+            raise ValueError(f"Light IPv{v} coverage invariant failed")
+        removed_counts[f"ipv{v}"] = len(hosts)
+        light.update(networks_from_intervals(light_iv, v))
+    return light, removed_counts
+
+
+def cidr_prefix_breakdown(networks):
+    stats = {"total_cidrs": len(networks)}
+    for v, host_prefix in ((4, 32), (6, 128)):
+        family = [n for n in networks if n.version == v]
+        stats[f"ipv{v}_cidrs"] = len(family)
+        stats[f"ipv{v}_host_{host_prefix}_cidrs"] = sum(n.prefixlen == host_prefix for n in family)
+    return stats
+
+
+def write_light_output(path, full_payload, full, protected, optional, private, routing_exclusions):
+    light, removed = build_light_overlay(full, protected, optional, private, routing_exclusions)
+    expected = {"PRIVATE": private, "RU": light}
+    payload = encode_geoip(expected)
+    path.write_bytes(payload)
+    if parse_geoip_dat(path) != expected:
+        raise ValueError("v41 Light protobuf read-back verification failed")
+    digest = sha256(payload)
+    path.with_name(path.name + ".sha256sum").write_text(f"{digest}  {path.name}\n", encoding="ascii")
+    return {
+        "filename": path.name,
+        "policy": "drop_optional_only_post_policy_host_fragments",
+        "sha256": digest,
+        "bytes": len(payload),
+        "full_output_bytes": len(full_payload),
+        "bytes_saved": len(full_payload) - len(payload),
+        "full_cidr_breakdown": cidr_prefix_breakdown(full),
+        "light_cidr_breakdown": cidr_prefix_breakdown(light),
+        "removed_address_space": removed,
+        "address_space": addr_counts(light),
+        "private_unchanged": True,
+    }
+
+
 def potential_ipsum_direct_overlap(preblock, private, approved_blocked, ipsum):
     """Count review-only /24 address space intersecting eligible DIRECT, without summing rows."""
     result = {}
@@ -708,6 +767,9 @@ def main():
     parser.add_argument("--regional-admission-exclusions", type=Path, required=True)
     parser.add_argument("--ipsum", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
+    light = parser.add_mutually_exclusive_group()
+    light.add_argument("--light-output", type=Path, help="Defaults to geoip_RU_light.dat next to --output")
+    light.add_argument("--no-light-output", action="store_true", help="Build only the full v41 DAT")
     parser.add_argument("--categories", type=Path, required=True)
     parser.add_argument("--quality", type=Path, required=True)
     parser.add_argument("--metrics", type=Path, required=True)
@@ -716,6 +778,14 @@ def main():
     parser.add_argument("--blocked-output", type=Path, required=True)
     parser.add_argument("--manifest", type=Path, required=True)
     args = parser.parse_args()
+    light_path = None if args.no_light_output else (args.light_output or args.output.with_name("geoip_RU_light.dat"))
+    if light_path is not None:
+        full_paths = {value.resolve() for key, value in vars(args).items()
+                      if key != "light_output" and isinstance(value, Path)}
+        full_paths.add(args.output.with_name(args.output.name + ".sha256sum").resolve())
+        light_paths = {light_path.resolve(), light_path.with_name(light_path.name + ".sha256sum").resolve()}
+        if len(light_paths) != 2 or light_paths & full_paths:
+            parser.error("Light output and checksum must not overwrite full-build files")
 
     base_bytes = args.base.read_bytes()
     base = parse_geoip_dat(args.base)
@@ -1001,6 +1071,14 @@ def main():
         if company_missing:
             raise ValueError(f"Class-aware company-ASN coverage lost in IPv{v} beyond PRIVATE/hard-block/admission precedence")
 
+    light_stats = None
+    if light_path is not None:
+        hxehex = service_sources["hxehex-mobile-hosts"]
+        protected = base_ru | regional_union | company_prefixes | regional_only | reviewed_prefixes
+        protected.update(union_networks(*(nets for name, nets in service_sources.items() if name != "hxehex-mobile-hosts")))
+        light_stats = write_light_output(light_path, payload, final, protected, hxehex | hydra_union,
+                                         final_private, routing_exclusions)
+
     with args.metrics.open("w",encoding="utf-8",newline="") as f:
         fields = sorted({k for row in metrics_rows for k in row})
         writer=csv.DictWriter(f,fieldnames=fields,delimiter="\t",lineterminator="\n")
@@ -1125,6 +1203,18 @@ def main():
         "",
         "SHA-256 output: "+sha256(payload),
     ]
+    if light_stats:
+        before, after = (light_stats[key] for key in ("full_cidr_breakdown", "light_cidr_breakdown"))
+        quality.extend([
+            "",
+            "LIGHT OUTPUT (optional HXEHEX/Hydra host fragments only)",
+            f"Full -> Light RU CIDRs: {before['total_cidrs']} -> {after['total_cidrs']}",
+            f"Full -> Light IPv4 /32: {before['ipv4_host_32_cidrs']} -> {after['ipv4_host_32_cidrs']}",
+            f"Full -> Light IPv6 /128: {before['ipv6_host_128_cidrs']} -> {after['ipv6_host_128_cidrs']}",
+            f"Full -> Light DAT bytes: {len(payload)} -> {light_stats['bytes']}",
+            f"Removed DIRECT addresses: {light_stats['removed_address_space']}; PRIVATE unchanged",
+            f"SHA-256 Light output: {light_stats['sha256']}",
+        ])
     args.quality.write_text("\n".join(quality)+"\n",encoding="utf-8")
     manifest = {
         "schema":2,
@@ -1239,6 +1329,8 @@ def main():
             "antifilter_ipsum":sha256(args.ipsum.read_bytes()),
         },
     }
+    if light_stats:
+        manifest["light_output"] = light_stats
     args.manifest.write_text(json.dumps(manifest,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
     print(f"v41 protobuf bytes: {len(payload)} sha256={sha256(payload)}")
     print(f"v41 final RU CIDRs: {len(final)} IPv4={final_counts['ipv4']} IPv6={final_counts['ipv6']}")

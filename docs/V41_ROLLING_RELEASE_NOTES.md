@@ -32,6 +32,13 @@
 - The final client file remains `geoip_RU.dat` with `geoip:RU` and `geoip:PRIVATE` only.
 - `geoip_RU_company_asn_bgp_prefixes.txt` lists exact prefix-level company exceptions; it does not exempt whole ASNs outside the selected-origin snapshot.
 
+## Optional Light variant
+
+- The full `geoip_RU.dat` remains the default and keeps its existing routing policy. `geoip_RU_light.dat` has the same category names and identical PRIVATE coverage. It drops only /32 and /128 fragments unique to HXEHEX/Hydra after full policy, not their compact broader coverage.
+- Light retains all eligible coverage of the v37 base, RIR RU+BY+KZ, selected regional origins, corporate and reviewed operator ranges, Kyoresuas Standard, Escapingworm and W1ZARDZ already admitted by the full builder. PRIVATE, Telegram, hard IP evidence and regional admission exclusions are unchanged.
+- For sing-box use `geoip_RU_light.srs` and `geoip_PRIVATE.srs` (binary rule-set version 1). CI compiles and decompiles both and compares exact IPv4/IPv6 coverage with the validated Light DAT. All three files have SHA-256 sidecars.
+- The quality report and `light_output` manifest section show the exact per-build address-space and CIDR differences. The smaller DAT is not evidence of a fixed runtime RAM saving. An omitted IP may take a different route depending on the client's GeoSite, sniffing, DNS and fallback configuration.
+
 ## Attribution and limitations
 - Preserve v2fly/geoip CC-BY-SA-4.0 and DB-IP CC-BY-4.0 notices, plus upstream licenses/attributions for service feeds.
 - RIR registration, BGP announcements, service association and RKN block evidence are distinct signals and are reported separately.
