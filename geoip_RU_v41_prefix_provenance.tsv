@@ -492788,6 +492788,7 @@ reviewed-operator-prefixes	KZ			AS58061		38.244.178.0/24
 reviewed-operator-prefixes	KZ			AS58061		38.244.179.0/24
 reviewed-operator-prefixes	KZ			AS58061		38.244.206.0/24
 reviewed-operator-prefixes	KZ			AS202422		45.80.208.0/24
+reviewed-operator-prefixes	RU			AS203273		45.86.78.0/24
 reviewed-operator-prefixes	RU			AS205090		45.89.65.0/24
 reviewed-operator-prefixes	RU			AS209641		45.89.66.0/24
 reviewed-operator-prefixes	RU			AS209641		45.89.67.0/24
@@ -492812,10 +492813,16 @@ reviewed-operator-prefixes	RU			AS209641		94.142.142.0/24
 reviewed-operator-prefixes	RU			AS209641		95.81.114.0/24
 reviewed-operator-prefixes	RU			AS205090		95.81.121.0/24
 reviewed-operator-prefixes	RU			AS209641		95.81.125.0/24
+reviewed-operator-prefixes	RU			AS205090		104.128.130.0/24
 reviewed-operator-prefixes	RU			AS205090		104.128.134.0/24
 reviewed-operator-prefixes	RU			AS204997		104.128.140.0/24
 reviewed-operator-prefixes	KZ			AS49791		104.238.24.0/24
 reviewed-operator-prefixes	RU			AS48018		130.17.2.0/24
+reviewed-operator-prefixes	RU			AS205090		132.243.16.0/24
+reviewed-operator-prefixes	RU			AS205090		132.243.18.0/24
+reviewed-operator-prefixes	RU			AS205090		132.243.19.0/24
+reviewed-operator-prefixes	RU			AS205090		135.136.190.0/24
+reviewed-operator-prefixes	RU			AS204997		135.136.191.0/24
 reviewed-operator-prefixes	RU			AS204997		139.28.223.0/24
 reviewed-operator-prefixes	RU			AS207957		144.31.50.0/24
 reviewed-operator-prefixes	RU			AS207957		144.31.107.0/24
@@ -492828,7 +492835,9 @@ reviewed-operator-prefixes	KZ			AS58061		149.33.35.0/24
 reviewed-operator-prefixes	RU			AS402931		153.52.151.0/24
 reviewed-operator-prefixes	RU			AS204997		157.228.136.0/24
 reviewed-operator-prefixes	RU			AS204997		157.228.137.0/24
+reviewed-operator-prefixes	RU			AS209641		157.228.145.0/24
 reviewed-operator-prefixes	RU			AS205090		157.228.183.0/24
+reviewed-operator-prefixes	RU			AS205090		157.228.191.0/24
 reviewed-operator-prefixes	KZ			AS215294		178.92.244.0/23
 reviewed-operator-prefixes	RU			AS207957		178.250.186.0/24
 reviewed-operator-prefixes	BY			AS207957		179.253.86.0/24

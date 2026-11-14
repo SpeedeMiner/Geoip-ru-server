@@ -1,4 +1,4 @@
-Generated UTC: 2026-11-14T09:08:15.523480+00:00
+Generated UTC: 2026-11-14T10:06:13.125044+00:00
 ipverse aggregated.json files: 97507
 RIR delegated-stats registered RU ASNs: 5772
 RIR delegated-stats registered BY/KZ ASNs: 387
