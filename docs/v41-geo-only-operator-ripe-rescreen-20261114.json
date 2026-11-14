@@ -1,0 +1,280 @@
+{
+  "base_pr_head": "5ae27ee7b284357d031b901c4f9cd89dcf31afaa",
+  "base_ci_artifact": "https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43567515683/artifacts/14102453294",
+  "base_dat_sha256": "01f87f595ba3c9a91452e79805ff410dce0a1482a536e72c41df390fb4afb5e9",
+  "pinned_ipverse_archive_sha256": "d34d00d59ec419fec991d860af290b557a47b8e2f9596688b9bd11b0e4103d02",
+  "screen": {
+    "method": "Union of pinned v2fly RU/BY/KZ and Loyalsoldier RU/BY intersected with the effective block mask, excluding hard, Telegram, regional registration, selected origins, explicit regional admission exclusions, current DIRECT and PRIVATE.",
+    "published_dat_resolver_only_ipv4": 671,
+    "base_pr_dat_resolver_only_ipv4": 638,
+    "base_pr_dat_resolver_only_ipv6": 0,
+    "candidate_ipv4_24_buckets": 121,
+    "ripe_rdap_responses": 92,
+    "ripe_rdap_errors": 29,
+    "exact_regional_assignments": 43,
+    "exact_regional_assignments_with_linked_geofeed": 10,
+    "scope_note": "The refreshed exact calculation differs by one from the previous journal counts (670 on publication and 637 after 33 restores). The previous journal did not enumerate its entire cohort, so this report preserves the distinction rather than assuming which address accounts for the historical difference.",
+    "rdap_fallback": "The 29 RIPE query errors were retried against the IANA-bootstrap registries using a representative cohort address. Returned non-RIPE records are discovery evidence, not approvals in this batch.",
+    "priority_next": [
+      "ARIN 3NT Kazakhstan exact and parent reassignments",
+      "ARIN exact RU reassignments for LightNode, UCLOUD and two additional networks"
+    ]
+  },
+  "admitted": [
+    {
+      "prefix": "5.252.176.0/24",
+      "country": "RU",
+      "rdap": "https://rdap.db.ripe.net/ip/5.252.176.0%2F24",
+      "inetnum": "https://rest.db.ripe.net/ripe/inetnum/5.252.176.0%20-%205.252.176.255.json",
+      "ris": "https://stat.ripe.net/data/routing-status/data.json?resource=5.252.176.0%2F24",
+      "ris_query_time": "2026-11-14T00:00:00",
+      "ris_origins": [
+        39798
+      ],
+      "ris_more_specifics": [],
+      "geofeed": "https://www.mivocloud.com/geofeed.csv",
+      "geofeed_sha256": "951304c087637e011083d1715ccc7958f767c627b37ef2445e7195608e59fb8d",
+      "geofeed_matches": [
+        [
+          "5.252.176.0/24",
+          "RU"
+        ]
+      ],
+      "operator": "MivoCloud",
+      "netname": "MIVO-5-252-176-0-24-RU",
+      "ris_peers": {
+        "ris_peers_seeing": 320,
+        "total_ris_peers": 320
+      },
+      "restored_ipv4": [
+        "5.252.176.13"
+      ],
+      "pinned_ipverse_coverage": {
+        "5.252.176.13": {
+          "5.252.176.0/22": [
+            39798
+          ]
+        }
+      },
+      "neighbor_controls": {
+        "5.252.177.0/24": "US",
+        "5.252.178.0/24": "RO",
+        "5.252.179.0/24": "DE"
+      }
+    },
+    {
+      "prefix": "104.238.24.0/24",
+      "country": "KZ",
+      "rdap": "https://rdap.db.ripe.net/ip/104.238.24.0%2F24",
+      "inetnum": "https://rest.db.ripe.net/ripe/inetnum/104.238.24.0%20-%20104.238.24.255.json",
+      "ris": "https://stat.ripe.net/data/routing-status/data.json?resource=104.238.24.0%2F24",
+      "ris_query_time": "2026-11-14T00:00:00",
+      "ris_origins": [
+        49791
+      ],
+      "ris_more_specifics": [],
+      "geofeed": "https://vdska.online/geofeed.csv",
+      "geofeed_sha256": "52f639e48759cf710967c0787fc03e1a443b8beb809c03f201a2648d375a48a1",
+      "geofeed_matches": [
+        [
+          "104.238.24.0/24",
+          "KZ"
+        ]
+      ],
+      "operator": "VDSKA",
+      "netname": "VDSKA",
+      "ris_peers": {
+        "ris_peers_seeing": 319,
+        "total_ris_peers": 320
+      },
+      "restored_ipv4": [
+        "104.238.24.251"
+      ],
+      "pinned_ipverse_coverage": {
+        "104.238.24.251": {
+          "104.238.24.0/24": [
+            49791
+          ]
+        }
+      }
+    },
+    {
+      "prefix": "185.255.135.0/24",
+      "country": "RU",
+      "rdap": "https://rdap.db.ripe.net/ip/185.255.135.0%2F24",
+      "inetnum": "https://rest.db.ripe.net/ripe/inetnum/185.255.135.0%20-%20185.255.135.255.json",
+      "ris": "https://stat.ripe.net/data/routing-status/data.json?resource=185.255.135.0%2F24",
+      "ris_query_time": "2026-11-14T00:00:00",
+      "ris_origins": [
+        204997
+      ],
+      "ris_more_specifics": [],
+      "geofeed": "https://geofeed.first-server.net/fb_geofeed.csv",
+      "geofeed_sha256": "3721f92fd09917143e01ec9117b46de301a289ecaaec0965ca1d8d2e0dd9ae89",
+      "geofeed_matches": [
+        [
+          "185.255.135.0/24",
+          "RU"
+        ]
+      ],
+      "operator": "FIRSTSERVER",
+      "netname": "FIRSTSERVER",
+      "ris_peers": {
+        "ris_peers_seeing": 319,
+        "total_ris_peers": 320
+      },
+      "restored_ipv4": [
+        "185.255.135.134"
+      ],
+      "pinned_ipverse_coverage": {
+        "185.255.135.134": {
+          "185.255.132.0/22": [
+            204997
+          ]
+        }
+      },
+      "input_note": "185.255.135.134 was absent in the earlier PR #27 CI replay. It is present in the effective resolver-only mask of both the published PR #27 DAT and the PR #28 base candidate used here."
+    },
+    {
+      "prefix": "212.212.88.0/24",
+      "country": "RU",
+      "rdap": "https://rdap.db.ripe.net/ip/212.212.88.0%2F24",
+      "inetnum": "https://rest.db.ripe.net/ripe/inetnum/212.212.88.0%20-%20212.212.88.255.json",
+      "ris": "https://stat.ripe.net/data/routing-status/data.json?resource=212.212.88.0%2F24",
+      "ris_query_time": "2026-11-14T00:00:00",
+      "ris_origins": [
+        140666
+      ],
+      "ris_more_specifics": [],
+      "geofeed": "https://www.anydigital.sg/geofeed.csv",
+      "geofeed_sha256": "99b6ad614e425215d31f039cba581ef6c33a51b9e9a14dd486a8719aa0cce4a7",
+      "geofeed_matches": [
+        [
+          "212.212.88.0/24",
+          "RU"
+        ]
+      ],
+      "operator": "Any Digital",
+      "netname": "SGAD-datacenter-RU",
+      "ris_peers": {
+        "ris_peers_seeing": 320,
+        "total_ris_peers": 320
+      },
+      "restored_ipv4": [
+        "212.212.88.35"
+      ],
+      "pinned_ipverse_coverage": {
+        "212.212.88.35": {
+          "212.212.88.0/21": [
+            140666
+          ],
+          "212.212.0.0/16": [
+            3257
+          ]
+        }
+      }
+    }
+  ],
+  "held": [
+    {
+      "prefix": "212.23.202.0/24",
+      "country": "RU",
+      "rdap": "https://rdap.db.ripe.net/ip/212.23.202.0%2F24",
+      "inetnum": "https://rest.db.ripe.net/ripe/inetnum/212.23.202.0%20-%20212.23.202.255.json",
+      "ris": "https://stat.ripe.net/data/routing-status/data.json?resource=212.23.202.0%2F24",
+      "ris_origins": [
+        14576
+      ],
+      "geofeed": "https://kingservers.com/geofeed.csv",
+      "ip_count": 6,
+      "reason": "RIPE and RIS agree, but the registry-linked operator geofeed returns HTTP 404."
+    },
+    {
+      "prefix": "185.180.199.0/24",
+      "country": "RU",
+      "rdap": "https://rdap.db.ripe.net/ip/185.180.199.0%2F24",
+      "inetnum": "https://rest.db.ripe.net/ripe/inetnum/185.180.199.0%20-%20185.180.199.255.json",
+      "ris": "https://stat.ripe.net/data/routing-status/data.json?resource=185.180.199.0%2F24",
+      "ris_origins": [
+        14576
+      ],
+      "geofeed": "https://kingservers.com/geofeed.csv",
+      "ip_count": 3,
+      "reason": "RIPE and RIS agree, but the registry-linked operator geofeed returns HTTP 404."
+    },
+    {
+      "prefix": "185.159.82.0/24",
+      "country": "RU",
+      "rdap": "https://rdap.db.ripe.net/ip/185.159.82.0%2F24",
+      "inetnum": "https://rest.db.ripe.net/ripe/inetnum/185.159.82.0%20-%20185.159.82.255.json",
+      "ris": "https://stat.ripe.net/data/routing-status/data.json?resource=185.159.82.0%2F24",
+      "ris_origins": [
+        14576
+      ],
+      "geofeed": "https://kingservers.com/geofeed.csv",
+      "ip_count": 1,
+      "reason": "RIPE and RIS agree, but the registry-linked operator geofeed returns HTTP 404."
+    },
+    {
+      "prefix": "185.180.230.0/24",
+      "country": "RU",
+      "rdap": "https://rdap.db.ripe.net/ip/185.180.230.0%2F24",
+      "inetnum": "https://rest.db.ripe.net/ripe/inetnum/185.180.230.0%20-%20185.180.230.255.json",
+      "ris": "https://stat.ripe.net/data/routing-status/data.json?resource=185.180.230.0%2F24",
+      "ris_origins": [
+        204997
+      ],
+      "geofeed": "https://geofeed.first-server.net/fb_geofeed.csv",
+      "ip_count": 2,
+      "reason": "RIPE and operator feed agree on RU. The pinned most-specific route has AS50113 while exact RIS has AS204997, also present on the less-specific pinned /23. Keep unchanged pending exact-origin reconciliation."
+    },
+    {
+      "prefix": "45.9.118.0/24",
+      "country": "RU",
+      "rdap": "https://rdap.db.ripe.net/ip/45.9.118.0%2F24",
+      "inetnum": "https://rest.db.ripe.net/ripe/inetnum/45.9.118.0%20-%2045.9.118.255.json",
+      "ris": "https://stat.ripe.net/data/routing-status/data.json?resource=45.9.118.0%2F24",
+      "ris_origins": [],
+      "geofeed": "https://netcrafters.tech/geofeed.csv",
+      "ip_count": 1,
+      "reason": "Registry-linked feed does not cover the prefix, and RIS provides no exact origin."
+    },
+    {
+      "prefix": "176.126.103.0/24",
+      "country": "RU",
+      "rdap": "https://rdap.db.ripe.net/ip/176.126.103.0%2F24",
+      "inetnum": "https://rest.db.ripe.net/ripe/inetnum/176.126.103.0%20-%20176.126.103.255.json",
+      "ris": "https://stat.ripe.net/data/routing-status/data.json?resource=176.126.103.0%2F24",
+      "ris_origins": [
+        210546
+      ],
+      "geofeed": "https://geofeed.as210546.net/subnet.csv",
+      "ip_count": 1,
+      "reason": "RIPE and RIS agree, but the registry-linked operator geofeed still returns HTTP 503."
+    },
+    {
+      "prefix": "178.253.54.0/24",
+      "ip_count": 39,
+      "rdap": "https://rdap.db.ripe.net/ip/178.253.54.0%2F24",
+      "reason": "Exact RU RIPE assignment, but no geofeed pointer in the exact SILVERHILL registry object."
+    },
+    {
+      "prefix": "91.241.59.0/24",
+      "ip_count": 2,
+      "rdap": "https://rdap.db.ripe.net/ip/91.241.59.0%2F24",
+      "reason": "Exact KZ RIPE assignment, but no geofeed pointer in the exact registry object."
+    }
+  ],
+  "verified_result": {
+    "table_rows": 103,
+    "table_limit": 112,
+    "ipv4_added_vs_pr_base": 4,
+    "ipv4_added_vs_published": 37,
+    "ipv4_removed": 0,
+    "ipv6_changed": false,
+    "private_changed": false,
+    "cohort_ipv4_after": 634,
+    "dat_sha256": "8311e0072cd51e5ec68cf61541bdd6848ca2d208cf615ebb56b16ba3f712ff76",
+    "effective_block_sha256": "3ca553cf1b89a710d2acc793e4d1a940265bbdd3e60b132f4e9b197c9df1267c"
+  }
+}
