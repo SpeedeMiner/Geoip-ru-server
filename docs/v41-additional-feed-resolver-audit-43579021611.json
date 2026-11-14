@@ -1449,5 +1449,519 @@
       "effective_resolver_addresses": 0
     }
   ],
-  "candidates": []
+  "candidates": [],
+  "future_resolver_exposure": {
+    "policy": "Snapshot-only hypothetical exposure of current DIRECT. Neither add exemptions nor remove routes.",
+    "frozen_ipverse_sha256": "d34d00d59ec419fec991d860af290b557a47b8e2f9596688b9bd11b0e4103d02",
+    "frozen_ipverse_observed_origin": "AS208398",
+    "totals": {
+      "ipv4": {
+        "published_direct_in_accepted_precarve": 15646,
+        "protected_by_v41_and_readmitted": 7102,
+        "future_resolver_exposure_no_protection": 8544,
+        "future_resolver_exposure_has_protection_without_readmission": 0
+      },
+      "ipv6": {
+        "published_direct_in_accepted_precarve": 2417851639229258349412352,
+        "protected_by_v41_and_readmitted": 2417851639229258349412352,
+        "future_resolver_exposure_no_protection": 0,
+        "future_resolver_exposure_has_protection_without_readmission": 0
+      }
+    },
+    "parents": [
+      {
+        "prefix": "100.43.64.0/19",
+        "current_direct_exposed_ipv4": 7416,
+        "registry": {
+          "url": "https://rdap.db.ripe.net/ip/100.43.64.0/19",
+          "crosscheck_url": "https://rdap.arin.net/registry/ip/100.43.64.0/19",
+          "country": "RS",
+          "name": "RS-TELETECH-20111206",
+          "start": "100.43.64.0",
+          "end": "100.43.95.255",
+          "registrant": "ORG-TDB4-RIPE",
+          "events": [
+            {
+              "eventAction": "registration",
+              "eventDate": "2023-12-18T15:48:54Z"
+            },
+            {
+              "eventAction": "last changed",
+              "eventDate": "2023-12-18T15:48:54Z"
+            }
+          ]
+        },
+        "routing": {
+          "url": "https://stat.ripe.net/data/routing-status/data.json?resource=100.43.64.0%2F19",
+          "query_time_utc": "2026-11-14T00:00:00",
+          "origin": "AS208398",
+          "ris_peers_ipv4": {
+            "ris_peers_seeing": 320,
+            "total_ris_peers": 320
+          },
+          "more_specifics": [
+            {
+              "prefix": "100.43.78.0/24",
+              "origin": 49714
+            }
+          ],
+          "rpki_url": "https://stat.ripe.net/data/rpki-validation/data.json?resource=AS208398&prefix=100.43.64.0%2F19",
+          "rpki": "valid"
+        },
+        "prefixes": [
+          {
+            "prefix": "100.43.64.0/21",
+            "addresses": 2048,
+            "geoip_feeds": [
+              "grimbird",
+              "davoyan"
+            ],
+            "network_info_url": "https://stat.ripe.net/data/network-info/data.json?resource=100.43.64.0",
+            "registry_probe_for_first_address": {
+              "url": "https://rdap.db.ripe.net/ip/100.43.64.0",
+              "country": "RS",
+              "name": "RS-TELETECH-20111206",
+              "start": "100.43.64.0",
+              "end": "100.43.95.255"
+            }
+          },
+          {
+            "prefix": "100.43.72.168/29",
+            "addresses": 8,
+            "geoip_feeds": [
+              "grimbird",
+              "davoyan"
+            ],
+            "network_info_url": "https://stat.ripe.net/data/network-info/data.json?resource=100.43.72.168",
+            "registry_probe_for_first_address": {
+              "url": "https://rdap.db.ripe.net/ip/100.43.72.168",
+              "country": "RS",
+              "name": "RS-TELETECH-20111206",
+              "start": "100.43.64.0",
+              "end": "100.43.95.255"
+            }
+          },
+          {
+            "prefix": "100.43.72.176/28",
+            "addresses": 16,
+            "geoip_feeds": [
+              "grimbird",
+              "davoyan"
+            ],
+            "network_info_url": "https://stat.ripe.net/data/network-info/data.json?resource=100.43.72.176",
+            "registry_probe_for_first_address": {
+              "url": "https://rdap.db.ripe.net/ip/100.43.72.176",
+              "country": "RS",
+              "name": "RS-TELETECH-20111206",
+              "start": "100.43.64.0",
+              "end": "100.43.95.255"
+            }
+          },
+          {
+            "prefix": "100.43.72.192/26",
+            "addresses": 64,
+            "geoip_feeds": [
+              "grimbird",
+              "davoyan"
+            ],
+            "network_info_url": "https://stat.ripe.net/data/network-info/data.json?resource=100.43.72.192",
+            "registry_probe_for_first_address": {
+              "url": "https://rdap.db.ripe.net/ip/100.43.72.192",
+              "country": "RS",
+              "name": "RS-TELETECH-20111206",
+              "start": "100.43.64.0",
+              "end": "100.43.95.255"
+            }
+          },
+          {
+            "prefix": "100.43.73.0/24",
+            "addresses": 256,
+            "geoip_feeds": [
+              "grimbird",
+              "davoyan"
+            ],
+            "network_info_url": "https://stat.ripe.net/data/network-info/data.json?resource=100.43.73.0",
+            "registry_probe_for_first_address": {
+              "url": "https://rdap.db.ripe.net/ip/100.43.73.0",
+              "country": "RS",
+              "name": "RS-TELETECH-20111206",
+              "start": "100.43.64.0",
+              "end": "100.43.95.255"
+            }
+          },
+          {
+            "prefix": "100.43.74.0/24",
+            "addresses": 256,
+            "geoip_feeds": [
+              "grimbird",
+              "davoyan"
+            ],
+            "network_info_url": "https://stat.ripe.net/data/network-info/data.json?resource=100.43.74.0",
+            "registry_probe_for_first_address": {
+              "url": "https://rdap.db.ripe.net/ip/100.43.74.0",
+              "country": "RS",
+              "name": "RS-TELETECH-20111206",
+              "start": "100.43.64.0",
+              "end": "100.43.95.255"
+            }
+          },
+          {
+            "prefix": "100.43.75.0/29",
+            "addresses": 8,
+            "geoip_feeds": [
+              "grimbird",
+              "davoyan"
+            ],
+            "network_info_url": "https://stat.ripe.net/data/network-info/data.json?resource=100.43.75.0",
+            "registry_probe_for_first_address": {
+              "url": "https://rdap.db.ripe.net/ip/100.43.75.0",
+              "country": "RS",
+              "name": "RS-TELETECH-20111206",
+              "start": "100.43.64.0",
+              "end": "100.43.95.255"
+            }
+          },
+          {
+            "prefix": "100.43.75.200/29",
+            "addresses": 8,
+            "geoip_feeds": [
+              "grimbird",
+              "davoyan"
+            ],
+            "network_info_url": "https://stat.ripe.net/data/network-info/data.json?resource=100.43.75.200",
+            "registry_probe_for_first_address": {
+              "url": "https://rdap.db.ripe.net/ip/100.43.75.200",
+              "country": "RS",
+              "name": "RS-TELETECH-20111206",
+              "start": "100.43.64.0",
+              "end": "100.43.95.255"
+            }
+          },
+          {
+            "prefix": "100.43.75.208/28",
+            "addresses": 16,
+            "geoip_feeds": [
+              "grimbird",
+              "davoyan"
+            ],
+            "network_info_url": "https://stat.ripe.net/data/network-info/data.json?resource=100.43.75.208",
+            "registry_probe_for_first_address": {
+              "url": "https://rdap.db.ripe.net/ip/100.43.75.208",
+              "country": "RS",
+              "name": "RS-TELETECH-20111206",
+              "start": "100.43.64.0",
+              "end": "100.43.95.255"
+            }
+          },
+          {
+            "prefix": "100.43.75.224/27",
+            "addresses": 32,
+            "geoip_feeds": [
+              "grimbird",
+              "davoyan"
+            ],
+            "network_info_url": "https://stat.ripe.net/data/network-info/data.json?resource=100.43.75.224",
+            "registry_probe_for_first_address": {
+              "url": "https://rdap.db.ripe.net/ip/100.43.75.224",
+              "country": "RS",
+              "name": "RS-TELETECH-20111206",
+              "start": "100.43.64.0",
+              "end": "100.43.95.255"
+            }
+          },
+          {
+            "prefix": "100.43.76.0/23",
+            "addresses": 512,
+            "geoip_feeds": [
+              "grimbird",
+              "davoyan"
+            ],
+            "network_info_url": "https://stat.ripe.net/data/network-info/data.json?resource=100.43.76.0",
+            "registry_probe_for_first_address": {
+              "url": "https://rdap.db.ripe.net/ip/100.43.76.0",
+              "country": "RS",
+              "name": "RS-TELETECH-20111206",
+              "start": "100.43.64.0",
+              "end": "100.43.95.255"
+            }
+          },
+          {
+            "prefix": "100.43.79.160/27",
+            "addresses": 32,
+            "geoip_feeds": [
+              "grimbird",
+              "davoyan"
+            ],
+            "network_info_url": "https://stat.ripe.net/data/network-info/data.json?resource=100.43.79.160",
+            "registry_probe_for_first_address": {
+              "url": "https://rdap.db.ripe.net/ip/100.43.79.160",
+              "country": "RS",
+              "name": "RS-TELETECH-20111206",
+              "start": "100.43.64.0",
+              "end": "100.43.95.255"
+            }
+          },
+          {
+            "prefix": "100.43.79.192/26",
+            "addresses": 64,
+            "geoip_feeds": [
+              "grimbird",
+              "davoyan"
+            ],
+            "network_info_url": "https://stat.ripe.net/data/network-info/data.json?resource=100.43.79.192",
+            "registry_probe_for_first_address": {
+              "url": "https://rdap.db.ripe.net/ip/100.43.79.192",
+              "country": "RS",
+              "name": "RS-TELETECH-20111206",
+              "start": "100.43.64.0",
+              "end": "100.43.95.255"
+            }
+          },
+          {
+            "prefix": "100.43.80.0/20",
+            "addresses": 4096,
+            "geoip_feeds": [
+              "grimbird",
+              "davoyan"
+            ],
+            "network_info_url": "https://stat.ripe.net/data/network-info/data.json?resource=100.43.80.0",
+            "registry_probe_for_first_address": {
+              "url": "https://rdap.db.ripe.net/ip/100.43.80.0",
+              "country": "RS",
+              "name": "RS-TELETECH-20111206",
+              "start": "100.43.64.0",
+              "end": "100.43.95.255"
+            }
+          }
+        ]
+      },
+      {
+        "prefix": "199.21.96.0/22",
+        "current_direct_exposed_ipv4": 768,
+        "registry": {
+          "url": "https://rdap.db.ripe.net/ip/199.21.96.0/22",
+          "crosscheck_url": "https://rdap.arin.net/registry/ip/199.21.96.0/22",
+          "country": "RS",
+          "name": "RS-TELETECH-20111013",
+          "start": "199.21.96.0",
+          "end": "199.21.99.255",
+          "registrant": "ORG-TDB4-RIPE",
+          "events": [
+            {
+              "eventAction": "registration",
+              "eventDate": "2023-12-18T15:48:54Z"
+            },
+            {
+              "eventAction": "last changed",
+              "eventDate": "2023-12-18T15:48:54Z"
+            }
+          ]
+        },
+        "routing": {
+          "url": "https://stat.ripe.net/data/routing-status/data.json?resource=199.21.96.0%2F22",
+          "query_time_utc": "2026-11-14T00:00:00",
+          "origin": "AS208398",
+          "ris_peers_ipv4": {
+            "ris_peers_seeing": 320,
+            "total_ris_peers": 320
+          },
+          "more_specifics": [],
+          "rpki_url": "https://stat.ripe.net/data/rpki-validation/data.json?resource=AS208398&prefix=199.21.96.0%2F22",
+          "rpki": "valid"
+        },
+        "prefixes": [
+          {
+            "prefix": "199.21.96.0/23",
+            "addresses": 512,
+            "geoip_feeds": [
+              "grimbird",
+              "davoyan"
+            ],
+            "network_info_url": "https://stat.ripe.net/data/network-info/data.json?resource=199.21.96.0",
+            "registry_probe_for_first_address": {
+              "url": "https://rdap.db.ripe.net/ip/199.21.96.0",
+              "country": "SG",
+              "name": "TELETECH-199-21-96-0",
+              "start": "199.21.96.0",
+              "end": "199.21.96.255"
+            }
+          },
+          {
+            "prefix": "199.21.98.0/24",
+            "addresses": 256,
+            "geoip_feeds": [
+              "grimbird",
+              "davoyan"
+            ],
+            "network_info_url": "https://stat.ripe.net/data/network-info/data.json?resource=199.21.98.0",
+            "registry_probe_for_first_address": {
+              "url": "https://rdap.db.ripe.net/ip/199.21.98.0",
+              "country": "FI",
+              "name": "TELETECH-199-21-98-0",
+              "start": "199.21.98.0",
+              "end": "199.21.98.63"
+            }
+          }
+        ]
+      },
+      {
+        "prefix": "199.36.240.0/22",
+        "current_direct_exposed_ipv4": 360,
+        "registry": {
+          "url": "https://rdap.db.ripe.net/ip/199.36.240.0/22",
+          "crosscheck_url": "https://rdap.arin.net/registry/ip/199.36.240.0/22",
+          "country": "RS",
+          "name": "RS-TELETECH-20100930",
+          "start": "199.36.240.0",
+          "end": "199.36.243.255",
+          "registrant": "ORG-TDB4-RIPE",
+          "events": [
+            {
+              "eventAction": "registration",
+              "eventDate": "2023-12-18T15:48:54Z"
+            },
+            {
+              "eventAction": "last changed",
+              "eventDate": "2023-12-18T15:48:54Z"
+            }
+          ]
+        },
+        "routing": {
+          "url": "https://stat.ripe.net/data/routing-status/data.json?resource=199.36.240.0%2F22",
+          "query_time_utc": "2026-11-14T00:00:00",
+          "origin": "AS208398",
+          "ris_peers_ipv4": {
+            "ris_peers_seeing": 320,
+            "total_ris_peers": 320
+          },
+          "more_specifics": [],
+          "rpki_url": "https://stat.ripe.net/data/rpki-validation/data.json?resource=AS208398&prefix=199.36.240.0%2F22",
+          "rpki": "valid"
+        },
+        "prefixes": [
+          {
+            "prefix": "199.36.240.0/24",
+            "addresses": 256,
+            "geoip_feeds": [
+              "grimbird",
+              "davoyan"
+            ],
+            "network_info_url": "https://stat.ripe.net/data/network-info/data.json?resource=199.36.240.0",
+            "registry_probe_for_first_address": {
+              "url": "https://rdap.db.ripe.net/ip/199.36.240.0",
+              "country": "RS",
+              "name": "TELETECH-199-36-240-0",
+              "start": "199.36.240.0",
+              "end": "199.36.240.255"
+            }
+          },
+          {
+            "prefix": "199.36.242.24/29",
+            "addresses": 8,
+            "geoip_feeds": [
+              "grimbird",
+              "davoyan"
+            ],
+            "network_info_url": "https://stat.ripe.net/data/network-info/data.json?resource=199.36.242.24",
+            "registry_probe_for_first_address": {
+              "url": "https://rdap.db.ripe.net/ip/199.36.242.24",
+              "country": "RS",
+              "name": "RS-TELETECH-20100930",
+              "start": "199.36.240.0",
+              "end": "199.36.243.255"
+            }
+          },
+          {
+            "prefix": "199.36.242.32/27",
+            "addresses": 32,
+            "geoip_feeds": [
+              "grimbird",
+              "davoyan"
+            ],
+            "network_info_url": "https://stat.ripe.net/data/network-info/data.json?resource=199.36.242.32",
+            "registry_probe_for_first_address": {
+              "url": "https://rdap.db.ripe.net/ip/199.36.242.32",
+              "country": "RS",
+              "name": "RS-TELETECH-20100930",
+              "start": "199.36.240.0",
+              "end": "199.36.243.255"
+            }
+          },
+          {
+            "prefix": "199.36.242.64/26",
+            "addresses": 64,
+            "geoip_feeds": [
+              "grimbird",
+              "davoyan"
+            ],
+            "network_info_url": "https://stat.ripe.net/data/network-info/data.json?resource=199.36.242.64",
+            "registry_probe_for_first_address": {
+              "url": "https://rdap.db.ripe.net/ip/199.36.242.64",
+              "country": "RS",
+              "name": "RS-TELETECH-20100930",
+              "start": "199.36.240.0",
+              "end": "199.36.243.255"
+            }
+          }
+        ]
+      }
+    ],
+    "ownership_note": "Registry and BGP show current foreign allocation and routing. BGP peering and past ownership do not settle present corporate control or service use."
+  },
+  "independent_replay": {
+    "source_main": "2ef37c489b2dc25c4f168c0d7299bb985b02d15a",
+    "production_run": 43579021611,
+    "go_version": "go1.26.10",
+    "locked_raw_input_count": 14,
+    "unchanged_except_build_timestamp": [
+      "geoip_RU_quality_report.txt",
+      "geoip_RU_v41_manifest.json"
+    ],
+    "validated": [
+      "validate_v41_base_artifacts",
+      "validate_v41_overlay",
+      "validate_v41_release_gate",
+      "validate_v41_telegram",
+      "validate_v41_publication_bounds"
+    ],
+    "identical_sha256": {
+      "geoip_RU.dat": "8d807b8d6069791b2e006bc561c4c69cc1a3172521cde0271c62b9305ce1c391",
+      "geoip_RU_categories.txt": "ec229f35818ff1fe4a67be71db6f698fd0901c099680209decc580b84e67f34f",
+      "geoip_RU_v41_source_metrics.tsv": "232b59ab71da6727e126325da7df8fa47f9cf2f779cf6e64a8ea728d1abadbbd",
+      "geoip_RU_v41_blocked_ip_exclusions.txt": "525125b2a06fb912e743bfbbfaa5420c161873dc0eafb28ec1c38cc45ed9774f",
+      "geoip_RU_v41_prefix_provenance.tsv": "4db17f9c763dacfa7dfc9a57cc52cc4035cae7b0dafec5845cfc894bb915a773",
+      "geoip_RU_v41_blocked_provenance.tsv": "28641e82b9fa9b9562c981c0437f2b27190a7ebfbb30aa0b67c8e1a3c5e08f4b",
+      "geoip_RU_v37_base.dat": "2b83b50081362fe0035c10fe256506219f1b8f283fdc1794633819b6fad88cbf",
+      "geoip_RU_v37_additional_provenance.tsv": "72fea28b3c893881ae4e5482b8a25fffff04a33e0192787100b890879639d925"
+    },
+    "before_carve_exact_coverage": {
+      "ipv4": 16926,
+      "ipv6": 2417851639229258349412352,
+      "cidrs": 69,
+      "sha256": "1a982458b882f436e1c84a103b698a1a35972cf03f07c6c8e1636b7d0e0f5af1"
+    }
+  },
+  "telegram_transport_observation": {
+    "url": "https://core.telegram.org/resources/cidr.txt",
+    "fresh_query_url": "https://core.telegram.org/resources/cidr.txt?audit=20261114-0938",
+    "older_representation": {
+      "bytes": 850,
+      "last_modified": "2019-07-03T13:22:54Z",
+      "sha256": "be6492cb34d4779d80b96f511af01e9ddb5860caff4167db18e165c1829d8366"
+    },
+    "matching_pinned_representation": {
+      "bytes": 227,
+      "last_modified": "2021-10-01T16:51:55Z",
+      "sha256": "3ecd072cedf72eceee6961b18a51e37f905d5ce4a656a5d24cf5fea63e6ec651"
+    },
+    "extra_old_coverage": [],
+    "additional_pinned_cidrs": [
+      "91.105.192.0/23",
+      "91.108.20.0/22",
+      "185.76.151.0/24",
+      "2a0a:f280::/32",
+      "2001:b28:f23c::/48"
+    ],
+    "decision": "Fail closed on drift. No Telegram masks, parsers, or workflows changed."
+  }
 }
