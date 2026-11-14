@@ -1,9 +1,9 @@
 {
   "schema": 2,
-  "generated_at": "2026-11-14T05:48:46.985884+00:00",
+  "generated_at": "2026-11-14T07:56:34.556006+00:00",
   "base_v37_sha256": "2b83b50081362fe0035c10fe256506219f1b8f283fdc1794633819b6fad88cbf",
-  "output_sha256": "66f3dbe3bcebad386207d026b5e7ebbd7113a1d45d86420996d7dc0742112166",
-  "output_bytes": 1742897,
+  "output_sha256": "8d807b8d6069791b2e006bc561c4c69cc1a3172521cde0271c62b9305ce1c391",
+  "output_bytes": 1739157,
   "sources": {
     "kyoresuas-standard": {
       "repository": "kyoresuas/ru-direct",
@@ -228,8 +228,8 @@
       "raw_files": [
         "v41-reviewed-operator-prefixes.tsv"
       ],
-      "valid_rows": 78,
-      "input_sha256": "b1cc287837e76818851dddf369433d57909fb8d8b0c04394e0eee720362f3f56",
+      "valid_rows": 112,
+      "input_sha256": "6fc81e315e8182b4c8c1254ddac93411fd76e1337e6d28d6b96064ab9522b9f8",
       "protection": "resolver_only_no_hard_override"
     }
   },
@@ -237,7 +237,7 @@
     "direct_cidrs": 37187,
     "whitelist_cidrs": 6710,
     "combined_eligible_address_space": {
-      "ipv4": 49123164,
+      "ipv4": 49123188,
       "ipv6": 2847564326570538260578726576128
     },
     "precedence": "PRIVATE > effective v41 blocked set > Hydra DIRECT/WHITELIST",
@@ -309,14 +309,14 @@
     "approved_union_original_unique": 200216,
     "exact_and_legacy_hard_unique": 828,
     "resolver_only_unique": 127712,
-    "v41_effective_after_class_aware_exceptions_unique": 119025,
-    "all_exempted_unique": 9108,
+    "v41_effective_after_class_aware_exceptions_unique": 118966,
+    "all_exempted_unique": 9167,
     "all_exempted_address_space": {
-      "ipv4": 10678,
+      "ipv4": 10737,
       "ipv6": 0
     },
     "all_exempted_direct_after_private": {
-      "ipv4": 10678,
+      "ipv4": 10737,
       "ipv6": 0
     },
     "core_company_asn_exempted_direct_after_private": {
@@ -328,10 +328,10 @@
       "ipv6": 0
     },
     "ipsum_review_only_unique": 18849,
-    "ipsum_company_adjusted_review_only_unique": 18617,
+    "ipsum_company_adjusted_review_only_unique": 18595,
     "ipsum_auto_carved": false,
     "ipsum_sha256": "037c30f578aeb0fd427d634a8f5eb5469da25ce6fa46c9ca74afab532db968d7",
-    "potential_additional_proxy_ipv4_addresses": 26719,
+    "potential_additional_proxy_ipv4_addresses": 19348,
     "potential_additional_proxy_ipv6_addresses": 0
   },
   "base_v37_address_space": {
@@ -339,11 +339,11 @@
     "ipv6": 1192521154882343928431950837055488
   },
   "final_v41_address_space": {
-    "ipv4": 53497350,
+    "ipv4": 53497409,
     "ipv6": 1205876352968421911415516831940608
   },
   "new_after_policy": {
-    "ipv4": 865295,
+    "ipv4": 865354,
     "ipv6": 13355198086077982983565994885120
   },
   "safety": {
@@ -369,7 +369,7 @@
     "hydra_geoip": "2ed3df4a369de869ce1b2def14ff1aef7135b7e056bb8faf1c9c45ac40cc2999",
     "regional_rir_inventory": "7d196717b138f817c6896ca6b25c26e7a0d92947af438c8115e56be3afba3e16",
     "regional_admission_exclusions": "9617c916f1ed7a4c4a45a1be76d60a24385fcf814c509546d555cb69b5244f1a",
-    "reviewed_operator_prefixes": "b1cc287837e76818851dddf369433d57909fb8d8b0c04394e0eee720362f3f56",
+    "reviewed_operator_prefixes": "6fc81e315e8182b4c8c1254ddac93411fd76e1337e6d28d6b96064ab9522b9f8",
     "kyoresuas_standard_ipv4": "867de404e49974c1711ba199dfd82537927a6812fbe28d0db8f46bcbecb3cecc",
     "kyoresuas_standard_ipv6": "ccad517f54f8d33989fb9303f8c1489308d0b091e0b3e6cc7b6df81b8e0b8d23",
     "kyoresuas_services_json": "97a9ad1438bfc4f501664e57f7ee294d42c10954744fc5c9ed925b602061ba9d",

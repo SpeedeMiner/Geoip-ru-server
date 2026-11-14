@@ -1,4 +1,4 @@
-Generated UTC: 2026-11-14T05:47:15.096906+00:00
+Generated UTC: 2026-11-14T07:55:11.421091+00:00
 Rows are resource registration evidence; they do not imply physical geolocation or current BGP reachability.
 afrinic: snapshot=2026-11-12; resource_records=0; CIDR_components=0; unique_country_registry_rows=0
 apnic: snapshot=2026-11-13; resource_records=0; CIDR_components=0; unique_country_registry_rows=0
