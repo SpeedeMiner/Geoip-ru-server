@@ -34,25 +34,5 @@
     "pr32": "9d063520be81cec04903012d252a3a6ca25141b3"
   },
   "production_ref": "de20de628d85062c8161b3da99fc7b0c94622919",
-  "independent_publication_bounds": {
-    "candidate_sha256": "2735053560ebd598cbdcd71ccf858806d4b955a17e2eac512a7baf249d43653a",
-    "delta": {
-      "4": {
-        "added": 0,
-        "after": 53497424,
-        "before": 53497424,
-        "limit": 267487,
-        "removed": 0
-      },
-      "6": {
-        "added": 0,
-        "after": 1.2058763529684219e+33,
-        "before": 1.2058763529684219e+33,
-        "limit": 1.205876352968422e+31,
-        "removed": 0
-      }
-    },
-    "needs_review": false,
-    "private_changed": false
-  }
+  "independent_publication_bounds": {"candidate_sha256": "2735053560ebd598cbdcd71ccf858806d4b955a17e2eac512a7baf249d43653a", "delta": {"4": {"added": 0, "after": 53497424, "before": 53497424, "limit": 267487, "removed": 0}, "6": {"added": 0, "after": 1205876352968421911415516831940608, "before": 1205876352968421911415516831940608, "limit": 12058763529684219114155168319406, "removed": 0}}, "needs_review": false, "private_changed": false}
 }
