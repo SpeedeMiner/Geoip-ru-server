@@ -3488,7 +3488,21 @@
     "effective_mask_sha256": "da3949ad119013db9a8237d322c63411234c201079f8506af3e51dc6051b0b6a",
     "same_immutable_hard_inputs": true,
     "actions_artifact": "https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43583581379/artifacts/14109138469",
-    "published_dat_matches_actions_artifact": true
+    "published_dat_matches_actions_artifact": true,
+    "delivery_endpoint_checks": [
+      {
+        "endpoint": "GitHub raw release branch",
+        "result": "downloaded and byte-identical"
+      },
+      {
+        "endpoint": "GitHub rolling effective mask",
+        "result": "downloaded and byte-identical"
+      },
+      {
+        "endpoint": "jsDelivr compatibility URL and mirrors",
+        "result": "TLS timeouts from this workspace; production purge step succeeded"
+      }
+    ]
   },
   "post_release": {
     "production_delta": {
@@ -3524,7 +3538,63 @@
       "157.228.145.100/32",
       "157.228.191.39/32"
     ],
-    "published_dat_sha256": "2735053560ebd598cbdcd71ccf858806d4b955a17e2eac512a7baf249d43653a"
+    "published_dat_sha256": "2735053560ebd598cbdcd71ccf858806d4b955a17e2eac512a7baf249d43653a",
+    "operator_protection_regressions": [
+      {
+        "prefix": "45.86.78.0/24",
+        "advisory_only_kept": true,
+        "hard_wins": true,
+        "missing_advisory_detected": true
+      },
+      {
+        "prefix": "104.128.130.0/24",
+        "advisory_only_kept": true,
+        "hard_wins": true,
+        "missing_advisory_detected": true
+      },
+      {
+        "prefix": "132.243.16.0/24",
+        "advisory_only_kept": true,
+        "hard_wins": true,
+        "missing_advisory_detected": true
+      },
+      {
+        "prefix": "132.243.18.0/24",
+        "advisory_only_kept": true,
+        "hard_wins": true,
+        "missing_advisory_detected": true
+      },
+      {
+        "prefix": "132.243.19.0/24",
+        "advisory_only_kept": true,
+        "hard_wins": true,
+        "missing_advisory_detected": true
+      },
+      {
+        "prefix": "135.136.190.0/24",
+        "advisory_only_kept": true,
+        "hard_wins": true,
+        "missing_advisory_detected": true
+      },
+      {
+        "prefix": "135.136.191.0/24",
+        "advisory_only_kept": true,
+        "hard_wins": true,
+        "missing_advisory_detected": true
+      },
+      {
+        "prefix": "157.228.145.0/24",
+        "advisory_only_kept": true,
+        "hard_wins": true,
+        "missing_advisory_detected": true
+      },
+      {
+        "prefix": "157.228.191.0/24",
+        "advisory_only_kept": true,
+        "hard_wins": true,
+        "missing_advisory_detected": true
+      }
+    ]
   },
   "decision_ledger": {
     "path": "v41-additional-one-group-decisions-43579021611.tsv",
