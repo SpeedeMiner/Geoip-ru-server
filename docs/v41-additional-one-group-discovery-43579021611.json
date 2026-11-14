@@ -3675,5 +3675,396 @@
       }
     },
     "production_changes": false
+  },
+  "followup_geofeed_scope_20261114": {
+    "production_run": 43583581379,
+    "dat_sha256": "2735053560ebd598cbdcd71ccf858806d4b955a17e2eac512a7baf249d43653a",
+    "normative_reference": "https://www.rfc-editor.org/rfc/rfc9632.html#section-4",
+    "netcrafters": {
+      "query_exact_and_covering": {
+        "url": "https://rest.db.ripe.net/search.json?source=RIPE&query-string=83.141.92.0%2F24&flags=all-less&type-filter=inetnum",
+        "http": 200,
+        "sha256": "dba7bd2908335de4830a888cc2ed546d69be2b06f91eacad8623b95c9605bea4",
+        "objects": 11,
+        "references": [],
+        "inetnums": [
+          {
+            "inetnum": [
+              "0.0.0.0 - 255.255.255.255"
+            ],
+            "country": [
+              "EU"
+            ],
+            "org": [
+              "ORG-IANA1-RIPE"
+            ],
+            "remarks": [
+              "This object represents all IPv4 addresses.",
+              "If you see this object as a result of a single IP query, it",
+              "means that the IP address you are querying is currently not",
+              "assigned to any organisation."
+            ]
+          },
+          {
+            "inetnum": [
+              "83.141.64.0 - 83.141.95.255"
+            ],
+            "country": [
+              "GB"
+            ],
+            "org": [
+              "ORG-AIAL1-RIPE"
+            ]
+          },
+          {
+            "inetnum": [
+              "83.141.80.0 - 83.141.95.255"
+            ],
+            "country": [
+              "GB"
+            ]
+          },
+          {
+            "inetnum": [
+              "83.141.92.0 - 83.141.92.255"
+            ],
+            "country": [
+              "RU"
+            ],
+            "org": [
+              "ORG-NO63-RIPE"
+            ]
+          }
+        ],
+        "inetnum_object_count": 4
+      },
+      "query_more_specific": {
+        "url": "https://rest.db.ripe.net/search.json?source=RIPE&query-string=83.141.92.0%2F24&flags=all-more&type-filter=inetnum",
+        "http": 404,
+        "sha256": "eeb25e46f436434fe3745984a9c16e729dec43d498db6b5f055b9bcf14d0f114",
+        "objects": 0,
+        "references": [],
+        "inetnums": []
+      },
+      "bgp_origin_validation": {
+        "url": "https://stat.ripe.net/data/rpki-validation/data.json?resource=AS203273&prefix=83.141.92.0%2F24",
+        "http": 200,
+        "sha256": "3b424d867f2b82660d859a75d75fd9bfd1b848302d3f9e9921e501c4c7a5f78b",
+        "objects": 0,
+        "references": [],
+        "inetnums": [],
+        "rpki_status": "valid"
+      },
+      "unsigned_feed_sha256": "ea20a6f8ab2613c370413ff00333336679a4719cd2cab07a849fe8060748df84",
+      "source_status": "operator corroboration only; no relevant covering RIPE inetnum points to the feed",
+      "policy_decision": "hold; new DNS-only protection would affect one IPv4 on these fixed inputs"
+    },
+    "firstserver": {
+      "ripe_org_query": {
+        "url": "https://rest.db.ripe.net/search.json?source=RIPE&query-string=ORG-FSSL4-RIPE&inverse=org&type-filter=inetnum",
+        "http": 200,
+        "sha256": "015dfd130bc3f259cdab586e1eead3801256babbcb092037090abb5232265318",
+        "objects": 24,
+        "references": [
+          "https://geofeed.first-server.net/fra_fs_geofeed.csv",
+          "https://geofeed.first-server.net/gels_fs_geofeed.csv",
+          "https://geofeed.first-server.net/paises_bajos_fs_geofeed.csv",
+          "https://geofeed.first-server.net/rf_fs_geofeed.csv"
+        ],
+        "inetnum_object_count": 8,
+        "inetnums": [
+          {
+            "inetnum": [
+              "83.147.194.0 - 83.147.194.255"
+            ],
+            "org": [
+              "ORG-FSSL4-RIPE"
+            ],
+            "country": [
+              "FI"
+            ],
+            "geofeed": [
+              "https://geofeed.first-server.net/gels_fs_geofeed.csv"
+            ]
+          },
+          {
+            "inetnum": [
+              "91.186.214.0 - 91.186.215.255"
+            ],
+            "country": [
+              "NL"
+            ],
+            "geofeed": [
+              "https://geofeed.first-server.net/paises_bajos_fs_geofeed.csv"
+            ],
+            "org": [
+              "ORG-FSSL4-RIPE"
+            ]
+          },
+          {
+            "inetnum": [
+              "132.243.16.0 - 132.243.16.255"
+            ],
+            "org": [
+              "ORG-FSSL4-RIPE"
+            ],
+            "country": [
+              "RU"
+            ],
+            "geofeed": [
+              "https://geofeed.first-server.net/rf_fs_geofeed.csv"
+            ]
+          },
+          {
+            "inetnum": [
+              "132.243.17.0 - 132.243.17.255"
+            ],
+            "org": [
+              "ORG-FSSL4-RIPE"
+            ],
+            "country": [
+              "RU"
+            ],
+            "geofeed": [
+              "https://geofeed.first-server.net/rf_fs_geofeed.csv"
+            ]
+          },
+          {
+            "inetnum": [
+              "132.243.18.0 - 132.243.18.255"
+            ],
+            "org": [
+              "ORG-FSSL4-RIPE"
+            ],
+            "country": [
+              "RU"
+            ],
+            "geofeed": [
+              "https://geofeed.first-server.net/rf_fs_geofeed.csv"
+            ]
+          },
+          {
+            "inetnum": [
+              "132.243.19.0 - 132.243.19.255"
+            ],
+            "org": [
+              "ORG-FSSL4-RIPE"
+            ],
+            "country": [
+              "RU"
+            ],
+            "geofeed": [
+              "https://geofeed.first-server.net/rf_fs_geofeed.csv"
+            ]
+          },
+          {
+            "inetnum": [
+              "178.253.31.0 - 178.253.31.255"
+            ],
+            "org": [
+              "ORG-FSSL4-RIPE"
+            ],
+            "country": [
+              "FI"
+            ],
+            "geofeed": [
+              "https://geofeed.first-server.net/gels_fs_geofeed.csv"
+            ]
+          },
+          {
+            "inetnum": [
+              "178.253.52.0 - 178.253.53.255"
+            ],
+            "org": [
+              "ORG-FSSL4-RIPE"
+            ],
+            "country": [
+              "DE"
+            ],
+            "geofeed": [
+              "https://geofeed.first-server.net/fra_fs_geofeed.csv"
+            ]
+          }
+        ]
+      },
+      "query_more_specific": {
+        "url": "https://rest.db.ripe.net/search.json?source=RIPE&query-string=45.142.122.0%2F24&flags=all-more&type-filter=inetnum",
+        "http": 404,
+        "sha256": "ff552d985f8f28d1a4c0c4ac5d833e22e0f1f139df78a1deb4fb3228847b05c5",
+        "objects": 0,
+        "references": [],
+        "inetnums": []
+      },
+      "bgp_origin_validation": {
+        "url": "https://stat.ripe.net/data/rpki-validation/data.json?resource=AS205090&prefix=45.142.122.0%2F24",
+        "http": 200,
+        "sha256": "4ddc87be3dcae83d5d691ef22e19e3a725e07b250ad25d84c1c9b764d10a9c82",
+        "objects": 0,
+        "references": [],
+        "inetnums": [],
+        "rpki_status": "valid"
+      },
+      "operator_feeds_checked": [
+        {
+          "url": "https://geofeed.first-server.net/fb_geofeed.csv",
+          "sha256": "3721f92fd09917143e01ec9117b46de301a289ecaaec0965ca1d8d2e0dd9ae89",
+          "overlaps": []
+        },
+        {
+          "url": "https://geofeed.first-server.net/fra_fs_geofeed.csv",
+          "sha256": "0b731c2f89d529a56a83eeb1151d9f62d3782e07766239a5aaa0c54860156bc7",
+          "overlaps": []
+        },
+        {
+          "url": "https://geofeed.first-server.net/gels_fs_geofeed.csv",
+          "sha256": "eb6995f26cdc8b7a36facbe052e2dc0862fd3bef5663ad3a8d005c3a40924e7e",
+          "overlaps": []
+        },
+        {
+          "url": "https://geofeed.first-server.net/paises_bajos_fs_geofeed.csv",
+          "sha256": "5928401ea1b49815a380097c0be722dccfb2f8b9c48ac17a9d88acacb06bd8b0",
+          "overlaps": []
+        },
+        {
+          "url": "https://geofeed.first-server.net/rf_fs_geofeed.csv",
+          "sha256": "77ffc9362d46db07c3a9d302c7ab8a3dfb2c5ebada3c443aa88acc3bcbb1f9eb",
+          "overlaps": []
+        }
+      ],
+      "missing_outside_dns_cohort": [
+        "45.142.122.151/32",
+        "45.142.122.86/32",
+        "45.142.122.93/32"
+      ],
+      "policy_decision": "hold; no covering geofeed row and adding the /24 would admit three addresses beyond the DNS-only pair"
+    },
+    "fixed_input_scope": {
+      "83.141.92.0/24": {
+        "outside_direct": [
+          "83.141.92.67/32"
+        ],
+        "hard_overlap": [],
+        "raw_resolver_overlap": [
+          "83.141.92.67/32"
+        ],
+        "effective_overlap": [
+          "83.141.92.67/32"
+        ],
+        "private_overlap": [],
+        "reviewed_admission_exclusion_overlap": []
+      },
+      "45.142.122.0/24": {
+        "outside_direct": [
+          "45.142.122.40/32",
+          "45.142.122.45/32",
+          "45.142.122.86/32",
+          "45.142.122.93/32",
+          "45.142.122.151/32"
+        ],
+        "hard_overlap": [],
+        "raw_resolver_overlap": [
+          "45.142.122.40/32",
+          "45.142.122.45/32"
+        ],
+        "effective_overlap": [
+          "45.142.122.40/32",
+          "45.142.122.45/32"
+        ],
+        "private_overlap": [],
+        "reviewed_admission_exclusion_overlap": []
+      },
+      "178.170.189.0/24": {
+        "outside_direct": [
+          "178.170.189.96/32"
+        ],
+        "hard_overlap": [],
+        "raw_resolver_overlap": [
+          "178.170.189.96/32"
+        ],
+        "effective_overlap": [
+          "178.170.189.96/32"
+        ],
+        "private_overlap": [],
+        "reviewed_admission_exclusion_overlap": []
+      },
+      "144.124.219.224/28": {
+        "outside_direct": [
+          "144.124.219.224/32"
+        ],
+        "hard_overlap": [],
+        "raw_resolver_overlap": [
+          "144.124.219.224/32"
+        ],
+        "effective_overlap": [
+          "144.124.219.224/32"
+        ],
+        "private_overlap": [],
+        "reviewed_admission_exclusion_overlap": []
+      },
+      "14.0.37.136/32": {
+        "outside_direct": [
+          "14.0.37.136/32"
+        ],
+        "hard_overlap": [],
+        "raw_resolver_overlap": [
+          "14.0.37.136/32"
+        ],
+        "effective_overlap": [
+          "14.0.37.136/32"
+        ],
+        "private_overlap": [],
+        "reviewed_admission_exclusion_overlap": []
+      }
+    },
+    "fixed_input_source_attribution": {
+      "45.142.122.40": {
+        "accepted_upstream_categories": [
+          "davoyan:RU"
+        ],
+        "v41_admission_provenance": [],
+        "base_v37_direct": false
+      },
+      "45.142.122.45": {
+        "accepted_upstream_categories": [
+          "davoyan:RU"
+        ],
+        "v41_admission_provenance": [],
+        "base_v37_direct": false
+      },
+      "45.142.122.86": {
+        "accepted_upstream_categories": [
+          "davoyan:RU"
+        ],
+        "v41_admission_provenance": [],
+        "base_v37_direct": false
+      },
+      "45.142.122.93": {
+        "accepted_upstream_categories": [
+          "davoyan:RU"
+        ],
+        "v41_admission_provenance": [],
+        "base_v37_direct": false
+      },
+      "45.142.122.151": {
+        "accepted_upstream_categories": [
+          "davoyan:RU"
+        ],
+        "v41_admission_provenance": [],
+        "base_v37_direct": false
+      },
+      "83.141.92.67": {
+        "accepted_upstream_categories": [
+          "davoyan:RU"
+        ],
+        "v41_admission_provenance": [
+          {
+            "source": "hydra-direct",
+            "prefix": "83.141.92.0/22"
+          }
+        ],
+        "base_v37_direct": false
+      }
+    },
+    "production_changes": false
   }
 }
