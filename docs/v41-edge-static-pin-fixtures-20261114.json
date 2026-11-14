@@ -1,0 +1,56 @@
+{
+  "v4-missing": {
+    "observed_company": 3377,
+    "selected_company": 3378,
+    "selected_total": 23603,
+    "normalized_rows": 0,
+    "archive_sha256": "f59011a52c15c8d20d1413e8a37db5741118ab568f3a5a950d641deff1302d99",
+    "selected_sha256": "cffb874ac49a46edba8da522bf9d9a905ff56b72d085150c61521971ceabfca2",
+    "global_sha256": "9b260db2b3fcec324843724a9aea31dce56696cf0a5fb866d61d007777cf619e",
+    "quality_gate": "PASS",
+    "company_origin_prefix_review": {
+      "45.148.65.0/24": "NOT_OBSERVED_STATIC_DIRECT_PIN",
+      "2a14:48c6::/48": "OBSERVED"
+    },
+    "selected_origin_prefix_review": {
+      "45.148.65.0/24": "NOT_OBSERVED_STATIC_DIRECT_PIN",
+      "2a14:48c6::/48": "OBSERVED"
+    }
+  },
+  "v6-missing": {
+    "observed_company": 3377,
+    "selected_company": 3378,
+    "selected_total": 23603,
+    "normalized_rows": 0,
+    "archive_sha256": "73e505c4245bb86242cdd24e12589a984b5b0688a86ebd98d6e8ba03773dd84b",
+    "selected_sha256": "cffb874ac49a46edba8da522bf9d9a905ff56b72d085150c61521971ceabfca2",
+    "global_sha256": "e7eb93d9d02ad7cde8c6e50fe716a9aebbac1dcb5d8ff4878e81c9f008a37337",
+    "quality_gate": "PASS",
+    "company_origin_prefix_review": {
+      "45.148.65.0/24": "OBSERVED",
+      "2a14:48c6::/48": "NOT_OBSERVED_STATIC_DIRECT_PIN"
+    },
+    "selected_origin_prefix_review": {
+      "45.148.65.0/24": "OBSERVED",
+      "2a14:48c6::/48": "NOT_OBSERVED_STATIC_DIRECT_PIN"
+    }
+  },
+  "noncanonical": {
+    "observed_company": 3378,
+    "selected_company": 3378,
+    "selected_total": 23603,
+    "normalized_rows": 2,
+    "archive_sha256": "72dd69f949b864c74a9179b5ed8fdf07e84aba05c8f8fdeec9b2448d0ca8cd6c",
+    "selected_sha256": "cffb874ac49a46edba8da522bf9d9a905ff56b72d085150c61521971ceabfca2",
+    "global_sha256": "44330f1d9d6a3497ad139fbf2150adcf698dbbc6b9f0534d69325963e0cebc63",
+    "quality_gate": "PASS",
+    "company_origin_prefix_review": {
+      "45.148.65.0/24": "OBSERVED",
+      "2a14:48c6::/48": "OBSERVED"
+    },
+    "selected_origin_prefix_review": {
+      "45.148.65.0/24": "OBSERVED",
+      "2a14:48c6::/48": "OBSERVED"
+    }
+  }
+}

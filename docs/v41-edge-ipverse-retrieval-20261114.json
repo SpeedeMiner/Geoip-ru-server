@@ -1,0 +1,34 @@
+{
+  "master": {
+    "url": "https://codeload.github.com/ipverse/as-ip-blocks/tar.gz/refs/heads/master",
+    "sha256": "d34d00d59ec419fec991d860af290b557a47b8e2f9596688b9bd11b0e4103d02",
+    "bytes": 16268982,
+    "metadata": {
+      "ETag": "\"86a9f096c08177047e8d64232f3225b39e712091d3c3ffc4749715694856f2dd\"",
+      "Last-Modified": null,
+      "Content-Length": null,
+      "root": "as-ip-blocks-master",
+      "git_commit": "5408a2fdf6a5e8f51dc71ab5ba54238b43e06664"
+    }
+  },
+  "commit": {
+    "url": "https://codeload.github.com/ipverse/as-ip-blocks/tar.gz/5408a2fdf6a5e8f51dc71ab5ba54238b43e06664",
+    "sha256": "9a8890e90e984176d33a32247511d3144340f52d7f929a21939d149aea9c44c7",
+    "bytes": 16355038,
+    "metadata": {
+      "ETag": "\"86a9f096c08177047e8d64232f3225b39e712091d3c3ffc4749715694856f2dd\"",
+      "Last-Modified": null,
+      "Content-Length": null,
+      "root": "as-ip-blocks-5408a2fdf6a5e8f51dc71ab5ba54238b43e06664",
+      "git_commit": "5408a2fdf6a5e8f51dc71ab5ba54238b43e06664"
+    }
+  },
+  "comparison": {
+    "same_embedded_commit": "5408a2fdf6a5e8f51dc71ab5ba54238b43e06664",
+    "same_regular_file_paths_and_bytes": true,
+    "regular_file_count": 292524,
+    "aggregated_json_files": 97507,
+    "normalized_member_name_digest_inventory_sha256": "de4bb1d971e9d092e3f40d9fc79159523c36d2c0d9f762044420bc3c5e80f10d",
+    "compressed_envelopes_differ": true
+  }
+}
