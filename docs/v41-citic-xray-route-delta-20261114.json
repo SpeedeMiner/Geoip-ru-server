@@ -1,0 +1,522 @@
+{
+  "engine": "Xray 26.7.28 (Xray, Penetrates Everything.) 5ca6f4b (go1.26.5 linux/amd64)",
+  "source_package_sha256": "8195d909f1109b8f3d99eefe401a3c451d7bf4af71f24d3815420f77e5dd2a40",
+  "scope": "Both outbounds are local SOCKS sinks, never dial target IPs or names. AsIs does not resolve test domains. This is a deterministic rule match, not target reachability or a copy of the user configuration.",
+  "fixed": {
+    "dat_sha256": "2735053560ebd598cbdcd71ccf858806d4b955a17e2eac512a7baf249d43653a",
+    "config_test": "PASS"
+  },
+  "shadow": {
+    "dat_sha256": "4517a9b8e4dce647d0c7e43deca49dfed87f687a1cc111a7e006e35fe417495f",
+    "config_test": "PASS"
+  },
+  "targets": {
+    "2001:ad0:cff::18": {
+      "category": "exact_ru_ipv6",
+      "fixed_expected": "PROXY",
+      "shadow_expected": "DIRECT",
+      "fixed_observed": "PROXY",
+      "shadow_observed": "DIRECT"
+    },
+    "2001:ad0:cff::19": {
+      "category": "exact_ru_ipv6",
+      "fixed_expected": "PROXY",
+      "shadow_expected": "DIRECT",
+      "fixed_observed": "PROXY",
+      "shadow_observed": "DIRECT"
+    },
+    "2001:ad0:cff::21": {
+      "category": "exact_ru_ipv6",
+      "fixed_expected": "PROXY",
+      "shadow_expected": "DIRECT",
+      "fixed_observed": "PROXY",
+      "shadow_observed": "DIRECT"
+    },
+    "2001:ad0:cff::253": {
+      "category": "exact_ru_ipv6",
+      "fixed_expected": "PROXY",
+      "shadow_expected": "DIRECT",
+      "fixed_observed": "PROXY",
+      "shadow_observed": "DIRECT"
+    },
+    "2001:ad0:cff::31": {
+      "category": "exact_ru_ipv6",
+      "fixed_expected": "PROXY",
+      "shadow_expected": "DIRECT",
+      "fixed_observed": "PROXY",
+      "shadow_observed": "DIRECT"
+    },
+    "2001:ad0:cff::6": {
+      "category": "exact_ru_ipv6",
+      "fixed_expected": "PROXY",
+      "shadow_expected": "DIRECT",
+      "fixed_observed": "PROXY",
+      "shadow_observed": "DIRECT"
+    },
+    "2001:ad0:cff::76": {
+      "category": "exact_ru_ipv6",
+      "fixed_expected": "PROXY",
+      "shadow_expected": "DIRECT",
+      "fixed_observed": "PROXY",
+      "shadow_observed": "DIRECT"
+    },
+    "2001:ad0:cff::77": {
+      "category": "exact_ru_ipv6",
+      "fixed_expected": "PROXY",
+      "shadow_expected": "DIRECT",
+      "fixed_observed": "PROXY",
+      "shadow_observed": "DIRECT"
+    },
+    "2001:ad0:cff::78": {
+      "category": "exact_ru_ipv6",
+      "fixed_expected": "PROXY",
+      "shadow_expected": "DIRECT",
+      "fixed_observed": "PROXY",
+      "shadow_observed": "DIRECT"
+    },
+    "2001:ad0:cff::8": {
+      "category": "exact_ru_ipv6",
+      "fixed_expected": "PROXY",
+      "shadow_expected": "DIRECT",
+      "fixed_observed": "PROXY",
+      "shadow_observed": "DIRECT"
+    },
+    "2001:ad0:cff::4": {
+      "category": "non_ru_same_scope",
+      "fixed_expected": "PROXY",
+      "shadow_expected": "PROXY",
+      "fixed_observed": "PROXY",
+      "shadow_observed": "PROXY"
+    },
+    "2001:ad0:cff::5": {
+      "category": "non_ru_same_scope",
+      "fixed_expected": "PROXY",
+      "shadow_expected": "PROXY",
+      "fixed_observed": "PROXY",
+      "shadow_observed": "PROXY"
+    },
+    "2001:ad0:cff::7": {
+      "category": "non_ru_same_scope",
+      "fixed_expected": "PROXY",
+      "shadow_expected": "PROXY",
+      "fixed_observed": "PROXY",
+      "shadow_observed": "PROXY"
+    },
+    "2001:ad0:cff::9": {
+      "category": "non_ru_same_scope",
+      "fixed_expected": "PROXY",
+      "shadow_expected": "PROXY",
+      "fixed_observed": "PROXY",
+      "shadow_observed": "PROXY"
+    },
+    "2001:ad0:cff::10": {
+      "category": "non_ru_same_scope",
+      "fixed_expected": "PROXY",
+      "shadow_expected": "PROXY",
+      "fixed_observed": "PROXY",
+      "shadow_observed": "PROXY"
+    },
+    "2001:ad0:cff::11": {
+      "category": "non_ru_same_scope",
+      "fixed_expected": "PROXY",
+      "shadow_expected": "PROXY",
+      "fixed_observed": "PROXY",
+      "shadow_observed": "PROXY"
+    },
+    "2001:ad0:cff::13": {
+      "category": "non_ru_same_scope",
+      "fixed_expected": "PROXY",
+      "shadow_expected": "PROXY",
+      "fixed_observed": "PROXY",
+      "shadow_observed": "PROXY"
+    },
+    "2001:ad0:cff::15": {
+      "category": "non_ru_same_scope",
+      "fixed_expected": "PROXY",
+      "shadow_expected": "PROXY",
+      "fixed_observed": "PROXY",
+      "shadow_observed": "PROXY"
+    },
+    "2001:ad0:cff::16": {
+      "category": "non_ru_same_scope",
+      "fixed_expected": "PROXY",
+      "shadow_expected": "PROXY",
+      "fixed_observed": "PROXY",
+      "shadow_observed": "PROXY"
+    },
+    "2001:ad0:cff::17": {
+      "category": "non_ru_same_scope",
+      "fixed_expected": "PROXY",
+      "shadow_expected": "PROXY",
+      "fixed_observed": "PROXY",
+      "shadow_observed": "PROXY"
+    },
+    "2001:ad0:cff::20": {
+      "category": "non_ru_same_scope",
+      "fixed_expected": "PROXY",
+      "shadow_expected": "PROXY",
+      "fixed_observed": "PROXY",
+      "shadow_observed": "PROXY"
+    },
+    "2001:ad0:cff::22": {
+      "category": "non_ru_same_scope",
+      "fixed_expected": "PROXY",
+      "shadow_expected": "PROXY",
+      "fixed_observed": "PROXY",
+      "shadow_observed": "PROXY"
+    },
+    "2001:ad0:cff::23": {
+      "category": "non_ru_same_scope",
+      "fixed_expected": "PROXY",
+      "shadow_expected": "PROXY",
+      "fixed_observed": "PROXY",
+      "shadow_observed": "PROXY"
+    },
+    "2001:ad0:cff::24": {
+      "category": "non_ru_same_scope",
+      "fixed_expected": "PROXY",
+      "shadow_expected": "PROXY",
+      "fixed_observed": "PROXY",
+      "shadow_observed": "PROXY"
+    },
+    "2001:ad0:cff::25": {
+      "category": "non_ru_same_scope",
+      "fixed_expected": "PROXY",
+      "shadow_expected": "PROXY",
+      "fixed_observed": "PROXY",
+      "shadow_observed": "PROXY"
+    },
+    "2001:ad0:cff::26": {
+      "category": "non_ru_same_scope",
+      "fixed_expected": "PROXY",
+      "shadow_expected": "PROXY",
+      "fixed_observed": "PROXY",
+      "shadow_observed": "PROXY"
+    },
+    "2001:ad0:cff::27": {
+      "category": "non_ru_same_scope",
+      "fixed_expected": "PROXY",
+      "shadow_expected": "PROXY",
+      "fixed_observed": "PROXY",
+      "shadow_observed": "PROXY"
+    },
+    "2001:ad0:cff::28": {
+      "category": "non_ru_same_scope",
+      "fixed_expected": "PROXY",
+      "shadow_expected": "PROXY",
+      "fixed_observed": "PROXY",
+      "shadow_observed": "PROXY"
+    },
+    "2001:ad0:cff::29": {
+      "category": "non_ru_same_scope",
+      "fixed_expected": "PROXY",
+      "shadow_expected": "PROXY",
+      "fixed_observed": "PROXY",
+      "shadow_observed": "PROXY"
+    },
+    "2001:ad0:cff::32": {
+      "category": "non_ru_same_scope",
+      "fixed_expected": "PROXY",
+      "shadow_expected": "PROXY",
+      "fixed_observed": "PROXY",
+      "shadow_observed": "PROXY"
+    },
+    "2001:ad0:cff::35": {
+      "category": "non_ru_same_scope",
+      "fixed_expected": "PROXY",
+      "shadow_expected": "PROXY",
+      "fixed_observed": "PROXY",
+      "shadow_observed": "PROXY"
+    },
+    "2001:ad0:cff::36": {
+      "category": "non_ru_same_scope",
+      "fixed_expected": "PROXY",
+      "shadow_expected": "PROXY",
+      "fixed_observed": "PROXY",
+      "shadow_observed": "PROXY"
+    },
+    "2001:ad0:cff::37": {
+      "category": "non_ru_same_scope",
+      "fixed_expected": "PROXY",
+      "shadow_expected": "PROXY",
+      "fixed_observed": "PROXY",
+      "shadow_observed": "PROXY"
+    },
+    "2001:ad0:cff::38": {
+      "category": "non_ru_same_scope",
+      "fixed_expected": "PROXY",
+      "shadow_expected": "PROXY",
+      "fixed_observed": "PROXY",
+      "shadow_observed": "PROXY"
+    },
+    "2001:ad0:cff::39": {
+      "category": "non_ru_same_scope",
+      "fixed_expected": "PROXY",
+      "shadow_expected": "PROXY",
+      "fixed_observed": "PROXY",
+      "shadow_observed": "PROXY"
+    },
+    "2001:ad0:cff::40": {
+      "category": "non_ru_same_scope",
+      "fixed_expected": "PROXY",
+      "shadow_expected": "PROXY",
+      "fixed_observed": "PROXY",
+      "shadow_observed": "PROXY"
+    },
+    "2001:ad0:cff::41": {
+      "category": "non_ru_same_scope",
+      "fixed_expected": "PROXY",
+      "shadow_expected": "PROXY",
+      "fixed_observed": "PROXY",
+      "shadow_observed": "PROXY"
+    },
+    "2001:ad0:cff::42": {
+      "category": "non_ru_same_scope",
+      "fixed_expected": "PROXY",
+      "shadow_expected": "PROXY",
+      "fixed_observed": "PROXY",
+      "shadow_observed": "PROXY"
+    },
+    "2001:ad0:cff::48": {
+      "category": "non_ru_same_scope",
+      "fixed_expected": "PROXY",
+      "shadow_expected": "PROXY",
+      "fixed_observed": "PROXY",
+      "shadow_observed": "PROXY"
+    },
+    "2001:ad0:cff::49": {
+      "category": "non_ru_same_scope",
+      "fixed_expected": "PROXY",
+      "shadow_expected": "PROXY",
+      "fixed_observed": "PROXY",
+      "shadow_observed": "PROXY"
+    },
+    "2001:ad0:cff::51": {
+      "category": "non_ru_same_scope",
+      "fixed_expected": "PROXY",
+      "shadow_expected": "PROXY",
+      "fixed_observed": "PROXY",
+      "shadow_observed": "PROXY"
+    },
+    "2001:ad0:cff::52": {
+      "category": "non_ru_same_scope",
+      "fixed_expected": "PROXY",
+      "shadow_expected": "PROXY",
+      "fixed_observed": "PROXY",
+      "shadow_observed": "PROXY"
+    },
+    "2001:ad0:cff::53": {
+      "category": "non_ru_same_scope",
+      "fixed_expected": "PROXY",
+      "shadow_expected": "PROXY",
+      "fixed_observed": "PROXY",
+      "shadow_observed": "PROXY"
+    },
+    "2001:ad0:cff::54": {
+      "category": "non_ru_same_scope",
+      "fixed_expected": "PROXY",
+      "shadow_expected": "PROXY",
+      "fixed_observed": "PROXY",
+      "shadow_observed": "PROXY"
+    },
+    "2001:ad0:cff::55": {
+      "category": "non_ru_same_scope",
+      "fixed_expected": "PROXY",
+      "shadow_expected": "PROXY",
+      "fixed_observed": "PROXY",
+      "shadow_observed": "PROXY"
+    },
+    "2001:ad0:cff::56": {
+      "category": "non_ru_same_scope",
+      "fixed_expected": "PROXY",
+      "shadow_expected": "PROXY",
+      "fixed_observed": "PROXY",
+      "shadow_observed": "PROXY"
+    },
+    "2001:ad0:cff::58": {
+      "category": "non_ru_same_scope",
+      "fixed_expected": "PROXY",
+      "shadow_expected": "PROXY",
+      "fixed_observed": "PROXY",
+      "shadow_observed": "PROXY"
+    },
+    "2001:ad0:cff::59": {
+      "category": "non_ru_same_scope",
+      "fixed_expected": "PROXY",
+      "shadow_expected": "PROXY",
+      "fixed_observed": "PROXY",
+      "shadow_observed": "PROXY"
+    },
+    "2001:ad0:cff::81": {
+      "category": "non_ru_same_scope",
+      "fixed_expected": "PROXY",
+      "shadow_expected": "PROXY",
+      "fixed_observed": "PROXY",
+      "shadow_observed": "PROXY"
+    },
+    "2001:ad0:cff::100": {
+      "category": "non_ru_same_scope",
+      "fixed_expected": "PROXY",
+      "shadow_expected": "PROXY",
+      "fixed_observed": "PROXY",
+      "shadow_observed": "PROXY"
+    },
+    "2001:ad0:cff::101": {
+      "category": "non_ru_same_scope",
+      "fixed_expected": "PROXY",
+      "shadow_expected": "PROXY",
+      "fixed_observed": "PROXY",
+      "shadow_observed": "PROXY"
+    },
+    "2001:ad0:cff::254": {
+      "category": "non_ru_same_scope",
+      "fixed_expected": "PROXY",
+      "shadow_expected": "PROXY",
+      "fixed_observed": "PROXY",
+      "shadow_observed": "PROXY"
+    },
+    "2001:ad0:2000:1::1": {
+      "category": "already_direct_control",
+      "fixed_expected": "DIRECT",
+      "shadow_expected": "DIRECT",
+      "fixed_observed": "DIRECT",
+      "shadow_observed": "DIRECT"
+    },
+    "2a01:6e0::1": {
+      "category": "already_direct_control",
+      "fixed_expected": "DIRECT",
+      "shadow_expected": "DIRECT",
+      "fixed_observed": "DIRECT",
+      "shadow_observed": "DIRECT"
+    },
+    "212.65.65.1": {
+      "category": "already_direct_control",
+      "fixed_expected": "DIRECT",
+      "shadow_expected": "DIRECT",
+      "fixed_observed": "DIRECT",
+      "shadow_observed": "DIRECT"
+    },
+    "2001:ad0::": {
+      "category": "published_nonru_service_control",
+      "fixed_expected": "PROXY",
+      "shadow_expected": "PROXY",
+      "fixed_observed": "PROXY",
+      "shadow_observed": "PROXY"
+    },
+    "2001:ad0::1": {
+      "category": "published_nonru_service_control",
+      "fixed_expected": "PROXY",
+      "shadow_expected": "PROXY",
+      "fixed_observed": "PROXY",
+      "shadow_observed": "PROXY"
+    },
+    "2001:ad0::33": {
+      "category": "published_nonru_service_control",
+      "fixed_expected": "PROXY",
+      "shadow_expected": "PROXY",
+      "fixed_observed": "PROXY",
+      "shadow_observed": "PROXY"
+    },
+    "2403:2c00:ffff::2": {
+      "category": "published_nonru_service_control",
+      "fixed_expected": "PROXY",
+      "shadow_expected": "PROXY",
+      "fixed_observed": "PROXY",
+      "shadow_observed": "PROXY"
+    },
+    "r8-lo0-0-Mow-M9-RU.bb.citictel-cpc.com": {
+      "category": "hostname_without_resolution",
+      "fixed_expected": "PROXY",
+      "shadow_expected": "PROXY",
+      "fixed_observed": "PROXY",
+      "shadow_observed": "PROXY"
+    },
+    "r4-lo0-0-Spb-Rep-RU.bb.citictel-cpc.com": {
+      "category": "hostname_without_resolution",
+      "fixed_expected": "PROXY",
+      "shadow_expected": "PROXY",
+      "fixed_observed": "PROXY",
+      "shadow_observed": "PROXY"
+    },
+    "r8-lo0-0-Spb-Rep-RU.bb.citictel-cpc.com": {
+      "category": "hostname_without_resolution",
+      "fixed_expected": "PROXY",
+      "shadow_expected": "PROXY",
+      "fixed_observed": "PROXY",
+      "shadow_observed": "PROXY"
+    },
+    "rr1-lo0-0-Mow-M9-RU.bb.citictel-cpc.com": {
+      "category": "hostname_without_resolution",
+      "fixed_expected": "PROXY",
+      "shadow_expected": "PROXY",
+      "fixed_observed": "PROXY",
+      "shadow_observed": "PROXY"
+    },
+    "r4-lo0-0-Mow-M9-RU.bb.citictel-cpc.com": {
+      "category": "hostname_without_resolution",
+      "fixed_expected": "PROXY",
+      "shadow_expected": "PROXY",
+      "fixed_observed": "PROXY",
+      "shadow_observed": "PROXY"
+    },
+    "r9-lo0-0-Mow-M9-RU.bb.citictel-cpc.com": {
+      "category": "hostname_without_resolution",
+      "fixed_expected": "PROXY",
+      "shadow_expected": "PROXY",
+      "fixed_observed": "PROXY",
+      "shadow_observed": "PROXY"
+    },
+    "r8-lo0-0-Mow-Mar8-RU.bb.citictel-cpc.com": {
+      "category": "hostname_without_resolution",
+      "fixed_expected": "PROXY",
+      "shadow_expected": "PROXY",
+      "fixed_observed": "PROXY",
+      "shadow_observed": "PROXY"
+    },
+    "r9-lo0-0-Mow-Mar8-RU.bb.citictel-cpc.com": {
+      "category": "hostname_without_resolution",
+      "fixed_expected": "PROXY",
+      "shadow_expected": "PROXY",
+      "fixed_observed": "PROXY",
+      "shadow_observed": "PROXY"
+    },
+    "r14-lo0-0-Mow-Mar8-RU.bb.citictel-cpc.com": {
+      "category": "hostname_without_resolution",
+      "fixed_expected": "PROXY",
+      "shadow_expected": "PROXY",
+      "fixed_observed": "PROXY",
+      "shadow_observed": "PROXY"
+    },
+    "r9-lo0-0-Spb-K12-RU.bb.citictel-cpc.com": {
+      "category": "hostname_without_resolution",
+      "fixed_expected": "PROXY",
+      "shadow_expected": "PROXY",
+      "fixed_observed": "PROXY",
+      "shadow_observed": "PROXY"
+    },
+    "r9-lo0-0-Ala-Abd66-KZ.bb.citictel-cpc.com": {
+      "category": "hostname_without_resolution",
+      "fixed_expected": "PROXY",
+      "shadow_expected": "PROXY",
+      "fixed_observed": "PROXY",
+      "shadow_observed": "PROXY"
+    },
+    "citictel-cpc.ru": {
+      "category": "published_ru_geosite_match",
+      "fixed_expected": "DIRECT",
+      "shadow_expected": "DIRECT",
+      "fixed_observed": "DIRECT",
+      "shadow_observed": "DIRECT"
+    }
+  },
+  "tested": 71,
+  "changed": 10,
+  "test_categories": {
+    "exact_ru_ipv6": 10,
+    "non_ru_same_scope": 42,
+    "already_direct_control": 3,
+    "published_nonru_service_control": 4,
+    "hostname_without_resolution": 11,
+    "published_ru_geosite_match": 1
+  }
+}

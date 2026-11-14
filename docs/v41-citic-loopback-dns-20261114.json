@@ -1,0 +1,244 @@
+{
+  "2001:ad0:cff::18": {
+    "name": "r8-lo0-0-Mow-M9-RU.bb.citictel-cpc.com.",
+    "A": {
+      "url": "https://dns.google/resolve?name=r8-lo0-0-Mow-M9-RU.bb.citictel-cpc.com.&type=A&do=true",
+      "sha256": "27d97d4372c9b4d3c51e56817fddb39e5ec4c5b661650bbda5e5b8ab22885b1f",
+      "rcode": 0,
+      "AD": false,
+      "answers": [
+        "62.128.122.118",
+        "62.128.122.18"
+      ]
+    },
+    "AAAA": {
+      "url": "https://dns.google/resolve?name=r8-lo0-0-Mow-M9-RU.bb.citictel-cpc.com.&type=AAAA&do=true",
+      "sha256": "f62600fd441fcae6234dc78214178b7e7cc20a1f78dd687d30aa54398a1c9afd",
+      "rcode": 0,
+      "AD": false,
+      "answers": [
+        "2001:ad0:cff::18"
+      ]
+    }
+  },
+  "2001:ad0:cff::19": {
+    "name": "r4-lo0-0-Spb-Rep-RU.bb.citictel-cpc.com.",
+    "A": {
+      "url": "https://dns.google/resolve?name=r4-lo0-0-Spb-Rep-RU.bb.citictel-cpc.com.&type=A&do=true",
+      "sha256": "4fefcb75d8a20fd59891440bfed9b363fb5bf0db77f544d6da8963f8e7096ae0",
+      "rcode": 0,
+      "AD": false,
+      "answers": [
+        "62.128.122.119",
+        "62.128.122.19"
+      ]
+    },
+    "AAAA": {
+      "url": "https://dns.google/resolve?name=r4-lo0-0-Spb-Rep-RU.bb.citictel-cpc.com.&type=AAAA&do=true",
+      "sha256": "6235c82ed6f78051fde640f03ed2e355f071e2a024c7c38c45af8485ff2e03b3",
+      "rcode": 0,
+      "AD": false,
+      "answers": [
+        "2001:ad0:cff::19"
+      ]
+    }
+  },
+  "2001:ad0:cff::21": {
+    "name": "r8-lo0-0-Spb-Rep-RU.bb.citictel-cpc.com.",
+    "A": {
+      "url": "https://dns.google/resolve?name=r8-lo0-0-Spb-Rep-RU.bb.citictel-cpc.com.&type=A&do=true",
+      "sha256": "24a7e43137ec3b6a99fd56158bb693718a13049bcd73ec38278151ec7b0826b5",
+      "rcode": 0,
+      "AD": false,
+      "answers": [
+        "62.128.122.121",
+        "62.128.122.21"
+      ]
+    },
+    "AAAA": {
+      "url": "https://dns.google/resolve?name=r8-lo0-0-Spb-Rep-RU.bb.citictel-cpc.com.&type=AAAA&do=true",
+      "sha256": "702f7fbbeb42c5da7febdd5711fd7cf5abf1eca1522d1c34582e1b038d78f0d6",
+      "rcode": 0,
+      "AD": false,
+      "answers": [
+        "2001:ad0:cff::21"
+      ]
+    }
+  },
+  "2001:ad0:cff::253": {
+    "name": "rr1-lo0-0-Mow-M9-RU.bb.citictel-cpc.com.",
+    "A": {
+      "url": "https://dns.google/resolve?name=rr1-lo0-0-Mow-M9-RU.bb.citictel-cpc.com.&type=A&do=true",
+      "sha256": "5ceee2d0dbaf02972b1d0393caae6163a02d74354c4f47c8e24596b317cff5fc",
+      "rcode": 0,
+      "AD": false,
+      "answers": [
+        "62.128.122.253"
+      ]
+    },
+    "AAAA": {
+      "url": "https://dns.google/resolve?name=rr1-lo0-0-Mow-M9-RU.bb.citictel-cpc.com.&type=AAAA&do=true",
+      "sha256": "6fc725e5966cc57c81ee68050dc3fe40b7c7548ae4d8f77648ae0ae91d99c6a0",
+      "rcode": 0,
+      "AD": false,
+      "answers": [
+        "2001:ad0:cff::253"
+      ]
+    }
+  },
+  "2001:ad0:cff::31": {
+    "name": "r4-lo0-0-Mow-M9-RU.bb.citictel-cpc.com.",
+    "A": {
+      "url": "https://dns.google/resolve?name=r4-lo0-0-Mow-M9-RU.bb.citictel-cpc.com.&type=A&do=true",
+      "sha256": "5d3ec83d3879e3f970cfdd828a4f17f09b52f0327bd029e0e08d7d9b9e5bf9e2",
+      "rcode": 0,
+      "AD": false,
+      "answers": [
+        "62.128.122.131",
+        "62.128.122.31"
+      ]
+    },
+    "AAAA": {
+      "url": "https://dns.google/resolve?name=r4-lo0-0-Mow-M9-RU.bb.citictel-cpc.com.&type=AAAA&do=true",
+      "sha256": "9acc2b6cc5e3d83fa552b8124fb5bb47b2d9792dc6ffcc6fee71d6bdb7883f10",
+      "rcode": 0,
+      "AD": false,
+      "answers": [
+        "2001:ad0:cff::31"
+      ]
+    }
+  },
+  "2001:ad0:cff::6": {
+    "name": "r9-lo0-0-Mow-M9-RU.bb.citictel-cpc.com.",
+    "A": {
+      "url": "https://dns.google/resolve?name=r9-lo0-0-Mow-M9-RU.bb.citictel-cpc.com.&type=A&do=true",
+      "sha256": "dc3fe09b612293a0d853aedf90cdf2ba65b779ab849f1cbd7bae86ae20cb2697",
+      "rcode": 0,
+      "AD": false,
+      "answers": [
+        "217.28.245.5",
+        "62.128.122.106",
+        "62.128.122.6"
+      ]
+    },
+    "AAAA": {
+      "url": "https://dns.google/resolve?name=r9-lo0-0-Mow-M9-RU.bb.citictel-cpc.com.&type=AAAA&do=true",
+      "sha256": "10947925e2b6318933bb301c8abbe392b6362c59b492391f13e14f5265083dad",
+      "rcode": 0,
+      "AD": false,
+      "answers": [
+        "2001:ad0:cff::6"
+      ]
+    }
+  },
+  "2001:ad0:cff::76": {
+    "name": "r8-lo0-0-Mow-Mar8-RU.bb.citictel-cpc.com.",
+    "A": {
+      "url": "https://dns.google/resolve?name=r8-lo0-0-Mow-Mar8-RU.bb.citictel-cpc.com.&type=A&do=true",
+      "sha256": "1a26c38b4d0efff41a6a27f8f55737f087b050975d733069412418e92b4ef321",
+      "rcode": 0,
+      "AD": false,
+      "answers": [
+        "62.128.122.176",
+        "62.128.122.76"
+      ]
+    },
+    "AAAA": {
+      "url": "https://dns.google/resolve?name=r8-lo0-0-Mow-Mar8-RU.bb.citictel-cpc.com.&type=AAAA&do=true",
+      "sha256": "1680ce7ed9f939aa4987ac9d913ba8bb2eb75cd8d7635203bcbfbebdac088a49",
+      "rcode": 0,
+      "AD": false,
+      "answers": [
+        "2001:ad0:cff::76"
+      ]
+    }
+  },
+  "2001:ad0:cff::77": {
+    "name": "r9-lo0-0-Mow-Mar8-RU.bb.citictel-cpc.com.",
+    "A": {
+      "url": "https://dns.google/resolve?name=r9-lo0-0-Mow-Mar8-RU.bb.citictel-cpc.com.&type=A&do=true",
+      "sha256": "13d7fa2ac1240d7c8014ca3aab1290347c5dd30c2c7e3fed1e973172a96adb58",
+      "rcode": 0,
+      "AD": false,
+      "answers": [
+        "62.128.122.177",
+        "62.128.122.77"
+      ]
+    },
+    "AAAA": {
+      "url": "https://dns.google/resolve?name=r9-lo0-0-Mow-Mar8-RU.bb.citictel-cpc.com.&type=AAAA&do=true",
+      "sha256": "502c884989170113c7978247b9a040b500fb0191db377897b789d9064130b6d1",
+      "rcode": 0,
+      "AD": false,
+      "answers": [
+        "2001:ad0:cff::77"
+      ]
+    }
+  },
+  "2001:ad0:cff::78": {
+    "name": "r14-lo0-0-Mow-Mar8-RU.bb.citictel-cpc.com.",
+    "A": {
+      "url": "https://dns.google/resolve?name=r14-lo0-0-Mow-Mar8-RU.bb.citictel-cpc.com.&type=A&do=true",
+      "sha256": "76a227b1d99a868ebf9d67462af54437f925b03df26649c08d5a4dc20b30bb52",
+      "rcode": 0,
+      "AD": false,
+      "answers": [
+        "62.128.122.178",
+        "62.128.122.78"
+      ]
+    },
+    "AAAA": {
+      "url": "https://dns.google/resolve?name=r14-lo0-0-Mow-Mar8-RU.bb.citictel-cpc.com.&type=AAAA&do=true",
+      "sha256": "81b672c0eac87091a287681cb912c75854954767a794a3cabf651ffd18217cc0",
+      "rcode": 0,
+      "AD": false,
+      "answers": [
+        "2001:ad0:cff::78"
+      ]
+    }
+  },
+  "2001:ad0:cff::8": {
+    "name": "r9-lo0-0-Spb-K12-RU.bb.citictel-cpc.com.",
+    "A": {
+      "url": "https://dns.google/resolve?name=r9-lo0-0-Spb-K12-RU.bb.citictel-cpc.com.&type=A&do=true",
+      "sha256": "8dc9f2fc8255604c83c72689e3d88c5455d55f635253b8df2f1737828ce6140f",
+      "rcode": 0,
+      "AD": false,
+      "answers": [
+        "62.128.122.108",
+        "62.128.122.8"
+      ]
+    },
+    "AAAA": {
+      "url": "https://dns.google/resolve?name=r9-lo0-0-Spb-K12-RU.bb.citictel-cpc.com.&type=AAAA&do=true",
+      "sha256": "4a66c434183202bee39f6d98b48f8d19b9627b6ec155bacec3b3a26dde0271fb",
+      "rcode": 0,
+      "AD": false,
+      "answers": [
+        "2001:ad0:cff::8"
+      ]
+    }
+  },
+  "2001:ad0:cff::81": {
+    "name": "r9-lo0-0-Ala-Abd66-KZ.bb.citictel-cpc.com.",
+    "A": {
+      "url": "https://dns.google/resolve?name=r9-lo0-0-Ala-Abd66-KZ.bb.citictel-cpc.com.&type=A&do=true",
+      "sha256": "ed7150bf6c209771b70047b2c23808a5b68d60ca840abb97e4aac881611c0f74",
+      "rcode": 0,
+      "AD": false,
+      "answers": [
+        "62.128.122.181",
+        "62.128.122.81"
+      ]
+    },
+    "AAAA": {
+      "url": "https://dns.google/resolve?name=r9-lo0-0-Ala-Abd66-KZ.bb.citictel-cpc.com.&type=AAAA&do=true",
+      "sha256": "ca9012306e660587923b483b4c66dd1c13bcf229cc6c6d5cdf82d302182620ce",
+      "rcode": 0,
+      "AD": false,
+      "answers": [
+        "2001:ad0:cff::81"
+      ]
+    }
+  }
+}
