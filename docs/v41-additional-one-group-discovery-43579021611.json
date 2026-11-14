@@ -2585,7 +2585,7 @@
       "regional_candidate": false
     }
   ],
-  "stage": "nine exact prefixes independently corroborated and submitted to production PR #30",
+  "stage": "PR #30 merged after exact fixed-input and CI artifact parity; publication pending",
   "exact_regional_recheck": [
     {
       "prefix": "104.128.130.0/24",
@@ -3441,5 +3441,32 @@
   "release_pr": "https://github.com/SpeedeMiner/Geoip-ru-server/pull/30",
   "release_ci": "https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43583331893",
   "expected_fixed_input_added_ipv4": 15,
-  "expected_fixed_input_other_delta": 0
+  "expected_fixed_input_other_delta": 0,
+  "merged_commit": "b98980c6181c3bfda35445f345ae83777f7d18f3",
+  "checked_ci_artifact": "https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43583331893/artifacts/14109212564",
+  "fixed_input_result": {
+    "candidate_sha256": "2735053560ebd598cbdcd71ccf858806d4b955a17e2eac512a7baf249d43653a",
+    "effective_blocked_sha256": "da3949ad119013db9a8237d322c63411234c201079f8506af3e51dc6051b0b6a",
+    "only_added_to_direct_and_removed_from_effective_mask": [
+      "45.86.78.168/32",
+      "45.86.78.173/32",
+      "104.128.130.205/32",
+      "104.128.130.208/32",
+      "104.128.130.236/32",
+      "132.243.16.12/32",
+      "132.243.18.18/32",
+      "132.243.18.34/32",
+      "132.243.19.137/32",
+      "132.243.19.140/32",
+      "135.136.190.63/32",
+      "135.136.190.120/32",
+      "135.136.191.186/32",
+      "157.228.145.100/32",
+      "157.228.191.39/32"
+    ],
+    "no_other_ipv4_delta": true,
+    "no_ipv6_delta": true,
+    "private_unchanged": true,
+    "validation": "v37 base, v41 overlay and release gates, official Telegram and absolute publication bounds all pass"
+  }
 }
