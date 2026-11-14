@@ -3,10 +3,14 @@
 ## Routing policy
 - Exactly two GeoIP categories are emitted: `RU` and `PRIVATE`. `RU` is the unified DIRECT bucket for RU+BY+KZ address resources and origins, plus reviewed service and Hydra DIRECT/WHITELIST intent.
 - PRIVATE always wins. The full official Telegram prefix set, bounded Antifilter subnet input and separately reviewed direct IP/subnet records cannot be overridden by any DIRECT protection class.
-- DNS-derived `ip.lst` and `ipresolve.lst` and unverified historical v38 records do not carve registered RU/BY/KZ resources, selected regional origins, CORE/SHARED origins or eligible existing service masks. They still apply outside these protections where applicable.
+- DNS-derived `ip.lst` and `ipresolve.lst` and unverified historical v38 records do not carve registered RU/BY/KZ resources, selected regional origins, CORE/SHARED origins eligible existing service masks or individually reviewed operator prefixes. They still apply outside these protections where applicable.
 - REG.RU AS197695 is SHARED_INFRA, with no ASN-wide admission outside the existing regional selection. Corporate and shared prefixes retain exact-origin provenance, including MOAS.
 - Regional eligibility relies on address registration and routing evidence, not a physical geolocation filter. The build separately excludes exact, reviewed foreign operational assignments. This is not RKN blocking and does not remove their parent allocations from the RIR inventory.
 - See [v41 policy and exact regional evidence](https://github.com/SpeedeMiner/Geoip-ru-server/blob/main/docs/GEOIP_RU_V41_POLICY.md).
+
+## Reviewed operator routes
+- The exact reviewed-prefix table covers verified RU/BY/KZ assignments. Its protection is resolver-only and does not exempt an entire ASN. The overlay and independent publication validators check its digest and eligible coverage.
+- The PR #27 evidence includes the [last two verified batches](https://github.com/SpeedeMiner/Geoip-ru-server/blob/main/docs/v41-geo-only-operator-rukz-20261114.json). Unconfirmed geography-only rows were not promoted.
 
 ## Service DIRECT outside geolocation
 - Kyoresuas `ru-standard` service prefixes are imported with per-service category/name/ASN/domain provenance.
