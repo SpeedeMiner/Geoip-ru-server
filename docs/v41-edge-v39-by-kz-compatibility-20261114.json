@@ -1,0 +1,67 @@
+{
+  "scope": "v39 compatibility extractor and protection mask, using the frozen v41 production input inventories as test data. Not a live v39 production build or release.",
+  "fixed_source_commit": "b98980c6181c3bfda35445f345ae83777f7d18f3",
+  "exact_selected_nlri_rows_without_by_kz_flag": 21529,
+  "exact_selected_nlri_rows_with_by_kz_flag": 23603,
+  "new_exact_selected_nlri_rows": 2074,
+  "protected_mask_delta": {
+    "ipv4": {
+      "added_mask_address_count": "5146880",
+      "approved_block_overlap_address_count": "1510",
+      "added_mask_cidr_count": 1393,
+      "sample_approved_block_overlap_cidrs": [
+        "2.27.130.25/32",
+        "2.27.131.105/32",
+        "2.135.236.82/32",
+        "5.129.208.4/32",
+        "5.129.209.229/32",
+        "5.129.219.18/32",
+        "5.180.27.151/32",
+        "5.180.27.205/32",
+        "5.180.47.163/32",
+        "5.253.229.10/32"
+      ]
+    },
+    "ipv6": {
+      "added_mask_address_count": "14887476583852540102970265567232",
+      "approved_block_overlap_address_count": "0",
+      "added_mask_cidr_count": 195,
+      "sample_approved_block_overlap_cidrs": []
+    }
+  },
+  "source_sha256": {
+    "RU_PREFIX_INPUT": "cffb874ac49a46edba8da522bf9d9a905ff56b72d085150c61521971ceabfca2",
+    "RU_ASN_REGISTRY": "fae1b8aa4b8064f5948f5e57ef5277d26a1209d62edaf7bf2423bc560bae25e5",
+    "BY_KZ_ASN_REGISTRY": "0a9aff6e579a860b1f7ce94cfa5a8fb664330f8710817652e542c15cb6bf7e07",
+    "COMPANY_ASN_REGISTRY": "671dfb9885f4a006468921c0baf527deecdbcd188319e1f731154c0cb152142d"
+  },
+  "workflow_invocation": [
+    "--selected-prefixes",
+    "$RU_PREFIX_INPUT",
+    "--company-asns",
+    "$COMPANY_ASN_REGISTRY",
+    "--rir-ru-asns",
+    "$RU_ASN_REGISTRY",
+    "--rir-by-kz-asns",
+    "$BY_KZ_ASN_REGISTRY",
+    "--output",
+    "$COMPANY_ASN_PREFIXES"
+  ],
+  "prior_counts": {
+    "company_asn_registry_entries": 57,
+    "rir_ru_asn_registry_entries": 5772,
+    "active_company_asns": 53,
+    "active_rir_ru_asns": 5007,
+    "active_protected_asns": 5011,
+    "unique_prefixes": 21529,
+    "ipv4_prefixes": 19617,
+    "ipv6_prefixes": 1912,
+    "ipv4_addresses": 47121920,
+    "ipv6_addresses": 201669454612980230758598168281088,
+    "selected_origin_input_sha256": "cffb874ac49a46edba8da522bf9d9a905ff56b72d085150c61521971ceabfca2",
+    "company_asn_registry_sha256": "671dfb9885f4a006468921c0baf527deecdbcd188319e1f731154c0cb152142d",
+    "output_sha256": "cd64dd693656f60d43c52b6c96d66820e1b3b2841fea8a380b05c60109d1c94c",
+    "rir_ru_asn_registry_sha256": "fae1b8aa4b8064f5948f5e57ef5277d26a1209d62edaf7bf2423bc560bae25e5"
+  },
+  "current_command_output_sha256": "1b479016132268676337659bf8a03afe50dad0198a4c7b99f511169e5aab9b0b"
+}
