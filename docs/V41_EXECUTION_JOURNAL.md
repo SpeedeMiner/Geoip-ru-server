@@ -627,3 +627,9 @@ See [v41 release hardening](V41_RELEASE_HARDENING.md). Routing-policy changes ar
 - Verified all 37 pinned raw input bytes from the release provenance. Reconstructed the v37 and v41 interval sets, including effective masks, then matched both IPv4 and IPv6 against the published DAT at snapshot `geoip-v41-snapshot-43617500418.1`.
 - Published full per-source coverage, inclusive and exclusive contributions, and the exact 9,281-address v34 IPv4 delta on this audit branch. There is no unclassified remainder. See [audit and methodology](V41_PUBLISHED_SOURCE_COVERAGE_20261114.md).
 - No production, release, workflow or PR #5 changes.
+
+## 2026-11-14 22:48 +0500 — full v41 repository audit
+
+- Reviewed production main `596c93df` and published snapshot `geoip-v41-snapshot-43617500418.1`. Verified 164 Python tests, Go tests, all five workflow YAMLs and a fresh fixed-input replay using 37 hash-checked inputs. DAT, SRS, effective block and both generated input bundles matched published bytes.
+- Measured 262 IPv4 admitted only via W1ZARDZ outside regional RIR, 6,902 historical-only IPv4 still in the effective mask, and identified missing versioned block inputs, independent release endpoint drift, and BGP provenance limitations.
+- See [full repository audit](V41_FULL_REPOSITORY_AUDIT_20261114.md). Documentation only on this audit branch, no routing, workflow, publication or PR #5 changes.
