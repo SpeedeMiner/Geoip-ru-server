@@ -1,0 +1,48 @@
+{
+  "mode": "counterfactual only; current ipverse and current other registries",
+  "asn_delta": {
+    "added_current": [
+      "AS218077",
+      "AS218082",
+      "AS218087"
+    ],
+    "removed_current": [
+      "AS218465",
+      "AS218621"
+    ]
+  },
+  "ipverse_aggregate_observations": {
+    "AS218465": {
+      "ipv4": [
+        "31.77.222.0/24"
+      ],
+      "ipv6": [
+        "2a0e:e001:20::/44"
+      ]
+    },
+    "AS218082": null,
+    "AS218621": {
+      "ipv4": [
+        "48.103.138.0/24",
+        "169.128.68.0/24",
+        "177.202.118.0/24",
+        "179.236.128.0/24"
+      ],
+      "ipv6": []
+    },
+    "AS218087": null,
+    "AS218077": null
+  },
+  "prefixes_current": 23603,
+  "prefixes_with_prior_ru_asn": 23609,
+  "only_current": [],
+  "only_prior_ru_asn": [
+    "31.77.222.0/24",
+    "48.103.138.0/24",
+    "169.128.68.0/24",
+    "177.202.118.0/24",
+    "179.236.128.0/24",
+    "2a0e:e001:20::/44"
+  ],
+  "policy_changes": false
+}
