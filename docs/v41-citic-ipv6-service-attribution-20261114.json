@@ -1,0 +1,1033 @@
+{
+  "fixed_dat_sha256": "2735053560ebd598cbdcd71ccf858806d4b955a17e2eac512a7baf249d43653a",
+  "shadow_dat_sha256": "4517a9b8e4dce647d0c7e43deca49dfed87f687a1cc111a7e006e35fe417495f",
+  "production_regional_inputs": {
+    "regional_origin_sha256": "bd657dedf8ca9b1f3652b81a7da3e20f3396bf730926050236e19461452cc6ad",
+    "rir_inventory_sha256": "7d196717b138f817c6896ca6b25c26e7a0d92947af438c8115e56be3afba3e16"
+  },
+  "AS12976_exact_routed_prefixes": {
+    "212.65.64.0/19": {
+      "addresses_decimal": "8192",
+      "DIRECT_decimal": "8192",
+      "source": "AS12976",
+      "exact_RU_rir_inventory": true
+    },
+    "213.152.128.0/19": {
+      "addresses_decimal": "8192",
+      "DIRECT_decimal": "8192",
+      "source": "AS12976",
+      "exact_RU_rir_inventory": true
+    },
+    "2a01:6e0::/32": {
+      "addresses_decimal": "79228162514264337593543950336",
+      "DIRECT_decimal": "79228162514264337593543950336",
+      "source": "AS12976",
+      "exact_RU_rir_inventory": true
+    }
+  },
+  "geosite_comparison": {
+    "repo": "SpeedeMiner/Geosite-ru-light",
+    "tag": "latest-optimized",
+    "asset_url": "https://github.com/SpeedeMiner/Geosite-ru-light/releases/download/latest-optimized/geosite_RU.dat",
+    "sha256": "75b79f1883e0ae7380621c41bdac89777dc1df660844d141ea98a400526728ec",
+    "category_counts": {
+      "RU": 3846,
+      "BLOCK": 44,
+      "APPLE": 92,
+      "EPICGAMES": 27,
+      "ESCAPEFROMTARKOV": 4,
+      "FACEIT": 2,
+      "GITHUB": 27,
+      "GOOGLE-DEEPMIND": 41,
+      "GOOGLE-PLAY": 29,
+      "MICROSOFT": 66,
+      "PINTEREST": 50,
+      "RIOT": 54,
+      "STEAM": 40,
+      "TELEGRAM": 26,
+      "TWITCH": 40,
+      "TWITCH-ADS": 5,
+      "YOUTUBE": 177,
+      "WIN-SPY": 323
+    },
+    "scope": "Fixed named latest-release artifact only. No claim about other GeoSite releases or user local rules."
+  },
+  "operator_service_dns_controls": {
+    "corporate_web": {
+      "name": "www.citictel-cpc.com",
+      "geosite_matches": {},
+      "addresses": [
+        {
+          "address": "202.76.67.59",
+          "in_fixed_DIRECT": false,
+          "in_shadow_DIRECT": false,
+          "in_PRIVATE": false
+        },
+        {
+          "address": "2403:2c00:ffff::2",
+          "in_fixed_DIRECT": false,
+          "in_shadow_DIRECT": false,
+          "in_PRIVATE": false
+        }
+      ],
+      "dns": {
+        "A": {
+          "name": "www.citictel-cpc.com",
+          "type": "A",
+          "url": "https://dns.google/resolve?name=www.citictel-cpc.com&type=A&do=true",
+          "sha256": "27234b54007888f846670f714df814b1b56582da7d2c92e0767e774bb0af7915",
+          "rcode": 0,
+          "authenticated_data": false,
+          "answer": [
+            {
+              "name": "www.citictel-cpc.com.",
+              "type": 5,
+              "TTL": 600,
+              "data": "g19934-www.gslb.hk.net."
+            },
+            {
+              "name": "g19934-www.gslb.hk.net.",
+              "type": 1,
+              "TTL": 30,
+              "data": "202.76.67.59"
+            }
+          ]
+        },
+        "AAAA": {
+          "name": "www.citictel-cpc.com",
+          "type": "AAAA",
+          "url": "https://dns.google/resolve?name=www.citictel-cpc.com&type=AAAA&do=true",
+          "sha256": "b597f9621ddda43dca152dc244ed54d81e506d0db4e3c4b90ad3ce8c645d6666",
+          "rcode": 0,
+          "authenticated_data": false,
+          "answer": [
+            {
+              "name": "www.citictel-cpc.com.",
+              "type": 5,
+              "TTL": 600,
+              "data": "g19934-www.gslb.hk.net."
+            },
+            {
+              "name": "g19934-www.gslb.hk.net.",
+              "type": 28,
+              "TTL": 30,
+              "data": "2403:2c00:ffff::2"
+            }
+          ]
+        }
+      }
+    },
+    "client_portal": {
+      "name": "mc.citictel-cpc.com",
+      "geosite_matches": {},
+      "addresses": [
+        {
+          "address": "202.66.5.194",
+          "in_fixed_DIRECT": false,
+          "in_shadow_DIRECT": false,
+          "in_PRIVATE": false
+        }
+      ],
+      "dns": {
+        "A": {
+          "name": "mc.citictel-cpc.com",
+          "type": "A",
+          "url": "https://dns.google/resolve?name=mc.citictel-cpc.com&type=A&do=true",
+          "sha256": "b4921757cd9df3048be4ca78c2b488f2144c599f291bdc7aa169b2bf81826a07",
+          "rcode": 0,
+          "authenticated_data": false,
+          "answer": [
+            {
+              "name": "mc.citictel-cpc.com.",
+              "type": 5,
+              "TTL": 600,
+              "data": "gid19934-sso-web.stm.citictel-cpc.com."
+            },
+            {
+              "name": "gid19934-sso-web.stm.citictel-cpc.com.",
+              "type": 1,
+              "TTL": 30,
+              "data": "202.66.5.194"
+            }
+          ]
+        },
+        "AAAA": {
+          "name": "mc.citictel-cpc.com",
+          "type": "AAAA",
+          "url": "https://dns.google/resolve?name=mc.citictel-cpc.com&type=AAAA&do=true",
+          "sha256": "89066cff4bea0a9208553b85c319747f2f37f3b971ab1a0ec98ef07570b93a50",
+          "rcode": 0,
+          "authenticated_data": false,
+          "answer": [
+            {
+              "name": "mc.citictel-cpc.com.",
+              "type": 5,
+              "TTL": 600,
+              "data": "gid19934-sso-web.stm.citictel-cpc.com."
+            }
+          ]
+        }
+      }
+    },
+    "looking_glass": {
+      "name": "lg.citictel-cpc.com",
+      "geosite_matches": {},
+      "addresses": [
+        {
+          "address": "195.222.0.7",
+          "in_fixed_DIRECT": false,
+          "in_shadow_DIRECT": false,
+          "in_PRIVATE": false
+        }
+      ],
+      "dns": {
+        "A": {
+          "name": "lg.citictel-cpc.com",
+          "type": "A",
+          "url": "https://dns.google/resolve?name=lg.citictel-cpc.com&type=A&do=true",
+          "sha256": "ae7d7523c32edbe492d22b235be5c22eda811e0fc41ab4bda53bfcea164d5464",
+          "rcode": 0,
+          "authenticated_data": false,
+          "answer": [
+            {
+              "name": "lg.citictel-cpc.com.",
+              "type": 1,
+              "TTL": 600,
+              "data": "195.222.0.7"
+            }
+          ]
+        },
+        "AAAA": {
+          "name": "lg.citictel-cpc.com",
+          "type": "AAAA",
+          "url": "https://dns.google/resolve?name=lg.citictel-cpc.com&type=AAAA&do=true",
+          "sha256": "c2b259b81cdc101b17ef4b3dda805bd3972cf19fa78aa795e58b7abc269cdbea",
+          "rcode": 0,
+          "authenticated_data": false,
+          "answer": []
+        }
+      }
+    },
+    "legacy_name_server_1": {
+      "name": "ns.eunet.ee",
+      "geosite_matches": {},
+      "addresses": [
+        {
+          "address": "195.222.0.1",
+          "in_fixed_DIRECT": false,
+          "in_shadow_DIRECT": false,
+          "in_PRIVATE": false
+        },
+        {
+          "address": "2001:ad0::",
+          "in_fixed_DIRECT": false,
+          "in_shadow_DIRECT": false,
+          "in_PRIVATE": false
+        }
+      ],
+      "dns": {
+        "A": {
+          "name": "ns.eunet.ee",
+          "type": "A",
+          "url": "https://dns.google/resolve?name=ns.eunet.ee&type=A&do=true",
+          "sha256": "7fe1c3a755d414ef14bc3d82fd4038de09ffd70bffe3a80dddce6934491e4595",
+          "rcode": 0,
+          "authenticated_data": false,
+          "answer": [
+            {
+              "name": "ns.eunet.ee.",
+              "type": 1,
+              "TTL": 21600,
+              "data": "195.222.0.1"
+            }
+          ]
+        },
+        "AAAA": {
+          "name": "ns.eunet.ee",
+          "type": "AAAA",
+          "url": "https://dns.google/resolve?name=ns.eunet.ee&type=AAAA&do=true",
+          "sha256": "15a720a29ea12d6e771d26bd9ad2b1b4756a69b26494c96ce46fca808b3062af",
+          "rcode": 0,
+          "authenticated_data": false,
+          "answer": [
+            {
+              "name": "ns.eunet.ee.",
+              "type": 28,
+              "TTL": 21600,
+              "data": "2001:ad0::"
+            }
+          ]
+        }
+      }
+    },
+    "legacy_name_server_2": {
+      "name": "ns.data.ee",
+      "geosite_matches": {},
+      "addresses": [
+        {
+          "address": "195.222.4.1",
+          "in_fixed_DIRECT": false,
+          "in_shadow_DIRECT": false,
+          "in_PRIVATE": false
+        },
+        {
+          "address": "2001:ad0::1",
+          "in_fixed_DIRECT": false,
+          "in_shadow_DIRECT": false,
+          "in_PRIVATE": false
+        }
+      ],
+      "dns": {
+        "A": {
+          "name": "ns.data.ee",
+          "type": "A",
+          "url": "https://dns.google/resolve?name=ns.data.ee&type=A&do=true",
+          "sha256": "f8fbf93d41d4aa3eed4834bc31392e8556073872817659baa65518df32c13f4a",
+          "rcode": 0,
+          "authenticated_data": false,
+          "answer": [
+            {
+              "name": "ns.data.ee.",
+              "type": 1,
+              "TTL": 9337,
+              "data": "195.222.4.1"
+            }
+          ]
+        },
+        "AAAA": {
+          "name": "ns.data.ee",
+          "type": "AAAA",
+          "url": "https://dns.google/resolve?name=ns.data.ee&type=AAAA&do=true",
+          "sha256": "ffbf10adb580183337bbf5e17ee04c48f9412aedcc8b883408686eb11603708a",
+          "rcode": 0,
+          "authenticated_data": false,
+          "answer": [
+            {
+              "name": "ns.data.ee.",
+              "type": 28,
+              "TTL": 21600,
+              "data": "2001:ad0::1"
+            }
+          ]
+        }
+      }
+    },
+    "legacy_ntp": {
+      "name": "ntp.data.ee",
+      "geosite_matches": {},
+      "addresses": [
+        {
+          "address": "212.47.200.3",
+          "in_fixed_DIRECT": false,
+          "in_shadow_DIRECT": false,
+          "in_PRIVATE": false
+        },
+        {
+          "address": "212.47.200.5",
+          "in_fixed_DIRECT": false,
+          "in_shadow_DIRECT": false,
+          "in_PRIVATE": false
+        },
+        {
+          "address": "212.47.200.6",
+          "in_fixed_DIRECT": false,
+          "in_shadow_DIRECT": false,
+          "in_PRIVATE": false
+        }
+      ],
+      "dns": {
+        "A": {
+          "name": "ntp.data.ee",
+          "type": "A",
+          "url": "https://dns.google/resolve?name=ntp.data.ee&type=A&do=true",
+          "sha256": "ede3d1a1878a1ff0efb48d699e601cdef120a1c938fb325a831a0cfd2849dd1d",
+          "rcode": 0,
+          "authenticated_data": false,
+          "answer": [
+            {
+              "name": "ntp.data.ee.",
+              "type": 1,
+              "TTL": 21600,
+              "data": "212.47.200.6"
+            },
+            {
+              "name": "ntp.data.ee.",
+              "type": 1,
+              "TTL": 21600,
+              "data": "212.47.200.5"
+            },
+            {
+              "name": "ntp.data.ee.",
+              "type": 1,
+              "TTL": 21600,
+              "data": "212.47.200.3"
+            }
+          ]
+        },
+        "AAAA": {
+          "name": "ntp.data.ee",
+          "type": "AAAA",
+          "url": "https://dns.google/resolve?name=ntp.data.ee&type=AAAA&do=true",
+          "sha256": "926db03a367e563ced50b5172aceb7eed1f3427826903704e1aae3e47f97966a",
+          "rcode": 0,
+          "authenticated_data": false,
+          "answer": []
+        }
+      }
+    },
+    "legacy_webmail": {
+      "name": "webmail.datanet.ee",
+      "geosite_matches": {},
+      "addresses": [
+        {
+          "address": "195.222.0.7",
+          "in_fixed_DIRECT": false,
+          "in_shadow_DIRECT": false,
+          "in_PRIVATE": false
+        }
+      ],
+      "dns": {
+        "A": {
+          "name": "webmail.datanet.ee",
+          "type": "A",
+          "url": "https://dns.google/resolve?name=webmail.datanet.ee&type=A&do=true",
+          "sha256": "a87c751788fd5793143268800a99b8139ca57cbef6f0bf2edb93721ce25e0cbf",
+          "rcode": 0,
+          "authenticated_data": false,
+          "answer": [
+            {
+              "name": "webmail.datanet.ee.",
+              "type": 1,
+              "TTL": 21600,
+              "data": "195.222.0.7"
+            }
+          ]
+        },
+        "AAAA": {
+          "name": "webmail.datanet.ee",
+          "type": "AAAA",
+          "url": "https://dns.google/resolve?name=webmail.datanet.ee&type=AAAA&do=true",
+          "sha256": "fd2a65847e3c741b7bb4c2b601b87d18a25a0d71939ca93791a93e1db0895d44",
+          "rcode": 0,
+          "authenticated_data": false,
+          "answer": []
+        }
+      }
+    },
+    "legacy_mailadmin": {
+      "name": "mailadmin.datanet.ee",
+      "geosite_matches": {},
+      "addresses": [
+        {
+          "address": "195.222.0.7",
+          "in_fixed_DIRECT": false,
+          "in_shadow_DIRECT": false,
+          "in_PRIVATE": false
+        }
+      ],
+      "dns": {
+        "A": {
+          "name": "mailadmin.datanet.ee",
+          "type": "A",
+          "url": "https://dns.google/resolve?name=mailadmin.datanet.ee&type=A&do=true",
+          "sha256": "e20410800b9c1893c96d76115169048237155e8c35295c29f64ba0ea33ac2111",
+          "rcode": 0,
+          "authenticated_data": false,
+          "answer": [
+            {
+              "name": "mailadmin.datanet.ee.",
+              "type": 5,
+              "TTL": 21600,
+              "data": "admin.datanet.ee."
+            },
+            {
+              "name": "admin.datanet.ee.",
+              "type": 1,
+              "TTL": 21600,
+              "data": "195.222.0.7"
+            }
+          ]
+        },
+        "AAAA": {
+          "name": "mailadmin.datanet.ee",
+          "type": "AAAA",
+          "url": "https://dns.google/resolve?name=mailadmin.datanet.ee&type=AAAA&do=true",
+          "sha256": "4c811d7a241e21672fb8503606da71281f0e12f246d6e49a2a1d2261faf1cfac",
+          "rcode": 0,
+          "authenticated_data": false,
+          "answer": [
+            {
+              "name": "mailadmin.datanet.ee.",
+              "type": 5,
+              "TTL": 21600,
+              "data": "admin.datanet.ee."
+            }
+          ]
+        }
+      }
+    },
+    "legacy_smtp": {
+      "name": "mail.datanet.ee",
+      "geosite_matches": {},
+      "addresses": [
+        {
+          "address": "195.222.0.3",
+          "in_fixed_DIRECT": false,
+          "in_shadow_DIRECT": false,
+          "in_PRIVATE": false
+        }
+      ],
+      "dns": {
+        "A": {
+          "name": "mail.datanet.ee",
+          "type": "A",
+          "url": "https://dns.google/resolve?name=mail.datanet.ee&type=A&do=true",
+          "sha256": "f7dc081c87aa2da27025570eeeaebde9c60d5461e869540e848c985187caeb3f",
+          "rcode": 0,
+          "authenticated_data": false,
+          "answer": [
+            {
+              "name": "mail.datanet.ee.",
+              "type": 1,
+              "TTL": 1800,
+              "data": "195.222.0.3"
+            }
+          ]
+        },
+        "AAAA": {
+          "name": "mail.datanet.ee",
+          "type": "AAAA",
+          "url": "https://dns.google/resolve?name=mail.datanet.ee&type=AAAA&do=true",
+          "sha256": "a0ee096b83f79499c934aa070be75797aa5755f06fde8518afb4591033d1f207",
+          "rcode": 0,
+          "authenticated_data": false,
+          "answer": []
+        }
+      }
+    },
+    "legacy_imap": {
+      "name": "imap.datanet.ee",
+      "geosite_matches": {},
+      "addresses": [
+        {
+          "address": "195.222.0.33",
+          "in_fixed_DIRECT": false,
+          "in_shadow_DIRECT": false,
+          "in_PRIVATE": false
+        },
+        {
+          "address": "2001:ad0::33",
+          "in_fixed_DIRECT": false,
+          "in_shadow_DIRECT": false,
+          "in_PRIVATE": false
+        }
+      ],
+      "dns": {
+        "A": {
+          "name": "imap.datanet.ee",
+          "type": "A",
+          "url": "https://dns.google/resolve?name=imap.datanet.ee&type=A&do=true",
+          "sha256": "8b4c92bcfd1f72ffb85acb45ee053353ffe460e5928518445ead3f3980b802b7",
+          "rcode": 0,
+          "authenticated_data": false,
+          "answer": [
+            {
+              "name": "imap.datanet.ee.",
+              "type": 1,
+              "TTL": 21600,
+              "data": "195.222.0.33"
+            }
+          ]
+        },
+        "AAAA": {
+          "name": "imap.datanet.ee",
+          "type": "AAAA",
+          "url": "https://dns.google/resolve?name=imap.datanet.ee&type=AAAA&do=true",
+          "sha256": "0ae147cfe8e0565f16df76560448c7736925f8afdc8742b1036912c9df8c7543",
+          "rcode": 0,
+          "authenticated_data": false,
+          "answer": [
+            {
+              "name": "imap.datanet.ee.",
+              "type": 28,
+              "TTL": 21600,
+              "data": "2001:ad0::33"
+            }
+          ]
+        }
+      }
+    },
+    "legacy_pop3": {
+      "name": "pop3.datanet.ee",
+      "geosite_matches": {},
+      "addresses": [
+        {
+          "address": "195.222.0.33",
+          "in_fixed_DIRECT": false,
+          "in_shadow_DIRECT": false,
+          "in_PRIVATE": false
+        },
+        {
+          "address": "2001:ad0::33",
+          "in_fixed_DIRECT": false,
+          "in_shadow_DIRECT": false,
+          "in_PRIVATE": false
+        }
+      ],
+      "dns": {
+        "A": {
+          "name": "pop3.datanet.ee",
+          "type": "A",
+          "url": "https://dns.google/resolve?name=pop3.datanet.ee&type=A&do=true",
+          "sha256": "782fbdcfd9a590fd065c91f752105a3d8f28d9a196fff09e686a2c4abc1b48c7",
+          "rcode": 0,
+          "authenticated_data": false,
+          "answer": [
+            {
+              "name": "pop3.datanet.ee.",
+              "type": 5,
+              "TTL": 21600,
+              "data": "imap.datanet.ee."
+            },
+            {
+              "name": "imap.datanet.ee.",
+              "type": 1,
+              "TTL": 21600,
+              "data": "195.222.0.33"
+            }
+          ]
+        },
+        "AAAA": {
+          "name": "pop3.datanet.ee",
+          "type": "AAAA",
+          "url": "https://dns.google/resolve?name=pop3.datanet.ee&type=AAAA&do=true",
+          "sha256": "9a44b997dc76d18487d31ce30021a7b8bf1ac3a7c4231c8615ad274d81409c52",
+          "rcode": 0,
+          "authenticated_data": false,
+          "answer": [
+            {
+              "name": "pop3.datanet.ee.",
+              "type": 5,
+              "TTL": 21600,
+              "data": "imap.datanet.ee."
+            },
+            {
+              "name": "imap.datanet.ee.",
+              "type": 28,
+              "TTL": 21600,
+              "data": "2001:ad0::33"
+            }
+          ]
+        }
+      }
+    },
+    "legacy_usage_portal": {
+      "name": "kqview.linxtelecom.com",
+      "geosite_matches": {},
+      "addresses": [
+        {
+          "address": "195.222.0.11",
+          "in_fixed_DIRECT": false,
+          "in_shadow_DIRECT": false,
+          "in_PRIVATE": false
+        }
+      ],
+      "dns": {
+        "A": {
+          "name": "kqview.linxtelecom.com",
+          "type": "A",
+          "url": "https://dns.google/resolve?name=kqview.linxtelecom.com&type=A&do=true",
+          "sha256": "75c639b540f868dd6596a9a45642688a1195aef53c7e1c32ebe01a26fe1cd2ca",
+          "rcode": 0,
+          "authenticated_data": false,
+          "answer": [
+            {
+              "name": "kqview.linxtelecom.com.",
+              "type": 1,
+              "TTL": 300,
+              "data": "195.222.0.11"
+            }
+          ]
+        },
+        "AAAA": {
+          "name": "kqview.linxtelecom.com",
+          "type": "AAAA",
+          "url": "https://dns.google/resolve?name=kqview.linxtelecom.com&type=AAAA&do=true",
+          "sha256": "07b607ed639efdf5a11968d7006f4b04dda86dfb6be6c3d1bd870959da826011",
+          "rcode": 0,
+          "authenticated_data": false,
+          "answer": []
+        }
+      }
+    },
+    "legacy_webhosting": {
+      "name": "www.teiehosting.ee",
+      "geosite_matches": {},
+      "addresses": [],
+      "dns": {
+        "A": {
+          "name": "www.teiehosting.ee",
+          "type": "A",
+          "url": "https://dns.google/resolve?name=www.teiehosting.ee&type=A&do=true",
+          "sha256": "a5f9a46fc268a0bcaf33f09e35f3a8b7d606dbee1929d7b6908ba794428e5471",
+          "rcode": 3,
+          "authenticated_data": true,
+          "answer": []
+        },
+        "AAAA": {
+          "name": "www.teiehosting.ee",
+          "type": "AAAA",
+          "url": "https://dns.google/resolve?name=www.teiehosting.ee&type=AAAA&do=true",
+          "sha256": "eb602c3fe7e8394364b8ff6f67080f01015c23abf8cf2c371990fa3f4ea2a9d2",
+          "rcode": 3,
+          "authenticated_data": true,
+          "answer": []
+        }
+      }
+    },
+    "russian_corporate_domain": {
+      "name": "citictel-cpc.ru",
+      "geosite_matches": {
+        "RU": [
+          "2:ru"
+        ]
+      },
+      "addresses": [
+        {
+          "address": "212.65.65.1",
+          "in_fixed_DIRECT": true,
+          "in_shadow_DIRECT": true,
+          "in_PRIVATE": false
+        },
+        {
+          "address": "2a01:6e0::1",
+          "in_fixed_DIRECT": true,
+          "in_shadow_DIRECT": true,
+          "in_PRIVATE": false
+        }
+      ],
+      "dns": {
+        "A": {
+          "name": "citictel-cpc.ru",
+          "type": "A",
+          "url": "https://dns.google/resolve?name=citictel-cpc.ru&type=A&do=true",
+          "sha256": "6e82d53dab3339358e21b1c271c5afc13c22d62149a273173de40e099d2a3f5b",
+          "rcode": 0,
+          "authenticated_data": false,
+          "answer": [
+            {
+              "name": "citictel-cpc.ru.",
+              "type": 1,
+              "TTL": 21600,
+              "data": "212.65.65.1"
+            }
+          ]
+        },
+        "AAAA": {
+          "name": "citictel-cpc.ru",
+          "type": "AAAA",
+          "url": "https://dns.google/resolve?name=citictel-cpc.ru&type=AAAA&do=true",
+          "sha256": "2bb0605273be26ba1544e5738503c9ed2dcaff29428ac0d86bf962580f44b398",
+          "rcode": 0,
+          "authenticated_data": false,
+          "answer": [
+            {
+              "name": "citictel-cpc.ru.",
+              "type": 28,
+              "TTL": 21600,
+              "data": "2a01:6e0::1"
+            }
+          ]
+        }
+      }
+    },
+    "geofeed_host": {
+      "name": "gf.data.ee",
+      "geosite_matches": {},
+      "addresses": [
+        {
+          "address": "195.222.0.7",
+          "in_fixed_DIRECT": false,
+          "in_shadow_DIRECT": false,
+          "in_PRIVATE": false
+        }
+      ],
+      "dns": {
+        "A": {
+          "name": "gf.data.ee",
+          "type": "A",
+          "url": "https://dns.google/resolve?name=gf.data.ee&type=A&do=true",
+          "sha256": "2da73e7894d22cb35da1a3962d4dedf52d3575b1755eb9cb5f3b4a8b8edc687a",
+          "rcode": 0,
+          "authenticated_data": false,
+          "answer": [
+            {
+              "name": "gf.data.ee.",
+              "type": 1,
+              "TTL": 21600,
+              "data": "195.222.0.7"
+            }
+          ]
+        },
+        "AAAA": {
+          "name": "gf.data.ee",
+          "type": "AAAA",
+          "url": "https://dns.google/resolve?name=gf.data.ee&type=AAAA&do=true",
+          "sha256": "043be3306fd5902121ed3d3b013edc13e639bd84c353c6d97e120fad7a140b7f",
+          "rcode": 0,
+          "authenticated_data": false,
+          "answer": []
+        }
+      }
+    }
+  },
+  "exact_loopbacks": {
+    "2001:ad0:cff::18": {
+      "address": "2001:ad0:cff::18",
+      "in_fixed_DIRECT": false,
+      "in_shadow_DIRECT": true,
+      "in_PRIVATE": false,
+      "ptr": "r8-lo0-0-Mow-M9-RU.bb.citictel-cpc.com.",
+      "geosite_matches": {},
+      "a_record": {
+        "name": "r8-lo0-0-Mow-M9-RU.bb.citictel-cpc.com.",
+        "type": "A",
+        "url": "https://dns.google/resolve?name=r8-lo0-0-Mow-M9-RU.bb.citictel-cpc.com.&type=A&do=true",
+        "sha256": "b6d14e51d28ed8055f67071902a033edd6868e273909d7b205262b1eaa65971d",
+        "rcode": 0,
+        "authenticated_data": false,
+        "answer": [
+          {
+            "name": "r8-lo0-0-Mow-M9-RU.bb.citictel-cpc.com.",
+            "type": 1,
+            "TTL": 3600,
+            "data": "62.128.122.18"
+          },
+          {
+            "name": "r8-lo0-0-Mow-M9-RU.bb.citictel-cpc.com.",
+            "type": 1,
+            "TTL": 3600,
+            "data": "62.128.122.118"
+          }
+        ]
+      },
+      "public_service_exact_aaaa_match": []
+    },
+    "2001:ad0:cff::19": {
+      "address": "2001:ad0:cff::19",
+      "in_fixed_DIRECT": false,
+      "in_shadow_DIRECT": true,
+      "in_PRIVATE": false,
+      "ptr": "r4-lo0-0-Spb-Rep-RU.bb.citictel-cpc.com.",
+      "geosite_matches": {},
+      "a_record": {
+        "name": "r4-lo0-0-Spb-Rep-RU.bb.citictel-cpc.com.",
+        "type": "A",
+        "url": "https://dns.google/resolve?name=r4-lo0-0-Spb-Rep-RU.bb.citictel-cpc.com.&type=A&do=true",
+        "sha256": "8fb3e26947529f867b6623a47361b8fac1d0feaee9cdd300ddca191b5ed3219f",
+        "rcode": 0,
+        "authenticated_data": false,
+        "answer": [
+          {
+            "name": "r4-lo0-0-Spb-Rep-RU.bb.citictel-cpc.com.",
+            "type": 1,
+            "TTL": 3600,
+            "data": "62.128.122.19"
+          },
+          {
+            "name": "r4-lo0-0-Spb-Rep-RU.bb.citictel-cpc.com.",
+            "type": 1,
+            "TTL": 3600,
+            "data": "62.128.122.119"
+          }
+        ]
+      },
+      "public_service_exact_aaaa_match": []
+    },
+    "2001:ad0:cff::21": {
+      "address": "2001:ad0:cff::21",
+      "in_fixed_DIRECT": false,
+      "in_shadow_DIRECT": true,
+      "in_PRIVATE": false,
+      "ptr": "r8-lo0-0-Spb-Rep-RU.bb.citictel-cpc.com.",
+      "geosite_matches": {},
+      "a_record": {
+        "name": "r8-lo0-0-Spb-Rep-RU.bb.citictel-cpc.com.",
+        "type": "A",
+        "url": "https://dns.google/resolve?name=r8-lo0-0-Spb-Rep-RU.bb.citictel-cpc.com.&type=A&do=true",
+        "error": "<urlopen error timed out>"
+      },
+      "public_service_exact_aaaa_match": []
+    },
+    "2001:ad0:cff::253": {
+      "address": "2001:ad0:cff::253",
+      "in_fixed_DIRECT": false,
+      "in_shadow_DIRECT": true,
+      "in_PRIVATE": false,
+      "ptr": "rr1-lo0-0-Mow-M9-RU.bb.citictel-cpc.com.",
+      "geosite_matches": {},
+      "a_record": {
+        "name": "rr1-lo0-0-Mow-M9-RU.bb.citictel-cpc.com.",
+        "type": "A",
+        "url": "https://dns.google/resolve?name=rr1-lo0-0-Mow-M9-RU.bb.citictel-cpc.com.&type=A&do=true",
+        "error": "<urlopen error timed out>"
+      },
+      "public_service_exact_aaaa_match": []
+    },
+    "2001:ad0:cff::31": {
+      "address": "2001:ad0:cff::31",
+      "in_fixed_DIRECT": false,
+      "in_shadow_DIRECT": true,
+      "in_PRIVATE": false,
+      "ptr": "r4-lo0-0-Mow-M9-RU.bb.citictel-cpc.com.",
+      "geosite_matches": {},
+      "a_record": {
+        "name": "r4-lo0-0-Mow-M9-RU.bb.citictel-cpc.com.",
+        "type": "A",
+        "url": "https://dns.google/resolve?name=r4-lo0-0-Mow-M9-RU.bb.citictel-cpc.com.&type=A&do=true",
+        "error": "<urlopen error timed out>"
+      },
+      "public_service_exact_aaaa_match": []
+    },
+    "2001:ad0:cff::6": {
+      "address": "2001:ad0:cff::6",
+      "in_fixed_DIRECT": false,
+      "in_shadow_DIRECT": true,
+      "in_PRIVATE": false,
+      "ptr": "r9-lo0-0-Mow-M9-RU.bb.citictel-cpc.com.",
+      "geosite_matches": {},
+      "a_record": {
+        "name": "r9-lo0-0-Mow-M9-RU.bb.citictel-cpc.com.",
+        "type": "A",
+        "url": "https://dns.google/resolve?name=r9-lo0-0-Mow-M9-RU.bb.citictel-cpc.com.&type=A&do=true",
+        "error": "<urlopen error timed out>"
+      },
+      "public_service_exact_aaaa_match": []
+    },
+    "2001:ad0:cff::76": {
+      "address": "2001:ad0:cff::76",
+      "in_fixed_DIRECT": false,
+      "in_shadow_DIRECT": true,
+      "in_PRIVATE": false,
+      "ptr": "r8-lo0-0-Mow-Mar8-RU.bb.citictel-cpc.com.",
+      "geosite_matches": {},
+      "a_record": {
+        "name": "r8-lo0-0-Mow-Mar8-RU.bb.citictel-cpc.com.",
+        "type": "A",
+        "url": "https://dns.google/resolve?name=r8-lo0-0-Mow-Mar8-RU.bb.citictel-cpc.com.&type=A&do=true",
+        "sha256": "65d3420f418195f0af352607156086792b9527f99442ae98185d15e10206634d",
+        "rcode": 0,
+        "authenticated_data": false,
+        "answer": [
+          {
+            "name": "r8-lo0-0-Mow-Mar8-RU.bb.citictel-cpc.com.",
+            "type": 1,
+            "TTL": 3600,
+            "data": "62.128.122.176"
+          },
+          {
+            "name": "r8-lo0-0-Mow-Mar8-RU.bb.citictel-cpc.com.",
+            "type": 1,
+            "TTL": 3600,
+            "data": "62.128.122.76"
+          }
+        ]
+      },
+      "public_service_exact_aaaa_match": []
+    },
+    "2001:ad0:cff::77": {
+      "address": "2001:ad0:cff::77",
+      "in_fixed_DIRECT": false,
+      "in_shadow_DIRECT": true,
+      "in_PRIVATE": false,
+      "ptr": "r9-lo0-0-Mow-Mar8-RU.bb.citictel-cpc.com.",
+      "geosite_matches": {},
+      "a_record": {
+        "name": "r9-lo0-0-Mow-Mar8-RU.bb.citictel-cpc.com.",
+        "type": "A",
+        "url": "https://dns.google/resolve?name=r9-lo0-0-Mow-Mar8-RU.bb.citictel-cpc.com.&type=A&do=true",
+        "sha256": "13d7fa2ac1240d7c8014ca3aab1290347c5dd30c2c7e3fed1e973172a96adb58",
+        "rcode": 0,
+        "authenticated_data": false,
+        "answer": [
+          {
+            "name": "r9-lo0-0-Mow-Mar8-RU.bb.citictel-cpc.com.",
+            "type": 1,
+            "TTL": 3600,
+            "data": "62.128.122.77"
+          },
+          {
+            "name": "r9-lo0-0-Mow-Mar8-RU.bb.citictel-cpc.com.",
+            "type": 1,
+            "TTL": 3600,
+            "data": "62.128.122.177"
+          }
+        ]
+      },
+      "public_service_exact_aaaa_match": []
+    },
+    "2001:ad0:cff::78": {
+      "address": "2001:ad0:cff::78",
+      "in_fixed_DIRECT": false,
+      "in_shadow_DIRECT": true,
+      "in_PRIVATE": false,
+      "ptr": "r14-lo0-0-Mow-Mar8-RU.bb.citictel-cpc.com.",
+      "geosite_matches": {},
+      "a_record": {
+        "name": "r14-lo0-0-Mow-Mar8-RU.bb.citictel-cpc.com.",
+        "type": "A",
+        "url": "https://dns.google/resolve?name=r14-lo0-0-Mow-Mar8-RU.bb.citictel-cpc.com.&type=A&do=true",
+        "sha256": "0603a74f04d870d80384d05e2bf7daac1747d4b9082113618fd56cfcd96d5f01",
+        "rcode": 0,
+        "authenticated_data": false,
+        "answer": [
+          {
+            "name": "r14-lo0-0-Mow-Mar8-RU.bb.citictel-cpc.com.",
+            "type": 1,
+            "TTL": 3600,
+            "data": "62.128.122.178"
+          },
+          {
+            "name": "r14-lo0-0-Mow-Mar8-RU.bb.citictel-cpc.com.",
+            "type": 1,
+            "TTL": 3600,
+            "data": "62.128.122.78"
+          }
+        ]
+      },
+      "public_service_exact_aaaa_match": []
+    },
+    "2001:ad0:cff::8": {
+      "address": "2001:ad0:cff::8",
+      "in_fixed_DIRECT": false,
+      "in_shadow_DIRECT": true,
+      "in_PRIVATE": false,
+      "ptr": "r9-lo0-0-Spb-K12-RU.bb.citictel-cpc.com.",
+      "geosite_matches": {},
+      "a_record": {
+        "name": "r9-lo0-0-Spb-K12-RU.bb.citictel-cpc.com.",
+        "type": "A",
+        "url": "https://dns.google/resolve?name=r9-lo0-0-Spb-K12-RU.bb.citictel-cpc.com.&type=A&do=true",
+        "sha256": "9583abf97749dd05766bee5b6ca9ec56d622bfc6007065c016b188172d5e9f1b",
+        "rcode": 0,
+        "authenticated_data": false,
+        "answer": [
+          {
+            "name": "r9-lo0-0-Spb-K12-RU.bb.citictel-cpc.com.",
+            "type": 1,
+            "TTL": 3600,
+            "data": "62.128.122.8"
+          },
+          {
+            "name": "r9-lo0-0-Spb-K12-RU.bb.citictel-cpc.com.",
+            "type": 1,
+            "TTL": 3600,
+            "data": "62.128.122.108"
+          }
+        ]
+      },
+      "public_service_exact_aaaa_match": []
+    }
+  },
+  "policy": "Checking exact known service destinations and routing matches is separate from testing arbitrary ports on backbone routers."
+}

@@ -1,0 +1,248 @@
+{
+  "parent_local_peers": {
+    "url": "https://stat.ripe.net/data/looking-glass/data.json?resource=2001%3Aad0%3A%3A%2F32",
+    "sha256": "0ed279ddfde8cd8bd61a9b4b8805dc5435eec23eb7763bfa78d5f93c75c024e3",
+    "data": {
+      "query_time": "2026-11-14T12:09:59",
+      "latest_time": "2026-11-14T12:09:03",
+      "collector_count": 23,
+      "selected_collectors": [
+        {
+          "rrc": "RRC00",
+          "location": "Amsterdam, NL",
+          "peer_paths": 32
+        },
+        {
+          "rrc": "RRC12",
+          "location": "Frankfurt, DE",
+          "peer_paths": 34
+        },
+        {
+          "rrc": "RRC07",
+          "location": "Stockholm, SE",
+          "peer_paths": 10
+        },
+        {
+          "rrc": "RRC13",
+          "location": "Moscow, RU",
+          "peer_paths": [
+            {
+              "prefix": "2001:ad0::/32",
+              "asn_origin": "3327",
+              "as_path": "28917 3327",
+              "next_hop": "2001:7f8:20:101::208:147",
+              "last_updated": "2026-09-12T07:46:24.370000",
+              "latest_time": "2026-11-14T12:09:55.600000"
+            },
+            {
+              "prefix": "2001:ad0::/32",
+              "asn_origin": "3327",
+              "as_path": "20764 3216 3327",
+              "next_hop": "2001:7f8:20:101::208:223",
+              "last_updated": "2026-08-31T13:39:01.920000",
+              "latest_time": "2026-11-14T12:09:55.620000",
+              "moscow_ingress_community": true
+            },
+            {
+              "prefix": "2001:ad0::/32",
+              "asn_origin": "3327",
+              "as_path": "24482 3327",
+              "next_hop": "2001:7f8:20:101::209:109",
+              "last_updated": "2026-10-27T19:07:36.060000",
+              "latest_time": "2026-11-14T12:09:55.620000"
+            },
+            {
+              "prefix": "2001:ad0::/32",
+              "asn_origin": "3327",
+              "as_path": "41722 3327",
+              "next_hop": "2001:7f8:20:101::208:151",
+              "last_updated": "2026-09-12T08:00:28.040000",
+              "latest_time": "2026-11-14T12:09:54.610000"
+            },
+            {
+              "prefix": "2001:ad0::/32",
+              "asn_origin": "3327",
+              "as_path": "28917 3327",
+              "next_hop": "195.208.208.147",
+              "last_updated": "2026-09-12T07:46:24.300000",
+              "latest_time": "2026-11-14T12:09:55.590000"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "loopback_cover_lookup": {
+    "url": "https://stat.ripe.net/data/looking-glass/data.json?resource=2001%3Aad0%3Acff%3A%3A6%2F128",
+    "sha256": "d689b8da4eedaf4a3325bec05b7e17608be2b2f8425604eb8378c008bc09037f",
+    "data": {
+      "query_time": "2026-11-14T12:09:58",
+      "latest_time": "2026-11-14T12:09:03",
+      "collector_count": 0,
+      "selected_collectors": []
+    }
+  },
+  "loopback_scope": {
+    "url": "https://stat.ripe.net/data/routing-status/data.json?resource=2001%3Aad0%3Acff%3A%3A%2F48&min_peers_seeing=2",
+    "sha256": "966b8869f6e04948f78bec18335442929125f7ffc65917df2ee16cd4cdb7fb36",
+    "data": {
+      "first_seen": {},
+      "last_seen": {},
+      "visibility": {
+        "v4": {
+          "ris_peers_seeing": 0,
+          "total_ris_peers": 0
+        },
+        "v6": {
+          "ris_peers_seeing": 0,
+          "total_ris_peers": 310
+        }
+      },
+      "origins": [],
+      "less_specifics": [
+        {
+          "prefix": "2000::/6",
+          "origin": 29632
+        },
+        {
+          "prefix": "2001:ad0::/32",
+          "origin": 3327
+        }
+      ],
+      "more_specifics": [],
+      "resource": "2001:ad0:cff::/48",
+      "query_time": "2026-11-14T00:00:00"
+    }
+  },
+  "as12976_exact_prefixes": {
+    "url": "https://stat.ripe.net/data/announced-prefixes/data.json?resource=AS12976&starttime=2026-11-07&endtime=2026-11-14",
+    "sha256": "4357c804426ea09e9fe3be956bd024b536e18863f96679cf68860559258f79e8",
+    "data": {
+      "prefixes": [
+        {
+          "prefix": "213.152.128.0/19",
+          "timelines": [
+            {
+              "starttime": "2026-11-07T00:00:00",
+              "endtime": "2026-11-14T00:00:00"
+            }
+          ]
+        },
+        {
+          "prefix": "2a01:6e0::/32",
+          "timelines": [
+            {
+              "starttime": "2026-11-07T00:00:00",
+              "endtime": "2026-11-14T00:00:00"
+            }
+          ]
+        },
+        {
+          "prefix": "212.65.64.0/19",
+          "timelines": [
+            {
+              "starttime": "2026-11-07T00:00:00",
+              "endtime": "2026-11-14T00:00:00"
+            }
+          ]
+        }
+      ],
+      "query_starttime": "2026-11-07T00:00:00",
+      "query_endtime": "2026-11-14T00:00:00",
+      "resource": "12976",
+      "latest_time": "2026-11-14T00:00:00",
+      "earliest_time": "2000-08-01T00:00:00"
+    }
+  },
+  "as12976_v6_roa": {
+    "url": "https://stat.ripe.net/data/rpki-validation/data.json?resource=AS12976&prefix=2a01%3A6e0%3A%3A%2F32",
+    "sha256": "ce5335eb6083aa10667cf6e2bd077982c95f2f124741f827bb617c3d2bf4e7c2",
+    "data": {
+      "resource": "12976",
+      "prefix": "2a01:6e0::/32",
+      "validating_roas": [
+        {
+          "origin": "12976",
+          "prefix": "2a01:6e0::/32",
+          "validity": "valid",
+          "max_length": 32
+        }
+      ],
+      "status": "valid",
+      "validator": "routinator"
+    }
+  },
+  "as12976_v6_local_peers": {
+    "url": "https://stat.ripe.net/data/looking-glass/data.json?resource=2a01%3A6e0%3A%3A%2F32",
+    "sha256": "7a25df9e7bc66972ff60adb6b576ac7e64bbdc352a19b1576c40af815a50612d",
+    "data": {
+      "query_time": "2026-11-14T12:10:06",
+      "latest_time": "2026-11-14T12:09:46",
+      "collector_count": 23,
+      "selected_collectors": [
+        {
+          "rrc": "RRC00",
+          "location": "Amsterdam, NL",
+          "peer_paths": 32
+        },
+        {
+          "rrc": "RRC12",
+          "location": "Frankfurt, DE",
+          "peer_paths": 34
+        },
+        {
+          "rrc": "RRC07",
+          "location": "Stockholm, SE",
+          "peer_paths": 10
+        },
+        {
+          "rrc": "RRC13",
+          "location": "Moscow, RU",
+          "peer_paths": [
+            {
+              "prefix": "2a01:6e0::/32",
+              "asn_origin": "12976",
+              "as_path": "28917 12976",
+              "next_hop": "2001:7f8:20:101::208:147",
+              "last_updated": "2026-08-18T18:00:40.420000",
+              "latest_time": "2026-11-14T12:10:02.610000"
+            },
+            {
+              "prefix": "2a01:6e0::/32",
+              "asn_origin": "12976",
+              "as_path": "20764 3216 3327 12976",
+              "next_hop": "2001:7f8:20:101::208:223",
+              "last_updated": "2026-08-31T13:39:02.930000",
+              "latest_time": "2026-11-14T12:10:03.620000",
+              "moscow_ingress_community": true
+            },
+            {
+              "prefix": "2a01:6e0::/32",
+              "asn_origin": "12976",
+              "as_path": "24482 12976",
+              "next_hop": "2001:7f8:20:101::208:209",
+              "last_updated": "2026-10-12T11:49:39.750000",
+              "latest_time": "2026-11-14T12:10:03.620000"
+            },
+            {
+              "prefix": "2a01:6e0::/32",
+              "asn_origin": "12976",
+              "as_path": "41722 12976",
+              "next_hop": "2001:7f8:20:101::208:209",
+              "last_updated": "2026-09-09T09:32:53.050000",
+              "latest_time": "2026-11-14T12:10:01.610000"
+            },
+            {
+              "prefix": "2a01:6e0::/32",
+              "asn_origin": "12976",
+              "as_path": "28917 12976",
+              "next_hop": "195.208.208.147",
+              "last_updated": "2026-08-18T18:04:48.760000",
+              "latest_time": "2026-11-14T12:10:03.600000"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}
