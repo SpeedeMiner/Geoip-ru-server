@@ -273,3 +273,8 @@ See [v41 release hardening](V41_RELEASE_HARDENING.md). Routing-policy changes ar
 - Baseline is main `2ef37c4`, release `c605a38`, [production run 43579021611](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43579021611), DAT SHA-256 `8d807b8d6069791b2e006bc561c4c69cc1a3172521cde0271c62b9305ce1c391`.
 - Reconstruct v37 additional-feed eligibility **before** the block carve using the production-pinned Grimbird, Digne, Davoyan and Golukon inputs. Grimbird+Digne count as one logical group. Subtract already-trusted sources and selected ASN coverage to avoid re-opening the previously reviewed geography-only cohort.
 - Check only effective resolver-only exclusions outside DIRECT, PRIVATE, hard, Telegram and explicit regional admission exclusions. Require exact independent evidence before changing coverage. Work stays on this branch, outside PR #5 and production. Next checkpoint: record reconstructed address-space totals and exact candidates.
+
+### Checkpoint — reconstructed production eligibility
+
+- All seven pinned DAT inputs verified by SHA-256 and size. Reconstructed post-carve additional coverage matches the published v37 provenance exactly in both families (162 CIDRs). Before the v37 carve: 16,926 IPv4. After the carve: 16,844 IPv4.
+- All 82 removed IPv4 are already in the published v41 DIRECT set. IPv6 had zero v37 carve loss. Remaining v41 resolver-only loss: **0 IPv4 and 0 IPv6**. No routing-table change is justified by this snapshot. Next checkpoint: attribute all 82 restorations, check the accepted set against final DAT, and pin the machine-readable result.
