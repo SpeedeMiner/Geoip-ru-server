@@ -26,6 +26,7 @@ SOURCES = {
     "loyalsoldier-by": "loyalsoldier-by.dat",
 }
 GROUPS = (("grimbird", "digne"), ("davoyan",), ("golukon",))
+ADDITIONAL = tuple(source for group in GROUPS for source in group)
 
 
 def category_allowed(source, tag):
@@ -49,16 +50,25 @@ def read_cidrs(path):
     return parse_cidr_file(path)[0]
 
 
+def dedupe_layers(f, m):
+    return normalize_interval_union(f["v2fly"], f["loyalsoldier"], f["loyalsoldier-by"],
+                                    m["private"], m["asn"])
+
+
 def additional_eligibility(f, m):
     groups = [normalize_interval_union(*(f[k] for k in group)) for group in GROUPS]
     all_additional = normalize_interval_union(*groups)
     two = normalize_interval_union(intersect(groups[0], groups[1]),
                                    intersect(groups[0], groups[2]), intersect(groups[1], groups[2]))
-    trusted = normalize_interval_union(f["v2fly"], f["loyalsoldier"], f["loyalsoldier-by"])
     eligible = normalize_interval_union(two, intersect(all_additional, m["asn"]),
                                         intersect(all_additional, m["rir_ru"]))
-    eligible = subtract(eligible, normalize_interval_union(trusted, m["private"], m["asn"]))
+    eligible = subtract(eligible, dedupe_layers(f, m))
     return all_additional, two, eligible
+
+
+def unconfirmed_additional_space(all_additional, eligible, f, m):
+    """Remove coverage already accepted by v37 or supplied by its dedupe layers."""
+    return subtract(all_additional, normalize_interval_union(eligible, dedupe_layers(f, m)))
 
 
 def resolver_only_loss(eligible, m):
@@ -74,15 +84,17 @@ def future_resolver_exposure(eligible, direct, admitted, protected):
     return current_direct, no_protection, no_readmission
 
 
-def source_labels(path):
+def source_label_intervals(path):
     rows = {}
     for line in path.read_text(encoding="utf-8").splitlines():
         if not line.strip() or line.startswith("#"):
             continue
         prefix, _, comment = line.partition("#")
         label = comment.strip().removeprefix("sources=")
-        rows[ip_network(prefix.strip())] = label.split(",") if label else []
-    return rows
+        network = ip_network(prefix.strip())
+        for name in label.split(",") if label else ():
+            rows.setdefault((network.version, name), set()).add(network)
+    return {(version, label): intervals(nets, version) for (version, label), nets in rows.items()}
 
 
 def calculate(artifact, source_dir, admission_file, telegram_file):
@@ -163,8 +175,8 @@ def calculate(artifact, source_dir, admission_file, telegram_file):
     }
     if not (admission_ids | protection_ids) <= additions.keys():
         raise ValueError("Missing v41 provenance source")
-    resolver_labels = source_labels(paths["blocked_resolver_only"])
-    totals, exposure, candidates, restored_rows, removed_rows = {}, {}, [], [], []
+    resolver_labels = source_label_intervals(paths["blocked_resolver_only"])
+    totals, exposure, negative_control, candidates, restored_rows, removed_rows = {}, {}, {}, [], [], []
     for v in (4, 6):
         f = {k: intervals(nets, v) for k, nets in feeds.items()}
         m = {k: intervals(nets, v) for k, nets in masks.items()}
@@ -174,6 +186,21 @@ def calculate(artifact, source_dir, admission_file, telegram_file):
             raise ValueError(f"Reconstructed additional eligibility does not match published v37 evidence (IPv{v})")
         raw_lost = intersect(eligible, m["approved"])
         resolver_lost = resolver_only_loss(eligible, m)
+        single_group = unconfirmed_additional_space(all_additional, eligible, f, m)
+        if intersect(single_group, two) or intersect(single_group, m["rir_ru"]):
+            raise ValueError(f"Negative control contains accepted source evidence (IPv{v})")
+        outside_scope = resolver_only_loss(single_group, m)
+        negative_control[f"ipv{v}"] = {
+            "one_group_unconfirmed_space": interval_size(single_group),
+            "overlap_with_v37_approved_carve": interval_size(intersect(single_group, m["approved"])),
+            "v41_already_direct_from_other_layers": interval_size(intersect(single_group, m["direct"])),
+            "outside_scope_effective_resolver_space": interval_size(outside_scope),
+            "outside_scope_source_overlap": {
+                k: interval_size(intersect(outside_scope, f[k])) for k in ADDITIONAL
+            },
+            "outside_scope_effective_resolver_cidrs": [
+                str(n) for n in sorted(networks_from_intervals(outside_scope, v))],
+        }
         if intersect(resolver_lost, raw_lost) != resolver_lost:
             raise ValueError(f"Effective resolver exclusions diverge from the v37 approved union (IPv{v})")
         lost_after_v37 = subtract(post_carve, m["direct"])
@@ -227,10 +254,11 @@ def calculate(artifact, source_dir, admission_file, telegram_file):
         if already_direct:
             scoped = {key: intersect(source_intervals[key], already_direct)
                       for key in admission_ids | protection_ids}
+            scoped_labels = {label: intersect(addresses, already_direct)
+                             for (version, label), addresses in resolver_labels.items() if version == v}
             for net in sorted(networks_from_intervals(already_direct, v)):
                 exact = intervals({net}, v)
-                feed_hits = {key: interval_size(intersect(exact, value))
-                             for key, value in f.items() if key in {s for group in GROUPS for s in group}}
+                feed_hits = {key: interval_size(intersect(exact, f[key])) for key in ADDITIONAL}
                 admission_hits = {key: interval_size(intersect(exact, scoped[key]))
                                   for key in sorted(admission_ids) if intersect(exact, scoped[key])}
                 protection_hits = {key: interval_size(intersect(exact, scoped[key]))
@@ -239,8 +267,7 @@ def calculate(artifact, source_dir, admission_file, telegram_file):
                     raise ValueError(f"No v41 re-admission source for {net}")
                 if subtract(exact, protected):
                     raise ValueError(f"No v41 resolver protection source for {net}")
-                labels = sorted({label for prefix, values in resolver_labels.items()
-                                 if prefix.version == net.version and prefix.overlaps(net) for label in values})
+                labels = sorted(label for label, value in scoped_labels.items() if intersect(exact, value))
                 restored_rows.append({
                     "prefix": str(net), "addresses": net.num_addresses,
                     "source_overlap_addresses": feed_hits,
@@ -253,7 +280,7 @@ def calculate(artifact, source_dir, admission_file, telegram_file):
             candidates.append({
                 "prefix": str(net), "addresses": net.num_addresses,
                 "source_overlap_addresses": {
-                    k: interval_size(intersect(exact, f[k])) for group in GROUPS for k in group
+                    k: interval_size(intersect(exact, f[k])) for k in ADDITIONAL
                 },
                 "two_group_addresses": interval_size(intersect(exact, two)),
                 "rir_ru_addresses": interval_size(intersect(exact, m["rir_ru"])),
@@ -263,7 +290,7 @@ def calculate(artifact, source_dir, admission_file, telegram_file):
             "input_provenance_sha256": sha(provenance), "locked_dat_sha256": feed_sha,
             "prefix_provenance_sha256": sha(prefix_provenance), "exposure": exposure,
             "totals": totals, "restored": restored_rows, "removed_after_v37": removed_rows,
-            "candidates": candidates}
+            "candidates": candidates, "unconfirmed_single_group_negative_control": negative_control}
 
 
 def main():

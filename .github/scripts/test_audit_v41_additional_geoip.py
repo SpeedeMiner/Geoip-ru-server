@@ -2,6 +2,7 @@ import unittest
 
 from audit_v41_additional_geoip import (
     additional_eligibility, category_allowed, future_resolver_exposure, resolver_only_loss,
+    unconfirmed_additional_space,
 )
 
 
@@ -16,6 +17,7 @@ class AdditionalGeoIPAuditTests(unittest.TestCase):
         self.assertEqual(union, [(1, 5), (7, 9)])
         self.assertEqual(two_groups, [(3, 4)])
         self.assertEqual(eligible, [(7, 7)])
+        self.assertEqual(unconfirmed_additional_space(union, eligible, feeds, masks), [(1, 2), (5, 5)])
 
     def test_only_effective_resolver_loss_and_no_hard_private_or_admission(self):
         masks = {
