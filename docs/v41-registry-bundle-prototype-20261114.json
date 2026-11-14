@@ -1,0 +1,37 @@
+{
+  "bundle_bytes": 4811374,
+  "bundle_sha256": "2844d222c81c0ba7d56cdf3296c2f7bc351034b2e8f5f08a0259368cfc99bf9b",
+  "files": {
+    "delegated-afrinic-latest": {
+      "sha256": "21b55a80a32138e0c7e037cb7327109dfeee95d2debb3453cdb62f3745b809ab",
+      "size": 496308
+    },
+    "delegated-apnic-latest": {
+      "sha256": "ddf23b8b3315cd810952d464a900c8c3642f0c6e04033f8c063db65ba7fde9c6",
+      "size": 4357044
+    },
+    "delegated-arin-extended-latest": {
+      "sha256": "181a2f71061541e70282880056c9ee2d2ab05fe6c31d3efed242a14d67d0c23a",
+      "size": 12915003
+    },
+    "delegated-lacnic-latest": {
+      "sha256": "e20a8c5e3e8d754f4a011ccd148d749a7d53cc73df86b8381efd42cf8eb73ae2",
+      "size": 2325304
+    },
+    "delegated-ripencc-latest": {
+      "sha256": "625378fa5a610dcc9c0b3d85c3cf342d0bbba7d37389bd3c474ae63c2cc7182b",
+      "size": 8314021
+    },
+    "iana-ipv4-special-registry.csv": {
+      "sha256": "cbc4b7653c8bc640ba1e8e5d4ebbf11e7c7a1d867e7f1593aad001d3f8632aac",
+      "size": 2445
+    },
+    "iana-ipv6-special-registry.csv": {
+      "sha256": "bf56772aef97fbf9b4a27c98b8511f2bb1ba96da4b9ccc12ab203a2496faba66",
+      "size": 2300
+    }
+  },
+  "input_bytes": 28412425,
+  "provenance_sha256": "f6fd085b8f1e9b37598f1c0526d61d105f669989f4cb872bad43810dc94dd324",
+  "schema": 1
+}
