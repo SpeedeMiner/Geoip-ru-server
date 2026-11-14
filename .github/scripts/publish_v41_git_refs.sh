@@ -48,6 +48,7 @@ else
   [[ "$status" == 2 ]] || exit "$status"
 fi
 git -C "$dest" tag "$snapshot"
+# Publish the snapshot tag only. Moving release must wait for asset readback.
 GIT_TERMINAL_PROMPT=0 git -C "$dest" "${auth[@]}" push --atomic origin \
-  HEAD:refs/heads/release "refs/tags/$snapshot"
-printf 'snapshot=%s\n' "$snapshot" >> "$GITHUB_OUTPUT"
+  "refs/tags/$snapshot"
+printf 'snapshot=%s\nsnapshot_sha=%s\n' "$snapshot" "$(git -C "$dest" rev-parse HEAD)" >> "$GITHUB_OUTPUT"

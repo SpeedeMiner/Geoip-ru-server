@@ -549,8 +549,8 @@ jobs:
           REVIEWED_SHA: ${{ inputs.reviewed_geoip_sha256 }}
         run: bash ../.github/scripts/verify_v41_publication_candidate.sh
 
-      - name: Publish release branch and versioned snapshot tag
-        id: release_ref
+      - name: Stage the versioned snapshot tag
+        id: snapshot_ref
         shell: bash
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -561,8 +561,16 @@ jobs:
         shell: bash
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SNAPSHOT_TAG: ${{ steps.release_ref.outputs.snapshot }}
+          SNAPSHOT_TAG: ${{ steps.snapshot_ref.outputs.snapshot }}
         run: bash ../.github/scripts/publish_v41_snapshot_release.sh
+
+      - name: Verify the published archive and promote the release branch
+        shell: bash
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SNAPSHOT_TAG: ${{ steps.snapshot_ref.outputs.snapshot }}
+          SNAPSHOT_SHA: ${{ steps.snapshot_ref.outputs.snapshot_sha }}
+        run: bash ../.github/scripts/promote_v41_release.sh
 
       - name: Publish GitHub Release
         # v3.0.3; pin the action implementation to an immutable commit.
