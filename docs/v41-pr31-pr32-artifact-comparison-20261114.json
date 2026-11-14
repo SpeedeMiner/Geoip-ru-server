@@ -1,0 +1,40 @@
+{
+  "zip_sha256": {
+    "pr31": "9e077397be21490576da293f156391e494b01ee40bae1d08e10873964f87ca4c",
+    "pr32": "257aecb9a9b639273afcdec0b8f2b8f32b0e8c80e5b5ff91c17ffa7a7f0e30e7"
+  },
+  "members": {
+    "pr31": 60,
+    "pr32": 61,
+    "shared": 60
+  },
+  "only_pr31": [],
+  "only_pr32": [
+    "as-ip-blocks.tar.gz"
+  ],
+  "byte_identical_shared": 54,
+  "different_shared": [
+    "geoip_RU_BY_KZ_asn_stats.txt",
+    "geoip_RU_BY_KZ_rir_stats.txt",
+    "geoip_RU_quality_report.txt",
+    "geoip_RU_rir_stats.txt",
+    "geoip_RU_v37_base_quality_report.txt",
+    "geoip_RU_v41_manifest.json"
+  ],
+  "different_after_timestamp_normalization": [],
+  "manifest_changed_fields": [
+    "generated_at"
+  ],
+  "geoip_dat": [
+    1738277,
+    "2735053560ebd598cbdcd71ccf858806d4b955a17e2eac512a7baf249d43653a"
+  ],
+  "effective_mask": [
+    2021103,
+    "da3949ad119013db9a8237d322c63411234c201079f8506af3e51dc6051b0b6a"
+  ],
+  "ipverse_archive": [
+    16268982,
+    "d34d00d59ec419fec991d860af290b557a47b8e2f9596688b9bd11b0e4103d02"
+  ]
+}

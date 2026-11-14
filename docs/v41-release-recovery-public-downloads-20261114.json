@@ -1,0 +1,82 @@
+[
+  {
+    "surface": "snapshot",
+    "tag": "geoip-v41-snapshot-43587602958.1",
+    "name": "geoip_RU.dat",
+    "size": 1738277,
+    "sha256": "2735053560ebd598cbdcd71ccf858806d4b955a17e2eac512a7baf249d43653a",
+    "state": "verified"
+  },
+  {
+    "surface": "snapshot",
+    "tag": "geoip-v41-snapshot-43587602958.1",
+    "name": "geoip_RU.dat.sha256sum",
+    "size": 79,
+    "sha256": "8c5abbcf8a1505bfb637c4c9c939d663ba89b760562cf2ff23c37b5b71a3f7b3",
+    "state": "verified"
+  },
+  {
+    "surface": "snapshot",
+    "tag": "geoip-v41-snapshot-43587602958.1",
+    "name": "geoip_RU_quality_report.txt",
+    "size": 7424,
+    "sha256": "91a45f828467236ff24e231d0df11ca035b82017abb727e3c7caafa8b142f5b9",
+    "state": "verified"
+  },
+  {
+    "surface": "snapshot",
+    "tag": "geoip-v41-snapshot-43587602958.1",
+    "name": "geoip_RU_v41_manifest.json",
+    "size": 12507,
+    "sha256": "5bf1402f19cbda2228aa4ee43ca40b735de4377fa41cb29fae8a8ec41471b81a",
+    "state": "verified"
+  },
+  {
+    "surface": "rolling",
+    "tag": "latest-geoip-client-v41",
+    "name": "geoip_RU.dat",
+    "size": 1738277,
+    "sha256": "2735053560ebd598cbdcd71ccf858806d4b955a17e2eac512a7baf249d43653a",
+    "state": "verified"
+  },
+  {
+    "surface": "rolling",
+    "tag": "latest-geoip-client-v41",
+    "name": "geoip_RU.dat.sha256sum",
+    "size": 79,
+    "sha256": "8c5abbcf8a1505bfb637c4c9c939d663ba89b760562cf2ff23c37b5b71a3f7b3",
+    "state": "verified"
+  },
+  {
+    "surface": "rolling",
+    "tag": "latest-geoip-client-v41",
+    "name": "geoip_RU_input_provenance.tsv",
+    "size": 8284,
+    "sha256": "44ba33521f2a5657596582af8ddcd7918edddd7c08a80988df8f7a02ace11d93",
+    "state": "verified"
+  },
+  {
+    "surface": "rolling",
+    "tag": "latest-geoip-client-v41",
+    "name": "geoip_RU_quality_report.txt",
+    "size": 7424,
+    "sha256": "91a45f828467236ff24e231d0df11ca035b82017abb727e3c7caafa8b142f5b9",
+    "state": "verified"
+  },
+  {
+    "surface": "rolling",
+    "tag": "latest-geoip-client-v41",
+    "name": "geoip_RU_v41_blocked_ip_exclusions.txt.sha256sum",
+    "size": 105,
+    "sha256": "63eca88110b7d6f15018304536d7d7c6cc5de373b1012b62f07150786e09b32e",
+    "state": "verified"
+  },
+  {
+    "surface": "rolling",
+    "tag": "latest-geoip-client-v41",
+    "name": "geoip_RU_v41_manifest.json",
+    "size": 12507,
+    "sha256": "5bf1402f19cbda2228aa4ee43ca40b735de4377fa41cb29fae8a8ec41471b81a",
+    "state": "verified"
+  }
+]
