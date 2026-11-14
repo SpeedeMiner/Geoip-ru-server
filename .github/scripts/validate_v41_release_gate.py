@@ -90,7 +90,7 @@ def verify_hard_evidence(hard_rows, subnet_feed: Path, reviewed_registry: Path):
 def literal_service_exceptions(regions, sources):
     """Verify hard exceptions from original rows, without reusing the overlay masks."""
     result = set()
-    for name in ("kyoresuas-standard", "hxehex-mobile-hosts", "w1zardz-service-direct"):
+    for name in ("kyoresuas-standard", "w1zardz-service-direct"):
         for net in sources.get(name, ()):
             if net.prefixlen != net.max_prefixlen:
                 continue
@@ -217,7 +217,7 @@ def main() -> int:
             pass
         feed = CurrentFeeds()
         for field in ("kyoresuas_v4", "kyoresuas_v6", "kyoresuas_services",
-                      "w1zardz", "hxehex_ip", "escapingworm"):
+                      "w1zardz", "escapingworm"):
             setattr(feed, field, getattr(a, field))
         sources, _, _ = builder.load_service_inputs(feed)
         service = literal_service_exceptions(regions, sources)

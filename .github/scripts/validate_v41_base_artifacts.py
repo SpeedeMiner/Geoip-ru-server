@@ -37,7 +37,7 @@ for row in provenance_entries:
     else:
         raise SystemExit(f"Unknown input provenance status: {status}")
 expected_input_files = {
-    "hydra-geoip.dat", "grimbird-geoip.dat", "digne-geoip.dat", "davoyan-geoip.dat",
+    "telegram-official-cidrs.txt", "hydra-geoip.dat", "grimbird-geoip.dat", "digne-geoip.dat", "davoyan-geoip.dat",
     "kirill-geoip.dat", "golukon-geoip.dat", "v2fly-geoip.dat", "v2fly-geoip.dat.sha256sum",
     "loyalsoldier-ru.dat", "loyalsoldier-by.dat", "loyalsoldier-private.dat",
     "hxehex-cidrwhitelist.txt", "w1zardz-ru-ipv4.txt",

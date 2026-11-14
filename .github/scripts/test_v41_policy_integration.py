@@ -9,6 +9,8 @@ from build_v41_overlay import (
 )
 
 
+from validate_v41_overlay import assert_hxehex_diagnostic_only
+
 def n(*ranges):
     return {ipaddress.ip_network(value) for value in ranges}
 
@@ -49,12 +51,32 @@ class V41PolicyIntegrationTests(unittest.TestCase):
             "w1zardz-service-direct": n("104.16.0.0/24"),
         }
         hosts, resolver = build_service_protection_masks({"RU": set(), "BY": set(), "KZ": set()}, sources)
-        self.assertEqual(hosts, n("77.88.5.6/32", "77.88.5.7/32", "2001:db8::6/128"))
+        self.assertEqual(hosts, n("77.88.5.6/32", "77.88.5.7/32"))
         effective, _ = class_aware_effective_block_set(
             exact, resolved, set(), n("77.88.0.0/18"), set(), hosts, resolver,
         )
         self.assertEqual(addr_counts(effective), addr_counts(exact))
         self.assertEqual(addr_counts(effective | exact), addr_counts(exact))
+
+    def test_hxehex_does_not_protect_dns_evidence_but_independent_sources_do(self):
+        hxehex_only = n("192.0.2.1/32")
+        also_kyoresuas = n("198.51.100.1/32")
+        regions = {country: set() for country in ("RU", "BY", "KZ")}
+        sources = {"hxehex-mobile-hosts": hxehex_only | also_kyoresuas,
+                   "kyoresuas-standard": also_kyoresuas}
+        hosts, resolver = build_service_protection_masks(regions, sources)
+        self.assertEqual(hosts, also_kyoresuas)
+        self.assertEqual(resolver, also_kyoresuas)
+        effective, _ = class_aware_effective_block_set(
+            set(), hxehex_only | also_kyoresuas, set(), set(), set(), hosts, resolver)
+        self.assertEqual(effective, hxehex_only)
+
+    def test_hxehex_direct_leak_fails_but_other_admission_is_valid(self):
+        observed = n("192.0.2.1/32", "198.51.100.1/32")
+        independently_admitted = n("198.51.100.0/24")
+        assert_hxehex_diagnostic_only(n("198.51.100.1/32"), independently_admitted, observed)
+        with self.assertRaisesRegex(ValueError, "HXEHEX-only admission"):
+            assert_hxehex_diagnostic_only(observed, independently_admitted, observed)
 
     def test_w1zardz_regional_intersection_cannot_synthesize_a_hard_exception(self):
         hosts, resolver = build_service_protection_masks(

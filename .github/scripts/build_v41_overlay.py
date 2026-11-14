@@ -19,31 +19,27 @@ from datetime import date, datetime, timezone
 from pathlib import Path
 from typing import Iterable
 
-from prepare_blocked_sources_v41 import TELEGRAM_PREFIXES
 from validate_v41_telegram import PINNED_FEED, read_telegram_feed
 
 SOURCE_REFS = {
     "kyoresuas-standard": {
         "repository": "kyoresuas/ru-direct",
-        "commit": "0781793a159f9a53c5e68da2f46b0a64855f8cb6",
         "files": ["ru-standard.ipv4.txt", "ru-standard.ipv6.txt", "services.json"],
         "license": "Owner waived separate license verification; preserve upstream data attributions",
     },
     "w1zardz-service-direct": {
         "repository": "w1zardz/amnezia-vpn-russia-split-tunneling",
-        "commit": "6157cdfb55f1748c98cab121cde008b5f69d325d",
         "files": ["dist/ru-direct-ipv4.txt"],
         "license": "MIT",
     },
     "hxehex-mobile-hosts": {
+        "role": "diagnostic-only",
         "repository": "hxehex/russia-mobile-internet-whitelist",
-        "commit": "fad3653ebd4b212643774a4d10af3eb33838e4ff",
         "files": ["ipwhitelist.txt"],
         "license": "MIT",
     },
     "operator-whitelist": {
         "repository": "escapingworm/russia-whitelist",
-        "commit": "2bb6c0788f21986b7928d986ea2577c6ebc11b36",
         "files": ["ru-whitelist-cidr.txt"],
         "license": "MIT",
     },
@@ -532,11 +528,10 @@ def build_service_protection_masks(rir, service_sources):
     nor a provider network can manufacture a literal service host.
     """
     ky = service_sources.get("kyoresuas-standard", set())
-    hxehex = service_sources.get("hxehex-mobile-hosts", set())
     operators = service_sources.get("operator-whitelist", set())
     w1zardz = service_sources.get("w1zardz-service-direct", set())
-    exact = {net for net in ky | hxehex if net.prefixlen == net.max_prefixlen}
-    resolver = ky | hxehex | operators
+    exact = {net for net in ky if net.prefixlen == net.max_prefixlen}
+    resolver = ky | operators
     regional = union_networks(*(rir[country] for country in ("RU", "BY", "KZ")))
     w1zardz_hosts = {net for net in w1zardz if net.prefixlen == net.max_prefixlen}
     for version in (4, 6):
@@ -605,9 +600,8 @@ def parse_ipsum(path: Path):
         raise ValueError(f"Antifilter ipsum has too many invalid rows: {invalid}")
     return networks, {"raw_rows": raw + invalid, "valid_rows": raw, "invalid_rows": invalid}
 
-def load_service_inputs(args, telegram=None):
-    if telegram is None:
-        telegram = read_telegram_feed(PINNED_FEED)
+def load_service_inputs(args):
+    """Load only feeds eligible to contribute DIRECT routes."""
     sources = {}
     source_stats = {}
     provenance_rows = []
@@ -649,29 +643,9 @@ def load_service_inputs(args, telegram=None):
 
     for source_id, path in (
         ("w1zardz-service-direct", args.w1zardz),
-        ("hxehex-mobile-hosts", args.hxehex_ip),
         ("operator-whitelist", args.escapingworm),
     ):
         networks, stats = parse_cidr_file(path, allow_hosts=True)
-        if source_id == "hxehex-mobile-hosts":
-            official = {v: intervals(telegram, v) for v in (4, 6)}
-            curated = {ipaddress.ip_network(cidr) for cidr in TELEGRAM_PREFIXES}
-            curated_only = {
-                v: subtract(intervals(curated, v), official[v]) for v in (4, 6)
-            }
-            # Preserve existing official-feed handling. Also drop raw rows wholly
-            # inside the curated-only hard mask before attributing DIRECT input.
-            # A broader row keeps its original identity so unrelated addresses
-            # remain eligible. The hard mask still carves its blocked portion.
-            # Never split a service row into new literal hosts.
-            conflicts = set()
-            for net in networks:
-                start, end = int(net.network_address), int(net.broadcast_address)
-                if (intersect_one_range(start, end, official[net.version])
-                        or intersect_one_range(start, end, curated_only[net.version]) == [(start, end)]):
-                    conflicts.add(net)
-            networks.difference_update(conflicts)
-            stats["telegram_unique_prefixes_rejected"] = len(conflicts)
         sources[source_id] = networks
         source_stats[source_id] = {"raw_files":[path.name], **stats}
         for net in sorted(networks, key=lambda n:(n.version,int(n.network_address),n.prefixlen)):
@@ -685,6 +659,18 @@ def load_service_inputs(args, telegram=None):
                 "prefix":str(net),
             })
     return sources, source_stats, provenance_rows
+
+def load_hxehex_diagnostics(path):
+    """Retain source rows for attribution without giving them routing authority."""
+    networks, stats = parse_cidr_file(path, allow_hosts=True)
+    stats = {"raw_files": [path.name], "role": "diagnostic-only", **stats}
+    rows = [
+        {"source_id": "hxehex-mobile-hosts", "category": "diagnostic-only",
+         "service": "", "tier": "", "asn_list": "", "domains": "", "prefix": str(net)}
+        for net in sorted(networks, key=lambda n: (n.version, int(n.network_address), n.prefixlen))
+    ]
+    return networks, stats, rows
+
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
@@ -707,6 +693,8 @@ def main():
     parser.add_argument("--reviewed-operator-prefixes", type=Path, required=True)
     parser.add_argument("--regional-admission-exclusions", type=Path, required=True)
     parser.add_argument("--ipsum", type=Path, required=True)
+    parser.add_argument("--telegram-feed", type=Path, default=PINNED_FEED)
+    parser.add_argument("--input-provenance", type=Path)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--categories", type=Path, required=True)
     parser.add_argument("--quality", type=Path, required=True)
@@ -716,7 +704,6 @@ def main():
     parser.add_argument("--blocked-output", type=Path, required=True)
     parser.add_argument("--manifest", type=Path, required=True)
     args = parser.parse_args()
-
     base_bytes = args.base.read_bytes()
     base = parse_geoip_dat(args.base)
     if set(base) != {"RU", "PRIVATE"}:
@@ -726,8 +713,10 @@ def main():
     private_iv = {v: intervals(private, v) for v in (4, 6)}
 
     rir, rir_rows = parse_rir_tsv(args.rir)
-    telegram = read_telegram_feed(PINNED_FEED)
-    service_sources, source_stats, prefix_rows = load_service_inputs(args, telegram)
+    telegram = read_telegram_feed(args.telegram_feed)
+    service_sources, source_stats, prefix_rows = load_service_inputs(args)
+    hxehex_diagnostics, hxehex_stats, hxehex_rows = load_hxehex_diagnostics(args.hxehex_ip)
+    prefix_rows.extend(hxehex_rows)
     hydra_sources = parse_hydra_direct_whitelist(args.hydra)
     for hydra_id, hydra_nets in hydra_sources.items():
         source_stats[hydra_id] = {"raw_files": [args.hydra.name], "valid_rows": len(hydra_nets)}
@@ -908,6 +897,19 @@ def main():
         row.update({k:str(v) for k,v in source_stats.get(source_id,{}).items() if isinstance(v,(str,int))})
         metrics_rows.append(row)
 
+    # Report overlaps, never a routing contribution, for diagnostic evidence.
+    diagnostic_row = {
+        "source_id": "hxehex-mobile-hosts", "unique_cidrs": len(hxehex_diagnostics),
+        **{k: v for k, v in hxehex_stats.items() if isinstance(v, (str, int))},
+    }
+    for v in (4, 6):
+        src_iv = intervals(hxehex_diagnostics, v)
+        diagnostic_row[f"ipv{v}_addresses"] = interval_size(src_iv)
+        diagnostic_row[f"ipv{v}_already_in_v37"] = interval_size(intersect(src_iv, base_ru_iv[v]))
+        diagnostic_row[f"ipv{v}_direct_overlap"] = interval_size(intersect(src_iv, final_iv[v]))
+        diagnostic_row[f"ipv{v}_new_after_policy"] = 0
+    metrics_rows.append(diagnostic_row)
+
     # Compute exact v41 delta and /24 what-if analysis using the same corporate
     # exemption. Only the effective (non-corporate) blocked set is subtracted.
     delta_v4 = interval_size(new_vs_base[4])
@@ -1048,7 +1050,7 @@ def main():
         "- PRIVATE has absolute precedence.",
         "- CORE_CORPORATE exact origin prefixes are protected from the resolver layer only.",
         "- SHARED_INFRA exact origin prefixes are protected only against the resolver-only layer.",
-        "- Official Telegram CIDRs are non-exempt in DIRECT. Overlapping HXEHEX entries are rejected before service protection.",
+        "- Official Telegram CIDRs are non-exempt in DIRECT. HXEHEX evidence does not participate in service protection.",
         "- Current ip.lst and ipresolve.lst are DNS-derived; unverified historical v38 is advisory.",
         "- Current bounded subnet feed and reviewed direct registry IP/subnet records remain hard.",
         "- MOAS is CORE_CORPORATE when any exact origin is CORE; otherwise SHARED_INFRA receives resolver-only protection.",
@@ -1088,12 +1090,14 @@ def main():
         "SERVICE DIRECT INPUTS",
         f"Kyoresuas Standard services represented in service catalog: {service_stats_count(source_stats)}",
         f"W1ZARDZ unique service/direct prefixes: {len(service_sources['w1zardz-service-direct'])}",
-        f"HXEHEX exact host-IP prefixes: {len(service_sources['hxehex-mobile-hosts'])}",
         f"Escapingworm operator whitelist prefixes: {len(service_sources['operator-whitelist'])}",
         f"Literal service hosts (resolver protection only): {len(service_exact)}",
         f"Service resolver-protected address space: {addr_counts(service_resolver)}",
         "Service and operator whitelist routes are separate from geographic/RIR resource evidence.",
         "Service datasets can include foreign-located or shared-provider endpoints; no country geolocation filter was applied.",
+        "",
+        f"HXEHEX diagnostic-only prefixes: {len(hxehex_diagnostics)}",
+        "HXEHEX is retained for comparison only. It contributes no DIRECT routes or resolver exemptions.",
         "",
         "RKN BLOCKS AND CORPORATE COMPANY-ASN EXCEPTION",
         f"Original v37 approved blocked CIDRs: {len(blocked_base)}",
@@ -1133,13 +1137,20 @@ def main():
         "output_sha256":sha256(payload),
         "output_bytes":len(payload),
         "sources":SOURCE_REFS,
-        "telegram_official": {"cidrs": len(telegram), "input_sha256": sha256(PINNED_FEED.read_bytes())},
+        "input_provenance_sha256": sha256(args.input_provenance.read_bytes()) if args.input_provenance else None,
+        "telegram_official": {"cidrs": len(telegram), "input_sha256": sha256(args.telegram_feed.read_bytes())},
         "rir_inventory":{"rows":rir_rows,"countries":{c:len(rir[c]) for c in ("RU","BY","KZ")}},
         "regional_admission_exclusions": {
             "records": list(admission_exclusions.values()),
             "removed_after_block_policy": {f"ipv{v}": count for v, count in admission_removed.items()},
         },
         "service_sources":source_stats,
+        "diagnostic_sources": {
+            "hxehex-mobile-hosts": {
+                **hxehex_stats, "unique_cidrs": len(hxehex_diagnostics),
+                "direct_overlap": {f"ipv{v}": diagnostic_row[f"ipv{v}_direct_overlap"] for v in (4, 6)},
+            },
+        },
         "hydra_routing_intent": {
             "direct_cidrs": len(hydra_sources["hydra-direct"]),
             "whitelist_cidrs": len(hydra_sources["hydra-whitelist"]),

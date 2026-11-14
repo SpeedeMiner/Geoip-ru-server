@@ -14,7 +14,7 @@
 
 ## Service DIRECT outside geolocation
 - Kyoresuas `ru-standard` service prefixes are imported with per-service category/name/ASN/domain provenance.
-- W1ZARDZ service-direct, HXEHEX exact host-IP whitelist, and Escapingworm operator whitelist prefixes are separately attributed.
+- W1ZARDZ service-direct and Escapingworm operator whitelist prefixes are separately attributed. HXEHEX host rows remain diagnostic-only and do not create DIRECT routes or resolver exemptions.
 - These feeds are treated as service/availability intent, not geographic proof. Their prefixes are still subject to PRIVATE and RKN exclusions.
 - Service-source coverage and exact address-space deltas are published in `geoip_RU_v41_source_metrics.tsv` and `geoip_RU_v41_prefix_provenance.tsv`.
 
@@ -31,6 +31,17 @@
 - `geoip_RU_BY_KZ_rir_registered_prefixes.tsv` retains country, RIR and resource-status provenance.
 - The final client file remains `geoip_RU.dat` with `geoip:RU` and `geoip:PRIVATE` only.
 - `geoip_RU_company_asn_bgp_prefixes.txt` lists exact prefix-level company exceptions; it does not exempt whole ASNs outside the selected-origin snapshot.
+
+## Source refresh and replay
+
+- Each build resolves the latest stable asset or published branch for all routing feed publishers. Related files are fetched from the same resolved version.
+- The versioned release retains the exact routing and official Telegram inputs in `v41-upstream-inputs.tar.gz`. The input provenance records resolved URLs, byte counts and SHA-256. Existing RIR/IANA and ipverse retention remains separate.
+- Reviewed policy tables and the historical v38 evidence baseline are not rolling feeds.
+
+## Xray and sing-box files
+
+- `geoip_RU.dat` is the sole GeoIP profile, with `RU` and `PRIVATE`.
+- `geoip_RU.srs` and `geoip_PRIVATE.srs` are sing-box v1 exports from this same DAT. CI compiles and decompiles both and checks exact IPv4/IPv6 equality. All three files have SHA-256 sidecars.
 
 ## Attribution and limitations
 - Preserve v2fly/geoip CC-BY-SA-4.0 and DB-IP CC-BY-4.0 notices, plus upstream licenses/attributions for service feeds.

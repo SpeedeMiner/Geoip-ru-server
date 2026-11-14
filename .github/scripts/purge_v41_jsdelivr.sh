@@ -11,6 +11,10 @@ purge_jsdelivr() {
 }
 purge_jsdelivr "geoip_RU.dat"
 purge_jsdelivr "geoip_RU.dat.sha256sum"
+purge_jsdelivr "geoip_RU.srs"
+purge_jsdelivr "geoip_RU.srs.sha256sum"
+purge_jsdelivr "geoip_PRIVATE.srs"
+purge_jsdelivr "geoip_PRIVATE.srs.sha256sum"
 purge_jsdelivr "geoip_RU_quality_report.txt"
 purge_jsdelivr "geoip_RU_v37_additional_provenance.tsv"
 purge_jsdelivr "geoip_RU_v41_prefix_provenance.tsv"

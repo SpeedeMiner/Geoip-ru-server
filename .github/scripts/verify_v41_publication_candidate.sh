@@ -1,13 +1,19 @@
 #!/usr/bin/env bash
 set -euo pipefail
 sha256sum -c "$OUTPUT_SHA_FILE"
+sha256sum -c geoip_RU.srs.sha256sum geoip_PRIVATE.srs.sha256sum
+python3 ../.github/scripts/build_v41_srs.py
 sha256sum -c "$V41_BLOCKED_SHA"
 sha256sum -c "$REGISTRY_INPUTS_SHA"
 python3 ../.github/scripts/bundle_v41_registry_inputs.py verify \
   "$INPUT_PROVENANCE" "$REGISTRY_INPUTS_ARCHIVE"
 python3 ../.github/scripts/verify_v41_ipverse_archive.py \
   --provenance "$INPUT_PROVENANCE" --archive "$IPVERSE_BGP_ARCHIVE"
-python3 ../.github/scripts/validate_v41_telegram.py --geoip "$V41_OUTPUT_FILE"
+sha256sum -c "$UPSTREAM_INPUTS_SHA"
+python3 ../.github/scripts/bundle_v41_registry_inputs.py \
+  --upstream-catalog ../.github/data/v41-upstream-sources.json verify \
+  "$INPUT_PROVENANCE" "$UPSTREAM_INPUTS_ARCHIVE"
+python3 ../.github/scripts/validate_v41_telegram.py --geoip "$V41_OUTPUT_FILE" --official-feed "$TELEGRAM_OFFICIAL_INPUT"
 grep -q '^PRE_PUBLICATION_V41_HARD_POLICY_GATE$' "$V41_QUALITY_REPORT"
 ref="$(git ls-remote --exit-code origin refs/heads/release | cut -f1)"
 [[ "$ref" =~ ^[0-9a-f]{40}$ ]]

@@ -21,6 +21,15 @@ def sha256(path: Path) -> str:
     return h.hexdigest()
 
 
+def assert_hxehex_diagnostic_only(ru, independently_admitted, hxehex):
+    """No address from the diagnostic feed may enter RU without another input."""
+    for version in (4, 6):
+        candidates = builder.intersect(builder.intervals(ru, version),
+                                       builder.intervals(hxehex, version))
+        if builder.subtract(candidates, builder.intervals(independently_admitted, version)):
+            raise ValueError(f"HXEHEX-only admission in IPv{version} DIRECT")
+
+
 def validate(args: argparse.Namespace) -> dict:
     decoded = builder.parse_geoip_dat(args.geoip)
     if set(decoded) != {"RU", "PRIVATE"}:
@@ -34,18 +43,17 @@ def validate(args: argparse.Namespace) -> dict:
     shared = builder.parse_cidr_file(args.company_shared, allow_hosts=False)[0]
     regional_all = builder.parse_cidr_file(args.regional_origin_prefixes, allow_hosts=False)[0]
     regional_only = builder.subtract_networks(regional_all, company_all)
-    # Use the exact same v39 service-source classification, reconstructed from the
-    # pinned service feeds for independent validation.
+    # Reconstruct v41 DIRECT service masks from the pinned routing feeds.
+    # The HXEHEX diagnostic input is hash-checked, not used for admission.
     class Inputs: pass
     feeds = Inputs()
     feeds.kyoresuas_v4 = args.kyoresuas_v4
     feeds.kyoresuas_v6 = args.kyoresuas_v6
     feeds.kyoresuas_services = args.kyoresuas_services
     feeds.w1zardz = args.w1zardz
-    feeds.hxehex_ip = args.hxehex_ip
     feeds.escapingworm = args.escapingworm
-    telegram = read_telegram_feed(PINNED_FEED)
-    service_sources, _, _ = builder.load_service_inputs(feeds, telegram)
+    telegram = read_telegram_feed(args.telegram_feed)
+    service_sources, _, _ = builder.load_service_inputs(feeds)
     rir_resources, _ = builder.parse_rir_tsv(args.rir)
     service_exact, service_resolver = builder.build_service_protection_masks(rir_resources, service_sources)
     regional_resources = builder.union_networks(*rir_resources.values())
@@ -115,7 +123,25 @@ def validate(args: argparse.Namespace) -> dict:
         if builder.subtract(builder.intervals(expected_hydra, version), builder.intervals(decoded["RU"], version)):
             raise ValueError(f"Hydra DIRECT/WHITELIST IPv{version} eligible coverage missing")
 
+    base = builder.parse_geoip_dat(args.base)
+    if set(base) != {"RU", "PRIVATE"}:
+        raise ValueError("Expected v37 base categories RU and PRIVATE")
+    hxehex = builder.parse_cidr_file(args.hxehex_ip)[0]
+    assert_hxehex_diagnostic_only(
+        decoded["RU"],
+        builder.union_networks(base["RU"], regional_resources, regional_all, company_all, reviewed,
+                               *service_sources.values(), *hydra_sources.values()),
+        hxehex,
+    )
+
     manifest = json.loads(args.manifest.read_text(encoding="utf-8"))
+    hxehex_info = manifest.get("diagnostic_sources", {}).get("hxehex-mobile-hosts", {})
+    if (manifest.get("base_v37_sha256") != sha256(args.base)
+            or manifest.get("input_sha256", {}).get("hxehex_ipwhitelist") != sha256(args.hxehex_ip)
+            or hxehex_info.get("role") != "diagnostic-only"
+            or hxehex_info.get("unique_cidrs") != len(hxehex)
+            or "hxehex-mobile-hosts" in manifest.get("service_sources", {})):
+        raise ValueError("HXEHEX diagnostic source provenance mismatch")
     if (manifest.get("input_sha256", {}).get("regional_admission_exclusions") != sha256(args.regional_admission_exclusions)
             or manifest.get("regional_admission_exclusions", {}).get("records") != list(admission.values())):
         raise ValueError("Regional admission exclusion provenance mismatch")
@@ -142,7 +168,7 @@ def validate(args: argparse.Namespace) -> dict:
     if manifest.get("input_sha256", {}).get("regional_origin_prefixes") != sha256(args.regional_origin_prefixes):
         raise ValueError("Manifest selected regional origin SHA-256 mismatch")
 
-    if manifest.get("telegram_official") != {"cidrs": len(telegram), "input_sha256": sha256(PINNED_FEED)}:
+    if manifest.get("telegram_official") != {"cidrs": len(telegram), "input_sha256": sha256(args.telegram_feed)}:
         raise ValueError("Manifest official Telegram snapshot mismatch")
 
     safety = manifest.get("safety", {})
@@ -209,13 +235,14 @@ def validate(args: argparse.Namespace) -> dict:
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     for name in (
-        "geoip", "hydra", "blocked_union", "blocked_exact", "blocked_resolved",
+        "geoip", "base", "hydra", "blocked_union", "blocked_exact", "blocked_resolved",
         "company_all", "company_core", "company_shared", "regional_origin_prefixes",
         "kyoresuas_v4", "kyoresuas_v6", "kyoresuas_services", "w1zardz",
         "hxehex_ip", "escapingworm", "effective_blocked",
         "manifest", "quality", "rir", "regional_admission_exclusions", "reviewed_operator_prefixes",
     ):
         parser.add_argument("--" + name.replace("_", "-"), type=Path, required=True)
+    parser.add_argument("--telegram-feed", type=Path, default=PINNED_FEED)
     args = parser.parse_args()
     try:
         validate(args)

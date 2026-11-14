@@ -2,7 +2,7 @@
 
 This change hardens ingestion and publication without enabling a new routing policy.
 
-- Static routing inputs are listed in `.github/data/v41-source-lock.json` with versioned upstream URLs, byte lengths and independently reviewed SHA-256 digests. Initial bytes match the published v41 input provenance at release commit `0ef5d68d0cca585dc90cb4a5199dd0abd5ce24d7`. Update the URL, byte length and digest together in a reviewed commit. Official RIR/IANA/BGP and current block feeds still refresh at build time. They are dynamic and protected by transport, parser and publication bounds, not by this lock. Kirill no longer uses third-party proxies.
+- The v41 publisher uses `.github/data/v41-upstream-sources.json` to resolve each upstream's current stable release or output branch once per build. Files from the same source use the same release or commit. Release assets are verified against GitHub's digest and size, branch files against their Git blob ID and size, and v2fly against its companion checksum. The old static lock is retained only for reproducing historical releases. The rolling build never falls back silently to it. Official RIR/IANA/BGP, Telegram and current block feeds refresh at build time. Reviewed local exceptions and the v38 historical evidence baseline are intentionally unchanged.
 - The independent DAT reader verifies canonical prefixes, category uniqueness, inverse-match semantics, non-overlap with PRIVATE and size/address limits. The hard ceiling is 8 MiB, 350,000 RU CIDRs, 64,000,000 IPv4 addresses and 2^111 IPv6 addresses. The widest allowed RU records are IPv4 /8 and IPv6 /24. It checks added and removed address sets separately against the previous release commit, with thresholds of 0.5% IPv4 and 1% IPv6 (small reference floors 4,096 and 2^80). Any PRIVATE change also requires review. Absolute bounds cannot be waived.
 - To confirm a relative overrun, review the candidate artifact and provide its exact SHA-256 as `reviewed_geoip_sha256` when manually dispatching the workflow on main. This is an explicit action by a user with dispatch rights, not a claim of a separate GitHub Environment reviewer. If the regenerated artifact changes, the previous digest will not approve it.
 - The build job has read-only repository permissions. The publish job receives only its artifacts and checks them against the same immutable previous branch commit before a fast-forward update. Existing running publishes are not automatically cancelled. The versioned Git tag is staged before the snapshot Release is created. The branch advances only after the required public input archives verify. Versioned GitHub snapshots are never edited by this workflow. This is not GitHub-enforced repository-wide immutability, which would also prevent updates to the compatibility release. A failed upload can leave a staged tag without moving the release branch.
@@ -57,5 +57,9 @@ python3 .github/scripts/bundle_v41_registry_inputs.py restore \
 
 Older snapshots that predate registry retention are not retroactively changed.
 The new archive does not change route selection or turn the entire release into
-a self-contained build corpus. Other inputs still use the recorded, pinned
-upstream locations and hashes.
+a self-contained build corpus. For newer snapshots, `v41-upstream-inputs.tar.gz` also preserves the exact
+rolling routing inputs and official Telegram file. Verify the archive
+against `geoip_RU_v41_upstream_inputs.sha256sum` in the versioned Git tree
+and use `bundle_v41_registry_inputs.py --upstream-catalog
+.github/data/v41-upstream-sources.json restore` with that snapshot's
+provenance and source revision. Historical snapshots remain unchanged.

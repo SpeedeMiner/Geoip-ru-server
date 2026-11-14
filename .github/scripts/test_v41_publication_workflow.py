@@ -39,6 +39,11 @@ class PublicationWorkflowTests(unittest.TestCase):
     def git(*args, cwd):
         return subprocess.check_output(["git", *args], cwd=cwd, text=True, stderr=subprocess.PIPE).strip()
 
+    def prepare_srs_assets(self):
+        for name in ("geoip_RU.srs", "geoip_PRIVATE.srs"):
+            (self.candidate / name).write_text(name, encoding="ascii")
+            (self.candidate / (name + ".sha256sum")).write_text("fixture", encoding="ascii")
+
     def setup_git(self):
         self.git("init", "--bare", str(self.remote), cwd=self.root)
         seed = self.root / "seed"
@@ -57,6 +62,7 @@ class PublicationWorkflowTests(unittest.TestCase):
             self.env[name] = filename
             (self.candidate / filename).write_text(filename, encoding="utf-8")
         (self.candidate / "geoip_RU_company_asn_registry.sha256sum").write_text("test", encoding="utf-8")
+        self.prepare_srs_assets()
 
     def invoke(self, script, **env):
         return subprocess.run(["bash", str(SCRIPTS / script)], cwd=self.candidate,
@@ -71,7 +77,8 @@ class PublicationWorkflowTests(unittest.TestCase):
         self.asset = self.root / "published-archive"
         self.registry_asset = self.root / "published-registry"
         self.env.update(PATH=f"{self.root}:{os.environ['PATH']}", TEST_ASSET=str(self.asset),
-                        TEST_REGISTRY_ASSET=str(self.registry_asset))
+                        TEST_REGISTRY_ASSET=str(self.registry_asset),
+                        TEST_UPSTREAM_ASSET=str(self.root / "published-upstream"))
         curl = self.root / "curl"
         curl.write_text(
             "#!/usr/bin/env python3\n"
@@ -79,7 +86,7 @@ class PublicationWorkflowTests(unittest.TestCase):
             "tag = os.environ['SNAPSHOT_TAG']\n"
             "base = f'https://github.com/example/geoip/releases/download/{tag}/'\n"
             "assert sys.argv[-1].startswith(base)\n"
-            "key = {'as-ip-blocks.tar.gz':'TEST_ASSET','v41-registry-inputs.tar.gz':'TEST_REGISTRY_ASSET'}[sys.argv[-1][len(base):]]\n"
+            "key = {'as-ip-blocks.tar.gz':'TEST_ASSET','v41-registry-inputs.tar.gz':'TEST_REGISTRY_ASSET','v41-upstream-inputs.tar.gz':'TEST_UPSTREAM_ASSET'}[sys.argv[-1][len(base):]]\n"
             "asset = pathlib.Path(os.environ[key])\n"
             "if not asset.exists(): sys.exit(22)\n"
             "shutil.copyfile(asset, sys.argv[sys.argv.index('--output') + 1])\n"
@@ -101,14 +108,30 @@ class PublicationWorkflowTests(unittest.TestCase):
             (self.candidate / member).write_bytes(data)
             rows.append(f"registry\t{member}\thttps://example.test/registry\t"
                         f"{sha256(data).hexdigest()}\t{len(data)}\tdownloaded")
+        catalog = json.loads((SCRIPTS.parent / "data/v41-upstream-sources.json").read_text())
+        sources = tuple(sorted(name for group in catalog for name in group["files"])) + ("telegram-official-cidrs.txt",)
+        for member in sources:
+            data = member.encode("ascii")
+            (self.candidate / member).write_bytes(data)
+            rows.append(f"source\t{member}\thttps://example.test/source\t"
+                        f"{sha256(data).hexdigest()}\t{len(data)}\tdownloaded")
         path = self.candidate / provenance
         path.write_text("\n".join(rows) + "\n")
         result = create(path, self.candidate, self.candidate / bundle)
         (self.candidate / checksum).write_text(f"{result['bundle_sha256']}  {bundle}\n")
         self.env.update(INPUT_PROVENANCE=provenance, REGISTRY_INPUTS_ARCHIVE=bundle,
                         REGISTRY_INPUTS_SHA=checksum)
+        upstream, upstream_sha = "v41-upstream-inputs.tar.gz", "geoip_RU_v41_upstream_inputs.sha256sum"
+        result = create(path, self.candidate, self.candidate / upstream, members=sources)
+        (self.candidate / upstream_sha).write_text(f"{result['bundle_sha256']}  {upstream}\n")
+        self.env.update(UPSTREAM_INPUTS_ARCHIVE=upstream, UPSTREAM_INPUTS_SHA=upstream_sha)
+
+    def provide_upstream_asset(self):
+        (self.root / "published-upstream").write_bytes(
+            (self.candidate / "v41-upstream-inputs.tar.gz").read_bytes())
 
     def provide_registry_asset(self):
+        self.provide_upstream_asset()
         self.registry_asset.write_bytes((self.candidate / self.env["REGISTRY_INPUTS_ARCHIVE"]).read_bytes())
 
     def stage(self, tag="v41.3"):
@@ -183,6 +206,7 @@ class PublicationWorkflowTests(unittest.TestCase):
         upload = self.invoke("publish_v41_snapshot_release.sh")
         self.assertEqual(upload.returncode, 0, upload.stderr)
         self.assertEqual(self.asset.read_bytes(), archive)
+        self.provide_upstream_asset()
         self.assertEqual(self.git("rev-parse", "release", cwd=self.remote), start)
         wrong = self.invoke("promote_v41_release.sh", SNAPSHOT_SHA=start)
         self.assertNotEqual(wrong.returncode, 0)
@@ -270,6 +294,7 @@ class PublicationWorkflowTests(unittest.TestCase):
         archive_bytes = gzip.compress(random.Random(42).randbytes(5_000_000), compresslevel=1, mtime=0)
         (self.candidate / env["IPVERSE_BGP_ARCHIVE"]).write_bytes(archive_bytes)
         self.prepare_registry(env["INPUT_PROVENANCE"], archive_bytes)
+        self.prepare_srs_assets()
         missing = self.invoke("publish_v41_snapshot_release.sh", **env)
         self.assertNotEqual(missing.returncode, 0)
         self.assertIn("quality.txt", missing.stderr)
@@ -291,6 +316,10 @@ class PublicationWorkflowTests(unittest.TestCase):
         self.assertEqual(command[:3], ["release", "create", "v41.3"])
         self.assertIn("as-ip-blocks.tar.gz", command)
         self.assertIn("v41-registry-inputs.tar.gz", command)
+        self.assertIn("v41-upstream-inputs.tar.gz", command)
+        self.assertIn("geoip_RU.dat", command)
+        self.assertIn("geoip_RU.srs", command)
+        self.assertIn("geoip_PRIVATE.srs", command)
         self.assertIn("--verify-tag", command)
         self.assertIn("--latest=false", command)
 
