@@ -8,5 +8,9 @@
   "selected_rows": 23603,
   "historical_invalid_prefixes": 19,
   "historical_invalid_pairs": 20,
-  "unseeded_invalid_review_rows": 0
+  "unseeded_invalid_review_rows": 0,
+  "comparison_to_fixed_production_replay": {
+    "company_and_selected_rows_match_ignoring_GENERATED_UTC": true,
+    "rpki_exact_status_pairs_matching_independent_current_query": 142
+  }
 }
