@@ -2585,7 +2585,7 @@
       "regional_candidate": false
     }
   ],
-  "stage": "published and verified; nine reviewed operator prefixes only",
+  "stage": "closed and published; all 811 discovery addresses assigned a snapshot-specific decision",
   "exact_regional_recheck": [
     {
       "prefix": "104.128.130.0/24",
@@ -3525,5 +3525,34 @@
       "157.228.191.39/32"
     ],
     "published_dat_sha256": "2735053560ebd598cbdcd71ccf858806d4b955a17e2eac512a7baf249d43653a"
+  },
+  "decision_ledger": {
+    "path": "v41-additional-one-group-decisions-43579021611.tsv",
+    "sha256": "606c2fc98aa7b615f87cd51bc2b4e4d4c94ae2b514b104c3b6d94c5d731a5d79",
+    "decision_counts": {
+      "admitted_exact_operator_review_pr30": 15,
+      "hold_authoritative_rdap_unavailable_foreign_cdn_route": 1,
+      "hold_covering_registry_no_exact_ris": 1,
+      "hold_exact_registry_no_geofeed_match": 2,
+      "hold_exact_registry_no_linked_geofeed": 1,
+      "hold_no_regional_assignment_in_checked_registry": 790,
+      "hold_ru_child_without_exact_ris_or_geofeed": 1
+    },
+    "remaining_addresses_by_registry_country": {
+      "AE": 11,
+      "BZ": 94,
+      "CH": 3,
+      "CW": 7,
+      "DE": 67,
+      "GB": 15,
+      "IE": 11,
+      "NL": 558,
+      "RU": 5,
+      "SC": 2,
+      "TR": 5,
+      "UA": 17,
+      "UNVERIFIED": 1
+    },
+    "limitations": "Registry address ranges and checked more-specific records are assignment evidence, not measured service reachability. Hold decisions do not assert permanent exclusion."
   }
 }
