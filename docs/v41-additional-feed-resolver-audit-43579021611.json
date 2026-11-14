@@ -1,0 +1,1453 @@
+{
+  "dat_sha256": "8d807b8d6069791b2e006bc561c4c69cc1a3172521cde0271c62b9305ce1c391",
+  "effective_mask_sha256": "525125b2a06fb912e743bfbbfaa5420c161873dc0eafb28ec1c38cc45ed9774f",
+  "input_provenance_sha256": "44ba33521f2a5657596582af8ddcd7918edddd7c08a80988df8f7a02ace11d93",
+  "locked_dat_sha256": {
+    "grimbird": "b0f063b499019ccafa95c692d803ab0ad47619a4a0aa0b0ab6bace7e9708fe1d",
+    "digne": "2afe2ccc7862c4557f42ee9e777c2f2985370e56b3f20839eafbdf02261158fa",
+    "davoyan": "2de5cced2e69a668fb75f1a96387e2cb939562897f98a822e76f44f68e848a7e",
+    "golukon": "22c60f68b6bdf2c5a24a18a46a9797d9467961f9c47b16c7bf5b10fed70c8f08",
+    "v2fly": "eedb24b3b9fcba27e06b92c0428dab90d9496083091ae4cf39e11387fd99d0e2",
+    "loyalsoldier": "72745d626cfec819b36221825bb05c3a27e086a7f48871265411827cc86ff9cb",
+    "loyalsoldier-by": "baac721e10f384222261b4fe9d8bed5572fb03300a5840ff015ce84b3705bd7e"
+  },
+  "totals": {
+    "ipv4": {
+      "source_union": 49102521,
+      "two_group": 45753879,
+      "eligible_before_v37_carve": 16926,
+      "accepted_after_v37_carve": 16844,
+      "lost_to_v37_approved_union": 82,
+      "hard_or_telegram": 0,
+      "already_restored_in_v41": 82,
+      "regional_admission_exclusion": 0,
+      "effective_resolver_only_loss": 0,
+      "other": 0,
+      "accepted_after_v37_missing_in_v41": 1280,
+      "accepted_after_v37_hard_or_telegram": 0,
+      "accepted_after_v37_admission_exclusion": 1280,
+      "accepted_after_v37_effective_resolver": 0
+    },
+    "ipv6": {
+      "source_union": 1062390072778921631804601351143276,
+      "two_group": 876188137346940100294624321470464,
+      "eligible_before_v37_carve": 2417851639229258349412352,
+      "accepted_after_v37_carve": 2417851639229258349412352,
+      "lost_to_v37_approved_union": 0,
+      "hard_or_telegram": 0,
+      "already_restored_in_v41": 0,
+      "regional_admission_exclusion": 0,
+      "effective_resolver_only_loss": 0,
+      "other": 0,
+      "accepted_after_v37_missing_in_v41": 0,
+      "accepted_after_v37_hard_or_telegram": 0,
+      "accepted_after_v37_admission_exclusion": 0,
+      "accepted_after_v37_effective_resolver": 0
+    }
+  },
+  "restored": [
+    {
+      "prefix": "85.239.61.138/32",
+      "addresses": 1,
+      "source_overlap_addresses": {
+        "grimbird": 0,
+        "digne": 0,
+        "davoyan": 1,
+        "golukon": 0
+      },
+      "resolver_evidence_labels": [
+        "antifilter-ipresolve.lst",
+        "v38-historical-ipresolve.lst-dns"
+      ],
+      "readmission_overlap_addresses": {
+        "rir-resource-RU": 1
+      },
+      "resolver_protection_overlap_addresses": {
+        "rir-resource-RU": 1
+      }
+    },
+    {
+      "prefix": "85.239.63.135/32",
+      "addresses": 1,
+      "source_overlap_addresses": {
+        "grimbird": 0,
+        "digne": 0,
+        "davoyan": 1,
+        "golukon": 0
+      },
+      "resolver_evidence_labels": [
+        "antifilter-ipresolve.lst",
+        "v38-historical-ipresolve.lst-dns"
+      ],
+      "readmission_overlap_addresses": {
+        "rir-resource-RU": 1
+      },
+      "resolver_protection_overlap_addresses": {
+        "rir-resource-RU": 1
+      }
+    },
+    {
+      "prefix": "193.233.63.2/31",
+      "addresses": 2,
+      "source_overlap_addresses": {
+        "grimbird": 0,
+        "digne": 0,
+        "davoyan": 2,
+        "golukon": 0
+      },
+      "resolver_evidence_labels": [
+        "antifilter-ip.lst",
+        "antifilter-ipresolve.lst",
+        "v38-historical-ip.lst-dns",
+        "v38-historical-ipresolve.lst-dns"
+      ],
+      "readmission_overlap_addresses": {
+        "hydra-direct": 1,
+        "rir-resource-RU": 2
+      },
+      "resolver_protection_overlap_addresses": {
+        "rir-resource-RU": 2
+      }
+    },
+    {
+      "prefix": "193.233.63.4/32",
+      "addresses": 1,
+      "source_overlap_addresses": {
+        "grimbird": 0,
+        "digne": 0,
+        "davoyan": 1,
+        "golukon": 0
+      },
+      "resolver_evidence_labels": [
+        "antifilter-ipresolve.lst",
+        "v38-historical-ipresolve.lst-dns"
+      ],
+      "readmission_overlap_addresses": {
+        "rir-resource-RU": 1
+      },
+      "resolver_protection_overlap_addresses": {
+        "rir-resource-RU": 1
+      }
+    },
+    {
+      "prefix": "193.233.63.6/31",
+      "addresses": 2,
+      "source_overlap_addresses": {
+        "grimbird": 0,
+        "digne": 0,
+        "davoyan": 2,
+        "golukon": 0
+      },
+      "resolver_evidence_labels": [
+        "antifilter-ipresolve.lst",
+        "v38-historical-ipresolve.lst-dns"
+      ],
+      "readmission_overlap_addresses": {
+        "rir-resource-RU": 2
+      },
+      "resolver_protection_overlap_addresses": {
+        "rir-resource-RU": 2
+      }
+    },
+    {
+      "prefix": "193.233.63.8/32",
+      "addresses": 1,
+      "source_overlap_addresses": {
+        "grimbird": 0,
+        "digne": 0,
+        "davoyan": 1,
+        "golukon": 0
+      },
+      "resolver_evidence_labels": [
+        "antifilter-ip.lst",
+        "antifilter-ipresolve.lst",
+        "v38-historical-ip.lst-dns",
+        "v38-historical-ipresolve.lst-dns"
+      ],
+      "readmission_overlap_addresses": {
+        "rir-resource-RU": 1
+      },
+      "resolver_protection_overlap_addresses": {
+        "rir-resource-RU": 1
+      }
+    },
+    {
+      "prefix": "193.233.63.12/31",
+      "addresses": 2,
+      "source_overlap_addresses": {
+        "grimbird": 0,
+        "digne": 0,
+        "davoyan": 2,
+        "golukon": 0
+      },
+      "resolver_evidence_labels": [
+        "antifilter-ip.lst",
+        "antifilter-ipresolve.lst",
+        "v38-historical-ip.lst-dns",
+        "v38-historical-ipresolve.lst-dns"
+      ],
+      "readmission_overlap_addresses": {
+        "rir-resource-RU": 2
+      },
+      "resolver_protection_overlap_addresses": {
+        "rir-resource-RU": 2
+      }
+    },
+    {
+      "prefix": "193.233.63.14/32",
+      "addresses": 1,
+      "source_overlap_addresses": {
+        "grimbird": 0,
+        "digne": 0,
+        "davoyan": 1,
+        "golukon": 0
+      },
+      "resolver_evidence_labels": [
+        "antifilter-ip.lst",
+        "antifilter-ipresolve.lst",
+        "v38-historical-ip.lst-dns",
+        "v38-historical-ipresolve.lst-dns"
+      ],
+      "readmission_overlap_addresses": {
+        "rir-resource-RU": 1
+      },
+      "resolver_protection_overlap_addresses": {
+        "rir-resource-RU": 1
+      }
+    },
+    {
+      "prefix": "193.233.63.16/31",
+      "addresses": 2,
+      "source_overlap_addresses": {
+        "grimbird": 0,
+        "digne": 0,
+        "davoyan": 2,
+        "golukon": 0
+      },
+      "resolver_evidence_labels": [
+        "antifilter-ipresolve.lst",
+        "v38-historical-ipresolve.lst-dns"
+      ],
+      "readmission_overlap_addresses": {
+        "rir-resource-RU": 2
+      },
+      "resolver_protection_overlap_addresses": {
+        "rir-resource-RU": 2
+      }
+    },
+    {
+      "prefix": "193.233.63.19/32",
+      "addresses": 1,
+      "source_overlap_addresses": {
+        "grimbird": 0,
+        "digne": 0,
+        "davoyan": 1,
+        "golukon": 0
+      },
+      "resolver_evidence_labels": [
+        "antifilter-ipresolve.lst",
+        "v38-historical-ipresolve.lst-dns"
+      ],
+      "readmission_overlap_addresses": {
+        "rir-resource-RU": 1
+      },
+      "resolver_protection_overlap_addresses": {
+        "rir-resource-RU": 1
+      }
+    },
+    {
+      "prefix": "193.233.63.21/32",
+      "addresses": 1,
+      "source_overlap_addresses": {
+        "grimbird": 0,
+        "digne": 0,
+        "davoyan": 1,
+        "golukon": 0
+      },
+      "resolver_evidence_labels": [
+        "antifilter-ip.lst",
+        "antifilter-ipresolve.lst",
+        "v38-historical-ip.lst-dns",
+        "v38-historical-ipresolve.lst-dns"
+      ],
+      "readmission_overlap_addresses": {
+        "rir-resource-RU": 1
+      },
+      "resolver_protection_overlap_addresses": {
+        "rir-resource-RU": 1
+      }
+    },
+    {
+      "prefix": "193.233.63.22/32",
+      "addresses": 1,
+      "source_overlap_addresses": {
+        "grimbird": 0,
+        "digne": 0,
+        "davoyan": 1,
+        "golukon": 0
+      },
+      "resolver_evidence_labels": [
+        "antifilter-ipresolve.lst",
+        "v38-historical-ipresolve.lst-dns"
+      ],
+      "readmission_overlap_addresses": {
+        "rir-resource-RU": 1
+      },
+      "resolver_protection_overlap_addresses": {
+        "rir-resource-RU": 1
+      }
+    },
+    {
+      "prefix": "193.233.63.29/32",
+      "addresses": 1,
+      "source_overlap_addresses": {
+        "grimbird": 0,
+        "digne": 0,
+        "davoyan": 1,
+        "golukon": 0
+      },
+      "resolver_evidence_labels": [
+        "antifilter-ipresolve.lst",
+        "v38-historical-ipresolve.lst-dns"
+      ],
+      "readmission_overlap_addresses": {
+        "hydra-direct": 1,
+        "rir-resource-RU": 1
+      },
+      "resolver_protection_overlap_addresses": {
+        "rir-resource-RU": 1
+      }
+    },
+    {
+      "prefix": "193.233.63.30/32",
+      "addresses": 1,
+      "source_overlap_addresses": {
+        "grimbird": 0,
+        "digne": 0,
+        "davoyan": 1,
+        "golukon": 0
+      },
+      "resolver_evidence_labels": [
+        "antifilter-ipresolve.lst",
+        "v38-historical-ipresolve.lst-dns"
+      ],
+      "readmission_overlap_addresses": {
+        "rir-resource-RU": 1
+      },
+      "resolver_protection_overlap_addresses": {
+        "rir-resource-RU": 1
+      }
+    },
+    {
+      "prefix": "193.233.63.32/32",
+      "addresses": 1,
+      "source_overlap_addresses": {
+        "grimbird": 0,
+        "digne": 0,
+        "davoyan": 1,
+        "golukon": 0
+      },
+      "resolver_evidence_labels": [
+        "antifilter-ipresolve.lst",
+        "v38-historical-ipresolve.lst-dns"
+      ],
+      "readmission_overlap_addresses": {
+        "rir-resource-RU": 1
+      },
+      "resolver_protection_overlap_addresses": {
+        "rir-resource-RU": 1
+      }
+    },
+    {
+      "prefix": "193.233.63.34/31",
+      "addresses": 2,
+      "source_overlap_addresses": {
+        "grimbird": 0,
+        "digne": 0,
+        "davoyan": 2,
+        "golukon": 0
+      },
+      "resolver_evidence_labels": [
+        "antifilter-ipresolve.lst",
+        "v38-historical-ipresolve.lst-dns"
+      ],
+      "readmission_overlap_addresses": {
+        "rir-resource-RU": 2
+      },
+      "resolver_protection_overlap_addresses": {
+        "rir-resource-RU": 2
+      }
+    },
+    {
+      "prefix": "193.233.63.38/32",
+      "addresses": 1,
+      "source_overlap_addresses": {
+        "grimbird": 0,
+        "digne": 0,
+        "davoyan": 1,
+        "golukon": 0
+      },
+      "resolver_evidence_labels": [
+        "antifilter-ip.lst",
+        "v38-historical-ip.lst-dns"
+      ],
+      "readmission_overlap_addresses": {
+        "hydra-direct": 1,
+        "rir-resource-RU": 1
+      },
+      "resolver_protection_overlap_addresses": {
+        "rir-resource-RU": 1
+      }
+    },
+    {
+      "prefix": "193.233.63.43/32",
+      "addresses": 1,
+      "source_overlap_addresses": {
+        "grimbird": 0,
+        "digne": 0,
+        "davoyan": 1,
+        "golukon": 0
+      },
+      "resolver_evidence_labels": [
+        "antifilter-ip.lst",
+        "v38-historical-ip.lst-dns"
+      ],
+      "readmission_overlap_addresses": {
+        "hydra-direct": 1,
+        "rir-resource-RU": 1
+      },
+      "resolver_protection_overlap_addresses": {
+        "rir-resource-RU": 1
+      }
+    },
+    {
+      "prefix": "193.233.63.44/31",
+      "addresses": 2,
+      "source_overlap_addresses": {
+        "grimbird": 0,
+        "digne": 0,
+        "davoyan": 2,
+        "golukon": 0
+      },
+      "resolver_evidence_labels": [
+        "antifilter-ipresolve.lst",
+        "v38-historical-ipresolve.lst-dns"
+      ],
+      "readmission_overlap_addresses": {
+        "rir-resource-RU": 2
+      },
+      "resolver_protection_overlap_addresses": {
+        "rir-resource-RU": 2
+      }
+    },
+    {
+      "prefix": "193.233.63.48/31",
+      "addresses": 2,
+      "source_overlap_addresses": {
+        "grimbird": 0,
+        "digne": 0,
+        "davoyan": 2,
+        "golukon": 0
+      },
+      "resolver_evidence_labels": [
+        "antifilter-ip.lst",
+        "antifilter-ipresolve.lst",
+        "v38-historical-ip.lst-dns",
+        "v38-historical-ipresolve.lst-dns"
+      ],
+      "readmission_overlap_addresses": {
+        "rir-resource-RU": 2
+      },
+      "resolver_protection_overlap_addresses": {
+        "rir-resource-RU": 2
+      }
+    },
+    {
+      "prefix": "193.233.63.52/32",
+      "addresses": 1,
+      "source_overlap_addresses": {
+        "grimbird": 0,
+        "digne": 0,
+        "davoyan": 1,
+        "golukon": 0
+      },
+      "resolver_evidence_labels": [
+        "antifilter-ipresolve.lst",
+        "v38-historical-ipresolve.lst-dns"
+      ],
+      "readmission_overlap_addresses": {
+        "rir-resource-RU": 1
+      },
+      "resolver_protection_overlap_addresses": {
+        "rir-resource-RU": 1
+      }
+    },
+    {
+      "prefix": "193.233.63.54/31",
+      "addresses": 2,
+      "source_overlap_addresses": {
+        "grimbird": 0,
+        "digne": 0,
+        "davoyan": 2,
+        "golukon": 0
+      },
+      "resolver_evidence_labels": [
+        "antifilter-ip.lst",
+        "v38-historical-ip.lst-dns"
+      ],
+      "readmission_overlap_addresses": {
+        "hydra-direct": 1,
+        "rir-resource-RU": 2
+      },
+      "resolver_protection_overlap_addresses": {
+        "rir-resource-RU": 2
+      }
+    },
+    {
+      "prefix": "193.233.63.57/32",
+      "addresses": 1,
+      "source_overlap_addresses": {
+        "grimbird": 0,
+        "digne": 0,
+        "davoyan": 1,
+        "golukon": 0
+      },
+      "resolver_evidence_labels": [
+        "antifilter-ip.lst",
+        "v38-historical-ip.lst-dns"
+      ],
+      "readmission_overlap_addresses": {
+        "hydra-direct": 1,
+        "rir-resource-RU": 1
+      },
+      "resolver_protection_overlap_addresses": {
+        "rir-resource-RU": 1
+      }
+    },
+    {
+      "prefix": "193.233.63.58/32",
+      "addresses": 1,
+      "source_overlap_addresses": {
+        "grimbird": 0,
+        "digne": 0,
+        "davoyan": 1,
+        "golukon": 0
+      },
+      "resolver_evidence_labels": [
+        "antifilter-ip.lst",
+        "antifilter-ipresolve.lst",
+        "v38-historical-ip.lst-dns",
+        "v38-historical-ipresolve.lst-dns"
+      ],
+      "readmission_overlap_addresses": {
+        "rir-resource-RU": 1
+      },
+      "resolver_protection_overlap_addresses": {
+        "rir-resource-RU": 1
+      }
+    },
+    {
+      "prefix": "193.233.63.61/32",
+      "addresses": 1,
+      "source_overlap_addresses": {
+        "grimbird": 0,
+        "digne": 0,
+        "davoyan": 1,
+        "golukon": 0
+      },
+      "resolver_evidence_labels": [
+        "antifilter-ipresolve.lst",
+        "v38-historical-ipresolve.lst-dns"
+      ],
+      "readmission_overlap_addresses": {
+        "rir-resource-RU": 1
+      },
+      "resolver_protection_overlap_addresses": {
+        "rir-resource-RU": 1
+      }
+    },
+    {
+      "prefix": "193.233.63.63/32",
+      "addresses": 1,
+      "source_overlap_addresses": {
+        "grimbird": 0,
+        "digne": 0,
+        "davoyan": 1,
+        "golukon": 0
+      },
+      "resolver_evidence_labels": [
+        "antifilter-ipresolve.lst",
+        "v38-historical-ipresolve.lst-dns"
+      ],
+      "readmission_overlap_addresses": {
+        "rir-resource-RU": 1
+      },
+      "resolver_protection_overlap_addresses": {
+        "rir-resource-RU": 1
+      }
+    },
+    {
+      "prefix": "193.233.63.64/32",
+      "addresses": 1,
+      "source_overlap_addresses": {
+        "grimbird": 0,
+        "digne": 0,
+        "davoyan": 1,
+        "golukon": 0
+      },
+      "resolver_evidence_labels": [
+        "antifilter-ip.lst",
+        "v38-historical-ip.lst-dns"
+      ],
+      "readmission_overlap_addresses": {
+        "rir-resource-RU": 1
+      },
+      "resolver_protection_overlap_addresses": {
+        "rir-resource-RU": 1
+      }
+    },
+    {
+      "prefix": "193.233.63.68/32",
+      "addresses": 1,
+      "source_overlap_addresses": {
+        "grimbird": 0,
+        "digne": 0,
+        "davoyan": 1,
+        "golukon": 0
+      },
+      "resolver_evidence_labels": [
+        "antifilter-ip.lst",
+        "antifilter-ipresolve.lst",
+        "v38-historical-ip.lst-dns",
+        "v38-historical-ipresolve.lst-dns"
+      ],
+      "readmission_overlap_addresses": {
+        "rir-resource-RU": 1
+      },
+      "resolver_protection_overlap_addresses": {
+        "rir-resource-RU": 1
+      }
+    },
+    {
+      "prefix": "193.233.63.70/32",
+      "addresses": 1,
+      "source_overlap_addresses": {
+        "grimbird": 0,
+        "digne": 0,
+        "davoyan": 1,
+        "golukon": 0
+      },
+      "resolver_evidence_labels": [
+        "antifilter-ipresolve.lst",
+        "v38-historical-ipresolve.lst-dns"
+      ],
+      "readmission_overlap_addresses": {
+        "rir-resource-RU": 1
+      },
+      "resolver_protection_overlap_addresses": {
+        "rir-resource-RU": 1
+      }
+    },
+    {
+      "prefix": "193.233.63.72/31",
+      "addresses": 2,
+      "source_overlap_addresses": {
+        "grimbird": 0,
+        "digne": 0,
+        "davoyan": 2,
+        "golukon": 0
+      },
+      "resolver_evidence_labels": [
+        "antifilter-ip.lst",
+        "antifilter-ipresolve.lst",
+        "v38-historical-ip.lst-dns",
+        "v38-historical-ipresolve.lst-dns"
+      ],
+      "readmission_overlap_addresses": {
+        "rir-resource-RU": 2
+      },
+      "resolver_protection_overlap_addresses": {
+        "rir-resource-RU": 2
+      }
+    },
+    {
+      "prefix": "193.233.63.75/32",
+      "addresses": 1,
+      "source_overlap_addresses": {
+        "grimbird": 0,
+        "digne": 0,
+        "davoyan": 1,
+        "golukon": 0
+      },
+      "resolver_evidence_labels": [
+        "antifilter-ipresolve.lst",
+        "v38-historical-ipresolve.lst-dns"
+      ],
+      "readmission_overlap_addresses": {
+        "rir-resource-RU": 1
+      },
+      "resolver_protection_overlap_addresses": {
+        "rir-resource-RU": 1
+      }
+    },
+    {
+      "prefix": "193.233.63.77/32",
+      "addresses": 1,
+      "source_overlap_addresses": {
+        "grimbird": 0,
+        "digne": 0,
+        "davoyan": 1,
+        "golukon": 0
+      },
+      "resolver_evidence_labels": [
+        "antifilter-ip.lst",
+        "antifilter-ipresolve.lst",
+        "v38-historical-ip.lst-dns",
+        "v38-historical-ipresolve.lst-dns"
+      ],
+      "readmission_overlap_addresses": {
+        "rir-resource-RU": 1
+      },
+      "resolver_protection_overlap_addresses": {
+        "rir-resource-RU": 1
+      }
+    },
+    {
+      "prefix": "193.233.63.81/32",
+      "addresses": 1,
+      "source_overlap_addresses": {
+        "grimbird": 0,
+        "digne": 0,
+        "davoyan": 1,
+        "golukon": 0
+      },
+      "resolver_evidence_labels": [
+        "antifilter-ip.lst",
+        "antifilter-ipresolve.lst",
+        "v38-historical-ip.lst-dns",
+        "v38-historical-ipresolve.lst-dns"
+      ],
+      "readmission_overlap_addresses": {
+        "rir-resource-RU": 1
+      },
+      "resolver_protection_overlap_addresses": {
+        "rir-resource-RU": 1
+      }
+    },
+    {
+      "prefix": "193.233.63.82/31",
+      "addresses": 2,
+      "source_overlap_addresses": {
+        "grimbird": 0,
+        "digne": 0,
+        "davoyan": 2,
+        "golukon": 0
+      },
+      "resolver_evidence_labels": [
+        "antifilter-ip.lst",
+        "antifilter-ipresolve.lst",
+        "v38-historical-ip.lst-dns",
+        "v38-historical-ipresolve.lst-dns"
+      ],
+      "readmission_overlap_addresses": {
+        "rir-resource-RU": 2
+      },
+      "resolver_protection_overlap_addresses": {
+        "rir-resource-RU": 2
+      }
+    },
+    {
+      "prefix": "193.233.63.84/31",
+      "addresses": 2,
+      "source_overlap_addresses": {
+        "grimbird": 0,
+        "digne": 0,
+        "davoyan": 2,
+        "golukon": 0
+      },
+      "resolver_evidence_labels": [
+        "antifilter-ip.lst",
+        "antifilter-ipresolve.lst",
+        "v38-historical-ip.lst-dns",
+        "v38-historical-ipresolve.lst-dns"
+      ],
+      "readmission_overlap_addresses": {
+        "rir-resource-RU": 2
+      },
+      "resolver_protection_overlap_addresses": {
+        "rir-resource-RU": 2
+      }
+    },
+    {
+      "prefix": "193.233.63.87/32",
+      "addresses": 1,
+      "source_overlap_addresses": {
+        "grimbird": 0,
+        "digne": 0,
+        "davoyan": 1,
+        "golukon": 0
+      },
+      "resolver_evidence_labels": [
+        "antifilter-ipresolve.lst",
+        "v38-historical-ipresolve.lst-dns"
+      ],
+      "readmission_overlap_addresses": {
+        "rir-resource-RU": 1
+      },
+      "resolver_protection_overlap_addresses": {
+        "rir-resource-RU": 1
+      }
+    },
+    {
+      "prefix": "193.233.63.89/32",
+      "addresses": 1,
+      "source_overlap_addresses": {
+        "grimbird": 0,
+        "digne": 0,
+        "davoyan": 1,
+        "golukon": 0
+      },
+      "resolver_evidence_labels": [
+        "antifilter-ipresolve.lst",
+        "v38-historical-ipresolve.lst-dns"
+      ],
+      "readmission_overlap_addresses": {
+        "rir-resource-RU": 1
+      },
+      "resolver_protection_overlap_addresses": {
+        "rir-resource-RU": 1
+      }
+    },
+    {
+      "prefix": "193.233.63.98/31",
+      "addresses": 2,
+      "source_overlap_addresses": {
+        "grimbird": 0,
+        "digne": 0,
+        "davoyan": 2,
+        "golukon": 0
+      },
+      "resolver_evidence_labels": [
+        "antifilter-ipresolve.lst",
+        "v38-historical-ipresolve.lst-dns"
+      ],
+      "readmission_overlap_addresses": {
+        "rir-resource-RU": 2
+      },
+      "resolver_protection_overlap_addresses": {
+        "rir-resource-RU": 2
+      }
+    },
+    {
+      "prefix": "193.233.63.101/32",
+      "addresses": 1,
+      "source_overlap_addresses": {
+        "grimbird": 0,
+        "digne": 0,
+        "davoyan": 1,
+        "golukon": 0
+      },
+      "resolver_evidence_labels": [
+        "antifilter-ip.lst",
+        "v38-historical-ip.lst-dns"
+      ],
+      "readmission_overlap_addresses": {
+        "hydra-direct": 1,
+        "rir-resource-RU": 1
+      },
+      "resolver_protection_overlap_addresses": {
+        "rir-resource-RU": 1
+      }
+    },
+    {
+      "prefix": "193.233.63.102/31",
+      "addresses": 2,
+      "source_overlap_addresses": {
+        "grimbird": 0,
+        "digne": 0,
+        "davoyan": 2,
+        "golukon": 0
+      },
+      "resolver_evidence_labels": [
+        "antifilter-ipresolve.lst",
+        "v38-historical-ipresolve.lst-dns"
+      ],
+      "readmission_overlap_addresses": {
+        "hydra-direct": 1,
+        "rir-resource-RU": 2
+      },
+      "resolver_protection_overlap_addresses": {
+        "rir-resource-RU": 2
+      }
+    },
+    {
+      "prefix": "193.233.63.110/32",
+      "addresses": 1,
+      "source_overlap_addresses": {
+        "grimbird": 0,
+        "digne": 0,
+        "davoyan": 1,
+        "golukon": 0
+      },
+      "resolver_evidence_labels": [
+        "antifilter-ip.lst",
+        "v38-historical-ip.lst-dns"
+      ],
+      "readmission_overlap_addresses": {
+        "rir-resource-RU": 1
+      },
+      "resolver_protection_overlap_addresses": {
+        "rir-resource-RU": 1
+      }
+    },
+    {
+      "prefix": "193.233.63.112/32",
+      "addresses": 1,
+      "source_overlap_addresses": {
+        "grimbird": 0,
+        "digne": 0,
+        "davoyan": 1,
+        "golukon": 0
+      },
+      "resolver_evidence_labels": [
+        "antifilter-ipresolve.lst",
+        "v38-historical-ipresolve.lst-dns"
+      ],
+      "readmission_overlap_addresses": {
+        "rir-resource-RU": 1
+      },
+      "resolver_protection_overlap_addresses": {
+        "rir-resource-RU": 1
+      }
+    },
+    {
+      "prefix": "193.233.63.115/32",
+      "addresses": 1,
+      "source_overlap_addresses": {
+        "grimbird": 0,
+        "digne": 0,
+        "davoyan": 1,
+        "golukon": 0
+      },
+      "resolver_evidence_labels": [
+        "antifilter-ipresolve.lst",
+        "v38-historical-ipresolve.lst-dns"
+      ],
+      "readmission_overlap_addresses": {
+        "rir-resource-RU": 1
+      },
+      "resolver_protection_overlap_addresses": {
+        "rir-resource-RU": 1
+      }
+    },
+    {
+      "prefix": "193.233.63.123/32",
+      "addresses": 1,
+      "source_overlap_addresses": {
+        "grimbird": 0,
+        "digne": 0,
+        "davoyan": 1,
+        "golukon": 0
+      },
+      "resolver_evidence_labels": [
+        "antifilter-ipresolve.lst",
+        "v38-historical-ipresolve.lst-dns"
+      ],
+      "readmission_overlap_addresses": {
+        "rir-resource-RU": 1
+      },
+      "resolver_protection_overlap_addresses": {
+        "rir-resource-RU": 1
+      }
+    },
+    {
+      "prefix": "193.233.63.124/32",
+      "addresses": 1,
+      "source_overlap_addresses": {
+        "grimbird": 0,
+        "digne": 0,
+        "davoyan": 1,
+        "golukon": 0
+      },
+      "resolver_evidence_labels": [
+        "antifilter-ip.lst",
+        "v38-historical-ip.lst-dns"
+      ],
+      "readmission_overlap_addresses": {
+        "rir-resource-RU": 1
+      },
+      "resolver_protection_overlap_addresses": {
+        "rir-resource-RU": 1
+      }
+    },
+    {
+      "prefix": "193.233.63.126/32",
+      "addresses": 1,
+      "source_overlap_addresses": {
+        "grimbird": 0,
+        "digne": 0,
+        "davoyan": 1,
+        "golukon": 0
+      },
+      "resolver_evidence_labels": [
+        "antifilter-ip.lst",
+        "v38-historical-ip.lst-dns"
+      ],
+      "readmission_overlap_addresses": {
+        "hydra-direct": 1,
+        "rir-resource-RU": 1
+      },
+      "resolver_protection_overlap_addresses": {
+        "rir-resource-RU": 1
+      }
+    },
+    {
+      "prefix": "193.233.63.128/31",
+      "addresses": 2,
+      "source_overlap_addresses": {
+        "grimbird": 0,
+        "digne": 0,
+        "davoyan": 2,
+        "golukon": 0
+      },
+      "resolver_evidence_labels": [
+        "antifilter-ip.lst",
+        "antifilter-ipresolve.lst",
+        "v38-historical-ip.lst-dns",
+        "v38-historical-ipresolve.lst-dns"
+      ],
+      "readmission_overlap_addresses": {
+        "rir-resource-RU": 2
+      },
+      "resolver_protection_overlap_addresses": {
+        "rir-resource-RU": 2
+      }
+    },
+    {
+      "prefix": "193.233.63.131/32",
+      "addresses": 1,
+      "source_overlap_addresses": {
+        "grimbird": 0,
+        "digne": 0,
+        "davoyan": 1,
+        "golukon": 0
+      },
+      "resolver_evidence_labels": [
+        "antifilter-ipresolve.lst",
+        "v38-historical-ipresolve.lst-dns"
+      ],
+      "readmission_overlap_addresses": {
+        "rir-resource-RU": 1
+      },
+      "resolver_protection_overlap_addresses": {
+        "rir-resource-RU": 1
+      }
+    },
+    {
+      "prefix": "193.233.63.132/32",
+      "addresses": 1,
+      "source_overlap_addresses": {
+        "grimbird": 0,
+        "digne": 0,
+        "davoyan": 1,
+        "golukon": 0
+      },
+      "resolver_evidence_labels": [
+        "antifilter-ipresolve.lst",
+        "v38-historical-ipresolve.lst-dns"
+      ],
+      "readmission_overlap_addresses": {
+        "rir-resource-RU": 1
+      },
+      "resolver_protection_overlap_addresses": {
+        "rir-resource-RU": 1
+      }
+    },
+    {
+      "prefix": "193.233.63.135/32",
+      "addresses": 1,
+      "source_overlap_addresses": {
+        "grimbird": 0,
+        "digne": 0,
+        "davoyan": 1,
+        "golukon": 0
+      },
+      "resolver_evidence_labels": [
+        "antifilter-ipresolve.lst",
+        "v38-historical-ipresolve.lst-dns"
+      ],
+      "readmission_overlap_addresses": {
+        "rir-resource-RU": 1
+      },
+      "resolver_protection_overlap_addresses": {
+        "rir-resource-RU": 1
+      }
+    },
+    {
+      "prefix": "193.233.63.139/32",
+      "addresses": 1,
+      "source_overlap_addresses": {
+        "grimbird": 0,
+        "digne": 0,
+        "davoyan": 1,
+        "golukon": 0
+      },
+      "resolver_evidence_labels": [
+        "antifilter-ip.lst",
+        "antifilter-ipresolve.lst",
+        "v38-historical-ip.lst-dns",
+        "v38-historical-ipresolve.lst-dns"
+      ],
+      "readmission_overlap_addresses": {
+        "rir-resource-RU": 1
+      },
+      "resolver_protection_overlap_addresses": {
+        "rir-resource-RU": 1
+      }
+    },
+    {
+      "prefix": "193.233.63.157/32",
+      "addresses": 1,
+      "source_overlap_addresses": {
+        "grimbird": 0,
+        "digne": 0,
+        "davoyan": 1,
+        "golukon": 0
+      },
+      "resolver_evidence_labels": [
+        "antifilter-ipresolve.lst",
+        "v38-historical-ipresolve.lst-dns"
+      ],
+      "readmission_overlap_addresses": {
+        "rir-resource-RU": 1
+      },
+      "resolver_protection_overlap_addresses": {
+        "rir-resource-RU": 1
+      }
+    },
+    {
+      "prefix": "193.233.63.161/32",
+      "addresses": 1,
+      "source_overlap_addresses": {
+        "grimbird": 0,
+        "digne": 0,
+        "davoyan": 1,
+        "golukon": 0
+      },
+      "resolver_evidence_labels": [
+        "antifilter-ipresolve.lst",
+        "v38-historical-ipresolve.lst-dns"
+      ],
+      "readmission_overlap_addresses": {
+        "rir-resource-RU": 1
+      },
+      "resolver_protection_overlap_addresses": {
+        "rir-resource-RU": 1
+      }
+    },
+    {
+      "prefix": "193.233.63.163/32",
+      "addresses": 1,
+      "source_overlap_addresses": {
+        "grimbird": 0,
+        "digne": 0,
+        "davoyan": 1,
+        "golukon": 0
+      },
+      "resolver_evidence_labels": [
+        "antifilter-ip.lst",
+        "v38-historical-ip.lst-dns"
+      ],
+      "readmission_overlap_addresses": {
+        "rir-resource-RU": 1
+      },
+      "resolver_protection_overlap_addresses": {
+        "rir-resource-RU": 1
+      }
+    },
+    {
+      "prefix": "193.233.63.166/32",
+      "addresses": 1,
+      "source_overlap_addresses": {
+        "grimbird": 0,
+        "digne": 0,
+        "davoyan": 1,
+        "golukon": 0
+      },
+      "resolver_evidence_labels": [
+        "antifilter-ipresolve.lst",
+        "v38-historical-ipresolve.lst-dns"
+      ],
+      "readmission_overlap_addresses": {
+        "rir-resource-RU": 1
+      },
+      "resolver_protection_overlap_addresses": {
+        "rir-resource-RU": 1
+      }
+    },
+    {
+      "prefix": "193.233.63.170/32",
+      "addresses": 1,
+      "source_overlap_addresses": {
+        "grimbird": 0,
+        "digne": 0,
+        "davoyan": 1,
+        "golukon": 0
+      },
+      "resolver_evidence_labels": [
+        "antifilter-ip.lst",
+        "v38-historical-ip.lst-dns"
+      ],
+      "readmission_overlap_addresses": {
+        "hydra-direct": 1,
+        "rir-resource-RU": 1
+      },
+      "resolver_protection_overlap_addresses": {
+        "rir-resource-RU": 1
+      }
+    },
+    {
+      "prefix": "193.233.63.187/32",
+      "addresses": 1,
+      "source_overlap_addresses": {
+        "grimbird": 0,
+        "digne": 0,
+        "davoyan": 1,
+        "golukon": 0
+      },
+      "resolver_evidence_labels": [
+        "antifilter-ipresolve.lst",
+        "v38-historical-ipresolve.lst-dns"
+      ],
+      "readmission_overlap_addresses": {
+        "rir-resource-RU": 1
+      },
+      "resolver_protection_overlap_addresses": {
+        "rir-resource-RU": 1
+      }
+    },
+    {
+      "prefix": "193.233.63.192/32",
+      "addresses": 1,
+      "source_overlap_addresses": {
+        "grimbird": 0,
+        "digne": 0,
+        "davoyan": 1,
+        "golukon": 0
+      },
+      "resolver_evidence_labels": [
+        "antifilter-ipresolve.lst",
+        "v38-historical-ipresolve.lst-dns"
+      ],
+      "readmission_overlap_addresses": {
+        "rir-resource-RU": 1
+      },
+      "resolver_protection_overlap_addresses": {
+        "rir-resource-RU": 1
+      }
+    },
+    {
+      "prefix": "193.233.63.201/32",
+      "addresses": 1,
+      "source_overlap_addresses": {
+        "grimbird": 0,
+        "digne": 0,
+        "davoyan": 1,
+        "golukon": 0
+      },
+      "resolver_evidence_labels": [
+        "antifilter-ipresolve.lst",
+        "v38-historical-ipresolve.lst-dns"
+      ],
+      "readmission_overlap_addresses": {
+        "rir-resource-RU": 1
+      },
+      "resolver_protection_overlap_addresses": {
+        "rir-resource-RU": 1
+      }
+    },
+    {
+      "prefix": "193.233.63.203/32",
+      "addresses": 1,
+      "source_overlap_addresses": {
+        "grimbird": 0,
+        "digne": 0,
+        "davoyan": 1,
+        "golukon": 0
+      },
+      "resolver_evidence_labels": [
+        "antifilter-ipresolve.lst",
+        "v38-historical-ipresolve.lst-dns"
+      ],
+      "readmission_overlap_addresses": {
+        "rir-resource-RU": 1
+      },
+      "resolver_protection_overlap_addresses": {
+        "rir-resource-RU": 1
+      }
+    },
+    {
+      "prefix": "193.233.63.204/31",
+      "addresses": 2,
+      "source_overlap_addresses": {
+        "grimbird": 0,
+        "digne": 0,
+        "davoyan": 2,
+        "golukon": 0
+      },
+      "resolver_evidence_labels": [
+        "antifilter-ip.lst",
+        "antifilter-ipresolve.lst",
+        "v38-historical-ip.lst-dns",
+        "v38-historical-ipresolve.lst-dns"
+      ],
+      "readmission_overlap_addresses": {
+        "rir-resource-RU": 2
+      },
+      "resolver_protection_overlap_addresses": {
+        "rir-resource-RU": 2
+      }
+    },
+    {
+      "prefix": "193.233.63.210/32",
+      "addresses": 1,
+      "source_overlap_addresses": {
+        "grimbird": 0,
+        "digne": 0,
+        "davoyan": 1,
+        "golukon": 0
+      },
+      "resolver_evidence_labels": [
+        "antifilter-ipresolve.lst",
+        "v38-historical-ipresolve.lst-dns"
+      ],
+      "readmission_overlap_addresses": {
+        "rir-resource-RU": 1
+      },
+      "resolver_protection_overlap_addresses": {
+        "rir-resource-RU": 1
+      }
+    },
+    {
+      "prefix": "193.233.63.219/32",
+      "addresses": 1,
+      "source_overlap_addresses": {
+        "grimbird": 0,
+        "digne": 0,
+        "davoyan": 1,
+        "golukon": 0
+      },
+      "resolver_evidence_labels": [
+        "antifilter-ipresolve.lst",
+        "v38-historical-ipresolve.lst-dns"
+      ],
+      "readmission_overlap_addresses": {
+        "rir-resource-RU": 1
+      },
+      "resolver_protection_overlap_addresses": {
+        "rir-resource-RU": 1
+      }
+    },
+    {
+      "prefix": "193.233.63.220/32",
+      "addresses": 1,
+      "source_overlap_addresses": {
+        "grimbird": 0,
+        "digne": 0,
+        "davoyan": 1,
+        "golukon": 0
+      },
+      "resolver_evidence_labels": [
+        "antifilter-ipresolve.lst",
+        "v38-historical-ipresolve.lst-dns"
+      ],
+      "readmission_overlap_addresses": {
+        "rir-resource-RU": 1
+      },
+      "resolver_protection_overlap_addresses": {
+        "rir-resource-RU": 1
+      }
+    },
+    {
+      "prefix": "193.233.63.230/32",
+      "addresses": 1,
+      "source_overlap_addresses": {
+        "grimbird": 0,
+        "digne": 0,
+        "davoyan": 1,
+        "golukon": 0
+      },
+      "resolver_evidence_labels": [
+        "antifilter-ipresolve.lst",
+        "v38-historical-ipresolve.lst-dns"
+      ],
+      "readmission_overlap_addresses": {
+        "rir-resource-RU": 1
+      },
+      "resolver_protection_overlap_addresses": {
+        "rir-resource-RU": 1
+      }
+    },
+    {
+      "prefix": "193.233.63.242/32",
+      "addresses": 1,
+      "source_overlap_addresses": {
+        "grimbird": 0,
+        "digne": 0,
+        "davoyan": 1,
+        "golukon": 0
+      },
+      "resolver_evidence_labels": [
+        "antifilter-ipresolve.lst",
+        "v38-historical-ipresolve.lst-dns"
+      ],
+      "readmission_overlap_addresses": {
+        "rir-resource-RU": 1
+      },
+      "resolver_protection_overlap_addresses": {
+        "rir-resource-RU": 1
+      }
+    },
+    {
+      "prefix": "193.233.63.246/32",
+      "addresses": 1,
+      "source_overlap_addresses": {
+        "grimbird": 0,
+        "digne": 0,
+        "davoyan": 1,
+        "golukon": 0
+      },
+      "resolver_evidence_labels": [
+        "antifilter-ipresolve.lst",
+        "v38-historical-ipresolve.lst-dns"
+      ],
+      "readmission_overlap_addresses": {
+        "rir-resource-RU": 1
+      },
+      "resolver_protection_overlap_addresses": {
+        "rir-resource-RU": 1
+      }
+    }
+  ],
+  "removed_after_v37": [
+    {
+      "prefix": "31.204.59.0/24",
+      "addresses": 256,
+      "covering_admission_exclusions": [
+        "31.204.56.0/21"
+      ],
+      "hard_or_telegram_addresses": 0,
+      "effective_resolver_addresses": 0
+    },
+    {
+      "prefix": "31.204.60.0/22",
+      "addresses": 1024,
+      "covering_admission_exclusions": [
+        "31.204.56.0/21"
+      ],
+      "hard_or_telegram_addresses": 0,
+      "effective_resolver_addresses": 0
+    }
+  ],
+  "candidates": []
+}

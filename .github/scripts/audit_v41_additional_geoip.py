@@ -49,6 +49,34 @@ def read_cidrs(path):
     return parse_cidr_file(path)[0]
 
 
+def additional_eligibility(f, m):
+    groups = [normalize_interval_union(*(f[k] for k in group)) for group in GROUPS]
+    all_additional = normalize_interval_union(*groups)
+    two = normalize_interval_union(intersect(groups[0], groups[1]),
+                                   intersect(groups[0], groups[2]), intersect(groups[1], groups[2]))
+    trusted = normalize_interval_union(f["v2fly"], f["loyalsoldier"], f["loyalsoldier-by"])
+    eligible = normalize_interval_union(two, intersect(all_additional, m["asn"]),
+                                        intersect(all_additional, m["rir_ru"]))
+    eligible = subtract(eligible, normalize_interval_union(trusted, m["private"], m["asn"]))
+    return all_additional, two, eligible
+
+
+def resolver_only_loss(eligible, m):
+    selected = intersect(intersect(eligible, m["resolver"]), m["effective"])
+    return subtract(selected, normalize_interval_union(m["private"], m["hard"], m["admission"], m["direct"]))
+
+
+def source_labels(path):
+    rows = {}
+    for line in path.read_text(encoding="utf-8").splitlines():
+        if not line.strip() or line.startswith("#"):
+            continue
+        prefix, _, comment = line.partition("#")
+        label = comment.strip().removeprefix("sources=")
+        rows[ip_network(prefix.strip())] = label.split(",") if label else []
+    return rows
+
+
 def calculate(artifact, source_dir, admission_file, telegram_file):
     provenance = artifact / "geoip_RU_input_provenance.tsv"
     with provenance.open(encoding="utf-8", newline="") as stream:
@@ -84,8 +112,11 @@ def calculate(artifact, source_dir, admission_file, telegram_file):
     if any(sha(path) != hashes[k] for k, path in paths.items()):
         raise ValueError("Production input digest mismatch")
     dat_sha = sha(artifact / "geoip_RU.dat")
+    if dat_sha != manifest["output_sha256"]:
+        raise ValueError("Final DAT does not match its manifest")
     effective_path = artifact / "geoip_RU_v41_blocked_ip_exclusions.txt"
-    for path, digest in ((artifact / "geoip_RU.dat", dat_sha), (effective_path, sha(effective_path))):
+    for path, digest in ((artifact / "geoip_RU.dat", dat_sha), (effective_path, sha(effective_path)),
+                         (provenance, sha(provenance))):
         if path.with_name(path.name + ".sha256sum").read_text().split()[0] != digest:
             raise ValueError(f"Published checksum mismatch: {path}")
 
@@ -105,26 +136,53 @@ def calculate(artifact, source_dir, admission_file, telegram_file):
     with (artifact / "geoip_RU_v37_additional_provenance.tsv").open(encoding="utf-8", newline="") as stream:
         accepted = {ip_network(r["PREFIX"]) for r in csv.DictReader(stream, delimiter="\t")}
 
-    totals, candidates = {}, []
+    additions = {}
+    with (artifact / "geoip_RU_v41_prefix_provenance.tsv").open(encoding="utf-8", newline="") as stream:
+        for row in csv.DictReader(stream, delimiter="\t"):
+            additions.setdefault(row["source_id"], set()).add(ip_network(row["prefix"]))
+    admission_ids = {
+        "all-company-asn-origins", "rir-rukzby-selected-origin-protected", "rir-resource-RU",
+        "rir-resource-BY", "rir-resource-KZ", "hydra-direct", "hydra-whitelist",
+        "reviewed-operator-prefixes", "kyoresuas-standard", "hxehex-mobile-hosts",
+        "w1zardz-service-direct", "operator-whitelist",
+    }
+    protection_ids = {
+        "core-company-asn-origins", "shared-infrastructure-asn-origins",
+        "rir-rukzby-selected-origin-protected", "rir-resource-RU", "rir-resource-BY",
+        "rir-resource-KZ", "reviewed-operator-prefixes", "verified-service-resolver-protected",
+        "verified-service-exact-hosts",
+    }
+    if not (admission_ids | protection_ids) <= additions.keys():
+        raise ValueError("Missing v41 provenance source")
+    resolver_labels = source_labels(paths["blocked_resolver_only"])
+    totals, candidates, restored_rows, removed_rows = {}, [], [], []
     for v in (4, 6):
         f = {k: intervals(nets, v) for k, nets in feeds.items()}
         m = {k: intervals(nets, v) for k, nets in masks.items()}
-        groups = [normalize_interval_union(*(f[k] for k in group)) for group in GROUPS]
-        all_additional = normalize_interval_union(*groups)
-        two = normalize_interval_union(intersect(groups[0], groups[1]),
-                                       intersect(groups[0], groups[2]), intersect(groups[1], groups[2]))
-        trusted = normalize_interval_union(f["v2fly"], f["loyalsoldier"], f["loyalsoldier-by"])
-        eligible = normalize_interval_union(two, intersect(all_additional, m["asn"]),
-                                            intersect(all_additional, m["rir_ru"]))
-        eligible = subtract(eligible, normalize_interval_union(trusted, m["private"], m["asn"]))
+        all_additional, two, eligible = additional_eligibility(f, m)
         post_carve = subtract(eligible, m["approved"])
         if post_carve != intervals(accepted, v) or subtract(post_carve, m["base"]):
             raise ValueError(f"Reconstructed additional eligibility does not match published v37 evidence (IPv{v})")
         raw_lost = intersect(eligible, m["approved"])
-        resolver_lost = intersect(intersect(raw_lost, m["resolver"]), m["effective"])
-        resolver_lost = subtract(resolver_lost, normalize_interval_union(
-            m["private"], m["hard"], m["admission"], m["direct"],
-        ))
+        resolver_lost = resolver_only_loss(eligible, m)
+        if intersect(resolver_lost, raw_lost) != resolver_lost:
+            raise ValueError(f"Effective resolver exclusions diverge from the v37 approved union (IPv{v})")
+        lost_after_v37 = subtract(post_carve, m["direct"])
+        explained_after_v37 = normalize_interval_union(m["admission"], m["hard"], m["effective"])
+        if subtract(lost_after_v37, explained_after_v37):
+            raise ValueError(f"Unexplained v41 loss after v37 (IPv{v})")
+        for net in sorted(networks_from_intervals(lost_after_v37, v)):
+            exact = intervals({net}, v)
+            removed_rows.append({
+                "prefix": str(net), "addresses": net.num_addresses,
+                "covering_admission_exclusions": [
+                    str(exclusion) for exclusion in sorted(n for n in masks["admission"] if n.version == v)
+                    if exclusion.overlaps(net)
+                ],
+                "hard_or_telegram_addresses": interval_size(intersect(exact, m["hard"])),
+                "effective_resolver_addresses": interval_size(
+                    intersect(subtract(exact, m["hard"]), m["effective"])),
+            })
         hard = intersect(raw_lost, m["hard"])
         already_direct = intersect(raw_lost, m["direct"])
         admission = intersect(raw_lost, m["admission"])
@@ -135,7 +193,35 @@ def calculate(artifact, source_dir, admission_file, telegram_file):
             ("lost_to_v37_approved_union", raw_lost), ("hard_or_telegram", hard),
             ("already_restored_in_v41", already_direct), ("regional_admission_exclusion", admission),
             ("effective_resolver_only_loss", resolver_lost), ("other", remainder),
+            ("accepted_after_v37_missing_in_v41", lost_after_v37),
+            ("accepted_after_v37_hard_or_telegram", intersect(lost_after_v37, m["hard"])),
+            ("accepted_after_v37_admission_exclusion", intersect(lost_after_v37, m["admission"])),
+            ("accepted_after_v37_effective_resolver", intersect(subtract(lost_after_v37, m["hard"]), m["effective"])),
         )}
+        if already_direct:
+            scoped = {key: intersect(intervals(additions[key], v), already_direct)
+                      for key in admission_ids | protection_ids}
+            for net in sorted(networks_from_intervals(already_direct, v)):
+                exact = intervals({net}, v)
+                feed_hits = {key: interval_size(intersect(exact, value))
+                             for key, value in f.items() if key in {s for group in GROUPS for s in group}}
+                admission_hits = {key: interval_size(intersect(exact, scoped[key]))
+                                  for key in sorted(admission_ids) if intersect(exact, scoped[key])}
+                protection_hits = {key: interval_size(intersect(exact, scoped[key]))
+                                   for key in sorted(protection_ids) if intersect(exact, scoped[key])}
+                if subtract(exact, normalize_interval_union(*(scoped[key] for key in admission_ids))):
+                    raise ValueError(f"No v41 re-admission source for {net}")
+                if subtract(exact, normalize_interval_union(*(scoped[key] for key in protection_ids))):
+                    raise ValueError(f"No v41 resolver protection source for {net}")
+                labels = sorted({label for prefix, values in resolver_labels.items()
+                                 if prefix.version == net.version and prefix.overlaps(net) for label in values})
+                restored_rows.append({
+                    "prefix": str(net), "addresses": net.num_addresses,
+                    "source_overlap_addresses": feed_hits,
+                    "resolver_evidence_labels": labels,
+                    "readmission_overlap_addresses": admission_hits,
+                    "resolver_protection_overlap_addresses": protection_hits,
+                })
         for net in sorted(networks_from_intervals(resolver_lost, v)):
             exact = intervals({net}, v)
             candidates.append({
@@ -149,7 +235,8 @@ def calculate(artifact, source_dir, admission_file, telegram_file):
             })
     return {"dat_sha256": dat_sha, "effective_mask_sha256": sha(effective_path),
             "input_provenance_sha256": sha(provenance), "locked_dat_sha256": feed_sha,
-            "totals": totals, "candidates": candidates}
+            "totals": totals, "restored": restored_rows, "removed_after_v37": removed_rows,
+            "candidates": candidates}
 
 
 def main():
