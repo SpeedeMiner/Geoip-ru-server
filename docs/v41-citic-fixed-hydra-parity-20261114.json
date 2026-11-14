@@ -1,0 +1,604 @@
+{
+  "inputs_sha256": {
+    "production": "2735053560ebd598cbdcd71ccf858806d4b955a17e2eac512a7baf249d43653a",
+    "shadow": "4517a9b8e4dce647d0c7e43deca49dfed87f687a1cc111a7e006e35fe417495f",
+    "v37_base": "2b83b50081362fe0035c10fe256506219f1b8f283fdc1794633819b6fad88cbf",
+    "hydra": "2ed3df4a369de869ce1b2def14ff1aef7135b7e056bb8faf1c9c45ac40cc2999",
+    "effective_blocks": "da3949ad119013db9a8237d322c63411234c201079f8506af3e51dc6051b0b6a"
+  },
+  "ru_dns_answers_counts": {
+    "A": {
+      "answers": 20,
+      "published_direct": 20,
+      "shadow_direct": 20,
+      "v37_base_direct": 20,
+      "hydra_direct_matching": 20
+    },
+    "AAAA": {
+      "answers": 10,
+      "shadow_direct": 10
+    }
+  },
+  "per_hostname": {
+    "2001:ad0:cff::18": {
+      "name": "r8-lo0-0-Mow-M9-RU.bb.citictel-cpc.com.",
+      "archive_scope": {
+        "prefix": "2001:ad0:cff::18/128",
+        "country": "RU",
+        "city": "Moscow",
+        "url": "https://gf.data.ee/geofeed.csv",
+        "inetnum": "2001:ad0::/32",
+        "fetched_at": "2026-11-14T10:26:16+00:00",
+        "fixed_release_DIRECT": false
+      },
+      "answers": {
+        "62.128.122.118": {
+          "type": "A",
+          "published_direct": true,
+          "shadow_direct": true,
+          "v37_base_direct": true,
+          "private": false,
+          "v41_effective_blocked": false,
+          "hydra_direct_matching": [
+            "62.128.122.118/31"
+          ],
+          "hydra_whitelist_matching": []
+        },
+        "62.128.122.18": {
+          "type": "A",
+          "published_direct": true,
+          "shadow_direct": true,
+          "v37_base_direct": true,
+          "private": false,
+          "v41_effective_blocked": false,
+          "hydra_direct_matching": [
+            "62.128.122.18/31"
+          ],
+          "hydra_whitelist_matching": []
+        },
+        "2001:ad0:cff::18": {
+          "type": "AAAA",
+          "published_direct": false,
+          "shadow_direct": true,
+          "v37_base_direct": false,
+          "private": false,
+          "v41_effective_blocked": false,
+          "hydra_direct_matching": [],
+          "hydra_whitelist_matching": []
+        }
+      }
+    },
+    "2001:ad0:cff::19": {
+      "name": "r4-lo0-0-Spb-Rep-RU.bb.citictel-cpc.com.",
+      "archive_scope": {
+        "prefix": "2001:ad0:cff::19/128",
+        "country": "RU",
+        "city": "Saint Petersburg",
+        "url": "https://gf.data.ee/geofeed.csv",
+        "inetnum": "2001:ad0::/32",
+        "fetched_at": "2026-11-14T10:26:16+00:00",
+        "fixed_release_DIRECT": false
+      },
+      "answers": {
+        "62.128.122.119": {
+          "type": "A",
+          "published_direct": true,
+          "shadow_direct": true,
+          "v37_base_direct": true,
+          "private": false,
+          "v41_effective_blocked": false,
+          "hydra_direct_matching": [
+            "62.128.122.118/31"
+          ],
+          "hydra_whitelist_matching": []
+        },
+        "62.128.122.19": {
+          "type": "A",
+          "published_direct": true,
+          "shadow_direct": true,
+          "v37_base_direct": true,
+          "private": false,
+          "v41_effective_blocked": false,
+          "hydra_direct_matching": [
+            "62.128.122.18/31"
+          ],
+          "hydra_whitelist_matching": []
+        },
+        "2001:ad0:cff::19": {
+          "type": "AAAA",
+          "published_direct": false,
+          "shadow_direct": true,
+          "v37_base_direct": false,
+          "private": false,
+          "v41_effective_blocked": false,
+          "hydra_direct_matching": [],
+          "hydra_whitelist_matching": []
+        }
+      }
+    },
+    "2001:ad0:cff::21": {
+      "name": "r8-lo0-0-Spb-Rep-RU.bb.citictel-cpc.com.",
+      "archive_scope": {
+        "prefix": "2001:ad0:cff::21/128",
+        "country": "RU",
+        "city": "Saint Petersburg",
+        "url": "https://gf.data.ee/geofeed.csv",
+        "inetnum": "2001:ad0::/32",
+        "fetched_at": "2026-11-14T10:26:16+00:00",
+        "fixed_release_DIRECT": false
+      },
+      "answers": {
+        "62.128.122.121": {
+          "type": "A",
+          "published_direct": true,
+          "shadow_direct": true,
+          "v37_base_direct": true,
+          "private": false,
+          "v41_effective_blocked": false,
+          "hydra_direct_matching": [
+            "62.128.122.121/32"
+          ],
+          "hydra_whitelist_matching": []
+        },
+        "62.128.122.21": {
+          "type": "A",
+          "published_direct": true,
+          "shadow_direct": true,
+          "v37_base_direct": true,
+          "private": false,
+          "v41_effective_blocked": false,
+          "hydra_direct_matching": [
+            "62.128.122.21/32"
+          ],
+          "hydra_whitelist_matching": []
+        },
+        "2001:ad0:cff::21": {
+          "type": "AAAA",
+          "published_direct": false,
+          "shadow_direct": true,
+          "v37_base_direct": false,
+          "private": false,
+          "v41_effective_blocked": false,
+          "hydra_direct_matching": [],
+          "hydra_whitelist_matching": []
+        }
+      }
+    },
+    "2001:ad0:cff::253": {
+      "name": "rr1-lo0-0-Mow-M9-RU.bb.citictel-cpc.com.",
+      "archive_scope": {
+        "prefix": "2001:ad0:cff::253/128",
+        "country": "RU",
+        "city": "Moscow",
+        "url": "https://gf.data.ee/geofeed.csv",
+        "inetnum": "2001:ad0::/32",
+        "fetched_at": "2026-11-14T10:26:16+00:00",
+        "fixed_release_DIRECT": false
+      },
+      "answers": {
+        "62.128.122.253": {
+          "type": "A",
+          "published_direct": true,
+          "shadow_direct": true,
+          "v37_base_direct": true,
+          "private": false,
+          "v41_effective_blocked": false,
+          "hydra_direct_matching": [
+            "62.128.122.253/32"
+          ],
+          "hydra_whitelist_matching": []
+        },
+        "2001:ad0:cff::253": {
+          "type": "AAAA",
+          "published_direct": false,
+          "shadow_direct": true,
+          "v37_base_direct": false,
+          "private": false,
+          "v41_effective_blocked": false,
+          "hydra_direct_matching": [],
+          "hydra_whitelist_matching": []
+        }
+      }
+    },
+    "2001:ad0:cff::31": {
+      "name": "r4-lo0-0-Mow-M9-RU.bb.citictel-cpc.com.",
+      "archive_scope": {
+        "prefix": "2001:ad0:cff::31/128",
+        "country": "RU",
+        "city": "Moscow",
+        "url": "https://gf.data.ee/geofeed.csv",
+        "inetnum": "2001:ad0::/32",
+        "fetched_at": "2026-11-14T10:26:16+00:00",
+        "fixed_release_DIRECT": false
+      },
+      "answers": {
+        "62.128.122.131": {
+          "type": "A",
+          "published_direct": true,
+          "shadow_direct": true,
+          "v37_base_direct": true,
+          "private": false,
+          "v41_effective_blocked": false,
+          "hydra_direct_matching": [
+            "62.128.122.130/31"
+          ],
+          "hydra_whitelist_matching": []
+        },
+        "62.128.122.31": {
+          "type": "A",
+          "published_direct": true,
+          "shadow_direct": true,
+          "v37_base_direct": true,
+          "private": false,
+          "v41_effective_blocked": false,
+          "hydra_direct_matching": [
+            "62.128.122.30/31"
+          ],
+          "hydra_whitelist_matching": []
+        },
+        "2001:ad0:cff::31": {
+          "type": "AAAA",
+          "published_direct": false,
+          "shadow_direct": true,
+          "v37_base_direct": false,
+          "private": false,
+          "v41_effective_blocked": false,
+          "hydra_direct_matching": [],
+          "hydra_whitelist_matching": []
+        }
+      }
+    },
+    "2001:ad0:cff::6": {
+      "name": "r9-lo0-0-Mow-M9-RU.bb.citictel-cpc.com.",
+      "archive_scope": {
+        "prefix": "2001:ad0:cff::6/128",
+        "country": "RU",
+        "city": "Moscow",
+        "url": "https://gf.data.ee/geofeed.csv",
+        "inetnum": "2001:ad0::/32",
+        "fetched_at": "2026-11-14T10:26:16+00:00",
+        "fixed_release_DIRECT": false
+      },
+      "answers": {
+        "217.28.245.5": {
+          "type": "A",
+          "published_direct": true,
+          "shadow_direct": true,
+          "v37_base_direct": true,
+          "private": false,
+          "v41_effective_blocked": false,
+          "hydra_direct_matching": [
+            "217.28.245.5/32"
+          ],
+          "hydra_whitelist_matching": []
+        },
+        "62.128.122.106": {
+          "type": "A",
+          "published_direct": true,
+          "shadow_direct": true,
+          "v37_base_direct": true,
+          "private": false,
+          "v41_effective_blocked": false,
+          "hydra_direct_matching": [
+            "62.128.122.106/32"
+          ],
+          "hydra_whitelist_matching": []
+        },
+        "62.128.122.6": {
+          "type": "A",
+          "published_direct": true,
+          "shadow_direct": true,
+          "v37_base_direct": true,
+          "private": false,
+          "v41_effective_blocked": false,
+          "hydra_direct_matching": [
+            "62.128.122.6/32"
+          ],
+          "hydra_whitelist_matching": []
+        },
+        "2001:ad0:cff::6": {
+          "type": "AAAA",
+          "published_direct": false,
+          "shadow_direct": true,
+          "v37_base_direct": false,
+          "private": false,
+          "v41_effective_blocked": false,
+          "hydra_direct_matching": [],
+          "hydra_whitelist_matching": []
+        }
+      }
+    },
+    "2001:ad0:cff::76": {
+      "name": "r8-lo0-0-Mow-Mar8-RU.bb.citictel-cpc.com.",
+      "archive_scope": {
+        "prefix": "2001:ad0:cff::76/128",
+        "country": "RU",
+        "city": "Moscow",
+        "url": "https://gf.data.ee/geofeed.csv",
+        "inetnum": "2001:ad0::/32",
+        "fetched_at": "2026-11-14T10:26:16+00:00",
+        "fixed_release_DIRECT": false
+      },
+      "answers": {
+        "62.128.122.176": {
+          "type": "A",
+          "published_direct": true,
+          "shadow_direct": true,
+          "v37_base_direct": true,
+          "private": false,
+          "v41_effective_blocked": false,
+          "hydra_direct_matching": [
+            "62.128.122.176/30"
+          ],
+          "hydra_whitelist_matching": []
+        },
+        "62.128.122.76": {
+          "type": "A",
+          "published_direct": true,
+          "shadow_direct": true,
+          "v37_base_direct": true,
+          "private": false,
+          "v41_effective_blocked": false,
+          "hydra_direct_matching": [
+            "62.128.122.64/28"
+          ],
+          "hydra_whitelist_matching": []
+        },
+        "2001:ad0:cff::76": {
+          "type": "AAAA",
+          "published_direct": false,
+          "shadow_direct": true,
+          "v37_base_direct": false,
+          "private": false,
+          "v41_effective_blocked": false,
+          "hydra_direct_matching": [],
+          "hydra_whitelist_matching": []
+        }
+      }
+    },
+    "2001:ad0:cff::77": {
+      "name": "r9-lo0-0-Mow-Mar8-RU.bb.citictel-cpc.com.",
+      "archive_scope": {
+        "prefix": "2001:ad0:cff::77/128",
+        "country": "RU",
+        "city": "Moscow",
+        "url": "https://gf.data.ee/geofeed.csv",
+        "inetnum": "2001:ad0::/32",
+        "fetched_at": "2026-11-14T10:26:16+00:00",
+        "fixed_release_DIRECT": false
+      },
+      "answers": {
+        "62.128.122.177": {
+          "type": "A",
+          "published_direct": true,
+          "shadow_direct": true,
+          "v37_base_direct": true,
+          "private": false,
+          "v41_effective_blocked": false,
+          "hydra_direct_matching": [
+            "62.128.122.176/30"
+          ],
+          "hydra_whitelist_matching": []
+        },
+        "62.128.122.77": {
+          "type": "A",
+          "published_direct": true,
+          "shadow_direct": true,
+          "v37_base_direct": true,
+          "private": false,
+          "v41_effective_blocked": false,
+          "hydra_direct_matching": [
+            "62.128.122.64/28"
+          ],
+          "hydra_whitelist_matching": []
+        },
+        "2001:ad0:cff::77": {
+          "type": "AAAA",
+          "published_direct": false,
+          "shadow_direct": true,
+          "v37_base_direct": false,
+          "private": false,
+          "v41_effective_blocked": false,
+          "hydra_direct_matching": [],
+          "hydra_whitelist_matching": []
+        }
+      }
+    },
+    "2001:ad0:cff::78": {
+      "name": "r14-lo0-0-Mow-Mar8-RU.bb.citictel-cpc.com.",
+      "archive_scope": {
+        "prefix": "2001:ad0:cff::78/128",
+        "country": "RU",
+        "city": "Moscow",
+        "url": "https://gf.data.ee/geofeed.csv",
+        "inetnum": "2001:ad0::/32",
+        "fetched_at": "2026-11-14T10:26:16+00:00",
+        "fixed_release_DIRECT": false
+      },
+      "answers": {
+        "62.128.122.178": {
+          "type": "A",
+          "published_direct": true,
+          "shadow_direct": true,
+          "v37_base_direct": true,
+          "private": false,
+          "v41_effective_blocked": false,
+          "hydra_direct_matching": [
+            "62.128.122.176/30"
+          ],
+          "hydra_whitelist_matching": []
+        },
+        "62.128.122.78": {
+          "type": "A",
+          "published_direct": true,
+          "shadow_direct": true,
+          "v37_base_direct": true,
+          "private": false,
+          "v41_effective_blocked": false,
+          "hydra_direct_matching": [
+            "62.128.122.64/28"
+          ],
+          "hydra_whitelist_matching": []
+        },
+        "2001:ad0:cff::78": {
+          "type": "AAAA",
+          "published_direct": false,
+          "shadow_direct": true,
+          "v37_base_direct": false,
+          "private": false,
+          "v41_effective_blocked": false,
+          "hydra_direct_matching": [],
+          "hydra_whitelist_matching": []
+        }
+      }
+    },
+    "2001:ad0:cff::8": {
+      "name": "r9-lo0-0-Spb-K12-RU.bb.citictel-cpc.com.",
+      "archive_scope": {
+        "prefix": "2001:ad0:cff::8/128",
+        "country": "RU",
+        "city": "Saint Petersburg",
+        "url": "https://gf.data.ee/geofeed.csv",
+        "inetnum": "2001:ad0::/32",
+        "fetched_at": "2026-11-14T10:26:16+00:00",
+        "fixed_release_DIRECT": false
+      },
+      "answers": {
+        "62.128.122.108": {
+          "type": "A",
+          "published_direct": true,
+          "shadow_direct": true,
+          "v37_base_direct": true,
+          "private": false,
+          "v41_effective_blocked": false,
+          "hydra_direct_matching": [
+            "62.128.122.108/32"
+          ],
+          "hydra_whitelist_matching": []
+        },
+        "62.128.122.8": {
+          "type": "A",
+          "published_direct": true,
+          "shadow_direct": true,
+          "v37_base_direct": true,
+          "private": false,
+          "v41_effective_blocked": false,
+          "hydra_direct_matching": [
+            "62.128.122.8/32"
+          ],
+          "hydra_whitelist_matching": []
+        },
+        "2001:ad0:cff::8": {
+          "type": "AAAA",
+          "published_direct": false,
+          "shadow_direct": true,
+          "v37_base_direct": false,
+          "private": false,
+          "v41_effective_blocked": false,
+          "hydra_direct_matching": [],
+          "hydra_whitelist_matching": []
+        }
+      }
+    },
+    "2001:ad0:cff::81": {
+      "name": "r9-lo0-0-Ala-Abd66-KZ.bb.citictel-cpc.com.",
+      "archive_scope": {
+        "prefix": "2001:ad0:cff::81/128",
+        "country": "KZ",
+        "city": "Almaty",
+        "url": "https://gf.data.ee/geofeed.csv",
+        "inetnum": "2001:ad0::/32",
+        "fetched_at": "2026-11-14T10:26:16+00:00",
+        "fixed_release_DIRECT": false
+      },
+      "answers": {
+        "62.128.122.181": {
+          "type": "A",
+          "published_direct": false,
+          "shadow_direct": false,
+          "v37_base_direct": false,
+          "private": false,
+          "v41_effective_blocked": false,
+          "hydra_direct_matching": [],
+          "hydra_whitelist_matching": []
+        },
+        "62.128.122.81": {
+          "type": "A",
+          "published_direct": false,
+          "shadow_direct": false,
+          "v37_base_direct": false,
+          "private": false,
+          "v41_effective_blocked": false,
+          "hydra_direct_matching": [],
+          "hydra_whitelist_matching": []
+        },
+        "2001:ad0:cff::81": {
+          "type": "AAAA",
+          "published_direct": false,
+          "shadow_direct": false,
+          "v37_base_direct": false,
+          "private": false,
+          "v41_effective_blocked": false,
+          "hydra_direct_matching": [],
+          "hydra_whitelist_matching": []
+        }
+      }
+    }
+  },
+  "scopes": {
+    "2001:ad0:cff::/48": {
+      "total_ipv6_decimal": "1208925819614629174706176",
+      "published_direct_ipv6_decimal": "0",
+      "shadow_direct_ipv6_decimal": "10",
+      "effective_blocked_ipv6_decimal": "0",
+      "private_ipv6_decimal": "0"
+    },
+    "2001:ad0:c00::/40": {
+      "total_ipv6_decimal": "309485009821345068724781056",
+      "published_direct_ipv6_decimal": "110680464442257309696",
+      "shadow_direct_ipv6_decimal": "110680464442257309706",
+      "effective_blocked_ipv6_decimal": "0",
+      "private_ipv6_decimal": "0"
+    },
+    "2001:ad0::/32": {
+      "total_ipv6_decimal": "79228162514264337593543950336",
+      "published_direct_ipv6_decimal": "1209202520775734817980416",
+      "shadow_direct_ipv6_decimal": "1209202520775734817980426",
+      "effective_blocked_ipv6_decimal": "0",
+      "private_ipv6_decimal": "0"
+    },
+    "2001:ad0:5000::/40": {
+      "total_ipv6_decimal": "309485009821345068724781056",
+      "published_direct_ipv6_decimal": "0",
+      "shadow_direct_ipv6_decimal": "0",
+      "effective_blocked_ipv6_decimal": "0",
+      "private_ipv6_decimal": "0"
+    }
+  },
+  "ris_as3327": {
+    "window_start": "2026-11-07T00:00:00",
+    "window_end": "2026-11-14T00:00:00",
+    "ipv6_observed_routes": [
+      {
+        "prefix": "2001:ad0::/32",
+        "timelines": [
+          {
+            "starttime": "2026-11-07T00:00:00",
+            "endtime": "2026-11-14T00:00:00"
+          }
+        ]
+      },
+      {
+        "prefix": "2001:ad0:5000::/40",
+        "timelines": [
+          {
+            "starttime": "2026-11-07T00:00:00",
+            "endtime": "2026-11-14T00:00:00"
+          }
+        ]
+      }
+    ],
+    "sha256": "95ad98f8b1dca5dd01174dcc741fd645820684d59640fd4261b1e1176f16d41b"
+  },
+  "method": "Read exact saved DNS answers against fixed v37/v41 DAT, frozen Hydra categories and effective blocked ranges. No changes to any input. Broad prefix counts are address-space bounds, not proposals or counts of active devices."
+}
