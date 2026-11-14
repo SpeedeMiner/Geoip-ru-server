@@ -126,7 +126,7 @@ def validate(args: argparse.Namespace) -> dict:
     base = builder.parse_geoip_dat(args.base)
     if set(base) != {"RU", "PRIVATE"}:
         raise ValueError("Expected v37 base categories RU and PRIVATE")
-    hxehex = builder.parse_cidr_file(args.hxehex_ip)[0]
+    hxehex, hxehex_stats, _ = builder.load_hxehex_diagnostics(args.hxehex_ip)
     assert_hxehex_diagnostic_only(
         decoded["RU"],
         builder.union_networks(base["RU"], regional_resources, regional_all, company_all, reviewed,
@@ -139,9 +139,16 @@ def validate(args: argparse.Namespace) -> dict:
     if (manifest.get("base_v37_sha256") != sha256(args.base)
             or manifest.get("input_sha256", {}).get("hxehex_ipwhitelist") != sha256(args.hxehex_ip)
             or hxehex_info.get("role") != "diagnostic-only"
+            or hxehex_info.get("status") != hxehex_stats["status"]
             or hxehex_info.get("unique_cidrs") != len(hxehex)
             or "hxehex-mobile-hosts" in manifest.get("service_sources", {})):
         raise ValueError("HXEHEX diagnostic source provenance mismatch")
+    _, ipsum_stats = builder.parse_ipsum(args.ipsum)
+    if (manifest.get("input_sha256", {}).get("antifilter_ipsum") != sha256(args.ipsum)
+            or manifest.get("diagnostic_sources", {}).get("antifilter-ipsum") != {
+                **ipsum_stats, "role": "diagnostic-only"
+            }):
+        raise ValueError("Antifilter ipsum diagnostic source provenance mismatch")
     if (manifest.get("input_sha256", {}).get("regional_admission_exclusions") != sha256(args.regional_admission_exclusions)
             or manifest.get("regional_admission_exclusions", {}).get("records") != list(admission.values())):
         raise ValueError("Regional admission exclusion provenance mismatch")
@@ -238,7 +245,7 @@ def main() -> int:
         "geoip", "base", "hydra", "blocked_union", "blocked_exact", "blocked_resolved",
         "company_all", "company_core", "company_shared", "regional_origin_prefixes",
         "kyoresuas_v4", "kyoresuas_v6", "kyoresuas_services", "w1zardz",
-        "hxehex_ip", "escapingworm", "effective_blocked",
+        "hxehex_ip", "escapingworm", "effective_blocked", "ipsum",
         "manifest", "quality", "rir", "regional_admission_exclusions", "reviewed_operator_prefixes",
     ):
         parser.add_argument("--" + name.replace("_", "-"), type=Path, required=True)

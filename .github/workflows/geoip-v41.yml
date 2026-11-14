@@ -7,6 +7,10 @@ on:
         description: SHA-256 of an independently reviewed candidate (only for relative delta overruns)
         required: false
         type: string
+      reviewed_block_feeds_sha256:
+        description: Block-feed review digest printed by the failed publication count check
+        required: false
+        type: string
       snapshot_version:
         description: Optional one-time release tag such as v41.3. Empty uses the run ID.
         required: false
@@ -25,6 +29,7 @@ on:
       - ".github/scripts/build_v41_rir_legacy_inventory.py"
       - ".github/scripts/build_v41_iana_special_prefixes.py"
       - ".github/scripts/validate_v41_base_artifacts.py"
+      - ".github/scripts/validate_v41_block_feed_counts.py"
       - ".github/scripts/validate_v41_publication_bounds.py"
       - ".github/scripts/verify_v41_ipverse_archive.py"
       - ".github/scripts/bundle_v41_registry_inputs.py"
@@ -376,6 +381,7 @@ jobs:
             --regional-admission-exclusions .github/data/v41-regional-admission-exclusions.tsv \
             --reviewed-operator-prefixes .github/data/v41-reviewed-operator-prefixes.tsv \
             --effective-blocked "$V41_BLOCKED_FILE" \
+            --ipsum "$BLOCKED_IPSUM_INPUT" \
             --manifest "$V41_MANIFEST" \
             --quality "$V41_QUALITY_REPORT" \
             --rir "$RIR_RUKZBY_PREFIX_INPUT"
@@ -600,6 +606,7 @@ jobs:
         shell: bash
         env:
           REVIEWED_SHA: ${{ inputs.reviewed_geoip_sha256 }}
+          REVIEWED_BLOCK_FEEDS_SHA: ${{ inputs.reviewed_block_feeds_sha256 }}
         run: bash ../.github/scripts/verify_v41_publication_candidate.sh
 
       - name: Stage the versioned snapshot tag

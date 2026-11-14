@@ -17,6 +17,14 @@ python3 ../.github/scripts/validate_v41_telegram.py --geoip "$V41_OUTPUT_FILE" -
 grep -q '^PRE_PUBLICATION_V41_HARD_POLICY_GATE$' "$V41_QUALITY_REPORT"
 ref="$(git ls-remote --exit-code origin refs/heads/release | cut -f1)"
 [[ "$ref" =~ ^[0-9a-f]{40}$ ]]
+previous_block_stats="$RUNNER_TEMP/previous-block-feed-stats.tsv"
+curl --fail --location --silent --show-error --proto '=https' --proto-redir '=https' \
+  --connect-timeout 15 --max-time 90 --max-filesize 65536 \
+  "https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/${ref}/geoip_RU_blocked_source_stats.txt" -o "$previous_block_stats"
+python3 ../.github/scripts/validate_v41_block_feed_counts.py \
+  --previous "$previous_block_stats" --candidate "$BLOCKED_STATS_INPUT" \
+  --feeds "$BLOCKED_IP_RAW_INPUT" "$BLOCKED_IPRESOLVE_INPUT" "$BLOCKED_SUBNET_INPUT" \
+  --reviewed-sha256 "${REVIEWED_BLOCK_FEEDS_SHA:-}" | tee -a "$GITHUB_STEP_SUMMARY"
 curl --fail --location --silent --show-error --proto '=https' --proto-redir '=https' \
   --connect-timeout 15 --max-time 90 --max-filesize 8388608 \
   "https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/${ref}/geoip_RU.dat" -o "$RUNNER_TEMP/previous-geoip.dat"

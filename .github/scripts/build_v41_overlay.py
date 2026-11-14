@@ -578,7 +578,7 @@ def class_aware_effective_block_set(
 def parse_ipsum(path: Path):
     networks = set()
     raw = invalid = 0
-    for line_no, original in enumerate(path.read_text(encoding="utf-8-sig", errors="replace").splitlines(), 1):
+    for original in path.read_text(encoding="utf-8-sig", errors="replace").splitlines():
         line = original.strip()
         if not line or line.startswith("#"):
             continue
@@ -590,15 +590,18 @@ def parse_ipsum(path: Path):
         except ValueError:
             invalid += 1
             continue
-        raw += 1
         if net.version != 4 or net.prefixlen != 24:
-            raise ValueError(f"Antifilter ipsum must contain IPv4 /24 summaries only; line {line_no}: {net}")
+            invalid += 1
+            continue
+        raw += 1
         networks.add(net)
-    if not networks:
-        raise ValueError("Antifilter ipsum /24 feed is empty")
-    if invalid > max(20, int((raw + invalid) * 0.001)):
-        raise ValueError(f"Antifilter ipsum has too many invalid rows: {invalid}")
-    return networks, {"raw_rows": raw + invalid, "valid_rows": raw, "invalid_rows": invalid}
+    degraded = len(networks) < 1000 or invalid > max(20, int((raw + invalid) * 0.001))
+    if degraded:
+        print(f"::warning::Antifilter ipsum diagnostics skipped: unique IPv4 /24={len(networks)}, invalid={invalid}")
+    return (set() if degraded else networks), {
+        "raw_rows": raw + invalid, "valid_rows": raw, "invalid_rows": invalid,
+        "unique_valid_prefixes": len(networks), "status": "DEGRADED_DIAGNOSTIC" if degraded else "AVAILABLE",
+    }
 
 def load_service_inputs(args):
     """Load only feeds eligible to contribute DIRECT routes."""
@@ -662,8 +665,12 @@ def load_service_inputs(args):
 
 def load_hxehex_diagnostics(path):
     """Retain source rows for attribution without giving them routing authority."""
-    networks, stats = parse_cidr_file(path, allow_hosts=True)
-    stats = {"raw_files": [path.name], "role": "diagnostic-only", **stats}
+    try:
+        networks, stats = parse_cidr_file(path, allow_hosts=True)
+    except ValueError as exc:
+        print(f"::warning::HXEHEX host diagnostics skipped: {exc}")
+        networks, stats = set(), {"status": "DEGRADED_DIAGNOSTIC"}
+    stats = {"raw_files": [path.name], "role": "diagnostic-only", "status": "AVAILABLE", **stats}
     rows = [
         {"source_id": "hxehex-mobile-hosts", "category": "diagnostic-only",
          "service": "", "tier": "", "asn_list": "", "domains": "", "prefix": str(net)}
@@ -747,8 +754,6 @@ def main():
     service_exact, service_resolver = build_service_protection_masks(rir, service_sources)
 
     ipsum, ipsum_stats = parse_ipsum(args.ipsum)
-    if len(ipsum) < 1000:
-        raise ValueError(f"Antifilter ipsum review feed unexpectedly small: {len(ipsum)} /24 prefixes")
 
     reviewed = parse_reviewed_operator_prefixes(args.reviewed_operator_prefixes)
     reviewed_prefixes = set(reviewed)
@@ -1097,6 +1102,7 @@ def main():
         "Service datasets can include foreign-located or shared-provider endpoints; no country geolocation filter was applied.",
         "",
         f"HXEHEX diagnostic-only prefixes: {len(hxehex_diagnostics)}",
+        f"HXEHEX host diagnostic input status: {hxehex_stats['status']}",
         "HXEHEX is retained for comparison only. It contributes no DIRECT routes or resolver exemptions.",
         "",
         "RKN BLOCKS AND CORPORATE COMPANY-ASN EXCEPTION",
@@ -1110,6 +1116,7 @@ def main():
         f"CORE_CORPORATE origin prefixes: {len(core_company_prefixes)}; SHARED_INFRA origin prefixes: {len(shared_infrastructure_prefixes)}",
         f"Antifilter ipsum REVIEW-ONLY IPv4 /24 prefixes: {len(ipsum)}",
         f"Antifilter ipsum raw/valid/invalid rows: {ipsum_stats['raw_rows']}/{ipsum_stats['valid_rows']}/{ipsum_stats['invalid_rows']}",
+        f"Antifilter ipsum diagnostic input status: {ipsum_stats['status']}",
         f"Potential additional IPv4 DIRECT address space affected by /24 review candidates: {ipsum_overlap_direct[4]}",
         f"Potential additional IPv6 DIRECT address space affected by /24 review candidates: {ipsum_overlap_direct[6]}",
         "ipsum /24 candidates remain review-only. DNS-derived and unverified historical evidence cannot carve selected origin or RIR-resource coverage. Explicit IP/subnet evidence and Telegram take precedence.",
@@ -1146,6 +1153,7 @@ def main():
         },
         "service_sources":source_stats,
         "diagnostic_sources": {
+            "antifilter-ipsum": {**ipsum_stats, "role": "diagnostic-only"},
             "hxehex-mobile-hosts": {
                 **hxehex_stats, "unique_cidrs": len(hxehex_diagnostics),
                 "direct_overlap": {f"ipv{v}": diagnostic_row[f"ipv{v}_direct_overlap"] for v in (4, 6)},
