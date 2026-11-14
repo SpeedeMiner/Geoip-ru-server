@@ -1,0 +1,1221 @@
+{
+  "archive_sha256": "3f95fca2bb9692f8be7de5c513ea97c667ff9a32ebb3208b59582d311e3ceb4f",
+  "citic_loopback_archive_counts": {
+    "PL": 4,
+    "DE": 3,
+    "RU": 10,
+    "NL": 2,
+    "SE": 2,
+    "EE": 17,
+    "LT": 3,
+    "GE": 2,
+    "FI": 1,
+    "HU": 2,
+    "UA": 1,
+    "LV": 2,
+    "GB": 2,
+    "KZ": 1
+  },
+  "citic_exact_loopbacks": {
+    "2001:ad0:cff::4/128": {
+      "prefix": "2001:ad0:cff::4/128",
+      "country": "PL",
+      "city": "Warsaw",
+      "url": "https://gf.data.ee/geofeed.csv",
+      "inetnum": "2001:ad0::/32",
+      "fetched_at": "2026-11-14T10:26:16+00:00",
+      "fixed_release_DIRECT": false
+    },
+    "2001:ad0:cff::5/128": {
+      "prefix": "2001:ad0:cff::5/128",
+      "country": "DE",
+      "city": "Frankfurt",
+      "url": "https://gf.data.ee/geofeed.csv",
+      "inetnum": "2001:ad0::/32",
+      "fetched_at": "2026-11-14T10:26:16+00:00",
+      "fixed_release_DIRECT": false
+    },
+    "2001:ad0:cff::6/128": {
+      "prefix": "2001:ad0:cff::6/128",
+      "country": "RU",
+      "city": "Moscow",
+      "url": "https://gf.data.ee/geofeed.csv",
+      "inetnum": "2001:ad0::/32",
+      "fetched_at": "2026-11-14T10:26:16+00:00",
+      "fixed_release_DIRECT": false
+    },
+    "2001:ad0:cff::7/128": {
+      "prefix": "2001:ad0:cff::7/128",
+      "country": "NL",
+      "city": "Amsterdam",
+      "url": "https://gf.data.ee/geofeed.csv",
+      "inetnum": "2001:ad0::/32",
+      "fetched_at": "2026-11-14T10:26:16+00:00",
+      "fixed_release_DIRECT": false
+    },
+    "2001:ad0:cff::8/128": {
+      "prefix": "2001:ad0:cff::8/128",
+      "country": "RU",
+      "city": "Saint Petersburg",
+      "url": "https://gf.data.ee/geofeed.csv",
+      "inetnum": "2001:ad0::/32",
+      "fetched_at": "2026-11-14T10:26:16+00:00",
+      "fixed_release_DIRECT": false
+    },
+    "2001:ad0:cff::9/128": {
+      "prefix": "2001:ad0:cff::9/128",
+      "country": "SE",
+      "city": "Stockholm",
+      "url": "https://gf.data.ee/geofeed.csv",
+      "inetnum": "2001:ad0::/32",
+      "fetched_at": "2026-11-14T10:26:16+00:00",
+      "fixed_release_DIRECT": false
+    },
+    "2001:ad0:cff::10/128": {
+      "prefix": "2001:ad0:cff::10/128",
+      "country": "EE",
+      "city": "Tallinn",
+      "url": "https://gf.data.ee/geofeed.csv",
+      "inetnum": "2001:ad0::/32",
+      "fetched_at": "2026-11-14T10:26:16+00:00",
+      "fixed_release_DIRECT": false
+    },
+    "2001:ad0:cff::11/128": {
+      "prefix": "2001:ad0:cff::11/128",
+      "country": "EE",
+      "city": "Tallinn",
+      "url": "https://gf.data.ee/geofeed.csv",
+      "inetnum": "2001:ad0::/32",
+      "fetched_at": "2026-11-14T10:26:16+00:00",
+      "fixed_release_DIRECT": false
+    },
+    "2001:ad0:cff::13/128": {
+      "prefix": "2001:ad0:cff::13/128",
+      "country": "PL",
+      "city": "Warsaw",
+      "url": "https://gf.data.ee/geofeed.csv",
+      "inetnum": "2001:ad0::/32",
+      "fetched_at": "2026-11-14T10:26:16+00:00",
+      "fixed_release_DIRECT": false
+    },
+    "2001:ad0:cff::15/128": {
+      "prefix": "2001:ad0:cff::15/128",
+      "country": "PL",
+      "city": "Warsaw",
+      "url": "https://gf.data.ee/geofeed.csv",
+      "inetnum": "2001:ad0::/32",
+      "fetched_at": "2026-11-14T10:26:16+00:00",
+      "fixed_release_DIRECT": false
+    },
+    "2001:ad0:cff::16/128": {
+      "prefix": "2001:ad0:cff::16/128",
+      "country": "LT",
+      "city": "Vilnius",
+      "url": "https://gf.data.ee/geofeed.csv",
+      "inetnum": "2001:ad0::/32",
+      "fetched_at": "2026-11-14T10:26:16+00:00",
+      "fixed_release_DIRECT": false
+    },
+    "2001:ad0:cff::17/128": {
+      "prefix": "2001:ad0:cff::17/128",
+      "country": "NL",
+      "city": "Amsterdam",
+      "url": "https://gf.data.ee/geofeed.csv",
+      "inetnum": "2001:ad0::/32",
+      "fetched_at": "2026-11-14T10:26:16+00:00",
+      "fixed_release_DIRECT": false
+    },
+    "2001:ad0:cff::18/128": {
+      "prefix": "2001:ad0:cff::18/128",
+      "country": "RU",
+      "city": "Moscow",
+      "url": "https://gf.data.ee/geofeed.csv",
+      "inetnum": "2001:ad0::/32",
+      "fetched_at": "2026-11-14T10:26:16+00:00",
+      "fixed_release_DIRECT": false
+    },
+    "2001:ad0:cff::19/128": {
+      "prefix": "2001:ad0:cff::19/128",
+      "country": "RU",
+      "city": "Saint Petersburg",
+      "url": "https://gf.data.ee/geofeed.csv",
+      "inetnum": "2001:ad0::/32",
+      "fetched_at": "2026-11-14T10:26:16+00:00",
+      "fixed_release_DIRECT": false
+    },
+    "2001:ad0:cff::20/128": {
+      "prefix": "2001:ad0:cff::20/128",
+      "country": "DE",
+      "city": "Frankfurt",
+      "url": "https://gf.data.ee/geofeed.csv",
+      "inetnum": "2001:ad0::/32",
+      "fetched_at": "2026-11-14T10:26:16+00:00",
+      "fixed_release_DIRECT": false
+    },
+    "2001:ad0:cff::21/128": {
+      "prefix": "2001:ad0:cff::21/128",
+      "country": "RU",
+      "city": "Saint Petersburg",
+      "url": "https://gf.data.ee/geofeed.csv",
+      "inetnum": "2001:ad0::/32",
+      "fetched_at": "2026-11-14T10:26:16+00:00",
+      "fixed_release_DIRECT": false
+    },
+    "2001:ad0:cff::22/128": {
+      "prefix": "2001:ad0:cff::22/128",
+      "country": "EE",
+      "city": "Tartu",
+      "url": "https://gf.data.ee/geofeed.csv",
+      "inetnum": "2001:ad0::/32",
+      "fetched_at": "2026-11-14T10:26:16+00:00",
+      "fixed_release_DIRECT": false
+    },
+    "2001:ad0:cff::23/128": {
+      "prefix": "2001:ad0:cff::23/128",
+      "country": "GE",
+      "city": "Tbilisi",
+      "url": "https://gf.data.ee/geofeed.csv",
+      "inetnum": "2001:ad0::/32",
+      "fetched_at": "2026-11-14T10:26:16+00:00",
+      "fixed_release_DIRECT": false
+    },
+    "2001:ad0:cff::24/128": {
+      "prefix": "2001:ad0:cff::24/128",
+      "country": "GE",
+      "city": "Tbilisi",
+      "url": "https://gf.data.ee/geofeed.csv",
+      "inetnum": "2001:ad0::/32",
+      "fetched_at": "2026-11-14T10:26:16+00:00",
+      "fixed_release_DIRECT": false
+    },
+    "2001:ad0:cff::25/128": {
+      "prefix": "2001:ad0:cff::25/128",
+      "country": "EE",
+      "city": "Narva",
+      "url": "https://gf.data.ee/geofeed.csv",
+      "inetnum": "2001:ad0::/32",
+      "fetched_at": "2026-11-14T10:26:16+00:00",
+      "fixed_release_DIRECT": false
+    },
+    "2001:ad0:cff::26/128": {
+      "prefix": "2001:ad0:cff::26/128",
+      "country": "EE",
+      "city": "Tallinn",
+      "url": "https://gf.data.ee/geofeed.csv",
+      "inetnum": "2001:ad0::/32",
+      "fetched_at": "2026-11-14T10:26:16+00:00",
+      "fixed_release_DIRECT": false
+    },
+    "2001:ad0:cff::27/128": {
+      "prefix": "2001:ad0:cff::27/128",
+      "country": "EE",
+      "city": "Tallinn",
+      "url": "https://gf.data.ee/geofeed.csv",
+      "inetnum": "2001:ad0::/32",
+      "fetched_at": "2026-11-14T10:26:16+00:00",
+      "fixed_release_DIRECT": false
+    },
+    "2001:ad0:cff::28/128": {
+      "prefix": "2001:ad0:cff::28/128",
+      "country": "FI",
+      "city": "Helsinki",
+      "url": "https://gf.data.ee/geofeed.csv",
+      "inetnum": "2001:ad0::/32",
+      "fetched_at": "2026-11-14T10:26:16+00:00",
+      "fixed_release_DIRECT": false
+    },
+    "2001:ad0:cff::29/128": {
+      "prefix": "2001:ad0:cff::29/128",
+      "country": "LT",
+      "city": "Vilnius",
+      "url": "https://gf.data.ee/geofeed.csv",
+      "inetnum": "2001:ad0::/32",
+      "fetched_at": "2026-11-14T10:26:16+00:00",
+      "fixed_release_DIRECT": false
+    },
+    "2001:ad0:cff::31/128": {
+      "prefix": "2001:ad0:cff::31/128",
+      "country": "RU",
+      "city": "Moscow",
+      "url": "https://gf.data.ee/geofeed.csv",
+      "inetnum": "2001:ad0::/32",
+      "fetched_at": "2026-11-14T10:26:16+00:00",
+      "fixed_release_DIRECT": false
+    },
+    "2001:ad0:cff::32/128": {
+      "prefix": "2001:ad0:cff::32/128",
+      "country": "PL",
+      "city": "Warsaw",
+      "url": "https://gf.data.ee/geofeed.csv",
+      "inetnum": "2001:ad0::/32",
+      "fetched_at": "2026-11-14T10:26:16+00:00",
+      "fixed_release_DIRECT": false
+    },
+    "2001:ad0:cff::35/128": {
+      "prefix": "2001:ad0:cff::35/128",
+      "country": "HU",
+      "city": "Budapest",
+      "url": "https://gf.data.ee/geofeed.csv",
+      "inetnum": "2001:ad0::/32",
+      "fetched_at": "2026-11-14T10:26:16+00:00",
+      "fixed_release_DIRECT": false
+    },
+    "2001:ad0:cff::36/128": {
+      "prefix": "2001:ad0:cff::36/128",
+      "country": "HU",
+      "city": "Budapest",
+      "url": "https://gf.data.ee/geofeed.csv",
+      "inetnum": "2001:ad0::/32",
+      "fetched_at": "2026-11-14T10:26:16+00:00",
+      "fixed_release_DIRECT": false
+    },
+    "2001:ad0:cff::37/128": {
+      "prefix": "2001:ad0:cff::37/128",
+      "country": "UA",
+      "city": "Kyiv",
+      "url": "https://gf.data.ee/geofeed.csv",
+      "inetnum": "2001:ad0::/32",
+      "fetched_at": "2026-11-14T10:26:16+00:00",
+      "fixed_release_DIRECT": false
+    },
+    "2001:ad0:cff::38/128": {
+      "prefix": "2001:ad0:cff::38/128",
+      "country": "LV",
+      "city": "Riga",
+      "url": "https://gf.data.ee/geofeed.csv",
+      "inetnum": "2001:ad0::/32",
+      "fetched_at": "2026-11-14T10:26:16+00:00",
+      "fixed_release_DIRECT": false
+    },
+    "2001:ad0:cff::39/128": {
+      "prefix": "2001:ad0:cff::39/128",
+      "country": "LV",
+      "city": "Riga",
+      "url": "https://gf.data.ee/geofeed.csv",
+      "inetnum": "2001:ad0::/32",
+      "fetched_at": "2026-11-14T10:26:16+00:00",
+      "fixed_release_DIRECT": false
+    },
+    "2001:ad0:cff::40/128": {
+      "prefix": "2001:ad0:cff::40/128",
+      "country": "SE",
+      "city": "Stockholm",
+      "url": "https://gf.data.ee/geofeed.csv",
+      "inetnum": "2001:ad0::/32",
+      "fetched_at": "2026-11-14T10:26:16+00:00",
+      "fixed_release_DIRECT": false
+    },
+    "2001:ad0:cff::41/128": {
+      "prefix": "2001:ad0:cff::41/128",
+      "country": "LT",
+      "city": "Vilnius",
+      "url": "https://gf.data.ee/geofeed.csv",
+      "inetnum": "2001:ad0::/32",
+      "fetched_at": "2026-11-14T10:26:16+00:00",
+      "fixed_release_DIRECT": false
+    },
+    "2001:ad0:cff::42/128": {
+      "prefix": "2001:ad0:cff::42/128",
+      "country": "DE",
+      "city": "Frankfurt",
+      "url": "https://gf.data.ee/geofeed.csv",
+      "inetnum": "2001:ad0::/32",
+      "fetched_at": "2026-11-14T10:26:16+00:00",
+      "fixed_release_DIRECT": false
+    },
+    "2001:ad0:cff::48/128": {
+      "prefix": "2001:ad0:cff::48/128",
+      "country": "GB",
+      "city": "London",
+      "url": "https://gf.data.ee/geofeed.csv",
+      "inetnum": "2001:ad0::/32",
+      "fetched_at": "2026-11-14T10:26:16+00:00",
+      "fixed_release_DIRECT": false
+    },
+    "2001:ad0:cff::49/128": {
+      "prefix": "2001:ad0:cff::49/128",
+      "country": "GB",
+      "city": "London",
+      "url": "https://gf.data.ee/geofeed.csv",
+      "inetnum": "2001:ad0::/32",
+      "fetched_at": "2026-11-14T10:26:16+00:00",
+      "fixed_release_DIRECT": false
+    },
+    "2001:ad0:cff::51/128": {
+      "prefix": "2001:ad0:cff::51/128",
+      "country": "EE",
+      "city": "Tallinn",
+      "url": "https://gf.data.ee/geofeed.csv",
+      "inetnum": "2001:ad0::/32",
+      "fetched_at": "2026-11-14T10:26:16+00:00",
+      "fixed_release_DIRECT": false
+    },
+    "2001:ad0:cff::52/128": {
+      "prefix": "2001:ad0:cff::52/128",
+      "country": "EE",
+      "city": "Tallinn",
+      "url": "https://gf.data.ee/geofeed.csv",
+      "inetnum": "2001:ad0::/32",
+      "fetched_at": "2026-11-14T10:26:16+00:00",
+      "fixed_release_DIRECT": false
+    },
+    "2001:ad0:cff::53/128": {
+      "prefix": "2001:ad0:cff::53/128",
+      "country": "EE",
+      "city": "Tallinn",
+      "url": "https://gf.data.ee/geofeed.csv",
+      "inetnum": "2001:ad0::/32",
+      "fetched_at": "2026-11-14T10:26:16+00:00",
+      "fixed_release_DIRECT": false
+    },
+    "2001:ad0:cff::54/128": {
+      "prefix": "2001:ad0:cff::54/128",
+      "country": "EE",
+      "city": "Tallinn",
+      "url": "https://gf.data.ee/geofeed.csv",
+      "inetnum": "2001:ad0::/32",
+      "fetched_at": "2026-11-14T10:26:16+00:00",
+      "fixed_release_DIRECT": false
+    },
+    "2001:ad0:cff::55/128": {
+      "prefix": "2001:ad0:cff::55/128",
+      "country": "EE",
+      "city": "Tallinn",
+      "url": "https://gf.data.ee/geofeed.csv",
+      "inetnum": "2001:ad0::/32",
+      "fetched_at": "2026-11-14T10:26:16+00:00",
+      "fixed_release_DIRECT": false
+    },
+    "2001:ad0:cff::56/128": {
+      "prefix": "2001:ad0:cff::56/128",
+      "country": "EE",
+      "city": "Tallinn",
+      "url": "https://gf.data.ee/geofeed.csv",
+      "inetnum": "2001:ad0::/32",
+      "fetched_at": "2026-11-14T10:26:16+00:00",
+      "fixed_release_DIRECT": false
+    },
+    "2001:ad0:cff::58/128": {
+      "prefix": "2001:ad0:cff::58/128",
+      "country": "EE",
+      "city": "Tallinn",
+      "url": "https://gf.data.ee/geofeed.csv",
+      "inetnum": "2001:ad0::/32",
+      "fetched_at": "2026-11-14T10:26:16+00:00",
+      "fixed_release_DIRECT": false
+    },
+    "2001:ad0:cff::59/128": {
+      "prefix": "2001:ad0:cff::59/128",
+      "country": "EE",
+      "city": "Tallinn",
+      "url": "https://gf.data.ee/geofeed.csv",
+      "inetnum": "2001:ad0::/32",
+      "fetched_at": "2026-11-14T10:26:16+00:00",
+      "fixed_release_DIRECT": false
+    },
+    "2001:ad0:cff::76/128": {
+      "prefix": "2001:ad0:cff::76/128",
+      "country": "RU",
+      "city": "Moscow",
+      "url": "https://gf.data.ee/geofeed.csv",
+      "inetnum": "2001:ad0::/32",
+      "fetched_at": "2026-11-14T10:26:16+00:00",
+      "fixed_release_DIRECT": false
+    },
+    "2001:ad0:cff::77/128": {
+      "prefix": "2001:ad0:cff::77/128",
+      "country": "RU",
+      "city": "Moscow",
+      "url": "https://gf.data.ee/geofeed.csv",
+      "inetnum": "2001:ad0::/32",
+      "fetched_at": "2026-11-14T10:26:16+00:00",
+      "fixed_release_DIRECT": false
+    },
+    "2001:ad0:cff::78/128": {
+      "prefix": "2001:ad0:cff::78/128",
+      "country": "RU",
+      "city": "Moscow",
+      "url": "https://gf.data.ee/geofeed.csv",
+      "inetnum": "2001:ad0::/32",
+      "fetched_at": "2026-11-14T10:26:16+00:00",
+      "fixed_release_DIRECT": false
+    },
+    "2001:ad0:cff::81/128": {
+      "prefix": "2001:ad0:cff::81/128",
+      "country": "KZ",
+      "city": "Almaty",
+      "url": "https://gf.data.ee/geofeed.csv",
+      "inetnum": "2001:ad0::/32",
+      "fetched_at": "2026-11-14T10:26:16+00:00",
+      "fixed_release_DIRECT": false
+    },
+    "2001:ad0:cff::100/128": {
+      "prefix": "2001:ad0:cff::100/128",
+      "country": "EE",
+      "city": "Tallinn",
+      "url": "https://gf.data.ee/geofeed.csv",
+      "inetnum": "2001:ad0::/32",
+      "fetched_at": "2026-11-14T10:26:16+00:00",
+      "fixed_release_DIRECT": false
+    },
+    "2001:ad0:cff::101/128": {
+      "prefix": "2001:ad0:cff::101/128",
+      "country": "EE",
+      "city": "Tallinn",
+      "url": "https://gf.data.ee/geofeed.csv",
+      "inetnum": "2001:ad0::/32",
+      "fetched_at": "2026-11-14T10:26:16+00:00",
+      "fixed_release_DIRECT": false
+    },
+    "2001:ad0:cff::253/128": {
+      "prefix": "2001:ad0:cff::253/128",
+      "country": "RU",
+      "city": "Moscow",
+      "url": "https://gf.data.ee/geofeed.csv",
+      "inetnum": "2001:ad0::/32",
+      "fetched_at": "2026-11-14T10:26:16+00:00",
+      "fixed_release_DIRECT": false
+    },
+    "2001:ad0:cff::254/128": {
+      "prefix": "2001:ad0:cff::254/128",
+      "country": "EE",
+      "city": "Tallinn",
+      "url": "https://gf.data.ee/geofeed.csv",
+      "inetnum": "2001:ad0::/32",
+      "fetched_at": "2026-11-14T10:26:16+00:00",
+      "fixed_release_DIRECT": false
+    }
+  },
+  "citic_foreign_control_sample": {
+    "2001:ad0:cff::4/128": {
+      "archive_country": "PL",
+      "ptr": {
+        "url": "https://dns.google/resolve?name=4.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.f.f.c.0.0.d.a.0.1.0.0.2.ip6.arpa&type=PTR&do=true",
+        "sha256": "b0d3b43fe45a4dbc445e6ca8669075c24e163a4a43b68d40c2c20f5fdf172ae2",
+        "status": 0,
+        "answers": [
+          {
+            "name": "4.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.f.f.c.0.0.d.a.0.1.0.0.2.ip6.arpa.",
+            "type": 12,
+            "TTL": 21600,
+            "data": "r1-lo0-0-Waw-Lim-PL.bb.citictel-cpc.com."
+          }
+        ]
+      },
+      "forward": {
+        "url": "https://dns.google/resolve?name=r1-lo0-0-Waw-Lim-PL.bb.citictel-cpc.com.&type=AAAA&do=true",
+        "sha256": "654fcb019e2cf74479526ea6dd80da18bd1652c305774b6a60e986ee9dd6aa1f",
+        "status": 0,
+        "answers": [
+          {
+            "name": "r1-lo0-0-Waw-Lim-PL.bb.citictel-cpc.com.",
+            "type": 28,
+            "TTL": 3600,
+            "data": "2001:ad0:cff::4"
+          }
+        ]
+      },
+      "confirmed": true,
+      "country_label_match": true
+    },
+    "2001:ad0:cff::5/128": {
+      "archive_country": "DE",
+      "ptr": {
+        "url": "https://dns.google/resolve?name=5.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.f.f.c.0.0.d.a.0.1.0.0.2.ip6.arpa&type=PTR&do=true",
+        "sha256": "40a296c3d05efd0673406b39efc812d046fff9003acdc90870cd5f635c7506c5",
+        "status": 0,
+        "answers": [
+          {
+            "name": "5.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.f.f.c.0.0.d.a.0.1.0.0.2.ip6.arpa.",
+            "type": 12,
+            "TTL": 21600,
+            "data": "r9-lo0-0-Fra-Anct-DE.bb.citictel-cpc.com."
+          }
+        ]
+      },
+      "forward": {
+        "url": "https://dns.google/resolve?name=r9-lo0-0-Fra-Anct-DE.bb.citictel-cpc.com.&type=AAAA&do=true",
+        "sha256": "505c55c37c709040f9d4e33133c571161373d7c3a8445a2275006b9f0db36f5c",
+        "status": 0,
+        "answers": [
+          {
+            "name": "r9-lo0-0-Fra-Anct-DE.bb.citictel-cpc.com.",
+            "type": 28,
+            "TTL": 3600,
+            "data": "2001:ad0:cff::5"
+          }
+        ]
+      },
+      "confirmed": true,
+      "country_label_match": true
+    },
+    "2001:ad0:cff::7/128": {
+      "archive_country": "NL",
+      "ptr": {
+        "url": "https://dns.google/resolve?name=7.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.f.f.c.0.0.d.a.0.1.0.0.2.ip6.arpa&type=PTR&do=true",
+        "sha256": "3e413504e780fd170d46c6505fedae589b62c4d5b2f7932aeea3382fc5c1aaee",
+        "status": 0,
+        "answers": [
+          {
+            "name": "7.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.f.f.c.0.0.d.a.0.1.0.0.2.ip6.arpa.",
+            "type": 12,
+            "TTL": 21600,
+            "data": "r9-lo0-0-Ams-TC-NL.bb.citictel-cpc.com."
+          }
+        ]
+      },
+      "forward": {
+        "url": "https://dns.google/resolve?name=r9-lo0-0-Ams-TC-NL.bb.citictel-cpc.com.&type=AAAA&do=true",
+        "sha256": "5d178fc39bfd94fb37f15735a4a389e13d0b63ea49c1c6c4edcc6f9957814803",
+        "status": 0,
+        "answers": [
+          {
+            "name": "r9-lo0-0-Ams-TC-NL.bb.citictel-cpc.com.",
+            "type": 28,
+            "TTL": 3600,
+            "data": "2001:ad0:cff::7"
+          }
+        ]
+      },
+      "confirmed": true,
+      "country_label_match": true
+    },
+    "2001:ad0:cff::9/128": {
+      "archive_country": "SE",
+      "ptr": {
+        "url": "https://dns.google/resolve?name=9.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.f.f.c.0.0.d.a.0.1.0.0.2.ip6.arpa&type=PTR&do=true",
+        "sha256": "7f3c25b0b4e1b13bf17dfba9dc6c9042ca7b1e819a18f07c87bd523f308b2ecb",
+        "status": 0,
+        "answers": [
+          {
+            "name": "9.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.f.f.c.0.0.d.a.0.1.0.0.2.ip6.arpa.",
+            "type": 12,
+            "TTL": 21600,
+            "data": "r9-lo0-0-Sto-TC-SE.bb.citictel-cpc.com."
+          }
+        ]
+      },
+      "forward": {
+        "url": "https://dns.google/resolve?name=r9-lo0-0-Sto-TC-SE.bb.citictel-cpc.com.&type=AAAA&do=true",
+        "sha256": "3bac9a26c658777ef4a201f1256082b5b3908cdfec5ce951f3864a3aa663afbc",
+        "status": 0,
+        "answers": [
+          {
+            "name": "r9-lo0-0-Sto-TC-SE.bb.citictel-cpc.com.",
+            "type": 28,
+            "TTL": 3600,
+            "data": "2001:ad0:cff::9"
+          }
+        ]
+      },
+      "confirmed": true,
+      "country_label_match": true
+    },
+    "2001:ad0:cff::10/128": {
+      "archive_country": "EE",
+      "ptr": {
+        "url": "https://dns.google/resolve?name=0.1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.f.f.c.0.0.d.a.0.1.0.0.2.ip6.arpa&type=PTR&do=true",
+        "sha256": "fd717ef798f24792764982cb76cf0712d6d227ed136e0f98bb51443918fc000c",
+        "status": 0,
+        "answers": [
+          {
+            "name": "0.1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.f.f.c.0.0.d.a.0.1.0.0.2.ip6.arpa.",
+            "type": 12,
+            "TTL": 21600,
+            "data": "r9-lo0-0-Tln-Linx-EE.bb.citictel-cpc.com."
+          }
+        ]
+      },
+      "forward": {
+        "url": "https://dns.google/resolve?name=r9-lo0-0-Tln-Linx-EE.bb.citictel-cpc.com.&type=AAAA&do=true",
+        "sha256": "be3b2012636566bde3dfdb6f974a1660e1cc896801fb3171e004340eb18b7767",
+        "status": 0,
+        "answers": [
+          {
+            "name": "r9-lo0-0-Tln-Linx-EE.bb.citictel-cpc.com.",
+            "type": 28,
+            "TTL": 3600,
+            "data": "2001:ad0:cff::10"
+          }
+        ]
+      },
+      "confirmed": true,
+      "country_label_match": true
+    },
+    "2001:ad0:cff::16/128": {
+      "archive_country": "LT",
+      "ptr": {
+        "url": "https://dns.google/resolve?name=6.1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.f.f.c.0.0.d.a.0.1.0.0.2.ip6.arpa&type=PTR&do=true",
+        "sha256": "39ef1beb87310004c2f2d0dbff1c79ea4ec6489fbb5780733dd538b585975795",
+        "status": 0,
+        "answers": [
+          {
+            "name": "6.1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.f.f.c.0.0.d.a.0.1.0.0.2.ip6.arpa.",
+            "type": 12,
+            "TTL": 21600,
+            "data": "r8-lo0-0-Vno-Lnrg-LT.bb.citictel-cpc.com."
+          }
+        ]
+      },
+      "forward": {
+        "url": "https://dns.google/resolve?name=r8-lo0-0-Vno-Lnrg-LT.bb.citictel-cpc.com.&type=AAAA&do=true",
+        "sha256": "579ecc22a553eaa3c1d0d6bbca100076349d044662ac502bc3098c32a1ba47d4",
+        "status": 0,
+        "answers": [
+          {
+            "name": "r8-lo0-0-Vno-Lnrg-LT.bb.citictel-cpc.com.",
+            "type": 28,
+            "TTL": 3600,
+            "data": "2001:ad0:cff::16"
+          }
+        ]
+      },
+      "confirmed": true,
+      "country_label_match": true
+    },
+    "2001:ad0:cff::23/128": {
+      "archive_country": "GE",
+      "ptr": {
+        "url": "https://dns.google/resolve?name=3.2.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.f.f.c.0.0.d.a.0.1.0.0.2.ip6.arpa&type=PTR&do=true",
+        "sha256": "3a5c4e782db7678bc0c96a99d7968234854222817c47b2f2bed9439c33b92c46",
+        "status": 0,
+        "answers": [
+          {
+            "name": "3.2.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.f.f.c.0.0.d.a.0.1.0.0.2.ip6.arpa.",
+            "type": 12,
+            "TTL": 21600,
+            "data": "r9-lo0-0-Tbs-NewT-GE.bb.citictel-cpc.com."
+          }
+        ]
+      },
+      "forward": {
+        "url": "https://dns.google/resolve?name=r9-lo0-0-Tbs-NewT-GE.bb.citictel-cpc.com.&type=AAAA&do=true",
+        "sha256": "6988e0790fa7e665e864a4879115d2f8926f5f015b081aef852ef61c33943500",
+        "status": 0,
+        "answers": [
+          {
+            "name": "r9-lo0-0-Tbs-NewT-GE.bb.citictel-cpc.com.",
+            "type": 28,
+            "TTL": 3600,
+            "data": "2001:ad0:cff::23"
+          }
+        ]
+      },
+      "confirmed": true,
+      "country_label_match": true
+    },
+    "2001:ad0:cff::28/128": {
+      "archive_country": "FI",
+      "ptr": {
+        "url": "https://dns.google/resolve?name=8.2.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.f.f.c.0.0.d.a.0.1.0.0.2.ip6.arpa&type=PTR&do=true",
+        "sha256": "b1b970f8be3f0fbfaae81b9cfd1377aed05cc0be0ba02e1e26edc8202a3aac56",
+        "status": 0,
+        "answers": [
+          {
+            "name": "8.2.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.f.f.c.0.0.d.a.0.1.0.0.2.ip6.arpa.",
+            "type": 12,
+            "TTL": 21600,
+            "data": "r9-lo0-0-Hel-Song-FI.bb.citictel-cpc.com."
+          }
+        ]
+      },
+      "forward": {
+        "url": "https://dns.google/resolve?name=r9-lo0-0-Hel-Song-FI.bb.citictel-cpc.com.&type=AAAA&do=true",
+        "sha256": "b91711c4eef8f20f4a428cb0e2dc9947f6c916e2c428537ccc956293680b3cc0",
+        "status": 0,
+        "answers": [
+          {
+            "name": "r9-lo0-0-Hel-Song-FI.bb.citictel-cpc.com.",
+            "type": 28,
+            "TTL": 3600,
+            "data": "2001:ad0:cff::28"
+          }
+        ]
+      },
+      "confirmed": true,
+      "country_label_match": true
+    },
+    "2001:ad0:cff::35/128": {
+      "archive_country": "HU",
+      "ptr": {
+        "url": "https://dns.google/resolve?name=5.3.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.f.f.c.0.0.d.a.0.1.0.0.2.ip6.arpa&type=PTR&do=true",
+        "sha256": "6d9bca17bd87ceda1237cb7d9cae44ac03cd1f5fb901e145fdbff8447067e27d",
+        "status": 0,
+        "answers": [
+          {
+            "name": "5.3.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.f.f.c.0.0.d.a.0.1.0.0.2.ip6.arpa.",
+            "type": 12,
+            "TTL": 21600,
+            "data": "r1-lo0-0-Bud-Dplx-HU.bb.citictel-cpc.com."
+          }
+        ]
+      },
+      "forward": {
+        "url": "https://dns.google/resolve?name=r1-lo0-0-Bud-Dplx-HU.bb.citictel-cpc.com.&type=AAAA&do=true",
+        "sha256": "2b4d25c1bfcf99a0a1a2a32b06feb7872975e6b585c94fffc98db472f86b51ea",
+        "status": 0,
+        "answers": [
+          {
+            "name": "r1-lo0-0-Bud-Dplx-HU.bb.citictel-cpc.com.",
+            "type": 28,
+            "TTL": 3600,
+            "data": "2001:ad0:cff::35"
+          }
+        ]
+      },
+      "confirmed": true,
+      "country_label_match": true
+    },
+    "2001:ad0:cff::37/128": {
+      "archive_country": "UA",
+      "ptr": {
+        "url": "https://dns.google/resolve?name=7.3.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.f.f.c.0.0.d.a.0.1.0.0.2.ip6.arpa&type=PTR&do=true",
+        "sha256": "202e00c3e03514b47bc03c7732d412fbf97fe57382b38506ab64cd95c224da33",
+        "status": 0,
+        "answers": [
+          {
+            "name": "7.3.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.f.f.c.0.0.d.a.0.1.0.0.2.ip6.arpa.",
+            "type": 12,
+            "TTL": 21600,
+            "data": "r1-lo0-0-Iev-UIX2-UA.bb.citictel-cpc.com."
+          }
+        ]
+      },
+      "forward": {
+        "url": "https://dns.google/resolve?name=r1-lo0-0-Iev-UIX2-UA.bb.citictel-cpc.com.&type=AAAA&do=true",
+        "sha256": "223d22a3c6b8c99cdcd4260ec43cd176f7f9ab46e04087120619a9276d362d39",
+        "status": 0,
+        "answers": [
+          {
+            "name": "r1-lo0-0-Iev-UIX2-UA.bb.citictel-cpc.com.",
+            "type": 28,
+            "TTL": 3600,
+            "data": "2001:ad0:cff::37"
+          }
+        ]
+      },
+      "confirmed": true,
+      "country_label_match": true
+    },
+    "2001:ad0:cff::38/128": {
+      "archive_country": "LV",
+      "ptr": {
+        "url": "https://dns.google/resolve?name=8.3.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.f.f.c.0.0.d.a.0.1.0.0.2.ip6.arpa&type=PTR&do=true",
+        "sha256": "8960d1889ec838328f03ca6f344bcb6c3ec27fdd0ca5384abf35b34e46f19234",
+        "status": 0,
+        "answers": [
+          {
+            "name": "8.3.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.f.f.c.0.0.d.a.0.1.0.0.2.ip6.arpa.",
+            "type": 12,
+            "TTL": 21600,
+            "data": "r8-lo0-0-Rix-LVRTC-LV.bb.citictel-cpc.com."
+          }
+        ]
+      },
+      "forward": {
+        "url": "https://dns.google/resolve?name=r8-lo0-0-Rix-LVRTC-LV.bb.citictel-cpc.com.&type=AAAA&do=true",
+        "sha256": "377c467649b172d5fbc84affbc433707f2b1c602e7e78be8a3a295a5f8eaab1c",
+        "status": 0,
+        "answers": [
+          {
+            "name": "r8-lo0-0-Rix-LVRTC-LV.bb.citictel-cpc.com.",
+            "type": 28,
+            "TTL": 3600,
+            "data": "2001:ad0:cff::38"
+          }
+        ]
+      },
+      "confirmed": true,
+      "country_label_match": true
+    },
+    "2001:ad0:cff::48/128": {
+      "archive_country": "GB",
+      "ptr": {
+        "url": "https://dns.google/resolve?name=8.4.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.f.f.c.0.0.d.a.0.1.0.0.2.ip6.arpa&type=PTR&do=true",
+        "sha256": "44141ff61fd77666709988235648da7fd2afc7f6bacd5b56635cfb4eabdddd98",
+        "status": 0,
+        "answers": [
+          {
+            "name": "8.4.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.f.f.c.0.0.d.a.0.1.0.0.2.ip6.arpa.",
+            "type": 12,
+            "TTL": 21600,
+            "data": "r8-lo0-0-Lon-THN-UK.bb.citictel-cpc.com."
+          }
+        ]
+      },
+      "forward": {
+        "url": "https://dns.google/resolve?name=r8-lo0-0-Lon-THN-UK.bb.citictel-cpc.com.&type=AAAA&do=true",
+        "sha256": "1a4d3b8ce18dc60c32409162ef4eb57cd30ce738ee22dac51a79a8ee5ea68249",
+        "status": 0,
+        "answers": [
+          {
+            "name": "r8-lo0-0-Lon-THN-UK.bb.citictel-cpc.com.",
+            "type": 28,
+            "TTL": 3600,
+            "data": "2001:ad0:cff::48"
+          }
+        ]
+      },
+      "confirmed": true,
+      "country_label_match": false
+    }
+  },
+  "additional_kz_control": {
+    "ptr": {
+      "url": "https://dns.google/resolve?name=1.8.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.f.f.c.0.0.d.a.0.1.0.0.2.ip6.arpa&type=PTR&do=true",
+      "sha256": "2ead87c98dd070df3b8e72aef36deaa749860954be74391317a46e8ee11ced97",
+      "data": {
+        "Status": 0,
+        "TC": false,
+        "RD": true,
+        "RA": true,
+        "AD": false,
+        "CD": false,
+        "Question": [
+          {
+            "name": "1.8.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.f.f.c.0.0.d.a.0.1.0.0.2.ip6.arpa.",
+            "type": 12
+          }
+        ],
+        "Answer": [
+          {
+            "name": "1.8.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.f.f.c.0.0.d.a.0.1.0.0.2.ip6.arpa.",
+            "type": 12,
+            "TTL": 21600,
+            "data": "r9-lo0-0-Ala-Abd66-KZ.bb.citictel-cpc.com."
+          }
+        ],
+        "Comment": "Response from 195.222.0.1."
+      }
+    },
+    "aaaa": {
+      "url": "https://dns.google/resolve?name=r9-lo0-0-Ala-Abd66-KZ.bb.citictel-cpc.com.&type=AAAA&do=true",
+      "sha256": "95dd740f1b5f1f3d398b8f3e31879f9d8dbbe22bb05c51706f3a0fa938021a8d",
+      "data": {
+        "Status": 0,
+        "TC": false,
+        "RD": true,
+        "RA": true,
+        "AD": false,
+        "CD": false,
+        "Question": [
+          {
+            "name": "r9-lo0-0-Ala-Abd66-KZ.bb.citictel-cpc.com.",
+            "type": 28
+          }
+        ],
+        "Answer": [
+          {
+            "name": "r9-lo0-0-Ala-Abd66-KZ.bb.citictel-cpc.com.",
+            "type": 28,
+            "TTL": 3600,
+            "data": "2001:ad0:cff::81"
+          }
+        ],
+        "Comment": "Response from 2403:2c00:d003::2."
+      }
+    }
+  },
+  "current_registry_geofeed_archived_intersections": {
+    "retn.net/geofeed/geofeed_v6.csv": {
+      "2a02:2d8::/48": {
+        "ipv6_archive_rows": 153,
+        "matching_rows": [
+          {
+            "prefix": "2a02:2d8::/32",
+            "country": "DE",
+            "city": "",
+            "url": "https://www.retn.net/geofeed/geofeed_v6.csv",
+            "inetnum": "2a02:2d8::/32",
+            "fetched_at": "2026-11-14T10:26:17+00:00",
+            "within_current_referrer": false,
+            "overlap_cidrs": [
+              "2a02:2d8::57f5:e047/128",
+              "2a02:2d8::57f5:e04d/128",
+              "2a02:2d8::57f5:e053/128",
+              "2a02:2d8::57f5:e059/128",
+              "2a02:2d8:0:804::/62",
+              "2a02:2d8:0:1010::/60",
+              "2a02:2d8:0:1020::/59",
+              "2a02:2d8:0:1810::/64",
+              "2a02:2d8:0:1820::/59",
+              "2a02:2d8:0:2006::/64",
+              "2a02:2d8:0:a800::/53",
+              "2a02:2d8:0:c00f::/64",
+              "2a02:2d8:0:c010::/60",
+              "2a02:2d8:0:c020::/59"
+            ]
+          }
+        ]
+      },
+      "2a02:2d8::/32": {
+        "ipv6_archive_rows": 153,
+        "matching_rows": [
+          {
+            "prefix": "2a02:2d8::/32",
+            "country": "DE",
+            "city": "",
+            "url": "https://www.retn.net/geofeed/geofeed_v6.csv",
+            "inetnum": "2a02:2d8::/32",
+            "fetched_at": "2026-11-14T10:26:17+00:00",
+            "within_current_referrer": true,
+            "overlap_cidrs": [
+              "2a02:2d8:1:6::/64",
+              "2a02:2d8:1:f800::/53",
+              "2a02:2d8:2:4800::/64",
+              "2a02:2d8:2:4803::/64",
+              "2a02:2d8:2:a805::/64",
+              "2a02:2d8:2:c001::/64",
+              "2a02:2d8:3:6000::/64",
+              "2a02:2d8:4:3000::/63",
+              "2a02:2d8:4:3005::/64",
+              "2a02:2d8:4:300f::/64",
+              "2a02:2d8:4:3011::/64",
+              "2a02:2d8:4:6800::/67",
+              "2a02:2d8:4:6800:2000::/71",
+              "2a02:2d8:4:6800:2200::/72",
+              "2a02:2d8:4:6800:2300::/75",
+              "2a02:2d8:4:6800:2320::/77",
+              "2a02:2d8:4:6800:2328::/79",
+              "2a02:2d8:4:6800:232a::/128",
+              "2a02:2d8:4:6800:232a::2/127",
+              "2a02:2d8:4:6800:232a::4/126",
+              "2a02:2d8:4:6800:232a::8/125",
+              "2a02:2d8:4:6800:232a::10/124",
+              "2a02:2d8:4:6800:232a::20/123",
+              "2a02:2d8:4:6800:232a::40/122",
+              "2a02:2d8:4:6800:232a::80/121",
+              "2a02:2d8:4:6800:232a::100/120",
+              "2a02:2d8:4:6800:232a::200/119",
+              "2a02:2d8:4:6800:232a::400/118",
+              "2a02:2d8:4:6800:232a::800/117",
+              "2a02:2d8:4:6800:232a::1000/116",
+              "2a02:2d8:4:6800:232a::2000/115",
+              "2a02:2d8:4:6800:232a::4000/114",
+              "2a02:2d8:4:6800:232a::8000/113",
+              "2a02:2d8:4:6800:232a:0:1:0/112",
+              "2a02:2d8:4:6800:232a:0:2:0/111",
+              "2a02:2d8:4:6800:232a:0:4:0/110",
+              "2a02:2d8:4:6800:232a:0:8:0/109",
+              "2a02:2d8:4:6800:232a:0:10:0/108",
+              "2a02:2d8:4:6800:232a:0:20:0/107",
+              "2a02:2d8:4:6800:232a:0:40:0/106",
+              "2a02:2d8:4:6800:232a:0:80:0/105",
+              "2a02:2d8:4:6800:232a:0:100:0/104",
+              "2a02:2d8:4:6800:232a:0:200:0/103",
+              "2a02:2d8:4:6800:232a:0:400:0/102",
+              "2a02:2d8:4:6800:232a:0:800:0/101",
+              "2a02:2d8:4:6800:232a:0:1000:0/100",
+              "2a02:2d8:4:6800:232a:0:2000:0/99",
+              "2a02:2d8:4:6800:232a:0:4000:0/98",
+              "2a02:2d8:4:6800:232a:0:8000:0/97",
+              "2a02:2d8:4:6800:232a:1::/96",
+              "2a02:2d8:4:6800:232a:2::/95",
+              "2a02:2d8:4:6800:232a:4::/94",
+              "2a02:2d8:4:6800:232a:8::/93",
+              "2a02:2d8:4:6800:232a:10::/92",
+              "2a02:2d8:4:6800:232a:20::/91",
+              "2a02:2d8:4:6800:232a:40::/90",
+              "2a02:2d8:4:6800:232a:80::/89",
+              "2a02:2d8:4:6800:232a:100::/88",
+              "2a02:2d8:4:6800:232a:200::/87",
+              "2a02:2d8:4:6800:232a:400::/86",
+              "2a02:2d8:4:6800:232a:800::/85",
+              "2a02:2d8:4:6800:232a:1000::/84",
+              "2a02:2d8:4:6800:232a:2000::/83",
+              "2a02:2d8:4:6800:232a:4000::/82",
+              "2a02:2d8:4:6800:232a:8000::/81",
+              "2a02:2d8:4:6800:232b::/80",
+              "2a02:2d8:4:6800:232c::/78",
+              "2a02:2d8:4:6800:2330::/76",
+              "2a02:2d8:4:6800:2340::/74",
+              "2a02:2d8:4:6800:2380::/73",
+              "2a02:2d8:4:6800:2400::/70",
+              "2a02:2d8:4:6800:2800::/69",
+              "2a02:2d8:4:6800:3000::/68",
+              "2a02:2d8:4:6800:4000::/66",
+              "2a02:2d8:4:6800:8000::/65",
+              "2a02:2d8:4:6801::/64",
+              "2a02:2d8:4:6802::/64"
+            ]
+          }
+        ]
+      }
+    },
+    "geofeed.power-servers.net/ih_geofeed.csv": {
+      "2a0a:9307::/32": {
+        "ipv6_archive_rows": 6,
+        "matching_rows": []
+      }
+    }
+  },
+  "fixed_release_sha256": "2735053560ebd598cbdcd71ccf858806d4b955a17e2eac512a7baf249d43653a",
+  "shadow": {
+    "control": {
+      "dat_sha256": "2735053560ebd598cbdcd71ccf858806d4b955a17e2eac512a7baf249d43653a",
+      "blocked_sha256": "da3949ad119013db9a8237d322c63411234c201079f8506af3e51dc6051b0b6a",
+      "relative_gate": {
+        "candidate_sha256": "2735053560ebd598cbdcd71ccf858806d4b955a17e2eac512a7baf249d43653a",
+        "delta": {
+          "4": {
+            "added": 0,
+            "after": 53497424,
+            "before": 53497424,
+            "limit": 267487,
+            "removed": 0
+          },
+          "6": {
+            "added": 0,
+            "after": 1205876352968421911415516831940608,
+            "before": 1205876352968421911415516831940608,
+            "limit": 12058763529684219114155168319406,
+            "removed": 0
+          }
+        },
+        "needs_review": false,
+        "private_changed": false
+      },
+      "gates": "all seven passed"
+    },
+    "candidate": {
+      "dat_sha256": "4517a9b8e4dce647d0c7e43deca49dfed87f687a1cc111a7e006e35fe417495f",
+      "blocked_sha256": "da3949ad119013db9a8237d322c63411234c201079f8506af3e51dc6051b0b6a",
+      "relative_gate": {
+        "candidate_sha256": "4517a9b8e4dce647d0c7e43deca49dfed87f687a1cc111a7e006e35fe417495f",
+        "delta": {
+          "4": {
+            "added": 0,
+            "after": 53497424,
+            "before": 53497424,
+            "limit": 267487,
+            "removed": 0
+          },
+          "6": {
+            "added": 10,
+            "after": 1205876352968421911415516831940618,
+            "before": 1205876352968421911415516831940608,
+            "limit": 12058763529684219114155168319406,
+            "removed": 0
+          }
+        },
+        "needs_review": false,
+        "private_changed": false
+      },
+      "gates": "all seven passed",
+      "added_ipv6": [
+        "2001:ad0:cff::6/128",
+        "2001:ad0:cff::8/128",
+        "2001:ad0:cff::18/128",
+        "2001:ad0:cff::19/128",
+        "2001:ad0:cff::21/128",
+        "2001:ad0:cff::31/128",
+        "2001:ad0:cff::76/128",
+        "2001:ad0:cff::77/128",
+        "2001:ad0:cff::78/128",
+        "2001:ad0:cff::253/128"
+      ]
+    },
+    "mode": "Detached shadow replay only. No build branch, table, publication gate or released artifact was modified.",
+    "fixed_production": {
+      "source_sha": "b98980c6181c3bfda35445f345ae83777f7d18f3",
+      "workflow_run": 43583581379,
+      "scheduled_readback_run": 43587602958
+    },
+    "candidate_table_sha256": "b736ba510ec222671c5dabc341780dcc22bb88e08b9fbc6aed129a172e58ca87",
+    "table_rows": {
+      "control": 121,
+      "shadow_only": 131
+    },
+    "no_widening": {
+      "foreign_archived_siblings_outside_candidate": 41,
+      "kz_outside_candidate": 1,
+      "all_added_points_equal_frozen_ru_loopbacks": true,
+      "unchanged_categories": [
+        "RU",
+        "PRIVATE"
+      ]
+    },
+    "block_input_sha256": {
+      "hard": "d34d01aa2007a1da68eab9c4b7d8ac838ff58a1238bce254d392e7a1d04d424d",
+      "raw_resolver": "1026597df528de59ccda9fddd5e9721709f7c8953b309a8ebbb1548d49975ee6",
+      "approved_union": "82e595f197cb2c27eacd86e83ce8f65a02456c5dfcc3371dd5338688248202cd",
+      "effective": "da3949ad119013db9a8237d322c63411234c201079f8506af3e51dc6051b0b6a"
+    },
+    "fresh_telegram_sha256": "3ecd072cedf72eceee6961b18a51e37f905d5ce4a656a5d24cf5fea63e6ec651",
+    "local_gate_logs": {
+      "control": {
+        "build_v41_overlay": "9963b7affa69e9a9bf3d8ce0a4c91ea677559beb57f843c4750b2594526c4e79",
+        "validate_v41_base_artifacts": "1b7c3fd80aa4c89ade0b837cde4dde3cc48046393954baf48630a78d47aefc2f",
+        "validate_v41_overlay": "c7555435e2653f6cbb9c42ba82070b94bb0f824031aa7d74be749ae2659d2020",
+        "validate_v41_publication_bounds": "63843fc1df170b2acd6e9e2390c5e3852e9bf338da024e8e5489e8efd21bb494",
+        "validate_v41_relative_bounds": "63843fc1df170b2acd6e9e2390c5e3852e9bf338da024e8e5489e8efd21bb494",
+        "validate_v41_release_gate": "fb30414e34ad028772b200af33e7b965f1d5d5b3b6131d4a0311f0d0e01e9566",
+        "validate_v41_telegram": "5fa0c04012fa78f0dba8239cbbecedb3022571f55038f237fdbc746d91c4cc75"
+      },
+      "candidate": {
+        "build_v41_overlay": "c05848ad8c4f6d39e9c83b02fa855bea578886bfe01c668e776602a4b8cefe89",
+        "validate_v41_base_artifacts": "1b7c3fd80aa4c89ade0b837cde4dde3cc48046393954baf48630a78d47aefc2f",
+        "validate_v41_overlay": "fa98c9ca39aa5f3cfd61e7968e6278e38cf08636bb3408635392306af0bf9365",
+        "validate_v41_publication_bounds": "9a65f697eb011af66be4c932f9915a684d09880cf1633b983f7cf39e3886c830",
+        "validate_v41_relative_bounds": "9251796c214476e3207942b30c86e77162d96dda00857cc1d3930972000b8dbc",
+        "validate_v41_release_gate": "fc961065307703b860803cfbe0f2127308609a5a0f510d30e0a8894330fbce28",
+        "validate_v41_telegram": "5fa0c04012fa78f0dba8239cbbecedb3022571f55038f237fdbc746d91c4cc75"
+      }
+    },
+    "fixture": {
+      "added_table_rows": [
+        {
+          "country": "RU",
+          "prefix": "2001:ad0:cff::6/128",
+          "origin_asn": "AS3327"
+        },
+        {
+          "country": "RU",
+          "prefix": "2001:ad0:cff::8/128",
+          "origin_asn": "AS3327"
+        },
+        {
+          "country": "RU",
+          "prefix": "2001:ad0:cff::18/128",
+          "origin_asn": "AS3327"
+        },
+        {
+          "country": "RU",
+          "prefix": "2001:ad0:cff::19/128",
+          "origin_asn": "AS3327"
+        },
+        {
+          "country": "RU",
+          "prefix": "2001:ad0:cff::21/128",
+          "origin_asn": "AS3327"
+        },
+        {
+          "country": "RU",
+          "prefix": "2001:ad0:cff::31/128",
+          "origin_asn": "AS3327"
+        },
+        {
+          "country": "RU",
+          "prefix": "2001:ad0:cff::76/128",
+          "origin_asn": "AS3327"
+        },
+        {
+          "country": "RU",
+          "prefix": "2001:ad0:cff::77/128",
+          "origin_asn": "AS3327"
+        },
+        {
+          "country": "RU",
+          "prefix": "2001:ad0:cff::78/128",
+          "origin_asn": "AS3327"
+        },
+        {
+          "country": "RU",
+          "prefix": "2001:ad0:cff::253/128",
+          "origin_asn": "AS3327"
+        }
+      ],
+      "coverage_policy": "Individually identified infrastructure hosts under an observed covering origin. Exact /128 NLRI or direct reachability is not claimed."
+    }
+  }
+}
