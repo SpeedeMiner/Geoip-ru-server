@@ -6,6 +6,7 @@ import unittest
 from pathlib import Path
 from types import SimpleNamespace
 
+from build_v41_overlay import W1ZARDZ_EXCLUSIONS
 from validate_v41_release_gate import (
     REPORT_MARKER, SOURCE_KEYS, check_manifest, format_quality_section,
     inspect_policy, literal_service_exceptions, read_hard_sources, verify_hard_evidence,
@@ -112,10 +113,17 @@ class ReleaseGateTests(unittest.TestCase):
             manifest = {"schema": 2,
                         "output_sha256": hashlib.sha256(b"geoip").hexdigest(),
                         "input_sha256": {
+                            "w1zardz_gaming_exclusions": hashlib.sha256(W1ZARDZ_EXCLUSIONS.read_bytes()).hexdigest(),
+                            **{
                             key: hashlib.sha256(field.encode()).hexdigest()
                             for field, key in SOURCE_KEYS.items()
+                            },
                         }}
             check_manifest(manifest, args)
+            digest = manifest["input_sha256"].pop("w1zardz_gaming_exclusions")
+            with self.assertRaisesRegex(ValueError, "w1zardz_gaming_exclusions"):
+                check_manifest(manifest, args)
+            manifest["input_sha256"]["w1zardz_gaming_exclusions"] = digest
             args.core.write_text("modified", encoding="utf-8")
             with self.assertRaisesRegex(ValueError, "corporate_core_prefixes"):
                 check_manifest(manifest, args)

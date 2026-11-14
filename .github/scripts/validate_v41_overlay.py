@@ -53,9 +53,12 @@ def validate(args: argparse.Namespace) -> dict:
     feeds.w1zardz = args.w1zardz
     feeds.escapingworm = args.escapingworm
     telegram = read_telegram_feed(args.telegram_feed)
-    service_sources, _, _ = builder.load_service_inputs(feeds)
+    service_sources, source_stats, _ = builder.load_service_inputs(feeds)
     rir_resources, _ = builder.parse_rir_tsv(args.rir)
-    service_exact, service_resolver = builder.build_service_protection_masks(rir_resources, service_sources)
+    service_exact, service_resolver = builder.build_service_protection_masks(
+        rir_resources, service_sources,
+        w1zardz_literal_hosts=builder.original_w1zardz_hosts(args.w1zardz, service_sources["w1zardz-service-direct"]),
+    )
     regional_resources = builder.union_networks(*rir_resources.values())
     if company_core & shared or company_core | shared != company_all:
         raise ValueError("Company core/shared masks are not a disjoint exact partition")
@@ -133,8 +136,21 @@ def validate(args: argparse.Namespace) -> dict:
                                *service_sources.values(), *hydra_sources.values()),
         hxehex,
     )
+    excluded = builder.read_w1zardz_exclusions(builder.W1ZARDZ_EXCLUSIONS)
+    independently_admitted = builder.union_networks(
+        base["RU"], regional_resources, regional_all, company_all, reviewed,
+        *service_sources.values(), *hydra_sources.values(),
+    )
+    if builder.intersect(builder.intervals(excluded, 4),
+                         builder.intervals(service_sources["w1zardz-service-direct"], 4)):
+        raise ValueError("Excluded gaming address still present in W1ZARDZ admission")
+    assert_no_w1zardz_only_gaming_routes(decoded["RU"], independently_admitted, excluded)
 
     manifest = json.loads(args.manifest.read_text(encoding="utf-8"))
+    if (manifest.get("input_sha256", {}).get("w1zardz_direct") != sha256(args.w1zardz)
+            or manifest.get("input_sha256", {}).get("w1zardz_gaming_exclusions") != sha256(builder.W1ZARDZ_EXCLUSIONS)
+            or manifest.get("service_sources", {}).get("w1zardz-service-direct") != source_stats["w1zardz-service-direct"]):
+        raise ValueError("W1ZARDZ source/exclusion provenance mismatch")
     hxehex_info = manifest.get("diagnostic_sources", {}).get("hxehex-mobile-hosts", {})
     if (manifest.get("base_v37_sha256") != sha256(args.base)
             or manifest.get("input_sha256", {}).get("hxehex_ipwhitelist") != sha256(args.hxehex_ip)
@@ -230,6 +246,11 @@ def validate(args: argparse.Namespace) -> dict:
     }
     print(json.dumps(report, ensure_ascii=False, sort_keys=True))
     return report
+
+def assert_no_w1zardz_only_gaming_routes(ru, independently_admitted, excluded):
+    overlap = builder.intersect(builder.intervals(ru, 4), builder.intervals(excluded, 4))
+    if builder.subtract(overlap, builder.intervals(independently_admitted, 4)):
+        raise ValueError("W1ZARDZ-only gaming address still present in IPv4 DIRECT")
 
 
 def main() -> int:

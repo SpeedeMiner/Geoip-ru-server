@@ -21,6 +21,8 @@ from typing import Iterable
 
 from validate_v41_telegram import PINNED_FEED, read_telegram_feed
 
+W1ZARDZ_EXCLUSIONS = Path(__file__).resolve().parent.parent / "data/v41-w1zardz-gaming-exclusions.txt"
+
 SOURCE_REFS = {
     "kyoresuas-standard": {
         "repository": "kyoresuas/ru-direct",
@@ -495,6 +497,40 @@ def subtract_networks(source, *masks):
         output.update(networks_from_intervals(remaining, version))
     return output
 
+def read_w1zardz_exclusions(path: Path):
+    networks = set()
+    for number, row in enumerate(path.read_text(encoding="utf-8").splitlines(), 1):
+        token = row.partition("#")[0].strip()
+        if not token:
+            continue
+        net = ipaddress.IPv4Network(token, strict=True)
+        if (str(net) != token or net in networks or net.prefixlen < 24
+                or not net.is_global or net.is_multicast):
+            raise ValueError(f"{path}:{number}: invalid W1ZARDZ exclusion {token!r}")
+        networks.add(net)
+    if not networks:
+        raise ValueError(f"{path}: no W1ZARDZ exclusion records")
+    return networks
+
+def filter_w1zardz_routes(networks, excluded):
+    """Subtract only from W1ZARDZ and preserve unchanged literal host rows."""
+    mask = intervals(excluded, 4)
+    kept, removed = set(), []
+    for net in networks:
+        start, end = int(net.network_address), int(net.broadcast_address)
+        overlap = intersect_one_range(start, end, mask) if net.version == 4 else []
+        if not overlap:
+            kept.add(net)
+            continue
+        removed.extend(overlap)
+        kept.update(networks_from_intervals(subtract([(start, end)], overlap), 4))
+    return kept, networks_from_intervals(normalize_interval_union(removed), 4)
+
+def original_w1zardz_hosts(path: Path, admitted):
+    """Keep only literal upstream hosts, not /32s synthesized by trimming."""
+    original, _ = parse_cidr_file(path, allow_hosts=True)
+    return {net for net in original & admitted if net.prefixlen == net.max_prefixlen}
+
 def potential_ipsum_direct_overlap(preblock, private, approved_blocked, ipsum):
     """Count review-only /24 address space intersecting eligible DIRECT, without summing rows."""
     result = {}
@@ -521,7 +557,7 @@ def blocked_prefix_impact(network, preblock_after_private, approved_blocked):
 def parse_blocked_base(path: Path):
     return parse_cidr_file(path, allow_hosts=True)[0]
 
-def build_service_protection_masks(rir, service_sources):
+def build_service_protection_masks(rir, service_sources, *, w1zardz_literal_hosts=None):
     """Return literal service hosts and the full resolver-protection address space.
 
     Select hosts before clipping or collapsing so neither an allocation boundary
@@ -533,7 +569,8 @@ def build_service_protection_masks(rir, service_sources):
     exact = {net for net in ky if net.prefixlen == net.max_prefixlen}
     resolver = ky | operators
     regional = union_networks(*(rir[country] for country in ("RU", "BY", "KZ")))
-    w1zardz_hosts = {net for net in w1zardz if net.prefixlen == net.max_prefixlen}
+    w1zardz_hosts = (w1zardz_literal_hosts if w1zardz_literal_hosts is not None
+                     else {net for net in w1zardz if net.prefixlen == net.max_prefixlen})
     for version in (4, 6):
         # Do not collapse adjacent W1ZARDZ host rows into broader CIDRs.
         ru_intervals = intervals(rir["RU"], version)
@@ -646,6 +683,19 @@ def load_service_inputs(args):
         ("operator-whitelist", args.escapingworm),
     ):
         networks, stats = parse_cidr_file(path, allow_hosts=True)
+        if source_id == "w1zardz-service-direct":
+            w1zardz_excluded = read_w1zardz_exclusions(W1ZARDZ_EXCLUSIONS)
+            networks, removed = filter_w1zardz_routes(networks, w1zardz_excluded)
+            stats.update({
+                "admitted_input_cidrs": len(networks),
+                "excluded_ipv4_addresses": addr_counts(removed)["ipv4"],
+                "admission_exclusions_sha256": sha256(W1ZARDZ_EXCLUSIONS.read_bytes()),
+            })
+            for net in sorted(removed, key=lambda n: (int(n.network_address), n.prefixlen)):
+                provenance_rows.append({
+                    "source_id": source_id, "category": "excluded-game-ip",
+                    "service": "", "tier": "", "asn_list": "", "domains": "", "prefix": str(net),
+                })
         sources[source_id] = networks
         source_stats[source_id] = {"raw_files":[path.name], **stats}
         for net in sorted(networks, key=lambda n:(n.version,int(n.network_address),n.prefixlen)):
@@ -744,7 +794,10 @@ def main():
         raise ValueError("CORE/SHARED prefix masks must exactly partition the all-company prefix set")
     regional_with_companies, regional_origin_stats = parse_cidr_file(args.regional_origin_prefixes, allow_hosts=False)
     regional_only = subtract_networks(regional_with_companies, company_prefixes)
-    service_exact, service_resolver = build_service_protection_masks(rir, service_sources)
+    service_exact, service_resolver = build_service_protection_masks(
+        rir, service_sources,
+        w1zardz_literal_hosts=original_w1zardz_hosts(args.w1zardz, service_sources["w1zardz-service-direct"]),
+    )
 
     ipsum, ipsum_stats = parse_ipsum(args.ipsum)
     if len(ipsum) < 1000:
@@ -1090,6 +1143,7 @@ def main():
         "SERVICE DIRECT INPUTS",
         f"Kyoresuas Standard services represented in service catalog: {service_stats_count(source_stats)}",
         f"W1ZARDZ unique service/direct prefixes: {len(service_sources['w1zardz-service-direct'])}",
+        f"IPv4 addresses removed from the W1ZARDZ input by the gaming policy: {source_stats['w1zardz-service-direct']['excluded_ipv4_addresses']}",
         f"Escapingworm operator whitelist prefixes: {len(service_sources['operator-whitelist'])}",
         f"Literal service hosts (resolver protection only): {len(service_exact)}",
         f"Service resolver-protected address space: {addr_counts(service_resolver)}",
@@ -1238,6 +1292,7 @@ def main():
             "kyoresuas_standard_ipv6":sha256(args.kyoresuas_v6.read_bytes()),
             "kyoresuas_services_json":sha256(args.kyoresuas_services.read_bytes()),
             "w1zardz_direct":sha256(args.w1zardz.read_bytes()),
+            "w1zardz_gaming_exclusions":sha256(W1ZARDZ_EXCLUSIONS.read_bytes()),
             "hxehex_ipwhitelist":sha256(args.hxehex_ip.read_bytes()),
             "escapingworm_operator_whitelist":sha256(args.escapingworm.read_bytes()),
             "v37_blocked_base":sha256(args.blocked_base.read_bytes()),

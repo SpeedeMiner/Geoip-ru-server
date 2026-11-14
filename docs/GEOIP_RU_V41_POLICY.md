@@ -8,7 +8,11 @@ v41 branches from PR #12's corrected v39 head, preserving:
 - Corrected Russian-company ASN registry (removes 13 falsely attributed or unverified ASN names).
 - RIR-RU **selected-origin** routes from the pinned ipverse observation file, not loose GeoIP geolocation assumptions.
 - Kyoresuas Standard and Escapingworm operator-service DIRECT inputs.
-- W1ZARDZ DIRECT prefixes only where they overlap RIR-RU address resources.
+- W1ZARDZ is a service-intent feed, not geographic evidence. Its v41 overlay
+  contribution excludes seven individually reviewed gaming-catalog entries.
+  This is source-scoped, not a global denylist. Other independently admitted
+  coverage is unchanged. Existing RIR limits still apply to W1ZARDZ protection
+  masks, not to general service admission. The original feed remains archived.
 - Approved Antifilter ip.lst / ipresolve.lst / bounded subnet.lst and curated Telegram sources, with `ipsum.lst` review-only.
 - v37 base GeoIP RU/PRIVATE, PRIVATE precedence, full provenance and independent read-back validation.
 - Corrected v37 quality-report source for the prefix-audit workflow; that audit's 57-versus-56 target selection remains a separate unresolved issue.

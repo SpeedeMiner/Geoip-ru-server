@@ -35,6 +35,7 @@ on:
       - ".github/data/v41-reviewed-rkn-ip-records.tsv"
       - ".github/data/v41-reviewed-operator-prefixes.tsv"
       - ".github/data/v41-regional-admission-exclusions.tsv"
+      - ".github/data/v41-w1zardz-gaming-exclusions.txt"
       - ".github/scripts/validate_v41_overlay.py"
       - ".github/scripts/validate_v41_release_gate.py"
       - ".github/scripts/validate_v41_telegram.py"
