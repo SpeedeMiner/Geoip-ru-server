@@ -1,0 +1,17 @@
+{
+  "attempts": 140,
+  "unique_urls": 101,
+  "by_input": {
+    "delegated-apnic-latest": 37,
+    "delegated-arin-extended-latest": 29,
+    "delegated-lacnic-latest": 29,
+    "delegated-ripencc-latest": 45
+  },
+  "states": {
+    "unavailable": 140
+  },
+  "distinct_http_error_kinds": {
+    "28": 140
+  },
+  "conclusion": "Access failed during this pass. This does not establish absence of the dated upstream files."
+}

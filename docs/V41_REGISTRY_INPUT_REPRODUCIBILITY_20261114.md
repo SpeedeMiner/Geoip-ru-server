@@ -49,6 +49,14 @@ bytes, restoration reproduced every input, and checking the old archive
 against the current provenance correctly failed. Neither the bundle nor
 that earlier provenance is a substitute for the current production inputs.
 
+The [retention matrix](v41-release-source-retention-matrix-20261114.json)
+counts 17/36 raw sources in the production Actions ZIP, 18/36 in the
+PR #32 candidate ZIP and 25/36 if the registry bundle is added. The
+remaining 11 files (27,107,541 raw bytes) have pinned upstream hashes
+and URLs, but are not retained in those two artifacts. The proposed
+registry bundle closes the observed mutable-input gap, not every
+possible future upstream availability gap.
+
 If long-term raw rebuildability becomes a release requirement, add a
 dedicated build-time bundle for the seven registry inputs. Keep the
 first integration in candidate CI and measure storage before choosing

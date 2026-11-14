@@ -1,0 +1,22 @@
+{
+  "production_artifact_id": 14111415093,
+  "artifact_members": 60,
+  "rolling_assets": 59,
+  "shared_exact": 59,
+  "mismatches": [],
+  "only_rolling": [],
+  "artifact_only": [
+    "geoip_RU_v37_base.dat"
+  ],
+  "rolling_only_vs_git_matches_input_provenance": {
+    "antifilter-community.lst": true,
+    "antifilter-ip.lst": true,
+    "antifilter-ipresolve.lst": true,
+    "antifilter-subnet.lst": true,
+    "geoip_RU_v38_pinned_antifilter-ip.lst": true,
+    "geoip_RU_v38_pinned_antifilter-ipresolve.lst": true,
+    "geoip_RU_v38_pinned_antifilter-subnet.lst": true,
+    "hydra-geoip.dat": true,
+    "refilter-ipsum.lst": true
+  }
+}
