@@ -99,7 +99,7 @@ def parse_cidr_file(path: Path, allow_hosts: bool = True):
         raise ValueError(f"source {path} has too many invalid rows: {invalid}")
     return networks, {"raw_rows": raw + invalid, "valid_rows": raw, "invalid_rows": invalid}
 
-MAX_REVIEWED_OPERATOR_PREFIXES = 96
+MAX_REVIEWED_OPERATOR_PREFIXES = 112
 
 
 def parse_reviewed_operator_prefixes(path: Path):
