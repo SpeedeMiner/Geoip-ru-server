@@ -22,7 +22,7 @@ class NonDnsDiscoveryTest(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             path = Path(tmp) / "snapshot.tar.gz"
             with tarfile.open(path, "w:gz") as archive:
-                for asn, routes in [(2, ["192.0.2.0/25", "192.0.2.0/25", "192.0.2.128/26"]),
+                for asn, routes in [(2, ["0.0.0.0/0", "192.0.2.0/25", "192.0.2.0/25", "192.0.2.128/26"]),
                                     (3, ["192.0.2.0/25", "192.0.2.192/26"])]:
                     data = json.dumps({"asn": asn, "prefixes": {"ipv4": routes}}).encode()
                     info = tarfile.TarInfo(f"archive/{asn}/aggregated.json")

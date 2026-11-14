@@ -92,6 +92,8 @@ def match_archive(archive, candidates):
             asn = int(data["asn"])
             for value in (data.get("prefixes") or {}).get("ipv4", []):
                 net = ipaddress.IPv4Network(value, strict=False)
+                if net.prefixlen == 0:
+                    continue
                 start, end = int(net.network_address), int(net.broadcast_address)
                 i = bisect_left(last_addresses, start)
                 if i < len(candidates) and candidates[i][0] <= end:
@@ -137,7 +139,7 @@ def main():
             raise ValueError("Candidate group counts do not partition the set")
         rows.append({
             "observed_prefix": str(net) if net else None, "origins": asns, "candidate_addresses": count,
-            "candidate_cidrs": [str(n) for n in networks_from_intervals(iv, 4)], "source_groups": by_group,
+            "candidate_cidrs": [str(n) for n in sorted(networks_from_intervals(iv, 4))], "source_groups": by_group,
         })
     total = interval_size(candidates)
     if sum(status.values()) != total:
