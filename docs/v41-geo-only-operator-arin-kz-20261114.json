@@ -1,0 +1,460 @@
+{
+  "geofeed": "https://noc.3nt.com/geofeed.csv",
+  "geofeed_sha256": "1f14d2fa698bd1c89feaf522426c91a4ee2a2129981108263feb13ed6757088b",
+  "admitted": [
+    {
+      "prefix": "38.180.207.0/24",
+      "url": "https://rdap.arin.net/registry/ip/38.180.207.94",
+      "name": "CLOUD-NETWORK-KZ",
+      "country": "KZ",
+      "start": "38.180.207.0",
+      "end": "38.180.207.255",
+      "ips": 4,
+      "handle": "NET-38-180-207-0-1",
+      "geofeed_remarks": [
+        "Geofeed https://noc.3nt.com/geofeed.csv"
+      ],
+      "org": [
+        "NSL-384"
+      ],
+      "ris": "https://stat.ripe.net/data/routing-status/data.json?resource=38.180.207.0%2F24",
+      "ris_query_time": "2026-11-14T00:00:00",
+      "ris_origins": [
+        58061
+      ],
+      "ris_more_specifics": [],
+      "ris_peers": {
+        "ris_peers_seeing": 320,
+        "total_ris_peers": 320
+      },
+      "restored_ipv4": [
+        "38.180.207.94",
+        "38.180.207.106",
+        "38.180.207.161",
+        "38.180.207.212"
+      ],
+      "pinned_ipverse_coverage": {
+        "38.180.207.94": {
+          "38.0.0.0/8": [
+            174
+          ],
+          "38.180.206.0/23": [
+            58061
+          ]
+        },
+        "38.180.207.106": {
+          "38.0.0.0/8": [
+            174
+          ],
+          "38.180.206.0/23": [
+            58061
+          ]
+        },
+        "38.180.207.161": {
+          "38.0.0.0/8": [
+            174
+          ],
+          "38.180.206.0/23": [
+            58061
+          ]
+        },
+        "38.180.207.212": {
+          "38.0.0.0/8": [
+            174
+          ],
+          "38.180.206.0/23": [
+            58061
+          ]
+        }
+      }
+    },
+    {
+      "prefix": "38.244.134.0/24",
+      "url": "https://rdap.arin.net/registry/ip/38.244.134.57",
+      "name": "CLOUD-NETWORK-KZ",
+      "country": "KZ",
+      "start": "38.244.134.0",
+      "end": "38.244.134.255",
+      "ips": 2,
+      "handle": "NET-38-244-134-0-1",
+      "geofeed_remarks": [
+        "Geofeed https://noc.3nt.com/geofeed.csv"
+      ],
+      "org": [
+        "NSL-384"
+      ],
+      "ris": "https://stat.ripe.net/data/routing-status/data.json?resource=38.244.134.0%2F24",
+      "ris_query_time": "2026-11-14T00:00:00",
+      "ris_origins": [
+        58061
+      ],
+      "ris_more_specifics": [],
+      "ris_peers": {
+        "ris_peers_seeing": 320,
+        "total_ris_peers": 320
+      },
+      "restored_ipv4": [
+        "38.244.134.57",
+        "38.244.134.145"
+      ],
+      "pinned_ipverse_coverage": {
+        "38.244.134.57": {
+          "38.0.0.0/8": [
+            174
+          ],
+          "38.244.134.0/23": [
+            58061
+          ]
+        },
+        "38.244.134.145": {
+          "38.0.0.0/8": [
+            174
+          ],
+          "38.244.134.0/23": [
+            58061
+          ]
+        }
+      }
+    },
+    {
+      "prefix": "38.244.135.0/24",
+      "url": "https://rdap.arin.net/registry/ip/38.244.135.46",
+      "name": "CLOUD-NETWORK-KZ",
+      "country": "KZ",
+      "start": "38.244.135.0",
+      "end": "38.244.135.255",
+      "ips": 3,
+      "handle": "NET-38-244-135-0-1",
+      "geofeed_remarks": [
+        "Geofeed https://noc.3nt.com/geofeed.csv"
+      ],
+      "org": [
+        "NSL-384"
+      ],
+      "ris": "https://stat.ripe.net/data/routing-status/data.json?resource=38.244.135.0%2F24",
+      "ris_query_time": "2026-11-14T00:00:00",
+      "ris_origins": [
+        58061
+      ],
+      "ris_more_specifics": [],
+      "ris_peers": {
+        "ris_peers_seeing": 320,
+        "total_ris_peers": 320
+      },
+      "restored_ipv4": [
+        "38.244.135.46",
+        "38.244.135.67",
+        "38.244.135.168"
+      ],
+      "pinned_ipverse_coverage": {
+        "38.244.135.46": {
+          "38.0.0.0/8": [
+            174
+          ],
+          "38.244.134.0/23": [
+            58061
+          ]
+        },
+        "38.244.135.67": {
+          "38.0.0.0/8": [
+            174
+          ],
+          "38.244.134.0/23": [
+            58061
+          ]
+        },
+        "38.244.135.168": {
+          "38.0.0.0/8": [
+            174
+          ],
+          "38.244.134.0/23": [
+            58061
+          ]
+        }
+      }
+    },
+    {
+      "prefix": "38.244.178.0/24",
+      "url": "https://rdap.arin.net/registry/ip/38.244.178.27",
+      "name": "CLOUD-NETWORK-KZ",
+      "country": "KZ",
+      "start": "38.244.178.0",
+      "end": "38.244.178.255",
+      "ips": 5,
+      "handle": "NET-38-244-178-0-1",
+      "geofeed_remarks": [
+        "Geofeed https://noc.3nt.com/geofeed.csv"
+      ],
+      "org": [
+        "NSL-384"
+      ],
+      "ris": "https://stat.ripe.net/data/routing-status/data.json?resource=38.244.178.0%2F24",
+      "ris_query_time": "2026-11-14T00:00:00",
+      "ris_origins": [
+        58061
+      ],
+      "ris_more_specifics": [],
+      "ris_peers": {
+        "ris_peers_seeing": 320,
+        "total_ris_peers": 320
+      },
+      "restored_ipv4": [
+        "38.244.178.27",
+        "38.244.178.78",
+        "38.244.178.84",
+        "38.244.178.185",
+        "38.244.178.193"
+      ],
+      "pinned_ipverse_coverage": {
+        "38.244.178.27": {
+          "38.0.0.0/8": [
+            174
+          ],
+          "38.244.178.0/23": [
+            58061
+          ]
+        },
+        "38.244.178.78": {
+          "38.0.0.0/8": [
+            174
+          ],
+          "38.244.178.0/23": [
+            58061
+          ]
+        },
+        "38.244.178.84": {
+          "38.0.0.0/8": [
+            174
+          ],
+          "38.244.178.0/23": [
+            58061
+          ]
+        },
+        "38.244.178.185": {
+          "38.0.0.0/8": [
+            174
+          ],
+          "38.244.178.0/23": [
+            58061
+          ]
+        },
+        "38.244.178.193": {
+          "38.0.0.0/8": [
+            174
+          ],
+          "38.244.178.0/23": [
+            58061
+          ]
+        }
+      }
+    },
+    {
+      "prefix": "38.244.179.0/24",
+      "url": "https://rdap.arin.net/registry/ip/38.244.179.2",
+      "name": "CLOUD-NETWORK-KZ",
+      "country": "KZ",
+      "start": "38.244.179.0",
+      "end": "38.244.179.255",
+      "ips": 2,
+      "handle": "NET-38-244-179-0-1",
+      "geofeed_remarks": [
+        "Geofeed https://noc.3nt.com/geofeed.csv"
+      ],
+      "org": [
+        "NSL-384"
+      ],
+      "ris": "https://stat.ripe.net/data/routing-status/data.json?resource=38.244.179.0%2F24",
+      "ris_query_time": "2026-11-14T00:00:00",
+      "ris_origins": [
+        58061
+      ],
+      "ris_more_specifics": [],
+      "ris_peers": {
+        "ris_peers_seeing": 320,
+        "total_ris_peers": 320
+      },
+      "restored_ipv4": [
+        "38.244.179.2",
+        "38.244.179.129"
+      ],
+      "pinned_ipverse_coverage": {
+        "38.244.179.2": {
+          "38.0.0.0/8": [
+            174
+          ],
+          "38.244.178.0/23": [
+            58061
+          ]
+        },
+        "38.244.179.129": {
+          "38.0.0.0/8": [
+            174
+          ],
+          "38.244.178.0/23": [
+            58061
+          ]
+        }
+      }
+    },
+    {
+      "prefix": "38.244.206.0/24",
+      "url": "https://rdap.arin.net/registry/ip/38.244.206.96",
+      "name": "CLOUD-NETWORK-KZ",
+      "country": "KZ",
+      "start": "38.244.206.0",
+      "end": "38.244.206.255",
+      "ips": 1,
+      "handle": "NET-38-244-206-0-1",
+      "geofeed_remarks": [
+        "Geofeed https://noc.3nt.com/geofeed.csv"
+      ],
+      "org": [
+        "NSL-384"
+      ],
+      "ris": "https://stat.ripe.net/data/routing-status/data.json?resource=38.244.206.0%2F24",
+      "ris_query_time": "2026-11-14T00:00:00",
+      "ris_origins": [
+        58061
+      ],
+      "ris_more_specifics": [],
+      "ris_peers": {
+        "ris_peers_seeing": 320,
+        "total_ris_peers": 320
+      },
+      "restored_ipv4": [
+        "38.244.206.96"
+      ],
+      "pinned_ipverse_coverage": {
+        "38.244.206.96": {
+          "38.0.0.0/8": [
+            174
+          ],
+          "38.244.206.0/24": [
+            58061
+          ]
+        }
+      }
+    },
+    {
+      "prefix": "149.33.0.0/24",
+      "url": "https://rdap.arin.net/registry/ip/149.33.0.97",
+      "name": "CLOUD-NETWORK-KZ",
+      "country": "KZ",
+      "start": "149.33.0.0",
+      "end": "149.33.0.255",
+      "ips": 2,
+      "handle": "NET-149-33-0-0-3",
+      "geofeed_remarks": [
+        "Geofeed https://noc.3nt.com/geofeed.csv"
+      ],
+      "org": [
+        "NSL-384"
+      ],
+      "ris": "https://stat.ripe.net/data/routing-status/data.json?resource=149.33.0.0%2F24",
+      "ris_query_time": "2026-11-14T00:00:00",
+      "ris_origins": [
+        58061
+      ],
+      "ris_more_specifics": [],
+      "ris_peers": {
+        "ris_peers_seeing": 320,
+        "total_ris_peers": 320
+      },
+      "restored_ipv4": [
+        "149.33.0.97",
+        "149.33.0.122"
+      ],
+      "pinned_ipverse_coverage": {
+        "149.33.0.97": {
+          "149.33.0.0/24": [
+            58061
+          ]
+        },
+        "149.33.0.122": {
+          "149.33.0.0/24": [
+            58061
+          ]
+        }
+      }
+    },
+    {
+      "prefix": "149.33.35.0/24",
+      "url": "https://rdap.arin.net/registry/ip/149.33.35.25",
+      "name": "CLOUD-NETWORK-KZ",
+      "country": "KZ",
+      "start": "149.33.35.0",
+      "end": "149.33.35.255",
+      "ips": 1,
+      "handle": "NET-149-33-35-0-1",
+      "geofeed_remarks": [
+        "Geofeed https://noc.3nt.com/geofeed.csv"
+      ],
+      "org": [
+        "NSL-384"
+      ],
+      "ris": "https://stat.ripe.net/data/routing-status/data.json?resource=149.33.35.0%2F24",
+      "ris_query_time": "2026-11-14T00:00:00",
+      "ris_origins": [
+        58061
+      ],
+      "ris_more_specifics": [],
+      "ris_peers": {
+        "ris_peers_seeing": 320,
+        "total_ris_peers": 320
+      },
+      "restored_ipv4": [
+        "149.33.35.25"
+      ],
+      "pinned_ipverse_coverage": {
+        "149.33.35.25": {
+          "149.33.35.0/24": [
+            58061
+          ]
+        }
+      }
+    }
+  ],
+  "base_pr_head": "eca7b16287f836bc79f875b6da053020c59f2fd4",
+  "pinned_ipverse_archive_sha256": "d34d00d59ec419fec991d860af290b557a47b8e2f9596688b9bd11b0e4103d02",
+  "qualification": "The exact ARIN reassignments are all named CLOUD-NETWORK-KZ, point to the same registrant geofeed with KZ for each /24, and match current exact RIS and the pinned most-specific BGP origin. ARIN RDAP omits a top-level country field and the registrant address is GB. Neither is used as a geographic inference.",
+  "held": [
+    {
+      "prefix": "38.180.36.0/22",
+      "rdap": "https://rdap.arin.net/registry/ip/38.180.36.12",
+      "reason": "ARIN, the 3NT geofeed and exact AS58061 RIS agree for the /22, but the reviewed operator policy allows IPv4 exceptions no broader than /23. Do not split a verified /22 into unverified exact assignments.",
+      "ip_count": 7
+    },
+    {
+      "prefix": "38.60.223.0/24",
+      "rdap": "https://rdap.arin.net/registry/ip/38.60.223.37",
+      "reason": "The registry records a regional name or country, but no registry-linked geofeed has been established. No new resolver exemption."
+    },
+    {
+      "prefix": "45.195.222.0/24",
+      "rdap": "https://rdap.arin.net/registry/ip/45.195.222.236",
+      "reason": "The registry records a regional name or country, but no registry-linked geofeed has been established. No new resolver exemption."
+    },
+    {
+      "prefix": "152.32.227.0/24",
+      "rdap": "https://rdap.arin.net/registry/ip/152.32.227.101",
+      "reason": "The registry records a regional name or country, but no registry-linked geofeed has been established. No new resolver exemption."
+    },
+    {
+      "prefix": "156.227.199.0/24",
+      "rdap": "https://rdap.arin.net/registry/ip/156.227.199.10",
+      "reason": "The registry records a regional name or country, but no registry-linked geofeed has been established. No new resolver exemption."
+    }
+  ],
+  "verified_result": {
+    "table_rows": 111,
+    "table_limit": 112,
+    "ipv4_added_vs_pr_base": 20,
+    "ipv4_added_vs_published": 57,
+    "ipv4_removed": 0,
+    "ipv6_changed": false,
+    "private_changed": false,
+    "cohort_ipv4_after": 614,
+    "dat_sha256": "d163e934c89519e3812552fb2ca842b7498db13e9615672f71d4ed141ee2122b",
+    "effective_block_sha256": "b0a554299f4a801ca52e68f227798493e4e76a6524207cc37af0e353250a2f57"
+  }
+}

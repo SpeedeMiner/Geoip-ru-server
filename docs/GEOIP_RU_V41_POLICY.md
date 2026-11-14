@@ -81,6 +81,8 @@ The [post-release review](v41-geo-only-operator-post-release-20261114.json) and 
 
 Later draft reviews cover [Gcore and EDIS](v41-geo-only-operator-gcore-edis-20261114.json), [mixed-origin operator networks](v41-geo-only-operator-mixed-origin-20261114.json), and [four further exact assignments](v41-geo-only-operator-ripe-rescreen-20261114.json). The draft table has 103 rows under the 112-row limit. In particular, only MivoCloud's Moscow `5.252.176.0/24` is protected. The operator's neighboring /24s within the same pinned BGP aggregate are geofeeded to US, RO and DE and receive no protection from this row.
 
+The [ARIN follow-up](v41-geo-only-operator-arin-kz-20261114.json) adds eight exact Kazakhstan /24 reassignments to 3NT with a linked Almaty geofeed and exact AS58061 RIS announcements. This is the same exact-assignment policy applied to a different registry. The registrant's office country does not override the assignment evidence. The corroborated `38.180.36.0/22` stays outside the table because it exceeds the existing /23 maximum scope for IPv4.
+
 ## Reviewed regional admission conflicts
 
 The v41 overlay excludes exact IPv4 prefixes in [the reviewed admission table](../.github/data/v41-regional-admission-exclusions.tsv) from the emitted RU category after candidate assembly. This does not modify RIR inventories, select or reject an entire ASN, add an output category, or alter RKN, Telegram or resolver block inputs and masks. The list is local and reviewed. It is not populated by a country feed or automated geographic filtering. A regional parent allocation alone is not enough for the listed cases because exact or more-specific assignment records and the observed origin point outside the region.
