@@ -52,7 +52,7 @@ class TelegramPrecedenceTests(unittest.TestCase):
         self.assertEqual(overlay.subtract_networks(protected | v6, effective), nets("1.2.3.4/32"))
         self.assertEqual(resolver_only, nets("1.2.3.4/32"))
 
-    def test_hxehex_source_filters_exact_host_before_service_classification(self):
+    def test_hxehex_source_filters_official_and_curated_rows_without_splitting(self):
         with tempfile.TemporaryDirectory() as folder:
             root = Path(folder)
             inputs = SimpleNamespace()
@@ -63,11 +63,26 @@ class TelegramPrecedenceTests(unittest.TestCase):
                 setattr(inputs, name, p)
             inputs.kyoresuas_services.write_text(json.dumps({"categories": [{"services": [
                 {"tier": "lite", "ipv4": ["1.2.3.4/32"]} for _ in range(50)]}]}))
-            inputs.hxehex_ip.write_text("185.76.151.1\n185.76.150.1\n")
+            inputs.hxehex_ip.write_text(
+                "185.76.151.1\n185.76.150.1\n95.161.64.1\n"
+                "95.161.64.0/21\n95.161.64.0/20\n95.161.64.0/19\n95.161.80.1\n"
+            )
             sources, stats, rows = overlay.load_service_inputs(inputs)
-            self.assertEqual(sources["hxehex-mobile-hosts"], nets("185.76.150.1/32"))
-            self.assertEqual(stats["hxehex-mobile-hosts"]["telegram_unique_prefixes_rejected"], 1)
-            self.assertNotIn("185.76.151.1/32", {row["prefix"] for row in rows})
+            self.assertEqual(sources["hxehex-mobile-hosts"],
+                             nets("185.76.150.1/32", "95.161.64.0/19", "95.161.80.1/32"))
+            self.assertEqual(stats["hxehex-mobile-hosts"]["telegram_unique_prefixes_rejected"], 4)
+            self.assertEqual({row["prefix"] for row in rows if row["source_id"] == "hxehex-mobile-hosts"},
+                             {"185.76.150.1/32", "95.161.64.0/19", "95.161.80.1/32"})
+            regions = {country: set() for country in ("RU", "BY", "KZ")}
+            exact, resolver = overlay.build_service_protection_masks(regions, sources)
+            self.assertNotIn(ipaddress.ip_network("95.161.64.1/32"), exact)
+            hard = nets("95.161.64.0/20")
+            effective, _ = overlay.class_aware_effective_block_set(
+                hard, set(), set(), set(), service_exact_hosts=exact,
+                service_resolver_prefixes=resolver, non_exempt=read_telegram_feed(PINNED_FEED),
+            )
+            self.assertEqual(overlay.subtract_networks(sources["hxehex-mobile-hosts"], effective),
+                             nets("185.76.150.1/32", "95.161.80.0/20"))
 
     def test_feed_rejects_partial_or_noncanonical_rows(self):
         with tempfile.TemporaryDirectory() as folder:
