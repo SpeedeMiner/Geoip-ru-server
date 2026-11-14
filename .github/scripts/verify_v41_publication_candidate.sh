@@ -2,6 +2,9 @@
 set -euo pipefail
 sha256sum -c "$OUTPUT_SHA_FILE"
 sha256sum -c "$V41_BLOCKED_SHA"
+sha256sum -c "$REGISTRY_INPUTS_SHA"
+python3 ../.github/scripts/bundle_v41_registry_inputs.py verify \
+  "$INPUT_PROVENANCE" "$REGISTRY_INPUTS_ARCHIVE"
 python3 ../.github/scripts/verify_v41_ipverse_archive.py \
   --provenance "$INPUT_PROVENANCE" --archive "$IPVERSE_BGP_ARCHIVE"
 python3 ../.github/scripts/validate_v41_telegram.py --geoip "$V41_OUTPUT_FILE"

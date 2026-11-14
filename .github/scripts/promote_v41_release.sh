@@ -4,7 +4,8 @@ set -euo pipefail
 [[ "$GITHUB_REPOSITORY" =~ ^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$ ]]
 [[ "$SNAPSHOT_TAG" =~ ^(v41\.(0|[1-9][0-9]{0,5})|geoip-v41-snapshot-[0-9]{1,20}\.[0-9]{1,10})$ ]]
 [[ "$SNAPSHOT_SHA" =~ ^[0-9a-f]{40}$ && "$PREVIOUS_RELEASE_SHA" =~ ^[0-9a-f]{40}$ ]]
-verify="$(dirname "${BASH_SOURCE[0]}")/verify_v41_ipverse_archive.py"
+scripts="$(dirname "${BASH_SOURCE[0]}")"
+verify="$scripts/verify_v41_ipverse_archive.py"
 dest="$(mktemp -d)"
 trap 'rm -rf -- "$dest"' EXIT
 AUTH_B64="$(printf 'x-access-token:%s' "$GITHUB_TOKEN" | base64 -w0)"
@@ -31,6 +32,19 @@ curl --fail --silent --show-error --location --proto '=https' --proto-redir '=ht
   --output "$dest/as-ip-blocks.tar.gz" \
   "https://github.com/$GITHUB_REPOSITORY/releases/download/$SNAPSHOT_TAG/as-ip-blocks.tar.gz"
 python3 "$verify" --provenance "$dest/provenance.tsv" --archive "$dest/as-ip-blocks.tar.gz"
+
+git -C "$dest" show "$SNAPSHOT_SHA:geoip_RU_v41_registry_inputs.sha256sum" > "$dest/registry.sha256"
+IFS= read -r registry_checksum < "$dest/registry.sha256"
+[[ "$registry_checksum" =~ ^([0-9a-f]{64})\ \ v41-registry-inputs\.tar\.gz$ ]]
+registry_sha="${BASH_REMATCH[1]}"
+# Verify the published compressed bytes and then every original member.
+curl --fail --silent --show-error --location --proto '=https' --proto-redir '=https' \
+  --retry 3 --retry-all-errors --connect-timeout 15 --max-time 90 --max-filesize 134217728 \
+  --output "$dest/v41-registry-inputs.tar.gz" \
+  "https://github.com/$GITHUB_REPOSITORY/releases/download/$SNAPSHOT_TAG/v41-registry-inputs.tar.gz"
+printf '%s  %s\n' "$registry_sha" "$dest/v41-registry-inputs.tar.gz" | sha256sum -c -
+python3 "$scripts/bundle_v41_registry_inputs.py" verify \
+  "$dest/provenance.tsv" "$dest/v41-registry-inputs.tar.gz"
 
 # Require the exact checked parent to still be current when the server updates
 # the ref. The direct-parent check above guarantees this is a fast-forward.
