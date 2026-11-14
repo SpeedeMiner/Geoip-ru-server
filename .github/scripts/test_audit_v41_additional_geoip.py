@@ -1,6 +1,8 @@
 import unittest
 
-from audit_v41_additional_geoip import additional_eligibility, category_allowed, resolver_only_loss
+from audit_v41_additional_geoip import (
+    additional_eligibility, category_allowed, future_resolver_exposure, resolver_only_loss,
+)
 
 
 class AdditionalGeoIPAuditTests(unittest.TestCase):
@@ -33,6 +35,13 @@ class AdditionalGeoIPAuditTests(unittest.TestCase):
                 self.assertTrue(category_allowed(source, tag), (source, tag))
             for tag in excluded:
                 self.assertFalse(category_allowed(source, tag), (source, tag))
+
+    def test_future_exposure_requires_both_resolver_protection_and_readmission(self):
+        current, no_protection, no_readmission = future_resolver_exposure(
+            [(1, 12)], [(1, 8), (10, 12)], [(1, 3), (6, 12)], [(1, 5), (7, 12)])
+        self.assertEqual(current, [(1, 8), (10, 12)])
+        self.assertEqual(no_protection, [(6, 6)])
+        self.assertEqual(no_readmission, [(4, 5)])
 
 
 if __name__ == "__main__":

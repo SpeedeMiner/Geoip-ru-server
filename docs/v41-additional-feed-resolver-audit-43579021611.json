@@ -11,6 +11,46 @@
     "loyalsoldier": "72745d626cfec819b36221825bb05c3a27e086a7f48871265411827cc86ff9cb",
     "loyalsoldier-by": "baac721e10f384222261b4fe9d8bed5572fb03300a5840ff015ce84b3705bd7e"
   },
+  "prefix_provenance_sha256": "4db17f9c763dacfa7dfc9a57cc52cc4035cae7b0dafec5845cfc894bb915a773",
+  "exposure": {
+    "ipv4": {
+      "published_direct_in_accepted_precarve": 15646,
+      "protected_by_v41_and_readmitted": 7102,
+      "future_resolver_exposure_no_protection": 8544,
+      "future_resolver_exposure_has_protection_without_readmission": 0,
+      "no_protection_cidrs": [
+        "100.43.64.0/21",
+        "100.43.72.168/29",
+        "100.43.72.176/28",
+        "100.43.72.192/26",
+        "100.43.73.0/24",
+        "100.43.74.0/24",
+        "100.43.75.0/29",
+        "100.43.75.200/29",
+        "100.43.75.208/28",
+        "100.43.75.224/27",
+        "100.43.76.0/23",
+        "100.43.79.160/27",
+        "100.43.79.192/26",
+        "100.43.80.0/20",
+        "199.21.96.0/23",
+        "199.21.98.0/24",
+        "199.36.240.0/24",
+        "199.36.242.24/29",
+        "199.36.242.32/27",
+        "199.36.242.64/26"
+      ],
+      "protection_without_readmission_cidrs": []
+    },
+    "ipv6": {
+      "published_direct_in_accepted_precarve": 2417851639229258349412352,
+      "protected_by_v41_and_readmitted": 2417851639229258349412352,
+      "future_resolver_exposure_no_protection": 0,
+      "future_resolver_exposure_has_protection_without_readmission": 0,
+      "no_protection_cidrs": [],
+      "protection_without_readmission_cidrs": []
+    }
+  },
   "totals": {
     "ipv4": {
       "source_union": 49102521,
@@ -1906,7 +1946,21 @@
         ]
       }
     ],
-    "ownership_note": "Registry and BGP show current foreign allocation and routing. BGP peering and past ownership do not settle present corporate control or service use."
+    "ownership_note": "Registry and BGP show current foreign allocation and routing. BGP peering and past ownership do not settle present corporate control or service use.",
+    "corporate_secondary_sources": [
+      {
+        "url": "https://www.companywall.rs/firma/etp-doo/MMxAAW2GY/osobe-i-vlasnistvo",
+        "claim": "Yandex N.V. was recorded as the direct owner until 2024-04-23. Current direct owner shown as Smart Business Technologies d.o.o. Beograd."
+      },
+      {
+        "url": "https://www.companywall.rs/firma/smart-business-technologies/MMx7RNkbD/osobe-i-vlasnistvo",
+        "claim": "Current parent is shown as individually owned, not as a Yandex corporate entity. This directory is not a certified registry extract."
+      },
+      {
+        "url": "https://yandex.com/ips",
+        "claim": "Yandex official currently published owned-and-used ranges omit all three TeleTech parents."
+      }
+    ]
   },
   "independent_replay": {
     "source_main": "2ef37c489b2dc25c4f168c0d7299bb985b02d15a",
@@ -1962,6 +2016,14 @@
       "2a0a:f280::/32",
       "2001:b28:f23c::/48"
     ],
-    "decision": "Fail closed on drift. No Telegram masks, parsers, or workflows changed."
+    "decision": "Fail closed on drift. No Telegram masks, parsers, or workflows changed.",
+    "separate_legacy_hard_cidr": {
+      "prefix": "95.161.64.0/20",
+      "source": "runetfreedom-static-telegram",
+      "official_pinned": false,
+      "overlap_hxehex_addresses": 0,
+      "overlap_final_direct_addresses": 0,
+      "hard_excluded_addresses": 4096
+    }
   }
 }
