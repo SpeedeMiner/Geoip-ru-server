@@ -1,0 +1,10 @@
+{
+  "archive_sha256": "d34d00d59ec419fec991d860af290b557a47b8e2f9596688b9bd11b0e4103d02",
+  "archive_bytes": 16268982,
+  "upload_failure_keeps_old_release": true,
+  "missing_public_archive_keeps_old_release": true,
+  "success_advances_release_exactly_to_verified_tagged_child": true,
+  "git": "local bare repo",
+  "gh_and_curl": "local fixtures",
+  "external_writes": false
+}
