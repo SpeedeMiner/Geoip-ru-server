@@ -1577,6 +1577,206 @@
         "not_covered": 0,
         "role": "PRIVATE exception (outside PRIVATE)"
       }
+    },
+    "Kyoresuas services.json": {
+      "IPv4": {
+        "role": "DIRECT",
+        "input": 757865,
+        "covered": 757865,
+        "coverage_percent": 100.0,
+        "not_covered": 0,
+        "outside_source": 52641175,
+        "overlap_vs_v34_new": 0
+      },
+      "IPv6": {
+        "role": "DIRECT",
+        "input": 3243489945586708573536284311558,
+        "covered": 3243489945586708573536284311558,
+        "coverage_percent": 100.0,
+        "not_covered": 0,
+        "outside_source": 1202632863022835202841980547629050,
+        "overlap_vs_v34_new": 0
+      }
+    },
+    "Kyoresuas aggregate IPv4/IPv6": {
+      "IPv4": {
+        "role": "DIRECT",
+        "input": 757865,
+        "covered": 757865,
+        "coverage_percent": 100.0,
+        "not_covered": 0,
+        "outside_source": 52641175,
+        "overlap_vs_v34_new": 0
+      },
+      "IPv6": {
+        "role": "DIRECT",
+        "input": 3243489945586708573536284311558,
+        "covered": 3243489945586708573536284311558,
+        "coverage_percent": 100.0,
+        "not_covered": 0,
+        "outside_source": 1202632863022835202841980547629050,
+        "overlap_vs_v34_new": 0
+      }
+    },
+    "Service exact resolver protection": {
+      "IPv4": {
+        "role": "Resolver protection/DIRECT overlap",
+        "input": 1049,
+        "covered": 1049,
+        "coverage_percent": 100.0,
+        "not_covered": 0,
+        "outside_source": 53397991,
+        "overlap_vs_v34_new": 0
+      },
+      "IPv6": {
+        "role": "Resolver protection/DIRECT overlap",
+        "input": 65,
+        "covered": 65,
+        "coverage_percent": 100.0,
+        "not_covered": 0,
+        "outside_source": 1205876352968421911415516831940543,
+        "overlap_vs_v34_new": 0
+      }
+    },
+    "Service range resolver protection": {
+      "IPv4": {
+        "role": "Resolver protection/DIRECT overlap",
+        "input": 824514,
+        "covered": 824514,
+        "coverage_percent": 100.0,
+        "not_covered": 0,
+        "outside_source": 52574526,
+        "overlap_vs_v34_new": 0
+      },
+      "IPv6": {
+        "role": "Resolver protection/DIRECT overlap",
+        "input": 3243489945586708573536284311558,
+        "covered": 3243489945586708573536284311558,
+        "coverage_percent": 100.0,
+        "not_covered": 0,
+        "outside_source": 1202632863022835202841980547629050,
+        "overlap_vs_v34_new": 0
+      }
+    },
+    "Reviewed RKN IP records": {
+      "IPv4": {
+        "role": "BLOCK/REVIEW intersection",
+        "input": 746,
+        "covered": 746,
+        "coverage_percent": 100.0,
+        "not_covered": 0,
+        "outside_source": 575077,
+        "DIRECT_overlap": 0
+      },
+      "IPv6": {
+        "role": "BLOCK/REVIEW intersection",
+        "input": 0,
+        "covered": 0,
+        "coverage_percent": null,
+        "not_covered": 0,
+        "outside_source": 79232998217542796110242775040,
+        "DIRECT_overlap": 0
+      }
+    },
+    "Reviewed Antifilter ip.lst host decisions": {
+      "IPv4": {
+        "role": "BLOCK/REVIEW intersection",
+        "input": 63,
+        "covered": 0,
+        "coverage_percent": 0.0,
+        "not_covered": 63,
+        "outside_source": 575823,
+        "DIRECT_overlap": 63
+      },
+      "IPv6": {
+        "role": "BLOCK/REVIEW intersection",
+        "input": 0,
+        "covered": 0,
+        "coverage_percent": null,
+        "not_covered": 0,
+        "outside_source": 79232998217542796110242775040,
+        "DIRECT_overlap": 0
+      }
+    },
+    "RIR afrinic RU/BY/KZ": {
+      "IPv4": {
+        "role": "DIRECT",
+        "input": 0,
+        "covered": 0,
+        "coverage_percent": null,
+        "not_covered": 0,
+        "outside_source": 53399040,
+        "overlap_vs_v34_new": 0
+      },
+      "IPv6": {
+        "role": "DIRECT",
+        "input": 0,
+        "covered": 0,
+        "coverage_percent": null,
+        "not_covered": 0,
+        "outside_source": 1205876352968421911415516831940608,
+        "overlap_vs_v34_new": 0
+      }
+    },
+    "RIR apnic RU/BY/KZ": {
+      "IPv4": {
+        "role": "DIRECT",
+        "input": 0,
+        "covered": 0,
+        "coverage_percent": null,
+        "not_covered": 0,
+        "outside_source": 53399040,
+        "overlap_vs_v34_new": 0
+      },
+      "IPv6": {
+        "role": "DIRECT",
+        "input": 0,
+        "covered": 0,
+        "coverage_percent": null,
+        "not_covered": 0,
+        "outside_source": 1205876352968421911415516831940608,
+        "overlap_vs_v34_new": 0
+      }
+    },
+    "RIR arin RU/BY/KZ": {
+      "IPv4": {
+        "role": "DIRECT",
+        "input": 0,
+        "covered": 0,
+        "coverage_percent": null,
+        "not_covered": 0,
+        "outside_source": 53399040,
+        "overlap_vs_v34_new": 0
+      },
+      "IPv6": {
+        "role": "DIRECT",
+        "input": 0,
+        "covered": 0,
+        "coverage_percent": null,
+        "not_covered": 0,
+        "outside_source": 1205876352968421911415516831940608,
+        "overlap_vs_v34_new": 0
+      }
+    },
+    "RIR lacnic RU/BY/KZ": {
+      "IPv4": {
+        "role": "DIRECT",
+        "input": 0,
+        "covered": 0,
+        "coverage_percent": null,
+        "not_covered": 0,
+        "outside_source": 53399040,
+        "overlap_vs_v34_new": 0
+      },
+      "IPv6": {
+        "role": "DIRECT",
+        "input": 0,
+        "covered": 0,
+        "coverage_percent": null,
+        "not_covered": 0,
+        "outside_source": 1205876352968421911415516831940608,
+        "overlap_vs_v34_new": 0
+      }
     }
   }
 }
