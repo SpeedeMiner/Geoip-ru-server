@@ -1,0 +1,250 @@
+[
+  {
+    "name": "davoyan-geoip.dat",
+    "status": "exact",
+    "source": "provenance_url",
+    "sha256": "2de5cced2e69a668fb75f1a96387e2cb939562897f98a822e76f44f68e848a7e",
+    "size": 681978
+  },
+  {
+    "name": "digne-geoip.dat",
+    "status": "exact",
+    "source": "provenance_url",
+    "sha256": "2afe2ccc7862c4557f42ee9e777c2f2985370e56b3f20839eafbdf02261158fa",
+    "size": 809687
+  },
+  {
+    "name": "escapingworm-operator-cidr.txt",
+    "status": "exact",
+    "source": "cache",
+    "sha256": "cb36cdc22acd9d177a1402b074f5180f1a3286cd856fb6aba7afbf6333a795e4",
+    "size": 1395
+  },
+  {
+    "name": "golukon-geoip.dat",
+    "status": "exact",
+    "source": "provenance_url",
+    "sha256": "22c60f68b6bdf2c5a24a18a46a9797d9467961f9c47b16c7bf5b10fed70c8f08",
+    "size": 131218
+  },
+  {
+    "name": "grimbird-geoip.dat",
+    "status": "exact",
+    "source": "provenance_url",
+    "sha256": "b0f063b499019ccafa95c692d803ab0ad47619a4a0aa0b0ab6bace7e9708fe1d",
+    "size": 398808
+  },
+  {
+    "name": "hxehex-cidrwhitelist.txt",
+    "status": "exact",
+    "source": "provenance_url",
+    "sha256": "149d27a8e3502b95b9a378817854c87af6417c2a9bbf0b17eb8f7affef1f3868",
+    "size": 470393
+  },
+  {
+    "name": "hxehex-ipwhitelist.txt",
+    "status": "exact",
+    "source": "cache",
+    "sha256": "8a3814375701decd9787718fc3ae769187aa4714e2a1b8fa5d96f94ad2bd4da0",
+    "size": 1757478
+  },
+  {
+    "name": "hydra-geoip.dat",
+    "status": "exact",
+    "source": "cache",
+    "sha256": "2ed3df4a369de869ce1b2def14ff1aef7135b7e056bb8faf1c9c45ac40cc2999",
+    "size": 440492
+  },
+  {
+    "name": "kirill-geoip.dat",
+    "status": "exact",
+    "source": "provenance_url",
+    "sha256": "81c8b59e121fa38e00fe6efaa0f2919bc2de174deff54e53a5c4c05681c03059",
+    "size": 328405
+  },
+  {
+    "name": "kyoresuas-ru-standard-ipv4.txt",
+    "status": "exact",
+    "source": "cache",
+    "sha256": "867de404e49974c1711ba199dfd82537927a6812fbe28d0db8f46bcbecb3cecc",
+    "size": 10305
+  },
+  {
+    "name": "kyoresuas-ru-standard-ipv6.txt",
+    "status": "exact",
+    "source": "cache",
+    "sha256": "ccad517f54f8d33989fb9303f8c1489308d0b091e0b3e6cc7b6df81b8e0b8d23",
+    "size": 1401
+  },
+  {
+    "name": "kyoresuas-services.json",
+    "status": "exact",
+    "source": "cache",
+    "sha256": "97a9ad1438bfc4f501664e57f7ee294d42c10954744fc5c9ed925b602061ba9d",
+    "size": 63100
+  },
+  {
+    "name": "loyalsoldier-by.dat",
+    "status": "exact",
+    "source": "provenance_url",
+    "sha256": "baac721e10f384222261b4fe9d8bed5572fb03300a5840ff015ce84b3705bd7e",
+    "size": 11629
+  },
+  {
+    "name": "loyalsoldier-private.dat",
+    "status": "exact",
+    "source": "provenance_url",
+    "sha256": "4acc277c0425871bf1171a06302a60fec1d7ced5db204bb5b4090a5b6e0efe99",
+    "size": 436
+  },
+  {
+    "name": "loyalsoldier-ru.dat",
+    "status": "exact",
+    "source": "provenance_url",
+    "sha256": "72745d626cfec819b36221825bb05c3a27e086a7f48871265411827cc86ff9cb",
+    "size": 398794
+  },
+  {
+    "name": "v2fly-geoip.dat",
+    "status": "exact",
+    "source": "provenance_url",
+    "sha256": "eedb24b3b9fcba27e06b92c0428dab90d9496083091ae4cf39e11387fd99d0e2",
+    "size": 23876117
+  },
+  {
+    "name": "v2fly-geoip.dat.sha256sum",
+    "status": "exact",
+    "source": "provenance_url",
+    "sha256": "22b576c674dd9f2535bc90eb9c334431b400e3101ccb525be3e085bcf56bb8aa",
+    "size": 76
+  },
+  {
+    "name": "w1zardz-ru-ipv4.txt",
+    "status": "exact",
+    "source": "cache",
+    "sha256": "eb4e35274762494acbee235e75413046ddb9e83d838095ecd71e647648cd7e7c",
+    "size": 16217
+  },
+  {
+    "name": "delegated-afrinic-latest",
+    "status": "exact",
+    "source": "existing_hash_verified_replay_cache",
+    "sha256": "21b55a80a32138e0c7e037cb7327109dfeee95d2debb3453cdb62f3745b809ab",
+    "size": 496308
+  },
+  {
+    "name": "delegated-apnic-latest",
+    "status": "unavailable",
+    "curl_exit": 28,
+    "error": "curl: (28) Connection timed out after 12000 milliseconds"
+  },
+  {
+    "name": "delegated-arin-extended-latest",
+    "status": "unavailable",
+    "curl_exit": 28,
+    "error": "curl: (28) Connection timed out after 12001 milliseconds"
+  },
+  {
+    "name": "delegated-lacnic-latest",
+    "status": "unavailable",
+    "curl_exit": 28,
+    "error": "curl: (28) Connection timed out after 12000 milliseconds"
+  },
+  {
+    "name": "delegated-ripencc-latest",
+    "status": "unavailable",
+    "curl_exit": 28,
+    "error": "curl: (28) Connection timed out after 12000 milliseconds"
+  },
+  {
+    "name": "iana-ipv4-special-registry.csv",
+    "status": "exact",
+    "source": "existing_hash_verified_replay_cache",
+    "sha256": "cbc4b7653c8bc640ba1e8e5d4ebbf11e7c7a1d867e7f1593aad001d3f8632aac",
+    "size": 2445
+  },
+  {
+    "name": "iana-ipv6-special-registry.csv",
+    "status": "exact",
+    "source": "existing_hash_verified_replay_cache",
+    "sha256": "bf56772aef97fbf9b4a27c98b8511f2bb1ba96da4b9ccc12ab203a2496faba66",
+    "size": 2300
+  },
+  {
+    "name": "as-ip-blocks.tar.gz",
+    "status": "exact",
+    "source": "cache",
+    "sha256": "d34d00d59ec419fec991d860af290b557a47b8e2f9596688b9bd11b0e4103d02",
+    "size": 16268982
+  },
+  {
+    "name": "antifilter-ip.lst",
+    "status": "exact",
+    "source": "cache",
+    "sha256": "80c4e9d0c82aee4071d67ddcb149e579340252a8df7885488976c68023063222",
+    "size": 715838
+  },
+  {
+    "name": "antifilter-ipresolve.lst",
+    "status": "exact",
+    "source": "cache",
+    "sha256": "8d8d11605a299da96006df6303a90b08b4ae25d35c1d1a199708cb83f84cdf44",
+    "size": 2622450
+  },
+  {
+    "name": "geoip_RU_v38_approved_blocked_baseline.txt",
+    "status": "exact",
+    "source": "cache",
+    "sha256": "df909b12b985b23080075821cedc5e2f73b7b1f89abcd9950293b400ce1e4a5d",
+    "size": 3290594
+  },
+  {
+    "name": "geoip_RU_v38_pinned_antifilter-ip.lst",
+    "status": "exact",
+    "source": "cache",
+    "sha256": "c9c0656d0188f4afa740d71332b618d42b5606ab27e7561790f47b588781d1cb",
+    "size": 716286
+  },
+  {
+    "name": "geoip_RU_v38_pinned_antifilter-ipresolve.lst",
+    "status": "exact",
+    "source": "cache",
+    "sha256": "8d8d11605a299da96006df6303a90b08b4ae25d35c1d1a199708cb83f84cdf44",
+    "size": 2622450
+  },
+  {
+    "name": "geoip_RU_v38_pinned_antifilter-subnet.lst",
+    "status": "exact",
+    "source": "cache",
+    "sha256": "2554552742bc0da516a321db66b36fa6cece28c4b3c64b66ff6d12320b33bdb6",
+    "size": 1109
+  },
+  {
+    "name": "antifilter-subnet.lst",
+    "status": "exact",
+    "source": "cache",
+    "sha256": "2554552742bc0da516a321db66b36fa6cece28c4b3c64b66ff6d12320b33bdb6",
+    "size": 1109
+  },
+  {
+    "name": "antifilter-ipsum.lst",
+    "status": "exact",
+    "source": "cache",
+    "sha256": "037c30f578aeb0fd427d634a8f5eb5469da25ce6fa46c9ca74afab532db968d7",
+    "size": 294584
+  },
+  {
+    "name": "antifilter-community.lst",
+    "status": "exact",
+    "source": "cache",
+    "sha256": "390a72ccaf30f6b7a25b29709f0e6dd3b9a4079873195e2333239d3790c2490f",
+    "size": 15114
+  },
+  {
+    "name": "refilter-ipsum.lst",
+    "status": "exact",
+    "source": "cache",
+    "sha256": "daef14e23e2dad9988c55917c0f3aea0dbc308244cfa6f790d3daf371f3303f7",
+    "size": 473238
+  }
+]
