@@ -1,0 +1,1612 @@
+{
+  "artifacts": {
+    "v34": {
+      "sha256": "778acd9da7b13b18c4942b626f09f809d3a23fd05d4d29bb404439a7eb0b5152",
+      "bytes": 491731,
+      "RU CIDRs": 31242,
+      "PRIVATE CIDRs": 151,
+      "IPv4": {
+        "CIDRs": 16557,
+        "hosts": 1061,
+        "addresses": 49530207
+      },
+      "IPv6": {
+        "CIDRs": 14685,
+        "hosts": 0,
+        "addresses": 1.1243605946078274e+33
+      }
+    },
+    "v41-full": {
+      "sha256": "2735053560ebd598cbdcd71ccf858806d4b955a17e2eac512a7baf249d43653a",
+      "bytes": 1738277,
+      "RU CIDRs": 155395,
+      "PRIVATE CIDRs": 151,
+      "IPv4": {
+        "CIDRs": 140292,
+        "hosts": 124144,
+        "addresses": 53497424
+      },
+      "IPv6": {
+        "CIDRs": 15103,
+        "hosts": 0,
+        "addresses": 1.2058763529684219e+33
+      }
+    },
+    "v41-light": {
+      "sha256": "3fd29b69e5be1a7c90658e4bbcbc53726be0fe84573854638f2e1238485dafd5",
+      "bytes": 504737,
+      "RU CIDRs": 32041,
+      "PRIVATE CIDRs": 151,
+      "IPv4": {
+        "CIDRs": 16938,
+        "hosts": 779,
+        "addresses": 53374041
+      },
+      "IPv6": {
+        "CIDRs": 15103,
+        "hosts": 0,
+        "addresses": 1.2058763529684219e+33
+      }
+    }
+  },
+  "coverage": {
+    "IPv4": {
+      "only-v34": {
+        "addresses": 36341,
+        "CIDRs": 1173,
+        "largest_CIDRs": [
+          "31.204.32.0/20",
+          "141.138.88.0/21",
+          "154.200.64.0/21",
+          "154.200.216.0/21",
+          "45.201.52.0/22",
+          "45.201.56.0/22",
+          "45.201.96.0/22",
+          "45.201.104.0/22",
+          "45.201.116.0/22"
+        ]
+      },
+      "only-v41-light": {
+        "addresses": 3880175,
+        "CIDRs": 2570,
+        "largest_CIDRs": [
+          "2.72.0.0/13",
+          "2.132.0.0/14",
+          "37.150.0.0/15",
+          "178.90.0.0/15",
+          "5.76.0.0/16",
+          "5.251.0.0/16",
+          "92.46.0.0/16",
+          "95.57.0.0/16",
+          "95.58.0.0/16"
+        ]
+      },
+      "common": {
+        "addresses": 49493866,
+        "CIDRs": 17446,
+        "largest_CIDRs": [
+          "5.136.0.0/13",
+          "95.24.0.0/13",
+          "176.208.0.0/13",
+          "178.64.0.0/13",
+          "2.60.0.0/14",
+          "2.92.0.0/14",
+          "5.16.0.0/14",
+          "5.164.0.0/14",
+          "37.20.0.0/14"
+        ]
+      },
+      "only-v41-full-vs-v34": {
+        "addresses": 4002862,
+        "CIDRs": 125257,
+        "largest_CIDRs": [
+          "2.72.0.0/13",
+          "2.132.0.0/14",
+          "37.150.0.0/15",
+          "178.90.0.0/15",
+          "5.76.0.0/16",
+          "5.251.0.0/16",
+          "92.46.0.0/16",
+          "95.57.0.0/16",
+          "95.58.0.0/16"
+        ]
+      },
+      "only-v34-vs-v41-full": {
+        "addresses": 35645,
+        "CIDRs": 540,
+        "largest_CIDRs": [
+          "31.204.32.0/20",
+          "141.138.88.0/21",
+          "154.200.64.0/21",
+          "154.200.216.0/21",
+          "45.201.52.0/22",
+          "45.201.56.0/22",
+          "45.201.96.0/22",
+          "45.201.104.0/22",
+          "45.201.116.0/22"
+        ]
+      },
+      "removed-by-light-already-in-v34": {
+        "addresses": 696,
+        "CIDRs": 696,
+        "largest_CIDRs": [
+          "5.35.174.3/32",
+          "14.0.37.137/32",
+          "14.102.233.23/32",
+          "14.102.233.123/32",
+          "17.1.164.139/32",
+          "31.57.152.2/32",
+          "31.57.152.4/32",
+          "31.57.152.11/32",
+          "31.57.152.29/32"
+        ]
+      },
+      "removed-by-light-not-in-v34": {
+        "addresses": 122687,
+        "CIDRs": 122687,
+        "largest_CIDRs": [
+          "5.8.24.1/32",
+          "5.8.25.1/32",
+          "5.8.26.1/32",
+          "5.8.27.1/32",
+          "5.8.32.1/32",
+          "5.8.33.1/32",
+          "5.8.34.1/32",
+          "5.8.40.1/32",
+          "5.8.41.1/32"
+        ]
+      },
+      "removed-by-light": {
+        "addresses": 123383,
+        "CIDRs": 123383,
+        "largest_CIDRs": [
+          "5.8.24.1/32",
+          "5.8.25.1/32",
+          "5.8.26.1/32",
+          "5.8.27.1/32",
+          "5.8.32.1/32",
+          "5.8.33.1/32",
+          "5.8.34.1/32",
+          "5.8.40.1/32",
+          "5.8.41.1/32"
+        ]
+      },
+      "PRIVATE": {
+        "v34": {
+          "addresses": 592708862,
+          "CIDRs": 21,
+          "largest_CIDRs": [
+            "224.0.0.0/3",
+            "0.0.0.0/8",
+            "10.0.0.0/8",
+            "127.0.0.0/8",
+            "100.64.0.0/10",
+            "172.16.0.0/12",
+            "198.18.0.0/15",
+            "169.254.0.0/16",
+            "192.168.0.0/16"
+          ]
+        },
+        "v41": {
+          "addresses": 592708862,
+          "CIDRs": 21,
+          "largest_CIDRs": [
+            "224.0.0.0/3",
+            "0.0.0.0/8",
+            "10.0.0.0/8",
+            "127.0.0.0/8",
+            "100.64.0.0/10",
+            "172.16.0.0/12",
+            "198.18.0.0/15",
+            "169.254.0.0/16",
+            "192.168.0.0/16"
+          ]
+        },
+        "only-v34": {
+          "addresses": 0,
+          "CIDRs": 0,
+          "largest_CIDRs": []
+        },
+        "only-v41": {
+          "addresses": 0,
+          "CIDRs": 0,
+          "largest_CIDRs": []
+        }
+      },
+      "layer_intersections": {
+        "RIR-BY": {
+          "v34": 1792624,
+          "v41-full": 1793021,
+          "v41-light": 1793021,
+          "only-v34": 0,
+          "only-v41-light": 397,
+          "common": 1792624,
+          "only-v41-full-vs-v34": 397,
+          "only-v34-vs-v41-full": 0,
+          "removed-by-light-already-in-v34": 0,
+          "removed-by-light-not-in-v34": 0,
+          "removed-by-light": 0
+        },
+        "RIR-KZ": {
+          "v34": 29676,
+          "v41-full": 3381917,
+          "v41-light": 3381917,
+          "only-v34": 0,
+          "only-v41-light": 3352241,
+          "common": 29676,
+          "only-v41-full-vs-v34": 3352241,
+          "only-v34-vs-v41-full": 0,
+          "removed-by-light-already-in-v34": 0,
+          "removed-by-light-not-in-v34": 0,
+          "removed-by-light": 0
+        },
+        "RIR-RU": {
+          "v34": 44929711,
+          "v41-full": 45220644,
+          "v41-light": 45220644,
+          "only-v34": 4124,
+          "only-v41-light": 295057,
+          "common": 44925587,
+          "only-v41-full-vs-v34": 295057,
+          "only-v34-vs-v41-full": 4124,
+          "removed-by-light-already-in-v34": 0,
+          "removed-by-light-not-in-v34": 0,
+          "removed-by-light": 0
+        },
+        "company-origins": {
+          "v34": 19613244,
+          "v41-full": 19617020,
+          "v41-light": 19617020,
+          "only-v34": 4,
+          "only-v41-light": 3780,
+          "common": 19613240,
+          "only-v41-full-vs-v34": 3780,
+          "only-v34-vs-v41-full": 4,
+          "removed-by-light-already-in-v34": 0,
+          "removed-by-light-not-in-v34": 0,
+          "removed-by-light": 0
+        },
+        "selected-regional-and-company-origins": {
+          "v34": 45888144,
+          "v41-full": 49184248,
+          "v41-light": 49184248,
+          "only-v34": 23,
+          "only-v41-light": 3296127,
+          "common": 45888121,
+          "only-v41-full-vs-v34": 3296127,
+          "only-v34-vs-v41-full": 23,
+          "removed-by-light-already-in-v34": 0,
+          "removed-by-light-not-in-v34": 0,
+          "removed-by-light": 0
+        },
+        "hxehex-mobile-hosts": {
+          "v34": 17367,
+          "v41-full": 141657,
+          "v41-light": 18964,
+          "only-v34": 6,
+          "only-v41-light": 1603,
+          "common": 17361,
+          "only-v41-full-vs-v34": 124290,
+          "only-v34-vs-v41-full": 0,
+          "removed-by-light-already-in-v34": 6,
+          "removed-by-light-not-in-v34": 122687,
+          "removed-by-light": 122693
+        },
+        "hydra-direct": {
+          "v34": 49123898,
+          "v41-full": 49122048,
+          "v41-light": 49121357,
+          "only-v34": 4929,
+          "only-v41-light": 2388,
+          "common": 49118969,
+          "only-v41-full-vs-v34": 2388,
+          "only-v34-vs-v41-full": 4238,
+          "removed-by-light-already-in-v34": 691,
+          "removed-by-light-not-in-v34": 0,
+          "removed-by-light": 691
+        },
+        "hydra-whitelist": {
+          "v34": 219006,
+          "v41-full": 219005,
+          "v41-light": 219004,
+          "only-v34": 2,
+          "only-v41-light": 0,
+          "common": 219004,
+          "only-v41-full-vs-v34": 0,
+          "only-v34-vs-v41-full": 1,
+          "removed-by-light-already-in-v34": 1,
+          "removed-by-light-not-in-v34": 0,
+          "removed-by-light": 1
+        },
+        "kyoresuas-standard": {
+          "v34": 758629,
+          "v41-full": 758629,
+          "v41-light": 758629,
+          "only-v34": 0,
+          "only-v41-light": 0,
+          "common": 758629,
+          "only-v41-full-vs-v34": 0,
+          "only-v34-vs-v41-full": 0,
+          "removed-by-light-already-in-v34": 0,
+          "removed-by-light-not-in-v34": 0,
+          "removed-by-light": 0
+        },
+        "operator-whitelist": {
+          "v34": 199424,
+          "v41-full": 199424,
+          "v41-light": 199424,
+          "only-v34": 0,
+          "only-v41-light": 0,
+          "common": 199424,
+          "only-v41-full-vs-v34": 0,
+          "only-v34-vs-v41-full": 0,
+          "removed-by-light-already-in-v34": 0,
+          "removed-by-light-not-in-v34": 0,
+          "removed-by-light": 0
+        },
+        "regional-admission-exclusion": {
+          "v34": 4096,
+          "v41-full": 0,
+          "v41-light": 0,
+          "only-v34": 4096,
+          "only-v41-light": 0,
+          "common": 0,
+          "only-v41-full-vs-v34": 0,
+          "only-v34-vs-v41-full": 4096,
+          "removed-by-light-already-in-v34": 0,
+          "removed-by-light-not-in-v34": 0,
+          "removed-by-light": 0
+        },
+        "reviewed-operator-prefixes": {
+          "v34": 29696,
+          "v41-full": 33535,
+          "v41-light": 33535,
+          "only-v34": 1,
+          "only-v41-light": 3840,
+          "common": 29695,
+          "only-v41-full-vs-v34": 3840,
+          "only-v34-vs-v41-full": 1,
+          "removed-by-light-already-in-v34": 0,
+          "removed-by-light-not-in-v34": 0,
+          "removed-by-light": 0
+        },
+        "w1zardz-service-direct": {
+          "v34": 495612,
+          "v41-full": 495874,
+          "v41-light": 495874,
+          "only-v34": 0,
+          "only-v41-light": 262,
+          "common": 495612,
+          "only-v41-full-vs-v34": 262,
+          "only-v34-vs-v41-full": 0,
+          "removed-by-light-already-in-v34": 0,
+          "removed-by-light-not-in-v34": 0,
+          "removed-by-light": 0
+        },
+        "hard-block": {
+          "v34": 31,
+          "v41-full": 0,
+          "v41-light": 0,
+          "only-v34": 31,
+          "only-v41-light": 0,
+          "common": 0,
+          "only-v41-full-vs-v34": 0,
+          "only-v34-vs-v41-full": 31,
+          "removed-by-light-already-in-v34": 0,
+          "removed-by-light-not-in-v34": 0,
+          "removed-by-light": 0
+        },
+        "effective-block": {
+          "v34": 568,
+          "v41-full": 0,
+          "v41-light": 0,
+          "only-v34": 568,
+          "only-v41-light": 0,
+          "common": 0,
+          "only-v41-full-vs-v34": 0,
+          "only-v34-vs-v41-full": 568,
+          "removed-by-light-already-in-v34": 0,
+          "removed-by-light-not-in-v34": 0,
+          "removed-by-light": 0
+        }
+      },
+      "only_v34_exclusive_breakdown": {
+        "Light_only_optimization": {
+          "addresses": 696,
+          "CIDRs": 696,
+          "largest_CIDRs": [
+            "5.35.174.3/32",
+            "14.0.37.137/32",
+            "14.102.233.23/32",
+            "14.102.233.123/32",
+            "17.1.164.139/32",
+            "31.57.152.2/32",
+            "31.57.152.4/32",
+            "31.57.152.11/32",
+            "31.57.152.29/32"
+          ]
+        },
+        "v41_PRIVATE": {
+          "addresses": 0,
+          "CIDRs": 0,
+          "largest_CIDRs": []
+        },
+        "regional_admission_exclusion": {
+          "addresses": 4096,
+          "CIDRs": 1,
+          "largest_CIDRs": [
+            "31.204.32.0/20"
+          ]
+        },
+        "effective_hard": {
+          "addresses": 31,
+          "CIDRs": 30,
+          "largest_CIDRs": [
+            "195.208.220.90/31",
+            "2.57.184.180/32",
+            "5.45.82.43/32",
+            "5.188.211.92/32",
+            "37.19.5.139/32",
+            "37.19.5.155/32",
+            "45.87.154.4/32",
+            "45.144.220.204/32",
+            "62.76.75.106/32"
+          ]
+        },
+        "other_effective_block": {
+          "addresses": 537,
+          "CIDRs": 425,
+          "largest_CIDRs": [
+            "193.9.49.192/28",
+            "193.9.49.184/29",
+            "193.9.49.208/29",
+            "194.67.193.72/29",
+            "194.67.193.80/29",
+            "104.28.24.96/30",
+            "178.253.54.148/30",
+            "178.253.54.188/30",
+            "193.9.49.4/30"
+          ]
+        },
+        "not_admitted_other": {
+          "addresses": 30981,
+          "CIDRs": 85,
+          "largest_CIDRs": [
+            "141.138.88.0/21",
+            "154.200.64.0/21",
+            "154.200.216.0/21",
+            "45.201.52.0/22",
+            "45.201.56.0/22",
+            "45.201.96.0/22",
+            "45.201.104.0/22",
+            "45.201.116.0/22",
+            "154.200.92.0/22"
+          ]
+        }
+      },
+      "new_vs_v34_RIR_disjoint": {
+        "RU": 295057,
+        "BY": 397,
+        "KZ": 3352241,
+        "outside": 232480
+      },
+      "old_vs_light_RIR_disjoint": {
+        "RU": 4124,
+        "BY": 0,
+        "KZ": 0,
+        "outside": 32217
+      }
+    },
+    "IPv6": {
+      "only-v34": {
+        "addresses": 1.267661480560606e+30,
+        "CIDRs": 9,
+        "largest_CIDRs": [
+          "2a01:a580::/29",
+          "2a0a:21c0::/29",
+          "2a0a:6040:b1f2::/47",
+          "2a0a:6040:b1f4::/47",
+          "2a03:5f80:9::/48",
+          "2a03:5f80:b::/48",
+          "2a06:a003::/48",
+          "2a06:a003:1111::/48",
+          "2a06:a003:b00b::/48"
+        ]
+      },
+      "only-v41-light": {
+        "addresses": 8.278341984115513e+31,
+        "CIDRs": 1125,
+        "largest_CIDRs": [
+          "2a00:1760::/29",
+          "2a00:c820::/29",
+          "2a01:68c0::/29",
+          "2a02:2208::/29",
+          "2a02:50c0::/29",
+          "2a02:d240::/29",
+          "2a02:e300::/29",
+          "2a03:3000::/29",
+          "2a04:3a80::/29"
+        ]
+      },
+      "common": {
+        "addresses": 1.1230929331272668e+33,
+        "CIDRs": 14676,
+        "largest_CIDRs": [
+          "2001:3b40::/29",
+          "2001:3e00::/29",
+          "2a00:e88::/29",
+          "2a00:eb8::/29",
+          "2a00:f00::/29",
+          "2a00:1148::/29",
+          "2a00:13f8::/29",
+          "2a00:14d0::/29",
+          "2a00:1898::/29"
+        ]
+      },
+      "only-v41-full-vs-v34": {
+        "addresses": 8.278341984115513e+31,
+        "CIDRs": 1125,
+        "largest_CIDRs": [
+          "2a00:1760::/29",
+          "2a00:c820::/29",
+          "2a01:68c0::/29",
+          "2a02:2208::/29",
+          "2a02:50c0::/29",
+          "2a02:d240::/29",
+          "2a02:e300::/29",
+          "2a03:3000::/29",
+          "2a04:3a80::/29"
+        ]
+      },
+      "only-v34-vs-v41-full": {
+        "addresses": 1.267661480560606e+30,
+        "CIDRs": 9,
+        "largest_CIDRs": [
+          "2a01:a580::/29",
+          "2a0a:21c0::/29",
+          "2a0a:6040:b1f2::/47",
+          "2a0a:6040:b1f4::/47",
+          "2a03:5f80:9::/48",
+          "2a03:5f80:b::/48",
+          "2a06:a003::/48",
+          "2a06:a003:1111::/48",
+          "2a06:a003:b00b::/48"
+        ]
+      },
+      "removed-by-light-already-in-v34": {
+        "addresses": 0,
+        "CIDRs": 0,
+        "largest_CIDRs": []
+      },
+      "removed-by-light-not-in-v34": {
+        "addresses": 0,
+        "CIDRs": 0,
+        "largest_CIDRs": []
+      },
+      "removed-by-light": {
+        "addresses": 0,
+        "CIDRs": 0,
+        "largest_CIDRs": []
+      },
+      "PRIVATE": {
+        "v34": {
+          "addresses": 4.3255458312311767e+36,
+          "CIDRs": 130,
+          "largest_CIDRs": [
+            "fc00::/7",
+            "ff00::/8",
+            "fe80::/10",
+            "5f00::/16",
+            "3fff::/20",
+            "2001:100::/24",
+            "2001:80::/25",
+            "2001:40::/26",
+            "2001:10::/28"
+          ]
+        },
+        "v41": {
+          "addresses": 4.3255458312311767e+36,
+          "CIDRs": 130,
+          "largest_CIDRs": [
+            "fc00::/7",
+            "ff00::/8",
+            "fe80::/10",
+            "5f00::/16",
+            "3fff::/20",
+            "2001:100::/24",
+            "2001:80::/25",
+            "2001:40::/26",
+            "2001:10::/28"
+          ]
+        },
+        "only-v34": {
+          "addresses": 0,
+          "CIDRs": 0,
+          "largest_CIDRs": []
+        },
+        "only-v41": {
+          "addresses": 0,
+          "CIDRs": 0,
+          "largest_CIDRs": []
+        }
+      },
+      "layer_intersections": {
+        "RIR-BY": {
+          "v34": 2.4178516392292583e+24,
+          "v41-full": 1.2597285093322947e+31,
+          "v41-light": 1.2597285093322947e+31,
+          "only-v34": 0,
+          "only-v41-light": 1.2597282675471308e+31,
+          "common": 2.4178516392292583e+24,
+          "only-v41-full-vs-v34": 1.2597282675471308e+31,
+          "only-v34-vs-v41-full": 0,
+          "removed-by-light-already-in-v34": 0,
+          "removed-by-light-not-in-v34": 0,
+          "removed-by-light": 0
+        },
+        "RIR-KZ": {
+          "v34": 9.507597108543719e+29,
+          "v41-full": 4.413009377400015e+31,
+          "v41-light": 4.413009377400015e+31,
+          "only-v34": 0,
+          "only-v41-light": 4.317933406314578e+31,
+          "common": 9.507597108543719e+29,
+          "only-v41-full-vs-v34": 4.317933406314578e+31,
+          "only-v34-vs-v41-full": 0,
+          "removed-by-light-already-in-v34": 0,
+          "removed-by-light-not-in-v34": 0,
+          "removed-by-light": 0
+        },
+        "RIR-RU": {
+          "v34": 8.433395420704202e+32,
+          "v41-full": 8.548722724744327e+32,
+          "v41-light": 8.548722724744327e+32,
+          "only-v34": 0,
+          "only-v41-light": 1.1532730404012517e+31,
+          "common": 8.433395420704202e+32,
+          "only-v41-full-vs-v34": 1.1532730404012517e+31,
+          "only-v34-vs-v41-full": 0,
+          "removed-by-light-already-in-v34": 0,
+          "removed-by-light-not-in-v34": 0,
+          "removed-by-light": 0
+        },
+        "company-origins": {
+          "v34": 2.1530965220559087e+31,
+          "v41-full": 2.153098939907548e+31,
+          "v41-light": 2.153098939907548e+31,
+          "only-v34": 0,
+          "only-v41-light": 2.4178516392292583e+25,
+          "common": 2.1530965220559087e+31,
+          "only-v41-full-vs-v34": 2.4178516392292583e+25,
+          "only-v34-vs-v41-full": 0,
+          "removed-by-light-already-in-v34": 0,
+          "removed-by-light-not-in-v34": 0,
+          "removed-by-light": 0
+        },
+        "selected-regional-and-company-origins": {
+          "v34": 2.0089875231373616e+32,
+          "v41-full": 2.157862494493092e+32,
+          "v41-light": 2.157862494493092e+32,
+          "only-v34": 0,
+          "only-v41-light": 1.4887497135573027e+31,
+          "common": 2.0089875231373616e+32,
+          "only-v41-full-vs-v34": 1.4887497135573027e+31,
+          "only-v34-vs-v41-full": 0,
+          "removed-by-light-already-in-v34": 0,
+          "removed-by-light-not-in-v34": 0,
+          "removed-by-light": 0
+        },
+        "hxehex-mobile-hosts": {
+          "v34": 0,
+          "v41-full": 0,
+          "v41-light": 0,
+          "only-v34": 0,
+          "only-v41-light": 0,
+          "common": 0,
+          "only-v41-full-vs-v34": 0,
+          "only-v34-vs-v41-full": 0,
+          "removed-by-light-already-in-v34": 0,
+          "removed-by-light-not-in-v34": 0,
+          "removed-by-light": 0
+        },
+        "hydra-direct": {
+          "v34": 2.847564326570538e+30,
+          "v41-full": 2.847564326570538e+30,
+          "v41-light": 2.847564326570538e+30,
+          "only-v34": 0,
+          "only-v41-light": 0,
+          "common": 2.847564326570538e+30,
+          "only-v41-full-vs-v34": 0,
+          "only-v34-vs-v41-full": 0,
+          "removed-by-light-already-in-v34": 0,
+          "removed-by-light-not-in-v34": 0,
+          "removed-by-light": 0
+        },
+        "hydra-whitelist": {
+          "v34": 0,
+          "v41-full": 0,
+          "v41-light": 0,
+          "only-v34": 0,
+          "only-v41-light": 0,
+          "common": 0,
+          "only-v41-full-vs-v34": 0,
+          "only-v34-vs-v41-full": 0,
+          "removed-by-light-already-in-v34": 0,
+          "removed-by-light-not-in-v34": 0,
+          "removed-by-light": 0
+        },
+        "kyoresuas-standard": {
+          "v34": 3.3227168991751533e+30,
+          "v41-full": 3.3227168991751533e+30,
+          "v41-light": 3.3227168991751533e+30,
+          "only-v34": 0,
+          "only-v41-light": 0,
+          "common": 3.3227168991751533e+30,
+          "only-v41-full-vs-v34": 0,
+          "only-v34-vs-v41-full": 0,
+          "removed-by-light-already-in-v34": 0,
+          "removed-by-light-not-in-v34": 0,
+          "removed-by-light": 0
+        },
+        "operator-whitelist": {
+          "v34": 0,
+          "v41-full": 0,
+          "v41-light": 0,
+          "only-v34": 0,
+          "only-v41-light": 0,
+          "common": 0,
+          "only-v41-full-vs-v34": 0,
+          "only-v34-vs-v41-full": 0,
+          "removed-by-light-already-in-v34": 0,
+          "removed-by-light-not-in-v34": 0,
+          "removed-by-light": 0
+        },
+        "regional-admission-exclusion": {
+          "v34": 0,
+          "v41-full": 0,
+          "v41-light": 0,
+          "only-v34": 0,
+          "only-v41-light": 0,
+          "common": 0,
+          "only-v41-full-vs-v34": 0,
+          "only-v34-vs-v41-full": 0,
+          "removed-by-light-already-in-v34": 0,
+          "removed-by-light-not-in-v34": 0,
+          "removed-by-light": 0
+        },
+        "reviewed-operator-prefixes": {
+          "v34": 0,
+          "v41-full": 18446744073709552000,
+          "v41-light": 18446744073709552000,
+          "only-v34": 0,
+          "only-v41-light": 18446744073709552000,
+          "common": 0,
+          "only-v41-full-vs-v34": 18446744073709552000,
+          "only-v34-vs-v41-full": 0,
+          "removed-by-light-already-in-v34": 0,
+          "removed-by-light-not-in-v34": 0,
+          "removed-by-light": 0
+        },
+        "w1zardz-service-direct": {
+          "v34": 0,
+          "v41-full": 0,
+          "v41-light": 0,
+          "only-v34": 0,
+          "only-v41-light": 0,
+          "common": 0,
+          "only-v41-full-vs-v34": 0,
+          "only-v34-vs-v41-full": 0,
+          "removed-by-light-already-in-v34": 0,
+          "removed-by-light-not-in-v34": 0,
+          "removed-by-light": 0
+        },
+        "hard-block": {
+          "v34": 0,
+          "v41-full": 0,
+          "v41-light": 0,
+          "only-v34": 0,
+          "only-v41-light": 0,
+          "common": 0,
+          "only-v41-full-vs-v34": 0,
+          "only-v34-vs-v41-full": 0,
+          "removed-by-light-already-in-v34": 0,
+          "removed-by-light-not-in-v34": 0,
+          "removed-by-light": 0
+        },
+        "effective-block": {
+          "v34": 0,
+          "v41-full": 0,
+          "v41-light": 0,
+          "only-v34": 0,
+          "only-v41-light": 0,
+          "common": 0,
+          "only-v41-full-vs-v34": 0,
+          "only-v34-vs-v41-full": 0,
+          "removed-by-light-already-in-v34": 0,
+          "removed-by-light-not-in-v34": 0,
+          "removed-by-light": 0
+        }
+      }
+    }
+  },
+  "provenance": {
+    "sources_disjoint": {
+      "HXEHEX": 122691,
+      "Hydra DIRECT": 689,
+      "Hydra WHITELIST": 1,
+      "HXEHEX+Hydra DIRECT": 2
+    },
+    "sources_disjoint_also_v34": {
+      "HXEHEX": 4,
+      "Hydra DIRECT": 689,
+      "Hydra WHITELIST": 1,
+      "HXEHEX+Hydra DIRECT": 2
+    },
+    "examples": {
+      "HXEHEX": [
+        "5.8.24.1",
+        "5.8.25.1",
+        "5.8.26.1",
+        "5.8.27.1",
+        "5.8.32.1",
+        "5.8.33.1",
+        "5.8.34.1",
+        "5.8.40.1"
+      ],
+      "Hydra DIRECT": [
+        "5.35.174.3",
+        "14.0.37.137",
+        "14.102.233.23",
+        "14.102.233.123",
+        "17.1.164.139",
+        "31.57.152.2",
+        "31.57.152.4",
+        "31.57.152.11"
+      ],
+      "Hydra WHITELIST": [
+        "185.141.216.151"
+      ],
+      "HXEHEX+Hydra DIRECT": [
+        "186.2.161.1",
+        "186.2.166.1"
+      ]
+    },
+    "raw_hxehex_literal_hosts": 122693,
+    "unique_observed_ASNs": 7011,
+    "IP_with_BGP_match": 115046,
+    "IP_with_multiple_ASN_matches": 4775,
+    "top_origin_ASNs": [
+      {
+        "ASN": 749,
+        "addresses": 29810,
+        "in_v34": 0,
+        "metadata": {
+          "handle": "DNIC-AS-00749",
+          "description": "United States Department of Defense (DoD)",
+          "countryCode": "US",
+          "country": "United States",
+          "origin": "authoritative",
+          "category": "government_admin",
+          "networkRole": "stub"
+        }
+      },
+      {
+        "ASN": 9121,
+        "addresses": 4894,
+        "in_v34": 0,
+        "metadata": {
+          "handle": "TTNET",
+          "description": "Turk Telekomunikasyon Anonim Sirketi",
+          "countryCode": "TR",
+          "country": "Türkiye",
+          "origin": "authoritative",
+          "category": "isp",
+          "networkRole": "major_transit"
+        }
+      },
+      {
+        "ASN": 3301,
+        "addresses": 2744,
+        "in_v34": 0,
+        "metadata": {
+          "handle": "TELIANET-SWEDEN",
+          "description": "Telia Company AB",
+          "countryCode": "SE",
+          "country": "Sweden",
+          "origin": "authoritative",
+          "category": "isp",
+          "networkRole": "major_transit"
+        }
+      },
+      {
+        "ASN": 47331,
+        "addresses": 2372,
+        "in_v34": 0,
+        "metadata": {
+          "handle": "TTNET",
+          "description": "TTNet A.S.",
+          "countryCode": "TR",
+          "country": "Türkiye",
+          "origin": "authoritative",
+          "category": "business",
+          "networkRole": "stub"
+        }
+      },
+      {
+        "ASN": 3303,
+        "addresses": 1839,
+        "in_v34": 0,
+        "metadata": {
+          "handle": "SWISSCOM",
+          "description": "Swisscom (Schweiz) AG",
+          "countryCode": "CH",
+          "country": "Switzerland",
+          "origin": "authoritative",
+          "category": "isp",
+          "networkRole": "major_transit"
+        }
+      },
+      {
+        "ASN": 3215,
+        "addresses": 1811,
+        "in_v34": 0,
+        "metadata": {
+          "handle": "AS3215",
+          "description": "Orange S.A.",
+          "countryCode": "FR",
+          "country": "France",
+          "origin": "authoritative",
+          "category": "isp",
+          "networkRole": "major_transit"
+        }
+      },
+      {
+        "ASN": 702,
+        "addresses": 1629,
+        "in_v34": 0,
+        "metadata": {
+          "handle": "UUNET",
+          "description": "Verizon Business",
+          "countryCode": "US",
+          "country": "United States",
+          "origin": "authoritative",
+          "category": "isp",
+          "networkRole": "major_transit"
+        }
+      },
+      {
+        "ASN": 5089,
+        "addresses": 1388,
+        "in_v34": 0,
+        "metadata": {
+          "handle": "NTL",
+          "description": "Virgin Media Limited",
+          "countryCode": "GB",
+          "country": "United Kingdom",
+          "origin": "authoritative",
+          "category": "isp",
+          "networkRole": "midsize_transit"
+        }
+      },
+      {
+        "ASN": 701,
+        "addresses": 1272,
+        "in_v34": 0,
+        "metadata": {
+          "handle": "UUNET",
+          "description": "Verizon Business",
+          "countryCode": "US",
+          "country": "United States",
+          "origin": "authoritative",
+          "category": "isp",
+          "networkRole": "tier1_transit"
+        }
+      },
+      {
+        "ASN": 12912,
+        "addresses": 1159,
+        "in_v34": 0,
+        "metadata": {
+          "handle": "TMPL",
+          "description": "T-Mobile Polska S.A.",
+          "countryCode": "PL",
+          "country": "Poland",
+          "origin": "authoritative",
+          "category": "isp",
+          "networkRole": "major_transit"
+        }
+      },
+      {
+        "ASN": 33915,
+        "addresses": 1146,
+        "in_v34": 0,
+        "metadata": {
+          "handle": "TNF-AS",
+          "description": "Vodafone Libertel B.V.",
+          "countryCode": "NL",
+          "country": "Netherlands",
+          "origin": "authoritative",
+          "category": "isp",
+          "networkRole": "midsize_transit"
+        }
+      },
+      {
+        "ASN": 16509,
+        "addresses": 1125,
+        "in_v34": 0,
+        "metadata": {
+          "handle": "AMAZON-02",
+          "description": "Amazon.com Inc.",
+          "countryCode": "US",
+          "country": "United States",
+          "origin": "authoritative",
+          "category": "hosting",
+          "networkRole": "major_transit"
+        }
+      },
+      {
+        "ASN": 2856,
+        "addresses": 1087,
+        "in_v34": 0,
+        "metadata": {
+          "handle": "BT-UK-AS",
+          "description": "British Telecommunications Limited",
+          "countryCode": "GB",
+          "country": "United Kingdom",
+          "origin": "authoritative",
+          "category": "isp",
+          "networkRole": "major_transit"
+        }
+      },
+      {
+        "ASN": 3209,
+        "addresses": 1054,
+        "in_v34": 0,
+        "metadata": {
+          "handle": "VODANET",
+          "description": "Vodafone GmbH",
+          "countryCode": "DE",
+          "country": "Germany",
+          "origin": "authoritative",
+          "category": "isp",
+          "networkRole": "major_transit"
+        }
+      },
+      {
+        "ASN": 8447,
+        "addresses": 1027,
+        "in_v34": 0,
+        "metadata": {
+          "handle": "A1TELEKOM-AT",
+          "description": "A1 Telekom Austria AG",
+          "countryCode": "AT",
+          "country": "Austria",
+          "origin": "authoritative",
+          "category": "isp",
+          "networkRole": "major_transit"
+        }
+      },
+      {
+        "ASN": 3269,
+        "addresses": 950,
+        "in_v34": 0,
+        "metadata": {
+          "handle": "ASN-IBSNAZ",
+          "description": "Telecom Italia S.p.A.",
+          "countryCode": "IT",
+          "country": "Italy",
+          "origin": "authoritative",
+          "category": "isp",
+          "networkRole": "major_transit"
+        }
+      },
+      {
+        "ASN": 3320,
+        "addresses": 911,
+        "in_v34": 0,
+        "metadata": {
+          "handle": "DTAG",
+          "description": "Deutsche Telekom AG",
+          "countryCode": "DE",
+          "country": "Germany",
+          "origin": "authoritative",
+          "category": "isp",
+          "networkRole": "tier1_transit"
+        }
+      },
+      {
+        "ASN": 5432,
+        "addresses": 842,
+        "in_v34": 0,
+        "metadata": {
+          "handle": "PROXIMUS-ISP-AS",
+          "description": "Proximus NV",
+          "countryCode": "BE",
+          "country": "Belgium",
+          "origin": "authoritative",
+          "category": "isp",
+          "networkRole": "stub"
+        }
+      },
+      {
+        "ASN": 1273,
+        "addresses": 783,
+        "in_v34": 0,
+        "metadata": {
+          "handle": "CW",
+          "description": "Vodafone Group PLC",
+          "countryCode": null,
+          "country": null,
+          "origin": "authoritative",
+          "category": "isp",
+          "networkRole": "major_transit"
+        }
+      },
+      {
+        "ASN": 15557,
+        "addresses": 646,
+        "in_v34": 0,
+        "metadata": {
+          "handle": "LDCOMNET",
+          "description": "Societe Francaise Du Radiotelephone - SFR SA",
+          "countryCode": "FR",
+          "country": "France",
+          "origin": "authoritative",
+          "category": "isp",
+          "networkRole": "midsize_transit"
+        }
+      },
+      {
+        "ASN": 9145,
+        "addresses": 628,
+        "in_v34": 0,
+        "metadata": {
+          "handle": "EWETEL",
+          "description": "EWE TEL GmbH",
+          "countryCode": "DE",
+          "country": "Germany",
+          "origin": "authoritative",
+          "category": "isp",
+          "networkRole": "midsize_transit"
+        }
+      },
+      {
+        "ASN": 1257,
+        "addresses": 581,
+        "in_v34": 4,
+        "metadata": {
+          "handle": "SWIPNET",
+          "description": "Tele2 Sverige AB",
+          "countryCode": "SE",
+          "country": "Sweden",
+          "origin": "authoritative",
+          "category": "isp",
+          "networkRole": "major_transit"
+        }
+      },
+      {
+        "ASN": 719,
+        "addresses": 510,
+        "in_v34": 0,
+        "metadata": {
+          "handle": "ELISA-AS",
+          "description": "Elisa Oyj",
+          "countryCode": "FI",
+          "country": "Finland",
+          "origin": "authoritative",
+          "category": "isp",
+          "networkRole": "midsize_transit"
+        }
+      },
+      {
+        "ASN": 3257,
+        "addresses": 500,
+        "in_v34": 0,
+        "metadata": {
+          "handle": "GTT-BACKBONE",
+          "description": "GTT Communications Inc.",
+          "countryCode": "US",
+          "country": "United States",
+          "origin": "authoritative",
+          "category": "isp",
+          "networkRole": "tier1_transit"
+        }
+      },
+      {
+        "ASN": 3352,
+        "addresses": 460,
+        "in_v34": 0,
+        "metadata": {
+          "handle": "TELEFONICA-DE-ESPANA",
+          "description": "TELEFONICA DE ESPANA S.A.U.",
+          "countryCode": "ES",
+          "country": "Spain",
+          "origin": "authoritative",
+          "category": "isp",
+          "networkRole": "major_transit"
+        }
+      },
+      {
+        "ASN": 7018,
+        "addresses": 425,
+        "in_v34": 0,
+        "metadata": {
+          "handle": "ATT-INTERNET4",
+          "description": "AT&T Enterprises LLC",
+          "countryCode": "US",
+          "country": "United States",
+          "origin": "authoritative",
+          "category": "isp",
+          "networkRole": "tier1_transit"
+        }
+      },
+      {
+        "ASN": 6805,
+        "addresses": 410,
+        "in_v34": 0,
+        "metadata": {
+          "handle": "TDDE-ASN1",
+          "description": "Telefonica Germany GmbH & Co.OHG",
+          "countryCode": "DE",
+          "country": "Germany",
+          "origin": "authoritative",
+          "category": "isp",
+          "networkRole": "midsize_transit"
+        }
+      },
+      {
+        "ASN": 1136,
+        "addresses": 406,
+        "in_v34": 0,
+        "metadata": {
+          "handle": "KPN",
+          "description": "KPN B.V.",
+          "countryCode": "NL",
+          "country": "Netherlands",
+          "origin": "authoritative",
+          "category": "isp",
+          "networkRole": "midsize_transit"
+        }
+      },
+      {
+        "ASN": 174,
+        "addresses": 403,
+        "in_v34": 4,
+        "metadata": {
+          "handle": "COGENT-174",
+          "description": "Cogent Communications LLC",
+          "countryCode": "US",
+          "country": "United States",
+          "origin": "authoritative",
+          "category": "isp",
+          "networkRole": "tier1_transit"
+        }
+      },
+      {
+        "ASN": 11664,
+        "addresses": 398,
+        "in_v34": 0,
+        "metadata": {
+          "handle": "TECHTEL-LMDS-COMUNICACIONES",
+          "description": "Techtel LMDS Comunicaciones Interactivas S.A.",
+          "countryCode": "AR",
+          "country": "Argentina",
+          "origin": "authoritative",
+          "category": "isp",
+          "networkRole": "major_transit"
+        }
+      },
+      {
+        "ASN": 6400,
+        "addresses": 369,
+        "in_v34": 0,
+        "metadata": {
+          "handle": "COMPANIA-DOMINICANA-TELEFONOS",
+          "description": "Compañía Dominicana de Teléfonos S. A.",
+          "countryCode": "DO",
+          "country": "Dominican Republic",
+          "origin": "authoritative",
+          "category": "isp",
+          "networkRole": "midsize_transit"
+        }
+      },
+      {
+        "ASN": 8412,
+        "addresses": 360,
+        "in_v34": 0,
+        "metadata": {
+          "handle": "TMA",
+          "description": "T-Mobile Austria GmbH",
+          "countryCode": "AT",
+          "country": "Austria",
+          "origin": "authoritative",
+          "category": "isp",
+          "networkRole": "midsize_transit"
+        }
+      },
+      {
+        "ASN": 27947,
+        "addresses": 346,
+        "in_v34": 0,
+        "metadata": {
+          "handle": "TELCONET",
+          "description": "Telconet S.A",
+          "countryCode": "EC",
+          "country": "Ecuador",
+          "origin": "authoritative",
+          "category": "isp",
+          "networkRole": "midsize_transit"
+        }
+      },
+      {
+        "ASN": 16086,
+        "addresses": 341,
+        "in_v34": 0,
+        "metadata": {
+          "handle": "DNA",
+          "description": "DNA Oyj",
+          "countryCode": "FI",
+          "country": "Finland",
+          "origin": "authoritative",
+          "category": "isp",
+          "networkRole": "midsize_transit"
+        }
+      },
+      {
+        "ASN": 13285,
+        "addresses": 336,
+        "in_v34": 0,
+        "metadata": {
+          "handle": "OPALTELECOM-AS",
+          "description": "TalkTalk Communications Limited",
+          "countryCode": "GB",
+          "country": "United Kingdom",
+          "origin": "authoritative",
+          "category": "isp",
+          "networkRole": "access_provider"
+        }
+      },
+      {
+        "ASN": 8075,
+        "addresses": 320,
+        "in_v34": 0,
+        "metadata": {
+          "handle": "MICROSOFT-CORP-MSN-AS-BLOCK",
+          "description": "Microsoft Corporation",
+          "countryCode": "US",
+          "country": "United States",
+          "origin": "authoritative",
+          "category": "hosting",
+          "networkRole": "access_provider"
+        }
+      },
+      {
+        "ASN": 8426,
+        "addresses": 296,
+        "in_v34": 0,
+        "metadata": {
+          "handle": "CLARANET-AS",
+          "description": "Claranet Limited",
+          "countryCode": "GB",
+          "country": "United Kingdom",
+          "origin": "authoritative",
+          "category": "hosting",
+          "networkRole": "midsize_transit"
+        }
+      },
+      {
+        "ASN": 9009,
+        "addresses": 295,
+        "in_v34": 0,
+        "metadata": {
+          "handle": "M247",
+          "description": "M247 Europe SRL",
+          "countryCode": "RO",
+          "country": "Romania",
+          "origin": "authoritative",
+          "category": "hosting",
+          "networkRole": "major_transit"
+        }
+      },
+      {
+        "ASN": 27925,
+        "addresses": 295,
+        "in_v34": 0,
+        "metadata": {
+          "handle": "ENTEL-PCS-TELECOMUNICACIONES",
+          "description": "Entel PCS Telecomunicaciones S.A.",
+          "countryCode": "CL",
+          "country": "Chile",
+          "origin": "authoritative",
+          "category": "isp",
+          "networkRole": "stub"
+        }
+      },
+      {
+        "ASN": 5384,
+        "addresses": 294,
+        "in_v34": 0,
+        "metadata": {
+          "handle": "EMIRATES-INTERNET",
+          "description": "EMIRATES TELECOMMUNICATIONS GROUP COMPANY (ETISALAT GROUP) PJSC",
+          "countryCode": "AE",
+          "country": "United Arab Emirates",
+          "origin": "authoritative",
+          "category": "isp",
+          "networkRole": "midsize_transit"
+        }
+      },
+      {
+        "ASN": 59692,
+        "addresses": 285,
+        "in_v34": 276,
+        "metadata": {
+          "handle": "IQWEB",
+          "description": "IQWeb FZ-LLC",
+          "countryCode": "AE",
+          "country": "United Arab Emirates",
+          "origin": "authoritative",
+          "category": "hosting",
+          "networkRole": "major_transit"
+        }
+      },
+      {
+        "ASN": 1267,
+        "addresses": 270,
+        "in_v34": 0,
+        "metadata": {
+          "handle": "ASN-WINDTRE",
+          "description": "WIND TRE S.P.A.",
+          "countryCode": "IT",
+          "country": "Italy",
+          "origin": "authoritative",
+          "category": "isp",
+          "networkRole": "major_transit"
+        }
+      },
+      {
+        "ASN": 12479,
+        "addresses": 269,
+        "in_v34": 0,
+        "metadata": {
+          "handle": "UNI2-AS",
+          "description": "Orange Espagne SA",
+          "countryCode": "ES",
+          "country": "Spain",
+          "origin": "authoritative",
+          "category": "isp",
+          "networkRole": "midsize_transit"
+        }
+      },
+      {
+        "ASN": 27651,
+        "addresses": 268,
+        "in_v34": 0,
+        "metadata": {
+          "handle": "ENTEL-CHILE",
+          "description": "ENTEL CHILE S.A.",
+          "countryCode": "CL",
+          "country": "Chile",
+          "origin": "authoritative",
+          "category": "business",
+          "networkRole": "stub"
+        }
+      },
+      {
+        "ASN": 197207,
+        "addresses": 260,
+        "in_v34": 0,
+        "metadata": {
+          "handle": "MCCI-AS",
+          "description": "Mobile Communication Company of Iran PLC",
+          "countryCode": "IR",
+          "country": "Iran",
+          "origin": "authoritative",
+          "category": "isp",
+          "networkRole": "access_provider"
+        }
+      }
+    ],
+    "top_country_sets_by_ASN_metadata": [
+      [
+        "US",
+        39951
+      ],
+      [
+        "not_observed",
+        8337
+      ],
+      [
+        "GB",
+        7112
+      ],
+      [
+        "DE",
+        7110
+      ],
+      [
+        "TR",
+        5833
+      ],
+      [
+        "FR",
+        5098
+      ],
+      [
+        "SE",
+        4404
+      ],
+      [
+        "NL",
+        4081
+      ],
+      [
+        "IT",
+        3645
+      ],
+      [
+        "CH",
+        3465
+      ],
+      [
+        "PL",
+        3339
+      ],
+      [
+        "ES",
+        3035
+      ],
+      [
+        "AT",
+        2523
+      ],
+      [
+        "BE",
+        1356
+      ],
+      [
+        "UA",
+        1344
+      ],
+      [
+        "IR",
+        1143
+      ],
+      [
+        "FI",
+        1043
+      ],
+      [
+        "LT",
+        901
+      ],
+      [
+        "AR",
+        900
+      ],
+      [
+        "CZ",
+        873
+      ]
+    ],
+    "ipverse_sha256": "d34d00d59ec419fec991d860af290b557a47b8e2f9596688b9bd11b0e4103d02"
+  },
+  "audit": {
+    "v34_tag_commit": "abfd4d49c92f68a7cc1f3e33094128fc31cc2b6a",
+    "v41_pr_head": "36ff98a0f9bb0d821a030bead1a337a85fb64416",
+    "v41_candidate_run": 43609640040,
+    "hxehex_input_unique_ipv4_hosts": 141664,
+    "hxehex_input_unique_ipv4_hosts_ending_dot_1": 141664,
+    "hxehex_removed_ipv4_hosts_ending_dot_1": 122693,
+    "hxehex_removed_ipv4_hosts_also_in_cidr_feed": 122693,
+    "private_exact_same_all_three": true,
+    "dat_srs_exact_ru_match_both_v34_and_v41_light": true,
+    "all_v34_only_ipv6_covered_by_published_v34_asn_bgp_list": true,
+    "only_v34_ipv6_grouping_by_v34_origin_tag": {
+      "AS30972": 2,
+      "AS50952": 2,
+      "AS200676": 5
+    },
+    "comparison_export_sha256": "9e56f3e914d2ba11ebd610605620377a80a55eb167c6ab0f4a9803ad254efbc8"
+  }
+}
