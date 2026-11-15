@@ -142,17 +142,24 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--repo", default="SpeedeMiner/Geoip-ru-server")
     parser.add_argument("--cdn-sha", help="full expected CDN commit; default: current origin/cdn")
+    parser.add_argument("--release-sha", help="full expected release commit; implies --compare-release")
     parser.add_argument("--edges", action="store_true", help="also read Fastly and Gcore endpoints")
     parser.add_argument("--compare-release", action="store_true",
                         help="require the current promoted release and checksums to match")
     args = parser.parse_args()
     if not REPO_RE.fullmatch(args.repo):
         parser.error("--repo must be owner/repository")
+    for option, sha in (("--cdn-sha", args.cdn_sha), ("--release-sha", args.release_sha)):
+        if sha is not None and not SHA_RE.fullmatch(sha):
+            parser.error(f"{option} must be a full commit SHA")
+    compare_release = args.compare_release or args.release_sha is not None
     try:
         commit = args.cdn_sha or get_commit(args.repo, "cdn")
-        release = get_commit(args.repo, "release") if args.compare_release else None
+        release = get_commit(args.repo, "release") if compare_release else None
+        if args.release_sha is not None and args.release_sha != release:
+            raise ValueError("current release does not match expected release SHA")
         result = audit(args.repo, commit, EDGES if args.edges else CANONICAL, release_commit=release)
-        if args.compare_release:
+        if compare_release:
             # Moving refs are not a pass, even for internally consistent bytes.
             if (get_commit(args.repo, "release") != release
                     or get_commit(args.repo, "cdn") != commit):

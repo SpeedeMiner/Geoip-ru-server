@@ -51,6 +51,7 @@ class PublicationLogTests(unittest.TestCase):
             "github.repository": REPO,
             "steps.cdn_ref.outputs.cdn_sha": "a" * 40,
             "steps.snapshot_ref.outputs.snapshot": snapshot,
+            "steps.snapshot_ref.outputs.snapshot_sha": "b" * 40,
         }
         def render(status):
             result = log
@@ -63,6 +64,7 @@ class PublicationLogTests(unittest.TestCase):
             with self.subTest(status=status):
                 output = render(status)
                 self.assertIn(f"https://github.com/{REPO}/releases/tag/{snapshot}", output)
+                self.assertIn(f"Release commit: {'b' * 40}", output)
                 if status == "verified":
                     audit.validate_release_links(output, REPO)
                 else:

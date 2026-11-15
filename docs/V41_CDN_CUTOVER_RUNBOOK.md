@@ -29,11 +29,11 @@ SHA can legitimately stay the same even when the release SHA advances.
    start a duplicate production run just to refresh caches.
 2. Find the versioned GitHub snapshot and CDN status in the job log or
    Actions summary. Treat the GitHub snapshot as the fallback for this update.
-3. Set `CDN_SHA` to the full CDN commit shown by the run and re-run the
-   read-only audit against that commit.
+3. Set `CDN_SHA` and `RELEASE_SHA` to the full commits shown by this run.
+   Then re-run the read-only audit against both commits.
 
 ```sh
-python3 .github/scripts/audit_v41_cdn_public.py --edges --compare-release --cdn-sha "$CDN_SHA"
+python3 .github/scripts/audit_v41_cdn_public.py --edges --cdn-sha "$CDN_SHA" --release-sha "$RELEASE_SHA"
 ```
 
 | What the workflow reports | What to do |

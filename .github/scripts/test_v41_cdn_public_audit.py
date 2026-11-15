@@ -127,6 +127,25 @@ class PublicCdnAuditTests(unittest.TestCase):
                 self.assertEqual(stdout.getvalue(), "")
                 self.assertIn("branch moved during audit", stderr.getvalue())
 
+    def test_expected_release_is_checked_even_when_cdn_sha_is_unchanged(self):
+        expected_release, newer_release = "c" * 40, "d" * 40
+        cli = ["audit", "--repo", REPO, "--cdn-sha", SHA, "--release-sha", expected_release]
+        for actual_release, status in ((newer_release, 1), (expected_release, 0)):
+            with self.subTest(actual_release=actual_release):
+                stdout, stderr = io.StringIO(), io.StringIO()
+                with patch.object(audit.sys, "argv", cli), \
+                        patch.object(audit, "get_commit",
+                                     side_effect=lambda _, branch: actual_release if branch == "release" else SHA), \
+                        patch.object(audit, "audit", return_value={"files": {}}) as run, \
+                        contextlib.redirect_stdout(stdout), contextlib.redirect_stderr(stderr):
+                    self.assertEqual(audit.main(), status)
+                if status:
+                    run.assert_not_called()
+                    self.assertIn("does not match expected release", stderr.getvalue())
+                else:
+                    run.assert_called_once_with(REPO, SHA, audit.CANONICAL,
+                                               release_commit=expected_release)
+
     def test_inventory_matches_the_shell_publisher(self):
         shell = Path(audit.__file__).with_name("v41_cdn_files.sh").read_text()
         line = next(line for line in shell.splitlines() if "V41_CDN_FILES=" in line)

@@ -85,7 +85,9 @@ Raw and the actual CDN downloads. With `--edges` it also checks Fastly and
 Gcore. With `--compare-release` it also reads all three files and sidecars
 from both the current pinned release commit and the rolling GitHub Release
 asset URLs. It fails if either branch moves during the check. Without this flag it checks internal CDN consistency only.
-Use `--cdn-sha` when verifying a specific expected publication.
+When verifying a specific publication, pass both `--cdn-sha` and
+`--release-sha` from its publish log. The latter also enables release
+comparison without requiring `--compare-release`.
 A mismatch exits nonzero. During normal cache propagation, retry or use
 GitHub Release directly. This command neither purges nor changes a ref.
 

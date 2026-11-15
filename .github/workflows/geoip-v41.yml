@@ -717,6 +717,7 @@ jobs:
         run: |
           echo "GitHub Release: ${{ github.server_url }}/${{ github.repository }}/releases/download/latest-geoip-client-v41/geoip_RU.dat"
           echo "Versioned GitHub snapshot: ${{ github.server_url }}/${{ github.repository }}/releases/tag/${{ steps.snapshot_ref.outputs.snapshot }}"
+          echo "Release commit: ${{ steps.snapshot_ref.outputs.snapshot_sha }}"
           echo "Raw release branch: https://raw.githubusercontent.com/${{ github.repository }}/release/geoip_RU.dat"
           echo "CDN commit: ${{ steps.cdn_ref.outputs.cdn_sha }}"
           echo "CDN status: ${{ steps.cdn_ref.outputs.cdn_status }}"
