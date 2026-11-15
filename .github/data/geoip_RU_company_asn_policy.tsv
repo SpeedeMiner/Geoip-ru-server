@@ -56,3 +56,35 @@ AS47724	CORE_CORPORATE	HeadHunter	Dedicated corporate/first-party origin
 AS197068	SHARED_INFRA	Qrator	Shared hosting, CDN, cloud, access or transit infrastructure; retain exact and subnet blocks
 AS51115	SHARED_INFRA	Qrator	Shared hosting, CDN, cloud, access or transit infrastructure; retain exact and subnet blocks
 AS197695	SHARED_INFRA	REG.RU	Shared hosting origin already selected through the RIR-RU registry
+AS50339	CORE_CORPORATE	NSPK	Registered corporate origin; preserve all hard exclusions
+AS21292	CORE_CORPORATE	NSPK	Registered corporate origin; preserve all hard exclusions
+AS41185	CORE_CORPORATE	NSPK	Registered corporate origin; preserve all hard exclusions
+AS41187	CORE_CORPORATE	NSPK	Registered corporate origin; preserve all hard exclusions
+AS60967	CORE_CORPORATE	NSPK	Registered corporate origin; preserve all hard exclusions
+AS8901	SHARED_INFRA	Moscow City	Shared access, hosting or service infrastructure; preserve all hard exclusions
+AS207353	CORE_CORPORATE	RUTUBE	Registered corporate origin; preserve all hard exclusions
+AS48061	SHARED_INFRA	RUTUBE	Shared access, hosting or service infrastructure; preserve all hard exclusions
+AS24638	CORE_CORPORATE	Rambler	Registered corporate origin; preserve all hard exclusions
+AS42481	CORE_CORPORATE	Rambler	Registered corporate origin; preserve all hard exclusions
+AS44696	CORE_CORPORATE	Rambler	Registered corporate origin; preserve all hard exclusions
+AS57306	CORE_CORPORATE	Rambler	Registered corporate origin; preserve all hard exclusions
+AS42231	CORE_CORPORATE	PSB	Registered corporate origin; preserve all hard exclusions
+AS42554	CORE_CORPORATE	PSB	Registered corporate origin; preserve all hard exclusions
+AS42758	CORE_CORPORATE	PSB	Registered corporate origin; preserve all hard exclusions
+AS197258	CORE_CORPORATE	Sovcombank	Registered corporate origin; preserve all hard exclusions
+AS209973	CORE_CORPORATE	Sovcombank	Registered corporate origin; preserve all hard exclusions
+AS51136	CORE_CORPORATE	Sovcombank	Registered corporate origin; preserve all hard exclusions
+AS31174	CORE_CORPORATE	Raiffeisenbank RU	Registered corporate origin; preserve all hard exclusions
+AS202273	CORE_CORPORATE	MKB	Registered corporate origin; preserve all hard exclusions
+AS50464	CORE_CORPORATE	MKB	Registered corporate origin; preserve all hard exclusions
+AS39267	CORE_CORPORATE	MKB	Registered corporate origin; preserve all hard exclusions
+AS57898	CORE_CORPORATE	DNS Retail	Registered corporate origin; preserve all hard exclusions
+AS52047	CORE_CORPORATE	M.Video	Registered corporate origin; preserve all hard exclusions
+AS198610	SHARED_INFRA	Beget	Shared access, hosting or service infrastructure; preserve all hard exclusions
+AS213533	SHARED_INFRA	Beget	Shared access, hosting or service infrastructure; preserve all hard exclusions
+AS214822	SHARED_INFRA	RuVDS	Shared access, hosting or service infrastructure; preserve all hard exclusions
+AS49238	CORE_CORPORATE	Dr.Web	Registered corporate origin; preserve all hard exclusions
+AS59446	CORE_CORPORATE	Dr.Web	Registered corporate origin; preserve all hard exclusions
+AS8732	SHARED_INFRA	Akado	Shared access, hosting or service infrastructure; preserve all hard exclusions
+AS12768	SHARED_INFRA	ER-Telecom	Shared access, hosting or service infrastructure; preserve all hard exclusions
+AS56330	SHARED_INFRA	ER-Telecom	Shared access, hosting or service infrastructure; preserve all hard exclusions
