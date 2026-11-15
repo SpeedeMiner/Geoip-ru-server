@@ -69,3 +69,4 @@
 
 - `3c16c13` прошёл [сборку v41](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43698381746) и [lint](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43698381741).
 - Добавлен автоматический guard для обоих workflow. Он проверяет порядок GitHub Release → CDN, положение дополнительного rolling read-back при наличии, общую очередь, запрет запуска repair на PR, область прав записи и синтаксис shell-шагов. Guard локально прошёл на конфигурации PR №39.
+- Проверка совместимости с остальной очередью выявила конфликт между косметическим переименованием шага и вставкой полного rolling read-back в №35. Имя оставлено прежним, guard привязан к стабильному `id: cdn_ref`.
