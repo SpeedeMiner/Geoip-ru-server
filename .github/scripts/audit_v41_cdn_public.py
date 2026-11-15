@@ -70,7 +70,7 @@ def checked_snapshot_tag(repo: str, release: str, expected: str | None,
     if expected is not None and tag != expected:
         raise ValueError("release snapshot marker does not match expected tag")
     if get_tag_commit(repo, tag) != release:
-        raise ValueError("versioned snapshot tag does not point to promoted release")
+        raise ValueError("versioned snapshot tag does not point to expected release commit")
     return tag
 
 
@@ -113,7 +113,6 @@ def fetch_https(url: str, limit: int) -> bytes:
     if len(data) > limit:
         raise ValueError(f"response exceeds audit limit: {url}")
     return data
-
 
 
 def verify_release_assets(
@@ -226,6 +225,8 @@ def main() -> int:
     parser.add_argument("--snapshot-tag", help="full expected snapshot tag; implies --verify-snapshot")
     parser.add_argument("--fallback-only", action="store_true",
                         help="verify GitHub's versioned fallback without querying any CDN or rolling asset")
+    parser.add_argument("--historical-snapshot", action="store_true",
+                        help="allow fallback-only verification of a pinned non-current release")
     args = parser.parse_args()
     if not REPO_RE.fullmatch(args.repo):
         parser.error("--repo must be owner/repository")
@@ -236,22 +237,29 @@ def main() -> int:
         parser.error("--snapshot-tag must be a versioned v41 snapshot tag")
     if args.fallback_only and (args.cdn_sha is not None or args.edges):
         parser.error("--fallback-only does not accept CDN options")
+    if args.historical_snapshot and not (args.fallback_only and args.release_sha and args.snapshot_tag):
+        parser.error("--historical-snapshot requires --fallback-only, --release-sha and --snapshot-tag")
     verify_snapshot = args.verify_snapshot or args.snapshot_tag is not None or args.fallback_only
     compare_release = args.compare_release or args.release_sha is not None or verify_snapshot
     try:
         commit = None if args.fallback_only else args.cdn_sha or get_commit(args.repo, "cdn")
-        release = get_commit(args.repo, "release") if compare_release else None
+        if args.historical_snapshot:
+            release = args.release_sha
+        else:
+            release = get_commit(args.repo, "release") if compare_release else None
         if args.release_sha is not None and args.release_sha != release:
             raise ValueError("current release does not match expected release SHA")
         tag = checked_snapshot_tag(args.repo, release, args.snapshot_tag) if verify_snapshot else None
         if args.fallback_only:
             result = audit_fallback(args.repo, release, tag)
+            if args.historical_snapshot:
+                result["scope"] = "specified historical GitHub snapshot only"
         else:
             refs = {"release_commit": release}
             if tag is not None:
                 refs["versioned_tag"] = tag
             result = audit(args.repo, commit, EDGES if args.edges else CANONICAL, **refs)
-        if compare_release:
+        if compare_release and not args.historical_snapshot:
             # Moving refs are not a pass, even for internally consistent bytes.
             if (get_commit(args.repo, "release") != release
                     or (not args.fallback_only and get_commit(args.repo, "cdn") != commit)):

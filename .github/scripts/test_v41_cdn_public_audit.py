@@ -237,6 +237,35 @@ class PublicCdnAuditTests(unittest.TestCase):
         self.assertEqual([item.args for item in refs.call_args_list], [(REPO, "release")] * 2)
         fallback.assert_called_once_with(REPO, release, tag)
 
+    def test_historical_fallback_is_explicit_and_never_reads_mutable_refs(self):
+        release, tag = "c" * 40, "v41.2"
+        cli = ["audit", "--repo", REPO, "--historical-snapshot", "--fallback-only",
+               "--release-sha", release, "--snapshot-tag", tag]
+        stdout = io.StringIO()
+        with patch.object(audit.sys, "argv", cli), \
+                patch.object(audit, "get_commit",
+                             side_effect=AssertionError("unexpected mutable ref read")), \
+                patch.object(audit, "checked_snapshot_tag", return_value=tag) as marker, \
+                patch.object(audit, "get_tag_commit", return_value=release), \
+                patch.object(audit, "audit_fallback", return_value={"files": {}}), \
+                contextlib.redirect_stdout(stdout):
+            self.assertEqual(audit.main(), 0)
+        marker.assert_called_once_with(REPO, release, tag)
+        self.assertEqual(json.loads(stdout.getvalue())["scope"], "specified historical GitHub snapshot only")
+
+    def test_historical_fallback_requires_both_explicit_pins_and_fallback_only(self):
+        args = ["--historical-snapshot", "--fallback-only", "--release-sha", "c" * 40,
+                "--snapshot-tag", "v41.2"]
+        for omitted in ("--release-sha", "--snapshot-tag", "--fallback-only"):
+            cli = args.copy()
+            index = cli.index(omitted)
+            del cli[index:index + (1 if omitted == "--fallback-only" else 2)]
+            with self.subTest(omitted=omitted), patch.object(audit.sys, "argv", ["audit", *cli]), \
+                    contextlib.redirect_stderr(io.StringIO()) as err, self.assertRaises(SystemExit) as stopped:
+                audit.main()
+            self.assertEqual(stopped.exception.code, 2)
+            self.assertIn("--historical-snapshot requires", err.getvalue())
+
     def test_inventory_matches_the_shell_publisher(self):
         shell = Path(audit.__file__).with_name("v41_cdn_files.sh").read_text()
         line = next(line for line in shell.splitlines() if "V41_CDN_FILES=" in line)

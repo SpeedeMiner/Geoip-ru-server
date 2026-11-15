@@ -54,7 +54,19 @@ python3 .github/scripts/audit_v41_cdn_public.py --fallback-only --release-sha "$
 ```
 
 Passing this check verifies the versioned GitHub snapshot, not recovery of
-the public CDN. The expected release must still be the promoted release.
+the public CDN. The expected release must still be the promoted release unless
+you explicitly verify a historical snapshot.
+
+To inspect a previously deployed snapshot after a newer release, pass the
+known historical release SHA and its exact tag. This verifies only that
+snapshot, without reading any mutable release, rolling or CDN reference.
+
+```sh
+python3 .github/scripts/audit_v41_cdn_public.py --fallback-only --historical-snapshot --release-sha "$RELEASE_SHA" --snapshot-tag "$SNAPSHOT_TAG"
+```
+
+A historical DAT-only snapshot does not pass this three-file check. This
+read-only mode neither changes the published version nor rolls back CDN.
 
 When release bytes and checksums are correct, **Repair GeoIP v41 client CDN**
 can repair the channel from an existing release. If the binary tree already matches,
