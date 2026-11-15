@@ -35,11 +35,13 @@ class CdnRepairTests(unittest.TestCase):
         self.bin.mkdir()
         self.scripts = self.root / "scripts"
         self.scripts.mkdir()
-        for f in ("repair_v41_cdn.sh", "v41_cdn_files.sh"):
+        for f in ("repair_v41_cdn.sh", "v41_cdn_files.sh", "verify_v41_cdn_github_release.sh"):
             (self.scripts / f).write_bytes((SCRIPTS / f).read_bytes())
         (self.scripts / "deliver_v41_cdn.sh").write_text(
             '#!/bin/bash\nset -eu\n[[ "$V41_REQUIRE_CDN_READBACK" == 1 ]]\n'
             '[[ "$SNAPSHOT_SHA" == "$EXPECTED_SNAPSHOT" ]]\n'
+            'out="$(mktemp -d)"\ntrap "rm -rf -- \\"$out\\"" EXIT\n'
+            'bash "$(dirname "$0")/verify_v41_cdn_github_release.sh" "$SNAPSHOT_SHA" "$out"\n'
             'printf "%s\\n" "$SNAPSHOT_SHA" > "$TEST_DELIVERY"\n'
             'exit "${TEST_DELIVERY_STATUS:-0}"\n')
         mock = self.bin / "curl"

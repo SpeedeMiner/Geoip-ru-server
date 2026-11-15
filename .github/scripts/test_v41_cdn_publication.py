@@ -231,11 +231,14 @@ out.write_text("stale" if stale else filename)
 
 
 class DeliveryStepTests(unittest.TestCase):
-    def invoke(self, *, publish_status=0, purge_status=0, readback_status=0, strict=False):
+    def invoke(self, *, publish_status=0, purge_status=0, readback_status=0, strict=False, github_status=0):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
             delivery = root / "deliver_v41_cdn.sh"
             delivery.write_bytes((SCRIPTS / delivery.name).read_bytes())
+            (root / "verify_v41_cdn_github_release.sh").write_text(
+                'echo github >> "$CALLS"\n[[ "$1" == "$TEST_SHA" && -d "$2" ]] || exit 91\n'
+                'exit "$GITHUB_STATUS"\n')
             (root / "publish_v41_cdn_branch.sh").write_text(
                 'echo publish >> "$CALLS"\nprintf "cdn_sha=%s\\n" "$TEST_SHA" >>"$GITHUB_OUTPUT"\n'
                 'exit "$PUBLISH_STATUS"\n')
@@ -249,30 +252,40 @@ class DeliveryStepTests(unittest.TestCase):
                                     env={**os.environ, "TEST_SHA": sha, "CALLS": str(calls),
                                          "GITHUB_OUTPUT": str(outputs), "PUBLISH_STATUS": str(publish_status),
                                          "PURGE_STATUS": str(purge_status), "READBACK_STATUS": str(readback_status),
-                                         "V41_REQUIRE_CDN_READBACK": str(int(strict))})
+                                         "V41_REQUIRE_CDN_READBACK": str(int(strict)),
+                                         "GITHUB_STATUS": str(github_status), "SNAPSHOT_SHA": sha})
             return result, calls.read_text().splitlines(), outputs.read_text() if outputs.exists() else None
 
     def test_required_ref_write_and_independent_best_effort_cache_steps(self):
         res, calls, out = self.invoke(purge_status=1, readback_status=1)
         self.assertEqual(res.returncode, 0, res.stderr)
-        self.assertEqual(calls, ["publish", "purge", "readback"])
+        self.assertEqual(calls, ["github", "publish", "purge", "readback"])
         self.assertEqual(out, f"cdn_sha={'1' * 40}\n")
         self.assertIn("not confirmed", res.stdout)
         failure, calls, out = self.invoke(publish_status=1)
         self.assertEqual(failure.returncode, 1)
-        self.assertEqual(calls, ["publish"])
+        self.assertEqual(calls, ["github", "publish"])
         self.assertIsNone(out)
 
     def test_manual_repair_requires_cdn_bytes_but_not_a_purge_confirmation(self):
         res, calls, out = self.invoke(purge_status=1, strict=True)
         self.assertEqual(res.returncode, 0, res.stderr)
-        self.assertEqual(calls, ["publish", "purge", "readback"])
+        self.assertEqual(calls, ["github", "publish", "purge", "readback"])
         self.assertEqual(out, f"cdn_sha={'1' * 40}\n")
         failure, calls, out = self.invoke(readback_status=1, strict=True)
         self.assertEqual(failure.returncode, 1)
-        self.assertEqual(calls, ["publish", "purge", "readback"])
+        self.assertEqual(calls, ["github", "publish", "purge", "readback"])
         self.assertIn("is set, but public CDN bytes were not confirmed", failure.stdout)
         self.assertIsNone(out)
+
+
+    def test_github_preflight_failure_stops_production_and_repair(self):
+        for strict in (False, True):
+            with self.subTest(strict=strict):
+                res, calls, out = self.invoke(github_status=1, strict=strict)
+                self.assertEqual(res.returncode, 1)
+                self.assertEqual(calls, ["github"])
+                self.assertIsNone(out)
 
 
 if __name__ == "__main__":
