@@ -37,6 +37,10 @@ def validate(workflows):
                if step.get("run", "").endswith("/verify_v41_rolling_release.sh")]
     if any(not ship < index < cdn for index in rolling):
         raise ValueError("Full rolling release read-back must precede CDN delivery")
+    outputs = steps[cdn].get("env", {})
+    if (outputs.get("SNAPSHOT_SHA") != "${{ steps.snapshot_ref.outputs.snapshot_sha }}"
+            or outputs.get("V41_CDN_FALLBACK_TAG") != "${{ steps.snapshot_ref.outputs.snapshot }}"):
+        raise ValueError("Production CDN must verify the exact snapshot SHA and versioned fallback")
     for name, workflow in workflows.items():
         for j in workflow["jobs"].values():
             for s in j.get("steps", []):

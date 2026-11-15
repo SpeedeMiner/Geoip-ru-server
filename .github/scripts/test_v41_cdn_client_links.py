@@ -41,6 +41,19 @@ class ReleaseNotesTests(unittest.TestCase):
 
 @unittest.skipIf(yaml is None, "PyYAML is required for the workflow log check")
 class PublicationLogTests(unittest.TestCase):
+    def test_publish_step_must_pass_the_snapshot_tag_to_cdn_preflight(self):
+        from validate_v41_cdn_workflows import validate
+
+        names = ("geoip-v41.yml", "geoip-v41-cdn-repair.yml")
+        workflows = {name: yaml.safe_load((BASE / ".github/workflows" / name).read_bytes())
+                     for name in names}
+        validate(workflows)
+        publish = workflows[names[0]]["jobs"]["publish"]
+        step = next(s for s in publish["steps"] if s.get("id") == "cdn_ref")
+        step["env"].pop("V41_CDN_FALLBACK_TAG")
+        with self.assertRaisesRegex(ValueError, "versioned fallback"):
+            validate(workflows)
+
     def test_links_hidden_until_public_readback_is_verified(self):
         workflow = yaml.safe_load((BASE / ".github/workflows/geoip-v41.yml").read_bytes())
         steps = workflow["jobs"]["publish"]["steps"]
