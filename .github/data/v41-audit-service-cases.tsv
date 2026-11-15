@@ -1,0 +1,30 @@
+# Hostnames are audited representatives, not the full endpoint set of a named service.
+DOMAIN	SERVICE	COHORT	SOURCE_DATE	EVIDENCE
+gosuslugi.ru	Gosuslugi	MINISTRY_2025_09_05	2025-09-05	https://t.me/mintsifry/2603
+www.gosuslugi.ru	Gosuslugi	MINISTRY_2025_09_05	2025-09-05	https://t.me/mintsifry/2603
+esia.gosuslugi.ru	Gosuslugi login	MINISTRY_2025_09_05	2025-09-05	https://t.me/mintsifry/2603
+vk.com	VK	MINISTRY_2025_09_05	2025-09-05	https://t.me/mintsifry/2603
+ok.ru	Odnoklassniki	MINISTRY_2025_09_05	2025-09-05	https://t.me/mintsifry/2603
+mail.ru	Mail.ru	MINISTRY_2025_09_05	2025-09-05	https://t.me/mintsifry/2603
+max.ru	Max	MINISTRY_2025_09_05	2025-09-05	https://t.me/mintsifry/2603
+yandex.ru	Yandex	MINISTRY_2025_09_05	2025-09-05	https://t.me/mintsifry/2603
+ozon.ru	Ozon	MINISTRY_2025_09_05	2025-09-05	https://t.me/mintsifry/2603
+wildberries.ru	Wildberries	MINISTRY_2025_09_05	2025-09-05	https://t.me/mintsifry/2603
+avito.ru	Avito	MINISTRY_2025_09_05	2025-09-05	https://t.me/mintsifry/2603
+dzen.ru	Dzen	MINISTRY_2025_09_05	2025-09-05	https://t.me/mintsifry/2603
+rutube.ru	Rutube	MINISTRY_2025_09_05	2025-09-05	https://t.me/mintsifry/2603
+mironline.ru	Mir	MINISTRY_2025_09_05	2025-09-05	https://t.me/mintsifry/2603
+government.ru	Russian government	MINISTRY_2025_09_05	2025-09-05	https://t.me/mintsifry/2603
+kremlin.ru	Russian presidential administration	MINISTRY_2025_09_05	2025-09-05	https://t.me/mintsifry/2603
+vybory.gov.ru	Remote electronic voting	MINISTRY_2025_09_05	2025-09-05	https://t.me/mintsifry/2603
+beeline.ru	Beeline	MINISTRY_2025_09_05	2025-09-05	https://t.me/mintsifry/2603
+megafon.ru	MegaFon	MINISTRY_2025_09_05	2025-09-05	https://t.me/mintsifry/2603
+mts.ru	MTS	MINISTRY_2025_09_05	2025-09-05	https://t.me/mintsifry/2603
+rt.ru	Rostelecom	MINISTRY_2025_09_05	2025-09-05	https://t.me/mintsifry/2603
+t2.ru	T2	MINISTRY_2025_09_05	2025-09-05	https://t.me/mintsifry/2603
+sberbank.ru	Sberbank	BANK_CONTROL	2026-11-15	https://www.sberbank.ru/
+alfabank.ru	Alfa-Bank	BANK_CONTROL	2026-11-15	https://alfabank.ru/
+vtb.ru	VTB	BANK_CONTROL	2026-11-15	https://www.vtb.ru/
+tbank.ru	T-Bank	BANK_CONTROL	2026-11-15	https://www.tbank.ru/
+kaspi.kz	Kaspi Bank	BANK_CONTROL	2026-11-15	https://kaspi.kz/
+belarusbank.by	Belarusbank	BANK_CONTROL	2026-11-15	https://belarusbank.by/

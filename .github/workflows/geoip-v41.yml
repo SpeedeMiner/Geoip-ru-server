@@ -24,6 +24,11 @@ on:
       - ".github/scripts/build_v41_overlay.py"
       - ".github/scripts/build_v41_srs.py"
       - ".github/scripts/extract_ru_asn_prefixes_v41.py"
+      - ".github/scripts/v41_asn_observations.py"
+      - ".github/scripts/audit_v41_asn_regressions.py"
+      - ".github/scripts/audit_v41_service_coverage.py"
+      - ".github/data/v41-audit-priority-asns.tsv"
+      - ".github/data/v41-audit-service-cases.tsv"
       - ".github/scripts/geoip-v37-builder/**"
       - ".github/scripts/download_v41_build_inputs.sh"
       - ".github/scripts/validate_v41_download_input.py"
@@ -554,6 +559,53 @@ jobs:
         with:
           name: geoip-v41-block-feed-delta
           path: ${{ runner.temp }}/v41-block-feed-delta.json
+          if-no-files-found: ignore
+          retention-days: 30
+
+      - name: Report priority ASN regressions (advisory)
+        if: github.event_name == 'pull_request'
+        continue-on-error: true
+        timeout-minutes: 3
+        shell: bash
+        run: |
+          baseline="$(mktemp -d)"
+          trap 'rm -rf -- "$baseline"' EXIT
+          options=()
+          ref=""
+          get_baseline() {
+            local tag name
+            git fetch -q --no-tags --depth=1 origin refs/heads/release || return 1
+            ref="$(git rev-parse FETCH_HEAD)" || return 1
+            for name in geoip_RU.dat geoip_RU_input_provenance.tsv geoip_RU_v41_manifest.json \
+              geoip_RU_v41_release_manifest.json geoip_RU_BY_KZ_asn_bgp_prefixes.txt \
+              geoip_RU_v41_rir_ru_and_company_origin_prefixes.txt geoip_RU_ipverse_snapshot_tag.txt; do
+              git show "$ref:$name" > "$baseline/$name" || return 1
+            done
+            tag="$(python3 .github/scripts/verify_v41_ipverse_archive.py \
+              --provenance "$baseline/geoip_RU_input_provenance.tsv" \
+              --snapshot-tag-file "$baseline/geoip_RU_ipverse_snapshot_tag.txt")" || return 1
+            curl --fail --location --silent --show-error --proto '=https' --proto-redir '=https' \
+              --connect-timeout 10 --max-time 40 --max-filesize 67108864 \
+              --output "$baseline/as-ip-blocks.tar.gz" \
+              "https://github.com/$GITHUB_REPOSITORY/releases/download/$tag/as-ip-blocks.tar.gz" || return 1
+            echo "Priority ASN comparison baseline: $ref" >> "$GITHUB_STEP_SUMMARY"
+          }
+          if get_baseline; then
+            options=(--previous "$baseline" --previous-release "$ref")
+          else
+            echo "::warning::Priority ASN comparison baseline unavailable; reporting candidate only."
+          fi
+          python3 .github/scripts/audit_v41_asn_regressions.py \
+            --watchlist .github/data/v41-audit-priority-asns.tsv \
+            --candidate . "${options[@]}" --output "$RUNNER_TEMP/v41-priority-asn.json"
+
+      - name: Upload priority ASN regressions (PR only)
+        if: github.event_name == 'pull_request'
+        continue-on-error: true
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: geoip-v41-priority-asn
+          path: ${{ runner.temp }}/v41-priority-asn.json
           if-no-files-found: ignore
           retention-days: 30
 
