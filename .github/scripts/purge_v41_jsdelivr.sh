@@ -1,11 +1,14 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+[[ "$GITHUB_REPOSITORY" =~ ^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$ ]]
+source "$(dirname "${BASH_SOURCE[0]}")/v41_cdn_files.sh"
+
 # CDN cache refresh is best effort. Check each response for the requested
 # path, and report partial failure only after all compatibility URLs were tried.
 purge_jsdelivr() {
   local path="$1"
-  local key="/gh/${GITHUB_REPOSITORY:?set GITHUB_REPOSITORY (owner/repo)}@release/${path}"
+  local key="/gh/${GITHUB_REPOSITORY:?set GITHUB_REPOSITORY (owner/repo)}@cdn/${path}"
   local response code
   if response="$(curl --fail --location --silent --show-error \
     --proto '=https' --proto-redir '=https' --connect-timeout 10 --max-time 25 \
@@ -35,27 +38,6 @@ except (KeyError, TypeError, ValueError):
   printf 'jsDelivr purge confirmed: %s\n' "$path"
 }
 
-paths=(
-  geoip_RU.dat geoip_RU.dat.sha256sum
-  geoip_RU.srs geoip_RU.srs.sha256sum
-  geoip_PRIVATE.srs geoip_PRIVATE.srs.sha256sum
-  geoip_RU_quality_report.txt
-  geoip_RU_v37_additional_provenance.tsv
-  geoip_RU_v41_prefix_provenance.tsv
-  geoip_RU_v41_blocked_provenance.tsv
-  geoip_RU_v41_manifest.json
-  geoip_RU_company_asn_bgp_prefixes.txt
-  geoip_RU_company_asn_core_bgp_prefixes.txt
-  geoip_RU_shared_infrastructure_bgp_prefixes.txt
-  geoip_RU_v41_rir_ru_and_company_origin_prefixes.txt
-  geoip_RU_company_asn_policy.tsv
-  geoip_RU_blocked_ip_exact_and_legacy_hard.txt
-  geoip_RU_blocked_ipresolve_resolver_only.txt
-  geoip_RU_BY_KZ_asn_manifest.txt
-  geoip_RU_input_provenance.tsv
-  geoip_RU_input_provenance.tsv.sha256sum
-  geoip_RU_blocked_ip_exclusions.txt
-)
 
 report() {
   local line="$1"
@@ -67,7 +49,7 @@ report() {
 
 failed=()
 success=0
-for path in "${paths[@]}"; do
+for path in "${V41_CDN_FILES[@]}"; do
   if purge_jsdelivr "$path"; then
     success=$((success + 1))
   else
@@ -78,7 +60,7 @@ done
 report ""
 report "### jsDelivr cache refresh"
 report ""
-report "Confirmed: $success/${#paths[@]}. Failed: ${#failed[@]}."
+report "Confirmed: $success/${#V41_CDN_FILES[@]}. Failed: ${#failed[@]}."
 if (( ${#failed[@]} )); then
   report ""
   for path in "${failed[@]}"; do

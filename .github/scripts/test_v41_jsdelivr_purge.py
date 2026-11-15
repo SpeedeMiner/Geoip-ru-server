@@ -14,7 +14,7 @@ from urllib.parse import urlparse
 url = urlparse(sys.argv[-1])
 assert url.scheme == "https" and url.netloc == "purge.jsdelivr.net"
 key = url.path
-assert key.startswith("/gh/SpeedeMiner/Geoip-ru-server@release/")
+assert key.startswith("/gh/SpeedeMiner/Geoip-ru-server@cdn/")
 name = key.rsplit("/", 1)[1]
 with Path(os.environ["TEST_CALLS"]).open("a") as log:
     log.write(name + "\\n")
@@ -27,7 +27,7 @@ if case == "invalid":
 result = {
     "status": "pending" if case == "pending" else "finished",
     "paths": {
-        "/gh/unrelated/repo@release/other.dat": {
+        "/gh/unrelated/repo@cdn/other.dat": {
             "throttled": False, "providers": {"CF": True, "FY": True},
         },
     },
@@ -57,33 +57,24 @@ class JsdelivrPurgeTests(unittest.TestCase):
             result = subprocess.run(["bash", str(SCRIPT)], env=env, text=True, capture_output=True, check=False)
             seen = calls.read_text().splitlines()
             self.assertEqual(len(set(seen)), len(seen))
-            self.assertEqual(len(seen), 22)
-            self.assertEqual(seen[0], "geoip_RU.dat")
-            self.assertEqual(seen[-1], "geoip_RU_blocked_ip_exclusions.txt")
+            self.assertEqual(seen, ["geoip_RU.dat", "geoip_RU.srs", "geoip_PRIVATE.srs"])
             return result, summary.read_text()
 
     def test_accepts_only_confirmed_success_for_each_requested_path(self):
         result, summary = self.run_script({})
         self.assertEqual(result.returncode, 0, result.stderr)
-        self.assertIn("Confirmed: 22/22. Failed: 0.", summary)
+        self.assertIn("Confirmed: 3/3. Failed: 0.", summary)
         self.assertNotIn("Unconfirmed:", summary)
 
     def test_attempts_every_path_even_after_transport_and_api_errors(self):
-        failure_cases = {
-            "geoip_RU.dat": "transport",
-            "geoip_RU.dat.sha256sum": "invalid",
-            "geoip_RU.srs": "wrong-path",
-            "geoip_RU.srs.sha256sum": "provider-failure",
-            "geoip_PRIVATE.srs": "throttled",
-            "geoip_PRIVATE.srs.sha256sum": "pending",
-            "geoip_RU_quality_report.txt": "empty-providers",
-        }
-        result, summary = self.run_script(failure_cases)
-        self.assertEqual(result.returncode, 1)
-        self.assertIn("Confirmed: 15/22. Failed: 7.", summary)
-        self.assertIn("run-specific GitHub Release", summary)
-        for name in failure_cases:
-            self.assertIn(f"Unconfirmed: {name}", summary)
+        for failure in ("transport", "invalid", "wrong-path", "provider-failure",
+                        "throttled", "pending", "empty-providers"):
+            with self.subTest(failure=failure):
+                result, summary = self.run_script({"geoip_RU.dat": failure})
+                self.assertEqual(result.returncode, 1)
+                self.assertIn("Confirmed: 2/3. Failed: 1.", summary)
+                self.assertIn("run-specific GitHub Release", summary)
+                self.assertIn("Unconfirmed: geoip_RU.dat", summary)
 
 
 if __name__ == "__main__":

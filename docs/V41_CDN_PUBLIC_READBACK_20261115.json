@@ -1,0 +1,171 @@
+[
+  {
+    "category": "cdn",
+    "name": "geoip_RU.dat",
+    "url": "https://cdn.jsdelivr.net/gh/SpeedeMiner/Geoip-ru-server@cdn/geoip_RU.dat",
+    "utc": "2026-11-15T08:44:38.480432+00:00",
+    "status": 200,
+    "bytes": 512067,
+    "sha256": "5d7e9dd0eb66bd507eb5f695b83441493fb20b2307ef71125de16c8b3809fa7d",
+    "matches_github_release": true
+  },
+  {
+    "category": "cdn",
+    "name": "geoip_RU.srs",
+    "url": "https://cdn.jsdelivr.net/gh/SpeedeMiner/Geoip-ru-server@cdn/geoip_RU.srs",
+    "utc": "2026-11-15T08:44:38.481507+00:00",
+    "status": 200,
+    "bytes": 128250,
+    "sha256": "21c54a6b83c7292ec51c8fff33f19e54cc869750cb6e3cea87d7662df87684e0",
+    "matches_github_release": true
+  },
+  {
+    "category": "cdn",
+    "name": "geoip_PRIVATE.srs",
+    "url": "https://cdn.jsdelivr.net/gh/SpeedeMiner/Geoip-ru-server@cdn/geoip_PRIVATE.srs",
+    "utc": "2026-11-15T08:44:38.482082+00:00",
+    "status": 200,
+    "bytes": 228,
+    "sha256": "b9ea6381ea61e286298aea76c10cb85a252ff0d20c49d6de3527be1353c107c4",
+    "matches_github_release": true
+  },
+  {
+    "category": "cdn",
+    "name": "geoip_RU.dat.sha256sum",
+    "url": "https://cdn.jsdelivr.net/gh/SpeedeMiner/Geoip-ru-server@cdn/geoip_RU.dat.sha256sum",
+    "utc": "2026-11-15T08:44:38.490806+00:00",
+    "status": 404,
+    "detail": "Couldn't find the requested file /geoip_RU.dat.sha256sum in SpeedeMiner/Geoip-ru-server."
+  },
+  {
+    "category": "cdn",
+    "name": "geoip_RU_quality_report.txt",
+    "url": "https://cdn.jsdelivr.net/gh/SpeedeMiner/Geoip-ru-server@cdn/geoip_RU_quality_report.txt",
+    "utc": "2026-11-15T08:44:38.491817+00:00",
+    "status": 404,
+    "detail": "Couldn't find the requested file /geoip_RU_quality_report.txt in SpeedeMiner/Geoip-ru-server."
+  },
+  {
+    "category": "cdn",
+    "name": "geoip_RU_v41_manifest.json",
+    "url": "https://cdn.jsdelivr.net/gh/SpeedeMiner/Geoip-ru-server@cdn/geoip_RU_v41_manifest.json",
+    "utc": "2026-11-15T08:44:38.492506+00:00",
+    "status": 404,
+    "detail": "Couldn't find the requested file /geoip_RU_v41_manifest.json in SpeedeMiner/Geoip-ru-server."
+  },
+  {
+    "category": "cdn",
+    "name": "hydra-geoip.dat",
+    "url": "https://cdn.jsdelivr.net/gh/SpeedeMiner/Geoip-ru-server@cdn/hydra-geoip.dat",
+    "utc": "2026-11-15T08:44:44.829949+00:00",
+    "status": 404,
+    "detail": "Couldn't find the requested file /hydra-geoip.dat in SpeedeMiner/Geoip-ru-server."
+  },
+  {
+    "category": "cdn",
+    "name": "geoip_RU_v41_prefix_provenance.tsv",
+    "url": "https://cdn.jsdelivr.net/gh/SpeedeMiner/Geoip-ru-server@cdn/geoip_RU_v41_prefix_provenance.tsv",
+    "utc": "2026-11-15T08:44:44.943644+00:00",
+    "status": 404,
+    "detail": "Couldn't find the requested file /geoip_RU_v41_prefix_provenance.tsv in SpeedeMiner/Geoip-ru-server."
+  },
+  {
+    "category": "gcore",
+    "name": "geoip_RU.dat",
+    "url": "https://gcore.jsdelivr.net/gh/SpeedeMiner/Geoip-ru-server@cdn/geoip_RU.dat",
+    "utc": "2026-11-15T08:44:44.945841+00:00",
+    "status": 200,
+    "bytes": 512067,
+    "sha256": "5d7e9dd0eb66bd507eb5f695b83441493fb20b2307ef71125de16c8b3809fa7d",
+    "matches_github_release": true
+  },
+  {
+    "category": "gcore",
+    "name": "geoip_RU.srs",
+    "url": "https://gcore.jsdelivr.net/gh/SpeedeMiner/Geoip-ru-server@cdn/geoip_RU.srs",
+    "utc": "2026-11-15T08:44:44.946755+00:00",
+    "status": 200,
+    "bytes": 128250,
+    "sha256": "21c54a6b83c7292ec51c8fff33f19e54cc869750cb6e3cea87d7662df87684e0",
+    "matches_github_release": true
+  },
+  {
+    "category": "gcore",
+    "name": "geoip_PRIVATE.srs",
+    "url": "https://gcore.jsdelivr.net/gh/SpeedeMiner/Geoip-ru-server@cdn/geoip_PRIVATE.srs",
+    "utc": "2026-11-15T08:44:44.981934+00:00",
+    "status": 200,
+    "bytes": 228,
+    "sha256": "b9ea6381ea61e286298aea76c10cb85a252ff0d20c49d6de3527be1353c107c4",
+    "matches_github_release": true
+  },
+  {
+    "category": "raw-commit",
+    "name": "geoip_RU.dat",
+    "url": "https://raw.githubusercontent.com/SpeedeMiner/Geoip-ru-server/80e3b143d5d6b84cb6545e80be9ee0401e0089be/geoip_RU.dat",
+    "utc": "2026-11-15T08:44:45.412563+00:00",
+    "status": 200,
+    "bytes": 512067,
+    "sha256": "5d7e9dd0eb66bd507eb5f695b83441493fb20b2307ef71125de16c8b3809fa7d",
+    "matches_github_release": true
+  },
+  {
+    "category": "raw-commit",
+    "name": "geoip_RU.srs",
+    "url": "https://raw.githubusercontent.com/SpeedeMiner/Geoip-ru-server/80e3b143d5d6b84cb6545e80be9ee0401e0089be/geoip_RU.srs",
+    "utc": "2026-11-15T08:44:49.086672+00:00",
+    "status": 200,
+    "bytes": 128250,
+    "sha256": "21c54a6b83c7292ec51c8fff33f19e54cc869750cb6e3cea87d7662df87684e0",
+    "matches_github_release": true
+  },
+  {
+    "category": "raw-commit",
+    "name": "geoip_PRIVATE.srs",
+    "url": "https://raw.githubusercontent.com/SpeedeMiner/Geoip-ru-server/80e3b143d5d6b84cb6545e80be9ee0401e0089be/geoip_PRIVATE.srs",
+    "utc": "2026-11-15T08:44:49.126293+00:00",
+    "status": 200,
+    "bytes": 228,
+    "sha256": "b9ea6381ea61e286298aea76c10cb85a252ff0d20c49d6de3527be1353c107c4",
+    "matches_github_release": true
+  },
+  {
+    "category": "raw-commit",
+    "name": "geoip_RU.dat.sha256sum",
+    "url": "https://raw.githubusercontent.com/SpeedeMiner/Geoip-ru-server/80e3b143d5d6b84cb6545e80be9ee0401e0089be/geoip_RU.dat.sha256sum",
+    "utc": "2026-11-15T08:44:49.230073+00:00",
+    "status": 404,
+    "detail": "404: Not Found"
+  },
+  {
+    "category": "raw-commit",
+    "name": "geoip_RU_quality_report.txt",
+    "url": "https://raw.githubusercontent.com/SpeedeMiner/Geoip-ru-server/80e3b143d5d6b84cb6545e80be9ee0401e0089be/geoip_RU_quality_report.txt",
+    "utc": "2026-11-15T08:44:49.674039+00:00",
+    "status": 404,
+    "detail": "404: Not Found"
+  },
+  {
+    "category": "list",
+    "name": "tree",
+    "url": "https://data.jsdelivr.com/v1/package/gh/SpeedeMiner/Geoip-ru-server@cdn",
+    "utc": "2026-11-15T08:44:50.554624+00:00",
+    "status": 200,
+    "bytes": 550,
+    "sha256": "a78f36f042b2ea428591663516808c49a3fcd6963075a2fd9c85346b6323324b",
+    "paths": [
+      [
+        "geoip_PRIVATE.srs",
+        "file"
+      ],
+      [
+        "geoip_RU.dat",
+        "file"
+      ],
+      [
+        "geoip_RU.srs",
+        "file"
+      ]
+    ]
+  }
+]

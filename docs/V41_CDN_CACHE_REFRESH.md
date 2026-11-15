@@ -1,26 +1,39 @@
-# v41 rolling CDN cache refresh
+# v41 client-only jsDelivr delivery
 
-The GitHub release and the rolling jsDelivr alias are separate delivery
-paths. Cache refresh does not publish, roll back, or verify release bytes.
-The v41 publisher runs it as a non-fatal step after release publication.
+The supported CDN alias is the `cdn` branch. It contains exactly three files.
 
-The script attempts all 22 compatibility URLs, even when an individual
-request times out or the API does not confirm the purge. It verifies the
-exact response path, completed status, the throttle flag and every reported
-provider. GitHub Actions shows the confirmation count and failed filenames
-in its job summary. A successful purge response is not a guarantee that
-every observer sees the same bytes immediately.
+| Client | Rolling URL |
+| --- | --- |
+| Xray | [geoip_RU.dat](https://cdn.jsdelivr.net/gh/SpeedeMiner/Geoip-ru-server@cdn/geoip_RU.dat) |
+| sing-box RU | [geoip_RU.srs](https://cdn.jsdelivr.net/gh/SpeedeMiner/Geoip-ru-server@cdn/geoip_RU.srs) |
+| sing-box PRIVATE | [geoip_PRIVATE.srs](https://cdn.jsdelivr.net/gh/SpeedeMiner/Geoip-ru-server@cdn/geoip_PRIVATE.srs) |
 
-If a refresh failed after GitHub publication, retry the cache step by
-itself when the CDN recovers. No new build, release or tag is needed.
-From the source checkout, after verifying the intended rolling branch:
+Checksums, source DATs, manifests, archives and audit reports stay on GitHub.
+The workflow never adds them to `cdn` or asks jsDelivr to refresh them.
+Old `@release` CDN links are not refreshed or supported. This design
+does not revoke previously cached URLs or stop someone from requesting a
+different public GitHub ref through a third-party cache.
+
+Only the production v41 job publishes the CDN branch, after publishing and
+verifying the release. It derives a fresh tree from the three checked
+GitHub blobs, never from an unrestricted copy of `release`. The branch
+starts from a root commit and subsequent updates are fast-forward and
+compare-and-swap protected. Unchanged bytes do not create another commit.
+GitHub checksum sidecars are checked before the branch moves. They are not
+part of the CDN payload.
+
+The best-effort purge attempts all three rolling URLs and checks the exact
+response path and reported provider confirmations. A separate bounded
+public read-back compares what jsDelivr serves against the new bytes.
+If it reports a failure, use the run-specific GitHub Release and its
+checksums. A GitHub release may still be edited unless the repository
+enforces immutable releases.
+
+For a manual retry of the cache refresh only, first confirm the intended
+`cdn` commit, then run the script from the source checkout.
 
 ```sh
 GITHUB_REPOSITORY=SpeedeMiner/Geoip-ru-server bash .github/scripts/purge_v41_jsdelivr.sh
 ```
 
-For consistent downloads, use the run-specific GitHub Release and verify
-its SHA-256 sidecars. Do not mix files from the versioned Release with
-hashes from a rolling CDN URL. The versioned link is preferable to a
-rolling alias, but GitHub can still permit editing release assets unless
-immutability is enforced by repository settings.
+[Publication journal](V41_CDN_PUBLICATION_JOURNAL_20261115.md).
