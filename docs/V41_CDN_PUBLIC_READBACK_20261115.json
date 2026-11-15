@@ -223,5 +223,44 @@
     "python_tests": 208,
     "required_rolling_GitHub_readback_before_CDN": true,
     "production_refs_modified": false
+  },
+  "isolated_committed_wrapper_artifact": {
+    "artifact": "v41-pr39-wrap-14155200201.zip",
+    "archive_sha256": "e9946c54721737aafd65ef3b4ade09b66f096f3bc1a4fff13c19866a98d4ee87",
+    "verified_names": [
+      "geoip_PRIVATE.srs",
+      "geoip_RU.dat",
+      "geoip_RU.srs"
+    ],
+    "payload_bytes": 640509,
+    "sha256": {
+      "geoip_RU.dat": "da0308b7b97fb170be08fa0e912ec379edf39742f41fa1234d104529bc1c51b8",
+      "geoip_RU.srs": "3cc3b23582aa430e9575a299672d538b4cc89a00eab6be22195c6622b7386fb9",
+      "geoip_PRIVATE.srs": "b9ea6381ea61e286298aea76c10cb85a252ff0d20c49d6de3527be1353c107c4"
+    },
+    "isolated_remote_only": true,
+    "preserved_prior_cdn_parent": "80e3b143d5d6b84cb6545e80be9ee0401e0089be",
+    "release_and_tags_unchanged": true
+  },
+  "isolated_whole_delivery_with_failures": {
+    "artifact": "v41-pr39-wrap-14155200201.zip",
+    "old_client_commit": "80e3b143d5d6b84cb6545e80be9ee0401e0089be",
+    "local_client_commit": "6f9f8b9e39f25b223fb663a05a0d6b77696a9d3a",
+    "expected_cache_error": "geoip_RU.srs purge timeout",
+    "expected_stale_cache_retried": "geoip_RU.dat",
+    "ordered_calls": [
+      "purge.jsdelivr.net geoip_RU.dat",
+      "purge.jsdelivr.net geoip_RU.srs",
+      "purge.jsdelivr.net geoip_PRIVATE.srs",
+      "raw.githubusercontent.com geoip_RU.dat",
+      "raw.githubusercontent.com geoip_RU.srs",
+      "raw.githubusercontent.com geoip_PRIVATE.srs",
+      "cdn.jsdelivr.net geoip_RU.dat",
+      "cdn.jsdelivr.net geoip_RU.dat",
+      "cdn.jsdelivr.net geoip_RU.srs",
+      "cdn.jsdelivr.net geoip_PRIVATE.srs"
+    ],
+    "all_client_bytes_verified": true,
+    "isolated_git_remote": true
   }
 }
