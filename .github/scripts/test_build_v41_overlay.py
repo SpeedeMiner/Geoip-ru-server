@@ -1,11 +1,34 @@
 import ipaddress
 import unittest
 
-from build_v41_overlay import class_aware_effective_block_set
+from build_v41_overlay import class_aware_effective_block_set, collapse
 
 
 def nets(*values):
     return {ipaddress.ip_network(value) for value in values}
+
+
+class CollapseIterableTests(unittest.TestCase):
+    def test_one_shot_iterator_preserves_both_host_families(self):
+        values = [ipaddress.ip_network("192.0.2.1/32"),
+                  ipaddress.ip_network("2001:db8::1/128")]
+        self.assertEqual(collapse(iter(values)), values)
+
+    def test_iterables_have_same_canonical_result(self):
+        cases = [
+            ([], []),
+            (["2001:db8::1/128"], ["2001:db8::1/128"]),
+            (["192.0.2.1/32"], ["192.0.2.1/32"]),
+            (["2001:db8::1/128", "192.0.2.1/32", "192.0.2.0/32",
+              "192.0.2.1/32", "2001:db8::/128"],
+             ["192.0.2.0/31", "2001:db8::/127"]),
+        ]
+        for source, expected in cases:
+            for factory in (list, tuple, set, iter):
+                with self.subTest(source=source, factory=factory.__name__):
+                    values = [ipaddress.ip_network(value) for value in source]
+                    self.assertEqual(collapse(factory(values)),
+                                     [ipaddress.ip_network(value) for value in expected])
 
 
 class ClassAwareBlockPrecedenceTests(unittest.TestCase):

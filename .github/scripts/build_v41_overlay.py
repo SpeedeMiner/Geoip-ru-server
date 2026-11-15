@@ -363,6 +363,7 @@ def field_bytes(number: int, value: bytes) -> bytes:
     return encode_varint((number << 3) | 2) + encode_varint(len(value)) + value
 
 def collapse(networks: Iterable[ipaddress._BaseNetwork]):
+    networks = tuple(networks)
     result = []
     for version in (4, 6):
         result.extend(ipaddress.collapse_addresses(n for n in networks if n.version == version))
