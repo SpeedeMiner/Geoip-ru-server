@@ -7,6 +7,10 @@ on:
         description: SHA-256 of an independently reviewed candidate (only for relative delta overruns)
         required: false
         type: string
+      reviewed_block_feeds_sha256:
+        description: Block-feed review digest printed by the failed publication count check
+        required: false
+        type: string
       snapshot_version:
         description: Optional one-time release tag such as v41.3. Empty uses the run ID.
         required: false
@@ -15,19 +19,24 @@ on:
     branches: [main, hardening/v41-release-integrity, policy/v41-1-service-and-regional, policy/v41-2-legacy-host-reclassification]
     paths:
       - ".github/workflows/geoip-v41.yml"
+      - ".github/workflows/geoip-v41-cdn-repair.yml"
       - ".github/scripts/build_rir_rukzby_prefixes.py"
       - ".github/scripts/build_v41_overlay.py"
       - ".github/scripts/build_v41_srs.py"
       - ".github/scripts/extract_ru_asn_prefixes_v41.py"
       - ".github/scripts/geoip-v37-builder/**"
+      - ".github/scripts/download_v41_build_inputs.sh"
       - ".github/scripts/download_v41_upstream_sources.py"
+      - ".github/scripts/v41_diagnostic_sources.py"
       - ".github/scripts/*v41*.sh"
       - ".github/scripts/build_v41_rir_legacy_inventory.py"
       - ".github/scripts/build_v41_iana_special_prefixes.py"
       - ".github/scripts/validate_v41_base_artifacts.py"
+      - ".github/scripts/validate_v41_block_feed_counts.py"
       - ".github/scripts/validate_v41_publication_bounds.py"
       - ".github/scripts/verify_v41_ipverse_archive.py"
       - ".github/scripts/bundle_v41_registry_inputs.py"
+      - ".github/scripts/v41_release_manifest.py"
       - ".github/data/v41-upstream-sources.json"
       - ".github/scripts/build_company_asn_prefixes.py"
       - ".github/scripts/build_company_asn_prefix_classes_v41.py"
@@ -35,6 +44,9 @@ on:
       - ".github/data/v41-reviewed-rkn-ip-records.tsv"
       - ".github/data/v41-reviewed-operator-prefixes.tsv"
       - ".github/data/v41-regional-admission-exclusions.tsv"
+      - ".github/data/v41-w1zardz-gaming-exclusions.txt"
+      - ".github/data/v41-reviewed-ipv6-admission-exclusions.tsv"
+      - ".github/scripts/v41_reviewed_ipv6_admission.py"
       - ".github/scripts/validate_v41_overlay.py"
       - ".github/scripts/validate_v41_release_gate.py"
       - ".github/scripts/validate_v41_telegram.py"
@@ -59,6 +71,7 @@ on:
 concurrency:
   group: geoip-direct-ru-by-kz-v41-${{ github.ref }}
   cancel-in-progress: false
+  queue: max
 
 permissions:
   contents: read
@@ -149,6 +162,9 @@ env:
   UPSTREAM_INPUTS_ARCHIVE: v41-upstream-inputs.tar.gz
   UPSTREAM_INPUTS_SHA: geoip_RU_v41_upstream_inputs.sha256sum
   INPUT_PROVENANCE_SHA: geoip_RU_input_provenance.tsv.sha256sum
+  BLOCK_INPUTS_ARCHIVE: v41-block-inputs.tar.gz
+  BLOCK_INPUTS_SHA: geoip_RU_v41_block_inputs.sha256sum
+  RELEASE_MANIFEST: geoip_RU_v41_release_manifest.json
 
 jobs:
   build:
@@ -310,6 +326,7 @@ jobs:
             --shared-infrastructure-prefixes "$SHARED_INFRASTRUCTURE_PREFIXES" \
             --regional-origin-prefixes "$REGIONAL_ORIGIN_PREFIXES" \
             --regional-admission-exclusions .github/data/v41-regional-admission-exclusions.tsv \
+            --reviewed-ipv6-admission-exclusions .github/data/v41-reviewed-ipv6-admission-exclusions.tsv \
             --reviewed-operator-prefixes .github/data/v41-reviewed-operator-prefixes.tsv \
             --ipsum "$BLOCKED_IPSUM_INPUT" \
             --output "$V41_OUTPUT_FILE" \
@@ -374,8 +391,10 @@ jobs:
             --hxehex-ip "$HXEHEX_IP_INPUT" \
             --escapingworm "$ESCAPINGWORM_OPERATOR_INPUT" \
             --regional-admission-exclusions .github/data/v41-regional-admission-exclusions.tsv \
+            --reviewed-ipv6-admission-exclusions .github/data/v41-reviewed-ipv6-admission-exclusions.tsv \
             --reviewed-operator-prefixes .github/data/v41-reviewed-operator-prefixes.tsv \
             --effective-blocked "$V41_BLOCKED_FILE" \
+            --ipsum "$BLOCKED_IPSUM_INPUT" \
             --manifest "$V41_MANIFEST" \
             --quality "$V41_QUALITY_REPORT" \
             --rir "$RIR_RUKZBY_PREFIX_INPUT"
@@ -423,6 +442,7 @@ jobs:
             --current-subnet-feed "$BLOCKED_SUBNET_INPUT" \
             --confirmed-ip-records .github/data/v41-reviewed-rkn-ip-records.tsv \
             --regional-admission-exclusions .github/data/v41-regional-admission-exclusions.tsv \
+            --reviewed-ipv6-admission-exclusions .github/data/v41-reviewed-ipv6-admission-exclusions.tsv \
             --reviewed-operator-prefixes .github/data/v41-reviewed-operator-prefixes.tsv \
             --effective "$V41_BLOCKED_FILE" \
             --core "$CORE_COMPANY_PREFIXES" \
@@ -480,6 +500,14 @@ jobs:
             "$INPUT_PROVENANCE" . "$UPSTREAM_INPUTS_ARCHIVE"
           sha256sum "$UPSTREAM_INPUTS_ARCHIVE" > "$UPSTREAM_INPUTS_SHA"
 
+      - name: Archive the exact current and historical block inputs
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 .github/scripts/bundle_v41_registry_inputs.py --block-inputs create \
+            "$INPUT_PROVENANCE" . "$BLOCK_INPUTS_ARCHIVE"
+          sha256sum "$BLOCK_INPUTS_ARCHIVE" > "$BLOCK_INPUTS_SHA"
+
       - name: Compile and verify sing-box rule-sets from the Full DAT
         shell: bash
         run: |
@@ -497,6 +525,13 @@ jobs:
           python3 .github/scripts/build_v41_srs.py --sing-box "$compiler_dir/sing-box-${version}-linux-amd64/sing-box"
           sha256sum -c geoip_RU.srs.sha256sum geoip_PRIVATE.srs.sha256sum
 
+      - name: Bind validated files to this build
+        shell: bash
+        run: |
+          python3 .github/scripts/v41_release_manifest.py create . \
+            --source-sha "$GITHUB_SHA" --repository "$GITHUB_REPOSITORY" \
+            --run-id "$GITHUB_RUN_ID" --run-attempt "$GITHUB_RUN_ATTEMPT"
+
       - name: Upload v41 validated build artifact
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
@@ -505,6 +540,9 @@ jobs:
             as-ip-blocks.tar.gz
             v41-registry-inputs.tar.gz
             v41-upstream-inputs.tar.gz
+            v41-block-inputs.tar.gz
+            geoip_RU_v41_block_inputs.sha256sum
+            geoip_RU_v41_release_manifest.json
             geoip_RU_v41_upstream_inputs.sha256sum
             telegram-official-cidrs.txt
             geoip_RU_v41_registry_inputs.sha256sum
@@ -600,7 +638,14 @@ jobs:
         shell: bash
         env:
           REVIEWED_SHA: ${{ inputs.reviewed_geoip_sha256 }}
+          REVIEWED_BLOCK_FEEDS_SHA: ${{ inputs.reviewed_block_feeds_sha256 }}
         run: bash ../.github/scripts/verify_v41_publication_candidate.sh
+
+      - name: Verify reviewed IPv6 admission in the downloaded candidate
+        run: |
+          python3 ../.github/scripts/v41_reviewed_ipv6_admission.py \
+            --table ../.github/data/v41-reviewed-ipv6-admission-exclusions.tsv \
+            --manifest "$V41_MANIFEST" --geoip "$V41_OUTPUT_FILE"
 
       - name: Stage the versioned snapshot tag
         id: snapshot_ref
@@ -617,7 +662,7 @@ jobs:
           SNAPSHOT_TAG: ${{ steps.snapshot_ref.outputs.snapshot }}
         run: bash ../.github/scripts/publish_v41_snapshot_release.sh
 
-      - name: Verify the published input archives and promote the release branch
+      - name: Verify public snapshot files and promote the release branch
         shell: bash
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -646,6 +691,8 @@ jobs:
             candidate/geoip_RU_category_audit.tsv
             candidate/geoip_RU_quality_report.txt
             candidate/geoip_RU_v41_manifest.json
+            candidate/geoip_RU_v41_release_manifest.json
+            candidate/geoip_RU_v41_block_inputs.sha256sum
             candidate/hydra-geoip.dat
             candidate/geoip_RU_v41_source_metrics.tsv
             candidate/geoip_RU_v41_prefix_provenance.tsv
@@ -700,18 +747,44 @@ jobs:
             candidate/geoip_RU_global_bgp_prefixes.txt
           body_path: docs/V41_ROLLING_RELEASE_NOTES.md
 
+      - name: Verify public rolling files against the release commit
+        shell: bash
+        env:
+          SNAPSHOT_SHA: ${{ steps.snapshot_ref.outputs.snapshot_sha }}
+        run: bash ../.github/scripts/verify_v41_rolling_release.sh
+
+      - name: Report an incomplete rolling update
+        if: failure() && steps.snapshot_ref.outcome == 'success'
+        shell: bash
+        run: |
+          echo "::warning::Check the versioned snapshot, release ref, and rolling assets separately before retrying publication."
+
       - name: Purge jsDelivr compatibility URLs
         shell: bash
-        continue-on-error: true
-        run: bash ../.github/scripts/purge_v41_jsdelivr.sh
+        id: cdn_ref
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SNAPSHOT_SHA: ${{ steps.snapshot_ref.outputs.snapshot_sha }}
+          V41_CDN_FALLBACK_TAG: ${{ steps.snapshot_ref.outputs.snapshot }}
+        run: bash ../.github/scripts/deliver_v41_cdn.sh
 
       - name: Print download and audit URLs
         if: github.ref == 'refs/heads/main'
         shell: bash
         run: |
           echo "GitHub Release: ${{ github.server_url }}/${{ github.repository }}/releases/download/latest-geoip-client-v41/geoip_RU.dat"
+          echo "Versioned GitHub snapshot: ${{ github.server_url }}/${{ github.repository }}/releases/tag/${{ steps.snapshot_ref.outputs.snapshot }}"
+          echo "Release commit: ${{ steps.snapshot_ref.outputs.snapshot_sha }}"
           echo "Raw release branch: https://raw.githubusercontent.com/${{ github.repository }}/release/geoip_RU.dat"
-          echo "jsDelivr: https://cdn.jsdelivr.net/gh/${{ github.repository }}@release/geoip_RU.dat"
+          echo "CDN commit: ${{ steps.cdn_ref.outputs.cdn_sha }}"
+          echo "CDN status: ${{ steps.cdn_ref.outputs.cdn_status }}"
+          if [[ "${{ steps.cdn_ref.outputs.cdn_status }}" == verified ]]; then
+            echo "jsDelivr DAT: https://cdn.jsdelivr.net/gh/${{ github.repository }}@cdn/geoip_RU.dat"
+            echo "jsDelivr RU SRS: https://cdn.jsdelivr.net/gh/${{ github.repository }}@cdn/geoip_RU.srs"
+            echo "jsDelivr PRIVATE SRS: https://cdn.jsdelivr.net/gh/${{ github.repository }}@cdn/geoip_PRIVATE.srs"
+          else
+            echo "Use the versioned GitHub snapshot above until jsDelivr delivery is verified."
+          fi
           echo "Quality report: https://raw.githubusercontent.com/${{ github.repository }}/release/geoip_RU_quality_report.txt"
           echo "v37 baseline prefix provenance: https://raw.githubusercontent.com/${{ github.repository }}/release/geoip_RU_v37_additional_provenance.tsv"
           echo "v41 service/resource prefix provenance: https://raw.githubusercontent.com/${{ github.repository }}/release/geoip_RU_v41_prefix_provenance.tsv"

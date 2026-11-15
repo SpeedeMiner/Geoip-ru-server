@@ -13,6 +13,43 @@ from prepare_blocked_sources_v41 import (
 
 
 class BlockedSourcePolicyTests(unittest.TestCase):
+    def test_required_count_guards_reject_duplicates_and_review_only_rows(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            start = int(ipaddress.ip_address("198.51.20.1"))
+            hosts = "".join(f"{ipaddress.ip_address(start + i)}\n" for i in range(1000))
+            for name in ("ip-list", "baseline"):
+                (root / name).write_text(hosts)
+            for name in ("ipresolve", "community", "refilter"):
+                (root / name).write_text("# unavailable\n")
+            (root / "subnet").write_text("203.0.113.0/24\n")
+            filenames = ("ip-list", "ipresolve", "baseline", "subnet", "community", "refilter",
+                         "approved", "exact-approved", "resolved-approved", "review", "stats", "checksums")
+            argv = ["prepare_blocked_sources_v41.py"] + [
+                arg for name in filenames for arg in ("--" + name, str(root / name))
+            ]
+            for name, content, message in (
+                ("ip-list", "198.51.20.1\n" * 1000, "approved_unique_hosts=1"),
+                ("ip-list", "203.0.113.0/24\n" * 1000, "approved_unique_hosts=0"),
+                ("ipresolve", "198.51.20.1\n", "antifilter-ipresolve.lst unexpectedly small"),
+                ("subnet", "192.0.0.0/8\n", "no approved unique bounded prefixes"),
+                ("baseline", "198.51.20.1\n" * 1000, "baseline unexpectedly small"),
+            ):
+                with self.subTest(name=name, message=message):
+                    file = root / name
+                    original = file.read_bytes()
+                    file.write_text(content)
+                    with mock.patch("sys.argv", argv), self.assertRaisesRegex(SystemExit, message):
+                        main()
+                    self.assertFalse((root / "approved").exists())
+                    file.write_bytes(original)
+            with mock.patch("sys.argv", argv), contextlib.redirect_stdout(io.StringIO()):
+                self.assertEqual(main(), 0)
+            stats = (root / "stats").read_text()
+            self.assertIn("antifilter-ipresolve.lst\tEMPTY_FALLBACK_V38_PINNED_BASELINE", stats)
+            self.assertIn("community-antifilter-community.lst\tDEGRADED_DIAGNOSTIC", stats)
+            self.assertIn("re-filter-ipsum.lst\tDEGRADED_DIAGNOSTIC", stats)
+
     def test_confirmed_registry_requires_evidence_and_rejects_dns_rows(self):
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory) / "reviewed.tsv"

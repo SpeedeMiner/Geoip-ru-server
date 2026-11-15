@@ -163,13 +163,16 @@ def build_company_prefix_classes(selected_prefixes: Path, company_registry: Path
 
     def metrics(prefixes: dict[str, set[int]]) -> dict[str, int]:
         counts = {4: 0, 6: 0}
-        addresses = {4: 0, 6: 0}
+        networks = {4: [], 6: []}
         asns: set[int] = set()
         for prefix, origins in prefixes.items():
             net = ipaddress.ip_network(prefix)
             counts[net.version] += 1
-            addresses[net.version] += net.num_addresses
+            networks[net.version].append(net)
             asns.update(origins)
+        # Keep exact origin rows unchanged, but measure each family as a union.
+        addresses = {f: sum(n.num_addresses for n in ipaddress.collapse_addresses(rows))
+                     for f, rows in networks.items()}
         return {
             "prefixes": len(prefixes),
             "active_origin_asns": len(asns),

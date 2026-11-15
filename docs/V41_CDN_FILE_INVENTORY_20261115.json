@@ -1,0 +1,24 @@
+{
+  "checked_utc": "2026-11-15T09:35:47.266980+00:00",
+  "tree_api": "https://data.jsdelivr.com/v1/package/gh/SpeedeMiner/Geoip-ru-server@cdn",
+  "flat_api": "https://data.jsdelivr.com/v1/package/gh/SpeedeMiner/Geoip-ru-server@cdn/flat",
+  "exact_member_allowlist": true,
+  "metadata_and_download_hashes_equal": true,
+  "files": {
+    "geoip_PRIVATE.srs": {
+      "size": 228,
+      "sha256": "b9ea6381ea61e286298aea76c10cb85a252ff0d20c49d6de3527be1353c107c4",
+      "url": "https://cdn.jsdelivr.net/gh/SpeedeMiner/Geoip-ru-server@cdn/geoip_PRIVATE.srs"
+    },
+    "geoip_RU.dat": {
+      "size": 512067,
+      "sha256": "5d7e9dd0eb66bd507eb5f695b83441493fb20b2307ef71125de16c8b3809fa7d",
+      "url": "https://cdn.jsdelivr.net/gh/SpeedeMiner/Geoip-ru-server@cdn/geoip_RU.dat"
+    },
+    "geoip_RU.srs": {
+      "size": 128250,
+      "sha256": "21c54a6b83c7292ec51c8fff33f19e54cc869750cb6e3cea87d7662df87684e0",
+      "url": "https://cdn.jsdelivr.net/gh/SpeedeMiner/Geoip-ru-server@cdn/geoip_RU.srs"
+    }
+  }
+}

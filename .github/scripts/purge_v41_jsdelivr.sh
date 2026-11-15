@@ -1,33 +1,72 @@
 #!/usr/bin/env bash
 set -euo pipefail
+
+[[ "$GITHUB_REPOSITORY" =~ ^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$ ]]
+source "$(dirname "${BASH_SOURCE[0]}")/v41_cdn_files.sh"
+
+# CDN cache refresh is best effort. Check each response for the requested
+# path, and report partial failure only after all compatibility URLs were tried.
 purge_jsdelivr() {
   local path="$1"
-  local response
-  response="$(curl --fail --location --silent --show-error \
-    --connect-timeout 15 --max-time 90 \
-    "https://purge.jsdelivr.net/gh/${GITHUB_REPOSITORY}@release/${path}")"
-  printf '%s\n' "$response"
-  python3 -c 'import json,sys; d=json.loads(sys.argv[1]); p=next(iter(d.get("paths",{}).values()),{}); providers=p.get("providers",{}); ok=(d.get("status")=="finished" and p.get("throttled") is False and providers and all(v is True for v in providers.values())); print("Purge status:",d.get("status"),"providers:",providers); sys.exit(0 if ok else 1)' "$response"
+  local key="/gh/${GITHUB_REPOSITORY:?set GITHUB_REPOSITORY (owner/repo)}@cdn/${path}"
+  local response code
+  if response="$(curl --fail --location --silent --show-error \
+    --proto '=https' --proto-redir '=https' --connect-timeout 10 --max-time 25 \
+    "https://purge.jsdelivr.net${key}")"; then
+    :
+  else
+    code=$?
+    printf '::warning::jsDelivr purge request failed for %s (curl %s)\n' "$path" "$code"
+    return 1
+  fi
+  if ! python3 -c '
+import json, sys
+try:
+    result = json.load(sys.stdin)
+    info = result["paths"][sys.argv[1]]
+    providers = info["providers"]
+    if (result["status"] != "finished" or info["throttled"] is not False
+        or not isinstance(providers, dict) or not providers
+        or not all(value is True for value in providers.values())):
+        sys.exit(1)
+except (KeyError, TypeError, ValueError):
+    sys.exit(1)
+' "$key" <<< "$response"; then
+    printf '::warning::jsDelivr did not confirm purge for %s\n' "$path"
+    return 1
+  fi
+  printf 'jsDelivr purge confirmed: %s\n' "$path"
 }
-purge_jsdelivr "geoip_RU.dat"
-purge_jsdelivr "geoip_RU.dat.sha256sum"
-purge_jsdelivr "geoip_RU.srs"
-purge_jsdelivr "geoip_RU.srs.sha256sum"
-purge_jsdelivr "geoip_PRIVATE.srs"
-purge_jsdelivr "geoip_PRIVATE.srs.sha256sum"
-purge_jsdelivr "geoip_RU_quality_report.txt"
-purge_jsdelivr "geoip_RU_v37_additional_provenance.tsv"
-purge_jsdelivr "geoip_RU_v41_prefix_provenance.tsv"
-purge_jsdelivr "geoip_RU_v41_blocked_provenance.tsv"
-purge_jsdelivr "geoip_RU_v41_manifest.json"
-purge_jsdelivr "geoip_RU_company_asn_bgp_prefixes.txt"
-purge_jsdelivr "geoip_RU_company_asn_core_bgp_prefixes.txt"
-purge_jsdelivr "geoip_RU_shared_infrastructure_bgp_prefixes.txt"
-purge_jsdelivr "geoip_RU_v41_rir_ru_and_company_origin_prefixes.txt"
-purge_jsdelivr "geoip_RU_company_asn_policy.tsv"
-purge_jsdelivr "geoip_RU_blocked_ip_exact_and_legacy_hard.txt"
-purge_jsdelivr "geoip_RU_blocked_ipresolve_resolver_only.txt"
-purge_jsdelivr "geoip_RU_BY_KZ_asn_manifest.txt"
-purge_jsdelivr "geoip_RU_input_provenance.tsv"
-purge_jsdelivr "geoip_RU_input_provenance.tsv.sha256sum"
-purge_jsdelivr "geoip_RU_blocked_ip_exclusions.txt"
+
+
+report() {
+  local line="$1"
+  printf '%s\n' "$line"
+  if [[ -n "${GITHUB_STEP_SUMMARY:-}" ]]; then
+    printf '%s\n' "$line" >> "$GITHUB_STEP_SUMMARY"
+  fi
+}
+
+failed=()
+success=0
+for path in "${V41_CDN_FILES[@]}"; do
+  if purge_jsdelivr "$path"; then
+    success=$((success + 1))
+  else
+    failed+=("$path")
+  fi
+done
+
+report ""
+report "### jsDelivr cache refresh"
+report ""
+report "Confirmed: $success/${#V41_CDN_FILES[@]}. Failed: ${#failed[@]}."
+if (( ${#failed[@]} )); then
+  report ""
+  for path in "${failed[@]}"; do
+    report "- Unconfirmed: $path"
+  done
+  report ""
+  report "Use the run-specific GitHub Release and its SHA-256 sidecars if a rolling CDN URL is stale."
+  exit 1
+fi

@@ -1,0 +1,58 @@
+{
+  "isolated_artifact_repair": {
+    "artifact": "v41-pr39-wrap-14155200201.zip",
+    "artifact_sha256": "e9946c54721737aafd65ef3b4ade09b66f096f3bc1a4fff13c19866a98d4ee87",
+    "stale_github_refused_before_delivery": true,
+    "stale_calls": [
+      "github.com geoip_RU.dat",
+      "github.com geoip_RU.dat.sha256sum",
+      "github.com geoip_RU.srs",
+      "github.com geoip_RU.srs.sha256sum"
+    ],
+    "successful_calls": [
+      "github.com geoip_RU.dat",
+      "github.com geoip_RU.dat.sha256sum",
+      "github.com geoip_RU.srs",
+      "github.com geoip_RU.srs.sha256sum",
+      "github.com geoip_PRIVATE.srs",
+      "github.com geoip_PRIVATE.srs.sha256sum",
+      "purge.jsdelivr.net geoip_RU.dat",
+      "purge.jsdelivr.net geoip_RU.srs",
+      "purge.jsdelivr.net geoip_PRIVATE.srs",
+      "raw.githubusercontent.com geoip_RU.dat",
+      "raw.githubusercontent.com geoip_RU.srs",
+      "raw.githubusercontent.com geoip_PRIVATE.srs",
+      "cdn.jsdelivr.net geoip_RU.dat",
+      "cdn.jsdelivr.net geoip_RU.srs",
+      "cdn.jsdelivr.net geoip_PRIVATE.srs"
+    ],
+    "only_cdn_moved": true,
+    "duplicate_repair_was_noop": true,
+    "local_remote_only": true
+  },
+  "read_only_live_rolling_checks": {
+    "github_release": "7eef1efcaafbdbe259f3aa4e56a07c38979afbfb",
+    "published_cdn": "80e3b143d5d6b84cb6545e80be9ee0401e0089be",
+    "no_live_write": true,
+    "no_live_purge": true,
+    "source_tree_unchanged": true,
+    "actual_rolling_binary_checks": true
+  },
+  "concurrent_release_swap": {
+    "changed_release_after_last_github_readback": true,
+    "cdn_unmodified": true,
+    "no_purge_requests": true,
+    "local_fixture_only": true,
+    "github_downloads": [
+      "github.com geoip_RU.dat",
+      "github.com geoip_RU.dat.sha256sum",
+      "github.com geoip_RU.srs",
+      "github.com geoip_RU.srs.sha256sum",
+      "github.com geoip_PRIVATE.srs",
+      "github.com geoip_PRIVATE.srs.sha256sum"
+    ]
+  },
+  "composed_tree": "bf2132e7e658a56b9a91c8c974418e1bc7cd225c",
+  "local_combined_test_count": 215,
+  "local_pr_test_count": 181
+}

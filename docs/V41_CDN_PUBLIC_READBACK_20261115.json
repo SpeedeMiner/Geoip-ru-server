@@ -1,0 +1,523 @@
+{
+  "bootstrap_sha": "80e3b143d5d6b84cb6545e80be9ee0401e0089be",
+  "bootstrap_tree": "dce8bcf96501a0dde4e9202b28e6519c90cbd2bd",
+  "source_release": "7eef1efcaafbdbe259f3aa4e56a07c38979afbfb",
+  "initial_public_readback": [
+    {
+      "category": "cdn",
+      "name": "geoip_RU.dat",
+      "url": "https://cdn.jsdelivr.net/gh/SpeedeMiner/Geoip-ru-server@cdn/geoip_RU.dat",
+      "utc": "2026-11-15T08:44:38.480432+00:00",
+      "status": 200,
+      "bytes": 512067,
+      "sha256": "5d7e9dd0eb66bd507eb5f695b83441493fb20b2307ef71125de16c8b3809fa7d",
+      "matches_github_release": true
+    },
+    {
+      "category": "cdn",
+      "name": "geoip_RU.srs",
+      "url": "https://cdn.jsdelivr.net/gh/SpeedeMiner/Geoip-ru-server@cdn/geoip_RU.srs",
+      "utc": "2026-11-15T08:44:38.481507+00:00",
+      "status": 200,
+      "bytes": 128250,
+      "sha256": "21c54a6b83c7292ec51c8fff33f19e54cc869750cb6e3cea87d7662df87684e0",
+      "matches_github_release": true
+    },
+    {
+      "category": "cdn",
+      "name": "geoip_PRIVATE.srs",
+      "url": "https://cdn.jsdelivr.net/gh/SpeedeMiner/Geoip-ru-server@cdn/geoip_PRIVATE.srs",
+      "utc": "2026-11-15T08:44:38.482082+00:00",
+      "status": 200,
+      "bytes": 228,
+      "sha256": "b9ea6381ea61e286298aea76c10cb85a252ff0d20c49d6de3527be1353c107c4",
+      "matches_github_release": true
+    },
+    {
+      "category": "cdn",
+      "name": "geoip_RU.dat.sha256sum",
+      "url": "https://cdn.jsdelivr.net/gh/SpeedeMiner/Geoip-ru-server@cdn/geoip_RU.dat.sha256sum",
+      "utc": "2026-11-15T08:44:38.490806+00:00",
+      "status": 404,
+      "detail": "Couldn't find the requested file /geoip_RU.dat.sha256sum in SpeedeMiner/Geoip-ru-server."
+    },
+    {
+      "category": "cdn",
+      "name": "geoip_RU_quality_report.txt",
+      "url": "https://cdn.jsdelivr.net/gh/SpeedeMiner/Geoip-ru-server@cdn/geoip_RU_quality_report.txt",
+      "utc": "2026-11-15T08:44:38.491817+00:00",
+      "status": 404,
+      "detail": "Couldn't find the requested file /geoip_RU_quality_report.txt in SpeedeMiner/Geoip-ru-server."
+    },
+    {
+      "category": "cdn",
+      "name": "geoip_RU_v41_manifest.json",
+      "url": "https://cdn.jsdelivr.net/gh/SpeedeMiner/Geoip-ru-server@cdn/geoip_RU_v41_manifest.json",
+      "utc": "2026-11-15T08:44:38.492506+00:00",
+      "status": 404,
+      "detail": "Couldn't find the requested file /geoip_RU_v41_manifest.json in SpeedeMiner/Geoip-ru-server."
+    },
+    {
+      "category": "cdn",
+      "name": "hydra-geoip.dat",
+      "url": "https://cdn.jsdelivr.net/gh/SpeedeMiner/Geoip-ru-server@cdn/hydra-geoip.dat",
+      "utc": "2026-11-15T08:44:44.829949+00:00",
+      "status": 404,
+      "detail": "Couldn't find the requested file /hydra-geoip.dat in SpeedeMiner/Geoip-ru-server."
+    },
+    {
+      "category": "cdn",
+      "name": "geoip_RU_v41_prefix_provenance.tsv",
+      "url": "https://cdn.jsdelivr.net/gh/SpeedeMiner/Geoip-ru-server@cdn/geoip_RU_v41_prefix_provenance.tsv",
+      "utc": "2026-11-15T08:44:44.943644+00:00",
+      "status": 404,
+      "detail": "Couldn't find the requested file /geoip_RU_v41_prefix_provenance.tsv in SpeedeMiner/Geoip-ru-server."
+    },
+    {
+      "category": "gcore",
+      "name": "geoip_RU.dat",
+      "url": "https://gcore.jsdelivr.net/gh/SpeedeMiner/Geoip-ru-server@cdn/geoip_RU.dat",
+      "utc": "2026-11-15T08:44:44.945841+00:00",
+      "status": 200,
+      "bytes": 512067,
+      "sha256": "5d7e9dd0eb66bd507eb5f695b83441493fb20b2307ef71125de16c8b3809fa7d",
+      "matches_github_release": true
+    },
+    {
+      "category": "gcore",
+      "name": "geoip_RU.srs",
+      "url": "https://gcore.jsdelivr.net/gh/SpeedeMiner/Geoip-ru-server@cdn/geoip_RU.srs",
+      "utc": "2026-11-15T08:44:44.946755+00:00",
+      "status": 200,
+      "bytes": 128250,
+      "sha256": "21c54a6b83c7292ec51c8fff33f19e54cc869750cb6e3cea87d7662df87684e0",
+      "matches_github_release": true
+    },
+    {
+      "category": "gcore",
+      "name": "geoip_PRIVATE.srs",
+      "url": "https://gcore.jsdelivr.net/gh/SpeedeMiner/Geoip-ru-server@cdn/geoip_PRIVATE.srs",
+      "utc": "2026-11-15T08:44:44.981934+00:00",
+      "status": 200,
+      "bytes": 228,
+      "sha256": "b9ea6381ea61e286298aea76c10cb85a252ff0d20c49d6de3527be1353c107c4",
+      "matches_github_release": true
+    },
+    {
+      "category": "raw-commit",
+      "name": "geoip_RU.dat",
+      "url": "https://raw.githubusercontent.com/SpeedeMiner/Geoip-ru-server/80e3b143d5d6b84cb6545e80be9ee0401e0089be/geoip_RU.dat",
+      "utc": "2026-11-15T08:44:45.412563+00:00",
+      "status": 200,
+      "bytes": 512067,
+      "sha256": "5d7e9dd0eb66bd507eb5f695b83441493fb20b2307ef71125de16c8b3809fa7d",
+      "matches_github_release": true
+    },
+    {
+      "category": "raw-commit",
+      "name": "geoip_RU.srs",
+      "url": "https://raw.githubusercontent.com/SpeedeMiner/Geoip-ru-server/80e3b143d5d6b84cb6545e80be9ee0401e0089be/geoip_RU.srs",
+      "utc": "2026-11-15T08:44:49.086672+00:00",
+      "status": 200,
+      "bytes": 128250,
+      "sha256": "21c54a6b83c7292ec51c8fff33f19e54cc869750cb6e3cea87d7662df87684e0",
+      "matches_github_release": true
+    },
+    {
+      "category": "raw-commit",
+      "name": "geoip_PRIVATE.srs",
+      "url": "https://raw.githubusercontent.com/SpeedeMiner/Geoip-ru-server/80e3b143d5d6b84cb6545e80be9ee0401e0089be/geoip_PRIVATE.srs",
+      "utc": "2026-11-15T08:44:49.126293+00:00",
+      "status": 200,
+      "bytes": 228,
+      "sha256": "b9ea6381ea61e286298aea76c10cb85a252ff0d20c49d6de3527be1353c107c4",
+      "matches_github_release": true
+    },
+    {
+      "category": "raw-commit",
+      "name": "geoip_RU.dat.sha256sum",
+      "url": "https://raw.githubusercontent.com/SpeedeMiner/Geoip-ru-server/80e3b143d5d6b84cb6545e80be9ee0401e0089be/geoip_RU.dat.sha256sum",
+      "utc": "2026-11-15T08:44:49.230073+00:00",
+      "status": 404,
+      "detail": "404: Not Found"
+    },
+    {
+      "category": "raw-commit",
+      "name": "geoip_RU_quality_report.txt",
+      "url": "https://raw.githubusercontent.com/SpeedeMiner/Geoip-ru-server/80e3b143d5d6b84cb6545e80be9ee0401e0089be/geoip_RU_quality_report.txt",
+      "utc": "2026-11-15T08:44:49.674039+00:00",
+      "status": 404,
+      "detail": "404: Not Found"
+    },
+    {
+      "category": "list",
+      "name": "tree",
+      "url": "https://data.jsdelivr.com/v1/package/gh/SpeedeMiner/Geoip-ru-server@cdn",
+      "utc": "2026-11-15T08:44:50.554624+00:00",
+      "status": 200,
+      "bytes": 550,
+      "sha256": "a78f36f042b2ea428591663516808c49a3fcd6963075a2fd9c85346b6323324b",
+      "paths": [
+        [
+          "geoip_PRIVATE.srs",
+          "file"
+        ],
+        [
+          "geoip_RU.dat",
+          "file"
+        ],
+        [
+          "geoip_RU.srs",
+          "file"
+        ]
+      ]
+    }
+  ],
+  "decoded_live": {
+    "geoip_RU.dat": {
+      "sha256": "5d7e9dd0eb66bd507eb5f695b83441493fb20b2307ef71125de16c8b3809fa7d",
+      "bytes": 512067,
+      "url": "https://cdn.jsdelivr.net/gh/SpeedeMiner/Geoip-ru-server@cdn/geoip_RU.dat",
+      "categories": [
+        "PRIVATE",
+        "RU"
+      ]
+    },
+    "geoip_RU.srs": {
+      "sha256": "21c54a6b83c7292ec51c8fff33f19e54cc869750cb6e3cea87d7662df87684e0",
+      "bytes": 128250,
+      "url": "https://cdn.jsdelivr.net/gh/SpeedeMiner/Geoip-ru-server@cdn/geoip_RU.srs",
+      "category": "RU",
+      "deduplicated_cidrs": 32774,
+      "dat_equivalent": true
+    },
+    "geoip_PRIVATE.srs": {
+      "sha256": "b9ea6381ea61e286298aea76c10cb85a252ff0d20c49d6de3527be1353c107c4",
+      "bytes": 228,
+      "url": "https://cdn.jsdelivr.net/gh/SpeedeMiner/Geoip-ru-server@cdn/geoip_PRIVATE.srs",
+      "category": "PRIVATE",
+      "deduplicated_cidrs": 151,
+      "dat_equivalent": true
+    }
+  },
+  "isolated_real_ci_promotion": {
+    "artifact": "v41-pr39-14155225214.zip",
+    "archive_sha256": "99030842eee1a6c00472971da02661b8665b78748fa63297785b96065b8572aa",
+    "verified_names": [
+      "geoip_PRIVATE.srs",
+      "geoip_RU.dat",
+      "geoip_RU.srs"
+    ],
+    "payload_bytes": 640509,
+    "sha256": {
+      "geoip_RU.dat": "da0308b7b97fb170be08fa0e912ec379edf39742f41fa1234d104529bc1c51b8",
+      "geoip_RU.srs": "3cc3b23582aa430e9575a299672d538b4cc89a00eab6be22195c6622b7386fb9",
+      "geoip_PRIVATE.srs": "b9ea6381ea61e286298aea76c10cb85a252ff0d20c49d6de3527be1353c107c4"
+    },
+    "isolated_remote_only": true,
+    "preserved_prior_cdn_parent": "80e3b143d5d6b84cb6545e80be9ee0401e0089be",
+    "release_and_tags_unchanged": true
+  },
+  "integration": {
+    "git_tree": "2c90c3f78db9bc4fd543222ddc0d1b50b8feb99e",
+    "python_tests": 208,
+    "required_rolling_GitHub_readback_before_CDN": true,
+    "production_refs_modified": false
+  },
+  "isolated_committed_wrapper_artifact": {
+    "artifact": "v41-pr39-wrap-14155200201.zip",
+    "archive_sha256": "e9946c54721737aafd65ef3b4ade09b66f096f3bc1a4fff13c19866a98d4ee87",
+    "verified_names": [
+      "geoip_PRIVATE.srs",
+      "geoip_RU.dat",
+      "geoip_RU.srs"
+    ],
+    "payload_bytes": 640509,
+    "sha256": {
+      "geoip_RU.dat": "da0308b7b97fb170be08fa0e912ec379edf39742f41fa1234d104529bc1c51b8",
+      "geoip_RU.srs": "3cc3b23582aa430e9575a299672d538b4cc89a00eab6be22195c6622b7386fb9",
+      "geoip_PRIVATE.srs": "b9ea6381ea61e286298aea76c10cb85a252ff0d20c49d6de3527be1353c107c4"
+    },
+    "isolated_remote_only": true,
+    "preserved_prior_cdn_parent": "80e3b143d5d6b84cb6545e80be9ee0401e0089be",
+    "release_and_tags_unchanged": true
+  },
+  "isolated_whole_delivery_with_failures": {
+    "artifact": "v41-pr39-wrap-14155200201.zip",
+    "old_client_commit": "80e3b143d5d6b84cb6545e80be9ee0401e0089be",
+    "local_client_commit": "6f9f8b9e39f25b223fb663a05a0d6b77696a9d3a",
+    "expected_cache_error": "geoip_RU.srs purge timeout",
+    "expected_stale_cache_retried": "geoip_RU.dat",
+    "ordered_calls": [
+      "purge.jsdelivr.net geoip_RU.dat",
+      "purge.jsdelivr.net geoip_RU.srs",
+      "purge.jsdelivr.net geoip_PRIVATE.srs",
+      "raw.githubusercontent.com geoip_RU.dat",
+      "raw.githubusercontent.com geoip_RU.srs",
+      "raw.githubusercontent.com geoip_PRIVATE.srs",
+      "cdn.jsdelivr.net geoip_RU.dat",
+      "cdn.jsdelivr.net geoip_RU.dat",
+      "cdn.jsdelivr.net geoip_RU.srs",
+      "cdn.jsdelivr.net geoip_PRIVATE.srs"
+    ],
+    "all_client_bytes_verified": true,
+    "isolated_git_remote": true
+  },
+  "cross_provider_matrix": {
+    "started_utc": "2026-11-15T08:56:50.454608+00:00",
+    "results": [
+      {
+        "url": "https://cdn.jsdelivr.net/gh/SpeedeMiner/Geoip-ru-server@cdn/geoip_RU.dat",
+        "host": "cdn.jsdelivr.net",
+        "path": "geoip_RU.dat",
+        "status": 200,
+        "bytes": 512067,
+        "sha256": "5d7e9dd0eb66bd507eb5f695b83441493fb20b2307ef71125de16c8b3809fa7d",
+        "headers": {
+          "X-Version": null,
+          "X-Version-Type": null,
+          "X-Cache": "MISS, HIT",
+          "Age": "187",
+          "Cache-Control": "public, max-age=604800, s-maxage=43200"
+        },
+        "matches_published_release": true
+      },
+      {
+        "url": "https://cdn.jsdelivr.net/gh/SpeedeMiner/Geoip-ru-server@cdn/geoip_RU.srs",
+        "host": "cdn.jsdelivr.net",
+        "path": "geoip_RU.srs",
+        "status": 200,
+        "bytes": 128250,
+        "sha256": "21c54a6b83c7292ec51c8fff33f19e54cc869750cb6e3cea87d7662df87684e0",
+        "headers": {
+          "X-Version": null,
+          "X-Version-Type": null,
+          "X-Cache": "MISS, HIT",
+          "Age": "187",
+          "Cache-Control": "public, max-age=604800, s-maxage=43200"
+        },
+        "matches_published_release": true
+      },
+      {
+        "url": "https://cdn.jsdelivr.net/gh/SpeedeMiner/Geoip-ru-server@cdn/geoip_PRIVATE.srs",
+        "host": "cdn.jsdelivr.net",
+        "path": "geoip_PRIVATE.srs",
+        "status": 200,
+        "bytes": 228,
+        "sha256": "b9ea6381ea61e286298aea76c10cb85a252ff0d20c49d6de3527be1353c107c4",
+        "headers": {
+          "X-Version": null,
+          "X-Version-Type": null,
+          "X-Cache": "MISS, HIT",
+          "Age": "187",
+          "Cache-Control": "public, max-age=604800, s-maxage=43200"
+        },
+        "matches_published_release": true
+      },
+      {
+        "url": "https://cdn.jsdelivr.net/gh/SpeedeMiner/Geoip-ru-server@cdn/geoip_RU.dat.sha256sum",
+        "host": "cdn.jsdelivr.net",
+        "path": "geoip_RU.dat.sha256sum",
+        "status": 404
+      },
+      {
+        "url": "https://cdn.jsdelivr.net/gh/SpeedeMiner/Geoip-ru-server@cdn/geoip_RU_v41_manifest.json",
+        "host": "cdn.jsdelivr.net",
+        "path": "geoip_RU_v41_manifest.json",
+        "status": 404
+      },
+      {
+        "url": "https://cdn.jsdelivr.net/gh/SpeedeMiner/Geoip-ru-server@cdn/geoip_RU_v41_prefix_provenance.tsv",
+        "host": "cdn.jsdelivr.net",
+        "path": "geoip_RU_v41_prefix_provenance.tsv",
+        "status": 404
+      },
+      {
+        "url": "https://cdn.jsdelivr.net/gh/SpeedeMiner/Geoip-ru-server@cdn/v41-upstream-inputs.tar.gz",
+        "host": "cdn.jsdelivr.net",
+        "path": "v41-upstream-inputs.tar.gz",
+        "status": 404
+      },
+      {
+        "url": "https://cdn.jsdelivr.net/gh/SpeedeMiner/Geoip-ru-server@cdn/hydra-geoip.dat",
+        "host": "cdn.jsdelivr.net",
+        "path": "hydra-geoip.dat",
+        "status": 404
+      },
+      {
+        "url": "https://cdn.jsdelivr.net/gh/SpeedeMiner/Geoip-ru-server@cdn/README.md",
+        "host": "cdn.jsdelivr.net",
+        "path": "README.md",
+        "status": 404
+      },
+      {
+        "url": "https://fastly.jsdelivr.net/gh/SpeedeMiner/Geoip-ru-server@cdn/geoip_RU.dat",
+        "host": "fastly.jsdelivr.net",
+        "path": "geoip_RU.dat",
+        "status": 200,
+        "bytes": 512067,
+        "sha256": "5d7e9dd0eb66bd507eb5f695b83441493fb20b2307ef71125de16c8b3809fa7d",
+        "headers": {
+          "X-Version": null,
+          "X-Version-Type": null,
+          "X-Cache": "MISS, MISS",
+          "Age": "0",
+          "Cache-Control": "public, max-age=604800, s-maxage=43200"
+        },
+        "matches_published_release": true
+      },
+      {
+        "url": "https://fastly.jsdelivr.net/gh/SpeedeMiner/Geoip-ru-server@cdn/geoip_RU.srs",
+        "host": "fastly.jsdelivr.net",
+        "path": "geoip_RU.srs",
+        "status": 200,
+        "bytes": 128250,
+        "sha256": "21c54a6b83c7292ec51c8fff33f19e54cc869750cb6e3cea87d7662df87684e0",
+        "headers": {
+          "X-Version": null,
+          "X-Version-Type": null,
+          "X-Cache": "MISS, MISS",
+          "Age": "0",
+          "Cache-Control": "public, max-age=604800, s-maxage=43200"
+        },
+        "matches_published_release": true
+      },
+      {
+        "url": "https://fastly.jsdelivr.net/gh/SpeedeMiner/Geoip-ru-server@cdn/geoip_PRIVATE.srs",
+        "host": "fastly.jsdelivr.net",
+        "path": "geoip_PRIVATE.srs",
+        "status": 200,
+        "bytes": 228,
+        "sha256": "b9ea6381ea61e286298aea76c10cb85a252ff0d20c49d6de3527be1353c107c4",
+        "headers": {
+          "X-Version": null,
+          "X-Version-Type": null,
+          "X-Cache": "MISS, MISS",
+          "Age": "0",
+          "Cache-Control": "public, max-age=604800, s-maxage=43200"
+        },
+        "matches_published_release": true
+      },
+      {
+        "url": "https://fastly.jsdelivr.net/gh/SpeedeMiner/Geoip-ru-server@cdn/geoip_RU.dat.sha256sum",
+        "host": "fastly.jsdelivr.net",
+        "path": "geoip_RU.dat.sha256sum",
+        "status": 404
+      },
+      {
+        "url": "https://fastly.jsdelivr.net/gh/SpeedeMiner/Geoip-ru-server@cdn/geoip_RU_v41_manifest.json",
+        "host": "fastly.jsdelivr.net",
+        "path": "geoip_RU_v41_manifest.json",
+        "status": 404
+      },
+      {
+        "url": "https://fastly.jsdelivr.net/gh/SpeedeMiner/Geoip-ru-server@cdn/geoip_RU_v41_prefix_provenance.tsv",
+        "host": "fastly.jsdelivr.net",
+        "path": "geoip_RU_v41_prefix_provenance.tsv",
+        "status": 404
+      },
+      {
+        "url": "https://fastly.jsdelivr.net/gh/SpeedeMiner/Geoip-ru-server@cdn/v41-upstream-inputs.tar.gz",
+        "host": "fastly.jsdelivr.net",
+        "path": "v41-upstream-inputs.tar.gz",
+        "status": 404
+      },
+      {
+        "url": "https://fastly.jsdelivr.net/gh/SpeedeMiner/Geoip-ru-server@cdn/hydra-geoip.dat",
+        "host": "fastly.jsdelivr.net",
+        "path": "hydra-geoip.dat",
+        "status": 404
+      },
+      {
+        "url": "https://fastly.jsdelivr.net/gh/SpeedeMiner/Geoip-ru-server@cdn/README.md",
+        "host": "fastly.jsdelivr.net",
+        "path": "README.md",
+        "status": 404
+      },
+      {
+        "url": "https://gcore.jsdelivr.net/gh/SpeedeMiner/Geoip-ru-server@cdn/geoip_RU.dat",
+        "host": "gcore.jsdelivr.net",
+        "path": "geoip_RU.dat",
+        "status": 200,
+        "bytes": 512067,
+        "sha256": "5d7e9dd0eb66bd507eb5f695b83441493fb20b2307ef71125de16c8b3809fa7d",
+        "headers": {
+          "X-Version": null,
+          "X-Version-Type": null,
+          "X-Cache": "MISS, MISS",
+          "Age": "741",
+          "Cache-Control": "public, max-age=604800, s-maxage=43200"
+        },
+        "matches_published_release": true
+      },
+      {
+        "url": "https://gcore.jsdelivr.net/gh/SpeedeMiner/Geoip-ru-server@cdn/geoip_RU.srs",
+        "host": "gcore.jsdelivr.net",
+        "path": "geoip_RU.srs",
+        "status": 200,
+        "bytes": 128250,
+        "sha256": "21c54a6b83c7292ec51c8fff33f19e54cc869750cb6e3cea87d7662df87684e0",
+        "headers": {
+          "X-Version": null,
+          "X-Version-Type": null,
+          "X-Cache": "MISS, MISS",
+          "Age": "741",
+          "Cache-Control": "public, max-age=604800, s-maxage=43200"
+        },
+        "matches_published_release": true
+      },
+      {
+        "url": "https://gcore.jsdelivr.net/gh/SpeedeMiner/Geoip-ru-server@cdn/geoip_PRIVATE.srs",
+        "host": "gcore.jsdelivr.net",
+        "path": "geoip_PRIVATE.srs",
+        "status": 200,
+        "bytes": 228,
+        "sha256": "b9ea6381ea61e286298aea76c10cb85a252ff0d20c49d6de3527be1353c107c4",
+        "headers": {
+          "X-Version": null,
+          "X-Version-Type": null,
+          "X-Cache": "MISS, MISS",
+          "Age": "741",
+          "Cache-Control": "public, max-age=604800, s-maxage=43200"
+        },
+        "matches_published_release": true
+      },
+      {
+        "url": "https://gcore.jsdelivr.net/gh/SpeedeMiner/Geoip-ru-server@cdn/geoip_RU.dat.sha256sum",
+        "host": "gcore.jsdelivr.net",
+        "path": "geoip_RU.dat.sha256sum",
+        "status": 404
+      },
+      {
+        "url": "https://gcore.jsdelivr.net/gh/SpeedeMiner/Geoip-ru-server@cdn/geoip_RU_v41_manifest.json",
+        "host": "gcore.jsdelivr.net",
+        "path": "geoip_RU_v41_manifest.json",
+        "status": 404
+      },
+      {
+        "url": "https://gcore.jsdelivr.net/gh/SpeedeMiner/Geoip-ru-server@cdn/geoip_RU_v41_prefix_provenance.tsv",
+        "host": "gcore.jsdelivr.net",
+        "path": "geoip_RU_v41_prefix_provenance.tsv",
+        "status": 404
+      },
+      {
+        "url": "https://gcore.jsdelivr.net/gh/SpeedeMiner/Geoip-ru-server@cdn/v41-upstream-inputs.tar.gz",
+        "host": "gcore.jsdelivr.net",
+        "path": "v41-upstream-inputs.tar.gz",
+        "status": 404
+      },
+      {
+        "url": "https://gcore.jsdelivr.net/gh/SpeedeMiner/Geoip-ru-server@cdn/hydra-geoip.dat",
+        "host": "gcore.jsdelivr.net",
+        "path": "hydra-geoip.dat",
+        "status": 404
+      },
+      {
+        "url": "https://gcore.jsdelivr.net/gh/SpeedeMiner/Geoip-ru-server@cdn/README.md",
+        "host": "gcore.jsdelivr.net",
+        "path": "README.md",
+        "status": 404
+      }
+    ]
+  }
+}

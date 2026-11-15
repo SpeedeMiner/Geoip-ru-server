@@ -62,7 +62,7 @@ download_file() {
 }
 
 download_optional_file() {
-  local label="$1" output="$2" url="$3" tmp="${2}.part"
+  local label="$1" output="$2" url="$3" tmp="${2}.part" status="${4:-unavailable}"
   rm -f "$tmp"
   if curl --fail --location --silent --show-error --proto "=https" --proto-redir "=https" --max-filesize 67108864 --connect-timeout 20 --max-time 180 \
        --retry 2 --retry-all-errors --retry-delay 2 --output "$tmp" "$url" && [[ -s "$tmp" ]]; then
@@ -72,8 +72,8 @@ download_optional_file() {
   else
     rm -f "$tmp"
     printf '# Optional source unavailable during this build: %s\n' "$url" > "$output"
-    record_source_download "$label" "$output" "$url" "unavailable"
-    echo "::warning::Optional source unavailable: ${label}; see blocked-source stats for fallback status."
+    record_source_download "$label" "$output" "$url" "$status"
+    echo "::warning::Optional source unavailable: ${label}; input provenance status=${status}."
   fi
 }
 
@@ -134,16 +134,18 @@ download_file "IANA IPV6 SPECIAL REGISTRY" "$IANA_V6_CSV" \
 # Extract RU-registered ASNs AND RU-registered IPv4/IPv6 resources from
 # the five authoritative RIR delegated-stat snapshots. IP registration
 # country is a corroborating registry signal, not proof of server location.
+# Evaluate both inventories against the same UTC date, even at midnight.
+rir_reference_utc="$(date -u +%F)"
 python3 .github/scripts/build_v41_rir_legacy_inventory.py "$AFRINIC_STATS" "$APNIC_STATS" "$ARIN_STATS" \
   "$LACNIC_STATS" "$RIPENCC_STATS" "$RU_ASN_REGISTRY" \
-  "$RIR_PREFIX_INPUT" "$RIR_STATS" "$BY_KZ_ASN_REGISTRY"
+  "$RIR_PREFIX_INPUT" "$RIR_STATS" "$BY_KZ_ASN_REGISTRY" --as-of "$rir_reference_utc"
 
 # v41 separately inventories the full RU+BY+KZ public address-resource
 # set. Registration is DIRECT evidence here, not a physical-geolocation claim.
 python3 .github/scripts/build_rir_rukzby_prefixes.py \
   --afrinic "$AFRINIC_STATS" --apnic "$APNIC_STATS" --arin "$ARIN_STATS" \
   --lacnic "$LACNIC_STATS" --ripencc "$RIPENCC_STATS" \
-  --output "$RIR_RUKZBY_PREFIX_INPUT" --stats "$RIR_RUKZBY_STATS"
+  --output "$RIR_RUKZBY_PREFIX_INPUT" --stats "$RIR_RUKZBY_STATS" --as-of "$rir_reference_utc"
 
 # Convert the official IANA registries into exact non-globally-reachable
 # prefixes and explicit globally-reachable exceptions.
@@ -184,8 +186,8 @@ download_file "ANTIFILTER SUBNET LIST" "$BLOCKED_SUBNET_INPUT" \
 # Officially described by the aggregator as /24 summarization of individual
 # RKN-derived IPs. The v41 builder applies it separately and reports its
 # wider shared-hosting/CDN collateral risk instead of hiding it in subnet.lst.
-download_file "ANTIFILTER IPSUM IPV4 /24 SUMMARY" "$BLOCKED_IPSUM_INPUT" \
-  "https://antifilter.download/list/ipsum.lst"
+download_optional_file "ANTIFILTER IPSUM IPV4 /24 SUMMARY" "$BLOCKED_IPSUM_INPUT" \
+  "https://antifilter.download/list/ipsum.lst" "diagnostic-unavailable"
 
 # Community and Re-filter are intentionally review-only. They must never
 # be silently promoted into automatic DIRECT exclusions.

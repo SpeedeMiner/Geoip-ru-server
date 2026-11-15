@@ -58,6 +58,26 @@ class CompanyASNPrefixClassTests(unittest.TestCase):
             self.assertIn("192.0.2.0/24", core_out.read_text(encoding="utf-8"))
             self.assertNotIn("192.0.2.0/24", shared_out.read_text(encoding="utf-8"))
 
+    def test_address_metrics_union_overlaps_without_dropping_exact_rows(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            registry, policy, selected = self.make_inputs(root)
+            with selected.open("a", encoding="utf-8") as out:
+                out.write("198.51.100.0/25 # AS100[Group100]\n"
+                          "198.51.100.0/26 # AS106[Group106]\n"
+                          "2001:db8:100::/49 # AS111[Group111]\n")
+            all_out, core_out, shared_out = root / "all", root / "core", root / "shared"
+            result = build_company_prefix_classes(selected, registry, policy, all_out, core_out, shared_out)
+            self.assertEqual(result["all_company_origins"]["ipv4_prefixes"], 5)
+            self.assertEqual(result["all_company_origins"]["ipv4_addresses"], 768)
+            self.assertEqual(result["core"]["ipv4_addresses"], 512)
+            self.assertEqual(result["shared_infrastructure"]["ipv4_addresses"], 320)
+            self.assertEqual(result["shared_infrastructure"]["ipv6_prefixes"], 2)
+            self.assertEqual(result["shared_infrastructure"]["ipv6_addresses"], 1 << 80)
+            self.assertIn("198.51.100.0/25 # AS100", core_out.read_text())
+            self.assertIn("198.51.100.0/26 # AS106", shared_out.read_text())
+            self.assertIn("2001:db8:100::/49 # AS111", all_out.read_text())
+
     def test_registry_policy_must_match_exactly(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)

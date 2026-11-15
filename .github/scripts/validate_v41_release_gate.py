@@ -13,6 +13,7 @@ import json
 from pathlib import Path
 
 import build_v41_overlay as builder
+from v41_reviewed_ipv6_admission import verify_reviewed_ipv6_admission_manifest
 from prepare_blocked_sources_v41 import (
     CONFIRMED_IP, HARD_SOURCE_LABELS, TELEGRAM_PREFIXES,
     read_confirmed_ip_records, read_feed, subnet_auto_approved,
@@ -50,6 +51,8 @@ def check_manifest(manifest: dict, args) -> None:
     for field, key in SOURCE_KEYS.items():
         if recorded.get(key) != digest(getattr(args, field)):
             raise ValueError(f"build input SHA-256 mismatch: {key}")
+    if recorded.get("w1zardz_gaming_exclusions") != digest(builder.W1ZARDZ_EXCLUSIONS):
+        raise ValueError("build input SHA-256 mismatch: w1zardz_gaming_exclusions")
 
 
 def read_hard_sources(path: Path):
@@ -87,11 +90,13 @@ def verify_hard_evidence(hard_rows, subnet_feed: Path, reviewed_registry: Path):
         raise ValueError("Hard sidecar does not match current explicit IP/subnet evidence")
 
 
-def literal_service_exceptions(regions, sources):
+def literal_service_exceptions(regions, sources, *, w1zardz_literal_hosts=None):
     """Verify hard exceptions from original rows, without reusing the overlay masks."""
     result = set()
     for name in ("kyoresuas-standard", "w1zardz-service-direct"):
-        for net in sources.get(name, ()):
+        candidates = (w1zardz_literal_hosts if name == "w1zardz-service-direct" and w1zardz_literal_hosts is not None
+                      else sources.get(name, ()))
+        for net in candidates:
             if net.prefixlen != net.max_prefixlen:
                 continue
             if name != "w1zardz-service-direct" or any(
@@ -198,6 +203,7 @@ def main() -> int:
     p.add_argument("--current-subnet-feed", type=Path, required=True)
     p.add_argument("--confirmed-ip-records", type=Path, required=True)
     p.add_argument("--regional-admission-exclusions", type=Path, required=True)
+    p.add_argument("--reviewed-ipv6-admission-exclusions", type=Path, required=True)
     p.add_argument("--reviewed-operator-prefixes", type=Path, required=True)
     a = p.parse_args()
     try:
@@ -206,7 +212,8 @@ def main() -> int:
         categories = builder.parse_geoip_dat(a.geoip)
         if set(categories) != {"RU", "PRIVATE"}:
             raise ValueError("Expected GeoIP categories RU and PRIVATE only")
-        admission = builder.parse_regional_admission_exclusions(a.regional_admission_exclusions)
+        admission = set(builder.parse_regional_admission_exclusions(a.regional_admission_exclusions))
+        admission.update(verify_reviewed_ipv6_admission_manifest(a.reviewed_ipv6_admission_exclusions, manifest))
         builder.assert_regional_admission_disjoint(categories["RU"], admission)
         effective = builder.parse_cidr_file(a.effective)[0]
         core = builder.parse_cidr_file(a.core, allow_hosts=False)[0]
@@ -220,7 +227,10 @@ def main() -> int:
                       "w1zardz", "escapingworm"):
             setattr(feed, field, getattr(a, field))
         sources, _, _ = builder.load_service_inputs(feed)
-        service = literal_service_exceptions(regions, sources)
+        service = literal_service_exceptions(
+            regions, sources,
+            w1zardz_literal_hosts=builder.original_w1zardz_hosts(a.w1zardz, sources["w1zardz-service-direct"]),
+        )
         hard_rows = read_hard_sources(a.hard)
         verify_hard_evidence(hard_rows, a.current_subnet_feed, a.confirmed_ip_records)
         reviewed = builder.parse_reviewed_operator_prefixes(a.reviewed_operator_prefixes)

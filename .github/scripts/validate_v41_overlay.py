@@ -11,6 +11,7 @@ from pathlib import Path
 
 import build_v41_overlay as builder
 from validate_v41_telegram import PINNED_FEED, read_telegram_feed
+from v41_reviewed_ipv6_admission import verify_reviewed_ipv6_admission_manifest
 
 
 def sha256(path: Path) -> str:
@@ -28,6 +29,18 @@ def assert_hxehex_diagnostic_only(ru, independently_admitted, hxehex):
                                        builder.intervals(hxehex, version))
         if builder.subtract(candidates, builder.intervals(independently_admitted, version)):
             raise ValueError(f"HXEHEX-only admission in IPv{version} DIRECT")
+
+
+def verify_ipv6_admission_effect(ru, admitted, private, effective, regional, reviewed):
+    """Check final IPv6 address space and measure removal against the no-IPv6-rule baseline."""
+    def iv(networks):
+        return builder.intervals(networks, 6)
+    pre = builder.subtract(iv(admitted), iv(private))
+    before = builder.subtract(builder.subtract(pre, iv(effective)), iv(regional))
+    after = builder.subtract(before, iv(reviewed))
+    if iv(ru) != after:
+        raise ValueError("Reviewed IPv6 admission changed DIRECT outside the expected exact output")
+    return builder.interval_size(builder.subtract(before, after))
 
 
 def validate(args: argparse.Namespace) -> dict:
@@ -53,9 +66,12 @@ def validate(args: argparse.Namespace) -> dict:
     feeds.w1zardz = args.w1zardz
     feeds.escapingworm = args.escapingworm
     telegram = read_telegram_feed(args.telegram_feed)
-    service_sources, _, _ = builder.load_service_inputs(feeds)
+    service_sources, source_stats, _ = builder.load_service_inputs(feeds)
     rir_resources, _ = builder.parse_rir_tsv(args.rir)
-    service_exact, service_resolver = builder.build_service_protection_masks(rir_resources, service_sources)
+    service_exact, service_resolver = builder.build_service_protection_masks(
+        rir_resources, service_sources,
+        w1zardz_literal_hosts=builder.original_w1zardz_hosts(args.w1zardz, service_sources["w1zardz-service-direct"]),
+    )
     regional_resources = builder.union_networks(*rir_resources.values())
     if company_core & shared or company_core | shared != company_all:
         raise ValueError("Company core/shared masks are not a disjoint exact partition")
@@ -71,7 +87,10 @@ def validate(args: argparse.Namespace) -> dict:
     if output_blocked != effective:
         raise ValueError("Published v41 effective block output differs from the class-aware policy calculation")
 
-    admission = builder.parse_regional_admission_exclusions(args.regional_admission_exclusions)
+    manifest = json.loads(args.manifest.read_text(encoding="utf-8"))
+    regional_admission = builder.parse_regional_admission_exclusions(args.regional_admission_exclusions)
+    ipv6_admission = verify_reviewed_ipv6_admission_manifest(args.reviewed_ipv6_admission_exclusions, manifest)
+    admission = set(regional_admission) | set(ipv6_admission)
     builder.assert_regional_admission_disjoint(decoded["RU"], admission)
     builder.assert_reviewed_operator_coverage(decoded["RU"], decoded["PRIVATE"], blocked_exact | telegram, admission, reviewed)
     for version in (4, 6):
@@ -126,24 +145,45 @@ def validate(args: argparse.Namespace) -> dict:
     base = builder.parse_geoip_dat(args.base)
     if set(base) != {"RU", "PRIVATE"}:
         raise ValueError("Expected v37 base categories RU and PRIVATE")
-    hxehex = builder.parse_cidr_file(args.hxehex_ip)[0]
-    assert_hxehex_diagnostic_only(
-        decoded["RU"],
-        builder.union_networks(base["RU"], regional_resources, regional_all, company_all, reviewed,
-                               *service_sources.values(), *hydra_sources.values()),
-        hxehex,
+    hxehex, hxehex_stats, _ = builder.load_hxehex_diagnostics(args.hxehex_ip)
+    excluded = builder.read_w1zardz_exclusions(builder.W1ZARDZ_EXCLUSIONS)
+    independently_admitted = builder.union_networks(
+        base["RU"], regional_resources, regional_all, company_all, reviewed,
+        *service_sources.values(), *hydra_sources.values(),
     )
+    assert_hxehex_diagnostic_only(decoded["RU"], independently_admitted, hxehex)
+    if builder.intersect(builder.intervals(excluded, 4),
+                         builder.intervals(service_sources["w1zardz-service-direct"], 4)):
+        raise ValueError("Excluded gaming address still present in W1ZARDZ admission")
+    assert_no_w1zardz_only_gaming_routes(decoded["RU"], independently_admitted, excluded)
 
     manifest = json.loads(args.manifest.read_text(encoding="utf-8"))
+    if (manifest.get("input_sha256", {}).get("w1zardz_direct") != sha256(args.w1zardz)
+            or manifest.get("input_sha256", {}).get("w1zardz_gaming_exclusions") != sha256(builder.W1ZARDZ_EXCLUSIONS)
+            or manifest.get("service_sources", {}).get("w1zardz-service-direct") != source_stats["w1zardz-service-direct"]):
+        raise ValueError("W1ZARDZ source/exclusion provenance mismatch")
+    removed_ipv6 = verify_ipv6_admission_effect(
+        decoded["RU"], independently_admitted, decoded["PRIVATE"], output_blocked, regional_admission, ipv6_admission
+    )
+    if manifest.get("reviewed_ipv6_admission_exclusions", {}).get("removed_after_block_policy") != {"ipv6": removed_ipv6}:
+        raise ValueError("Reviewed IPv6 admission removal count mismatch")
+
     hxehex_info = manifest.get("diagnostic_sources", {}).get("hxehex-mobile-hosts", {})
     if (manifest.get("base_v37_sha256") != sha256(args.base)
             or manifest.get("input_sha256", {}).get("hxehex_ipwhitelist") != sha256(args.hxehex_ip)
             or hxehex_info.get("role") != "diagnostic-only"
+            or hxehex_info.get("status") != hxehex_stats["status"]
             or hxehex_info.get("unique_cidrs") != len(hxehex)
             or "hxehex-mobile-hosts" in manifest.get("service_sources", {})):
         raise ValueError("HXEHEX diagnostic source provenance mismatch")
+    _, ipsum_stats = builder.parse_ipsum(args.ipsum)
+    if (manifest.get("input_sha256", {}).get("antifilter_ipsum") != sha256(args.ipsum)
+            or manifest.get("diagnostic_sources", {}).get("antifilter-ipsum") != {
+                **ipsum_stats, "role": "diagnostic-only"
+            }):
+        raise ValueError("Antifilter ipsum diagnostic source provenance mismatch")
     if (manifest.get("input_sha256", {}).get("regional_admission_exclusions") != sha256(args.regional_admission_exclusions)
-            or manifest.get("regional_admission_exclusions", {}).get("records") != list(admission.values())):
+            or manifest.get("regional_admission_exclusions", {}).get("records") != list(regional_admission.values())):
         raise ValueError("Regional admission exclusion provenance mismatch")
     if manifest.get("input_sha256", {}).get("reviewed_operator_prefixes") != sha256(args.reviewed_operator_prefixes):
         raise ValueError("Reviewed operator prefix input SHA-256 mismatch")
@@ -231,6 +271,11 @@ def validate(args: argparse.Namespace) -> dict:
     print(json.dumps(report, ensure_ascii=False, sort_keys=True))
     return report
 
+def assert_no_w1zardz_only_gaming_routes(ru, independently_admitted, excluded):
+    overlap = builder.intersect(builder.intervals(ru, 4), builder.intervals(excluded, 4))
+    if builder.subtract(overlap, builder.intervals(independently_admitted, 4)):
+        raise ValueError("W1ZARDZ-only gaming address still present in IPv4 DIRECT")
+
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
@@ -238,8 +283,9 @@ def main() -> int:
         "geoip", "base", "hydra", "blocked_union", "blocked_exact", "blocked_resolved",
         "company_all", "company_core", "company_shared", "regional_origin_prefixes",
         "kyoresuas_v4", "kyoresuas_v6", "kyoresuas_services", "w1zardz",
-        "hxehex_ip", "escapingworm", "effective_blocked",
+        "hxehex_ip", "escapingworm", "effective_blocked", "ipsum",
         "manifest", "quality", "rir", "regional_admission_exclusions", "reviewed_operator_prefixes",
+        "reviewed_ipv6_admission_exclusions",
     ):
         parser.add_argument("--" + name.replace("_", "-"), type=Path, required=True)
     parser.add_argument("--telegram-feed", type=Path, default=PINNED_FEED)
