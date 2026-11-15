@@ -1,0 +1,150 @@
+{
+  "comparisons": [
+    {
+      "candidate": "7eef1efcaafbdbe259f3aa4e56a07c38979afbfb",
+      "changed": [
+        {
+          "asn": 9198,
+          "family": 4,
+          "group": "Kazakhtelecom",
+          "removed_from_final_direct": {
+            "addresses": "0",
+            "cidrs": [],
+            "minimal_cidrs": 0
+          },
+          "retained_in_final_direct": {
+            "addresses": "1024",
+            "cidrs": [
+              "92.46.244.0/22"
+            ],
+            "minimal_cidrs": 1
+          }
+        },
+        {
+          "asn": 15774,
+          "family": 4,
+          "group": "TransTelecom",
+          "removed_from_final_direct": {
+            "addresses": "0",
+            "cidrs": [],
+            "minimal_cidrs": 0
+          },
+          "retained_in_final_direct": {
+            "addresses": "256",
+            "cidrs": [
+              "5.8.217.0/24"
+            ],
+            "minimal_cidrs": 1
+          }
+        }
+      ],
+      "previous": "f90d99390629db5aa35b6104a206d62950d1e090",
+      "summary": {
+        "affected_pairs": {
+          "attribution_loss_direct_retained": 2,
+          "space_lost_from_final_direct": 0
+        },
+        "asn_family_pairs": 118,
+        "baseline_available": true,
+        "counts_are_pairs_not_unique_addresses": true
+      }
+    },
+    {
+      "candidate": "a23b381e4844ed4cb84bf67e1f5984027e68769c",
+      "changed": [],
+      "previous": "7eef1efcaafbdbe259f3aa4e56a07c38979afbfb",
+      "summary": {
+        "affected_pairs": {
+          "attribution_loss_direct_retained": 0,
+          "space_lost_from_final_direct": 0
+        },
+        "asn_family_pairs": 118,
+        "baseline_available": true,
+        "counts_are_pairs_not_unique_addresses": true
+      }
+    },
+    {
+      "candidate": "79bddd4c51a36a8d3c2771e234e5171f574104c8",
+      "changed": [],
+      "previous": "a23b381e4844ed4cb84bf67e1f5984027e68769c",
+      "summary": {
+        "affected_pairs": {
+          "attribution_loss_direct_retained": 0,
+          "space_lost_from_final_direct": 0
+        },
+        "asn_family_pairs": 118,
+        "baseline_available": true,
+        "counts_are_pairs_not_unique_addresses": true
+      }
+    }
+  ],
+  "freshness_readback": {
+    "ipverse": {
+      "download_url": "https://codeload.github.com/ipverse/as-ip-blocks/tar.gz/refs/heads/master",
+      "observed_master": "54c5fec676bc504d44a09e9d45d0fe578795cbff",
+      "same_as_release": true,
+      "sha256": "5d3b254a78d4fbbd225d6e18b317a9a29e799f418a6f7b57dbe617b1d1beeb41"
+    },
+    "providers": {
+      "current_capture_sha256": "c739a21f56cb5378a973ccf72f3d586d0777756c231637db8295e6b1840d4d57",
+      "current_fetched_at": "2026-11-15T15:45:44.359344+00:00",
+      "normalized_scope_changes": [],
+      "payloads": {
+        "https://ip-ranges.amazonaws.com/ip-ranges.json": {
+          "current_sha256": "9aa1ed3582fbd17314ad228d3a2176814c2907d90f052998f675737380024c53",
+          "previous_sha256": "9aa1ed3582fbd17314ad228d3a2176814c2907d90f052998f675737380024c53"
+        },
+        "https://www.cloudflare.com/ips-v4": {
+          "current_sha256": "f02c6d83bc01ab0ae8577160e036d700c7455359bce054df884e5d7d9e4e9e7b",
+          "previous_sha256": "f02c6d83bc01ab0ae8577160e036d700c7455359bce054df884e5d7d9e4e9e7b"
+        },
+        "https://www.cloudflare.com/ips-v6": {
+          "current_sha256": "9e9d39e3e83bad00c4decafd53c63fa62029f3d95db68de937d2be28234ca0a9",
+          "previous_sha256": "9e9d39e3e83bad00c4decafd53c63fa62029f3d95db68de937d2be28234ca0a9"
+        },
+        "https://www.gstatic.com/ipranges/cloud.json": {
+          "current_sha256": "409ef299c0204773f8e70d89a09c9134b2a39fdd8581d4c0d94e8b169e0d6ace",
+          "metadata_only": {
+            "creationTime": {
+              "current": "2026-11-15T06:26:12.860692",
+              "previous": "2026-11-15T00:04:21.649665"
+            },
+            "syncToken": {
+              "current": "1794752772860",
+              "previous": "1794729861649"
+            }
+          },
+          "previous_sha256": "580c1abd5bfcd35adcd2d9aa9d1670dc054d78b54c103fda90b1b0ff8723d3f9"
+        },
+        "https://www.gstatic.com/ipranges/goog.json": {
+          "current_sha256": "e030f657cd2e11365f447a4a98694be951a1705c2a8189379e3904fc77a2f500",
+          "metadata_only": {
+            "creationTime": {
+              "current": "2026-11-15T06:26:12.860692",
+              "previous": "2026-11-15T00:04:21.649665"
+            },
+            "syncToken": {
+              "current": "1794752772860",
+              "previous": "1794729861649"
+            }
+          },
+          "previous_sha256": "c75d31d1f47cf0b7f1b77cbd512c8fc349baf608728e5c6f24ed6ffd23eb2819"
+        }
+      },
+      "previous_fetched_at": "2026-11-15T13:46:28.921027+00:00",
+      "previous_snapshot_sha256": "e643e891fd2fe25da71c1fe2bcb379703dbd6995e4609ec22c271716e031f189",
+      "status": {
+        "akamai": "UNAVAILABLE",
+        "aws-cloudfront": "AVAILABLE",
+        "aws-public": "AVAILABLE",
+        "cloudflare-proxy": "AVAILABLE",
+        "discord": "UNAVAILABLE",
+        "google-cloud": "AVAILABLE",
+        "google-goog": "AVAILABLE"
+      }
+    }
+  },
+  "historical_input_sha256": "941c0ccf7430fa0bc271e90db8d8f1e157165882dcbc66c165c78e847e9136ad",
+  "mode": "REPORT_ONLY",
+  "schema": 1
+}

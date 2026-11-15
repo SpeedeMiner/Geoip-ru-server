@@ -170,6 +170,26 @@ def family_snapshot(snapshot, key):
     }
 
 
+def evidence_ranges(ranges, version):
+    cidrs = as_cidrs(ranges, version)
+    return {"addresses": str(interval_size(ranges)), "minimal_cidrs": len(cidrs), "cidrs": cidrs}
+
+
+def summarize_impact(rows):
+    baseline_available = any(row["previous_selected_direct_impact"] is not None for row in rows)
+    return {
+        "baseline_available": baseline_available,
+        "asn_family_pairs": len(rows),
+        "affected_pairs": {
+            "attribution_loss_direct_retained": sum(
+                "ASN_ATTRIBUTION_LOSS_DIRECT_RETAINED" in row["review_reasons"] for row in rows),
+            "space_lost_from_final_direct": sum(
+                "PREVIOUS_ASN_SELECTED_SPACE_LOST_FROM_FINAL_DIRECT" in row["review_reasons"] for row in rows),
+        } if baseline_available else None,
+        "counts_are_pairs_not_unique_addresses": True,
+    }
+
+
 def compare(watch, previous, candidate):
     rows = []
     for asn, scope in sorted(watch.items()):
@@ -183,19 +203,33 @@ def compare(watch, previous, candidate):
                 reasons.append("NO_VERIFIED_BASELINE")
             elif before_ranges["observed"] and not current_ranges["observed"]:
                 reasons.append("PREVIOUSLY_OBSERVED_FAMILY_LOST")
-            if before_ranges and subtract(before_ranges["selected_in_direct"], current_ranges["selected_in_direct"]):
-                reasons.append("PREVIOUS_SELECTED_DIRECT_SPACE_REDUCED")
+            impact = None
+            if before_ranges is not None:
+                reduced = subtract(before_ranges["selected_in_direct"], current_ranges["selected_in_direct"])
+                retained = intersect(reduced, candidate["direct"][version])
+                missing = subtract(reduced, candidate["direct"][version])
+                impact = {
+                    "retained_in_final_direct": evidence_ranges(retained, version),
+                    "removed_from_final_direct": evidence_ranges(missing, version),
+                }
+                if reduced:
+                    reasons.append("PREVIOUS_SELECTED_DIRECT_SPACE_REDUCED")
+                if retained:
+                    reasons.append("ASN_ATTRIBUTION_LOSS_DIRECT_RETAINED")
+                if missing:
+                    reasons.append("PREVIOUS_ASN_SELECTED_SPACE_LOST_FROM_FINAL_DIRECT")
             if not current_ranges["observed"] and not current["rejected_records"]:
                 reasons.append("ABSENCE_UNCONFIRMED")
             delta = None if before is None else {
-                name: {direction: {**metric(parts, version), "cidrs": as_cidrs(parts, version)}
+                name: {direction: evidence_ranges(parts, version)
                        for direction, parts in (
                            ("added", subtract(after, before_ranges[name])),
                            ("removed", subtract(before_ranges[name], after)))}
                 for name, after in current_ranges.items()
             }
             rows.append({"asn": asn, **scope, "family": version, "candidate": current,
-                         "previous": before, "delta": delta, "review_reasons": reasons})
+                         "previous": before, "delta": delta, "previous_selected_direct_impact": impact,
+                         "review_reasons": reasons})
     return rows
 
 
@@ -213,12 +247,13 @@ def main():
         watch = read_watchlist(args.watchlist)
         candidate = verified_snapshot(args.candidate, watch)
         previous = verified_snapshot(args.previous, watch) if args.previous is not None else None
+        rows = compare(watch, previous, candidate)
         report = {
             "schema": 1, "mode": "REPORT_ONLY", "watchlist_sha256": describe(args.watchlist)["sha256"],
             "previous_release": args.previous_release,
             "previous_sha256": previous["hashes"] if previous else None, "candidate_sha256": candidate["hashes"],
             "scope": "ipverse observation window, not real-time BGP, geography, reachability or service ownership",
-            "rows": compare(watch, previous, candidate),
+            "direct_impact_summary": summarize_impact(rows), "rows": rows,
         }
         with args.output.open("x", encoding="utf-8") as stream:
             json.dump(report, stream, sort_keys=True, ensure_ascii=False, indent=2)

@@ -6,7 +6,8 @@ import tarfile
 from tempfile import TemporaryDirectory
 import unittest
 
-from audit_v41_asn_regressions import compare, read_observed, read_selected, read_watchlist
+from audit_v41_asn_regressions import compare, read_observed, read_selected, read_watchlist, summarize_impact
+from build_v41_overlay import intervals
 from v41_asn_observations import parse_announced_prefixes
 
 NET = ipaddress.ip_network
@@ -61,3 +62,46 @@ class PriorityASNTests(unittest.TestCase):
         path = Path(__file__).resolve().parents[1] / "data/v41-audit-priority-asns.tsv"
         entries = read_watchlist(path)
         self.assertTrue({13238, 47541, 44386, 49053, 35673, 6697, 9198, 35237} <= entries.keys())
+
+
+    def test_loss_is_split_against_the_final_dat_for_both_families(self):
+        for version, (whole, keep, lost) in {
+            4: ("192.0.2.0/24", "192.0.2.0/25", "192.0.2.128/25"),
+            6: ("2001:db8::/48", "2001:db8::/49", "2001:db8:0:8000::/49"),
+        }.items():
+            with self.subTest(version=version):
+                before = {"observed": {}, "selected": ({(123, version): {NET(whole)}}, {}),
+                          "direct": {**{4: [], 6: []}, version: intervals([NET(whole)], version)}}
+                candidate = {"observed": {}, "selected": ({}, {}),
+                             "direct": {**{4: [], 6: []}, version: intervals([NET(keep)], version)}}
+                rows = compare(WATCH, before, candidate)
+                row = rows[0 if version == 4 else 1]
+                impact = row["previous_selected_direct_impact"]
+                self.assertEqual(impact["retained_in_final_direct"]["cidrs"], [keep])
+                self.assertEqual(impact["removed_from_final_direct"]["cidrs"], [lost])
+                self.assertEqual(sum(int(v["addresses"]) for v in impact.values()), NET(whole).num_addresses)
+                self.assertEqual(summarize_impact(rows)["affected_pairs"],
+                                 {"attribution_loss_direct_retained": 1, "space_lost_from_final_direct": 1})
+
+    def test_no_baseline_is_unknown_and_unrelated_loss_is_not_attributed(self):
+        net = NET("192.0.2.0/24")
+        before = {"observed": {}, "selected": ({}, {}),
+                  "direct": {4: intervals([net], 4), 6: []}}
+        after = {"observed": {}, "selected": ({}, {}), "direct": {4: [], 6: []}}
+        rows = compare(WATCH, None, after)
+        self.assertIsNone(rows[0]["previous_selected_direct_impact"])
+        self.assertFalse(summarize_impact(rows)["baseline_available"])
+        self.assertIsNone(summarize_impact(rows)["affected_pairs"])
+        rows = compare(WATCH, before, after)
+        self.assertEqual(rows[0]["previous_selected_direct_impact"]["removed_from_final_direct"]["cidrs"], [])
+        self.assertNotIn("PREVIOUS_ASN_SELECTED_SPACE_LOST_FROM_FINAL_DIRECT", rows[0]["review_reasons"])
+
+    def test_final_direct_loss_can_happen_without_losing_asn_selection(self):
+        n = NET("192.0.2.0/24")
+        before = {"observed": {}, "selected": ({(123, 4): {n}}, {}),
+                  "direct": {4: intervals([n], 4), 6: []}}
+        after = {**before, "direct": {4: [], 6: []}}
+        row = compare(WATCH, before, after)[0]
+        self.assertEqual(row["delta"]["selected"]["removed"]["addresses"], "0")
+        self.assertEqual(row["previous_selected_direct_impact"]["removed_from_final_direct"]["cidrs"], [str(n)])
+        self.assertNotIn("ASN_ATTRIBUTION_LOSS_DIRECT_RETAINED", row["review_reasons"])
