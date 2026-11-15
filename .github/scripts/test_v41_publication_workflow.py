@@ -339,6 +339,25 @@ class PublicationWorkflowTests(unittest.TestCase):
         for i in matches:
             self.assertNotRegex(steps[i], r"(?m)^\s+(if|continue-on-error):")
 
+    def test_new_diagnostics_stay_in_read_only_pr_build_after_manifest(self):
+        workflow = (SCRIPTS.parent / "workflows" / "geoip-v41.yml").read_text()
+        build, publisher = workflow.split("\n  publish:\n", 1)
+        labels = (
+            "Resolve the published comparison commit once",
+            "Report scoped CDN and Hydra evidence",
+            "Replay service coverage",
+            "Upload scoped DIRECT and service audit",
+        )
+        for label in labels:
+            start = build.index("- name: " + label)
+            body = build[start:].split("\n      - name: ", 1)[0]
+            self.assertIn("github.event_name == 'pull_request'", body)
+            self.assertIn("continue-on-error: true", body)
+            self.assertGreater(start, build.index("- name: Bind validated files to this build"))
+            self.assertNotIn(label, publisher)
+        for filename in ("audit_v41_direct_provenance.py", "audit_v41_service_coverage.py"):
+            self.assertNotIn(filename, publisher)
+
     def test_release_creation_requires_existing_tag_and_never_edits_on_failure(self):
         capture = self.root / "gh-log"
         gh = self.root / "gh"

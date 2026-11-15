@@ -1,6 +1,6 @@
 import unittest
 
-from audit_v41_service_coverage import compare, family_report
+from audit_v41_service_coverage import compare, evidence_binding, family_report
 
 PROJ = {"rules": [{"match": "BLOCK", "outbound": "BLOCK"}, {"match": "RU", "outbound": "DIRECT"},
                   {"match": "GEOIP_RU", "outbound": "DIRECT"}], "default": "PROXY"}
@@ -37,3 +37,11 @@ class ServiceCoverageTests(unittest.TestCase):
         row, = compare({"example.test": {"domain": "example.test"}}, {"domains": [], "dns": []}, {4: [], 6: []})
         self.assertIsNone(row["geosite_observed_matches"])
         self.assertEqual(row["actual_client_route"], "UNKNOWN")
+
+    def test_historical_observations_require_explicit_replay_on_a_different_dat(self):
+        evidence = {"release_geoip_sha256": "reference"}
+        self.assertEqual(evidence_binding(evidence, "reference"), "SAME_DAT_AS_OBSERVATION")
+        with self.assertRaisesRegex(ValueError, "different GeoIP DAT"):
+            evidence_binding(evidence, "candidate")
+        self.assertEqual(evidence_binding(evidence, "candidate", replay_on_candidate=True),
+                         "FIXED_DNS_REPLAY_ON_DIFFERENT_DAT")

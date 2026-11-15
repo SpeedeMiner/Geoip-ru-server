@@ -104,11 +104,21 @@ def compare(cases, dns, direct, profile=None):
     return rows
 
 
+def evidence_binding(evidence, candidate_sha256, *, replay_on_candidate=False):
+    reference = evidence["release_geoip_sha256"]
+    if reference == candidate_sha256:
+        return "SAME_DAT_AS_OBSERVATION"
+    if replay_on_candidate:
+        return "FIXED_DNS_REPLAY_ON_DIFFERENT_DAT"
+    raise ValueError("DNS and GeoSite evidence was collected against a different GeoIP DAT")
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     for param in ("cases", "evidence", "dat", "output"):
         parser.add_argument(f"--{param}", required=True, type=Path)
     parser.add_argument("--evidence-sha256", required=True)
+    parser.add_argument("--replay-on-candidate", action="store_true", help="reuse fixed historical observations; never claim current DNS")
     parser.add_argument("--profile", type=Path, help="optional JSON projection of first-match client rules")
     args = parser.parse_args()
     try:
@@ -122,8 +132,7 @@ def main():
             raise ValueError("expanded evidence exceeds limit")
         evidence = json.loads(raw)
         datasets, digest = read_dat(args.dat)
-        if evidence["release_geoip_sha256"] != digest:
-            raise ValueError("DNS and GeoSite evidence was collected against a different GeoIP DAT")
+        binding = evidence_binding(evidence, digest, replay_on_candidate=args.replay_on_candidate)
         reviewed = evidence["service_review"]
         profile = profile_sha = None
         if args.profile is not None:
@@ -144,6 +153,7 @@ def main():
         rows = compare(read_cases(args.cases), reviewed, datasets["RU"], profile)
         report = {
             "schema": 1, "mode": "REPORT_ONLY", "dat_sha256": digest,
+            "observation_dat_sha256": evidence["release_geoip_sha256"], "dns_replay_status": binding,
             "cases_sha256": hashlib.sha256(args.cases.read_bytes()).hexdigest(), "evidence_sha256": args.evidence_sha256,
             "geosite_commit": reviewed["geosite_tag_commit"], "geosite_sha256": reviewed["sources"],
             "resolver_sources": reviewed["resolver_urls"], "dns_scope": reviewed["dns_scope"], "client_profile_sha256": profile_sha,

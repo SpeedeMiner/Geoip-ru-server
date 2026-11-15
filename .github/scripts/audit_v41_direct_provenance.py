@@ -262,6 +262,11 @@ def verify_inputs(root, base, candidate, data):
     for key,path in bindings.items():
         if digest(path.read_bytes()) != manifest['input_sha256'][key]:
             raise ValueError('input differs from retained manifest: '+key)
+    with (root/'geoip_RU_v41_rir_ru_and_company_origin_prefixes.txt').open(encoding='utf-8') as stream:
+        origin_hashes = [line.strip().partition('=')[2] for line in stream
+                         if line.startswith('# selected_origin_input_sha256=')]
+    if origin_hashes != [digest((root/'geoip_RU_BY_KZ_asn_bgp_prefixes.txt').read_bytes())]:
+        raise ValueError('retained regional origin sidecar does not bind the selected ASN evidence')
     provenance = root/'geoip_RU_input_provenance.tsv'
     if digest(provenance.read_bytes()) != manifest['input_provenance_sha256']:
         raise ValueError('input provenance differs from retained manifest')
