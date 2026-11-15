@@ -84,11 +84,14 @@ class PublicCdnAuditTests(unittest.TestCase):
         release = "c" * 40
         result = self.check(release_commit=release)
         self.assertEqual(result["release_commit"], release)
-        self.assertEqual(len(self.calls), 20)
+        self.assertEqual(len(self.calls), 26)
         for name in audit.FILES:
             base = f"https://raw.githubusercontent.com/{REPO}/{release}/{name}"
             self.assertIn(base, self.calls)
             self.assertIn(base + ".sha256sum", self.calls)
+            rolling = f"https://github.com/{REPO}/releases/download/latest-geoip-client-v41/{name}"
+            self.assertIn(rolling, self.calls)
+            self.assertIn(rolling + ".sha256sum", self.calls)
 
     def test_consistently_stale_cdn_relative_to_release_is_rejected(self):
         release = "c" * 40
@@ -101,6 +104,14 @@ class PublicCdnAuditTests(unittest.TestCase):
         self.stale.add(f"https://raw.githubusercontent.com/{REPO}/{release}/geoip_RU.dat.sha256sum")
         with self.assertRaisesRegex(ValueError, "promoted release checksum"):
             self.check(release_commit=release)
+
+    def test_consistent_git_and_cdn_do_not_hide_stale_rolling_download(self):
+        base = f"https://github.com/{REPO}/releases/download/latest-geoip-client-v41/"
+        for name in ("geoip_RU.srs", "geoip_RU.srs.sha256sum"):
+            with self.subTest(name=name):
+                self.stale = {base + name}
+                with self.assertRaisesRegex(ValueError, "rolling GitHub Release"):
+                    self.check(release_commit="c" * 40)
 
     def test_main_rejects_a_ref_change_in_either_branch(self):
         release = "c" * 40

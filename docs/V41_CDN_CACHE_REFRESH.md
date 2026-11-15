@@ -83,8 +83,8 @@ requires the jsDelivr tree and flat inventories to contain exactly the
 three client files. It compares their hashes and sizes with pinned GitHub
 Raw and the actual CDN downloads. With `--edges` it also checks Fastly and
 Gcore. With `--compare-release` it also reads all three files and sidecars
-from the current pinned release commit, and fails if either branch moves
-during the check. Without this flag it checks internal CDN consistency only.
+from both the current pinned release commit and the rolling GitHub Release
+asset URLs. It fails if either branch moves during the check. Without this flag it checks internal CDN consistency only.
 Use `--cdn-sha` when verifying a specific expected publication.
 A mismatch exits nonzero. During normal cache propagation, retry or use
 GitHub Release directly. This command neither purges nor changes a ref.

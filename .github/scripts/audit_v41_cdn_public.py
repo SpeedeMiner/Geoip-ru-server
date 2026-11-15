@@ -116,6 +116,7 @@ def audit(repo: str, commit: str, hosts: tuple[str, ...], fetch: Fetch = fetch_h
     }
     if release_commit is not None:
         release_base = f"https://raw.githubusercontent.com/{repo}/{release_commit}"
+        rolling_base = f"https://github.com/{repo}/releases/download/latest-geoip-client-v41"
 
         def verify_release(name):
             data = fetch(f"{release_base}/{name}", ASSET_SIZE)
@@ -125,10 +126,15 @@ def audit(repo: str, commit: str, hosts: tuple[str, ...], fetch: Fetch = fetch_h
             expected = f"{digest.hexdigest()}  {name}\n".encode()
             if fetch(f"{release_base}/{name}.sha256sum", 512) != expected:
                 raise ValueError(f"promoted release checksum differs: {name}")
+            if fetch(f"{rolling_base}/{name}", ASSET_SIZE) != data:
+                raise ValueError(f"rolling GitHub Release bytes differ: {name}")
+            if fetch(f"{rolling_base}/{name}.sha256sum", 512) != expected:
+                raise ValueError(f"rolling GitHub Release checksum differs: {name}")
 
         with ThreadPoolExecutor(max_workers=3) as pool:
             list(pool.map(verify_release, FILES))
         result["release_commit"] = release_commit
+        result["rolling_release_verified"] = True
     return result
 
 
