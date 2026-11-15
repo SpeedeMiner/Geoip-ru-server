@@ -29,9 +29,11 @@ from the exact CDN commit. If that check fails, they skip the cache purge.
 The best-effort purge then attempts the three rolling URLs and checks the
 response paths and provider confirmations. Even if purge fails, a bounded
 public read-back independently compares what jsDelivr serves with the new bytes.
-If it reports a failure, use the run-specific GitHub Release and its
-checksums. A GitHub release may still be edited unless the repository
-enforces immutable releases.
+The Actions summary reports whether the origin or public CDN was unconfirmed
+and points to the GitHub Release fallback. The production job only prints
+jsDelivr download URLs as verified when all three public downloads match.
+A GitHub release may still be edited unless the repository enforces immutable
+releases.
 
 ## Repair CDN from the current GitHub release
 

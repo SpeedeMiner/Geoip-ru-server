@@ -259,56 +259,68 @@ class DeliveryStepTests(unittest.TestCase):
             (root / "verify_v41_cdn_readback.sh").write_text(
                 'echo "${1:-missing-mode}" >> "$CALLS"\n[[ "$CDN_SHA" == "$TEST_SHA" ]] || exit 92\n'
                 'case "${1:-}" in pinned) exit "$PINNED_STATUS" ;; public) exit "$READBACK_STATUS" ;; *) exit 93 ;; esac\n')
-            calls, outputs = root / "calls", root / "outputs"
+            calls, outputs, summary = root / "calls", root / "outputs", root / "summary"
             sha = "1" * 40
             result = subprocess.run(["bash", str(delivery)], text=True, capture_output=True,
                                     env={**os.environ, "TEST_SHA": sha, "CALLS": str(calls),
-                                         "GITHUB_OUTPUT": str(outputs), "PUBLISH_STATUS": str(publish_status),
+                                         "GITHUB_OUTPUT": str(outputs), "GITHUB_STEP_SUMMARY": str(summary),
+                                         "PUBLISH_STATUS": str(publish_status),
                                          "PURGE_STATUS": str(purge_status), "READBACK_STATUS": str(readback_status),
                                          "PINNED_STATUS": str(pinned_status),
                                          "V41_REQUIRE_CDN_READBACK": str(int(strict)),
-                                         "GITHUB_STATUS": str(github_status), "SNAPSHOT_SHA": sha})
-            return result, calls.read_text().splitlines(), outputs.read_text() if outputs.exists() else None
+                                         "GITHUB_STATUS": str(github_status), "SNAPSHOT_SHA": sha,
+                                         "GITHUB_REPOSITORY": "example/geoip"})
+            return (result, calls.read_text().splitlines(),
+                    outputs.read_text() if outputs.exists() else None,
+                    summary.read_text() if summary.exists() else None)
 
     def test_required_ref_write_and_independent_best_effort_cache_steps(self):
-        res, calls, out = self.invoke(purge_status=1, readback_status=1)
+        res, calls, out, summary = self.invoke(purge_status=1, readback_status=1)
         self.assertEqual(res.returncode, 0, res.stderr)
         self.assertEqual(calls, ["github", "publish", "pinned", "purge", "public"])
-        self.assertEqual(out, f"cdn_sha={'1' * 40}\n")
+        self.assertEqual(out, f"cdn_sha={'1' * 40}\ncdn_status=public_unconfirmed\n")
         self.assertIn("not confirmed", res.stdout)
-        failure, calls, out = self.invoke(publish_status=1)
+        self.assertIn("public bytes not confirmed", summary)
+        self.assertIn("https://github.com/example/geoip/releases/tag/latest-geoip-client-v41", summary)
+        failure, calls, out, summary = self.invoke(publish_status=1)
         self.assertEqual(failure.returncode, 1)
         self.assertEqual(calls, ["github", "publish"])
         self.assertIsNone(out)
+        self.assertIsNone(summary)
 
     def test_manual_repair_requires_cdn_bytes_but_not_a_purge_confirmation(self):
-        res, calls, out = self.invoke(purge_status=1, strict=True)
+        res, calls, out, summary = self.invoke(purge_status=1, strict=True)
         self.assertEqual(res.returncode, 0, res.stderr)
         self.assertEqual(calls, ["github", "publish", "pinned", "purge", "public"])
-        self.assertEqual(out, f"cdn_sha={'1' * 40}\n")
-        failure, calls, out = self.invoke(readback_status=1, strict=True)
+        self.assertEqual(out, f"cdn_sha={'1' * 40}\ncdn_status=verified\n")
+        self.assertIn("verified on jsDelivr", summary)
+        self.assertIn("cache purge not confirmed", summary)
+        failure, calls, out, summary = self.invoke(readback_status=1, strict=True)
         self.assertEqual(failure.returncode, 1)
         self.assertEqual(calls, ["github", "publish", "pinned", "purge", "public"])
         self.assertIn("is set, but public CDN bytes were not confirmed", failure.stdout)
         self.assertIsNone(out)
-
+        self.assertIn("public bytes not confirmed", summary)
 
     def test_unconfirmed_pinned_origin_never_refreshes_public_cache(self):
         for strict in (False, True):
             with self.subTest(strict=strict):
-                res, calls, out = self.invoke(pinned_status=1, strict=strict)
+                res, calls, out, summary = self.invoke(pinned_status=1, strict=strict)
                 self.assertEqual(res.returncode, int(strict), res.stderr)
                 self.assertEqual(calls, ["github", "publish", "pinned"])
                 self.assertIn("skipping jsDelivr purge", res.stdout)
-                self.assertEqual(out, None if strict else f"cdn_sha={'1' * 40}\n")
+                self.assertEqual(out, None if strict else f"cdn_sha={'1' * 40}\ncdn_status=origin_unconfirmed\n")
+                self.assertIn("GitHub Raw not confirmed", summary)
+                self.assertIn("cache purge skipped", summary)
 
     def test_github_preflight_failure_stops_production_and_repair(self):
         for strict in (False, True):
             with self.subTest(strict=strict):
-                res, calls, out = self.invoke(github_status=1, strict=strict)
+                res, calls, out, summary = self.invoke(github_status=1, strict=strict)
                 self.assertEqual(res.returncode, 1)
                 self.assertEqual(calls, ["github"])
                 self.assertIsNone(out)
+                self.assertIsNone(summary)
 
 
 if __name__ == "__main__":

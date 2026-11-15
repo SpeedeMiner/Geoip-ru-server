@@ -717,9 +717,14 @@ jobs:
           echo "GitHub Release: ${{ github.server_url }}/${{ github.repository }}/releases/download/latest-geoip-client-v41/geoip_RU.dat"
           echo "Raw release branch: https://raw.githubusercontent.com/${{ github.repository }}/release/geoip_RU.dat"
           echo "CDN commit: ${{ steps.cdn_ref.outputs.cdn_sha }}"
-          echo "jsDelivr DAT: https://cdn.jsdelivr.net/gh/${{ github.repository }}@cdn/geoip_RU.dat"
-          echo "jsDelivr RU SRS: https://cdn.jsdelivr.net/gh/${{ github.repository }}@cdn/geoip_RU.srs"
-          echo "jsDelivr PRIVATE SRS: https://cdn.jsdelivr.net/gh/${{ github.repository }}@cdn/geoip_PRIVATE.srs"
+          echo "CDN status: ${{ steps.cdn_ref.outputs.cdn_status }}"
+          if [[ "${{ steps.cdn_ref.outputs.cdn_status }}" == verified ]]; then
+            echo "jsDelivr DAT: https://cdn.jsdelivr.net/gh/${{ github.repository }}@cdn/geoip_RU.dat"
+            echo "jsDelivr RU SRS: https://cdn.jsdelivr.net/gh/${{ github.repository }}@cdn/geoip_RU.srs"
+            echo "jsDelivr PRIVATE SRS: https://cdn.jsdelivr.net/gh/${{ github.repository }}@cdn/geoip_PRIVATE.srs"
+          else
+            echo "Use the GitHub Release links above until jsDelivr delivery is verified."
+          fi
           echo "Quality report: https://raw.githubusercontent.com/${{ github.repository }}/release/geoip_RU_quality_report.txt"
           echo "v37 baseline prefix provenance: https://raw.githubusercontent.com/${{ github.repository }}/release/geoip_RU_v37_additional_provenance.tsv"
           echo "v41 service/resource prefix provenance: https://raw.githubusercontent.com/${{ github.repository }}/release/geoip_RU_v41_prefix_provenance.tsv"
