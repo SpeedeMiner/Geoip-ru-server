@@ -1,0 +1,659 @@
+{
+  "date": "2026-11-15",
+  "draft_policy_scope": [
+    "2a0b:4e07:63f0::/48",
+    "2a0b:4e07:63f1::/48"
+  ],
+  "verified_ci_replay": {
+    "action_artifact": 14152588592,
+    "archive_sha256": "23ad9d7f5a135dbfca517a72c6888310078638f8c99882daddc49631f1e38fb9",
+    "no_policy_dat_sha256": "da0308b7b97fb170be08fa0e912ec379edf39742f41fa1234d104529bc1c51b8",
+    "candidate_dat_sha256": "2895e477781ae4da211a3fe54ada3066e0d62b068af6ebf9719dc13284bcd066",
+    "removed_ipv6_addresses": 2417851639229258349412352,
+    "removed_ipv6_cidrs": [
+      "2a0b:4e07:63f0::/47"
+    ],
+    "ipv4_delta": [],
+    "added_ipv6": [],
+    "unmodified_files_sha256": {
+      "geoip_PRIVATE.srs": "b9ea6381ea61e286298aea76c10cb85a252ff0d20c49d6de3527be1353c107c4",
+      "geoip_RU_v41_blocked_ip_exclusions.txt": "13de956f4c72b6d8e5a245931ec6cc4d376705cd652bf47a100810fd7c6cfdae",
+      "geoip_RU_v37_base.dat": "3b196ba746ee67f9b993337e2725887f130a280e4e76e53cb57448bf94d1eb8a",
+      "geoip_RU_blocked_ip_exclusions.txt": "b1df58d96e159440af984509f97a831b7b52f1653f8990f7af93703b7013faba"
+    },
+    "neighbor_coverage": {
+      "2a0b:4e07:6300::/48": 1208925819614629174706176,
+      "2a0b:4e07:6301::/48": 1208925819614629174706176,
+      "2a0b:4e07:6310::/48": 1208925819614629174706176,
+      "2a0b:4e07:63ff::/48": 1208925819614629174706176
+    }
+  },
+  "antifilter_https_get_observations": {
+    "ip.lst": {
+      "url": "https://antifilter.download/list/ip.lst",
+      "fetched_utc": "2026-11-15T07:58:16.279911+00:00",
+      "status": 200,
+      "sha256": "f5b63e9200cd05d5e0440a208793783512bc436637c8570942dc4e78022b02fe",
+      "size": 714779,
+      "headers": {
+        "Date": "Sun, 15 Nov 2026 07:58:24 GMT",
+        "Last-Modified": "Sat, 14 Nov 2026 16:27:48 GMT",
+        "ETag": "\"6af88c04-ae81b\"",
+        "Age": null,
+        "Cache-Control": null,
+        "Content-Type": "application/octet-stream",
+        "X-Cache": null
+      }
+    },
+    "ipresolve.lst": {
+      "url": "https://antifilter.download/list/ipresolve.lst",
+      "fetched_utc": "2026-11-15T07:58:16.281110+00:00",
+      "status": 200,
+      "sha256": "8d8d11605a299da96006df6303a90b08b4ae25d35c1d1a199708cb83f84cdf44",
+      "size": 2622450,
+      "headers": {
+        "Date": "Sun, 15 Nov 2026 07:58:24 GMT",
+        "Last-Modified": "Sun, 15 Nov 2026 07:31:42 GMT",
+        "ETag": "\"6af95fde-2803f2\"",
+        "Age": null,
+        "Cache-Control": null,
+        "Content-Type": "application/octet-stream",
+        "X-Cache": null
+      }
+    },
+    "subnet.lst": {
+      "url": "https://antifilter.download/list/subnet.lst",
+      "fetched_utc": "2026-11-15T07:58:16.281807+00:00",
+      "status": 200,
+      "sha256": "2554552742bc0da516a321db66b36fa6cece28c4b3c64b66ff6d12320b33bdb6",
+      "size": 1109,
+      "headers": {
+        "Date": "Sun, 15 Nov 2026 07:58:25 GMT",
+        "Last-Modified": "Sat, 14 Nov 2026 16:28:13 GMT",
+        "ETag": "\"6af88c1d-455\"",
+        "Age": null,
+        "Cache-Control": null,
+        "Content-Type": "application/octet-stream",
+        "X-Cache": null
+      }
+    },
+    "ipsum.lst": {
+      "url": "https://antifilter.download/list/ipsum.lst",
+      "fetched_utc": "2026-11-15T07:58:16.282518+00:00",
+      "status": 200,
+      "sha256": "fcc4b99f43032375c7ec652ab156575d4b7d7f48cd575239b6cf319366da6a1f",
+      "size": 295168,
+      "headers": {
+        "Date": "Sun, 15 Nov 2026 07:58:24 GMT",
+        "Last-Modified": "Sat, 14 Nov 2026 16:28:12 GMT",
+        "ETag": "\"6af88c1c-48100\"",
+        "Age": null,
+        "Cache-Control": null,
+        "Content-Type": "application/octet-stream",
+        "X-Cache": null
+      }
+    }
+  },
+  "cheese_geofeed": {
+    "url": "https://raw.githubusercontent.com/egor-white/geofeed/551d3fb527c36a71875319e47bba4df7709b9d33/geofeed.csv",
+    "sha256": "82e9ea3540a119d73cf8e5d1a0d94d1fdf323755130fbfdfdb5c2640920268b2",
+    "parent_rdap": "https://rdap.db.ripe.net/ip/2a0b:4e07:6300::/40",
+    "prefixes": {
+      "2a0b:4e07:6300::/48": {
+        "rdap_url": "https://rdap.db.ripe.net/ip/2a0b:4e07:6300::/48",
+        "rdap_sha256": "5fae399da1a1f8b53aa64c8624d4a0ba5e54823a028f650705fbc1139da832cb",
+        "rdap_country": "NL",
+        "rdap_name": "ams-core",
+        "operator_geofeed_country": "NL",
+        "ris": {
+          "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=2a0b%3A4e07%3A6300%3A%3A%2F48&timestamp=2026-11-15T07%3A59%3A00",
+          "sha256": "6ebb759097786fe5844f51489a2ad0acc103257168b141f614252480f6d80d6c",
+          "messages": [
+            [
+              "info",
+              "Data is only available until 2026-11-15 05:59:59+00:00! Query time has been changed."
+            ]
+          ],
+          "requested": "2026-11-15T07:59:00",
+          "observed": "2026-11-15T05:59:59",
+          "exact_origin_paths": {
+            "218750": 376
+          },
+          "exact_origin_collectors": {
+            "218750": [
+              "00",
+              "01",
+              "03",
+              "04",
+              "05",
+              "06",
+              "07",
+              "10",
+              "11",
+              "12",
+              "13",
+              "14",
+              "15",
+              "16",
+              "18",
+              "19",
+              "20",
+              "21",
+              "22",
+              "23",
+              "24",
+              "25",
+              "26"
+            ]
+          },
+          "covering_origins": {},
+          "more_specific_origins": {}
+        }
+      },
+      "2a0b:4e07:6301::/48": {
+        "rdap_url": "https://rdap.db.ripe.net/ip/2a0b:4e07:6301::/48",
+        "rdap_sha256": "33cd63bd4e7faefc0cf60536759218c8ae3cb053c167a71326c963911a59a41e",
+        "rdap_country": "RU",
+        "rdap_name": "home-net",
+        "operator_geofeed_country": "RU",
+        "ris": {
+          "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=2a0b%3A4e07%3A6301%3A%3A%2F48&timestamp=2026-11-15T07%3A59%3A00",
+          "sha256": "573b039dd5823a12d18f02800292540d6423183eb0370ca7bbc85834037e8ea7",
+          "messages": [
+            [
+              "info",
+              "Data is only available until 2026-11-15 05:59:59+00:00! Query time has been changed."
+            ]
+          ],
+          "requested": "2026-11-15T07:59:00",
+          "observed": "2026-11-15T05:59:59",
+          "exact_origin_paths": {
+            "218750": 379
+          },
+          "exact_origin_collectors": {
+            "218750": [
+              "00",
+              "01",
+              "03",
+              "04",
+              "05",
+              "06",
+              "07",
+              "10",
+              "11",
+              "12",
+              "13",
+              "14",
+              "15",
+              "16",
+              "18",
+              "19",
+              "20",
+              "21",
+              "22",
+              "23",
+              "24",
+              "25",
+              "26"
+            ]
+          },
+          "covering_origins": {},
+          "more_specific_origins": {}
+        }
+      },
+      "2a0b:4e07:6310::/48": {
+        "rdap_url": "https://rdap.db.ripe.net/ip/2a0b:4e07:6310::/48",
+        "rdap_sha256": "394deec6bab1b392e1a84807ea12dbc988544342e2b86fb7ea863d21fe5d63de",
+        "rdap_country": "DE",
+        "rdap_name": "fra-core",
+        "operator_geofeed_country": "DE",
+        "ris": {
+          "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=2a0b%3A4e07%3A6310%3A%3A%2F48&timestamp=2026-11-15T07%3A59%3A00",
+          "sha256": "83f0d2a1026f9cc4e287e9268357a5ba4539336a7d6e4b5979a1dba5b16ebea9",
+          "messages": [
+            [
+              "info",
+              "Data is only available until 2026-11-15 05:59:59+00:00! Query time has been changed."
+            ]
+          ],
+          "requested": "2026-11-15T07:59:00",
+          "observed": "2026-11-15T05:59:59",
+          "exact_origin_paths": {
+            "218750": 357
+          },
+          "exact_origin_collectors": {
+            "218750": [
+              "00",
+              "01",
+              "03",
+              "04",
+              "05",
+              "06",
+              "07",
+              "10",
+              "11",
+              "12",
+              "13",
+              "14",
+              "15",
+              "16",
+              "18",
+              "19",
+              "20",
+              "21",
+              "22",
+              "23",
+              "24",
+              "25",
+              "26"
+            ]
+          },
+          "covering_origins": {},
+          "more_specific_origins": {}
+        }
+      },
+      "2a0b:4e07:63f0::/48": {
+        "rdap_url": "https://rdap.db.ripe.net/ip/2a0b:4e07:63f0::/48",
+        "rdap_sha256": "e54b95422c8663fef7bb865144121b54eb55d4d6dbe24edd2bdf92695a7c867a",
+        "rdap_country": "KP",
+        "rdap_name": "test-subnet",
+        "operator_geofeed_country": "KP",
+        "ris": {
+          "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=2a0b%3A4e07%3A63f0%3A%3A%2F48&timestamp=2026-11-15T07%3A59%3A00",
+          "sha256": "27d3a2b86e9048525f3b05dc6a70ec0d5bb2177a6bcd78c2beeb02f82adfe5d8",
+          "messages": [
+            [
+              "info",
+              "Data is only available until 2026-11-15 05:59:59+00:00! Query time has been changed."
+            ]
+          ],
+          "requested": "2026-11-15T07:59:00",
+          "observed": "2026-11-15T05:59:59",
+          "exact_origin_paths": {
+            "218750": 352
+          },
+          "exact_origin_collectors": {
+            "218750": [
+              "00",
+              "01",
+              "03",
+              "04",
+              "05",
+              "06",
+              "07",
+              "10",
+              "11",
+              "12",
+              "13",
+              "14",
+              "15",
+              "16",
+              "18",
+              "19",
+              "20",
+              "21",
+              "22",
+              "23",
+              "24",
+              "25",
+              "26"
+            ]
+          },
+          "covering_origins": {},
+          "more_specific_origins": {}
+        }
+      },
+      "2a0b:4e07:63f1::/48": {
+        "rdap_url": "https://rdap.db.ripe.net/ip/2a0b:4e07:63f1::/48",
+        "rdap_sha256": "081d3b6a8cd3ba2d6ec70e1c47cd5faff1870725afc4b2e13e18c4ab53ed62b6",
+        "rdap_country": "IN",
+        "rdap_name": "bradar-telekom",
+        "operator_geofeed_country": "IN",
+        "ris": {
+          "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=2a0b%3A4e07%3A63f1%3A%3A%2F48&timestamp=2026-11-15T07%3A59%3A00",
+          "sha256": "e3c8d43fd4c0a5e6bf3ad3d0753d6fea3631f5790c1a2e00ca3112b202e9a431",
+          "messages": [
+            [
+              "info",
+              "Data is only available until 2026-11-15 05:59:59+00:00! Query time has been changed."
+            ]
+          ],
+          "requested": "2026-11-15T07:59:00",
+          "observed": "2026-11-15T05:59:59",
+          "exact_origin_paths": {
+            "218750": 375
+          },
+          "exact_origin_collectors": {
+            "218750": [
+              "00",
+              "01",
+              "03",
+              "04",
+              "05",
+              "06",
+              "07",
+              "10",
+              "11",
+              "12",
+              "13",
+              "14",
+              "15",
+              "16",
+              "18",
+              "19",
+              "20",
+              "21",
+              "22",
+              "23",
+              "24",
+              "25",
+              "26"
+            ]
+          },
+          "covering_origins": {},
+          "more_specific_origins": {}
+        }
+      },
+      "2a0b:4e07:63ff::/48": {
+        "rdap_url": "https://rdap.db.ripe.net/ip/2a0b:4e07:63ff::/48",
+        "rdap_sha256": "a932e0837e3ab95c0bc8d012c51f366f58041d2d1ab5529a4dde1a09dc81effd",
+        "rdap_country": "EU",
+        "rdap_name": "anycast-network",
+        "operator_geofeed_country": null,
+        "ris": {
+          "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=2a0b%3A4e07%3A63ff%3A%3A%2F48&timestamp=2026-11-15T07%3A59%3A00",
+          "sha256": "f906c931eeaa1e00217f54b7109a1c96c99d9fad63692f85d5e31f5b4a289857",
+          "messages": [
+            [
+              "info",
+              "Data is only available until 2026-11-15 05:59:59+00:00! Query time has been changed."
+            ]
+          ],
+          "requested": "2026-11-15T07:59:00",
+          "observed": "2026-11-15T05:59:59",
+          "exact_origin_paths": {
+            "218750": 358
+          },
+          "exact_origin_collectors": {
+            "218750": [
+              "00",
+              "01",
+              "03",
+              "04",
+              "05",
+              "06",
+              "07",
+              "10",
+              "11",
+              "12",
+              "13",
+              "14",
+              "15",
+              "16",
+              "18",
+              "19",
+              "20",
+              "21",
+              "22",
+              "23",
+              "24",
+              "25",
+              "26"
+            ]
+          },
+          "covering_origins": {},
+          "more_specific_origins": {}
+        }
+      }
+    }
+  },
+  "212.193.25.0/24": {
+    "status": "HOLD_NO_CURRENT_EXACT_ANNOUNCEMENT_OBSERVED",
+    "observations": {
+      "withdrawal_history": {
+        "url": "https://stat.ripe.net/data/routing-history/data.json?resource=212.193.25.0%2F24&starttime=2026-11-01T00%3A00%3A00&endtime=2026-11-15T07%3A59%3A00&normalise_visibility=false&min_peers=1",
+        "sha256": "4db8b844672e258bacc940a72bd17fdf34d457ceb1ee24761a15b803def6d049",
+        "messages": [
+          [
+            "info",
+            "Data is only available until 2026-11-15 00:00:00+00:00! Query time has been changed."
+          ]
+        ],
+        "query_starttime": "2026-11-01T00:00:00",
+        "query_endtime": "2026-11-15T00:00:00",
+        "by_origin": [
+          {
+            "origin": "218261",
+            "prefixes": [
+              {
+                "prefix": "212.193.25.0/24",
+                "timelines": [
+                  {
+                    "starttime": "2026-11-07T08:00:00",
+                    "endtime": "2026-11-12T23:59:59",
+                    "full_peers_seeing": 320.0
+                  },
+                  {
+                    "starttime": "2026-11-13T00:00:00",
+                    "endtime": "2026-11-13T07:59:59",
+                    "full_peers_seeing": 318
+                  },
+                  {
+                    "starttime": "2026-11-13T08:00:00",
+                    "endtime": "2026-11-14T15:59:59",
+                    "full_peers_seeing": 320.0
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "origin": "398343",
+            "prefixes": [
+              {
+                "prefix": "212.193.25.0/24",
+                "timelines": [
+                  {
+                    "starttime": "2026-11-01T00:00:00",
+                    "endtime": "2026-11-04T15:59:59",
+                    "full_peers_seeing": 324.0
+                  },
+                  {
+                    "starttime": "2026-11-04T16:00:00",
+                    "endtime": "2026-11-07T07:59:59",
+                    "full_peers_seeing": 2.0
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "total_number_of_peers": null
+      },
+      "withdrawal_status": {
+        "url": "https://stat.ripe.net/data/routing-status/data.json?resource=212.193.25.0%2F24&timestamp=2026-11-15T00%3A00%3A00&min_peers_seeing=1",
+        "sha256": "c06775a8e372bf8b4d13ba15d26ced073c8b3869bd8331407ad40dc4408ac09a",
+        "messages": [],
+        "query_time": "2026-11-15T00:00:00",
+        "first_seen": {
+          "prefix": "212.193.25.0/24",
+          "origin": "398343",
+          "time": "2022-11-04T16:00:00"
+        },
+        "last_seen": {
+          "prefix": "212.193.25.0/24",
+          "origin": "218261",
+          "time": "2026-11-14T08:00:00"
+        },
+        "less_specifics": [],
+        "more_specifics": [],
+        "origins": [],
+        "visibility": {
+          "v4": {
+            "ris_peers_seeing": 0,
+            "total_ris_peers": 320
+          },
+          "v6": {
+            "ris_peers_seeing": 0,
+            "total_ris_peers": 0
+          }
+        }
+      },
+      "withdrawal-2026-11-12-00": {
+        "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=212.193.25.0%2F24&timestamp=2026-11-12T00%3A00%3A00",
+        "sha256": "aa3304e9fbfeb05d9fdf34e8ba184e0efff11be9227648ed602785773488281f",
+        "messages": [],
+        "requested": "2026-11-12T00:00:00",
+        "observed": "2026-11-12T00:00:00",
+        "exact_origin_paths": {
+          "218261": 354
+        },
+        "exact_origin_collectors": {
+          "218261": [
+            "00",
+            "01",
+            "03",
+            "04",
+            "05",
+            "06",
+            "07",
+            "10",
+            "11",
+            "12",
+            "13",
+            "14",
+            "15",
+            "16",
+            "18",
+            "19",
+            "20",
+            "21",
+            "22",
+            "23",
+            "24",
+            "25",
+            "26"
+          ]
+        },
+        "covering_origins": {},
+        "more_specific_origins": {}
+      },
+      "withdrawal-2026-11-13-00": {
+        "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=212.193.25.0%2F24&timestamp=2026-11-13T00%3A00%3A00",
+        "sha256": "7b5881d47001c491e74080a611362d98cccccb449547c33482cee5f1aee34358",
+        "messages": [],
+        "requested": "2026-11-13T00:00:00",
+        "observed": "2026-11-13T00:00:00",
+        "exact_origin_paths": {
+          "218261": 352
+        },
+        "exact_origin_collectors": {
+          "218261": [
+            "00",
+            "01",
+            "03",
+            "04",
+            "05",
+            "06",
+            "07",
+            "10",
+            "11",
+            "12",
+            "13",
+            "14",
+            "15",
+            "16",
+            "18",
+            "19",
+            "20",
+            "21",
+            "22",
+            "23",
+            "24",
+            "25",
+            "26"
+          ]
+        },
+        "covering_origins": {},
+        "more_specific_origins": {}
+      },
+      "withdrawal-2026-11-14-00": {
+        "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=212.193.25.0%2F24&timestamp=2026-11-14T00%3A00%3A00",
+        "sha256": "380a29f9d72a72ec316dd91f846fe7cf870903c24406e54d6178c6bd0ba71055",
+        "messages": [],
+        "requested": "2026-11-14T00:00:00",
+        "observed": "2026-11-14T00:00:00",
+        "exact_origin_paths": {
+          "218261": 353
+        },
+        "exact_origin_collectors": {
+          "218261": [
+            "00",
+            "01",
+            "03",
+            "04",
+            "05",
+            "06",
+            "07",
+            "10",
+            "11",
+            "12",
+            "13",
+            "14",
+            "15",
+            "16",
+            "18",
+            "19",
+            "20",
+            "21",
+            "22",
+            "23",
+            "24",
+            "25",
+            "26"
+          ]
+        },
+        "covering_origins": {},
+        "more_specific_origins": {}
+      },
+      "withdrawal-2026-11-14-16": {
+        "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=212.193.25.0%2F24&timestamp=2026-11-14T16%3A00%3A00",
+        "sha256": "904de181910f1f26a21886d118efffa312815358744e6516ad8f5ea4944a0c35",
+        "messages": [],
+        "requested": "2026-11-14T16:00:00",
+        "observed": "2026-11-14T16:00:00",
+        "exact_origin_paths": {},
+        "exact_origin_collectors": {},
+        "covering_origins": {},
+        "more_specific_origins": {}
+      },
+      "withdrawal-2026-11-15-04": {
+        "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=212.193.25.0%2F24&timestamp=2026-11-15T04%3A00%3A00",
+        "sha256": "8d52c98c395fa3fb2f342f477710d6a6e40958ede01f3e2f68beece67643de6d",
+        "messages": [],
+        "requested": "2026-11-15T04:00:00",
+        "observed": "2026-11-15T04:00:00",
+        "exact_origin_paths": {},
+        "exact_origin_collectors": {},
+        "covering_origins": {},
+        "more_specific_origins": {}
+      },
+      "withdrawal-2026-11-15-07": {
+        "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=212.193.25.0%2F24&timestamp=2026-11-15T07%3A59%3A00",
+        "sha256": "1be85681e8a8a8cc62314f4d12c4b66a122e2e662802fad6c47b98ae577d5bed",
+        "messages": [
+          [
+            "info",
+            "Data is only available until 2026-11-15 05:59:59+00:00! Query time has been changed."
+          ]
+        ],
+        "requested": "2026-11-15T07:59:00",
+        "observed": "2026-11-15T05:59:59",
+        "exact_origin_paths": {},
+        "exact_origin_collectors": {},
+        "covering_origins": {},
+        "more_specific_origins": {}
+      }
+    }
+  }
+}
