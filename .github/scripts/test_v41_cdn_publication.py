@@ -118,6 +118,24 @@ class CdnPublicationTests(unittest.TestCase):
         self.assertIn("unexpected files", result.stdout)
         self.assertEqual(self.cdn(), self.initial_release)
 
+    def test_even_empty_subtrees_are_not_allowed_on_cdn(self):
+        self.assertEqual(self.invoke().returncode, 0)
+        clean = self.cdn()
+        entries = self.git(self.remote, "ls-tree", clean)
+        empty = subprocess.check_output(["git", "-C", str(self.remote), "mktree"], input=b"").strip()
+        tree = subprocess.check_output(
+            ["git", "-C", str(self.remote), "mktree"],
+            input=entries + b"040000 tree " + empty + b"\tnotes\n").strip().decode()
+        commit = self.git(self.remote, "-c", "user.name=Test", "-c", "user.email=test@example.test",
+                          "commit-tree", tree, "-p", clean, "-m", "unexpected empty tree").strip().decode()
+        self.git(self.remote, "update-ref", "refs/heads/cdn", commit, clean)
+        self.assertEqual(set(self.git(self.remote, "ls-tree", "-r", "--name-only", commit)
+                             .decode().splitlines()), set(FILES))
+        result = self.invoke()
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("unexpected files or modes", result.stdout)
+        self.assertEqual(self.cdn(), commit)
+
     def test_symlink_with_matching_checksum_is_not_a_client_blob(self):
         suspect = self.release / FILES[0]
         suspect.unlink()

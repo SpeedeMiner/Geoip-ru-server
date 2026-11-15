@@ -14,7 +14,7 @@ This runbook does not instruct operators to invalidate or delete legacy caches.
 
 ```sh
 git ls-remote origin refs/heads/main refs/heads/release refs/heads/cdn
-python3 .github/scripts/audit_v41_cdn_public.py --edges --verify-snapshot
+python3 .github/scripts/audit_v41_cdn_public.py --edges --verify-git-tree --verify-snapshot
 ```
 
 A successful audit confirms that the current rolling GitHub assets, promoted
@@ -34,7 +34,7 @@ SHA can legitimately stay the same even when the release SHA advances.
    exact GitHub snapshot tag shown by this run. Then re-run the audit.
 
 ```sh
-python3 .github/scripts/audit_v41_cdn_public.py --edges --cdn-sha "$CDN_SHA" --release-sha "$RELEASE_SHA" --snapshot-tag "$SNAPSHOT_TAG"
+python3 .github/scripts/audit_v41_cdn_public.py --edges --verify-git-tree --cdn-sha "$CDN_SHA" --release-sha "$RELEASE_SHA" --snapshot-tag "$SNAPSHOT_TAG"
 ```
 
 | What the workflow reports | What to do |

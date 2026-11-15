@@ -28,7 +28,8 @@ if [[ "$(git -C "$tmp" rev-parse refs/published/release)" != "$SNAPSHOT_SHA" ]];
 fi
 expected="$(printf '100644 blob %s\n' "${V41_CDN_FILES[@]}" | LC_ALL=C sort)"
 tree_inventory() {
-  git -C "$tmp" ls-tree -r --format='%(objectmode) %(objecttype) %(path)' "$@" | LC_ALL=C sort
+  # Inspect the root exactly, including directory entries that -r would hide.
+  git -C "$tmp" ls-tree --format='%(objectmode) %(objecttype) %(path)' "$@" | LC_ALL=C sort
 }
 previous=""
 parents=()

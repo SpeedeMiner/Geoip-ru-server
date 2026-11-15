@@ -10,6 +10,7 @@ import json
 import re
 import subprocess
 import sys
+from urllib.error import HTTPError
 from urllib.request import Request, urlopen
 
 FILES = ("geoip_RU.dat", "geoip_RU.srs", "geoip_PRIVATE.srs")
@@ -94,6 +95,23 @@ def parse_inventory(payload: bytes, *, flat: bool) -> dict[str, tuple[int, bytes
     return result
 
 
+def verify_cdn_git_tree(repo: str, commit: str, inventory: dict[str, tuple[int, bytes]],
+                        fetch: Fetch) -> None:
+    """Confirm the pinned GitHub root, not just jsDelivr's cached index."""
+    url = f"https://api.github.com/repos/{repo}/git/trees/{commit}"
+    response = json.loads(fetch(url, INDEX_SIZE))
+    if response.get("truncated") is not False:
+        raise ValueError("pinned GitHub CDN tree is truncated")
+    result = {}
+    for entry in response["tree"]:
+        path = entry["path"]
+        if path not in inventory or path in result or entry.get("type") != "blob" or entry.get("mode") != "100644":
+            raise ValueError("pinned GitHub CDN tree has unexpected files or modes")
+        result[path] = entry.get("size")
+    if result != {name: size for name, (size, _) in inventory.items()}:
+        raise ValueError("pinned GitHub CDN tree differs from public inventory")
+
+
 def validate_release_links(content: str, repo: str) -> None:
     """Require exactly the supported client links for this repo in public copy."""
     cdn_host = r"[a-z0-9-]+\.jsdelivr\.net"
@@ -106,10 +124,13 @@ def validate_release_links(content: str, repo: str) -> None:
 
 def fetch_https(url: str, limit: int) -> bytes:
     request = Request(url, headers={"User-Agent": "GeoIP-v41 CDN audit / SpeedeMiner/Geoip-ru-server"})
-    with urlopen(request, timeout=20) as response:
-        if response.status != 200 or not response.url.startswith("https://"):
-            raise ValueError(f"expected HTTPS 200 for {url}")
-        data = response.read(limit + 1)
+    try:
+        with urlopen(request, timeout=20) as response:
+            if response.status != 200 or not response.url.startswith("https://"):
+                raise ValueError(f"expected HTTPS 200 for {url}")
+            data = response.read(limit + 1)
+    except HTTPError as exc:
+        raise ValueError(f"HTTP {exc.code} from {url}") from exc
     if len(data) > limit:
         raise ValueError(f"response exceeds audit limit: {url}")
     return data
@@ -157,7 +178,8 @@ def audit_fallback(repo: str, release: str, tag: str, fetch: Fetch = fetch_https
             "files": files, "scope": "versioned GitHub fallback only"}
 
 def audit(repo: str, commit: str, hosts: tuple[str, ...], fetch: Fetch = fetch_https,
-          *, release_commit: str | None = None, versioned_tag: str | None = None) -> dict:
+          *, release_commit: str | None = None, versioned_tag: str | None = None,
+          verify_git_tree: bool = False) -> dict:
     if not REPO_RE.fullmatch(repo) or not SHA_RE.fullmatch(commit):
         raise ValueError("expected owner/repository and a full cdn commit SHA")
     if release_commit is not None and not SHA_RE.fullmatch(release_commit):
@@ -173,6 +195,9 @@ def audit(repo: str, commit: str, hosts: tuple[str, ...], fetch: Fetch = fetch_h
     flat = parse_inventory(fetch(index + "/flat", INDEX_SIZE), flat=True)
     if tree != flat:
         raise ValueError("tree and flat jsDelivr inventories disagree")
+
+    if verify_git_tree:
+        verify_cdn_git_tree(repo, commit, tree, fetch)
 
     checks = {
         (name, "raw.githubusercontent.com"):
@@ -199,6 +224,8 @@ def audit(repo: str, commit: str, hosts: tuple[str, ...], fetch: Fetch = fetch_h
         "files": {name: {"bytes": size, "sha256": digest.hex()}
                   for name, (size, digest) in tree.items()},
     }
+    if verify_git_tree:
+        result["pinned_git_tree_verified"] = True
     if release_commit is not None:
         downloads = ((f"https://github.com/{repo}/releases/download/latest-geoip-client-v41",
                       "rolling GitHub Release"),)
@@ -227,6 +254,8 @@ def main() -> int:
                         help="verify GitHub's versioned fallback without querying any CDN or rolling asset")
     parser.add_argument("--historical-snapshot", action="store_true",
                         help="allow fallback-only verification of a pinned non-current release")
+    parser.add_argument("--verify-git-tree", action="store_true",
+                        help="compare the pinned GitHub CDN root with jsDelivr inventories")
     args = parser.parse_args()
     if not REPO_RE.fullmatch(args.repo):
         parser.error("--repo must be owner/repository")
@@ -235,7 +264,7 @@ def main() -> int:
             parser.error(f"{option} must be a full commit SHA")
     if args.snapshot_tag is not None and not TAG_RE.fullmatch(args.snapshot_tag):
         parser.error("--snapshot-tag must be a versioned v41 snapshot tag")
-    if args.fallback_only and (args.cdn_sha is not None or args.edges):
+    if args.fallback_only and (args.cdn_sha is not None or args.edges or args.verify_git_tree):
         parser.error("--fallback-only does not accept CDN options")
     if args.historical_snapshot and not (args.fallback_only and args.release_sha and args.snapshot_tag):
         parser.error("--historical-snapshot requires --fallback-only, --release-sha and --snapshot-tag")
@@ -258,6 +287,8 @@ def main() -> int:
             refs = {"release_commit": release}
             if tag is not None:
                 refs["versioned_tag"] = tag
+            if args.verify_git_tree:
+                refs["verify_git_tree"] = True
             result = audit(args.repo, commit, EDGES if args.edges else CANONICAL, **refs)
         if compare_release and not args.historical_snapshot:
             # Moving refs are not a pass, even for internally consistent bytes.

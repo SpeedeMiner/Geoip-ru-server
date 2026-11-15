@@ -75,7 +75,7 @@ GITHUB_REPOSITORY=SpeedeMiner/Geoip-ru-server bash .github/scripts/purge_v41_jsd
 ## Audit the public channel without publishing
 
 ```sh
-python3 .github/scripts/audit_v41_cdn_public.py --edges --verify-snapshot
+python3 .github/scripts/audit_v41_cdn_public.py --edges --verify-git-tree --verify-snapshot
 ```
 
 This read-only command uses git to resolve the current `cdn` commit and
@@ -92,7 +92,10 @@ flag also verifies the exact versioned fallback and its checksums using the
 tag recorded in the promoted release. To check a specific run, pass its
 `--snapshot-tag` explicitly. Use `--fallback-only` to check the versioned
 GitHub assets and promoted Git commit while skipping the CDN and rolling
-GitHub downloads, for example during a CDN outage.
+GitHub downloads, for example during a CDN outage. The optional
+`--verify-git-tree` also reads the GitHub root tree for the pinned CDN commit
+so an old jsDelivr index cannot hide an extra entry in a new commit. This flag
+uses the public, unauthenticated GitHub API and does not require a token.
 A mismatch exits nonzero. During normal cache propagation, retry or use
 GitHub Release directly. This command neither purges nor changes a ref.
 

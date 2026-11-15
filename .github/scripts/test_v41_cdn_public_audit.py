@@ -25,9 +25,15 @@ class PublicCdnAuditTests(unittest.TestCase):
         ]
         self.flat = [{**row, "name": "/" + row["name"]} for row in self.rows]
         self.stale = set()
+        self.git_tree = {"truncated": False, "tree": [
+            {"path": n, "size": len(d), "mode": "100644", "type": "blob"}
+            for n, d in self.blobs.items()
+        ]}
 
     def fetch(self, url, limit):
         self.calls.append(url)
+        if url == f"https://api.github.com/repos/{REPO}/git/trees/{SHA}":
+            return json.dumps(self.git_tree).encode()
         if url.startswith("https://data.jsdelivr.com/"):
             rows = self.flat if url.endswith("/flat") else self.rows
             return json.dumps({"files": rows}).encode()
@@ -265,6 +271,36 @@ class PublicCdnAuditTests(unittest.TestCase):
                 audit.main()
             self.assertEqual(stopped.exception.code, 2)
             self.assertIn("--historical-snapshot requires", err.getvalue())
+
+    def test_pinned_git_tree_agrees_with_both_public_inventories(self):
+        result = self.check(verify_git_tree=True)
+        self.assertTrue(result["pinned_git_tree_verified"])
+        self.assertEqual(len(self.calls), 15)
+        self.assertIn(f"https://api.github.com/repos/{REPO}/git/trees/{SHA}", self.calls)
+
+    def test_cached_inventories_cannot_hide_an_extra_git_tree_entry(self):
+        payloads = [
+            {"path": "notes", "mode": "040000", "type": "tree"},
+            {"path": "journal.md", "mode": "100644", "type": "blob", "size": 10},
+        ]
+        for extra in payloads:
+            with self.subTest(extra=extra):
+                self.git_tree["tree"].append(extra)
+                with self.assertRaisesRegex(ValueError, "unexpected files or modes"):
+                    self.check(verify_git_tree=True)
+                self.git_tree["tree"].pop()
+
+    def test_git_tree_requires_all_files_untruncated_and_at_exact_sizes(self):
+        self.git_tree["truncated"] = True
+        with self.assertRaisesRegex(ValueError, "is truncated"):
+            self.check(verify_git_tree=True)
+        self.git_tree["truncated"] = False
+        self.git_tree["tree"][0]["size"] += 1
+        with self.assertRaisesRegex(ValueError, "differs from public inventory"):
+            self.check(verify_git_tree=True)
+        self.git_tree["tree"].pop()
+        with self.assertRaisesRegex(ValueError, "differs from public inventory"):
+            self.check(verify_git_tree=True)
 
     def test_inventory_matches_the_shell_publisher(self):
         shell = Path(audit.__file__).with_name("v41_cdn_files.sh").read_text()
