@@ -1,0 +1,71 @@
+{
+  "comparisons": [
+    {
+      "candidate": {
+        "normalized_address_union_sha256": "0452aa43b76d5545ad45ed16ab5e9c9aeae582fcac1c153c2f35aed23dab23f9",
+        "normalized_prefix_sha256": "9fc9ec3d52196c1ac4b446ef71d9e15324a0f29ede755b836c9019585cd54be6"
+      },
+      "candidate_archive_sha256": "d34d00d59ec419fec991d860af290b557a47b8e2f9596688b9bd11b0e4103d02",
+      "candidate_release": "7eef1efcaafbdbe259f3aa4e56a07c38979afbfb",
+      "changed_address_space_pairs": 2,
+      "changed_prefix_pairs": 2,
+      "previous": {
+        "normalized_address_union_sha256": "d178a2029a9f112ce04c8ac1753c32d907d10efb5e35866a77d9a2ac5eb45c80",
+        "normalized_prefix_sha256": "cbd3ef725ca99071ac661f25653bb71de94605af9dadae1ba3af4cfa23f4f97f"
+      },
+      "previous_archive_sha256": "961df8a56a05f60379088288b281d757001d55eb6f0d0819b7d85865c462d665",
+      "previous_release": "f90d99390629db5aa35b6104a206d62950d1e090",
+      "schema": 1,
+      "scope": "Valid candidate and baseline routes for watched ASN/family pairs only; parser errors and missing observations are tracked separately.",
+      "status": "WATCHED_ADDRESS_SPACE_CHANGED",
+      "watchlist_asns": 59
+    },
+    {
+      "candidate": {
+        "normalized_address_union_sha256": "0452aa43b76d5545ad45ed16ab5e9c9aeae582fcac1c153c2f35aed23dab23f9",
+        "normalized_prefix_sha256": "9fc9ec3d52196c1ac4b446ef71d9e15324a0f29ede755b836c9019585cd54be6"
+      },
+      "candidate_archive_sha256": "5d3b254a78d4fbbd225d6e18b317a9a29e799f418a6f7b57dbe617b1d1beeb41",
+      "candidate_release": "a23b381e4844ed4cb84bf67e1f5984027e68769c",
+      "changed_address_space_pairs": 0,
+      "changed_prefix_pairs": 0,
+      "previous": {
+        "normalized_address_union_sha256": "0452aa43b76d5545ad45ed16ab5e9c9aeae582fcac1c153c2f35aed23dab23f9",
+        "normalized_prefix_sha256": "9fc9ec3d52196c1ac4b446ef71d9e15324a0f29ede755b836c9019585cd54be6"
+      },
+      "previous_archive_sha256": "d34d00d59ec419fec991d860af290b557a47b8e2f9596688b9bd11b0e4103d02",
+      "previous_release": "7eef1efcaafbdbe259f3aa4e56a07c38979afbfb",
+      "schema": 1,
+      "scope": "Valid candidate and baseline routes for watched ASN/family pairs only; parser errors and missing observations are tracked separately.",
+      "status": "DIFFERENT_ARCHIVE_SAME_WATCHED_PREFIXES",
+      "watchlist_asns": 59
+    },
+    {
+      "candidate": {
+        "normalized_address_union_sha256": "0452aa43b76d5545ad45ed16ab5e9c9aeae582fcac1c153c2f35aed23dab23f9",
+        "normalized_prefix_sha256": "9fc9ec3d52196c1ac4b446ef71d9e15324a0f29ede755b836c9019585cd54be6"
+      },
+      "candidate_archive_sha256": "5d3b254a78d4fbbd225d6e18b317a9a29e799f418a6f7b57dbe617b1d1beeb41",
+      "candidate_release": "79bddd4c51a36a8d3c2771e234e5171f574104c8",
+      "changed_address_space_pairs": 0,
+      "changed_prefix_pairs": 0,
+      "previous": {
+        "normalized_address_union_sha256": "0452aa43b76d5545ad45ed16ab5e9c9aeae582fcac1c153c2f35aed23dab23f9",
+        "normalized_prefix_sha256": "9fc9ec3d52196c1ac4b446ef71d9e15324a0f29ede755b836c9019585cd54be6"
+      },
+      "previous_archive_sha256": "5d3b254a78d4fbbd225d6e18b317a9a29e799f418a6f7b57dbe617b1d1beeb41",
+      "previous_release": "a23b381e4844ed4cb84bf67e1f5984027e68769c",
+      "schema": 1,
+      "scope": "Valid candidate and baseline routes for watched ASN/family pairs only; parser errors and missing observations are tracked separately.",
+      "status": "IDENTICAL_ARCHIVE",
+      "watchlist_asns": 59
+    }
+  ],
+  "distinct_address_space_fingerprint_count": 2,
+  "distinct_prefix_fingerprint_count": 2,
+  "historical_evidence_sha256": "941c0ccf7430fa0bc271e90db8d8f1e157165882dcbc66c165c78e847e9136ad",
+  "mode": "REPORT_ONLY",
+  "schema": 1,
+  "unique_archive_sha_count": 3,
+  "watchlist_sha256": "0629fc8312ace2fd8f07bf9181ac8f74bf4ce63e4f1bb239a3a8102dcc5e0f8f"
+}

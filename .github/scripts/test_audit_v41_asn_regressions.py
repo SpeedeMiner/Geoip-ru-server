@@ -6,7 +6,10 @@ import tarfile
 from tempfile import TemporaryDirectory
 import unittest
 
-from audit_v41_asn_regressions import compare, read_observed, read_selected, read_watchlist, summarize_impact
+from audit_v41_asn_regressions import (
+    ARCHIVE, compare, read_observed, read_selected, read_watchlist,
+    summarize_impact, summarize_observed_changes,
+)
 from build_v41_overlay import intervals
 from v41_asn_observations import parse_announced_prefixes
 
@@ -105,3 +108,39 @@ class PriorityASNTests(unittest.TestCase):
         self.assertEqual(row["delta"]["selected"]["removed"]["addresses"], "0")
         self.assertEqual(row["previous_selected_direct_impact"]["removed_from_final_direct"]["cidrs"], [str(n)])
         self.assertNotIn("ASN_ATTRIBUTION_LOSS_DIRECT_RETAINED", row["review_reasons"])
+
+
+    @staticmethod
+    def observed_fixture(label, *nets, asn=123, version=4):
+        return {"hashes": {ARCHIVE: label}, "observed": {
+            asn: {version: ({NET(n) for n in nets}, {}, [], "fixture")},
+        }}
+
+    def test_repacked_archive_does_not_count_as_new_watched_input(self):
+        old = self.observed_fixture("before", "192.0.2.0/25", "192.0.2.128/25")
+        new = self.observed_fixture("after", "192.0.2.128/25", "192.0.2.0/25")
+        result = summarize_observed_changes(WATCH, old, new)
+        self.assertEqual(result["status"], "DIFFERENT_ARCHIVE_SAME_WATCHED_PREFIXES")
+        self.assertEqual(result["previous"], result["candidate"])
+        self.assertEqual(result["changed_address_space_pairs"], 0)
+        self.assertEqual(summarize_observed_changes(WATCH, old, old)["status"], "IDENTICAL_ARCHIVE")
+        unknown = summarize_observed_changes(WATCH, None, new)
+        self.assertIsNone(unknown["previous"])
+        self.assertIsNone(unknown["changed_address_space_pairs"])
+
+    def test_deaggregation_separates_prefix_changes_from_address_changes(self):
+        old = self.observed_fixture("before", "2001:db8::/48", version=6)
+        new = self.observed_fixture("after", "2001:db8::/49", "2001:db8:0:8000::/49", version=6)
+        result = summarize_observed_changes(WATCH, old, new)
+        self.assertEqual(result["status"], "WATCHED_PREFIX_SHAPE_CHANGED_WITHOUT_ADDRESS_CHANGE")
+        self.assertEqual((result["changed_prefix_pairs"], result["changed_address_space_pairs"]), (1, 0))
+        self.assertNotEqual(result["previous"]["normalized_prefix_sha256"], result["candidate"]["normalized_prefix_sha256"])
+        self.assertEqual(result["previous"]["normalized_address_union_sha256"], result["candidate"]["normalized_address_union_sha256"])
+
+    def test_origin_changes_are_not_hidden_by_equal_global_address_space(self):
+        watch = {**WATCH, 456: {**WATCH[123]}}
+        old = self.observed_fixture("before", "192.0.2.0/24")
+        new = self.observed_fixture("after", "192.0.2.0/24", asn=456)
+        result = summarize_observed_changes(watch, old, new)
+        self.assertEqual(result["status"], "WATCHED_ADDRESS_SPACE_CHANGED")
+        self.assertEqual(result["changed_address_space_pairs"], 2)

@@ -5,6 +5,7 @@ from __future__ import annotations
 import argparse
 from collections import Counter, defaultdict
 import csv
+from hashlib import sha256
 import ipaddress
 import json
 from pathlib import Path
@@ -175,6 +176,56 @@ def evidence_ranges(ranges, version):
     return {"addresses": str(interval_size(ranges)), "minimal_cidrs": len(cidrs), "cidrs": cidrs}
 
 
+def observed_fingerprints(watch, observed):
+    """Hash only valid watched routes, preserving ASN and family boundaries."""
+    identity = sha256()
+    coverage = sha256()
+    prefixes_by_pair = {}
+    coverage_by_pair = {}
+    for asn in sorted(watch):
+        for version in (4, 6):
+            record = observed.get(asn, {}).get(version)
+            prefixes = tuple(sorted(record[0], key=lambda n: (int(n.network_address), n.prefixlen))) if record else ()
+            union = tuple(intervals(prefixes, version))
+            pair = (asn, version)
+            prefixes_by_pair[pair] = prefixes
+            coverage_by_pair[pair] = union
+            # Canonical integers and explicit delimiters also handle IPv6 without rounding.
+            prefix_line = ",".join(f"{int(n.network_address)}/{n.prefixlen}" for n in prefixes)
+            coverage_line = ",".join(f"{lo}-{hi}" for lo, hi in union)
+            identity.update(f"{asn}:{version}:{prefix_line}\n".encode("ascii"))
+            coverage.update(f"{asn}:{version}:{coverage_line}\n".encode("ascii"))
+    return {
+        "normalized_prefix_sha256": identity.hexdigest(),
+        "normalized_address_union_sha256": coverage.hexdigest(),
+    }, prefixes_by_pair, coverage_by_pair
+
+
+def summarize_observed_changes(watch, previous, candidate):
+    current, current_prefixes, current_coverage = observed_fingerprints(watch, candidate["observed"])
+    base = prefix_pairs = coverage_pairs = None
+    if previous is None:
+        status = "NO_VERIFIED_BASELINE"
+    else:
+        base, prior_prefixes, prior_coverage = observed_fingerprints(watch, previous["observed"])
+        prefix_pairs = sum(prefixes != prior_prefixes[key] for key, prefixes in current_prefixes.items())
+        coverage_pairs = sum(coverage != prior_coverage[key] for key, coverage in current_coverage.items())
+        if coverage_pairs:
+            status = "WATCHED_ADDRESS_SPACE_CHANGED"
+        elif prefix_pairs:
+            status = "WATCHED_PREFIX_SHAPE_CHANGED_WITHOUT_ADDRESS_CHANGE"
+        elif previous["hashes"][ARCHIVE] != candidate["hashes"][ARCHIVE]:
+            status = "DIFFERENT_ARCHIVE_SAME_WATCHED_PREFIXES"
+        else:
+            status = "IDENTICAL_ARCHIVE"
+    return {
+        "schema": 1, "status": status, "candidate": current, "previous": base,
+        "watchlist_asns": len(watch),
+        "changed_prefix_pairs": prefix_pairs, "changed_address_space_pairs": coverage_pairs,
+        "scope": "Valid candidate and baseline routes for watched ASN/family pairs only; parser errors and missing observations are tracked separately.",
+    }
+
+
 def summarize_impact(rows):
     baseline_available = any(row["previous_selected_direct_impact"] is not None for row in rows)
     return {
@@ -253,7 +304,9 @@ def main():
             "previous_release": args.previous_release,
             "previous_sha256": previous["hashes"] if previous else None, "candidate_sha256": candidate["hashes"],
             "scope": "ipverse observation window, not real-time BGP, geography, reachability or service ownership",
-            "direct_impact_summary": summarize_impact(rows), "rows": rows,
+            "direct_impact_summary": summarize_impact(rows),
+            "observed_snapshot_identity": summarize_observed_changes(watch, previous, candidate),
+            "rows": rows,
         }
         with args.output.open("x", encoding="utf-8") as stream:
             json.dump(report, stream, sort_keys=True, ensure_ascii=False, indent=2)
