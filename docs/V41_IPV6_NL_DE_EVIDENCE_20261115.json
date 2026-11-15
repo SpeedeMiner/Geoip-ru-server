@@ -922,5 +922,925 @@
     "v6_delta": [],
     "candidate_dat_sha256": "6c85b18e91325379d95e454a399e8592e273620ec2cb78892393c37e4ec84840",
     "baseline_dat_sha256": "259ee23b1aea59d69140cd42877b43689b921bda62e8bfab3169708d4a410c67"
+  },
+  "confirmed_four_rule_ci": {
+    "action_artifact": 14153212849,
+    "archive_sha256": "2a9ada71124fe78d226b5d7fb13fd3a876c10019ad5ace503f57feccbf5f11eb",
+    "no_policy_dat_sha256": "da0308b7b97fb170be08fa0e912ec379edf39742f41fa1234d104529bc1c51b8",
+    "candidate_dat_sha256": "259ee23b1aea59d69140cd42877b43689b921bda62e8bfab3169708d4a410c67",
+    "removed_ipv6_addresses": 4835703278458516698824704,
+    "removed_ipv6_cidrs": [
+      "2a0b:4e07:6310::/48",
+      "2a0b:4e07:63f0::/47",
+      "2a0b:4e07:6300::/48"
+    ],
+    "ipv4_delta": [],
+    "added_ipv6": [],
+    "unmodified_files_sha256": {
+      "geoip_PRIVATE.srs": "b9ea6381ea61e286298aea76c10cb85a252ff0d20c49d6de3527be1353c107c4",
+      "geoip_RU_v41_blocked_ip_exclusions.txt": "13de956f4c72b6d8e5a245931ec6cc4d376705cd652bf47a100810fd7c6cfdae",
+      "geoip_RU_v37_base.dat": "3b196ba746ee67f9b993337e2725887f130a280e4e76e53cb57448bf94d1eb8a",
+      "geoip_RU_blocked_ip_exclusions.txt": "b1df58d96e159440af984509f97a831b7b52f1653f8990f7af93703b7013faba"
+    },
+    "neighbor_coverage": {
+      "2a0b:4e07:6301::/48": 1208925819614629174706176,
+      "2a0b:4e07:63ff::/48": 1208925819614629174706176
+    }
+  },
+  "larus_novacart_ipv4": {
+    "geofeed": {
+      "url": "https://larus.net/geofeed-trusted",
+      "observed_utc": "2026-11-15T08:29:31.614631+00:00",
+      "status": 200,
+      "final_url": "https://larus.net/geofeed-trusted",
+      "sha256": "5bee9e394017e4436b860fc5f211f496d11ecd23664c5e39221e63f872cec112",
+      "size": 82811,
+      "mime": "text/csv; charset=UTF-8",
+      "matching_rows": [],
+      "first_line": "# LARUS geofeed"
+    },
+    "rdap-177.29.252.0_24": {
+      "url": "https://rdap.db.ripe.net/ip/177.29.252.0/24",
+      "observed_utc": "2026-11-15T08:29:31.615665+00:00",
+      "status": 200,
+      "final_url": "https://rdap.db.ripe.net/ip/177.29.252.0/24",
+      "sha256": "f3c4c0a8332eacaca4f79d1f025433084e40bae5f6707fe0ff2b71573a6d3231",
+      "size": 6897,
+      "mime": "application/rdap+json",
+      "handle": "177.29.252.0 - 177.29.252.255",
+      "country": "HK",
+      "name": "Novacart-Commerce-llc",
+      "startAddress": "177.29.252.0",
+      "endAddress": "177.29.252.255",
+      "geofeed": [],
+      "geofeed_remarks": []
+    },
+    "rdap-177.29.253.0_24": {
+      "url": "https://rdap.db.ripe.net/ip/177.29.253.0/24",
+      "observed_utc": "2026-11-15T08:29:31.616495+00:00",
+      "status": 200,
+      "final_url": "https://rdap.db.ripe.net/ip/177.29.253.0/24",
+      "sha256": "e96b5d282ac68e82a1d48adb33ac882e58bd567f58446fd2d13b7c6e68a97282",
+      "size": 6897,
+      "mime": "application/rdap+json",
+      "handle": "177.29.253.0 - 177.29.253.255",
+      "country": "HK",
+      "name": "Novacart-Commerce-llc",
+      "startAddress": "177.29.253.0",
+      "endAddress": "177.29.253.255",
+      "geofeed": [],
+      "geofeed_remarks": []
+    },
+    "rdap-177.166.78.0_24": {
+      "url": "https://rdap.db.ripe.net/ip/177.166.78.0/24",
+      "observed_utc": "2026-11-15T08:29:31.617065+00:00",
+      "status": 200,
+      "final_url": "https://rdap.db.ripe.net/ip/177.166.78.0/24",
+      "sha256": "3fe109f8dd21bf056acf11375f1ce34bd5bd30a4fc8f94a0ee753fd8fbd125ed",
+      "size": 6899,
+      "mime": "application/rdap+json",
+      "handle": "177.166.78.0 - 177.166.78.255",
+      "country": "HK",
+      "name": "Novacart-Commerce-llc",
+      "startAddress": "177.166.78.0",
+      "endAddress": "177.166.78.255",
+      "geofeed": [],
+      "geofeed_remarks": []
+    },
+    "rdap-177.122.241.0_24": {
+      "url": "https://rdap.db.ripe.net/ip/177.122.241.0/24",
+      "observed_utc": "2026-11-15T08:29:31.618077+00:00",
+      "status": 200,
+      "final_url": "https://rdap.db.ripe.net/ip/177.122.241.0/24",
+      "sha256": "3ff2421c3964248198db43620e169e401a54c99c459143716e467547aaf99cee",
+      "size": 6929,
+      "mime": "application/rdap+json",
+      "handle": "177.122.241.0 - 177.122.241.255",
+      "country": "HK",
+      "name": "Novacart-Commerce-llc",
+      "startAddress": "177.122.241.0",
+      "endAddress": "177.122.241.255",
+      "geofeed": [],
+      "geofeed_remarks": []
+    },
+    "rdap-177.122.229.0_24": {
+      "url": "https://rdap.db.ripe.net/ip/177.122.229.0/24",
+      "observed_utc": "2026-11-15T08:29:36.440731+00:00",
+      "status": 200,
+      "final_url": "https://rdap.db.ripe.net/ip/177.122.229.0/24",
+      "sha256": "f3370e87f95a0f107ea29cbb0b699407da06e88a23c3f33bb4eff0e64f4b65fc",
+      "size": 6929,
+      "mime": "application/rdap+json",
+      "handle": "177.122.229.0 - 177.122.229.255",
+      "country": "HK",
+      "name": "Novacart-Commerce-llc",
+      "startAddress": "177.122.229.0",
+      "endAddress": "177.122.229.255",
+      "geofeed": [],
+      "geofeed_remarks": []
+    },
+    "rdap-177.166.74.0_24": {
+      "url": "https://rdap.db.ripe.net/ip/177.166.74.0/24",
+      "observed_utc": "2026-11-15T08:29:36.441345+00:00",
+      "status": 200,
+      "final_url": "https://rdap.db.ripe.net/ip/177.166.74.0/24",
+      "sha256": "35815d713470e6dd9761ecf2dfa1ad97987e028168dc98405b0b5c63fc74a7d7",
+      "size": 6899,
+      "mime": "application/rdap+json",
+      "handle": "177.166.74.0 - 177.166.74.255",
+      "country": "HK",
+      "name": "Novacart-Commerce-llc",
+      "startAddress": "177.166.74.0",
+      "endAddress": "177.166.74.255",
+      "geofeed": [],
+      "geofeed_remarks": []
+    },
+    "rdap-177.166.21.0_24": {
+      "url": "https://rdap.db.ripe.net/ip/177.166.21.0/24",
+      "observed_utc": "2026-11-15T08:29:36.610819+00:00",
+      "status": 200,
+      "final_url": "https://rdap.db.ripe.net/ip/177.166.21.0/24",
+      "sha256": "747bfb0635cb69d997b30fa65e8a906bf6cbcea64947556c2c0a62493bce33ed",
+      "size": 6899,
+      "mime": "application/rdap+json",
+      "handle": "177.166.21.0 - 177.166.21.255",
+      "country": "HK",
+      "name": "Novacart-Commerce-llc",
+      "startAddress": "177.166.21.0",
+      "endAddress": "177.166.21.255",
+      "geofeed": [],
+      "geofeed_remarks": []
+    },
+    "rdap-177.29.0.0_16": {
+      "url": "https://rdap.db.ripe.net/ip/177.29.0.0/16",
+      "observed_utc": "2026-11-15T08:29:36.728191+00:00",
+      "status": 200,
+      "final_url": "https://rdap.db.ripe.net/ip/177.29.0.0/16",
+      "sha256": "a49ae864f994877a5749bfe002646a45c2b43407284902fc0f4cca660b812789",
+      "size": 10203,
+      "mime": "application/rdap+json",
+      "handle": "177.28.0.0 - 177.29.255.255",
+      "country": "DE",
+      "name": "VG-LARUS-20110105",
+      "startAddress": "177.28.0.0",
+      "endAddress": "177.29.255.255",
+      "geofeed": [
+        "https://larus.net/geofeed-trusted"
+      ],
+      "geofeed_remarks": [
+        "Geofeed https://larus.net/geofeed-trusted"
+      ]
+    },
+    "rdap-177.122.0.0_16": {
+      "url": "https://rdap.db.ripe.net/ip/177.122.0.0/16",
+      "observed_utc": "2026-11-15T08:29:40.552705+00:00",
+      "status": 200,
+      "final_url": "https://rdap.db.ripe.net/ip/177.122.0.0/16",
+      "sha256": "c9bd68aaaf13b8f61412f7ddac0feee0c8b681aae7047c822d0a376309533392",
+      "size": 9124,
+      "mime": "application/rdap+json",
+      "handle": "177.122.0.0 - 177.122.255.255",
+      "country": "DE",
+      "name": "VG-LARUS-20120817",
+      "startAddress": "177.122.0.0",
+      "endAddress": "177.122.255.255",
+      "geofeed": [
+        "https://larus.net/geofeed-trusted"
+      ],
+      "geofeed_remarks": [
+        "Geofeed https://larus.net/geofeed-trusted"
+      ]
+    },
+    "rdap-177.166.0.0_16": {
+      "url": "https://rdap.db.ripe.net/ip/177.166.0.0/16",
+      "observed_utc": "2026-11-15T08:29:41.059641+00:00",
+      "status": 200,
+      "final_url": "https://rdap.db.ripe.net/ip/177.166.0.0/16",
+      "sha256": "28046fef21b80fee3820e7b9d3d183ae958d705a269b322b6649f382b1f203c4",
+      "size": 9124,
+      "mime": "application/rdap+json",
+      "handle": "177.166.0.0 - 177.166.255.255",
+      "country": "DE",
+      "name": "VG-LARUS-20120601",
+      "startAddress": "177.166.0.0",
+      "endAddress": "177.166.255.255",
+      "geofeed": [
+        "https://larus.net/geofeed-trusted"
+      ],
+      "geofeed_remarks": [
+        "Geofeed https://larus.net/geofeed-trusted"
+      ]
+    }
+  },
+  "remaining_ipv4_routing_hold": {
+    "177.29.252.0/24": {
+      "origin": 219305,
+      "coverage": {
+        "hard": 0,
+        "resolver_candidates": 0,
+        "effective": 0,
+        "selected_origin": 256,
+        "company": 0,
+        "final_direct": 256,
+        "v37": 256,
+        "private": 0
+      },
+      "decision": "hold-current-selected-origin-no-exact-country-corroboration"
+    },
+    "177.29.253.0/24": {
+      "origin": 219306,
+      "coverage": {
+        "hard": 0,
+        "resolver_candidates": 0,
+        "effective": 0,
+        "selected_origin": 256,
+        "company": 0,
+        "final_direct": 256,
+        "v37": 256,
+        "private": 0
+      },
+      "decision": "hold-current-selected-origin-no-exact-country-corroboration"
+    },
+    "177.166.78.0/24": {
+      "origin": 219238,
+      "coverage": {
+        "hard": 0,
+        "resolver_candidates": 0,
+        "effective": 0,
+        "selected_origin": 256,
+        "company": 0,
+        "final_direct": 256,
+        "v37": 256,
+        "private": 0
+      },
+      "decision": "hold-current-selected-origin-no-exact-country-corroboration"
+    },
+    "177.122.241.0/24": {
+      "origin": 218568,
+      "coverage": {
+        "hard": 0,
+        "resolver_candidates": 0,
+        "effective": 0,
+        "selected_origin": 256,
+        "company": 0,
+        "final_direct": 256,
+        "v37": 256,
+        "private": 0
+      },
+      "decision": "hold-current-selected-origin-no-exact-country-corroboration"
+    },
+    "177.122.229.0/24": {
+      "origin": 219216,
+      "coverage": {
+        "hard": 0,
+        "resolver_candidates": 0,
+        "effective": 0,
+        "selected_origin": 256,
+        "company": 0,
+        "final_direct": 256,
+        "v37": 256,
+        "private": 0
+      },
+      "decision": "hold-current-selected-origin-no-exact-country-corroboration"
+    },
+    "177.166.74.0/24": {
+      "origin": 219262,
+      "coverage": {
+        "hard": 0,
+        "resolver_candidates": 0,
+        "effective": 0,
+        "selected_origin": 256,
+        "company": 0,
+        "final_direct": 256,
+        "v37": 256,
+        "private": 0
+      },
+      "decision": "hold-current-selected-origin-no-exact-country-corroboration"
+    },
+    "177.166.21.0/24": {
+      "origin": 219284,
+      "coverage": {
+        "hard": 0,
+        "resolver_candidates": 0,
+        "effective": 0,
+        "selected_origin": 256,
+        "company": 0,
+        "final_direct": 256,
+        "v37": 256,
+        "private": 0
+      },
+      "decision": "hold-current-selected-origin-no-exact-country-corroboration"
+    },
+    "85.92.153.0/24": {
+      "origin": 41745,
+      "coverage": {
+        "hard": 0,
+        "resolver_candidates": 0,
+        "effective": 0,
+        "selected_origin": 256,
+        "company": 0,
+        "final_direct": 256,
+        "v37": 256,
+        "private": 0
+      },
+      "decision": "hold-current-selected-origin-no-exact-country-corroboration"
+    },
+    "85.92.154.0/24": {
+      "origin": 41745,
+      "coverage": {
+        "hard": 0,
+        "resolver_candidates": 0,
+        "effective": 0,
+        "selected_origin": 256,
+        "company": 0,
+        "final_direct": 256,
+        "v37": 256,
+        "private": 0
+      },
+      "decision": "hold-current-selected-origin-no-exact-country-corroboration"
+    },
+    "212.193.25.0/24": {
+      "origin": 218261,
+      "coverage": {
+        "hard": 0,
+        "resolver_candidates": 0,
+        "effective": 0,
+        "selected_origin": 0,
+        "company": 0,
+        "final_direct": 0,
+        "v37": 0,
+        "private": 0
+      },
+      "decision": "monitor-no-static-pin"
+    }
+  },
+  "all_prs_local_composition": {
+    "head": "dc5f89ff28b4fc2376c4a70c705a5749a8443d6e",
+    "order": [
+      35,
+      36,
+      37,
+      39,
+      38,
+      40,
+      41
+    ],
+    "results": [
+      {
+        "pr": 35,
+        "tree": "4e6c0ccea2618a3d507100be9d731df58089d564",
+        "conflicts": []
+      },
+      {
+        "pr": 36,
+        "tree": "f70d67d1788d3f27bca5b2eafbaeacaa86518fee",
+        "conflicts": []
+      },
+      {
+        "pr": 37,
+        "tree": "311191d5b4f0fcddb36dafc9613436c52e26e656",
+        "conflicts": []
+      },
+      {
+        "pr": 39,
+        "tree": "c84c6fbd940a2a16f369937c172dd0631bd357eb",
+        "conflicts": []
+      },
+      {
+        "pr": 38,
+        "tree": "71c10e8e4d4e66282243aeefdc05e739268fe5d2",
+        "conflicts": [
+          ".github/scripts/validate_v41_overlay.py",
+          ".github/workflows/geoip-v41.yml"
+        ]
+      },
+      {
+        "pr": 40,
+        "tree": "b6f9956e4239aafd6f9ec3708e097cb164cd408d",
+        "conflicts": [
+          ".github/scripts/bundle_v41_registry_inputs.py",
+          ".github/scripts/validate_v41_overlay.py"
+        ]
+      },
+      {
+        "pr": 41,
+        "tree": "1c460c84b2ca24c48716384d04d9ae38bdcf48fe",
+        "conflicts": [
+          "docs/V41_EXECUTION_JOURNAL.md"
+        ]
+      }
+    ]
+  },
+  "all_prs_same_input_replay": {
+    "geoip_RU.dat": {
+      "sha256": "6c85b18e91325379d95e454a399e8592e273620ec2cb78892393c37e4ec84840",
+      "same_as_simple_pr38_42": true
+    },
+    "geoip_RU.srs": {
+      "sha256": "0497ded35aef6ba33efc163bf5e06cea73dbb4f54417a85d88e702147cedb701",
+      "same_as_simple_pr38_42": true
+    },
+    "geoip_PRIVATE.srs": {
+      "sha256": "b9ea6381ea61e286298aea76c10cb85a252ff0d20c49d6de3527be1353c107c4",
+      "same_as_simple_pr38_42": true
+    },
+    "geoip_RU_v37_base.dat": {
+      "sha256": "3b196ba746ee67f9b993337e2725887f130a280e4e76e53cb57448bf94d1eb8a",
+      "same_as_simple_pr38_42": true
+    },
+    "geoip_RU_blocked_ip_exclusions.txt": {
+      "sha256": "b1df58d96e159440af984509f97a831b7b52f1653f8990f7af93703b7013faba",
+      "same_as_simple_pr38_42": true
+    },
+    "geoip_RU_v41_blocked_ip_exclusions.txt": {
+      "sha256": "13de956f4c72b6d8e5a245931ec6cc4d376705cd652bf47a100810fd7c6cfdae",
+      "same_as_simple_pr38_42": true
+    }
+  },
+  "all_prs_mock_staging": {
+    "live": {
+      "assets": {
+        "geoip_RU.dat": {
+          "sha256": "6c85b18e91325379d95e454a399e8592e273620ec2cb78892393c37e4ec84840",
+          "bytes": 512263
+        },
+        "geoip_RU.dat.sha256sum": {
+          "sha256": "af0667491aa55d408c534fa2e8a5f37f8bd4b67b3085df1b223a8087a36c9a38",
+          "bytes": 79
+        },
+        "geoip_RU.srs": {
+          "sha256": "0497ded35aef6ba33efc163bf5e06cea73dbb4f54417a85d88e702147cedb701",
+          "bytes": 128253
+        },
+        "geoip_RU.srs.sha256sum": {
+          "sha256": "cdfab810ca17dc9afaa3aee934dd3e2c074379001aaa3c173f972847027f94aa",
+          "bytes": 79
+        },
+        "geoip_PRIVATE.srs": {
+          "sha256": "b9ea6381ea61e286298aea76c10cb85a252ff0d20c49d6de3527be1353c107c4",
+          "bytes": 228
+        },
+        "geoip_PRIVATE.srs.sha256sum": {
+          "sha256": "17ca2e8246a3609d825cd5f611e76c9c039f75573f4d19238c83759fc96fd915",
+          "bytes": 84
+        },
+        "geoip_RU_v41_manifest.json": {
+          "sha256": "2719062eff0cf9e98c7dd180c95fd31082286d675040577b6774954bad2f3b22",
+          "bytes": 14909
+        },
+        "geoip_RU_quality_report.txt": {
+          "sha256": "f0741912bc44a6dd98f7e6a79aa4579a0c66c16ea168580dfe5330a411563cec",
+          "bytes": 7921
+        },
+        "geoip_RU_input_provenance.tsv": {
+          "sha256": "041e315b3735be858c49dc0e73e9a548b14f73c9e22ab06657a748e120c05549",
+          "bytes": 8479
+        },
+        "as-ip-blocks.tar.gz": {
+          "sha256": "5d3b254a78d4fbbd225d6e18b317a9a29e799f418a6f7b57dbe617b1d1beeb41",
+          "bytes": 16286885
+        },
+        "v41-registry-inputs.tar.gz": {
+          "sha256": "ebf0ed8f4267ea0211573b8c89a184212a4d3377c69836b96564eb0929d17b66",
+          "bytes": 4812144
+        },
+        "v41-upstream-inputs.tar.gz": {
+          "sha256": "e1ca826f9720f35fd95c43831dca9a55eef4c43e9a9ef8c0831b5792f2fd6965",
+          "bytes": 5986892
+        },
+        "v41-block-inputs.tar.gz": {
+          "sha256": "258f865d551af1e0c4d69a2be0c9a54a89d7fe50a75e62d01ac112445c0526d2",
+          "bytes": 1912574
+        }
+      },
+      "verified_asset_count": 13
+    },
+    "outage": {
+      "assets": {
+        "geoip_RU.dat": {
+          "sha256": "6c85b18e91325379d95e454a399e8592e273620ec2cb78892393c37e4ec84840",
+          "bytes": 512263
+        },
+        "geoip_RU.dat.sha256sum": {
+          "sha256": "af0667491aa55d408c534fa2e8a5f37f8bd4b67b3085df1b223a8087a36c9a38",
+          "bytes": 79
+        },
+        "geoip_RU.srs": {
+          "sha256": "0497ded35aef6ba33efc163bf5e06cea73dbb4f54417a85d88e702147cedb701",
+          "bytes": 128253
+        },
+        "geoip_RU.srs.sha256sum": {
+          "sha256": "cdfab810ca17dc9afaa3aee934dd3e2c074379001aaa3c173f972847027f94aa",
+          "bytes": 79
+        },
+        "geoip_PRIVATE.srs": {
+          "sha256": "b9ea6381ea61e286298aea76c10cb85a252ff0d20c49d6de3527be1353c107c4",
+          "bytes": 228
+        },
+        "geoip_PRIVATE.srs.sha256sum": {
+          "sha256": "17ca2e8246a3609d825cd5f611e76c9c039f75573f4d19238c83759fc96fd915",
+          "bytes": 84
+        },
+        "geoip_RU_v41_manifest.json": {
+          "sha256": "c03c75995a207a72eaf16d20eebef567988e9dcc6005348ebc6e0e6f7b61996f",
+          "bytes": 14817
+        },
+        "geoip_RU_quality_report.txt": {
+          "sha256": "ccabac7f1b063ac8490c2f283f6a412d9e6ea9c9eec9ee3a82c26d183ccdce42",
+          "bytes": 7920
+        },
+        "geoip_RU_input_provenance.tsv": {
+          "sha256": "200782c487a32fd69f833693a5d63904b8667103ad459426c55a903beba7da83",
+          "bytes": 8310
+        },
+        "as-ip-blocks.tar.gz": {
+          "sha256": "5d3b254a78d4fbbd225d6e18b317a9a29e799f418a6f7b57dbe617b1d1beeb41",
+          "bytes": 16286885
+        },
+        "v41-registry-inputs.tar.gz": {
+          "sha256": "7b9b09397fa63d17dbb814b1dd257216c152bc0b67cdf2d469290201aeb804ef",
+          "bytes": 4812146
+        },
+        "v41-upstream-inputs.tar.gz": {
+          "sha256": "0b71d47d97aa1ea57956e93a778f936d461fdf983c2d6d6671d5fccf9f672414",
+          "bytes": 5575791
+        },
+        "v41-block-inputs.tar.gz": {
+          "sha256": "65cfbbe2b4bf6d5f5f70dbbf2a662f0eeb570b6b9f194fa284810adad8ca331c",
+          "bytes": 1858738
+        }
+      },
+      "verified_asset_count": 13
+    }
+  },
+  "all_prs_publication_preflight": {
+    "live": {
+      "checks": [
+        {
+          "candidate": 50727,
+          "delta": 0,
+          "previous": 50727,
+          "source": "antifilter-ip.lst",
+          "verdict": "ok"
+        },
+        {
+          "candidate": 154157,
+          "delta": 0,
+          "previous": 154157,
+          "source": "antifilter-ipresolve.lst",
+          "verdict": "ok"
+        },
+        {
+          "candidate": 70,
+          "delta": 0,
+          "previous": 70,
+          "source": "antifilter-subnet.lst",
+          "verdict": "ok"
+        },
+        {
+          "content": "unchanged-since-previous-release",
+          "source": "antifilter-ip.lst"
+        },
+        {
+          "content": "unchanged-since-previous-release",
+          "source": "antifilter-ipresolve.lst"
+        },
+        {
+          "content": "unchanged-since-previous-release",
+          "source": "antifilter-subnet.lst"
+        },
+        {
+          "candidate_sha256": "6c85b18e91325379d95e454a399e8592e273620ec2cb78892393c37e4ec84840",
+          "delta": {
+            "4": {
+              "added": 2304,
+              "after": 53400826,
+              "before": 53399040,
+              "limit": 266995,
+              "removed": 518
+            },
+            "6": {
+              "added": 0,
+              "after": 1205876349341644452571629307822080,
+              "before": 1205876352968421911415516831940608,
+              "limit": 12058763529684219114155168319406,
+              "removed": 3626777458843887524118528
+            }
+          },
+          "needs_review": false,
+          "private_changed": false
+        }
+      ],
+      "release_commit": "7eef1efcaafbdbe259f3aa4e56a07c38979afbfb"
+    },
+    "outage": {
+      "checks": [
+        {
+          "candidate": 50727,
+          "delta": 0,
+          "previous": 50727,
+          "source": "antifilter-ip.lst",
+          "verdict": "ok"
+        },
+        {
+          "candidate": 154157,
+          "delta": 0,
+          "previous": 154157,
+          "source": "antifilter-ipresolve.lst",
+          "verdict": "ok"
+        },
+        {
+          "candidate": 70,
+          "delta": 0,
+          "previous": 70,
+          "source": "antifilter-subnet.lst",
+          "verdict": "ok"
+        },
+        {
+          "content": "unchanged-since-previous-release",
+          "source": "antifilter-ip.lst"
+        },
+        {
+          "content": "unchanged-since-previous-release",
+          "source": "antifilter-ipresolve.lst"
+        },
+        {
+          "content": "unchanged-since-previous-release",
+          "source": "antifilter-subnet.lst"
+        },
+        {
+          "candidate_sha256": "6c85b18e91325379d95e454a399e8592e273620ec2cb78892393c37e4ec84840",
+          "delta": {
+            "4": {
+              "added": 2304,
+              "after": 53400826,
+              "before": 53399040,
+              "limit": 266995,
+              "removed": 518
+            },
+            "6": {
+              "added": 0,
+              "after": 1205876349341644452571629307822080,
+              "before": 1205876352968421911415516831940608,
+              "limit": 12058763529684219114155168319406,
+              "removed": 3626777458843887524118528
+            }
+          },
+          "needs_review": false,
+          "private_changed": false
+        }
+      ],
+      "release_commit": "7eef1efcaafbdbe259f3aa4e56a07c38979afbfb"
+    }
+  },
+  "public_release_read_only": {
+    "tagged_release": {
+      "geoip_RU.dat": {
+        "url": "https://github.com/SpeedeMiner/Geoip-ru-server/releases/download/geoip-v41-snapshot-43617500418.1/geoip_RU.dat",
+        "utc": "2026-11-15T08:33:15.206518+00:00",
+        "code": 200,
+        "sha256": "5d7e9dd0eb66bd507eb5f695b83441493fb20b2307ef71125de16c8b3809fa7d",
+        "size": 512067,
+        "matches_immutable_raw": true
+      },
+      "geoip_RU.srs": {
+        "url": "https://github.com/SpeedeMiner/Geoip-ru-server/releases/download/geoip-v41-snapshot-43617500418.1/geoip_RU.srs",
+        "utc": "2026-11-15T08:33:15.207568+00:00",
+        "code": 200,
+        "sha256": "21c54a6b83c7292ec51c8fff33f19e54cc869750cb6e3cea87d7662df87684e0",
+        "size": 128250,
+        "matches_immutable_raw": true
+      },
+      "geoip_PRIVATE.srs": {
+        "url": "https://github.com/SpeedeMiner/Geoip-ru-server/releases/download/geoip-v41-snapshot-43617500418.1/geoip_PRIVATE.srs",
+        "utc": "2026-11-15T08:33:15.208371+00:00",
+        "code": 200,
+        "sha256": "b9ea6381ea61e286298aea76c10cb85a252ff0d20c49d6de3527be1353c107c4",
+        "size": 228,
+        "matches_immutable_raw": true
+      },
+      "geoip_RU.dat.sha256sum": {
+        "url": "https://github.com/SpeedeMiner/Geoip-ru-server/releases/download/geoip-v41-snapshot-43617500418.1/geoip_RU.dat.sha256sum",
+        "utc": "2026-11-15T08:33:15.208977+00:00",
+        "code": 200,
+        "sha256": "2721616b3007c8aa6e894255909ee53c63564392f94b4be36918d96b6aef6786",
+        "size": 79,
+        "matches_asset": true
+      },
+      "geoip_RU.srs.sha256sum": {
+        "url": "https://github.com/SpeedeMiner/Geoip-ru-server/releases/download/geoip-v41-snapshot-43617500418.1/geoip_RU.srs.sha256sum",
+        "utc": "2026-11-15T08:33:15.210251+00:00",
+        "code": 200,
+        "sha256": "d881d7a22c3bd9870f97109cbdc6d7cfcedceee4f546d1e36a16b73e7ee7de34",
+        "size": 79,
+        "matches_asset": true
+      },
+      "geoip_PRIVATE.srs.sha256sum": {
+        "url": "https://github.com/SpeedeMiner/Geoip-ru-server/releases/download/geoip-v41-snapshot-43617500418.1/geoip_PRIVATE.srs.sha256sum",
+        "utc": "2026-11-15T08:33:15.213355+00:00",
+        "code": 200,
+        "sha256": "17ca2e8246a3609d825cd5f611e76c9c039f75573f4d19238c83759fc96fd915",
+        "size": 84,
+        "matches_asset": true
+      },
+      "geoip_RU_v41_release_manifest.json": {
+        "url": "https://github.com/SpeedeMiner/Geoip-ru-server/releases/download/geoip-v41-snapshot-43617500418.1/geoip_RU_v41_release_manifest.json",
+        "utc": "2026-11-15T08:33:25.734839+00:00",
+        "code": 404
+      }
+    },
+    "rolling_release": {
+      "geoip_RU.dat": {
+        "url": "https://github.com/SpeedeMiner/Geoip-ru-server/releases/download/latest-geoip-client-v41/geoip_RU.dat",
+        "utc": "2026-11-15T08:33:25.754746+00:00",
+        "code": 200,
+        "sha256": "5d7e9dd0eb66bd507eb5f695b83441493fb20b2307ef71125de16c8b3809fa7d",
+        "size": 512067,
+        "matches_immutable_raw": true
+      },
+      "geoip_RU.srs": {
+        "url": "https://github.com/SpeedeMiner/Geoip-ru-server/releases/download/latest-geoip-client-v41/geoip_RU.srs",
+        "utc": "2026-11-15T08:33:25.798032+00:00",
+        "code": 200,
+        "sha256": "21c54a6b83c7292ec51c8fff33f19e54cc869750cb6e3cea87d7662df87684e0",
+        "size": 128250,
+        "matches_immutable_raw": true
+      },
+      "geoip_PRIVATE.srs": {
+        "url": "https://github.com/SpeedeMiner/Geoip-ru-server/releases/download/latest-geoip-client-v41/geoip_PRIVATE.srs",
+        "utc": "2026-11-15T08:33:25.798432+00:00",
+        "code": 200,
+        "sha256": "b9ea6381ea61e286298aea76c10cb85a252ff0d20c49d6de3527be1353c107c4",
+        "size": 228,
+        "matches_immutable_raw": true
+      },
+      "geoip_RU.dat.sha256sum": {
+        "url": "https://github.com/SpeedeMiner/Geoip-ru-server/releases/download/latest-geoip-client-v41/geoip_RU.dat.sha256sum",
+        "utc": "2026-11-15T08:33:25.809572+00:00",
+        "code": 200,
+        "sha256": "2721616b3007c8aa6e894255909ee53c63564392f94b4be36918d96b6aef6786",
+        "size": 79,
+        "matches_asset": true
+      },
+      "geoip_RU.srs.sha256sum": {
+        "url": "https://github.com/SpeedeMiner/Geoip-ru-server/releases/download/latest-geoip-client-v41/geoip_RU.srs.sha256sum",
+        "utc": "2026-11-15T08:33:25.864110+00:00",
+        "code": 200,
+        "sha256": "d881d7a22c3bd9870f97109cbdc6d7cfcedceee4f546d1e36a16b73e7ee7de34",
+        "size": 79,
+        "matches_asset": true
+      },
+      "geoip_PRIVATE.srs.sha256sum": {
+        "url": "https://github.com/SpeedeMiner/Geoip-ru-server/releases/download/latest-geoip-client-v41/geoip_PRIVATE.srs.sha256sum",
+        "utc": "2026-11-15T08:33:30.525665+00:00",
+        "code": 200,
+        "sha256": "17ca2e8246a3609d825cd5f611e76c9c039f75573f4d19238c83759fc96fd915",
+        "size": 84,
+        "matches_asset": true
+      },
+      "geoip_RU_v41_release_manifest.json": {
+        "url": "https://github.com/SpeedeMiner/Geoip-ru-server/releases/download/latest-geoip-client-v41/geoip_RU_v41_release_manifest.json",
+        "utc": "2026-11-15T08:33:35.248644+00:00",
+        "code": 404
+      }
+    },
+    "raw_release_commit": {
+      "geoip_RU.dat": {
+        "url": "https://raw.githubusercontent.com/SpeedeMiner/Geoip-ru-server/7eef1efcaafbdbe259f3aa4e56a07c38979afbfb/geoip_RU.dat",
+        "utc": "2026-11-15T08:33:35.286839+00:00",
+        "code": 200,
+        "sha256": "5d7e9dd0eb66bd507eb5f695b83441493fb20b2307ef71125de16c8b3809fa7d",
+        "size": 512067,
+        "matches_immutable_raw": true
+      },
+      "geoip_RU.srs": {
+        "url": "https://raw.githubusercontent.com/SpeedeMiner/Geoip-ru-server/7eef1efcaafbdbe259f3aa4e56a07c38979afbfb/geoip_RU.srs",
+        "utc": "2026-11-15T08:33:35.301371+00:00",
+        "code": 200,
+        "sha256": "21c54a6b83c7292ec51c8fff33f19e54cc869750cb6e3cea87d7662df87684e0",
+        "size": 128250,
+        "matches_immutable_raw": true
+      },
+      "geoip_PRIVATE.srs": {
+        "url": "https://raw.githubusercontent.com/SpeedeMiner/Geoip-ru-server/7eef1efcaafbdbe259f3aa4e56a07c38979afbfb/geoip_PRIVATE.srs",
+        "utc": "2026-11-15T08:33:35.306681+00:00",
+        "code": 200,
+        "sha256": "b9ea6381ea61e286298aea76c10cb85a252ff0d20c49d6de3527be1353c107c4",
+        "size": 228,
+        "matches_immutable_raw": true
+      },
+      "geoip_RU.dat.sha256sum": {
+        "url": "https://raw.githubusercontent.com/SpeedeMiner/Geoip-ru-server/7eef1efcaafbdbe259f3aa4e56a07c38979afbfb/geoip_RU.dat.sha256sum",
+        "utc": "2026-11-15T08:33:35.347857+00:00",
+        "code": 200,
+        "sha256": "2721616b3007c8aa6e894255909ee53c63564392f94b4be36918d96b6aef6786",
+        "size": 79,
+        "matches_asset": true
+      },
+      "geoip_RU.srs.sha256sum": {
+        "url": "https://raw.githubusercontent.com/SpeedeMiner/Geoip-ru-server/7eef1efcaafbdbe259f3aa4e56a07c38979afbfb/geoip_RU.srs.sha256sum",
+        "utc": "2026-11-15T08:33:35.663104+00:00",
+        "code": 200,
+        "sha256": "d881d7a22c3bd9870f97109cbdc6d7cfcedceee4f546d1e36a16b73e7ee7de34",
+        "size": 79,
+        "matches_asset": true
+      },
+      "geoip_PRIVATE.srs.sha256sum": {
+        "url": "https://raw.githubusercontent.com/SpeedeMiner/Geoip-ru-server/7eef1efcaafbdbe259f3aa4e56a07c38979afbfb/geoip_PRIVATE.srs.sha256sum",
+        "utc": "2026-11-15T08:33:39.235859+00:00",
+        "code": 200,
+        "sha256": "17ca2e8246a3609d825cd5f611e76c9c039f75573f4d19238c83759fc96fd915",
+        "size": 84,
+        "matches_asset": true
+      },
+      "geoip_RU_v41_release_manifest.json": {
+        "url": "https://raw.githubusercontent.com/SpeedeMiner/Geoip-ru-server/7eef1efcaafbdbe259f3aa4e56a07c38979afbfb/geoip_RU_v41_release_manifest.json",
+        "utc": "2026-11-15T08:33:40.007195+00:00",
+        "code": 404
+      }
+    },
+    "cdn_release": {
+      "geoip_RU.dat": {
+        "url": "https://cdn.jsdelivr.net/gh/SpeedeMiner/Geoip-ru-server@release/geoip_RU.dat",
+        "utc": "2026-11-15T08:33:40.060712+00:00",
+        "code": 200,
+        "sha256": "5d7e9dd0eb66bd507eb5f695b83441493fb20b2307ef71125de16c8b3809fa7d",
+        "size": 512067,
+        "matches_immutable_raw": true
+      },
+      "geoip_RU.srs": {
+        "url": "https://cdn.jsdelivr.net/gh/SpeedeMiner/Geoip-ru-server@release/geoip_RU.srs",
+        "utc": "2026-11-15T08:33:40.061750+00:00",
+        "code": 200,
+        "sha256": "21c54a6b83c7292ec51c8fff33f19e54cc869750cb6e3cea87d7662df87684e0",
+        "size": 128250,
+        "matches_immutable_raw": true
+      },
+      "geoip_PRIVATE.srs": {
+        "url": "https://cdn.jsdelivr.net/gh/SpeedeMiner/Geoip-ru-server@release/geoip_PRIVATE.srs",
+        "utc": "2026-11-15T08:33:40.075654+00:00",
+        "code": 200,
+        "sha256": "b9ea6381ea61e286298aea76c10cb85a252ff0d20c49d6de3527be1353c107c4",
+        "size": 228,
+        "matches_immutable_raw": true
+      },
+      "geoip_RU.dat.sha256sum": {
+        "url": "https://cdn.jsdelivr.net/gh/SpeedeMiner/Geoip-ru-server@release/geoip_RU.dat.sha256sum",
+        "utc": "2026-11-15T08:33:40.090197+00:00",
+        "code": 403
+      },
+      "geoip_RU.srs.sha256sum": {
+        "url": "https://cdn.jsdelivr.net/gh/SpeedeMiner/Geoip-ru-server@release/geoip_RU.srs.sha256sum",
+        "utc": "2026-11-15T08:33:40.277780+00:00",
+        "code": 200,
+        "sha256": "d881d7a22c3bd9870f97109cbdc6d7cfcedceee4f546d1e36a16b73e7ee7de34",
+        "size": 79,
+        "matches_asset": true
+      },
+      "geoip_PRIVATE.srs.sha256sum": {
+        "url": "https://cdn.jsdelivr.net/gh/SpeedeMiner/Geoip-ru-server@release/geoip_PRIVATE.srs.sha256sum",
+        "utc": "2026-11-15T08:33:44.600234+00:00",
+        "code": 200,
+        "sha256": "17ca2e8246a3609d825cd5f611e76c9c039f75573f4d19238c83759fc96fd915",
+        "size": 84,
+        "matches_asset": true
+      },
+      "geoip_RU_v41_release_manifest.json": {
+        "url": "https://cdn.jsdelivr.net/gh/SpeedeMiner/Geoip-ru-server@release/geoip_RU_v41_release_manifest.json",
+        "utc": "2026-11-15T08:33:44.662857+00:00",
+        "code": 404
+      }
+    }
+  },
+  "cdn_checksum_retry": {
+    "https://cdn.jsdelivr.net/gh/SpeedeMiner/Geoip-ru-server@release/geoip_RU.dat.sha256sum": {
+      "status": 200,
+      "matches_raw": true,
+      "sha256": "2721616b3007c8aa6e894255909ee53c63564392f94b4be36918d96b6aef6786"
+    },
+    "https://cdn.jsdelivr.net/gh/SpeedeMiner/Geoip-ru-server@7eef1efcaafbdbe259f3aa4e56a07c38979afbfb/geoip_RU.dat.sha256sum": {
+      "status": 200,
+      "matches_raw": true,
+      "sha256": "2721616b3007c8aa6e894255909ee53c63564392f94b4be36918d96b6aef6786"
+    },
+    "https://fastly.jsdelivr.net/gh/SpeedeMiner/Geoip-ru-server@release/geoip_RU.dat.sha256sum": {
+      "status": 200,
+      "matches_raw": true,
+      "sha256": "2721616b3007c8aa6e894255909ee53c63564392f94b4be36918d96b6aef6786"
+    },
+    "https://fastly.jsdelivr.net/gh/SpeedeMiner/Geoip-ru-server@7eef1efcaafbdbe259f3aa4e56a07c38979afbfb/geoip_RU.dat.sha256sum": {
+      "status": 200,
+      "matches_raw": true,
+      "sha256": "2721616b3007c8aa6e894255909ee53c63564392f94b4be36918d96b6aef6786"
+    },
+    "https://gcore.jsdelivr.net/gh/SpeedeMiner/Geoip-ru-server@release/geoip_RU.dat.sha256sum": {
+      "status": 403,
+      "body": "Package size exceeded the configured limit of 50 MB. Try https://github.com/SpeedeMiner/Geoip-ru-server/tree/release/geoip_RU.dat.sha256sum instead."
+    },
+    "https://gcore.jsdelivr.net/gh/SpeedeMiner/Geoip-ru-server@7eef1efcaafbdbe259f3aa4e56a07c38979afbfb/geoip_RU.dat.sha256sum": {
+      "status": 200,
+      "matches_raw": true,
+      "sha256": "2721616b3007c8aa6e894255909ee53c63564392f94b4be36918d96b6aef6786"
+    }
   }
 }
