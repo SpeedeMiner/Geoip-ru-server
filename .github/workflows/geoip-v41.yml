@@ -581,6 +581,7 @@ jobs:
       - name: Upload exact DIRECT delta
         if: github.event_name == 'pull_request' || github.ref == 'refs/heads/main'
         continue-on-error: true
+        timeout-minutes: 3
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
           name: geoip-v41-direct-delta
@@ -684,6 +685,7 @@ jobs:
       - name: Upload advisory Antifilter report
         if: github.event_name == 'pull_request' || github.ref == 'refs/heads/main'
         continue-on-error: true
+        timeout-minutes: 3
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
           name: v41-block-feed-delta-advisory
@@ -764,6 +766,7 @@ jobs:
       - name: Upload ASN and scoped provider advisories
         if: github.event_name == 'pull_request' || github.ref == 'refs/heads/main'
         continue-on-error: true
+        timeout-minutes: 3
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
           name: geoip-v41-asn-provider-advisories

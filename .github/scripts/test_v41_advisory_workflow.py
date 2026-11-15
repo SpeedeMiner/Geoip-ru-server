@@ -100,8 +100,7 @@ esac
                 self.assertTrue(self.condition_value(step['if'], event='pull_request', ref='refs/pull/1/merge'))
                 self.assertTrue(self.condition_value(step['if'], event='schedule', ref='refs/heads/main'))
                 self.assertFalse(self.condition_value(step['if'], event='push', ref='refs/heads/other'))
-                if 'run' in step:
-                    self.assertLessEqual(step['timeout-minutes'], 7)
+                self.assertLessEqual(step['timeout-minutes'], 7)
         publisher = str(workflow['jobs']['publish'])
         self.assertNotIn('audit_v41_asn_regressions.py', publisher)
         self.assertNotIn('audit_v41_direct_provenance.py', publisher)

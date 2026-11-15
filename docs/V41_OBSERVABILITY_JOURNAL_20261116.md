@@ -128,6 +128,7 @@
   publish job waits for the build job, so diagnostic execution can delay
   publication until it completes or its bounded step timeout expires.
 - Added regression assertions for main and PR execution conditions, bounded
-  timeouts and advisory-only failures; checksum and failed-fetch fixtures still
+  timeouts, including advisory artifact uploads, and advisory-only failures;
+  checksum and failed-fetch fixtures still
   verify that no baseline SHA is emitted on failure. Local/full and GitHub CI
   for this updated production-workflow scope are required before integration.
