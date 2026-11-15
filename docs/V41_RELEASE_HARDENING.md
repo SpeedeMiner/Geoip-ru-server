@@ -63,3 +63,26 @@ against `geoip_RU_v41_upstream_inputs.sha256sum` in the versioned Git tree
 and use `bundle_v41_registry_inputs.py --upstream-catalog
 .github/data/v41-upstream-sources.json restore` with that snapshot's
 provenance and source revision. Historical snapshots remain unchanged.
+
+## Restore the complete input set from a new versioned snapshot
+
+Download `geoip_RU_input_provenance.tsv`, the four input archives, and
+`geoip_RU_v41_release_manifest.json` from the same versioned release.
+Use scripts from the source commit in that manifest. For the block corpus:
+
+```bash
+python3 .github/scripts/bundle_v41_registry_inputs.py --block-inputs restore \
+  geoip_RU_input_provenance.tsv v41-block-inputs.tar.gz restored-block-inputs
+```
+
+This verifies each member against the exact input provenance before writing
+into a new directory. The four bundles cover the inputs that were previously
+split between versioned and rolling downloads. This applies to future
+snapshots. Older releases are not rewritten.
+
+The staged Git commit binds the public snapshot through its release manifest.
+A missing or changed public snapshot asset prevents advancing the release
+branch. If the mutable rolling update fails after promotion, the versioned
+snapshot and its Git commit remain the verified reference. Inspect the
+failed job and the three endpoints before retrying. Existing rolling URLs
+and the previous snapshots remain unchanged by this code change.

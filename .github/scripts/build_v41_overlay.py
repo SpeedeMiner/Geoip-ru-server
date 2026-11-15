@@ -20,6 +20,9 @@ from pathlib import Path
 from typing import Iterable
 
 from validate_v41_telegram import PINNED_FEED, read_telegram_feed
+from v41_reviewed_ipv6_admission import RECORD_KEY, read_reviewed_ipv6_admission
+
+W1ZARDZ_EXCLUSIONS = Path(__file__).resolve().parent.parent / "data/v41-w1zardz-gaming-exclusions.txt"
 
 SOURCE_REFS = {
     "kyoresuas-standard": {
@@ -495,6 +498,40 @@ def subtract_networks(source, *masks):
         output.update(networks_from_intervals(remaining, version))
     return output
 
+def read_w1zardz_exclusions(path: Path):
+    networks = set()
+    for number, row in enumerate(path.read_text(encoding="utf-8").splitlines(), 1):
+        token = row.partition("#")[0].strip()
+        if not token:
+            continue
+        net = ipaddress.IPv4Network(token, strict=True)
+        if (str(net) != token or net in networks or net.prefixlen < 24
+                or not net.is_global or net.is_multicast):
+            raise ValueError(f"{path}:{number}: invalid W1ZARDZ exclusion {token!r}")
+        networks.add(net)
+    if not networks:
+        raise ValueError(f"{path}: no W1ZARDZ exclusion records")
+    return networks
+
+def filter_w1zardz_routes(networks, excluded):
+    """Subtract only from W1ZARDZ and preserve unchanged literal host rows."""
+    mask = intervals(excluded, 4)
+    kept, removed = set(), []
+    for net in networks:
+        start, end = int(net.network_address), int(net.broadcast_address)
+        overlap = intersect_one_range(start, end, mask) if net.version == 4 else []
+        if not overlap:
+            kept.add(net)
+            continue
+        removed.extend(overlap)
+        kept.update(networks_from_intervals(subtract([(start, end)], overlap), 4))
+    return kept, networks_from_intervals(normalize_interval_union(removed), 4)
+
+def original_w1zardz_hosts(path: Path, admitted):
+    """Keep only literal upstream hosts, not /32s synthesized by trimming."""
+    original, _ = parse_cidr_file(path, allow_hosts=True)
+    return {net for net in original & admitted if net.prefixlen == net.max_prefixlen}
+
 def potential_ipsum_direct_overlap(preblock, private, approved_blocked, ipsum):
     """Count review-only /24 address space intersecting eligible DIRECT, without summing rows."""
     result = {}
@@ -521,7 +558,7 @@ def blocked_prefix_impact(network, preblock_after_private, approved_blocked):
 def parse_blocked_base(path: Path):
     return parse_cidr_file(path, allow_hosts=True)[0]
 
-def build_service_protection_masks(rir, service_sources):
+def build_service_protection_masks(rir, service_sources, *, w1zardz_literal_hosts=None):
     """Return literal service hosts and the full resolver-protection address space.
 
     Select hosts before clipping or collapsing so neither an allocation boundary
@@ -533,7 +570,8 @@ def build_service_protection_masks(rir, service_sources):
     exact = {net for net in ky if net.prefixlen == net.max_prefixlen}
     resolver = ky | operators
     regional = union_networks(*(rir[country] for country in ("RU", "BY", "KZ")))
-    w1zardz_hosts = {net for net in w1zardz if net.prefixlen == net.max_prefixlen}
+    w1zardz_hosts = (w1zardz_literal_hosts if w1zardz_literal_hosts is not None
+                     else {net for net in w1zardz if net.prefixlen == net.max_prefixlen})
     for version in (4, 6):
         # Do not collapse adjacent W1ZARDZ host rows into broader CIDRs.
         ru_intervals = intervals(rir["RU"], version)
@@ -578,7 +616,7 @@ def class_aware_effective_block_set(
 def parse_ipsum(path: Path):
     networks = set()
     raw = invalid = 0
-    for line_no, original in enumerate(path.read_text(encoding="utf-8-sig", errors="replace").splitlines(), 1):
+    for original in path.read_text(encoding="utf-8-sig", errors="replace").splitlines():
         line = original.strip()
         if not line or line.startswith("#"):
             continue
@@ -590,15 +628,18 @@ def parse_ipsum(path: Path):
         except ValueError:
             invalid += 1
             continue
-        raw += 1
         if net.version != 4 or net.prefixlen != 24:
-            raise ValueError(f"Antifilter ipsum must contain IPv4 /24 summaries only; line {line_no}: {net}")
+            invalid += 1
+            continue
+        raw += 1
         networks.add(net)
-    if not networks:
-        raise ValueError("Antifilter ipsum /24 feed is empty")
-    if invalid > max(20, int((raw + invalid) * 0.001)):
-        raise ValueError(f"Antifilter ipsum has too many invalid rows: {invalid}")
-    return networks, {"raw_rows": raw + invalid, "valid_rows": raw, "invalid_rows": invalid}
+    degraded = len(networks) < 1000 or invalid > max(20, int((raw + invalid) * 0.001))
+    if degraded:
+        print(f"::warning::Antifilter ipsum diagnostics skipped: unique IPv4 /24={len(networks)}, invalid={invalid}")
+    return (set() if degraded else networks), {
+        "raw_rows": raw + invalid, "valid_rows": raw, "invalid_rows": invalid,
+        "unique_valid_prefixes": len(networks), "status": "DEGRADED_DIAGNOSTIC" if degraded else "AVAILABLE",
+    }
 
 def load_service_inputs(args):
     """Load only feeds eligible to contribute DIRECT routes."""
@@ -646,6 +687,19 @@ def load_service_inputs(args):
         ("operator-whitelist", args.escapingworm),
     ):
         networks, stats = parse_cidr_file(path, allow_hosts=True)
+        if source_id == "w1zardz-service-direct":
+            w1zardz_excluded = read_w1zardz_exclusions(W1ZARDZ_EXCLUSIONS)
+            networks, removed = filter_w1zardz_routes(networks, w1zardz_excluded)
+            stats.update({
+                "admitted_input_cidrs": len(networks),
+                "excluded_ipv4_addresses": addr_counts(removed)["ipv4"],
+                "admission_exclusions_sha256": sha256(W1ZARDZ_EXCLUSIONS.read_bytes()),
+            })
+            for net in sorted(removed, key=lambda n: (int(n.network_address), n.prefixlen)):
+                provenance_rows.append({
+                    "source_id": source_id, "category": "excluded-game-ip",
+                    "service": "", "tier": "", "asn_list": "", "domains": "", "prefix": str(net),
+                })
         sources[source_id] = networks
         source_stats[source_id] = {"raw_files":[path.name], **stats}
         for net in sorted(networks, key=lambda n:(n.version,int(n.network_address),n.prefixlen)):
@@ -662,8 +716,12 @@ def load_service_inputs(args):
 
 def load_hxehex_diagnostics(path):
     """Retain source rows for attribution without giving them routing authority."""
-    networks, stats = parse_cidr_file(path, allow_hosts=True)
-    stats = {"raw_files": [path.name], "role": "diagnostic-only", **stats}
+    try:
+        networks, stats = parse_cidr_file(path, allow_hosts=True)
+    except ValueError as exc:
+        print(f"::warning::HXEHEX host diagnostics skipped: {exc}")
+        networks, stats = set(), {"status": "DEGRADED_DIAGNOSTIC"}
+    stats = {"raw_files": [path.name], "role": "diagnostic-only", "status": "AVAILABLE", **stats}
     rows = [
         {"source_id": "hxehex-mobile-hosts", "category": "diagnostic-only",
          "service": "", "tier": "", "asn_list": "", "domains": "", "prefix": str(net)}
@@ -692,6 +750,7 @@ def main():
     parser.add_argument("--regional-origin-prefixes", type=Path, required=True)
     parser.add_argument("--reviewed-operator-prefixes", type=Path, required=True)
     parser.add_argument("--regional-admission-exclusions", type=Path, required=True)
+    parser.add_argument("--reviewed-ipv6-admission-exclusions", type=Path, required=True)
     parser.add_argument("--ipsum", type=Path, required=True)
     parser.add_argument("--telegram-feed", type=Path, default=PINNED_FEED)
     parser.add_argument("--input-provenance", type=Path)
@@ -744,11 +803,12 @@ def main():
         raise ValueError("CORE/SHARED prefix masks must exactly partition the all-company prefix set")
     regional_with_companies, regional_origin_stats = parse_cidr_file(args.regional_origin_prefixes, allow_hosts=False)
     regional_only = subtract_networks(regional_with_companies, company_prefixes)
-    service_exact, service_resolver = build_service_protection_masks(rir, service_sources)
+    service_exact, service_resolver = build_service_protection_masks(
+        rir, service_sources,
+        w1zardz_literal_hosts=original_w1zardz_hosts(args.w1zardz, service_sources["w1zardz-service-direct"]),
+    )
 
     ipsum, ipsum_stats = parse_ipsum(args.ipsum)
-    if len(ipsum) < 1000:
-        raise ValueError(f"Antifilter ipsum review feed unexpectedly small: {len(ipsum)} /24 prefixes")
 
     reviewed = parse_reviewed_operator_prefixes(args.reviewed_operator_prefixes)
     reviewed_prefixes = set(reviewed)
@@ -809,6 +869,16 @@ def main():
             "service": row["delegated_country"] + " -> " + row["assignment_country"],
             "tier": "", "asn_list": row["origin_asn"], "domains": "", "prefix": row["prefix"],
         })
+    ipv6_admission = read_reviewed_ipv6_admission(args.reviewed_ipv6_admission_exclusions)
+    for row in ipv6_admission.values():
+        prefix_rows.append({
+            "source_id": "reviewed-ipv6-admission-exclusion",
+            "category": "Reviewed foreign IPv6 assignment",
+            "service": row["assignment_country"],
+            "tier": row["basis"], "asn_list": row["origin_asn"],
+            "domains": "", "prefix": row["prefix"],
+        })
+    admission_mask = set(admission_exclusions) | set(ipv6_admission)
     preblock = base_ru | additions
     preblock_iv = {v: intervals(preblock, v) for v in (4, 6)}
     core_company_iv = {v: intervals(core_company_prefixes, v) for v in (4, 6)}
@@ -823,9 +893,9 @@ def main():
     # CIDR set difference is not address-space subtraction: e.g. removing
     # 203.0.113.128/25 from a covering 203.0.113.0/24 must retain only the /25.
     # Convert to exact intervals before subtracting PRIVATE and RKN block prefixes.
-    routing_exclusions = blocked | set(admission_exclusions)
+    routing_exclusions = blocked | admission_mask
     final = set(collapse(subtract_networks(preblock, private, routing_exclusions)))
-    admission_iv = {v: intervals(admission_exclusions, v) for v in (4, 6)}
+    admission_iv = {v: intervals(admission_mask, v) for v in (4, 6)}
     admission_removed = {
         v: interval_size(intersect(subtract(subtract(preblock_iv[v], private_iv[v]), blocked_iv[v]), admission_iv[v]))
         for v in (4, 6)
@@ -992,7 +1062,7 @@ def main():
         raise ValueError("PRIVATE precedence violation in v41")
     if any(intersect(intervals(decoded["RU"],v),blocked_iv[v]) for v in (4,6)):
         raise ValueError("Non-corporate RKN blocked destination remains in DIRECT v41")
-    assert_regional_admission_disjoint(decoded["RU"], admission_exclusions)
+    assert_regional_admission_disjoint(decoded["RU"], admission_mask)
     for v in (4,6):
         company_expected = normalize_interval_union(
             core_company_iv[v], shared_infrastructure_iv[v], regional_only_iv[v],
@@ -1047,6 +1117,8 @@ def main():
         "- Regional registration and service sources remain DIRECT except for explicitly reviewed admission conflicts.",
         "- Regional admission exclusions (not RKN): " + ", ".join(row["prefix"] for row in admission_exclusions.values()),
         f"- IPv4 removed by regional admission exclusions after PRIVATE and block policy: {admission_removed[4]}",
+        "- Reviewed IPv6 admission exclusions (not RKN): " + ", ".join(map(str, ipv6_admission)),
+        f"- IPv6 removed by reviewed admission exclusions after PRIVATE and block policy: {admission_removed[6]}",
         "- PRIVATE has absolute precedence.",
         "- CORE_CORPORATE exact origin prefixes are protected from the resolver layer only.",
         "- SHARED_INFRA exact origin prefixes are protected only against the resolver-only layer.",
@@ -1090,6 +1162,7 @@ def main():
         "SERVICE DIRECT INPUTS",
         f"Kyoresuas Standard services represented in service catalog: {service_stats_count(source_stats)}",
         f"W1ZARDZ unique service/direct prefixes: {len(service_sources['w1zardz-service-direct'])}",
+        f"IPv4 addresses removed from the W1ZARDZ input by the gaming policy: {source_stats['w1zardz-service-direct']['excluded_ipv4_addresses']}",
         f"Escapingworm operator whitelist prefixes: {len(service_sources['operator-whitelist'])}",
         f"Literal service hosts (resolver protection only): {len(service_exact)}",
         f"Service resolver-protected address space: {addr_counts(service_resolver)}",
@@ -1097,6 +1170,7 @@ def main():
         "Service datasets can include foreign-located or shared-provider endpoints; no country geolocation filter was applied.",
         "",
         f"HXEHEX diagnostic-only prefixes: {len(hxehex_diagnostics)}",
+        f"HXEHEX host diagnostic input status: {hxehex_stats['status']}",
         "HXEHEX is retained for comparison only. It contributes no DIRECT routes or resolver exemptions.",
         "",
         "RKN BLOCKS AND CORPORATE COMPANY-ASN EXCEPTION",
@@ -1110,6 +1184,7 @@ def main():
         f"CORE_CORPORATE origin prefixes: {len(core_company_prefixes)}; SHARED_INFRA origin prefixes: {len(shared_infrastructure_prefixes)}",
         f"Antifilter ipsum REVIEW-ONLY IPv4 /24 prefixes: {len(ipsum)}",
         f"Antifilter ipsum raw/valid/invalid rows: {ipsum_stats['raw_rows']}/{ipsum_stats['valid_rows']}/{ipsum_stats['invalid_rows']}",
+        f"Antifilter ipsum diagnostic input status: {ipsum_stats['status']}",
         f"Potential additional IPv4 DIRECT address space affected by /24 review candidates: {ipsum_overlap_direct[4]}",
         f"Potential additional IPv6 DIRECT address space affected by /24 review candidates: {ipsum_overlap_direct[6]}",
         "ipsum /24 candidates remain review-only. DNS-derived and unverified historical evidence cannot carve selected origin or RIR-resource coverage. Explicit IP/subnet evidence and Telegram take precedence.",
@@ -1142,10 +1217,15 @@ def main():
         "rir_inventory":{"rows":rir_rows,"countries":{c:len(rir[c]) for c in ("RU","BY","KZ")}},
         "regional_admission_exclusions": {
             "records": list(admission_exclusions.values()),
-            "removed_after_block_policy": {f"ipv{v}": count for v, count in admission_removed.items()},
+            "removed_after_block_policy": {"ipv4": admission_removed[4], "ipv6": 0},
+        },
+        RECORD_KEY: {
+            "records": list(ipv6_admission.values()),
+            "removed_after_block_policy": {"ipv6": admission_removed[6]},
         },
         "service_sources":source_stats,
         "diagnostic_sources": {
+            "antifilter-ipsum": {**ipsum_stats, "role": "diagnostic-only"},
             "hxehex-mobile-hosts": {
                 **hxehex_stats, "unique_cidrs": len(hxehex_diagnostics),
                 "direct_overlap": {f"ipv{v}": diagnostic_row[f"ipv{v}_direct_overlap"] for v in (4, 6)},
@@ -1233,11 +1313,13 @@ def main():
             "hydra_geoip":sha256(args.hydra.read_bytes()),
             "regional_rir_inventory":sha256(args.rir.read_bytes()),
             "regional_admission_exclusions":sha256(args.regional_admission_exclusions.read_bytes()),
+            RECORD_KEY:sha256(args.reviewed_ipv6_admission_exclusions.read_bytes()),
             "reviewed_operator_prefixes":source_stats[reviewed_source]["input_sha256"],
             "kyoresuas_standard_ipv4":sha256(args.kyoresuas_v4.read_bytes()),
             "kyoresuas_standard_ipv6":sha256(args.kyoresuas_v6.read_bytes()),
             "kyoresuas_services_json":sha256(args.kyoresuas_services.read_bytes()),
             "w1zardz_direct":sha256(args.w1zardz.read_bytes()),
+            "w1zardz_gaming_exclusions":sha256(W1ZARDZ_EXCLUSIONS.read_bytes()),
             "hxehex_ipwhitelist":sha256(args.hxehex_ip.read_bytes()),
             "escapingworm_operator_whitelist":sha256(args.escapingworm.read_bytes()),
             "v37_blocked_base":sha256(args.blocked_base.read_bytes()),

@@ -18,6 +18,31 @@ COUNTRIES = ("RU", "BY", "KZ")
 ALLOWED_STATUS = {"allocated", "assigned", "legacy"}
 
 
+def utc_today() -> dt.date:
+    return dt.datetime.now(dt.timezone.utc).date()
+
+
+def parse_as_of(value: str) -> dt.date:
+    try:
+        reference = dt.date.fromisoformat(value)
+        if reference.isoformat() != value or reference > utc_today():
+            raise ValueError
+    except ValueError as exc:
+        raise argparse.ArgumentTypeError(
+            "--as-of must be a UTC date in YYYY-MM-DD form, no later than today"
+        ) from exc
+    return reference
+
+
+def validate_snapshot_age(registry: str, snapshot: dt.date, reference: dt.date) -> None:
+    age = (reference - snapshot).days
+    if not -1 <= age <= 14:
+        raise ValueError(
+            f"stale/future {registry} snapshot {snapshot} "
+            f"({age} days old as of {reference} UTC)"
+        )
+
+
 def snapshot_header(lines: list[str], expected_registry: str) -> list[str]:
     for line in lines:
         row = [x.strip() for x in line.lstrip("\ufeff").split("|")]
@@ -45,11 +70,11 @@ def parse_resource(country: str, kind: str, start: str, value: str) -> list[str]
     return []
 
 
-def build(input_paths: dict[str, Path]) -> tuple[list[dict[str, str]], list[str]]:
+def build(input_paths: dict[str, Path], *, as_of: dt.date | None = None) -> tuple[list[dict[str, str]], list[str]]:
     unique: set[tuple[str, str, str, str]] = set()
     counts: Counter[tuple[str, str, str]] = Counter()
     summaries = []
-    today = dt.date.today()
+    reference = utc_today() if as_of is None else as_of
 
     for registry in REGISTRIES:
         path = input_paths[registry]
@@ -58,9 +83,7 @@ def build(input_paths: dict[str, Path]) -> tuple[list[dict[str, str]], list[str]
             raise ValueError(f"empty delegated-stat snapshot: {registry}")
         header = snapshot_header(lines, registry)
         snapshot = dt.datetime.strptime(header[5], "%Y%m%d").date()
-        age = (today - snapshot).days
-        if age < -1 or age > 14:
-            raise ValueError(f"stale/future {registry} snapshot {snapshot} ({age} days old)")
+        validate_snapshot_age(registry, snapshot, reference)
         resources = 0
         generated = 0
         for raw in lines:
@@ -127,15 +150,19 @@ def main() -> int:
         parser.add_argument(f"--{registry}", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--stats", type=Path, required=True)
+    parser.add_argument("--as-of", type=parse_as_of,
+                        help="UTC freshness reference for historical replay (default: today UTC)")
     args = parser.parse_args()
     paths = {registry: getattr(args, registry) for registry in REGISTRIES}
-    rows, summaries = build(paths)
+    reference = args.as_of or utc_today()
+    rows, summaries = build(paths, as_of=reference)
     with args.output.open("w", encoding="utf-8", newline="") as stream:
         writer = csv.DictWriter(stream, fieldnames=["country", "prefix", "registry", "status"], delimiter="\t", lineterminator="\n")
         writer.writeheader()
         writer.writerows(rows)
     args.stats.write_text(
         "Generated UTC: " + dt.datetime.now(dt.timezone.utc).isoformat() + "\n"
+        + f"Freshness reference UTC date: {reference}\n"
         + "Rows are resource registration evidence; they do not imply physical geolocation or current BGP reachability.\n"
         + "\n".join(summaries) + "\n"
         + f"Total RU+BY+KZ resource rows: {len(rows)}\n",

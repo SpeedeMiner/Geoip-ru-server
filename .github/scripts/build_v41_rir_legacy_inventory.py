@@ -1,20 +1,22 @@
 #!/usr/bin/env python3
+import argparse
 import datetime
 import ipaddress
 import pathlib
-import sys
 
-inputs = [
-    ("afrinic", pathlib.Path(sys.argv[1])),
-    ("apnic", pathlib.Path(sys.argv[2])),
-    ("arin", pathlib.Path(sys.argv[3])),
-    ("lacnic", pathlib.Path(sys.argv[4])),
-    ("ripencc", pathlib.Path(sys.argv[5])),
-]
-asn_output = pathlib.Path(sys.argv[6])
-prefix_output = pathlib.Path(sys.argv[7])
-stats_output = pathlib.Path(sys.argv[8])
-by_kz_asn_output = pathlib.Path(sys.argv[9])
+from build_rir_rukzby_prefixes import REGISTRIES, parse_as_of, utc_today, validate_snapshot_age
+
+parser = argparse.ArgumentParser(description="Build the legacy v41 RIR inventory.")
+for name in (*REGISTRIES, "asn_output", "prefix_output", "stats_output", "by_kz_asn_output"):
+    parser.add_argument(name, type=pathlib.Path)
+parser.add_argument("--as-of", type=parse_as_of,
+                    help="UTC freshness reference for historical replay (default: today UTC)")
+args = parser.parse_args()
+inputs = [(name, getattr(args, name)) for name in REGISTRIES]
+asn_output = args.asn_output
+prefix_output = args.prefix_output
+stats_output = args.stats_output
+by_kz_asn_output = args.by_kz_asn_output
 asns_by_country = {"RU": set(), "BY": set(), "KZ": set()}
 asns = asns_by_country["RU"]
 by_kz_asns = set()
@@ -22,7 +24,7 @@ rir_prefixes = set()
 rir_v4_prefixes = set()
 rir_v6_prefixes = set()
 summaries = []
-today = datetime.date.today()
+reference = args.as_of or utc_today()
 raw_asn_records = raw_v4_records = raw_v6_records = 0
 generated_v4_cidr_components = generated_v6_cidr_components = normalized_v6_records = 0
 
@@ -59,11 +61,10 @@ for expected_registry, path in inputs:
         snapshot_date = datetime.datetime.strptime(header[5], "%Y%m%d").date()
     except ValueError:
         raise SystemExit(f"Invalid snapshot enddate in {expected_registry}: {header[5]!r}")
-    age_days = (today - snapshot_date).days
-    if age_days < -1 or age_days > 14:
-        raise SystemExit(
-            f"Stale/future {expected_registry} delegated stats: {snapshot_date} ({age_days} days old)"
-        )
+    try:
+        validate_snapshot_age(expected_registry, snapshot_date, reference)
+    except ValueError as exc:
+        raise SystemExit(str(exc)) from exc
 
     count_asn = count_v4 = count_v6 = 0
     registry_v4_components = registry_v6_components = 0
@@ -187,6 +188,7 @@ with prefix_output.open("w", encoding="utf-8") as handle:
 
 stats_lines = [
     f"Generated UTC: {datetime.datetime.now(datetime.timezone.utc).isoformat()}",
+    f"Freshness reference UTC date: {reference}",
     f"Unique RU-registered ASNs: {len(asns)}",
     f"Unique BY-registered ASNs: {len(asns_by_country['BY'])}",
     f"Unique KZ-registered ASNs: {len(asns_by_country['KZ'])}",

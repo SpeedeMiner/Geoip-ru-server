@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import os, sys
 from collections import defaultdict
+from v41_diagnostic_sources import STATUS, verify_unavailable_file
 output, manifest, company_manifest, bgp_stats, rir_stats, counts, quality, provenance, category_audit, by_kz_asns, blocked_ips, blocked_review, blocked_stats, blocked_checksums, input_provenance = sys.argv[1:]
 minimums = ((output, 4), (manifest, 100), (company_manifest, 300), (bgp_stats, 100), (rir_stats, 100),
             (counts, 100), (quality, 1600), (provenance, 50), (category_audit, 50), (by_kz_asns, 100), (blocked_ips, 10000),
@@ -30,6 +31,11 @@ for row in provenance_entries:
             raise SystemExit(f"Invalid downloaded-source provenance row: {row}")
         if not byte_count.isdigit() or int(byte_count) <= 0:
             raise SystemExit(f"Invalid downloaded-source byte count: {row}")
+    elif status == STATUS:
+        try:
+            verify_unavailable_file(local_file, source_name, fetch_url, digest, byte_count)
+        except (OSError, ValueError) as exc:
+            raise SystemExit(f"Invalid unavailable diagnostic provenance: {exc}") from exc
     elif status == "unavailable":
         allowed_unavailable = ("ANTIFILTER COMMUNITY CANDIDATES", "RE-FILTER CANDIDATES", "ANTIFILTER IPRESOLVE LIST")
         if source_name not in allowed_unavailable or digest != "-" or byte_count != "0":

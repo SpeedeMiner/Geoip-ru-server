@@ -1,53 +1,78 @@
 #!/usr/bin/env python3
+"""Normalize IANA special-purpose CIDRs without inferring unknown reachability."""
+import argparse
 import csv
 import ipaddress
-import pathlib
-import sys
+from pathlib import Path
+import re
 
-inputs = [pathlib.Path(sys.argv[1]), pathlib.Path(sys.argv[2])]
-private_out = pathlib.Path(sys.argv[3])
-reachable_out = pathlib.Path(sys.argv[4])
-non_global = set()
-global_exceptions = set()
+FOOTNOTES = re.compile(r"(?:\s*\[[0-9]+\])+\s*$")
 
-for path in inputs:
+
+def without_notes(value):
+    return FOOTNOTES.sub("", (value or "").strip()).strip()
+
+
+def read_registry(path, family):
+    non_global, globally_reachable = set(), set()
+    with path.open(encoding="utf-8-sig", newline="") as stream:
+        rows = csv.DictReader(stream, strict=True)
+        for field in ("Address Block", "Globally Reachable"):
+            if (rows.fieldnames or []).count(field) != 1:
+                raise ValueError(f"unexpected IANA CSV schema: {path}")
+        for row in rows:
+            status = without_notes(row.get("Globally Reachable")).casefold()
+            if None in row or any(v is None for v in row.values()):
+                raise ValueError(f"{path}:{rows.line_num}: malformed CSV record")
+            if status in {"", "n/a"}:  # No classification, not False.
+                continue
+            if status not in {"true", "false"}:
+                raise ValueError(f"{path}:{rows.line_num}: unknown reachability {status!r}")
+            dest = globally_reachable if status == "true" else non_global
+            for field in row["Address Block"].split(","):
+                token = without_notes(field)
+                try:
+                    if "/" not in token:
+                        raise ValueError("missing prefix length")
+                    net = ipaddress.ip_network(token, strict=True)
+                    if net.version != family or net.prefixlen == 0:
+                        raise ValueError("wrong family or default route")
+                except ValueError as exc:
+                    raise ValueError(f"{path}:{rows.line_num}: invalid IPv{family} CIDR {token!r}") from exc
+                dest.add(net)
+    if not non_global or not globally_reachable:
+        raise ValueError(f"{path}: missing IPv{family} reachability rows")
+    if non_global & globally_reachable:
+        raise ValueError(f"{path}: an exact prefix has conflicting reachability")
+    return non_global, globally_reachable
+
+
+def write_prefixes(path, header, nets):
+    rows = sorted(nets, key=lambda n: (n.version, int(n.network_address), n.prefixlen))
+    path.write_text(header + "\n" + "".join(f"{net}\n" for net in rows), encoding="utf-8")
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    for name in ("ipv4", "ipv6", "private_output", "reachable_output"):
+        parser.add_argument(name, type=Path)
+    args = parser.parse_args()
     try:
-        with path.open("r", encoding="utf-8-sig", newline="") as handle:
-            rows = list(csv.DictReader(handle))
-    except (OSError, UnicodeError, csv.Error) as exc:
-        raise SystemExit(f"Cannot parse IANA registry {path}: {exc}")
-    if not rows or "Address Block" not in rows[0] or "Globally Reachable" not in rows[0]:
-        raise SystemExit(f"Unexpected IANA CSV schema: {path}")
-    for row in rows:
-        block = (row.get("Address Block") or "").strip()
-        reachable = (row.get("Globally Reachable") or "").strip().split()[0].lower() if (row.get("Globally Reachable") or "").strip() else ""
-        if not block or reachable not in {"true", "false"}:
-            continue
-        try:
-            net = ipaddress.ip_network(block, strict=True)
-        except ValueError:
-            continue
-        if net.prefixlen == 0:
-            continue
-        if reachable == "false":
-            non_global.add(str(net))
-        else:
-            global_exceptions.add(str(net))
+        private4, public4 = read_registry(args.ipv4, 4)
+        private6, public6 = read_registry(args.ipv6, 6)
+        non_global = private4 | private6
+        if len(non_global) < 20:
+            raise ValueError(f"IANA non-globally-reachable prefix count unexpectedly small: {len(non_global)}")
+        global_exceptions = public4 | public6
+        write_prefixes(args.private_output, "# IANA Special-Purpose entries where Globally Reachable=False", non_global)
+        write_prefixes(args.reachable_output,
+                       "# IANA Special-Purpose entries where Globally Reachable=True; carve-outs from broad special blocks",
+                       global_exceptions)
+    except (OSError, ValueError, csv.Error) as exc:
+        parser.exit(1, f"ERROR: {exc}\n")
+    print(f"IANA non-global prefixes: {len(non_global)}")
+    print(f"IANA global-reachable exception prefixes: {len(global_exceptions)}")
 
-def key(value):
-    net = ipaddress.ip_network(value)
-    return net.version, int(net.network_address), net.prefixlen
 
-if len(non_global) < 20:
-    raise SystemExit(f"IANA non-globally-reachable prefix count unexpectedly small: {len(non_global)}")
-
-private_out.write_text(
-    "# IANA Special-Purpose entries where Globally Reachable=False\n" +
-    "\n".join(sorted(non_global, key=key)) + "\n", encoding="utf-8"
-)
-reachable_out.write_text(
-    "# IANA Special-Purpose entries where Globally Reachable=True; carve-outs from broad special blocks\n" +
-    "\n".join(sorted(global_exceptions, key=key)) + "\n", encoding="utf-8"
-)
-print(f"IANA non-global prefixes: {len(non_global)}")
-print(f"IANA global-reachable exception prefixes: {len(global_exceptions)}")
+if __name__ == "__main__":
+    main()

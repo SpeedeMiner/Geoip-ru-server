@@ -273,3 +273,34 @@ See [v41 release hardening](V41_RELEASE_HARDENING.md). Routing-policy changes ar
 - The [additional-source audit](https://github.com/SpeedeMiner/Geoip-ru-server/blob/062d504a4032b52684808ec6cac3d6a7c2ffaa8d/docs/v41-additional-feed-resolver-audit-43579021611.json) found zero DNS-only loss in the accepted v37 coverage. The [separate one-group discovery queue](https://github.com/SpeedeMiner/Geoip-ru-server/blob/062d504a4032b52684808ec6cac3d6a7c2ffaa8d/docs/v41-additional-one-group-discovery-43579021611.json) is not admitted by feed membership. It supplies only independently confirmed candidates for the existing reviewed-operator table.
 - [Exact release evidence](v41-additional-reviewed-operator-release-20261114.json) confirms nine /24 assignments using RIPE, registry-linked operator geofeeds, exact single-origin RPKI-valid RIS and same-origin pinned ipverse (exact or containing announcement). The reviewed table increases from 112 to 121 entries under a 121-row cap, with the existing minimum prefix sizes and non-overlap checks intact.
 - Expected fixed-input effect: +15 exact IPv4, zero IPv4 removals, zero IPv6 or PRIVATE changes. The other addresses inside the nine /24s are already DIRECT. Hard, Telegram, raw resolver and admission exclusions stay unchanged. No PR #5 changes.
+
+## 2026-11-14 — Close the v41 release input and readback gaps
+
+- Follow-up to the [full repository audit](https://github.com/SpeedeMiner/Geoip-ru-server/blob/e521e60ea9bbbc7d154e01ae336af3d812ce070a/docs/V41_FULL_REPOSITORY_AUDIT_20261114.md), based on production source `596c93df`.
+- The candidate retains all ten current and historical block inputs in a checked versioned archive, including exact optional fallback files. The release manifest links the input provenance and build commit to the actual DAT, SRS, checksums and archives. Snapshot download verification precedes release promotion. Rolling DAT and SRS readback fails on persistent drift after promotion.
+- Local integration tests verify fail-closed behavior for a missing block archive, mismatched public SRS, stale rolling output and competing release updates. Scope is build and publication only. W1ZARDZ admission, historical block policy, main, existing releases and PR #5 are not changed by this candidate.
+
+## 2026-11-15 — Classify verified payment, public-service and hosting origins
+
+- Reviewed 22 submitted ASN-to-company mappings against RIPE RDAP and RIS. Only AS8732, AS12768 and AS56330 matched as submitted. Added those three and 29 verified alternatives/related origins to the registry and class policy. No non-observed origins, upstreams or third-party CDN ASNs were newly imported. The [decision record](V41_ASN_COVERAGE_REVIEW_20261115.md) includes the 19 rejected mappings.
+- Registry 57 → 89 (24 new CORE, 8 new SHARED). All 32 additions were already selected through RIR-RU. On the published snapshot their 248 aggregated CIDRs are already fully DIRECT. Fixed-input replay retained v37 and v41 DAT, both SRS, PRIVATE and both exclusion masks byte for byte. Selected and global BGP CIDR key sets are unchanged.
+- Public DNS/BGP sample: 33 of 34 unique returned IPs already DIRECT. `ruvds.com` resolves in this sample to `186.2.163.33` on third-party AS59692. Keep that /24 and ASN out of the RuVDS company list. No merge, production or release changes, and no changes to #5, #35 or #40.
+- Independently checked the missing RuVDS frontend IP in RIPEstat DNS Chain, then verified that the published Geosite-ru-light RU SRS already matches `ruvds.com` and `www.ruvds.com` by suffix. No reason to add a shared third-party /24 for a domain-aware client.
+
+## 2026-11-15 — Verify regional telecom infrastructure origins
+
+- Reviewed 18 submitted operator mappings and three corrected/related origins. Added 16 SHARED_INFRA rows on top of PR #41 (89 → 105). Kept the existing AS12768 and AS56330 entries. Used RIPE registration and observed origins, not AS-set membership. See [operator decisions](V41_OPERATOR_ASN_REVIEW_20261115.md).
+- Held AS13116 at ASN level because RIPE records Tele2 Sverige AB. Its three RIS-observed Russian /24s are already fully DIRECT. Replaced wrong InterZet and Novotelecom associations with AS41733 and AS31200, and recorded AS47395 as SCARTEL-AS separately from MegaFon's AS25159. All 16 origins were previously selected through RIR-RU. No changes to PR #5, main or published artifacts.
+- Hash-verified replay preserved the v37 and v41 DATs, both SRS files and both block masks byte-for-byte. No added or removed DIRECT addresses. All 371 aggregate CIDR keys for the 16 origins were already covered. 164 Python tests, Go tests and release gates passed locally. Evidence in [per-ASN coverage](V41_OPERATOR_ASN_EVIDENCE_20261115.tsv).
+
+## 2026-11-15 — Verify live PR #41 artifact and AS13116 exact routes
+
+- Compared CI artifact 14150353641 against release `7eef1efc`: +2,304 / −256 RU IPv4, +one RU IPv6 /48, no PRIVATE delta. Restoring the old registry on the same live inputs reproduced CI binaries and block masks byte for byte. Replacing only the release ipverse archive also reproduced CI final DAT/SRS, so final routing drift comes from ipverse, not the PR's registry entries. See [control replay and exact deltas](V41_PR41_LIVE_DELTA_20261115.md).
+- All three exact TELE2RU /24s are completely DIRECT in both snapshots, with no block-mask overlap. The RIS snapshot records MOAS for `193.138.149.0/24` (AS48092 and AS13116). No new pins or ASN admission, and no routing change.
+- New `2a0b:4e07:63f0::/48` is labelled KP by its exact RDAP and registry-linked geofeed despite an RU origin ASN. Its already-present sibling is IN in the same geofeed. Nine new IPv4 /24s have nonregional exact RDAP labels, requiring corroboration before changing the routing policy. PR #5, main and production are untouched.
+
+## 2026-11-15 — Rehearse precise dual-stack admission exclusions without changing policy
+
+- Reviewed the two AS218750 /48s against exact RDAP, the pinned operator geofeed and RIPE RIS/RPKI. KP/IN are exact assignments, while the parent RIPE delegation is IL and AS218750 is RU. The live /47 comes from ipverse aggregation; RIS shows the two /48s separately. Each is already in the v37 layer wherever it appears in final DIRECT.
+- A local shadow replay removing exactly those two /48s changed only the IN /48 on the release inputs and both /48s on CI inputs. IPv4, PRIVATE, block masks and other AS218750 coverage were unchanged. Overlay, hard/PRIVATE, Telegram, delta and DAT/SRS validation passed. See [evidence and implementation boundary](V41_AS218750_IPV6_SHADOW_20261115.md).
+- Keep both production routing and PR #41 scope unchanged. If implementing a policy later, do not mislabel the IL resource delegation or use an ASN-wide exception. Existing IPv4 regional-exclusions schema cannot honestly describe this IPv6 case.

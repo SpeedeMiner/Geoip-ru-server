@@ -49,3 +49,23 @@
 - Preserve v2fly/geoip CC-BY-SA-4.0 and DB-IP CC-BY-4.0 notices, plus upstream licenses/attributions for service feeds.
 - RIR registration, BGP announcements, service association and RKN block evidence are distinct signals and are reported separately.
 - No ASN or service protection overrides an effective hard block. The independent release gate verifies hard provenance and DIRECT disjointness before publication.
+
+## Reproducible versioned releases
+
+- New versioned snapshots retain the current and historical block feeds in
+  `v41-block-inputs.tar.gz`. This includes the exact fallback file when an
+  optional feed is unavailable, with its unavailable status preserved.
+- `geoip_RU_v41_release_manifest.json` identifies the source commit and
+  workflow run and records the size and SHA-256 of the DAT, both SRS files,
+  checksum sidecars, provenance and input archives. The snapshot includes
+  the provenance TSV needed to verify and restore all input bundles.
+- The workflow reads the versioned assets from their public URLs and verifies
+  them against the manifest committed in the snapshot Git tree before moving
+  `release`. After updating the rolling release it also checks its core
+  DAT/SRS files and checksums against the promoted release commit. Publication
+  across separate endpoints is not atomic. A persistent mismatch fails the
+  workflow rather than being reported as a successful update.
+- Use the versioned download links for reproducibility. The rolling GitHub
+  tag is a stable URL for mutable assets, not a source-code checkout of the
+  newest artifact. For raw URLs, use the versioned snapshot commit or
+  `release` for the current published tree.

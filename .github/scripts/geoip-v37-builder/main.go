@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"bytes"
 	"fmt"
 	"math/big"
 	"net/netip"
@@ -1099,6 +1100,13 @@ func main() {
 			candidateRaw += matched
 		}
 		if matched == 0 {
+			if source.Name == "hxehex-whitelist" {
+				data, err := os.ReadFile(source.Path)
+				if err == nil && bytes.HasPrefix(data, []byte("# Optional source unavailable during this build: ")) {
+					fmt.Fprintln(os.Stderr, "::warning::hxehex-whitelist: diagnostic CIDR input unavailable")
+					continue
+				}
+			}
 			panic(fmt.Errorf("source %s parsed zero prefixes; refusing incomplete build", source.Name))
 		}
 		fmt.Printf("Loaded %-20s CIDRs=%d\n", source.Name, matched)

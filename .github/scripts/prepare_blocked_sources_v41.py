@@ -41,6 +41,8 @@ CONFIRMED_IP = "reviewed-rkn-ip-record"
 HARD_SOURCE_LABELS = frozenset({
     CONFIRMED_IP, "antifilter-subnet.lst", "runetfreedom-static-telegram",
 })
+MIN_HOST_FEED_APPROVED = 1000
+MIN_V38_BASELINE_UNIQUE = 1000
 
 
 def read_confirmed_ip_records(path: Path) -> set[str]:
@@ -205,7 +207,7 @@ def main() -> int:
     source = "v38-approved-baseline"
     nets, lines, invalid = read_feed(source_paths[source], source)
     unique = set(nets)
-    if lines < 1000 or not unique:
+    if len(unique) < MIN_V38_BASELINE_UNIQUE:
         raise SystemExit(f"pinned v38 baseline unexpectedly small: lines={lines}, valid_unique={len(unique)}")
     if invalid > max(10, int(lines * 0.001)):
         raise SystemExit(f"pinned v38 baseline has too many invalid rows: {invalid}/{lines}")
@@ -248,8 +250,9 @@ def main() -> int:
             else:
                 review.add((source, value, "non-host prefix in host-IP feed"))
                 review_count += 1
-        if lines < 1000 or not unique:
-            raise SystemExit(f"{source} unexpectedly small: lines={lines}, valid_unique={len(unique)}")
+        if approved < MIN_HOST_FEED_APPROVED:
+            raise SystemExit(f"{source} unexpectedly small: approved_unique_hosts={approved}, "
+                             f"minimum={MIN_HOST_FEED_APPROVED}, valid_unique={len(unique)}, lines={lines}")
         if invalid > max(10, int(lines * 0.001)):
             raise SystemExit(f"{source} has too many invalid rows: {invalid}/{lines}")
         rows[source] = {"data_lines": lines, "valid_unique": len(unique), "approved": approved,
@@ -271,8 +274,9 @@ def main() -> int:
         else:
             review.add((source, value, "broader than auto-carve threshold (/16 IPv4, /112 IPv6; 65,536 addresses max)"))
             review_count += 1
-    if not unique or lines == 0:
-        raise SystemExit("antifilter subnet.lst is empty; refusing to publish without the primary network block source")
+    if not approved:
+        raise SystemExit("antifilter-subnet.lst has no approved unique bounded prefixes; "
+                         "refusing to build without the primary network block source")
     if invalid > max(10, int(lines * 0.01)):
         raise SystemExit(f"antifilter subnet.lst has too many invalid rows: {invalid}/{lines}")
     rows[source] = {"data_lines": lines, "valid_unique": len(unique), "approved": approved,
@@ -304,7 +308,8 @@ def main() -> int:
         unique = set(nets)
         for value in unique:
             review.add((source, value, "community/summary source; review only, not auto-carved"))
-        if lines > 0 and not unique and invalid > 0:
+        if not unique:
+            feed_status[source] = "DEGRADED_DIAGNOSTIC"
             print(f"::warning::{source} returned no parseable IP prefixes; keeping it review-only and recording {invalid} invalid lines")
         # Candidate feeds are not used for routing decisions. Non-IP content is
         # retained in the invalid counter rather than failing an otherwise valid build.

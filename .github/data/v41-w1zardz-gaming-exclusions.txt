@@ -1,0 +1,9 @@
+# Source-scoped W1ZARDZ exclusions. Not RKN blocks or global DIRECT exclusions.
+# See V41_W1ZARDZ_GAMING_AUDIT_20261115.md on the audit branch.
+38.244.136.0/24 # Unverified gaming-catalog hosting block (Scalaxy/3NT)
+104.26.6.129/32 # Shared Cloudflare, Grand Mobile API/CDN
+104.26.7.129/32 # Shared Cloudflare, Grand Mobile API/CDN
+143.20.177.3/32 # Historically observed Grand Mobile launcher
+172.64.150.18/32 # Shared Cloudflare, Grand Mobile support
+172.67.73.25/32 # Historical Grand Mobile CDN, shared Cloudflare
+172.67.73.142/32 # Shared Cloudflare, Grand Mobile API/CDN
