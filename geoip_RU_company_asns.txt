@@ -89,3 +89,19 @@ AS59446	Dr.Web	Doctor Web Ltd	https://rdap.db.ripe.net/autnum/59446
 AS8732	Akado	JSC Comcor	https://rdap.db.ripe.net/autnum/8732
 AS12768	ER-Telecom	JSC ER-Telecom Holding	https://rdap.db.ripe.net/autnum/12768
 AS56330	ER-Telecom	JSC ER-Telecom Holding (Kurgan origin)	https://rdap.db.ripe.net/autnum/56330
+AS12772	ER-Telecom	JSC ER-Telecom Holding (ENFORTA-AS)	https://rdap.db.ripe.net/autnum/12772
+AS62287	ER-Telecom	JSC ER-Telecom Holding (REGION-AS, Magadan)	https://rdap.db.ripe.net/autnum/62287
+AS31483	ER-Telecom	JSC ER-Telecom Holding (ERTELECOM-DC-AS)	https://rdap.db.ripe.net/autnum/31483
+AS56981	ER-Telecom	JSC ER-Telecom Holding (TOMSK-AS)	https://rdap.db.ripe.net/autnum/56981
+AS41733	ER-Telecom	JSC ER-Telecom Holding (ZTELECOM-AS, InterZet)	https://rdap.db.ripe.net/autnum/41733
+AS31200	ER-Telecom	Novotelecom Ltd (Electronic City, subsidiary)	https://rdap.db.ripe.net/autnum/31200
+AS25159	MegaFon	PJSC MegaFon (SONICDUO-AS)	https://rdap.db.ripe.net/autnum/25159
+AS31163	MegaFon	PJSC MegaFon (MF-KAVKAZ-AS)	https://rdap.db.ripe.net/autnum/31163
+AS35298	MegaFon	PJSC MegaFon (MF-MGSM-AS)	https://rdap.db.ripe.net/autnum/35298
+AS24866	MegaFon	PJSC MegaFon (Cloud-Megafon)	https://rdap.db.ripe.net/autnum/24866
+AS47395	MegaFon	PJSC MegaFon (SCARTEL-AS, Yota)	https://rdap.db.ripe.net/autnum/47395
+AS39374	Tele2/T2	T2 Mobile LLC (RU-DI-EX-AS)	https://rdap.db.ripe.net/autnum/39374
+AS48092	Tele2/T2	T2 Mobile LLC (NSB-AS)	https://rdap.db.ripe.net/autnum/48092
+AS28812	Rostelecom	PJSC Bashinformsvyaz (Rostelecom subsidiary)	https://rdap.db.ripe.net/autnum/28812
+AS13118	Rostelecom	PJSC Rostelecom (ASN-YARTELECOM)	https://rdap.db.ripe.net/autnum/13118
+AS12380	Rostelecom	PJSC Rostelecom (LENSVYAZ)	https://rdap.db.ripe.net/autnum/12380
