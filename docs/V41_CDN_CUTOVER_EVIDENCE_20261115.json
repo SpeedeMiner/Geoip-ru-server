@@ -1,0 +1,118 @@
+{
+  "code_commit": "03c07f3112107a08bb783f7d088083a63b66697d",
+  "composed_tests": 237,
+  "composed_tree": "3c4c7d2ee8d672e7b70359db39e5d852edbc8f75",
+  "local_tests": 203,
+  "public_readback": {
+    "cdn_commit": "80e3b143d5d6b84cb6545e80be9ee0401e0089be",
+    "files": {
+      "geoip_PRIVATE.srs": {
+        "bytes": 228,
+        "sha256": "b9ea6381ea61e286298aea76c10cb85a252ff0d20c49d6de3527be1353c107c4"
+      },
+      "geoip_RU.dat": {
+        "bytes": 512067,
+        "sha256": "5d7e9dd0eb66bd507eb5f695b83441493fb20b2307ef71125de16c8b3809fa7d"
+      },
+      "geoip_RU.srs": {
+        "bytes": 128250,
+        "sha256": "21c54a6b83c7292ec51c8fff33f19e54cc869750cb6e3cea87d7662df87684e0"
+      }
+    },
+    "inventory": [
+      "tree",
+      "flat"
+    ],
+    "release_commit": "7eef1efcaafbdbe259f3aa4e56a07c38979afbfb",
+    "repo": "SpeedeMiner/Geoip-ru-server",
+    "rolling_release_verified": true,
+    "verified_hosts": [
+      "raw.githubusercontent.com",
+      "cdn.jsdelivr.net",
+      "fastly.jsdelivr.net",
+      "gcore.jsdelivr.net"
+    ]
+  },
+  "rehearsal": {
+    "artifact": "v41-pr39-cutover-rolling-14156908097.zip",
+    "artifact_sha256": "bc980b6e83766fe231ee9af1fa55377a2921e6bd49125da7b2177714455b52d1",
+    "local_remote_only": true,
+    "only_cdn_moved": true,
+    "preflight_stale_github_never_writes_cdn": [
+      "github.com geoip_RU.dat",
+      "github.com geoip_RU.dat.sha256sum",
+      "github.com geoip_RU.srs",
+      "github.com geoip_RU.srs.sha256sum"
+    ],
+    "public_cdn_stale_repair_fails": [
+      "github.com geoip_RU.dat",
+      "github.com geoip_RU.dat.sha256sum",
+      "github.com geoip_RU.srs",
+      "github.com geoip_RU.srs.sha256sum",
+      "github.com geoip_PRIVATE.srs",
+      "github.com geoip_PRIVATE.srs.sha256sum",
+      "raw.githubusercontent.com geoip_RU.dat",
+      "raw.githubusercontent.com geoip_RU.srs",
+      "raw.githubusercontent.com geoip_PRIVATE.srs",
+      "purge.jsdelivr.net geoip_RU.dat",
+      "purge.jsdelivr.net geoip_RU.srs",
+      "purge.jsdelivr.net geoip_PRIVATE.srs",
+      "cdn.jsdelivr.net geoip_RU.dat",
+      "cdn.jsdelivr.net geoip_RU.srs",
+      "cdn.jsdelivr.net geoip_RU.srs",
+      "cdn.jsdelivr.net geoip_RU.srs",
+      "cdn.jsdelivr.net geoip_PRIVATE.srs"
+    ],
+    "raw_origin_unavailable_no_purge": [
+      "github.com geoip_RU.dat",
+      "github.com geoip_RU.dat.sha256sum",
+      "github.com geoip_RU.srs",
+      "github.com geoip_RU.srs.sha256sum",
+      "github.com geoip_PRIVATE.srs",
+      "github.com geoip_PRIVATE.srs.sha256sum",
+      "raw.githubusercontent.com geoip_RU.dat",
+      "raw.githubusercontent.com geoip_RU.dat",
+      "raw.githubusercontent.com geoip_RU.dat"
+    ],
+    "raw_recovers_before_purge": [
+      "github.com geoip_RU.dat",
+      "github.com geoip_RU.dat.sha256sum",
+      "github.com geoip_RU.srs",
+      "github.com geoip_RU.srs.sha256sum",
+      "github.com geoip_PRIVATE.srs",
+      "github.com geoip_PRIVATE.srs.sha256sum",
+      "raw.githubusercontent.com geoip_RU.dat",
+      "raw.githubusercontent.com geoip_RU.dat",
+      "raw.githubusercontent.com geoip_RU.srs",
+      "raw.githubusercontent.com geoip_PRIVATE.srs",
+      "purge.jsdelivr.net geoip_RU.dat",
+      "purge.jsdelivr.net geoip_RU.srs",
+      "purge.jsdelivr.net geoip_PRIVATE.srs",
+      "cdn.jsdelivr.net geoip_RU.dat",
+      "cdn.jsdelivr.net geoip_RU.srs",
+      "cdn.jsdelivr.net geoip_PRIVATE.srs"
+    ],
+    "scheduled_origin_classified": true,
+    "scheduled_stale_public_classified": true,
+    "subsequent_repair_no_new_commit": [
+      "github.com geoip_RU.dat",
+      "github.com geoip_RU.dat.sha256sum",
+      "github.com geoip_RU.srs",
+      "github.com geoip_RU.srs.sha256sum",
+      "github.com geoip_PRIVATE.srs",
+      "github.com geoip_PRIVATE.srs.sha256sum",
+      "raw.githubusercontent.com geoip_RU.dat",
+      "raw.githubusercontent.com geoip_RU.srs",
+      "raw.githubusercontent.com geoip_PRIVATE.srs",
+      "purge.jsdelivr.net geoip_RU.dat",
+      "purge.jsdelivr.net geoip_RU.srs",
+      "purge.jsdelivr.net geoip_PRIVATE.srs",
+      "cdn.jsdelivr.net geoip_RU.dat",
+      "cdn.jsdelivr.net geoip_RU.srs",
+      "cdn.jsdelivr.net geoip_PRIVATE.srs"
+    ]
+  },
+  "rehearsal_note": "Git remote and HTTP mutations were confined to the fixture.",
+  "versioned_github_fallback": "geoip-v41-snapshot-43617500418.1",
+  "wrong_release_sha_rejected": true
+}
