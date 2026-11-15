@@ -8,6 +8,7 @@ import hashlib
 import ipaddress
 import json
 from pathlib import Path
+import re
 import subprocess
 import tarfile
 from tempfile import TemporaryDirectory
@@ -370,6 +371,8 @@ def build_report(previous, candidate, providers, layers, masks, origins=None, pr
 
 def write_summary(report, stream):
     print('### Scoped provider overlaps and Hydra (advisory)', file=stream)
+    print(f"- Pinned release: `{report['previous_release_commit']}`" if report.get('previous_release_commit') else
+          '- Pinned release identity: unknown.', file=stream)
     print(f"- Provider snapshot fetched: `{report['provider_snapshot_fetched_at']}`", file=stream)
     previous = report.get('previous_provider_snapshot_fetched_at')
     print(f"- Comparison provider snapshot: `{previous}`" if previous else
@@ -394,6 +397,7 @@ def main():
     p.add_argument('--snapshot', type=Path)
     p.add_argument('--previous-snapshot', type=Path)
     p.add_argument('--previous', type=Path)
+    p.add_argument('--previous-release')
     p.add_argument('--candidate', type=Path)
     p.add_argument('--inputs', type=Path)
     p.add_argument('--base', type=Path)
@@ -408,6 +412,8 @@ def main():
         return
     if not all((args.snapshot,args.previous,args.candidate,args.inputs,args.base,args.output)):
         p.error('audit requires --snapshot --previous --candidate --inputs --base --output')
+    if args.previous_release is not None and not re.fullmatch(r'[0-9a-f]{40}', args.previous_release):
+        p.error('--previous-release must be a full commit SHA')
     snapshot, providers = load_snapshot(args.snapshot)
     previous_doc, previous_providers = load_snapshot(args.previous_snapshot) if args.previous_snapshot else (None, None)
     manifest = verify_inputs(args.inputs, args.base, args.candidate, args.data)
@@ -439,6 +445,7 @@ def main():
     files['policy/'+b.W1ZARDZ_EXCLUSIONS.name] = b.W1ZARDZ_EXCLUSIONS
     report['input_sha256'] = {k:digest(path.read_bytes()) for k,path in sorted(files.items())}
     report['provider_snapshot_fetched_at'] = snapshot['fetched_at']
+    report['previous_release_commit'] = args.previous_release
     report['previous_provider_snapshot_fetched_at'] = previous_doc.get('fetched_at') if previous_doc else None
     report['provider_catalog_sha256'] = snapshot['catalog_sha256']
     report['observed_exact_moas_prefixes_with_selected_evidence'] = moas

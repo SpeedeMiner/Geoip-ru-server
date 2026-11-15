@@ -65,3 +65,23 @@
   import and the shared minimum ipverse record-count import. Workflow changes
   merged automatically. Composition tests and exact-head Actions are pending.
   No production refs or PR #5 were changed in this checkpoint.
+
+## 2026-11-16 — one release identity across advisory reports
+
+- After composing PR #50 and #51, identified that their independent reads of
+  `release` could resolve different commits if publication happened mid-run.
+  This integration now fetches and checksum-verifies the release DAT once,
+  then passes the same full SHA to the DIRECT, Antifilter, ASN and scoped
+  provider reports. The provider JSON records that release SHA and the exact
+  DAT hash. Missing or invalid baseline yields unknown comparisons, not zero;
+  ASN may still report candidate-only observations.
+- A fixture runs the actual workflow's baseline shell with fake Git. It checks
+  successful SHA export, failed fetch and incorrect DAT checksum. Neither
+  failure writes a release SHA, and both record unknown comparison status.
+- Local pre-integration code tree passed 301 Python tests, Go tests, YAML
+  parsing and CDN guard. On retained production inputs its block layers,
+  v41 DAT, source metrics and provenance are byte-identical; IPv4/IPv6 delta
+  is +0/−0 and PRIVATE unchanged. The independent hard-policy gate returned
+  zero hard/DIRECT intersections for both families; all 14 official Telegram
+  CIDRs passed. The shared-baseline change adds workflow and reporting logic;
+  its combined exact-head CI and full local test run are pending.
