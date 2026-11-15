@@ -161,7 +161,7 @@ class CdnPublicationTests(unittest.TestCase):
 
 
 class CdnReadbackTests(unittest.TestCase):
-    def invoke(self, *, mismatch=None, transient=False, raw_timeout=False):
+    def invoke(self, *, mismatch=None, transient=False, raw_timeout=False, mode=None):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
             for filename in FILES:
@@ -194,13 +194,15 @@ out.write_text("stale" if stale else filename)
             sleep = root / "sleep"
             sleep.write_text("#!/bin/sh\nexit 0\n")
             sleep.chmod(0o700)
-            p = subprocess.run(["bash", str(SCRIPTS / "verify_v41_cdn_readback.sh")],
+            args = [] if mode is None else [mode]
+            p = subprocess.run(["bash", str(SCRIPTS / "verify_v41_cdn_readback.sh"), *args],
                                cwd=root, capture_output=True, text=True, env={
                 **os.environ, "PATH": f"{root}:{os.environ['PATH']}",
                 "GITHUB_REPOSITORY": "example/geoip", "CDN_SHA": "a" * 40,
                 "TEST_MISMATCH": mismatch or "", "TEST_TRANSIENT": str(int(transient)),
                 "TEST_RAW_TIMEOUT": raw_timeout or ""})
-            return p, (root / "calls").read_text().splitlines()
+            log = root / "calls"
+            return p, log.read_text().splitlines() if log.exists() else []
 
     def test_correct_bytes_for_every_client_file(self):
         r, calls = self.invoke()
@@ -229,9 +231,20 @@ out.write_text("stale" if stale else filename)
         self.assertEqual(calls, ["raw.githubusercontent.com geoip_RU.dat"] * 3)
         self.assertIn("bytes not confirmed after retries", r.stdout)
 
+    def test_pinned_mode_and_public_mode_are_separate(self):
+        for mode, hostname in (("pinned", "raw.githubusercontent.com"), ("public", "cdn.jsdelivr.net")):
+            with self.subTest(mode=mode):
+                r, calls = self.invoke(mode=mode)
+                self.assertEqual(r.returncode, 0, r.stderr)
+                self.assertEqual(calls, [f"{hostname} {f}" for f in FILES])
+        r, calls = self.invoke(mode="typo")
+        self.assertNotEqual(r.returncode, 0)
+        self.assertEqual(calls, [])
+
 
 class DeliveryStepTests(unittest.TestCase):
-    def invoke(self, *, publish_status=0, purge_status=0, readback_status=0, strict=False, github_status=0):
+    def invoke(self, *, publish_status=0, purge_status=0, readback_status=0, strict=False,
+               github_status=0, pinned_status=0):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
             delivery = root / "deliver_v41_cdn.sh"
@@ -244,14 +257,15 @@ class DeliveryStepTests(unittest.TestCase):
                 'exit "$PUBLISH_STATUS"\n')
             (root / "purge_v41_jsdelivr.sh").write_text('echo purge >> "$CALLS"\nexit "$PURGE_STATUS"\n')
             (root / "verify_v41_cdn_readback.sh").write_text(
-                'echo readback >> "$CALLS"\n[[ "$CDN_SHA" == "$TEST_SHA" ]] || exit 92\n'
-                'exit "$READBACK_STATUS"\n')
+                'echo "${1:-missing-mode}" >> "$CALLS"\n[[ "$CDN_SHA" == "$TEST_SHA" ]] || exit 92\n'
+                'case "${1:-}" in pinned) exit "$PINNED_STATUS" ;; public) exit "$READBACK_STATUS" ;; *) exit 93 ;; esac\n')
             calls, outputs = root / "calls", root / "outputs"
             sha = "1" * 40
             result = subprocess.run(["bash", str(delivery)], text=True, capture_output=True,
                                     env={**os.environ, "TEST_SHA": sha, "CALLS": str(calls),
                                          "GITHUB_OUTPUT": str(outputs), "PUBLISH_STATUS": str(publish_status),
                                          "PURGE_STATUS": str(purge_status), "READBACK_STATUS": str(readback_status),
+                                         "PINNED_STATUS": str(pinned_status),
                                          "V41_REQUIRE_CDN_READBACK": str(int(strict)),
                                          "GITHUB_STATUS": str(github_status), "SNAPSHOT_SHA": sha})
             return result, calls.read_text().splitlines(), outputs.read_text() if outputs.exists() else None
@@ -259,7 +273,7 @@ class DeliveryStepTests(unittest.TestCase):
     def test_required_ref_write_and_independent_best_effort_cache_steps(self):
         res, calls, out = self.invoke(purge_status=1, readback_status=1)
         self.assertEqual(res.returncode, 0, res.stderr)
-        self.assertEqual(calls, ["github", "publish", "purge", "readback"])
+        self.assertEqual(calls, ["github", "publish", "pinned", "purge", "public"])
         self.assertEqual(out, f"cdn_sha={'1' * 40}\n")
         self.assertIn("not confirmed", res.stdout)
         failure, calls, out = self.invoke(publish_status=1)
@@ -270,14 +284,23 @@ class DeliveryStepTests(unittest.TestCase):
     def test_manual_repair_requires_cdn_bytes_but_not_a_purge_confirmation(self):
         res, calls, out = self.invoke(purge_status=1, strict=True)
         self.assertEqual(res.returncode, 0, res.stderr)
-        self.assertEqual(calls, ["github", "publish", "purge", "readback"])
+        self.assertEqual(calls, ["github", "publish", "pinned", "purge", "public"])
         self.assertEqual(out, f"cdn_sha={'1' * 40}\n")
         failure, calls, out = self.invoke(readback_status=1, strict=True)
         self.assertEqual(failure.returncode, 1)
-        self.assertEqual(calls, ["github", "publish", "purge", "readback"])
+        self.assertEqual(calls, ["github", "publish", "pinned", "purge", "public"])
         self.assertIn("is set, but public CDN bytes were not confirmed", failure.stdout)
         self.assertIsNone(out)
 
+
+    def test_unconfirmed_pinned_origin_never_refreshes_public_cache(self):
+        for strict in (False, True):
+            with self.subTest(strict=strict):
+                res, calls, out = self.invoke(pinned_status=1, strict=strict)
+                self.assertEqual(res.returncode, int(strict), res.stderr)
+                self.assertEqual(calls, ["github", "publish", "pinned"])
+                self.assertIn("skipping jsDelivr purge", res.stdout)
+                self.assertEqual(out, None if strict else f"cdn_sha={'1' * 40}\n")
 
     def test_github_preflight_failure_stops_production_and_repair(self):
         for strict in (False, True):

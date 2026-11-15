@@ -5,6 +5,12 @@ set -euo pipefail
 [[ "$CDN_SHA" =~ ^[0-9a-f]{40}$ ]]
 source "$(dirname "${BASH_SOURCE[0]}")/v41_cdn_files.sh"
 
+mode="${1:-all}"
+case "$mode" in
+  all|pinned|public) ;;
+  *) echo "Expected all, pinned or public read-back mode" >&2; exit 2 ;;
+esac
+
 tmp="$(mktemp -d)"
 trap 'rm -rf -- "$tmp"' EXIT
 raw="https://raw.githubusercontent.com/$GITHUB_REPOSITORY/$CDN_SHA"
@@ -24,12 +30,16 @@ verify_bytes() {
   return 1
 }
 
-for file in "${V41_CDN_FILES[@]}"; do
-  if ! verify_bytes "$raw/$file" "$file" "$tmp/$file"; then
-    echo "::error::Pinned CDN branch commit bytes not confirmed after retries: $file"
-    exit 1
-  fi
-done
+if [[ "$mode" != public ]]; then
+  for file in "${V41_CDN_FILES[@]}"; do
+    if ! verify_bytes "$raw/$file" "$file" "$tmp/$file"; then
+      echo "::error::Pinned CDN branch commit bytes not confirmed after retries: $file"
+      exit 1
+    fi
+  done
+  echo "GitHub Raw serving pinned CDN commit $CDN_SHA"
+  [[ "$mode" != pinned ]] || exit 0
+fi
 
 failed=()
 for file in "${V41_CDN_FILES[@]}"; do

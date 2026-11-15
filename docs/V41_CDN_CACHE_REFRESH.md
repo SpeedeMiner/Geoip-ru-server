@@ -24,9 +24,11 @@ compare-and-swap protected. Unchanged bytes do not create another commit.
 GitHub checksum sidecars are checked before the branch moves. They are not
 part of the CDN payload.
 
-The best-effort purge attempts all three rolling URLs and checks the exact
-response path and reported provider confirmations. A separate bounded
-public read-back compares what jsDelivr serves against the new bytes.
+After the Git update, both paths wait for GitHub Raw to serve all three files
+from the exact CDN commit. If that check fails, they skip the cache purge.
+The best-effort purge then attempts the three rolling URLs and checks the
+response paths and provider confirmations. Even if purge fails, a bounded
+public read-back independently compares what jsDelivr serves with the new bytes.
 If it reports a failure, use the run-specific GitHub Release and its
 checksums. A GitHub release may still be edited unless the repository
 enforces immutable releases.
