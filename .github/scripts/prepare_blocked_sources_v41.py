@@ -95,10 +95,14 @@ def parse_line(raw: str) -> ipaddress.IPv4Network | ipaddress.IPv6Network | None
 
 
 def read_feed(path: Path, source: str) -> tuple[list[str], int, int]:
+    return parse_feed(path.read_text(encoding="utf-8", errors="replace"), source)
+
+
+def parse_feed(text: str, source: str) -> tuple[list[str], int, int]:
     nets: list[str] = []
     data_lines = 0
     invalid = 0
-    for line_no, raw in enumerate(path.read_text(encoding="utf-8", errors="replace").splitlines(), 1):
+    for line_no, raw in enumerate(text.splitlines(), 1):
         if not raw.strip() or raw.lstrip().startswith("#"):
             continue
         data_lines += 1

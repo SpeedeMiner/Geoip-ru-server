@@ -34,6 +34,7 @@ on:
       - ".github/scripts/build_v41_iana_special_prefixes.py"
       - ".github/scripts/validate_v41_base_artifacts.py"
       - ".github/scripts/validate_v41_block_feed_counts.py"
+      - ".github/scripts/audit_v41_block_feed_delta.py"
       - ".github/scripts/validate_v41_publication_bounds.py"
       - ".github/scripts/verify_v41_ipverse_archive.py"
       - ".github/scripts/bundle_v41_registry_inputs.py"
@@ -533,6 +534,29 @@ jobs:
             --source-sha "$GITHUB_SHA" --repository "$GITHUB_REPOSITORY" \
             --run-id "$GITHUB_RUN_ID" --run-attempt "$GITHUB_RUN_ATTEMPT"
 
+      - name: Report exact blocked-feed address delta (advisory)
+        if: github.event_name == 'pull_request'
+        shell: bash
+        run: |
+          set -o pipefail
+          if timeout 180s python3 .github/scripts/audit_v41_block_feed_delta.py \
+            --repository "$GITHUB_REPOSITORY" --candidate . \
+            --output "$RUNNER_TEMP/v41-block-feed-delta.json" | tee -a "$GITHUB_STEP_SUMMARY"; then
+            echo 'Exact blocked-feed delta is advisory.' >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "::warning::Exact blocked-feed delta unavailable; no publication policy changed."
+          fi
+
+      - name: Upload exact blocked-feed address delta (PR only)
+        if: github.event_name == 'pull_request'
+        continue-on-error: true
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: geoip-v41-block-feed-delta
+          path: ${{ runner.temp }}/v41-block-feed-delta.json
+          if-no-files-found: ignore
+          retention-days: 30
+
       - name: Upload v41 validated build artifact
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
@@ -641,6 +665,15 @@ jobs:
           REVIEWED_SHA: ${{ inputs.reviewed_geoip_sha256 }}
           REVIEWED_BLOCK_FEEDS_SHA: ${{ inputs.reviewed_block_feeds_sha256 }}
         run: bash ../.github/scripts/verify_v41_publication_candidate.sh
+
+      - name: Upload exact blocked-feed address delta (publisher diagnostic)
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        continue-on-error: true
+        with:
+          name: geoip-v41-block-feed-delta
+          path: ${{ runner.temp }}/v41-block-feed-delta.json
+          if-no-files-found: ignore
+          retention-days: 30
 
       - name: Verify reviewed IPv6 admission in the downloaded candidate
         run: |

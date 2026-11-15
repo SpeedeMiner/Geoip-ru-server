@@ -50,4 +50,12 @@ printf '%s  %s\n' "$expected" "$RUNNER_TEMP/previous-geoip.dat" | sha256sum -c -
 python3 ../.github/scripts/validate_v41_publication_bounds.py \
   --candidate "$V41_OUTPUT_FILE" --reference "$RUNNER_TEMP/previous-geoip.dat" \
   --reviewed-sha256 "$REVIEWED_SHA" | tee -a "$GITHUB_STEP_SUMMARY"
+# The exact delta is advisory. Preserve the existing counts and publication gates.
+if timeout 180s python3 ../.github/scripts/audit_v41_block_feed_delta.py \
+  --repository "$GITHUB_REPOSITORY" --candidate . --previous-release "$ref" \
+  --output "$RUNNER_TEMP/v41-block-feed-delta.json" | tee -a "$GITHUB_STEP_SUMMARY"; then
+  echo 'Exact blocked-feed delta is advisory.' >> "$GITHUB_STEP_SUMMARY"
+else
+  echo "::warning::Exact blocked-feed delta unavailable; no publication policy changed."
+fi
 printf 'PREVIOUS_RELEASE_SHA=%s\n' "$ref" >> "$GITHUB_ENV"

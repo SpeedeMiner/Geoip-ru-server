@@ -1,0 +1,109 @@
+{
+  "candidate_dat_sha256": "b17fe26ccdcb8d272e6233ec9686a514b309e9d75e75653313a75f329b70fae7",
+  "candidate_provenance_sha256": "196ce9f6c1f686fb58d01cecc1ea3848575b88aa5090d48cb914197918f151e1",
+  "candidate_release_commit": "79bddd4c51a36a8d3c2771e234e5171f574104c8",
+  "feeds": {
+    "antifilter-ip.lst": {
+      "address_delta": {
+        "ipv4": {
+          "added": {
+            "addresses": "0",
+            "cidrs": []
+          },
+          "removed": {
+            "addresses": "0",
+            "cidrs": []
+          }
+        },
+        "ipv6": {
+          "added": {
+            "addresses": "0",
+            "cidrs": []
+          },
+          "removed": {
+            "addresses": "0",
+            "cidrs": []
+          }
+        }
+      },
+      "baseline": "a23b381e4844ed4cb84bf67e1f5984027e68769c",
+      "baseline_raw_sha256": "f5b63e9200cd05d5e0440a208793783512bc436637c8570942dc4e78022b02fe",
+      "raw_sha256": "f5b63e9200cd05d5e0440a208793783512bc436637c8570942dc4e78022b02fe",
+      "verdict": "IDENTICAL"
+    },
+    "antifilter-ipresolve.lst": {
+      "address_delta": {
+        "ipv4": {
+          "added": {
+            "addresses": "0",
+            "cidrs": []
+          },
+          "removed": {
+            "addresses": "0",
+            "cidrs": []
+          }
+        },
+        "ipv6": {
+          "added": {
+            "addresses": "0",
+            "cidrs": []
+          },
+          "removed": {
+            "addresses": "0",
+            "cidrs": []
+          }
+        }
+      },
+      "baseline": "a23b381e4844ed4cb84bf67e1f5984027e68769c",
+      "baseline_raw_sha256": "6b29a534c362b7f762caaaa70b9fabee0a06464d7a71f96eeb83a2b99b8c91c2",
+      "raw_sha256": "8d8d11605a299da96006df6303a90b08b4ae25d35c1d1a199708cb83f84cdf44",
+      "verdict": "EQUIVALENT_ADDRESS_SPACE"
+    },
+    "antifilter-subnet.lst": {
+      "address_delta": {
+        "ipv4": {
+          "added": {
+            "addresses": "0",
+            "cidrs": []
+          },
+          "removed": {
+            "addresses": "0",
+            "cidrs": []
+          }
+        },
+        "ipv6": {
+          "added": {
+            "addresses": "0",
+            "cidrs": []
+          },
+          "removed": {
+            "addresses": "0",
+            "cidrs": []
+          }
+        }
+      },
+      "baseline": "a23b381e4844ed4cb84bf67e1f5984027e68769c",
+      "baseline_raw_sha256": "2554552742bc0da516a321db66b36fa6cece28c4b3c64b66ff6d12320b33bdb6",
+      "raw_sha256": "2554552742bc0da516a321db66b36fa6cece28c4b3c64b66ff6d12320b33bdb6",
+      "verdict": "IDENTICAL"
+    }
+  },
+  "last_live_publication_age_seconds": 11546,
+  "last_verified_live_release": "a23b381e4844ed4cb84bf67e1f5984027e68769c",
+  "layers_vs_previous_release": null,
+  "mode": "REPORT_ONLY",
+  "newer_history_gaps": false,
+  "previous_release": "a23b381e4844ed4cb84bf67e1f5984027e68769c",
+  "published_history_checked": [
+    {
+      "release_commit": "a23b381e4844ed4cb84bf67e1f5984027e68769c",
+      "status": "LIVE_DOWNLOAD",
+      "verification": "actions-artifact-14159950854 bound via release Git provenance, before block archive schema"
+    }
+  ],
+  "report_utc": "2026-11-15T14:45:00+00:00",
+  "resolver_candidate_status": "LIVE_DOWNLOAD",
+  "schema": 1,
+  "scope": "Historical validation of normalized feeds only. Current automation does not use this pre-manifest artifact as fallback baseline.",
+  "upstream_freshness": "UNKNOWN"
+}
