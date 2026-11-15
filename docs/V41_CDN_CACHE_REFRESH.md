@@ -30,7 +30,9 @@ The best-effort purge then attempts the three rolling URLs and checks the
 response paths and provider confirmations. Even if purge fails, a bounded
 public read-back independently compares what jsDelivr serves with the new bytes.
 The Actions summary reports whether the origin or public CDN was unconfirmed
-and points to the GitHub Release fallback. The production job only prints
+and points to the GitHub Release fallback. Production links to the exact
+versioned snapshot published by that run. The standalone repair links to
+the current rolling GitHub Release it just verified. The production job only prints
 jsDelivr download URLs as verified when all three public downloads match.
 A GitHub release may still be edited unless the repository enforces immutable
 releases.

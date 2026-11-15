@@ -244,7 +244,7 @@ out.write_text("stale" if stale else filename)
 
 class DeliveryStepTests(unittest.TestCase):
     def invoke(self, *, publish_status=0, purge_status=0, readback_status=0, strict=False,
-               github_status=0, pinned_status=0):
+               github_status=0, pinned_status=0, snapshot_tag=""):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
             delivery = root / "deliver_v41_cdn.sh"
@@ -269,8 +269,8 @@ class DeliveryStepTests(unittest.TestCase):
                                          "PINNED_STATUS": str(pinned_status),
                                          "V41_REQUIRE_CDN_READBACK": str(int(strict)),
                                          "GITHUB_STATUS": str(github_status), "SNAPSHOT_SHA": sha,
-                                         "GITHUB_REPOSITORY": "example/geoip"})
-            return (result, calls.read_text().splitlines(),
+                                         "GITHUB_REPOSITORY": "example/geoip", "V41_CDN_FALLBACK_TAG": snapshot_tag})
+            return (result, calls.read_text().splitlines() if calls.exists() else [],
                     outputs.read_text() if outputs.exists() else None,
                     summary.read_text() if summary.exists() else None)
 
@@ -312,6 +312,19 @@ class DeliveryStepTests(unittest.TestCase):
                 self.assertEqual(out, None if strict else f"cdn_sha={'1' * 40}\ncdn_status=origin_unconfirmed\n")
                 self.assertIn("GitHub Raw not confirmed", summary)
                 self.assertIn("cache purge skipped", summary)
+
+    def test_production_fallback_uses_the_exact_release_for_this_run(self):
+        for tag in ("geoip-v41-snapshot-43617500418.1", "v41.3"):
+            with self.subTest(tag=tag):
+                res, _, _, summary = self.invoke(snapshot_tag=tag, readback_status=1)
+                self.assertEqual(res.returncode, 0, res.stderr)
+                self.assertIn(f"/releases/tag/{tag}", summary)
+                self.assertNotIn("latest-geoip-client-v41", summary)
+        res, calls, out, summary = self.invoke(snapshot_tag="bad/tag")
+        self.assertNotEqual(res.returncode, 0)
+        self.assertEqual(calls, [])
+        self.assertIsNone(out)
+        self.assertIsNone(summary)
 
     def test_github_preflight_failure_stops_production_and_repair(self):
         for strict in (False, True):

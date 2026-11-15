@@ -1,6 +1,11 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+fallback_tag="${V41_CDN_FALLBACK_TAG:-latest-geoip-client-v41}"
+if [[ ! "$fallback_tag" =~ ^(latest-geoip-client-v41|v41\.(0|[1-9][0-9]{0,5})|geoip-v41-snapshot-[0-9]{1,20}\.[0-9]{1,10})$ ]]; then
+  echo "::error::Unexpected GitHub Release fallback tag"
+  exit 1
+fi
 scripts="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)"
 tmp="$(mktemp -d)"
 trap 'rm -rf -- "$tmp"' EXIT
@@ -39,7 +44,7 @@ case "$status" in
   origin_unconfirmed) description="GitHub Raw not confirmed" ;;
   public_unconfirmed) description="public bytes not confirmed" ;;
 esac
-fallback="https://github.com/$GITHUB_REPOSITORY/releases/tag/latest-geoip-client-v41"
+fallback="https://github.com/$GITHUB_REPOSITORY/releases/tag/$fallback_tag"
 if [[ -n "${GITHUB_STEP_SUMMARY:-}" ]]; then
   {
     printf '\n### jsDelivr delivery\n\n'

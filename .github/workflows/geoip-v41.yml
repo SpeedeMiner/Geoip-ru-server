@@ -708,6 +708,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SNAPSHOT_SHA: ${{ steps.snapshot_ref.outputs.snapshot_sha }}
+          V41_CDN_FALLBACK_TAG: ${{ steps.snapshot_ref.outputs.snapshot }}
         run: bash ../.github/scripts/deliver_v41_cdn.sh
 
       - name: Print download and audit URLs
@@ -715,6 +716,7 @@ jobs:
         shell: bash
         run: |
           echo "GitHub Release: ${{ github.server_url }}/${{ github.repository }}/releases/download/latest-geoip-client-v41/geoip_RU.dat"
+          echo "Versioned GitHub snapshot: ${{ github.server_url }}/${{ github.repository }}/releases/tag/${{ steps.snapshot_ref.outputs.snapshot }}"
           echo "Raw release branch: https://raw.githubusercontent.com/${{ github.repository }}/release/geoip_RU.dat"
           echo "CDN commit: ${{ steps.cdn_ref.outputs.cdn_sha }}"
           echo "CDN status: ${{ steps.cdn_ref.outputs.cdn_status }}"
@@ -723,7 +725,7 @@ jobs:
             echo "jsDelivr RU SRS: https://cdn.jsdelivr.net/gh/${{ github.repository }}@cdn/geoip_RU.srs"
             echo "jsDelivr PRIVATE SRS: https://cdn.jsdelivr.net/gh/${{ github.repository }}@cdn/geoip_PRIVATE.srs"
           else
-            echo "Use the GitHub Release links above until jsDelivr delivery is verified."
+            echo "Use the versioned GitHub snapshot above until jsDelivr delivery is verified."
           fi
           echo "Quality report: https://raw.githubusercontent.com/${{ github.repository }}/release/geoip_RU_quality_report.txt"
           echo "v37 baseline prefix provenance: https://raw.githubusercontent.com/${{ github.repository }}/release/geoip_RU_v37_additional_provenance.tsv"
