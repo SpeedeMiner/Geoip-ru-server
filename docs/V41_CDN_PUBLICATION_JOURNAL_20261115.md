@@ -178,3 +178,8 @@
 
 - [v41 с постоянным сквозным тестом](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43702442082) и [повтор после runbook](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43702548440) зелёные. Архивы 14157207898 и 14157332804 скачаны и перепроверены, их три клиентских файла побайтово совпали с контрольным кандидатом. [Lint для закрепления release SHA](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43702741536) зелёный. Его [полная v41 сборка](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43702741521) уже запущена.
 - Повторное декодирование опубликованных SRS подтвердило покрытие обеих категорий DAT. PR №39 открыт, mergeable. `main`, `release`, `cdn`, rolling tag и черновики №41–42 не менялись. Слияние и production запуск не выполнялись.
+
+## 15.11.2026 15:17 UTC+05 — итог прохода
+
+- [Полный v41 CI для последнего изменения кода `03c07f3`](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43702741521) завершён успешно, production job штатно пропущен. [Артефакт 14156404502](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43702741521/artifacts/14156404502) скачан. SHA-256 ZIP, sidecars и побайтовое совпадение всех трёх бинарников с контрольной сборкой подтверждены.
+- Последующие изменения только в журнале и JSON с доказательствами. `main=596c93d`, `release=7eef1efc`, `cdn=80e3b14`. PR открыт и не изменяет политику маршрутизации. Результат до слияния — действующий чистый `@cdn` и проверенная миграция публикации. Старое поведение `@release` в `main` остаётся до переключения.
