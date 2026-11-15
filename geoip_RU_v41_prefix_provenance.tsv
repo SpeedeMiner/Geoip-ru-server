@@ -10,12 +10,11 @@ kyoresuas-standard	banks	Сбербанк	lite	35237,43396,44408,45000,47457,601
 kyoresuas-standard	banks	Сбербанк	lite	35237,43396,44408,45000,47457,60122,205161,206673,42974	54	84.252.152.0/24
 kyoresuas-standard	banks	Сбербанк	lite	35237,43396,44408,45000,47457,60122,205161,206673,42974	54	91.203.225.0/24
 kyoresuas-standard	banks	Сбербанк	lite	35237,43396,44408,45000,47457,60122,205161,206673,42974	54	91.217.194.0/24
-kyoresuas-standard	banks	Сбербанк	lite	35237,43396,44408,45000,47457,60122,205161,206673,42974	54	91.240.169.0/24
 kyoresuas-standard	banks	Сбербанк	lite	35237,43396,44408,45000,47457,60122,205161,206673,42974	54	95.181.177.60/32
 kyoresuas-standard	banks	Сбербанк	lite	35237,43396,44408,45000,47457,60122,205161,206673,42974	54	95.181.181.235/32
-kyoresuas-standard	banks	Сбербанк	lite	35237,43396,44408,45000,47457,60122,205161,206673,42974	54	151.236.65.0/24
+kyoresuas-standard	banks	Сбербанк	lite	35237,43396,44408,45000,47457,60122,205161,206673,42974	54	151.236.71.0/24
 kyoresuas-standard	banks	Сбербанк	lite	35237,43396,44408,45000,47457,60122,205161,206673,42974	54	151.236.81.0/24
-kyoresuas-standard	banks	Сбербанк	lite	35237,43396,44408,45000,47457,60122,205161,206673,42974	54	151.236.94.0/24
+kyoresuas-standard	banks	Сбербанк	lite	35237,43396,44408,45000,47457,60122,205161,206673,42974	54	151.236.122.0/24
 kyoresuas-standard	banks	Сбербанк	lite	35237,43396,44408,45000,47457,60122,205161,206673,42974	54	178.248.236.0/24
 kyoresuas-standard	banks	Сбербанк	lite	35237,43396,44408,45000,47457,60122,205161,206673,42974	54	185.31.113.0/24
 kyoresuas-standard	banks	Сбербанк	lite	35237,43396,44408,45000,47457,60122,205161,206673,42974	54	185.65.148.0/24
@@ -34,14 +33,13 @@ kyoresuas-standard	banks	Сбербанк	lite	35237,43396,44408,45000,47457,601
 kyoresuas-standard	banks	Сбербанк	lite	35237,43396,44408,45000,47457,60122,205161,206673,42974	54	195.43.144.0/24
 kyoresuas-standard	banks	Сбербанк	lite	35237,43396,44408,45000,47457,60122,205161,206673,42974	54	2a07:a600::/29
 kyoresuas-standard	banks	Сбербанк	lite	35237,43396,44408,45000,47457,60122,205161,206673,42974	54	2a11:27c0::195/128
+kyoresuas-standard	banks	Т-Банк	lite	43399,12686	45	81.222.127.0/24
 kyoresuas-standard	banks	Т-Банк	lite	43399,12686	45	84.201.187.121/32
 kyoresuas-standard	banks	Т-Банк	lite	43399,12686	45	91.194.226.0/23
 kyoresuas-standard	banks	Т-Банк	lite	43399,12686	45	91.199.205.0/24
 kyoresuas-standard	banks	Т-Банк	lite	43399,12686	45	91.218.132.0/22
 kyoresuas-standard	banks	Т-Банк	lite	43399,12686	45	91.240.170.0/24
 kyoresuas-standard	banks	Т-Банк	lite	43399,12686	45	151.236.83.0/24
-kyoresuas-standard	banks	Т-Банк	lite	43399,12686	45	151.236.110.0/24
-kyoresuas-standard	banks	Т-Банк	lite	43399,12686	45	151.236.115.0/24
 kyoresuas-standard	banks	Т-Банк	lite	43399,12686	45	158.160.22.26/32
 kyoresuas-standard	banks	Т-Банк	lite	43399,12686	45	178.130.128.0/23
 kyoresuas-standard	banks	Т-Банк	lite	43399,12686	45	178.248.232.0/24
@@ -139,7 +137,10 @@ kyoresuas-standard	banks	Другие банки	lite		41	195.242.82.13/32
 kyoresuas-standard	banks	Другие банки	lite		41	195.242.82.14/32
 kyoresuas-standard	banks	Другие банки	lite		41	195.242.83.13/32
 kyoresuas-standard	banks	Другие банки	lite		41	195.242.83.14/32
+kyoresuas-standard	classifieds	Авито	standard	201012	29	78.159.251.0/24
 kyoresuas-standard	classifieds	Авито	standard	201012	29	95.181.182.185/32
+kyoresuas-standard	classifieds	Авито	standard	201012	29	151.236.83.0/24
+kyoresuas-standard	classifieds	Авито	standard	201012	29	151.236.123.0/24
 kyoresuas-standard	classifieds	Авито	standard	201012	29	176.109.112.0/23
 kyoresuas-standard	classifieds	Авито	standard	201012	29	176.114.120.0/21
 kyoresuas-standard	classifieds	Авито	standard	201012	29	185.89.12.0/24
@@ -151,6 +152,7 @@ kyoresuas-standard	classifieds	Циан	standard		29	185.129.100.112/32
 kyoresuas-standard	classifieds	Циан	standard		29	188.72.103.103/32
 kyoresuas-standard	classifieds	hh.ru	standard	47724	14	94.124.200.0/22
 kyoresuas-standard	classifieds	hh.ru	standard	47724	14	94.124.206.0/23
+kyoresuas-standard	delivery	Самокат	standard		15	37.220.161.0/24
 kyoresuas-standard	delivery	Самокат	standard		15	46.235.185.0/24
 kyoresuas-standard	delivery	Самокат	standard		15	91.206.127.0/24
 kyoresuas-standard	delivery	Самокат	standard		15	91.221.165.0/24
@@ -197,14 +199,14 @@ kyoresuas-standard	education	Skillbox	standard		3	185.65.148.0/24
 kyoresuas-standard	education	Skillfactory	standard		3	176.57.67.55/32
 kyoresuas-standard	education	Skillfactory	standard		3	178.248.236.0/24
 kyoresuas-standard	government	Госуслуги и Госключ	lite	196747,212575	30	37.220.161.0/24
-kyoresuas-standard	government	Госуслуги и Госключ	lite	196747,212575	30	46.235.184.0/24
+kyoresuas-standard	government	Госуслуги и Госключ	lite	196747,212575	30	46.235.184.0/23
 kyoresuas-standard	government	Госуслуги и Госключ	lite	196747,212575	30	46.235.188.0/23
-kyoresuas-standard	government	Госуслуги и Госключ	lite	196747,212575	30	78.41.110.0/23
+kyoresuas-standard	government	Госуслуги и Госключ	lite	196747,212575	30	78.41.111.0/24
 kyoresuas-standard	government	Госуслуги и Госключ	lite	196747,212575	30	93.93.91.0/24
 kyoresuas-standard	government	Госуслуги и Госключ	lite	196747,212575	30	109.207.0.0/20
 kyoresuas-standard	government	Госуслуги и Госключ	lite	196747,212575	30	193.162.30.0/24
-kyoresuas-standard	government	Госуслуги и Госключ	lite	196747,212575	30	212.193.153.0/24
-kyoresuas-standard	government	Госуслуги и Госключ	lite	196747,212575	30	212.193.156.0/24
+kyoresuas-standard	government	Госуслуги и Госключ	lite	196747,212575	30	212.193.152.0/23
+kyoresuas-standard	government	Госуслуги и Госключ	lite	196747,212575	30	212.193.156.0/23
 kyoresuas-standard	government	Госуслуги и Госключ	lite	196747,212575	30	213.59.253.6/31
 kyoresuas-standard	government	Госуслуги и Госключ	lite	196747,212575	30	213.59.253.8/32
 kyoresuas-standard	government	Госуслуги и Госключ	lite	196747,212575	30	213.59.253.21/32
@@ -239,13 +241,13 @@ kyoresuas-standard	government	Федеральные ведомства	lite	829
 kyoresuas-standard	government	Федеральные ведомства	lite	8291,43797,199922	37	78.41.111.0/24
 kyoresuas-standard	government	Федеральные ведомства	lite	8291,43797,199922	37	82.202.190.114/32
 kyoresuas-standard	government	Федеральные ведомства	lite	8291,43797,199922	37	85.142.19.102/32
-kyoresuas-standard	government	Федеральные ведомства	lite	8291,43797,199922	37	87.226.252.75/32
 kyoresuas-standard	government	Федеральные ведомства	lite	8291,43797,199922	37	89.208.226.45/32
 kyoresuas-standard	government	Федеральные ведомства	lite	8291,43797,199922	37	89.208.226.50/32
 kyoresuas-standard	government	Федеральные ведомства	lite	8291,43797,199922	37	93.93.91.0/24
 kyoresuas-standard	government	Федеральные ведомства	lite	8291,43797,199922	37	95.129.236.157/32
 kyoresuas-standard	government	Федеральные ведомства	lite	8291,43797,199922	37	95.167.154.115/32
 kyoresuas-standard	government	Федеральные ведомства	lite	8291,43797,199922	37	95.167.245.92/32
+kyoresuas-standard	government	Федеральные ведомства	lite	8291,43797,199922	37	95.167.245.141/32
 kyoresuas-standard	government	Федеральные ведомства	lite	8291,43797,199922	37	95.173.128.0/21
 kyoresuas-standard	government	Федеральные ведомства	lite	8291,43797,199922	37	95.173.136.0/23
 kyoresuas-standard	government	Федеральные ведомства	lite	8291,43797,199922	37	95.173.138.0/24
@@ -263,14 +265,13 @@ kyoresuas-standard	government	Федеральные ведомства	lite	829
 kyoresuas-standard	government	Федеральные ведомства	lite	8291,43797,199922	37	194.226.116.0/22
 kyoresuas-standard	government	Федеральные ведомства	lite	8291,43797,199922	37	195.161.52.0/23
 kyoresuas-standard	government	Федеральные ведомства	lite	8291,43797,199922	37	195.208.66.0/24
-kyoresuas-standard	government	Федеральные ведомства	lite	8291,43797,199922	37	195.209.66.0/23
+kyoresuas-standard	government	Федеральные ведомства	lite	8291,43797,199922	37	195.209.67.0/24
 kyoresuas-standard	government	Федеральные ведомства	lite	8291,43797,199922	37	195.209.81.0/24
 kyoresuas-standard	government	Федеральные ведомства	lite	8291,43797,199922	37	195.209.86.0/23
 kyoresuas-standard	government	Федеральные ведомства	lite	8291,43797,199922	37	212.164.140.44/32
 kyoresuas-standard	government	Федеральные ведомства	lite	8291,43797,199922	37	212.164.140.54/32
 kyoresuas-standard	government	Федеральные ведомства	lite	8291,43797,199922	37	212.192.156.40/32
 kyoresuas-standard	government	Федеральные ведомства	lite	8291,43797,199922	37	212.193.155.0/24
-kyoresuas-standard	government	Федеральные ведомства	lite	8291,43797,199922	37	212.193.156.0/24
 kyoresuas-standard	government	Федеральные ведомства	lite	8291,43797,199922	37	212.233.121.96/32
 kyoresuas-standard	government	Федеральные ведомства	lite	8291,43797,199922	37	217.77.104.136/32
 kyoresuas-standard	government	Федеральные ведомства	lite	8291,43797,199922	37	217.77.104.150/32
@@ -314,31 +315,30 @@ kyoresuas-standard	government	Почта России	lite		15	212.164.140.155/3
 kyoresuas-standard	government	Почта России	lite		15	212.164.140.157/32
 kyoresuas-standard	government	Почта России	lite		15	212.164.140.159/32
 kyoresuas-standard	government	Почта России	lite		15	213.232.192.181/32
+kyoresuas-standard	maps	2ГИС	standard	197482	96	31.135.66.5/32
 kyoresuas-standard	maps	2ГИС	standard	197482	96	45.9.26.244/32
+kyoresuas-standard	maps	2ГИС	standard	197482	96	45.141.102.99/32
 kyoresuas-standard	maps	2ГИС	standard	197482	96	46.243.227.60/32
 kyoresuas-standard	maps	2ГИС	standard	197482	96	77.223.109.226/32
 kyoresuas-standard	maps	2ГИС	standard	197482	96	77.223.109.228/32
 kyoresuas-standard	maps	2ГИС	standard	197482	96	77.223.109.230/32
-kyoresuas-standard	maps	2ГИС	standard	197482	96	85.142.172.104/32
-kyoresuas-standard	maps	2ГИС	standard	197482	96	87.249.44.53/32
-kyoresuas-standard	maps	2ГИС	standard	197482	96	89.109.251.19/32
-kyoresuas-standard	maps	2ГИС	standard	197482	96	91.207.136.55/32
+kyoresuas-standard	maps	2ГИС	standard	197482	96	85.21.78.91/32
+kyoresuas-standard	maps	2ГИС	standard	197482	96	87.103.245.205/32
+kyoresuas-standard	maps	2ГИС	standard	197482	96	89.179.240.219/32
+kyoresuas-standard	maps	2ГИС	standard	197482	96	91.206.16.3/32
 kyoresuas-standard	maps	2ГИС	standard	197482	96	91.221.198.0/23
-kyoresuas-standard	maps	2ГИС	standard	197482	96	91.224.234.189/32
 kyoresuas-standard	maps	2ГИС	standard	197482	96	91.236.48.0/22
-kyoresuas-standard	maps	2ГИС	standard	197482	96	92.241.18.6/32
 kyoresuas-standard	maps	2ГИС	standard	197482	96	92.241.18.100/32
-kyoresuas-standard	maps	2ГИС	standard	197482	96	92.255.126.3/32
-kyoresuas-standard	maps	2ГИС	standard	197482	96	93.95.100.85/32
+kyoresuas-standard	maps	2ГИС	standard	197482	96	92.255.126.11/32
+kyoresuas-standard	maps	2ГИС	standard	197482	96	94.100.180.133/32
 kyoresuas-standard	maps	2ГИС	standard	197482	96	95.129.232.210/32
 kyoresuas-standard	maps	2ГИС	standard	197482	96	95.129.236.72/32
 kyoresuas-standard	maps	2ГИС	standard	197482	96	95.156.79.220/32
+kyoresuas-standard	maps	2ГИС	standard	197482	96	95.165.169.188/32
 kyoresuas-standard	maps	2ГИС	standard	197482	96	151.0.2.53/32
 kyoresuas-standard	maps	2ГИС	standard	197482	96	176.57.65.88/32
 kyoresuas-standard	maps	2ГИС	standard	197482	96	176.57.65.177/32
 kyoresuas-standard	maps	2ГИС	standard	197482	96	178.176.128.128/32
-kyoresuas-standard	maps	2ГИС	standard	197482	96	193.106.93.117/32
-kyoresuas-standard	maps	2ГИС	standard	197482	96	212.6.3.73/32
 kyoresuas-standard	maps	2ГИС	standard	197482	96	212.20.1.22/32
 kyoresuas-standard	maps	2ГИС	standard	197482	96	212.20.1.178/32
 kyoresuas-standard	maps	2ГИС	standard	197482	96	212.20.1.254/32
@@ -381,12 +381,12 @@ kyoresuas-standard	marketplaces	Мегамаркет	standard		5	185.31.113.0/24
 kyoresuas-standard	marketplaces	AliExpress Россия	standard		5	188.72.103.102/32
 kyoresuas-standard	marketplaces	Юла	standard		5	95.163.61.105/32
 kyoresuas-standard	payments	Мир и СБП	lite	21292,41185,41187,50339,60967	8	87.251.92.0/23
+kyoresuas-standard	payments	Мир и СБП	lite	21292,41185,41187,50339,60967	8	91.231.236.0/24
 kyoresuas-standard	payments	Мир и СБП	lite	21292,41185,41187,50339,60967	8	91.238.111.0/24
-kyoresuas-standard	payments	Мир и СБП	lite	21292,41185,41187,50339,60967	8	91.240.169.0/24
-kyoresuas-standard	payments	Мир и СБП	lite	21292,41185,41187,50339,60967	8	151.236.72.0/24
 kyoresuas-standard	payments	Мир и СБП	lite	21292,41185,41187,50339,60967	8	151.236.81.0/24
-kyoresuas-standard	payments	Мир и СБП	lite	21292,41185,41187,50339,60967	8	151.236.110.0/24
-kyoresuas-standard	payments	Мир и СБП	lite	21292,41185,41187,50339,60967	8	151.236.121.0/24
+kyoresuas-standard	payments	Мир и СБП	lite	21292,41185,41187,50339,60967	8	151.236.84.0/24
+kyoresuas-standard	payments	Мир и СБП	lite	21292,41185,41187,50339,60967	8	151.236.94.0/24
+kyoresuas-standard	payments	Мир и СБП	lite	21292,41185,41187,50339,60967	8	151.236.102.0/24
 kyoresuas-standard	payments	Мир и СБП	lite	21292,41185,41187,50339,60967	8	185.170.0.0/22
 kyoresuas-standard	payments	Мир и СБП	lite	21292,41185,41187,50339,60967	8	194.190.0.0/24
 kyoresuas-standard	payments	Мир и СБП	lite	21292,41185,41187,50339,60967	8	195.208.109.0/24
@@ -431,8 +431,6 @@ kyoresuas-standard	retail	Лента	standard		4	178.248.232.0/24
 kyoresuas-standard	retail	Лента	standard		4	178.248.239.0/24
 kyoresuas-standard	retail	ВкусВилл	standard		9	94.79.19.57/32
 kyoresuas-standard	retail	ВкусВилл	standard		9	151.236.71.0/24
-kyoresuas-standard	retail	ВкусВилл	standard		9	151.236.81.0/24
-kyoresuas-standard	retail	ВкусВилл	standard		9	151.236.110.0/24
 kyoresuas-standard	retail	ВкусВилл	standard		9	151.236.118.0/24
 kyoresuas-standard	retail	ВкусВилл	standard		9	178.248.232.0/24
 kyoresuas-standard	retail	ВкусВилл	standard		9	185.31.113.0/24
@@ -761,6 +759,7 @@ kyoresuas-standard	streaming	Okko	standard	211609	31	31.132.34.0/24
 kyoresuas-standard	streaming	Okko	standard	211609	31	80.94.84.0/22
 kyoresuas-standard	streaming	Okko	standard	211609	31	109.238.88.0/24
 kyoresuas-standard	streaming	Okko	standard	211609	31	109.238.90.0/24
+kyoresuas-standard	streaming	Okko	standard	211609	31	151.236.127.0/24
 kyoresuas-standard	streaming	Okko	standard	211609	31	155.212.234.0/24
 kyoresuas-standard	streaming	Okko	standard	211609	31	178.18.217.0/24
 kyoresuas-standard	streaming	Okko	standard	211609	31	178.18.218.0/23
@@ -807,16 +806,15 @@ kyoresuas-standard	streaming	Витрина ТВ	standard	41718	3	194.156.120.0/
 kyoresuas-standard	streaming	Витрина ТВ	standard	41718	3	195.216.153.0/24
 kyoresuas-standard	tech	RuStore	standard		28	90.156.232.47/32
 kyoresuas-standard	tech	RuStore	standard		28	90.156.232.221/32
-kyoresuas-standard	tech	RuStore	standard		28	95.163.58.192/29
-kyoresuas-standard	tech	RuStore	standard		28	95.163.58.200/31
-kyoresuas-standard	tech	RuStore	standard		28	95.163.58.202/32
-kyoresuas-standard	tech	RuStore	standard		28	95.163.58.204/30
+kyoresuas-standard	tech	RuStore	standard		28	95.163.58.192/30
+kyoresuas-standard	tech	RuStore	standard		28	95.163.58.196/32
+kyoresuas-standard	tech	RuStore	standard		28	95.163.58.198/31
+kyoresuas-standard	tech	RuStore	standard		28	95.163.58.200/29
 kyoresuas-standard	tech	RuStore	standard		28	95.163.58.208/31
-kyoresuas-standard	tech	RuStore	standard		28	95.163.58.211/32
-kyoresuas-standard	tech	RuStore	standard		28	95.163.58.212/32
-kyoresuas-standard	tech	RuStore	standard		28	95.163.58.214/31
-kyoresuas-standard	tech	RuStore	standard		28	95.163.58.216/32
-kyoresuas-standard	tech	RuStore	standard		28	95.163.58.218/31
+kyoresuas-standard	tech	RuStore	standard		28	95.163.58.210/32
+kyoresuas-standard	tech	RuStore	standard		28	95.163.58.212/31
+kyoresuas-standard	tech	RuStore	standard		28	95.163.58.214/32
+kyoresuas-standard	tech	RuStore	standard		28	95.163.58.216/30
 kyoresuas-standard	tech	RuStore	standard		28	95.163.60.61/32
 kyoresuas-standard	tech	RuStore	standard		28	95.163.60.62/31
 kyoresuas-standard	tech	RuStore	standard		28	95.163.61.6/32
@@ -1145,10 +1143,12 @@ kyoresuas-standard	aggregate-only	aggregate prefix not mapped in services.json	s
 kyoresuas-standard	aggregate-only	aggregate prefix not mapped in services.json	standard		0	91.221.164.0/23
 kyoresuas-standard	aggregate-only	aggregate prefix not mapped in services.json	standard		0	95.181.182.182/31
 kyoresuas-standard	aggregate-only	aggregate prefix not mapped in services.json	standard		0	151.236.80.0/23
+kyoresuas-standard	aggregate-only	aggregate prefix not mapped in services.json	standard		0	151.236.122.0/23
 kyoresuas-standard	aggregate-only	aggregate prefix not mapped in services.json	standard		0	178.248.232.0/21
 kyoresuas-standard	aggregate-only	aggregate prefix not mapped in services.json	standard		0	185.65.148.0/22
 kyoresuas-standard	aggregate-only	aggregate prefix not mapped in services.json	standard		0	185.129.100.112/31
 kyoresuas-standard	aggregate-only	aggregate prefix not mapped in services.json	standard		0	193.17.93.194/31
+kyoresuas-standard	aggregate-only	aggregate prefix not mapped in services.json	standard		0	195.209.66.0/23
 kyoresuas-standard	aggregate-only	aggregate prefix not mapped in services.json	standard		0	195.209.80.0/22
 w1zardz-service-direct						5.45.192.0/18
 w1zardz-service-direct						5.61.16.0/21
@@ -1182,12 +1182,12 @@ w1zardz-service-direct						37.140.192.41/32
 w1zardz-service-direct						37.220.161.51/32
 w1zardz-service-direct						37.220.161.64/32
 w1zardz-service-direct						37.220.161.117/32
-w1zardz-service-direct						37.220.161.124/32
 w1zardz-service-direct						37.220.161.127/32
 w1zardz-service-direct						37.220.161.129/32
 w1zardz-service-direct						37.220.161.200/32
 w1zardz-service-direct						37.220.161.212/32
 w1zardz-service-direct						37.220.161.219/32
+w1zardz-service-direct						37.220.161.222/32
 w1zardz-service-direct						37.220.161.236/31
 w1zardz-service-direct						37.220.161.251/32
 w1zardz-service-direct						37.220.162.231/32
@@ -1228,8 +1228,8 @@ w1zardz-service-direct						46.226.122.0/24
 w1zardz-service-direct						46.235.184.68/32
 w1zardz-service-direct						46.235.184.84/32
 w1zardz-service-direct						46.235.184.89/32
-w1zardz-service-direct						46.235.184.152/32
 w1zardz-service-direct						46.235.184.195/32
+w1zardz-service-direct						46.235.184.197/32
 w1zardz-service-direct						46.235.184.211/32
 w1zardz-service-direct						46.235.185.73/32
 w1zardz-service-direct						46.235.185.169/32
@@ -1244,10 +1244,11 @@ w1zardz-service-direct						46.235.188.79/32
 w1zardz-service-direct						46.235.188.94/32
 w1zardz-service-direct						46.235.188.129/32
 w1zardz-service-direct						46.235.188.133/32
-w1zardz-service-direct						46.235.188.152/32
 w1zardz-service-direct						46.235.188.171/32
 w1zardz-service-direct						46.235.188.172/32
-w1zardz-service-direct						46.235.189.44/32
+w1zardz-service-direct						46.235.188.251/32
+w1zardz-service-direct						46.235.189.7/32
+w1zardz-service-direct						46.235.189.64/32
 w1zardz-service-direct						46.235.189.201/32
 w1zardz-service-direct						46.243.177.102/31
 w1zardz-service-direct						51.250.120.146/32
@@ -1277,6 +1278,7 @@ w1zardz-service-direct						78.41.110.216/32
 w1zardz-service-direct						78.41.110.238/32
 w1zardz-service-direct						78.41.111.11/32
 w1zardz-service-direct						78.41.111.34/32
+w1zardz-service-direct						78.41.111.72/32
 w1zardz-service-direct						78.41.111.154/32
 w1zardz-service-direct						78.41.111.199/32
 w1zardz-service-direct						78.41.111.224/32
@@ -1377,7 +1379,6 @@ w1zardz-service-direct						86.109.210.185/32
 w1zardz-service-direct						87.226.155.117/32
 w1zardz-service-direct						87.226.162.216/32
 w1zardz-service-direct						87.226.166.137/32
-w1zardz-service-direct						87.226.252.75/32
 w1zardz-service-direct						87.228.12.190/32
 w1zardz-service-direct						87.239.104.0/21
 w1zardz-service-direct						87.240.128.0/18
@@ -1433,6 +1434,7 @@ w1zardz-service-direct						91.206.127.102/32
 w1zardz-service-direct						91.206.127.197/32
 w1zardz-service-direct						91.206.127.224/32
 w1zardz-service-direct						91.206.127.236/32
+w1zardz-service-direct						91.207.59.163/32
 w1zardz-service-direct						91.212.64.0/24
 w1zardz-service-direct						91.213.144.237/32
 w1zardz-service-direct						91.214.119.200/32
@@ -1493,16 +1495,15 @@ w1zardz-service-direct						92.53.96.195/32
 w1zardz-service-direct						93.88.179.201/32
 w1zardz-service-direct						93.91.8.37/32
 w1zardz-service-direct						93.92.113.12/32
-w1zardz-service-direct						93.93.88.21/32
 w1zardz-service-direct						93.93.89.38/32
 w1zardz-service-direct						93.93.89.134/32
-w1zardz-service-direct						93.93.89.154/32
+w1zardz-service-direct						93.93.89.138/32
 w1zardz-service-direct						93.93.89.173/32
 w1zardz-service-direct						93.93.89.201/32
 w1zardz-service-direct						93.93.91.63/32
+w1zardz-service-direct						93.93.91.88/32
 w1zardz-service-direct						93.93.91.103/32
 w1zardz-service-direct						93.93.91.107/32
-w1zardz-service-direct						93.93.91.201/32
 w1zardz-service-direct						93.95.101.202/32
 w1zardz-service-direct						93.158.128.0/18
 w1zardz-service-direct						93.186.224.0/20
@@ -1516,7 +1517,6 @@ w1zardz-service-direct						94.26.249.177/32
 w1zardz-service-direct						94.79.51.12/31
 w1zardz-service-direct						94.79.51.14/32
 w1zardz-service-direct						94.79.51.135/32
-w1zardz-service-direct						94.79.51.170/32
 w1zardz-service-direct						94.79.51.184/31
 w1zardz-service-direct						94.79.51.186/32
 w1zardz-service-direct						94.100.176.0/20
@@ -1553,6 +1553,7 @@ w1zardz-service-direct						95.163.248.0/21
 w1zardz-service-direct						95.167.154.115/32
 w1zardz-service-direct						95.167.220.237/32
 w1zardz-service-direct						95.167.245.92/32
+w1zardz-service-direct						95.167.245.141/32
 w1zardz-service-direct						95.173.128.0/21
 w1zardz-service-direct						95.173.136.0/23
 w1zardz-service-direct						95.173.138.0/24
@@ -1611,6 +1612,7 @@ w1zardz-service-direct						130.193.32.0/19
 w1zardz-service-direct						132.243.178.72/32
 w1zardz-service-direct						135.106.158.74/32
 w1zardz-service-direct						135.106.182.253/32
+w1zardz-service-direct						135.106.198.94/32
 w1zardz-service-direct						138.16.192.0/20
 w1zardz-service-direct						138.16.240.0/20
 w1zardz-service-direct						141.8.128.0/18
@@ -1886,6 +1888,7 @@ w1zardz-service-direct						194.9.208.0/22
 w1zardz-service-direct						194.54.14.0/23
 w1zardz-service-direct						194.54.177.229/32
 w1zardz-service-direct						194.58.112.174/32
+w1zardz-service-direct						194.67.71.58/32
 w1zardz-service-direct						194.67.71.106/32
 w1zardz-service-direct						194.67.71.193/32
 w1zardz-service-direct						194.67.72.31/32
@@ -1936,7 +1939,6 @@ w1zardz-service-direct						195.208.66.164/32
 w1zardz-service-direct						195.208.66.236/32
 w1zardz-service-direct						195.208.245.190/32
 w1zardz-service-direct						195.209.52.65/32
-w1zardz-service-direct						195.209.66.33/32
 w1zardz-service-direct						195.209.66.53/32
 w1zardz-service-direct						195.209.66.182/32
 w1zardz-service-direct						195.209.81.113/32
@@ -1944,6 +1946,7 @@ w1zardz-service-direct						195.209.81.131/32
 w1zardz-service-direct						195.209.81.149/32
 w1zardz-service-direct						195.209.81.215/32
 w1zardz-service-direct						195.209.82.71/32
+w1zardz-service-direct						195.209.82.84/32
 w1zardz-service-direct						195.209.82.129/32
 w1zardz-service-direct						195.209.82.227/32
 w1zardz-service-direct						195.209.82.243/32
@@ -2006,10 +2009,14 @@ w1zardz-service-direct						212.193.146.117/32
 w1zardz-service-direct						212.193.146.120/32
 w1zardz-service-direct						212.193.146.140/32
 w1zardz-service-direct						212.193.146.142/32
+w1zardz-service-direct						212.193.146.157/32
 w1zardz-service-direct						212.193.146.235/32
 w1zardz-service-direct						212.193.147.29/32
 w1zardz-service-direct						212.193.147.121/32
 w1zardz-service-direct						212.193.147.144/31
+w1zardz-service-direct						212.193.147.201/32
+w1zardz-service-direct						212.193.147.203/32
+w1zardz-service-direct						212.193.147.211/32
 w1zardz-service-direct						212.193.147.238/32
 w1zardz-service-direct						212.193.152.39/32
 w1zardz-service-direct						212.193.152.77/32
@@ -2019,10 +2026,11 @@ w1zardz-service-direct						212.193.152.97/32
 w1zardz-service-direct						212.193.152.137/32
 w1zardz-service-direct						212.193.152.147/32
 w1zardz-service-direct						212.193.152.165/32
+w1zardz-service-direct						212.193.152.230/32
 w1zardz-service-direct						212.193.152.252/32
+w1zardz-service-direct						212.193.153.0/32
 w1zardz-service-direct						212.193.153.14/32
 w1zardz-service-direct						212.193.153.24/32
-w1zardz-service-direct						212.193.153.35/32
 w1zardz-service-direct						212.193.153.124/32
 w1zardz-service-direct						212.193.153.131/32
 w1zardz-service-direct						212.193.153.133/32
@@ -2036,8 +2044,6 @@ w1zardz-service-direct						212.193.157.25/32
 w1zardz-service-direct						212.193.157.40/32
 w1zardz-service-direct						212.193.157.64/32
 w1zardz-service-direct						212.193.157.88/32
-w1zardz-service-direct						212.193.157.127/32
-w1zardz-service-direct						212.193.157.189/32
 w1zardz-service-direct						212.193.157.209/32
 w1zardz-service-direct						212.193.157.252/32
 w1zardz-service-direct						212.233.72.0/21
@@ -145537,6 +145543,7 @@ hydra-direct	routing-intent					9.247.199.0/24
 hydra-direct	routing-intent					9.247.200.0/24
 hydra-direct	routing-intent					9.247.210.0/24
 hydra-direct	routing-intent					9.247.213.0/24
+hydra-direct	routing-intent					9.247.217.0/24
 hydra-direct	routing-intent					9.247.228.0/24
 hydra-direct	routing-intent					9.247.255.0/24
 hydra-direct	routing-intent					13.141.63.0/24
@@ -145547,7 +145554,7 @@ hydra-direct	routing-intent					13.143.149.0/24
 hydra-direct	routing-intent					13.143.181.0/24
 hydra-direct	routing-intent					13.143.184.0/24
 hydra-direct	routing-intent					13.143.188.0/24
-hydra-direct	routing-intent					13.143.206.0/24
+hydra-direct	routing-intent					13.143.206.0/23
 hydra-direct	routing-intent					13.143.243.0/24
 hydra-direct	routing-intent					13.143.244.0/24
 hydra-direct	routing-intent					14.0.37.0/24
@@ -145564,6 +145571,7 @@ hydra-direct	routing-intent					17.188.20.0/23
 hydra-direct	routing-intent					17.188.128.0/18
 hydra-direct	routing-intent					17.249.0.0/16
 hydra-direct	routing-intent					17.252.0.0/16
+hydra-direct	routing-intent					23.88.248.0/27
 hydra-direct	routing-intent					23.90.128.0/20
 hydra-direct	routing-intent					23.105.224.0/23
 hydra-direct	routing-intent					23.105.226.0/28
@@ -145999,7 +146007,6 @@ hydra-direct	routing-intent					31.57.152.109/32
 hydra-direct	routing-intent					31.57.152.112/32
 hydra-direct	routing-intent					31.57.152.114/32
 hydra-direct	routing-intent					31.57.152.116/32
-hydra-direct	routing-intent					31.57.152.134/32
 hydra-direct	routing-intent					31.57.152.152/32
 hydra-direct	routing-intent					31.57.152.162/31
 hydra-direct	routing-intent					31.57.152.165/32
@@ -146008,9 +146015,13 @@ hydra-direct	routing-intent					31.57.152.173/32
 hydra-direct	routing-intent					31.57.152.174/32
 hydra-direct	routing-intent					31.57.152.188/31
 hydra-direct	routing-intent					31.57.152.190/32
-hydra-direct	routing-intent					31.57.152.196/31
+hydra-direct	routing-intent					31.57.152.197/32
 hydra-direct	routing-intent					31.57.152.198/32
-hydra-direct	routing-intent					31.57.152.200/32
+hydra-direct	routing-intent					31.57.152.200/30
+hydra-direct	routing-intent					31.57.152.204/32
+hydra-direct	routing-intent					31.57.152.207/32
+hydra-direct	routing-intent					31.57.152.208/31
+hydra-direct	routing-intent					31.57.152.210/32
 hydra-direct	routing-intent					31.57.152.234/32
 hydra-direct	routing-intent					31.57.159.0/24
 hydra-direct	routing-intent					31.57.182.0/24
@@ -146032,6 +146043,7 @@ hydra-direct	routing-intent					31.77.47.0/24
 hydra-direct	routing-intent					31.77.60.0/24
 hydra-direct	routing-intent					31.77.71.0/24
 hydra-direct	routing-intent					31.77.78.0/24
+hydra-direct	routing-intent					31.77.122.32/29
 hydra-direct	routing-intent					31.77.122.120/29
 hydra-direct	routing-intent					31.77.136.0/24
 hydra-direct	routing-intent					31.77.143.0/24
@@ -149517,6 +149529,7 @@ hydra-direct	routing-intent					45.199.251.0/24
 hydra-direct	routing-intent					45.199.253.0/24
 hydra-direct	routing-intent					45.199.254.0/24
 hydra-direct	routing-intent					45.201.1.0/24
+hydra-direct	routing-intent					45.201.8.0/24
 hydra-direct	routing-intent					45.201.26.0/24
 hydra-direct	routing-intent					45.201.34.0/24
 hydra-direct	routing-intent					45.201.44.0/24
@@ -150408,7 +150421,12 @@ hydra-direct	routing-intent					48.102.213.0/24
 hydra-direct	routing-intent					48.102.216.0/23
 hydra-direct	routing-intent					48.102.218.0/24
 hydra-direct	routing-intent					48.102.254.0/24
+hydra-direct	routing-intent					48.103.130.0/24
+hydra-direct	routing-intent					48.103.132.0/23
+hydra-direct	routing-intent					48.103.149.0/24
 hydra-direct	routing-intent					48.103.180.0/24
+hydra-direct	routing-intent					48.103.201.0/24
+hydra-direct	routing-intent					48.103.218.0/24
 hydra-direct	routing-intent					48.103.242.0/23
 hydra-direct	routing-intent					50.7.192.4/30
 hydra-direct	routing-intent					51.241.127.0/24
@@ -151138,16 +151156,44 @@ hydra-direct	routing-intent					64.112.83.0/24
 hydra-direct	routing-intent					64.113.17.0/24
 hydra-direct	routing-intent					64.188.90.0/24
 hydra-direct	routing-intent					64.204.144.0/29
-hydra-direct	routing-intent					64.204.144.8/30
+hydra-direct	routing-intent					64.204.144.10/31
 hydra-direct	routing-intent					64.204.144.12/31
-hydra-direct	routing-intent					64.204.144.16/28
-hydra-direct	routing-intent					64.204.144.32/27
-hydra-direct	routing-intent					64.204.144.64/27
+hydra-direct	routing-intent					64.204.144.18/31
+hydra-direct	routing-intent					64.204.144.28/30
+hydra-direct	routing-intent					64.204.144.32/29
+hydra-direct	routing-intent					64.204.144.40/30
+hydra-direct	routing-intent					64.204.144.44/31
+hydra-direct	routing-intent					64.204.144.50/31
+hydra-direct	routing-intent					64.204.144.52/31
+hydra-direct	routing-intent					64.204.144.64/28
+hydra-direct	routing-intent					64.204.144.80/30
+hydra-direct	routing-intent					64.204.144.88/30
 hydra-direct	routing-intent					64.204.144.96/28
-hydra-direct	routing-intent					64.204.144.112/29
+hydra-direct	routing-intent					64.204.144.118/31
 hydra-direct	routing-intent					64.204.144.120/30
-hydra-direct	routing-intent					64.204.144.126/31
-hydra-direct	routing-intent					64.204.144.128/25
+hydra-direct	routing-intent					64.204.144.136/30
+hydra-direct	routing-intent					64.204.144.140/31
+hydra-direct	routing-intent					64.204.144.144/31
+hydra-direct	routing-intent					64.204.144.148/31
+hydra-direct	routing-intent					64.204.144.152/31
+hydra-direct	routing-intent					64.204.144.158/31
+hydra-direct	routing-intent					64.204.144.160/31
+hydra-direct	routing-intent					64.204.144.170/31
+hydra-direct	routing-intent					64.204.144.172/31
+hydra-direct	routing-intent					64.204.144.176/30
+hydra-direct	routing-intent					64.204.144.186/31
+hydra-direct	routing-intent					64.204.144.188/30
+hydra-direct	routing-intent					64.204.144.192/31
+hydra-direct	routing-intent					64.204.144.196/30
+hydra-direct	routing-intent					64.204.144.204/31
+hydra-direct	routing-intent					64.204.144.208/30
+hydra-direct	routing-intent					64.204.144.214/31
+hydra-direct	routing-intent					64.204.144.222/31
+hydra-direct	routing-intent					64.204.144.224/30
+hydra-direct	routing-intent					64.204.144.230/31
+hydra-direct	routing-intent					64.204.144.232/29
+hydra-direct	routing-intent					64.204.144.244/31
+hydra-direct	routing-intent					64.204.144.250/31
 hydra-direct	routing-intent					64.205.65.0/27
 hydra-direct	routing-intent					64.246.59.0/24
 hydra-direct	routing-intent					65.86.203.0/27
@@ -155510,18 +155556,15 @@ hydra-direct	routing-intent					87.245.238.36/32
 hydra-direct	routing-intent					87.245.238.38/32
 hydra-direct	routing-intent					87.245.238.44/32
 hydra-direct	routing-intent					87.245.238.46/31
-hydra-direct	routing-intent					87.245.238.48/31
-hydra-direct	routing-intent					87.245.238.51/32
+hydra-direct	routing-intent					87.245.238.48/30
 hydra-direct	routing-intent					87.245.238.56/32
 hydra-direct	routing-intent					87.245.238.58/32
 hydra-direct	routing-intent					87.245.238.60/32
 hydra-direct	routing-intent					87.245.238.62/32
 hydra-direct	routing-intent					87.245.244.241/32
 hydra-direct	routing-intent					87.245.247.239/32
-hydra-direct	routing-intent					87.245.250.10/32
-hydra-direct	routing-intent					87.245.250.22/32
-hydra-direct	routing-intent					87.245.250.162/32
-hydra-direct	routing-intent					87.245.253.35/32
+hydra-direct	routing-intent					87.245.250.0/24
+hydra-direct	routing-intent					87.245.253.34/31
 hydra-direct	routing-intent					87.245.253.129/32
 hydra-direct	routing-intent					87.245.253.224/30
 hydra-direct	routing-intent					87.245.255.0/24
@@ -155984,7 +156027,6 @@ hydra-direct	routing-intent					89.22.128.0/18
 hydra-direct	routing-intent					89.22.216.0/21
 hydra-direct	routing-intent					89.22.224.1/32
 hydra-direct	routing-intent					89.22.224.32/32
-hydra-direct	routing-intent					89.22.224.51/32
 hydra-direct	routing-intent					89.22.224.74/31
 hydra-direct	routing-intent					89.22.224.108/32
 hydra-direct	routing-intent					89.22.224.134/32
@@ -156006,10 +156048,8 @@ hydra-direct	routing-intent					89.22.228.70/32
 hydra-direct	routing-intent					89.22.228.72/32
 hydra-direct	routing-intent					89.22.228.111/32
 hydra-direct	routing-intent					89.22.228.121/32
-hydra-direct	routing-intent					89.22.228.149/32
 hydra-direct	routing-intent					89.22.228.173/32
 hydra-direct	routing-intent					89.22.228.204/31
-hydra-direct	routing-intent					89.22.228.220/32
 hydra-direct	routing-intent					89.22.228.228/32
 hydra-direct	routing-intent					89.22.228.240/31
 hydra-direct	routing-intent					89.22.231.38/32
@@ -156397,7 +156437,7 @@ hydra-direct	routing-intent					89.169.33.80/32
 hydra-direct	routing-intent					89.169.33.96/32
 hydra-direct	routing-intent					89.169.33.139/32
 hydra-direct	routing-intent					89.169.33.145/32
-hydra-direct	routing-intent					89.169.33.150/31
+hydra-direct	routing-intent					89.169.33.150/32
 hydra-direct	routing-intent					89.169.33.154/32
 hydra-direct	routing-intent					89.169.33.210/32
 hydra-direct	routing-intent					89.169.33.223/32
@@ -161795,8 +161835,7 @@ hydra-direct	routing-intent					94.183.195.0/24
 hydra-direct	routing-intent					94.183.202.0/24
 hydra-direct	routing-intent					94.183.214.0/24
 hydra-direct	routing-intent					94.183.236.0/24
-hydra-direct	routing-intent					94.187.192.0/21
-hydra-direct	routing-intent					94.187.200.0/22
+hydra-direct	routing-intent					94.187.192.0/20
 hydra-direct	routing-intent					94.188.0.0/17
 hydra-direct	routing-intent					94.190.0.0/17
 hydra-direct	routing-intent					94.194.120.0/21
@@ -162714,7 +162753,6 @@ hydra-direct	routing-intent					95.161.228.0/22
 hydra-direct	routing-intent					95.161.232.0/21
 hydra-direct	routing-intent					95.161.241.0/24
 hydra-direct	routing-intent					95.161.244.0/22
-hydra-direct	routing-intent					95.161.249.96/27
 hydra-direct	routing-intent					95.161.251.0/24
 hydra-direct	routing-intent					95.163.0.0/18
 hydra-direct	routing-intent					95.163.64.0/23
@@ -163573,7 +163611,7 @@ hydra-direct	routing-intent					109.120.156.213/32
 hydra-direct	routing-intent					109.120.156.222/32
 hydra-direct	routing-intent					109.120.156.234/31
 hydra-direct	routing-intent					109.120.156.248/32
-hydra-direct	routing-intent					109.120.157.18/31
+hydra-direct	routing-intent					109.120.157.19/32
 hydra-direct	routing-intent					109.120.157.22/32
 hydra-direct	routing-intent					109.120.157.59/32
 hydra-direct	routing-intent					109.120.157.97/32
@@ -164360,7 +164398,6 @@ hydra-direct	routing-intent					138.124.14.40/29
 hydra-direct	routing-intent					138.124.14.48/28
 hydra-direct	routing-intent					138.124.14.64/26
 hydra-direct	routing-intent					138.124.14.128/25
-hydra-direct	routing-intent					138.124.18.11/32
 hydra-direct	routing-intent					138.124.18.23/32
 hydra-direct	routing-intent					138.124.18.71/32
 hydra-direct	routing-intent					138.124.18.72/32
@@ -164382,7 +164419,6 @@ hydra-direct	routing-intent					138.124.24.186/32
 hydra-direct	routing-intent					138.124.24.251/32
 hydra-direct	routing-intent					138.124.25.66/31
 hydra-direct	routing-intent					138.124.25.70/32
-hydra-direct	routing-intent					138.124.25.79/32
 hydra-direct	routing-intent					138.124.25.139/32
 hydra-direct	routing-intent					138.124.25.194/31
 hydra-direct	routing-intent					138.124.25.202/31
@@ -164406,6 +164442,7 @@ hydra-direct	routing-intent					138.124.49.0/30
 hydra-direct	routing-intent					138.124.49.4/32
 hydra-direct	routing-intent					138.124.49.20/31
 hydra-direct	routing-intent					138.124.49.47/32
+hydra-direct	routing-intent					138.124.49.65/32
 hydra-direct	routing-intent					138.124.49.77/32
 hydra-direct	routing-intent					138.124.49.98/32
 hydra-direct	routing-intent					138.124.49.177/32
@@ -165316,6 +165353,7 @@ hydra-direct	routing-intent					152.89.219.216/29
 hydra-direct	routing-intent					152.89.219.224/27
 hydra-direct	routing-intent					152.228.96.0/22
 hydra-direct	routing-intent					152.228.112.0/20
+hydra-direct	routing-intent					152.234.159.0/27
 hydra-direct	routing-intent					152.234.170.0/24
 hydra-direct	routing-intent					152.234.223.0/24
 hydra-direct	routing-intent					152.234.239.0/24
@@ -165327,13 +165365,12 @@ hydra-direct	routing-intent					153.43.152.0/21
 hydra-direct	routing-intent					153.51.32.0/19
 hydra-direct	routing-intent					153.51.64.0/18
 hydra-direct	routing-intent					153.51.160.0/19
-hydra-direct	routing-intent					153.52.151.0/24
 hydra-direct	routing-intent					153.56.206.0/23
 hydra-direct	routing-intent					153.72.26.64/26
 hydra-direct	routing-intent					153.72.27.0/24
 hydra-direct	routing-intent					153.76.160.0/20
 hydra-direct	routing-intent					153.76.178.0/23
-hydra-direct	routing-intent					153.76.202.0/31
+hydra-direct	routing-intent					153.76.202.0/24
 hydra-direct	routing-intent					153.76.232.0/24
 hydra-direct	routing-intent					153.79.176.0/20
 hydra-direct	routing-intent					153.80.0.0/24
@@ -165415,8 +165452,11 @@ hydra-direct	routing-intent					154.90.188.0/24
 hydra-direct	routing-intent					154.90.190.0/23
 hydra-direct	routing-intent					154.93.33.0/24
 hydra-direct	routing-intent					154.200.0.0/24
-hydra-direct	routing-intent					154.200.18.0/24
+hydra-direct	routing-intent					154.200.18.0/23
+hydra-direct	routing-intent					154.200.20.0/23
 hydra-direct	routing-intent					154.200.23.0/24
+hydra-direct	routing-intent					154.200.24.0/23
+hydra-direct	routing-intent					154.200.30.0/24
 hydra-direct	routing-intent					154.200.34.0/23
 hydra-direct	routing-intent					154.200.36.0/24
 hydra-direct	routing-intent					154.200.41.0/24
@@ -165743,6 +165783,7 @@ hydra-direct	routing-intent					162.245.124.138/31
 hydra-direct	routing-intent					162.254.197.71/32
 hydra-direct	routing-intent					162.255.50.0/24
 hydra-direct	routing-intent					163.5.31.0/24
+hydra-direct	routing-intent					163.5.56.0/24
 hydra-direct	routing-intent					163.5.209.0/24
 hydra-direct	routing-intent					163.8.221.0/24
 hydra-direct	routing-intent					163.116.166.87/32
@@ -165803,6 +165844,7 @@ hydra-direct	routing-intent					163.181.124.0/23
 hydra-direct	routing-intent					163.181.217.0/24
 hydra-direct	routing-intent					163.181.226.0/23
 hydra-direct	routing-intent					163.181.235.0/24
+hydra-direct	routing-intent					163.245.63.0/24
 hydra-direct	routing-intent					164.37.237.0/24
 hydra-direct	routing-intent					164.40.232.0/24
 hydra-direct	routing-intent					164.137.75.0/24
@@ -165887,6 +165929,7 @@ hydra-direct	routing-intent					167.150.223.0/27
 hydra-direct	routing-intent					167.150.223.225/32
 hydra-direct	routing-intent					167.150.223.229/32
 hydra-direct	routing-intent					167.150.223.232/32
+hydra-direct	routing-intent					167.253.23.0/24
 hydra-direct	routing-intent					168.80.1.0/24
 hydra-direct	routing-intent					168.81.57.0/24
 hydra-direct	routing-intent					168.81.59.0/24
@@ -165954,6 +165997,7 @@ hydra-direct	routing-intent					170.168.115.0/24
 hydra-direct	routing-intent					170.168.116.0/24
 hydra-direct	routing-intent					170.168.119.0/24
 hydra-direct	routing-intent					170.168.122.0/24
+hydra-direct	routing-intent					170.168.125.0/24
 hydra-direct	routing-intent					170.168.128.0/23
 hydra-direct	routing-intent					170.168.132.0/24
 hydra-direct	routing-intent					170.168.141.0/24
@@ -166595,10 +166639,7 @@ hydra-direct	routing-intent					176.108.240.0/20
 hydra-direct	routing-intent					176.109.0.0/21
 hydra-direct	routing-intent					176.109.8.0/22
 hydra-direct	routing-intent					176.109.12.0/23
-hydra-direct	routing-intent					176.109.14.0/27
-hydra-direct	routing-intent					176.109.14.32/28
-hydra-direct	routing-intent					176.109.14.56/29
-hydra-direct	routing-intent					176.109.14.64/26
+hydra-direct	routing-intent					176.109.14.0/25
 hydra-direct	routing-intent					176.109.14.136/29
 hydra-direct	routing-intent					176.109.14.144/28
 hydra-direct	routing-intent					176.109.14.160/27
@@ -166952,10 +166993,6 @@ hydra-direct	routing-intent					177.3.252.0/24
 hydra-direct	routing-intent					177.28.4.0/24
 hydra-direct	routing-intent					177.28.7.0/24
 hydra-direct	routing-intent					177.29.204.0/22
-hydra-direct	routing-intent					177.111.103.0/24
-hydra-direct	routing-intent					177.111.137.0/24
-hydra-direct	routing-intent					177.111.228.0/24
-hydra-direct	routing-intent					177.122.30.0/24
 hydra-direct	routing-intent					177.177.185.0/24
 hydra-direct	routing-intent					177.177.212.0/23
 hydra-direct	routing-intent					177.177.219.0/24
@@ -171310,6 +171347,7 @@ hydra-direct	routing-intent					185.162.94.112/28
 hydra-direct	routing-intent					185.162.94.128/25
 hydra-direct	routing-intent					185.162.95.0/24
 hydra-direct	routing-intent					185.162.129.0/24
+hydra-direct	routing-intent					185.162.177.0/24
 hydra-direct	routing-intent					185.162.188.0/22
 hydra-direct	routing-intent					185.162.204.0/22
 hydra-direct	routing-intent					185.162.232.0/23
@@ -172981,113 +173019,122 @@ hydra-direct	routing-intent					185.255.135.255/32
 hydra-direct	routing-intent					185.255.153.0/24
 hydra-direct	routing-intent					185.255.176.0/23
 hydra-direct	routing-intent					186.2.161.1/32
-hydra-direct	routing-intent					186.2.161.7/32
+hydra-direct	routing-intent					186.2.161.2/32
+hydra-direct	routing-intent					186.2.161.4/32
+hydra-direct	routing-intent					186.2.161.6/31
 hydra-direct	routing-intent					186.2.161.8/32
 hydra-direct	routing-intent					186.2.161.10/32
-hydra-direct	routing-intent					186.2.161.12/32
-hydra-direct	routing-intent					186.2.161.14/32
-hydra-direct	routing-intent					186.2.161.19/32
-hydra-direct	routing-intent					186.2.161.20/32
-hydra-direct	routing-intent					186.2.161.23/32
-hydra-direct	routing-intent					186.2.161.24/31
+hydra-direct	routing-intent					186.2.161.13/32
+hydra-direct	routing-intent					186.2.161.15/32
+hydra-direct	routing-intent					186.2.161.16/32
+hydra-direct	routing-intent					186.2.161.22/32
+hydra-direct	routing-intent					186.2.161.25/32
 hydra-direct	routing-intent					186.2.161.27/32
-hydra-direct	routing-intent					186.2.161.28/30
+hydra-direct	routing-intent					186.2.161.30/31
 hydra-direct	routing-intent					186.2.161.32/31
 hydra-direct	routing-intent					186.2.161.34/32
-hydra-direct	routing-intent					186.2.161.36/31
+hydra-direct	routing-intent					186.2.161.37/32
 hydra-direct	routing-intent					186.2.161.39/32
 hydra-direct	routing-intent					186.2.161.41/32
-hydra-direct	routing-intent					186.2.161.42/32
+hydra-direct	routing-intent					186.2.161.42/31
 hydra-direct	routing-intent					186.2.161.44/32
 hydra-direct	routing-intent					186.2.161.47/32
-hydra-direct	routing-intent					186.2.161.48/32
-hydra-direct	routing-intent					186.2.161.50/31
-hydra-direct	routing-intent					186.2.161.52/30
-hydra-direct	routing-intent					186.2.161.56/31
+hydra-direct	routing-intent					186.2.161.48/31
+hydra-direct	routing-intent					186.2.161.50/32
+hydra-direct	routing-intent					186.2.161.53/32
+hydra-direct	routing-intent					186.2.161.54/32
+hydra-direct	routing-intent					186.2.161.57/32
 hydra-direct	routing-intent					186.2.161.58/32
 hydra-direct	routing-intent					186.2.161.61/32
-hydra-direct	routing-intent					186.2.161.62/32
-hydra-direct	routing-intent					186.2.161.64/30
-hydra-direct	routing-intent					186.2.161.69/32
-hydra-direct	routing-intent					186.2.161.70/31
-hydra-direct	routing-intent					186.2.161.72/32
+hydra-direct	routing-intent					186.2.161.64/31
+hydra-direct	routing-intent					186.2.161.67/32
+hydra-direct	routing-intent					186.2.161.68/31
+hydra-direct	routing-intent					186.2.161.71/32
 hydra-direct	routing-intent					186.2.161.74/31
-hydra-direct	routing-intent					186.2.161.76/30
+hydra-direct	routing-intent					186.2.161.77/32
+hydra-direct	routing-intent					186.2.161.78/31
 hydra-direct	routing-intent					186.2.161.81/32
 hydra-direct	routing-intent					186.2.161.82/32
 hydra-direct	routing-intent					186.2.161.84/30
-hydra-direct	routing-intent					186.2.161.89/32
+hydra-direct	routing-intent					186.2.161.88/31
 hydra-direct	routing-intent					186.2.161.91/32
-hydra-direct	routing-intent					186.2.161.92/30
-hydra-direct	routing-intent					186.2.161.96/31
-hydra-direct	routing-intent					186.2.161.98/32
-hydra-direct	routing-intent					186.2.161.100/30
+hydra-direct	routing-intent					186.2.161.92/31
+hydra-direct	routing-intent					186.2.161.95/32
+hydra-direct	routing-intent					186.2.161.97/32
+hydra-direct	routing-intent					186.2.161.98/31
+hydra-direct	routing-intent					186.2.161.100/32
 hydra-direct	routing-intent					186.2.161.104/31
-hydra-direct	routing-intent					186.2.161.106/32
-hydra-direct	routing-intent					186.2.161.109/32
-hydra-direct	routing-intent					186.2.161.115/32
+hydra-direct	routing-intent					186.2.161.108/32
+hydra-direct	routing-intent					186.2.161.110/32
+hydra-direct	routing-intent					186.2.161.112/31
+hydra-direct	routing-intent					186.2.161.114/32
 hydra-direct	routing-intent					186.2.161.116/31
-hydra-direct	routing-intent					186.2.161.119/32
 hydra-direct	routing-intent					186.2.161.120/31
 hydra-direct	routing-intent					186.2.161.122/32
 hydra-direct	routing-intent					186.2.161.124/31
 hydra-direct	routing-intent					186.2.161.129/32
-hydra-direct	routing-intent					186.2.161.130/31
+hydra-direct	routing-intent					186.2.161.130/32
 hydra-direct	routing-intent					186.2.161.132/32
-hydra-direct	routing-intent					186.2.161.134/31
-hydra-direct	routing-intent					186.2.161.137/32
+hydra-direct	routing-intent					186.2.161.135/32
 hydra-direct	routing-intent					186.2.161.138/31
 hydra-direct	routing-intent					186.2.161.140/30
-hydra-direct	routing-intent					186.2.161.144/32
-hydra-direct	routing-intent					186.2.161.146/31
-hydra-direct	routing-intent					186.2.161.148/32
+hydra-direct	routing-intent					186.2.161.144/31
+hydra-direct	routing-intent					186.2.161.146/32
+hydra-direct	routing-intent					186.2.161.149/32
 hydra-direct	routing-intent					186.2.161.150/32
-hydra-direct	routing-intent					186.2.161.153/32
-hydra-direct	routing-intent					186.2.161.155/32
+hydra-direct	routing-intent					186.2.161.152/31
+hydra-direct	routing-intent					186.2.161.154/32
 hydra-direct	routing-intent					186.2.161.156/32
-hydra-direct	routing-intent					186.2.161.158/32
+hydra-direct	routing-intent					186.2.161.158/31
+hydra-direct	routing-intent					186.2.161.161/32
 hydra-direct	routing-intent					186.2.161.162/31
 hydra-direct	routing-intent					186.2.161.164/31
 hydra-direct	routing-intent					186.2.161.167/32
 hydra-direct	routing-intent					186.2.161.169/32
 hydra-direct	routing-intent					186.2.161.170/31
-hydra-direct	routing-intent					186.2.161.172/30
+hydra-direct	routing-intent					186.2.161.172/32
+hydra-direct	routing-intent					186.2.161.174/31
+hydra-direct	routing-intent					186.2.161.177/32
 hydra-direct	routing-intent					186.2.161.178/31
-hydra-direct	routing-intent					186.2.161.180/31
+hydra-direct	routing-intent					186.2.161.181/32
+hydra-direct	routing-intent					186.2.161.182/31
 hydra-direct	routing-intent					186.2.161.184/32
 hydra-direct	routing-intent					186.2.161.186/32
-hydra-direct	routing-intent					186.2.161.188/30
+hydra-direct	routing-intent					186.2.161.189/32
+hydra-direct	routing-intent					186.2.161.190/31
 hydra-direct	routing-intent					186.2.161.192/31
 hydra-direct	routing-intent					186.2.161.195/32
 hydra-direct	routing-intent					186.2.161.196/32
-hydra-direct	routing-intent					186.2.161.198/31
-hydra-direct	routing-intent					186.2.161.202/32
+hydra-direct	routing-intent					186.2.161.199/32
+hydra-direct	routing-intent					186.2.161.202/31
 hydra-direct	routing-intent					186.2.161.204/32
-hydra-direct	routing-intent					186.2.161.209/32
-hydra-direct	routing-intent					186.2.161.211/32
-hydra-direct	routing-intent					186.2.161.214/32
-hydra-direct	routing-intent					186.2.161.216/31
-hydra-direct	routing-intent					186.2.161.219/32
-hydra-direct	routing-intent					186.2.161.221/32
-hydra-direct	routing-intent					186.2.161.222/32
+hydra-direct	routing-intent					186.2.161.207/32
+hydra-direct	routing-intent					186.2.161.208/30
+hydra-direct	routing-intent					186.2.161.212/31
+hydra-direct	routing-intent					186.2.161.217/32
+hydra-direct	routing-intent					186.2.161.218/32
+hydra-direct	routing-intent					186.2.161.220/32
+hydra-direct	routing-intent					186.2.161.223/32
 hydra-direct	routing-intent					186.2.161.225/32
-hydra-direct	routing-intent					186.2.161.228/30
+hydra-direct	routing-intent					186.2.161.226/31
+hydra-direct	routing-intent					186.2.161.228/31
+hydra-direct	routing-intent					186.2.161.230/32
 hydra-direct	routing-intent					186.2.161.232/31
 hydra-direct	routing-intent					186.2.161.234/32
 hydra-direct	routing-intent					186.2.161.236/31
 hydra-direct	routing-intent					186.2.161.238/32
-hydra-direct	routing-intent					186.2.161.241/32
-hydra-direct	routing-intent					186.2.161.242/31
-hydra-direct	routing-intent					186.2.161.244/31
-hydra-direct	routing-intent					186.2.161.246/32
-hydra-direct	routing-intent					186.2.161.248/30
+hydra-direct	routing-intent					186.2.161.240/31
+hydra-direct	routing-intent					186.2.161.243/32
+hydra-direct	routing-intent					186.2.161.244/32
+hydra-direct	routing-intent					186.2.161.246/31
+hydra-direct	routing-intent					186.2.161.248/31
+hydra-direct	routing-intent					186.2.161.251/32
 hydra-direct	routing-intent					186.2.161.252/31
-hydra-direct	routing-intent					186.2.161.254/32
 hydra-direct	routing-intent					186.2.163.95/32
-hydra-direct	routing-intent					186.2.166.1/32
-hydra-direct	routing-intent					186.2.166.8/30
-hydra-direct	routing-intent					186.2.166.12/31
-hydra-direct	routing-intent					186.2.166.15/32
+hydra-direct	routing-intent					186.2.166.0/31
+hydra-direct	routing-intent					186.2.166.2/32
+hydra-direct	routing-intent					186.2.166.5/32
+hydra-direct	routing-intent					186.2.166.8/29
 hydra-direct	routing-intent					186.2.166.16/29
 hydra-direct	routing-intent					186.2.166.24/32
 hydra-direct	routing-intent					186.2.166.26/31
@@ -173103,13 +173150,14 @@ hydra-direct	routing-intent					186.2.166.56/29
 hydra-direct	routing-intent					186.2.166.64/32
 hydra-direct	routing-intent					186.2.166.71/32
 hydra-direct	routing-intent					186.2.166.76/32
-hydra-direct	routing-intent					186.2.166.85/32
+hydra-direct	routing-intent					186.2.166.84/31
+hydra-direct	routing-intent					186.2.166.87/32
 hydra-direct	routing-intent					186.2.166.98/32
 hydra-direct	routing-intent					186.2.166.111/32
 hydra-direct	routing-intent					186.2.166.112/31
 hydra-direct	routing-intent					186.2.166.128/29
 hydra-direct	routing-intent					186.2.166.136/32
-hydra-direct	routing-intent					186.2.166.139/32
+hydra-direct	routing-intent					186.2.166.138/31
 hydra-direct	routing-intent					186.2.166.142/31
 hydra-direct	routing-intent					186.2.166.147/32
 hydra-direct	routing-intent					186.2.166.148/30
@@ -173136,14 +173184,14 @@ hydra-direct	routing-intent					186.2.171.22/32
 hydra-direct	routing-intent					186.2.171.24/32
 hydra-direct	routing-intent					186.2.171.27/32
 hydra-direct	routing-intent					186.2.171.28/30
-hydra-direct	routing-intent					186.2.171.33/32
-hydra-direct	routing-intent					186.2.171.34/31
-hydra-direct	routing-intent					186.2.171.36/30
+hydra-direct	routing-intent					186.2.171.34/32
+hydra-direct	routing-intent					186.2.171.36/32
+hydra-direct	routing-intent					186.2.171.38/32
 hydra-direct	routing-intent					186.2.171.40/29
 hydra-direct	routing-intent					186.2.171.48/32
-hydra-direct	routing-intent					186.2.171.50/31
-hydra-direct	routing-intent					186.2.171.52/30
-hydra-direct	routing-intent					186.2.171.56/29
+hydra-direct	routing-intent					186.2.171.50/32
+hydra-direct	routing-intent					186.2.171.52/32
+hydra-direct	routing-intent					186.2.171.54/32
 hydra-direct	routing-intent					186.2.171.64/29
 hydra-direct	routing-intent					186.2.171.72/30
 hydra-direct	routing-intent					186.2.171.76/32
@@ -173178,21 +173226,18 @@ hydra-direct	routing-intent					186.2.175.24/32
 hydra-direct	routing-intent					186.2.175.26/32
 hydra-direct	routing-intent					186.2.175.28/32
 hydra-direct	routing-intent					186.2.175.30/31
-hydra-direct	routing-intent					186.2.175.32/32
 hydra-direct	routing-intent					186.2.175.34/31
 hydra-direct	routing-intent					186.2.175.38/32
 hydra-direct	routing-intent					186.2.175.40/30
 hydra-direct	routing-intent					186.2.175.46/31
 hydra-direct	routing-intent					186.2.175.48/29
 hydra-direct	routing-intent					186.2.175.56/31
-hydra-direct	routing-intent					186.2.175.60/31
 hydra-direct	routing-intent					186.2.175.66/31
 hydra-direct	routing-intent					186.2.175.68/30
 hydra-direct	routing-intent					186.2.175.72/30
 hydra-direct	routing-intent					186.2.175.76/31
 hydra-direct	routing-intent					186.2.175.84/31
 hydra-direct	routing-intent					186.2.175.88/31
-hydra-direct	routing-intent					186.2.175.90/32
 hydra-direct	routing-intent					186.2.175.94/31
 hydra-direct	routing-intent					186.2.175.96/31
 hydra-direct	routing-intent					186.2.175.100/31
@@ -174185,116 +174230,105 @@ hydra-direct	routing-intent					190.115.20.0/25
 hydra-direct	routing-intent					190.115.21.1/32
 hydra-direct	routing-intent					190.115.21.2/32
 hydra-direct	routing-intent					190.115.21.4/32
-hydra-direct	routing-intent					190.115.21.6/32
-hydra-direct	routing-intent					190.115.21.8/30
+hydra-direct	routing-intent					190.115.21.6/31
+hydra-direct	routing-intent					190.115.21.8/32
+hydra-direct	routing-intent					190.115.21.10/32
 hydra-direct	routing-intent					190.115.21.13/32
-hydra-direct	routing-intent					190.115.21.20/30
+hydra-direct	routing-intent					190.115.21.20/32
+hydra-direct	routing-intent					190.115.21.23/32
 hydra-direct	routing-intent					190.115.21.25/32
 hydra-direct	routing-intent					190.115.21.26/31
-hydra-direct	routing-intent					190.115.21.28/31
+hydra-direct	routing-intent					190.115.21.28/32
 hydra-direct	routing-intent					190.115.21.31/32
-hydra-direct	routing-intent					190.115.21.32/29
-hydra-direct	routing-intent					190.115.21.40/31
+hydra-direct	routing-intent					190.115.21.34/31
+hydra-direct	routing-intent					190.115.21.36/30
+hydra-direct	routing-intent					190.115.21.43/32
 hydra-direct	routing-intent					190.115.21.45/32
-hydra-direct	routing-intent					190.115.21.46/31
+hydra-direct	routing-intent					190.115.21.46/32
 hydra-direct	routing-intent					190.115.21.49/32
 hydra-direct	routing-intent					190.115.21.50/31
-hydra-direct	routing-intent					190.115.21.53/32
-hydra-direct	routing-intent					190.115.21.56/30
-hydra-direct	routing-intent					190.115.21.60/31
+hydra-direct	routing-intent					190.115.21.52/31
+hydra-direct	routing-intent					190.115.21.54/32
+hydra-direct	routing-intent					190.115.21.56/31
+hydra-direct	routing-intent					190.115.21.59/32
+hydra-direct	routing-intent					190.115.21.61/32
 hydra-direct	routing-intent					190.115.21.63/32
-hydra-direct	routing-intent					190.115.21.64/32
-hydra-direct	routing-intent					190.115.21.66/31
-hydra-direct	routing-intent					190.115.21.68/32
-hydra-direct	routing-intent					190.115.21.70/31
-hydra-direct	routing-intent					190.115.21.73/32
+hydra-direct	routing-intent					190.115.21.64/31
+hydra-direct	routing-intent					190.115.21.67/32
+hydra-direct	routing-intent					190.115.21.68/30
+hydra-direct	routing-intent					190.115.21.72/32
 hydra-direct	routing-intent					190.115.21.74/31
-hydra-direct	routing-intent					190.115.21.76/32
+hydra-direct	routing-intent					190.115.21.76/31
+hydra-direct	routing-intent					190.115.21.79/32
 hydra-direct	routing-intent					190.115.21.80/32
 hydra-direct	routing-intent					190.115.21.82/32
-hydra-direct	routing-intent					190.115.21.85/32
 hydra-direct	routing-intent					190.115.21.87/32
-hydra-direct	routing-intent					190.115.21.88/32
-hydra-direct	routing-intent					190.115.21.91/32
-hydra-direct	routing-intent					190.115.21.92/32
-hydra-direct	routing-intent					190.115.21.95/32
-hydra-direct	routing-intent					190.115.21.96/32
-hydra-direct	routing-intent					190.115.21.98/31
+hydra-direct	routing-intent					190.115.21.90/31
+hydra-direct	routing-intent					190.115.21.93/32
+hydra-direct	routing-intent					190.115.21.96/31
+hydra-direct	routing-intent					190.115.21.99/32
 hydra-direct	routing-intent					190.115.21.101/32
-hydra-direct	routing-intent					190.115.21.102/31
-hydra-direct	routing-intent					190.115.21.106/32
-hydra-direct	routing-intent					190.115.21.108/30
-hydra-direct	routing-intent					190.115.21.113/32
-hydra-direct	routing-intent					190.115.21.114/31
-hydra-direct	routing-intent					190.115.21.116/30
-hydra-direct	routing-intent					190.115.21.121/32
-hydra-direct	routing-intent					190.115.21.122/31
+hydra-direct	routing-intent					190.115.21.102/32
+hydra-direct	routing-intent					190.115.21.104/30
+hydra-direct	routing-intent					190.115.21.109/32
+hydra-direct	routing-intent					190.115.21.110/31
+hydra-direct	routing-intent					190.115.21.112/30
+hydra-direct	routing-intent					190.115.21.116/31
+hydra-direct	routing-intent					190.115.21.119/32
+hydra-direct	routing-intent					190.115.21.120/30
 hydra-direct	routing-intent					190.115.21.125/32
+hydra-direct	routing-intent					190.115.21.126/32
 hydra-direct	routing-intent					190.115.21.129/32
-hydra-direct	routing-intent					190.115.21.130/32
-hydra-direct	routing-intent					190.115.21.132/31
+hydra-direct	routing-intent					190.115.21.130/31
+hydra-direct	routing-intent					190.115.21.134/31
 hydra-direct	routing-intent					190.115.21.137/32
 hydra-direct	routing-intent					190.115.21.138/31
 hydra-direct	routing-intent					190.115.21.141/32
-hydra-direct	routing-intent					190.115.21.142/31
-hydra-direct	routing-intent					190.115.21.144/30
-hydra-direct	routing-intent					190.115.21.149/32
-hydra-direct	routing-intent					190.115.21.150/32
+hydra-direct	routing-intent					190.115.21.142/32
+hydra-direct	routing-intent					190.115.21.144/32
+hydra-direct	routing-intent					190.115.21.147/32
+hydra-direct	routing-intent					190.115.21.151/32
 hydra-direct	routing-intent					190.115.21.152/32
 hydra-direct	routing-intent					190.115.21.154/31
-hydra-direct	routing-intent					190.115.21.156/32
-hydra-direct	routing-intent					190.115.21.158/31
-hydra-direct	routing-intent					190.115.21.163/32
+hydra-direct	routing-intent					190.115.21.156/30
+hydra-direct	routing-intent					190.115.21.160/31
+hydra-direct	routing-intent					190.115.21.162/32
 hydra-direct	routing-intent					190.115.21.165/32
-hydra-direct	routing-intent					190.115.21.166/31
-hydra-direct	routing-intent					190.115.21.168/32
-hydra-direct	routing-intent					190.115.21.170/32
-hydra-direct	routing-intent					190.115.21.174/32
-hydra-direct	routing-intent					190.115.21.177/32
-hydra-direct	routing-intent					190.115.21.178/32
-hydra-direct	routing-intent					190.115.21.180/32
+hydra-direct	routing-intent					190.115.21.166/32
+hydra-direct	routing-intent					190.115.21.168/30
+hydra-direct	routing-intent					190.115.21.176/32
+hydra-direct	routing-intent					190.115.21.180/31
 hydra-direct	routing-intent					190.115.21.182/32
 hydra-direct	routing-intent					190.115.21.186/32
-hydra-direct	routing-intent					190.115.21.188/31
-hydra-direct	routing-intent					190.115.21.190/32
-hydra-direct	routing-intent					190.115.21.195/32
-hydra-direct	routing-intent					190.115.21.199/32
-hydra-direct	routing-intent					190.115.21.200/32
-hydra-direct	routing-intent					190.115.21.203/32
-hydra-direct	routing-intent					190.115.21.204/32
+hydra-direct	routing-intent					190.115.21.188/32
+hydra-direct	routing-intent					190.115.21.192/32
+hydra-direct	routing-intent					190.115.21.194/32
+hydra-direct	routing-intent					190.115.21.196/30
+hydra-direct	routing-intent					190.115.21.202/31
 hydra-direct	routing-intent					190.115.21.206/31
-hydra-direct	routing-intent					190.115.21.208/31
-hydra-direct	routing-intent					190.115.21.211/32
+hydra-direct	routing-intent					190.115.21.208/30
+hydra-direct	routing-intent					190.115.21.212/32
 hydra-direct	routing-intent					190.115.21.214/31
-hydra-direct	routing-intent					190.115.21.216/32
-hydra-direct	routing-intent					190.115.21.218/31
-hydra-direct	routing-intent					190.115.21.220/31
+hydra-direct	routing-intent					190.115.21.218/32
 hydra-direct	routing-intent					190.115.21.223/32
-hydra-direct	routing-intent					190.115.21.224/32
 hydra-direct	routing-intent					190.115.21.226/31
 hydra-direct	routing-intent					190.115.21.228/31
-hydra-direct	routing-intent					190.115.21.231/32
+hydra-direct	routing-intent					190.115.21.230/32
 hydra-direct	routing-intent					190.115.21.232/31
 hydra-direct	routing-intent					190.115.21.235/32
-hydra-direct	routing-intent					190.115.21.236/31
+hydra-direct	routing-intent					190.115.21.237/32
 hydra-direct	routing-intent					190.115.21.239/32
-hydra-direct	routing-intent					190.115.21.240/32
-hydra-direct	routing-intent					190.115.21.242/31
-hydra-direct	routing-intent					190.115.21.245/32
+hydra-direct	routing-intent					190.115.21.240/30
 hydra-direct	routing-intent					190.115.21.246/31
 hydra-direct	routing-intent					190.115.21.248/31
-hydra-direct	routing-intent					190.115.21.250/32
 hydra-direct	routing-intent					190.115.21.252/31
-hydra-direct	routing-intent					190.115.21.254/32
 hydra-direct	routing-intent					190.115.22.0/29
 hydra-direct	routing-intent					190.115.22.8/30
 hydra-direct	routing-intent					190.115.22.13/32
-hydra-direct	routing-intent					190.115.22.14/31
+hydra-direct	routing-intent					190.115.22.14/32
 hydra-direct	routing-intent					190.115.22.16/31
 hydra-direct	routing-intent					190.115.22.20/30
-hydra-direct	routing-intent					190.115.22.24/32
-hydra-direct	routing-intent					190.115.22.26/31
-hydra-direct	routing-intent					190.115.22.28/30
+hydra-direct	routing-intent					190.115.22.24/29
 hydra-direct	routing-intent					190.115.22.66/32
 hydra-direct	routing-intent					190.115.22.69/32
 hydra-direct	routing-intent					190.115.22.70/31
@@ -174355,6 +174389,7 @@ hydra-direct	routing-intent					190.115.26.216/32
 hydra-direct	routing-intent					190.115.26.218/31
 hydra-direct	routing-intent					190.115.26.220/30
 hydra-direct	routing-intent					190.115.26.224/27
+hydra-direct	routing-intent					190.115.28.6/32
 hydra-direct	routing-intent					190.115.28.16/28
 hydra-direct	routing-intent					190.115.28.32/27
 hydra-direct	routing-intent					190.115.28.64/26
@@ -174375,53 +174410,56 @@ hydra-direct	routing-intent					190.115.30.46/31
 hydra-direct	routing-intent					190.115.30.59/32
 hydra-direct	routing-intent					190.115.30.62/32
 hydra-direct	routing-intent					190.115.30.129/32
-hydra-direct	routing-intent					190.115.30.130/31
-hydra-direct	routing-intent					190.115.30.132/32
-hydra-direct	routing-intent					190.115.30.134/32
+hydra-direct	routing-intent					190.115.30.130/32
+hydra-direct	routing-intent					190.115.30.132/31
+hydra-direct	routing-intent					190.115.30.135/32
 hydra-direct	routing-intent					190.115.30.136/31
-hydra-direct	routing-intent					190.115.30.140/31
+hydra-direct	routing-intent					190.115.30.139/32
+hydra-direct	routing-intent					190.115.30.141/32
 hydra-direct	routing-intent					190.115.30.142/32
+hydra-direct	routing-intent					190.115.30.145/32
+hydra-direct	routing-intent					190.115.30.146/31
 hydra-direct	routing-intent					190.115.30.148/32
-hydra-direct	routing-intent					190.115.30.150/32
 hydra-direct	routing-intent					190.115.30.152/32
-hydra-direct	routing-intent					190.115.30.156/30
-hydra-direct	routing-intent					190.115.30.161/32
-hydra-direct	routing-intent					190.115.30.162/31
-hydra-direct	routing-intent					190.115.30.166/31
+hydra-direct	routing-intent					190.115.30.154/32
+hydra-direct	routing-intent					190.115.30.156/32
+hydra-direct	routing-intent					190.115.30.158/32
+hydra-direct	routing-intent					190.115.30.162/32
+hydra-direct	routing-intent					190.115.30.164/30
+hydra-direct	routing-intent					190.115.30.168/32
 hydra-direct	routing-intent					190.115.30.170/31
-hydra-direct	routing-intent					190.115.30.172/30
+hydra-direct	routing-intent					190.115.30.174/31
 hydra-direct	routing-intent					190.115.30.176/31
 hydra-direct	routing-intent					190.115.30.178/32
 hydra-direct	routing-intent					190.115.30.181/32
-hydra-direct	routing-intent					190.115.30.182/32
-hydra-direct	routing-intent					190.115.30.185/32
-hydra-direct	routing-intent					190.115.30.186/31
+hydra-direct	routing-intent					190.115.30.182/31
+hydra-direct	routing-intent					190.115.30.184/30
 hydra-direct	routing-intent					190.115.30.188/31
 hydra-direct	routing-intent					190.115.30.191/32
 hydra-direct	routing-intent					190.115.30.193/32
-hydra-direct	routing-intent					190.115.30.195/32
-hydra-direct	routing-intent					190.115.30.197/32
-hydra-direct	routing-intent					190.115.30.200/32
+hydra-direct	routing-intent					190.115.30.194/32
+hydra-direct	routing-intent					190.115.30.196/31
+hydra-direct	routing-intent					190.115.30.199/32
 hydra-direct	routing-intent					190.115.30.203/32
-hydra-direct	routing-intent					190.115.30.205/32
+hydra-direct	routing-intent					190.115.30.204/32
 hydra-direct	routing-intent					190.115.30.206/31
 hydra-direct	routing-intent					190.115.30.208/31
+hydra-direct	routing-intent					190.115.30.211/32
 hydra-direct	routing-intent					190.115.30.212/32
 hydra-direct	routing-intent					190.115.30.214/31
 hydra-direct	routing-intent					190.115.30.217/32
-hydra-direct	routing-intent					190.115.30.218/32
-hydra-direct	routing-intent					190.115.30.221/32
-hydra-direct	routing-intent					190.115.30.226/31
-hydra-direct	routing-intent					190.115.30.228/32
-hydra-direct	routing-intent					190.115.30.230/31
-hydra-direct	routing-intent					190.115.30.232/32
-hydra-direct	routing-intent					190.115.30.234/31
-hydra-direct	routing-intent					190.115.30.239/32
-hydra-direct	routing-intent					190.115.30.241/32
+hydra-direct	routing-intent					190.115.30.218/31
+hydra-direct	routing-intent					190.115.30.220/32
+hydra-direct	routing-intent					190.115.30.222/31
+hydra-direct	routing-intent					190.115.30.224/32
+hydra-direct	routing-intent					190.115.30.229/32
+hydra-direct	routing-intent					190.115.30.231/32
+hydra-direct	routing-intent					190.115.30.232/30
+hydra-direct	routing-intent					190.115.30.238/32
 hydra-direct	routing-intent					190.115.30.242/31
-hydra-direct	routing-intent					190.115.30.244/30
-hydra-direct	routing-intent					190.115.30.249/32
-hydra-direct	routing-intent					190.115.30.251/32
+hydra-direct	routing-intent					190.115.30.246/32
+hydra-direct	routing-intent					190.115.30.248/31
+hydra-direct	routing-intent					190.115.30.253/32
 hydra-direct	routing-intent					191.44.32.0/24
 hydra-direct	routing-intent					191.44.34.0/23
 hydra-direct	routing-intent					191.44.37.0/24
@@ -174644,6 +174682,7 @@ hydra-direct	routing-intent					193.16.101.0/24
 hydra-direct	routing-intent					193.16.208.0/23
 hydra-direct	routing-intent					193.16.210.0/24
 hydra-direct	routing-intent					193.16.232.0/24
+hydra-direct	routing-intent					193.17.4.0/24
 hydra-direct	routing-intent					193.17.52.0/24
 hydra-direct	routing-intent					193.17.88.0/23
 hydra-direct	routing-intent					193.17.92.0/23
@@ -175453,6 +175492,7 @@ hydra-direct	routing-intent					193.124.191.72/29
 hydra-direct	routing-intent					193.124.191.80/28
 hydra-direct	routing-intent					193.124.191.96/27
 hydra-direct	routing-intent					193.124.191.128/25
+hydra-direct	routing-intent					193.124.200.0/24
 hydra-direct	routing-intent					193.135.12.0/23
 hydra-direct	routing-intent					193.135.134.0/25
 hydra-direct	routing-intent					193.135.134.128/27
@@ -175823,7 +175863,6 @@ hydra-direct	routing-intent					193.187.174.126/32
 hydra-direct	routing-intent					193.187.174.128/25
 hydra-direct	routing-intent					193.187.175.0/24
 hydra-direct	routing-intent					193.187.192.0/22
-hydra-direct	routing-intent					193.188.21.25/32
 hydra-direct	routing-intent					193.188.21.28/31
 hydra-direct	routing-intent					193.188.21.70/32
 hydra-direct	routing-intent					193.188.21.92/32
@@ -179524,7 +179563,7 @@ hydra-direct	routing-intent					212.193.16.0/23
 hydra-direct	routing-intent					212.193.19.0/24
 hydra-direct	routing-intent					212.193.21.0/24
 hydra-direct	routing-intent					212.193.22.0/24
-hydra-direct	routing-intent					212.193.24.0/24
+hydra-direct	routing-intent					212.193.24.0/23
 hydra-direct	routing-intent					212.193.26.0/25
 hydra-direct	routing-intent					212.193.26.128/26
 hydra-direct	routing-intent					212.193.26.192/32
@@ -179916,20 +179955,17 @@ hydra-direct	routing-intent					213.165.33.68/30
 hydra-direct	routing-intent					213.165.33.137/32
 hydra-direct	routing-intent					213.165.33.149/32
 hydra-direct	routing-intent					213.165.33.160/32
-hydra-direct	routing-intent					213.165.33.177/32
 hydra-direct	routing-intent					213.165.33.251/32
 hydra-direct	routing-intent					213.165.34.70/31
 hydra-direct	routing-intent					213.165.34.91/32
 hydra-direct	routing-intent					213.165.34.127/32
 hydra-direct	routing-intent					213.165.34.185/32
-hydra-direct	routing-intent					213.165.34.249/32
 hydra-direct	routing-intent					213.165.35.26/32
 hydra-direct	routing-intent					213.165.35.37/32
 hydra-direct	routing-intent					213.165.35.41/32
 hydra-direct	routing-intent					213.165.35.63/32
 hydra-direct	routing-intent					213.165.35.68/32
 hydra-direct	routing-intent					213.165.35.79/32
-hydra-direct	routing-intent					213.165.35.96/32
 hydra-direct	routing-intent					213.165.35.109/32
 hydra-direct	routing-intent					213.165.35.111/32
 hydra-direct	routing-intent					213.165.35.182/32
@@ -179968,6 +180004,7 @@ hydra-direct	routing-intent					213.167.192.0/19
 hydra-direct	routing-intent					213.168.32.0/19
 hydra-direct	routing-intent					213.168.128.0/19
 hydra-direct	routing-intent					213.170.64.0/18
+hydra-direct	routing-intent					213.170.192.0/22
 hydra-direct	routing-intent					213.171.0.0/18
 hydra-direct	routing-intent					213.172.0.0/19
 hydra-direct	routing-intent					213.176.19.0/24
@@ -195862,7 +195899,7 @@ rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver excep
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					46.0.0.0/16
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					46.8.0.0/22
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					46.8.4.0/24
-rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					46.8.7.0/24
+rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					46.8.6.0/23
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					46.8.10.0/23
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					46.8.12.0/22
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					46.8.16.0/21
@@ -196063,7 +196100,6 @@ rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver excep
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					46.148.192.0/20
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					46.148.216.0/21
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					46.149.32.0/20
-rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					46.149.64.0/23
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					46.149.99.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					46.149.101.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					46.149.110.0/24
@@ -196345,10 +196381,7 @@ rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver excep
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					62.76.194.0/23
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					62.76.196.0/22
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					62.76.200.0/21
-rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					62.76.208.0/24
-rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					62.76.210.0/23
-rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					62.76.212.0/22
-rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					62.76.216.0/21
+rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					62.76.208.0/20
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					62.76.225.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					62.76.228.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					62.76.246.0/23
@@ -197927,6 +197960,8 @@ rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver excep
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					85.92.116.0/23
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					85.92.118.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					85.92.120.0/22
+rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					85.92.153.0/24
+rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					85.92.154.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					85.93.128.0/19
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					85.94.0.0/22
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					85.94.18.0/23
@@ -199293,7 +199328,7 @@ rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver excep
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					91.210.216.0/22
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					91.210.228.0/22
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					91.211.4.0/22
-rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					91.211.16.0/21
+rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					91.211.20.0/22
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					91.211.26.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					91.211.28.0/22
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					91.211.36.0/22
@@ -199518,7 +199553,6 @@ rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver excep
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					91.220.76.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					91.220.80.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					91.220.87.0/24
-rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					91.220.93.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					91.220.112.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					91.220.120.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					91.220.124.0/24
@@ -200457,7 +200491,9 @@ rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver excep
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					93.170.5.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					93.170.7.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					93.170.9.0/24
+rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					93.170.12.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					93.170.14.0/24
+rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					93.170.24.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					93.170.27.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					93.170.28.0/22
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					93.170.32.0/23
@@ -202559,9 +202595,15 @@ rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver excep
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					177.28.7.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					177.29.246.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					177.29.249.0/24
+rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					177.29.252.0/23
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					177.111.60.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					177.122.107.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					177.122.160.0/24
+rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					177.122.229.0/24
+rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					177.122.241.0/24
+rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					177.166.21.0/24
+rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					177.166.74.0/24
+rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					177.166.78.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					177.177.212.0/23
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					177.177.215.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					177.177.219.0/24
@@ -203295,6 +203337,7 @@ rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver excep
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					185.50.150.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					185.51.21.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					185.51.124.0/22
+rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					185.51.140.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					185.51.142.0/23
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					185.51.156.0/22
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					185.51.208.0/22
@@ -205018,6 +205061,7 @@ rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver excep
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					193.105.126.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					193.105.129.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					193.105.131.0/24
+rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					193.105.156.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					193.105.169.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					193.105.174.0/23
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					193.105.198.0/24
@@ -205750,8 +205794,11 @@ rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver excep
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					194.85.183.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					194.85.184.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					194.85.192.0/20
-rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					194.85.208.0/21
-rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					194.85.216.0/22
+rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					194.85.208.0/22
+rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					194.85.212.0/23
+rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					194.85.214.0/24
+rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					194.85.217.0/24
+rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					194.85.218.0/23
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					194.85.220.0/23
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					194.85.222.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					194.85.224.0/20
@@ -206117,7 +206164,6 @@ rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver excep
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					195.8.56.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					195.10.193.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					195.10.198.0/24
-rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					195.10.205.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					195.10.214.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					195.12.64.0/19
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					195.12.105.0/24
@@ -207114,7 +207160,6 @@ rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver excep
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					212.193.8.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					212.193.10.0/23
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					212.193.14.0/23
-rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					212.193.25.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					212.193.31.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					212.193.32.0/21
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					212.193.44.0/23
@@ -207247,7 +207292,10 @@ rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver excep
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					213.135.72.0/22
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					213.135.76.0/23
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					213.135.78.0/24
-rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					213.135.80.0/20
+rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					213.135.81.0/24
+rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					213.135.82.0/23
+rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					213.135.84.0/22
+rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					213.135.88.0/21
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					213.135.128.0/21
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					213.135.140.0/22
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					213.135.144.0/22
@@ -207515,7 +207563,7 @@ rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver excep
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					217.60.67.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					217.60.71.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					217.60.186.0/24
-rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					217.60.200.0/23
+rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					217.60.200.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					217.60.203.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					217.60.236.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					217.60.240.0/24
@@ -208521,6 +208569,7 @@ rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver excep
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a04:8240::/29
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a04:8580:ffff::/48
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a04:8581::/32
+rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a04:8582:fffe::/47
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a04:8f00::/29
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a04:9b40::/32
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a04:ac00::/47
@@ -208805,7 +208854,7 @@ rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver excep
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a0b:4e07:a60::/44
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a0b:4e07:6300::/47
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a0b:4e07:6310::/48
-rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a0b:4e07:63f1::/48
+rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a0b:4e07:63f0::/47
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a0b:4e07:63ff::/48
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a0b:5d40::/29
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a0b:6900::/48
@@ -209436,6 +209485,7 @@ verified-service-exact-hosts	Literal service host (resolver protection only)				
 verified-service-exact-hosts	Literal service host (resolver protection only)					31.31.199.181/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					31.129.52.194/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					31.130.149.151/32
+verified-service-exact-hosts	Literal service host (resolver protection only)					31.135.66.5/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					31.186.102.100/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					37.9.64.225/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					37.9.112.5/32
@@ -209448,12 +209498,12 @@ verified-service-exact-hosts	Literal service host (resolver protection only)				
 verified-service-exact-hosts	Literal service host (resolver protection only)					37.220.161.51/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					37.220.161.64/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					37.220.161.117/32
-verified-service-exact-hosts	Literal service host (resolver protection only)					37.220.161.124/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					37.220.161.127/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					37.220.161.129/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					37.220.161.200/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					37.220.161.212/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					37.220.161.219/32
+verified-service-exact-hosts	Literal service host (resolver protection only)					37.220.161.222/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					37.220.161.251/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					37.220.162.231/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					37.220.162.232/32
@@ -209474,6 +209524,7 @@ verified-service-exact-hosts	Literal service host (resolver protection only)				
 verified-service-exact-hosts	Literal service host (resolver protection only)					45.12.124.237/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					45.130.41.212/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					45.134.125.71/32
+verified-service-exact-hosts	Literal service host (resolver protection only)					45.141.102.99/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					45.145.188.166/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					45.155.92.19/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					45.155.105.30/32
@@ -209491,8 +209542,8 @@ verified-service-exact-hosts	Literal service host (resolver protection only)				
 verified-service-exact-hosts	Literal service host (resolver protection only)					46.235.184.68/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					46.235.184.84/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					46.235.184.89/32
-verified-service-exact-hosts	Literal service host (resolver protection only)					46.235.184.152/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					46.235.184.195/32
+verified-service-exact-hosts	Literal service host (resolver protection only)					46.235.184.197/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					46.235.184.211/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					46.235.185.73/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					46.235.185.169/32
@@ -209506,10 +209557,11 @@ verified-service-exact-hosts	Literal service host (resolver protection only)				
 verified-service-exact-hosts	Literal service host (resolver protection only)					46.235.188.94/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					46.235.188.129/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					46.235.188.133/32
-verified-service-exact-hosts	Literal service host (resolver protection only)					46.235.188.152/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					46.235.188.171/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					46.235.188.172/32
-verified-service-exact-hosts	Literal service host (resolver protection only)					46.235.189.44/32
+verified-service-exact-hosts	Literal service host (resolver protection only)					46.235.188.251/32
+verified-service-exact-hosts	Literal service host (resolver protection only)					46.235.189.7/32
+verified-service-exact-hosts	Literal service host (resolver protection only)					46.235.189.64/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					46.235.189.201/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					46.243.227.60/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					51.250.15.93/32
@@ -209563,6 +209615,7 @@ verified-service-exact-hosts	Literal service host (resolver protection only)				
 verified-service-exact-hosts	Literal service host (resolver protection only)					78.41.110.238/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					78.41.111.11/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					78.41.111.34/32
+verified-service-exact-hosts	Literal service host (resolver protection only)					78.41.111.72/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					78.41.111.154/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					78.41.111.199/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					78.41.111.224/32
@@ -209636,6 +209689,7 @@ verified-service-exact-hosts	Literal service host (resolver protection only)				
 verified-service-exact-hosts	Literal service host (resolver protection only)					84.252.147.184/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					84.252.150.82/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					84.252.150.155/32
+verified-service-exact-hosts	Literal service host (resolver protection only)					85.21.78.91/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					85.118.181.3/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					85.118.181.8/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					85.118.181.24/32
@@ -209644,7 +209698,6 @@ verified-service-exact-hosts	Literal service host (resolver protection only)				
 verified-service-exact-hosts	Literal service host (resolver protection only)					85.142.19.97/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					85.142.19.98/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					85.142.19.102/32
-verified-service-exact-hosts	Literal service host (resolver protection only)					85.142.172.104/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					85.143.112.110/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					85.193.70.155/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					85.193.70.213/32
@@ -209654,13 +209707,12 @@ verified-service-exact-hosts	Literal service host (resolver protection only)				
 verified-service-exact-hosts	Literal service host (resolver protection only)					85.209.149.83/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					85.233.75.14/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					86.109.210.185/32
+verified-service-exact-hosts	Literal service host (resolver protection only)					87.103.245.205/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					87.226.155.117/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					87.226.162.216/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					87.226.166.137/32
-verified-service-exact-hosts	Literal service host (resolver protection only)					87.226.252.75/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					87.228.12.190/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					87.249.32.214/32
-verified-service-exact-hosts	Literal service host (resolver protection only)					87.249.44.53/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					87.250.247.181/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					87.250.250.8/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					87.250.250.109/32
@@ -209693,8 +209745,8 @@ verified-service-exact-hosts	Literal service host (resolver protection only)				
 verified-service-exact-hosts	Literal service host (resolver protection only)					89.104.87.124/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					89.108.122.195/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					89.108.124.30/32
-verified-service-exact-hosts	Literal service host (resolver protection only)					89.109.251.19/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					89.175.190.152/32
+verified-service-exact-hosts	Literal service host (resolver protection only)					89.179.240.219/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					89.208.226.45/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					89.208.226.50/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					89.221.236.13/32
@@ -209724,6 +209776,7 @@ verified-service-exact-hosts	Literal service host (resolver protection only)				
 verified-service-exact-hosts	Literal service host (resolver protection only)					91.200.28.169/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					91.201.237.94/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					91.205.183.83/32
+verified-service-exact-hosts	Literal service host (resolver protection only)					91.206.16.3/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					91.206.100.17/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					91.206.127.19/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					91.206.127.24/32
@@ -209732,7 +209785,7 @@ verified-service-exact-hosts	Literal service host (resolver protection only)				
 verified-service-exact-hosts	Literal service host (resolver protection only)					91.206.127.197/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					91.206.127.224/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					91.206.127.236/32
-verified-service-exact-hosts	Literal service host (resolver protection only)					91.207.136.55/32
+verified-service-exact-hosts	Literal service host (resolver protection only)					91.207.59.163/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					91.213.144.109/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					91.213.144.193/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					91.213.144.237/32
@@ -209763,7 +209816,6 @@ verified-service-exact-hosts	Literal service host (resolver protection only)				
 verified-service-exact-hosts	Literal service host (resolver protection only)					91.221.165.177/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					91.222.128.11/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					91.222.130.250/32
-verified-service-exact-hosts	Literal service host (resolver protection only)					91.224.234.189/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					91.227.52.111/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					91.227.52.169/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					91.232.6.132/32
@@ -209782,23 +209834,20 @@ verified-service-exact-hosts	Literal service host (resolver protection only)				
 verified-service-exact-hosts	Literal service host (resolver protection only)					92.53.68.16/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					92.53.96.144/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					92.53.96.195/32
-verified-service-exact-hosts	Literal service host (resolver protection only)					92.241.18.6/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					92.241.18.100/32
-verified-service-exact-hosts	Literal service host (resolver protection only)					92.255.126.3/32
+verified-service-exact-hosts	Literal service host (resolver protection only)					92.255.126.11/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					93.77.162.59/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					93.88.179.201/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					93.91.8.37/32
-verified-service-exact-hosts	Literal service host (resolver protection only)					93.93.88.21/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					93.93.89.38/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					93.93.89.134/32
-verified-service-exact-hosts	Literal service host (resolver protection only)					93.93.89.154/32
+verified-service-exact-hosts	Literal service host (resolver protection only)					93.93.89.138/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					93.93.89.173/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					93.93.89.201/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					93.93.91.63/32
+verified-service-exact-hosts	Literal service host (resolver protection only)					93.93.91.88/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					93.93.91.103/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					93.93.91.107/32
-verified-service-exact-hosts	Literal service host (resolver protection only)					93.93.91.201/32
-verified-service-exact-hosts	Literal service host (resolver protection only)					93.95.100.85/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					93.95.101.202/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					93.158.134.102/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					93.158.134.144/32
@@ -209814,8 +209863,8 @@ verified-service-exact-hosts	Literal service host (resolver protection only)				
 verified-service-exact-hosts	Literal service host (resolver protection only)					94.79.19.57/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					94.79.51.14/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					94.79.51.135/32
-verified-service-exact-hosts	Literal service host (resolver protection only)					94.79.51.170/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					94.79.51.186/32
+verified-service-exact-hosts	Literal service host (resolver protection only)					94.100.180.133/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					94.100.180.215/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					94.100.180.216/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					94.139.253.227/32
@@ -209841,10 +209890,9 @@ verified-service-exact-hosts	Literal service host (resolver protection only)				
 verified-service-exact-hosts	Literal service host (resolver protection only)					95.163.52.80/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					95.163.56.199/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					95.163.58.189/32
-verified-service-exact-hosts	Literal service host (resolver protection only)					95.163.58.202/32
-verified-service-exact-hosts	Literal service host (resolver protection only)					95.163.58.211/32
-verified-service-exact-hosts	Literal service host (resolver protection only)					95.163.58.212/32
-verified-service-exact-hosts	Literal service host (resolver protection only)					95.163.58.216/32
+verified-service-exact-hosts	Literal service host (resolver protection only)					95.163.58.196/32
+verified-service-exact-hosts	Literal service host (resolver protection only)					95.163.58.210/32
+verified-service-exact-hosts	Literal service host (resolver protection only)					95.163.58.214/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					95.163.60.61/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					95.163.61.6/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					95.163.61.31/32
@@ -209861,10 +209909,12 @@ verified-service-exact-hosts	Literal service host (resolver protection only)				
 verified-service-exact-hosts	Literal service host (resolver protection only)					95.163.227.216/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					95.163.239.81/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					95.163.244.135/32
+verified-service-exact-hosts	Literal service host (resolver protection only)					95.165.169.188/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					95.167.23.5/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					95.167.154.115/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					95.167.220.237/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					95.167.245.92/32
+verified-service-exact-hosts	Literal service host (resolver protection only)					95.167.245.141/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					95.181.177.3/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					95.181.177.60/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					95.181.177.99/32
@@ -209908,6 +209958,7 @@ verified-service-exact-hosts	Literal service host (resolver protection only)				
 verified-service-exact-hosts	Literal service host (resolver protection only)					132.243.178.72/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					135.106.158.74/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					135.106.182.253/32
+verified-service-exact-hosts	Literal service host (resolver protection only)					135.106.198.94/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					136.234.78.64/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					138.16.200.202/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					138.16.200.226/32
@@ -210188,7 +210239,6 @@ verified-service-exact-hosts	Literal service host (resolver protection only)				
 verified-service-exact-hosts	Literal service host (resolver protection only)					193.28.44.8/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					193.32.60.27/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					193.37.157.43/32
-verified-service-exact-hosts	Literal service host (resolver protection only)					193.106.93.117/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					193.138.148.52/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					193.162.30.87/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					193.164.146.24/32
@@ -210206,6 +210256,7 @@ verified-service-exact-hosts	Literal service host (resolver protection only)				
 verified-service-exact-hosts	Literal service host (resolver protection only)					194.54.148.189/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					194.54.177.229/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					194.58.112.174/32
+verified-service-exact-hosts	Literal service host (resolver protection only)					194.67.71.58/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					194.67.71.106/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					194.67.71.193/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					194.67.72.31/32
@@ -210253,7 +210304,6 @@ verified-service-exact-hosts	Literal service host (resolver protection only)				
 verified-service-exact-hosts	Literal service host (resolver protection only)					195.208.187.27/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					195.208.245.190/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					195.209.52.65/32
-verified-service-exact-hosts	Literal service host (resolver protection only)					195.209.66.33/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					195.209.66.53/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					195.209.66.182/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					195.209.81.113/32
@@ -210261,6 +210311,7 @@ verified-service-exact-hosts	Literal service host (resolver protection only)				
 verified-service-exact-hosts	Literal service host (resolver protection only)					195.209.81.149/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					195.209.81.215/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					195.209.82.71/32
+verified-service-exact-hosts	Literal service host (resolver protection only)					195.209.82.84/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					195.209.82.129/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					195.209.82.227/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					195.209.82.243/32
@@ -210281,7 +210332,6 @@ verified-service-exact-hosts	Literal service host (resolver protection only)				
 verified-service-exact-hosts	Literal service host (resolver protection only)					195.242.83.14/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					195.245.206.101/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					195.246.218.77/32
-verified-service-exact-hosts	Literal service host (resolver protection only)					212.6.3.73/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					212.11.151.57/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					212.11.155.134/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					212.11.155.165/32
@@ -210325,9 +210375,13 @@ verified-service-exact-hosts	Literal service host (resolver protection only)				
 verified-service-exact-hosts	Literal service host (resolver protection only)					212.193.146.120/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					212.193.146.140/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					212.193.146.142/32
+verified-service-exact-hosts	Literal service host (resolver protection only)					212.193.146.157/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					212.193.146.235/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					212.193.147.29/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					212.193.147.121/32
+verified-service-exact-hosts	Literal service host (resolver protection only)					212.193.147.201/32
+verified-service-exact-hosts	Literal service host (resolver protection only)					212.193.147.203/32
+verified-service-exact-hosts	Literal service host (resolver protection only)					212.193.147.211/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					212.193.147.238/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					212.193.152.39/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					212.193.152.77/32
@@ -210337,10 +210391,11 @@ verified-service-exact-hosts	Literal service host (resolver protection only)				
 verified-service-exact-hosts	Literal service host (resolver protection only)					212.193.152.137/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					212.193.152.147/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					212.193.152.165/32
+verified-service-exact-hosts	Literal service host (resolver protection only)					212.193.152.230/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					212.193.152.252/32
+verified-service-exact-hosts	Literal service host (resolver protection only)					212.193.153.0/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					212.193.153.14/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					212.193.153.24/32
-verified-service-exact-hosts	Literal service host (resolver protection only)					212.193.153.35/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					212.193.153.124/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					212.193.153.131/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					212.193.153.133/32
@@ -210353,8 +210408,6 @@ verified-service-exact-hosts	Literal service host (resolver protection only)				
 verified-service-exact-hosts	Literal service host (resolver protection only)					212.193.157.40/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					212.193.157.64/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					212.193.157.88/32
-verified-service-exact-hosts	Literal service host (resolver protection only)					212.193.157.127/32
-verified-service-exact-hosts	Literal service host (resolver protection only)					212.193.157.189/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					212.193.157.209/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					212.193.157.252/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					212.233.121.96/32
@@ -210558,6 +210611,7 @@ verified-service-resolver-protected	Verified service resolver protection					31.
 verified-service-resolver-protected	Verified service resolver protection					31.130.149.151/32
 verified-service-resolver-protected	Verified service resolver protection					31.132.32.0/23
 verified-service-resolver-protected	Verified service resolver protection					31.132.34.0/24
+verified-service-resolver-protected	Verified service resolver protection					31.135.66.5/32
 verified-service-resolver-protected	Verified service resolver protection					31.177.104.0/22
 verified-service-resolver-protected	Verified service resolver protection					31.184.215.0/24
 verified-service-resolver-protected	Verified service resolver protection					31.184.228.0/23
@@ -210589,6 +210643,7 @@ verified-service-resolver-protected	Verified service resolver protection					45.
 verified-service-resolver-protected	Verified service resolver protection					45.130.41.212/32
 verified-service-resolver-protected	Verified service resolver protection					45.134.125.71/32
 verified-service-resolver-protected	Verified service resolver protection					45.136.20.0/22
+verified-service-resolver-protected	Verified service resolver protection					45.141.102.99/32
 verified-service-resolver-protected	Verified service resolver protection					45.145.188.166/32
 verified-service-resolver-protected	Verified service resolver protection					45.155.92.19/32
 verified-service-resolver-protected	Verified service resolver protection					45.155.105.30/32
@@ -210760,6 +210815,7 @@ verified-service-resolver-protected	Verified service resolver protection					84.
 verified-service-resolver-protected	Verified service resolver protection					84.252.150.0/23
 verified-service-resolver-protected	Verified service resolver protection					84.252.152.0/24
 verified-service-resolver-protected	Verified service resolver protection					84.252.160.0/19
+verified-service-resolver-protected	Verified service resolver protection					85.21.78.91/32
 verified-service-resolver-protected	Verified service resolver protection					85.118.181.3/32
 verified-service-resolver-protected	Verified service resolver protection					85.118.181.8/32
 verified-service-resolver-protected	Verified service resolver protection					85.118.181.24/32
@@ -210769,7 +210825,6 @@ verified-service-resolver-protected	Verified service resolver protection					85.
 verified-service-resolver-protected	Verified service resolver protection					85.142.19.98/32
 verified-service-resolver-protected	Verified service resolver protection					85.142.19.102/32
 verified-service-resolver-protected	Verified service resolver protection					85.142.115.0/24
-verified-service-resolver-protected	Verified service resolver protection					85.142.172.104/32
 verified-service-resolver-protected	Verified service resolver protection					85.143.112.110/32
 verified-service-resolver-protected	Verified service resolver protection					85.158.185.0/24
 verified-service-resolver-protected	Verified service resolver protection					85.192.32.0/22
@@ -210784,10 +210839,10 @@ verified-service-resolver-protected	Verified service resolver protection					85.
 verified-service-resolver-protected	Verified service resolver protection					85.209.149.83/32
 verified-service-resolver-protected	Verified service resolver protection					85.233.75.14/32
 verified-service-resolver-protected	Verified service resolver protection					86.109.210.185/32
+verified-service-resolver-protected	Verified service resolver protection					87.103.245.205/32
 verified-service-resolver-protected	Verified service resolver protection					87.226.155.117/32
 verified-service-resolver-protected	Verified service resolver protection					87.226.162.216/32
 verified-service-resolver-protected	Verified service resolver protection					87.226.166.137/32
-verified-service-resolver-protected	Verified service resolver protection					87.226.252.75/32
 verified-service-resolver-protected	Verified service resolver protection					87.228.12.190/32
 verified-service-resolver-protected	Verified service resolver protection					87.228.101.0/24
 verified-service-resolver-protected	Verified service resolver protection					87.239.104.0/21
@@ -210795,7 +210850,6 @@ verified-service-resolver-protected	Verified service resolver protection					87.
 verified-service-resolver-protected	Verified service resolver protection					87.242.112.0/22
 verified-service-resolver-protected	Verified service resolver protection					87.245.154.0/24
 verified-service-resolver-protected	Verified service resolver protection					87.249.32.214/32
-verified-service-resolver-protected	Verified service resolver protection					87.249.44.53/32
 verified-service-resolver-protected	Verified service resolver protection					87.250.224.0/19
 verified-service-resolver-protected	Verified service resolver protection					87.251.65.0/24
 verified-service-resolver-protected	Verified service resolver protection					87.251.92.0/23
@@ -210806,10 +210860,10 @@ verified-service-resolver-protected	Verified service resolver protection					89.
 verified-service-resolver-protected	Verified service resolver protection					89.104.112.0/23
 verified-service-resolver-protected	Verified service resolver protection					89.108.122.195/32
 verified-service-resolver-protected	Verified service resolver protection					89.108.124.30/32
-verified-service-resolver-protected	Verified service resolver protection					89.109.251.19/32
 verified-service-resolver-protected	Verified service resolver protection					89.169.90.10/31
 verified-service-resolver-protected	Verified service resolver protection					89.169.128.0/18
 verified-service-resolver-protected	Verified service resolver protection					89.175.190.152/32
+verified-service-resolver-protected	Verified service resolver protection					89.179.240.219/32
 verified-service-resolver-protected	Verified service resolver protection					89.208.84.0/22
 verified-service-resolver-protected	Verified service resolver protection					89.208.196.0/22
 verified-service-resolver-protected	Verified service resolver protection					89.208.208.0/22
@@ -210848,9 +210902,10 @@ verified-service-resolver-protected	Verified service resolver protection					91.
 verified-service-resolver-protected	Verified service resolver protection					91.201.237.94/32
 verified-service-resolver-protected	Verified service resolver protection					91.203.225.0/24
 verified-service-resolver-protected	Verified service resolver protection					91.205.183.83/32
+verified-service-resolver-protected	Verified service resolver protection					91.206.16.3/32
 verified-service-resolver-protected	Verified service resolver protection					91.206.100.0/23
 verified-service-resolver-protected	Verified service resolver protection					91.206.127.0/24
-verified-service-resolver-protected	Verified service resolver protection					91.207.136.55/32
+verified-service-resolver-protected	Verified service resolver protection					91.207.59.163/32
 verified-service-resolver-protected	Verified service resolver protection					91.208.248.0/24
 verified-service-resolver-protected	Verified service resolver protection					91.209.76.0/24
 verified-service-resolver-protected	Verified service resolver protection					91.212.64.0/24
@@ -210889,7 +210944,6 @@ verified-service-resolver-protected	Verified service resolver protection					91.
 verified-service-resolver-protected	Verified service resolver protection					91.222.130.250/32
 verified-service-resolver-protected	Verified service resolver protection					91.223.63.0/24
 verified-service-resolver-protected	Verified service resolver protection					91.223.93.0/24
-verified-service-resolver-protected	Verified service resolver protection					91.224.234.189/32
 verified-service-resolver-protected	Verified service resolver protection					91.227.52.111/32
 verified-service-resolver-protected	Verified service resolver protection					91.227.52.169/32
 verified-service-resolver-protected	Verified service resolver protection					91.227.91.0/24
@@ -210917,7 +210971,6 @@ verified-service-resolver-protected	Verified service resolver protection					92.
 verified-service-resolver-protected	Verified service resolver protection					92.53.68.16/32
 verified-service-resolver-protected	Verified service resolver protection					92.53.96.144/32
 verified-service-resolver-protected	Verified service resolver protection					92.53.96.195/32
-verified-service-resolver-protected	Verified service resolver protection					92.241.18.6/32
 verified-service-resolver-protected	Verified service resolver protection					92.241.18.100/32
 verified-service-resolver-protected	Verified service resolver protection					92.255.1.0/24
 verified-service-resolver-protected	Verified service resolver protection					92.255.3.0/24
@@ -210930,7 +210983,6 @@ verified-service-resolver-protected	Verified service resolver protection					93.
 verified-service-resolver-protected	Verified service resolver protection					93.92.113.0/24
 verified-service-resolver-protected	Verified service resolver protection					93.93.88.0/23
 verified-service-resolver-protected	Verified service resolver protection					93.93.91.0/24
-verified-service-resolver-protected	Verified service resolver protection					93.95.100.85/32
 verified-service-resolver-protected	Verified service resolver protection					93.95.101.202/32
 verified-service-resolver-protected	Verified service resolver protection					93.158.128.0/18
 verified-service-resolver-protected	Verified service resolver protection					93.183.78.37/32
@@ -210986,11 +211038,13 @@ verified-service-resolver-protected	Verified service resolver protection					95.
 verified-service-resolver-protected	Verified service resolver protection					95.163.239.81/32
 verified-service-resolver-protected	Verified service resolver protection					95.163.244.135/32
 verified-service-resolver-protected	Verified service resolver protection					95.163.248.0/21
+verified-service-resolver-protected	Verified service resolver protection					95.165.169.188/32
 verified-service-resolver-protected	Verified service resolver protection					95.167.23.5/32
 verified-service-resolver-protected	Verified service resolver protection					95.167.23.6/31
 verified-service-resolver-protected	Verified service resolver protection					95.167.154.115/32
 verified-service-resolver-protected	Verified service resolver protection					95.167.220.237/32
 verified-service-resolver-protected	Verified service resolver protection					95.167.245.92/32
+verified-service-resolver-protected	Verified service resolver protection					95.167.245.141/32
 verified-service-resolver-protected	Verified service resolver protection					95.173.128.0/21
 verified-service-resolver-protected	Verified service resolver protection					95.173.136.0/23
 verified-service-resolver-protected	Verified service resolver protection					95.173.138.0/24
@@ -211030,6 +211084,7 @@ verified-service-resolver-protected	Verified service resolver protection					130
 verified-service-resolver-protected	Verified service resolver protection					132.243.178.72/32
 verified-service-resolver-protected	Verified service resolver protection					135.106.158.74/32
 verified-service-resolver-protected	Verified service resolver protection					135.106.182.253/32
+verified-service-resolver-protected	Verified service resolver protection					135.106.198.94/32
 verified-service-resolver-protected	Verified service resolver protection					136.234.78.64/32
 verified-service-resolver-protected	Verified service resolver protection					138.16.192.0/20
 verified-service-resolver-protected	Verified service resolver protection					138.16.240.0/20
@@ -211259,7 +211314,6 @@ verified-service-resolver-protected	Verified service resolver protection					193
 verified-service-resolver-protected	Verified service resolver protection					193.37.157.43/32
 verified-service-resolver-protected	Verified service resolver protection					193.104.70.0/24
 verified-service-resolver-protected	Verified service resolver protection					193.104.207.0/24
-verified-service-resolver-protected	Verified service resolver protection					193.106.93.117/32
 verified-service-resolver-protected	Verified service resolver protection					193.138.148.52/32
 verified-service-resolver-protected	Verified service resolver protection					193.143.119.0/24
 verified-service-resolver-protected	Verified service resolver protection					193.162.30.0/24
@@ -211286,6 +211340,7 @@ verified-service-resolver-protected	Verified service resolver protection					194
 verified-service-resolver-protected	Verified service resolver protection					194.54.148.189/32
 verified-service-resolver-protected	Verified service resolver protection					194.54.177.229/32
 verified-service-resolver-protected	Verified service resolver protection					194.58.112.174/32
+verified-service-resolver-protected	Verified service resolver protection					194.67.71.58/32
 verified-service-resolver-protected	Verified service resolver protection					194.67.71.106/32
 verified-service-resolver-protected	Verified service resolver protection					194.67.71.193/32
 verified-service-resolver-protected	Verified service resolver protection					194.67.72.31/32
@@ -211376,7 +211431,6 @@ verified-service-resolver-protected	Verified service resolver protection					195
 verified-service-resolver-protected	Verified service resolver protection					195.246.218.77/32
 verified-service-resolver-protected	Verified service resolver protection					195.246.246.0/24
 verified-service-resolver-protected	Verified service resolver protection					195.248.69.0/24
-verified-service-resolver-protected	Verified service resolver protection					212.6.3.73/32
 verified-service-resolver-protected	Verified service resolver protection					212.11.128.0/22
 verified-service-resolver-protected	Verified service resolver protection					212.11.138.0/23
 verified-service-resolver-protected	Verified service resolver protection					212.11.141.0/24
@@ -211429,10 +211483,14 @@ verified-service-resolver-protected	Verified service resolver protection					212
 verified-service-resolver-protected	Verified service resolver protection					212.193.146.120/32
 verified-service-resolver-protected	Verified service resolver protection					212.193.146.140/32
 verified-service-resolver-protected	Verified service resolver protection					212.193.146.142/32
+verified-service-resolver-protected	Verified service resolver protection					212.193.146.157/32
 verified-service-resolver-protected	Verified service resolver protection					212.193.146.235/32
 verified-service-resolver-protected	Verified service resolver protection					212.193.147.29/32
 verified-service-resolver-protected	Verified service resolver protection					212.193.147.121/32
 verified-service-resolver-protected	Verified service resolver protection					212.193.147.144/31
+verified-service-resolver-protected	Verified service resolver protection					212.193.147.201/32
+verified-service-resolver-protected	Verified service resolver protection					212.193.147.203/32
+verified-service-resolver-protected	Verified service resolver protection					212.193.147.211/32
 verified-service-resolver-protected	Verified service resolver protection					212.193.147.238/32
 verified-service-resolver-protected	Verified service resolver protection					212.193.152.0/23
 verified-service-resolver-protected	Verified service resolver protection					212.193.155.0/24

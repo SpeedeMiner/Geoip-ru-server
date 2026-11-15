@@ -1,9 +1,9 @@
 {
   "schema": 2,
-  "generated_at": "2026-11-14T16:49:04.099778+00:00",
-  "base_v37_sha256": "dcd5be9abd55c1e09eb7427af4ec7f6b99073b7b77a28d77041336a8c87281b7",
-  "output_sha256": "5d7e9dd0eb66bd507eb5f695b83441493fb20b2307ef71125de16c8b3809fa7d",
-  "output_bytes": 512067,
+  "generated_at": "2026-11-15T11:31:46.891807+00:00",
+  "base_v37_sha256": "3b196ba746ee67f9b993337e2725887f130a280e4e76e53cb57448bf94d1eb8a",
+  "output_sha256": "93f6a3a5ac2551a681e7067df735a6c13c9ebbe7cc50e6d30e4a722dac64e46d",
+  "output_bytes": 512273,
   "sources": {
     "kyoresuas-standard": {
       "repository": "kyoresuas/ru-direct",
@@ -37,7 +37,7 @@
       "license": "MIT"
     }
   },
-  "input_provenance_sha256": "70f36f88245869e694bf08588b1a51ad58f0cf2773a079717c1f782fa743d335",
+  "input_provenance_sha256": "e6d364774759842b12a48cb4e483adce1d68b8ae33851597565d21d23a4389ae",
   "telegram_official": {
     "cidrs": 14,
     "input_sha256": "3ecd072cedf72eceee6961b18a51e37f905d5ce4a656a5d24cf5fea63e6ec651"
@@ -150,19 +150,19 @@
         "kyoresuas-services.json"
       ],
       "service_count": 90,
-      "services_generated_at": "2026-11-14T09:44:40.134Z",
+      "services_generated_at": "2026-11-15T10:17:35.919Z",
       "service_json_prefixes": 997,
-      "aggregate_feed_prefixes": 707,
-      "aggregate_only_prefixes": 9,
-      "ipv4_raw_rows": 633,
+      "aggregate_feed_prefixes": 706,
+      "aggregate_only_prefixes": 11,
+      "ipv4_raw_rows": 632,
       "ipv6_raw_rows": 74
     },
     "w1zardz-service-direct": {
       "raw_files": [
         "w1zardz-ru-ipv4.txt"
       ],
-      "raw_rows": 949,
-      "valid_rows": 949,
+      "raw_rows": 955,
+      "valid_rows": 955,
       "invalid_rows": 0
     },
     "operator-whitelist": {
@@ -177,7 +177,7 @@
       "raw_files": [
         "hydra-geoip.dat"
       ],
-      "valid_rows": 37236
+      "valid_rows": 37267
     },
     "hydra-whitelist": {
       "raw_files": [
@@ -201,16 +201,16 @@
       "invalid_rows": 0
     },
     "rir-rukzby-selected-origin-protected": {
-      "raw_rows": 23603,
-      "valid_rows": 23603,
+      "raw_rows": 23611,
+      "valid_rows": 23611,
       "invalid_rows": 0
     },
     "verified-service-exact-hosts": {
-      "valid_rows": 1114,
+      "valid_rows": 1118,
       "invalid_rows": 0
     },
     "verified-service-resolver-protected": {
-      "valid_rows": 1081,
+      "valid_rows": 1086,
       "invalid_rows": 0
     },
     "reviewed-operator-prefixes": {
@@ -233,20 +233,20 @@
       "invalid_rows": 0,
       "unique_cidrs": 141664,
       "direct_overlap": {
-        "ipv4": 18965,
+        "ipv4": 18967,
         "ipv6": 0
       }
     }
   },
   "hydra_routing_intent": {
-    "direct_cidrs": 37236,
+    "direct_cidrs": 37267,
     "whitelist_cidrs": 6710,
     "combined_eligible_address_space": {
-      "ipv4": 49148743,
+      "ipv4": 49155822,
       "ipv6": 2847563117644718645949551869952
     },
     "precedence": "PRIVATE > effective v41 blocked set > Hydra DIRECT/WHITELIST",
-    "input_sha256": "8ff1c909905e6fc7ec38e821c7c55ccd71660f9f796d21a9c5a0e1fb9184eecf"
+    "input_sha256": "c0c56874ee8c8859c94d5ecc7dd509ff683630315287bb1c88789f4968d593d8"
   },
   "corporate_company_asn_prefixes": {
     "unique_prefixes": 3378,
@@ -259,7 +259,7 @@
       "valid_rows": 3378,
       "invalid_rows": 0
     },
-    "input_sha256": "5cb0722a57cef47399fdd02a2a90663d5c332574d11d51d23be0da1bdd67ef0b"
+    "input_sha256": "2d646808111f305e131c8afd58207252b0d5ed8f488bc133e8bfce53b7cf64dd"
   },
   "corporate_core_prefixes": {
     "unique_prefixes": 283,
@@ -272,27 +272,27 @@
       "valid_rows": 283,
       "invalid_rows": 0
     },
-    "input_sha256": "0bfa8f824e1129afe0f1640a90f2ea528e38f2975d1bc984f27a646c438133e9"
+    "input_sha256": "67bc8f005a44e7dca8cdeadd570e9bf6e9ecf3ae44eedf16bb6b8d82339afbba"
   },
   "regional_origin_prefixes": {
-    "unique_prefixes": 14867,
-    "selected_origin_input_sha256": "bd657dedf8ca9b1f3652b81a7da3e20f3396bf730926050236e19461452cc6ad",
+    "unique_prefixes": 14879,
+    "selected_origin_input_sha256": "e9c4bf3b3082bcef3d23a24b4295dbc672baf6d05365b2569755bfe72f49cfa1",
     "protection": "resolver_only"
   },
   "ru_verified_service_prefixes": {
-    "unique_prefixes": 1081,
+    "unique_prefixes": 1086,
     "address_space": {
-      "ipv4": 824514,
+      "ipv4": 824519,
       "ipv6": 3243489945586708573536284311558
     },
-    "exact_host_prefixes": 1114,
+    "exact_host_prefixes": 1118,
     "exact_host_address_space": {
-      "ipv4": 1049,
+      "ipv4": 1053,
       "ipv6": 65
     },
-    "resolver_protected_prefixes": 1081,
+    "resolver_protected_prefixes": 1086,
     "resolver_protected_address_space": {
-      "ipv4": 824514,
+      "ipv4": 824519,
       "ipv6": 3243489945586708573536284311558
     },
     "protection": "resolver_only_no_hard_override"
@@ -308,7 +308,7 @@
       "valid_rows": 3095,
       "invalid_rows": 0
     },
-    "input_sha256": "60289e356007769d1dd538c90dc1146877a48233a8e4e4f97eadf5de4f342d09"
+    "input_sha256": "ac1348157f748ad974dc740708344bc15ee978a8b7f00eac3cbdf49a75dc0dab"
   },
   "blocked": {
     "approved_union_original_unique": 200391,
@@ -336,19 +336,19 @@
     "ipsum_company_adjusted_review_only_unique": 14516,
     "ipsum_auto_carved": false,
     "ipsum_sha256": "fcc4b99f43032375c7ec652ab156575d4b7d7f48cd575239b6cf319366da6a1f",
-    "potential_additional_proxy_ipv4_addresses": 17292,
+    "potential_additional_proxy_ipv4_addresses": 17279,
     "potential_additional_proxy_ipv6_addresses": 0
   },
   "base_v37_address_space": {
-    "ipv4": 52633211,
-    "ipv6": 1193154981391383862747328363364352
+    "ipv4": 52669040,
+    "ipv6": 1193154982600309682361957538070528
   },
   "final_v41_address_space": {
-    "ipv4": 53399040,
-    "ipv6": 1205876352968421911415516831940608
+    "ipv4": 53402539,
+    "ipv6": 1205876354177347731030146006646784
   },
   "new_after_policy": {
-    "ipv4": 765829,
+    "ipv4": 733499,
     "ipv6": 12721371577038048668188468576256
   },
   "safety": {
@@ -370,22 +370,22 @@
     "candidate_status": "REVIEW"
   },
   "input_sha256": {
-    "base_v37_geoip": "dcd5be9abd55c1e09eb7427af4ec7f6b99073b7b77a28d77041336a8c87281b7",
-    "hydra_geoip": "8ff1c909905e6fc7ec38e821c7c55ccd71660f9f796d21a9c5a0e1fb9184eecf",
+    "base_v37_geoip": "3b196ba746ee67f9b993337e2725887f130a280e4e76e53cb57448bf94d1eb8a",
+    "hydra_geoip": "c0c56874ee8c8859c94d5ecc7dd509ff683630315287bb1c88789f4968d593d8",
     "regional_rir_inventory": "7d196717b138f817c6896ca6b25c26e7a0d92947af438c8115e56be3afba3e16",
     "regional_admission_exclusions": "9617c916f1ed7a4c4a45a1be76d60a24385fcf814c509546d555cb69b5244f1a",
     "reviewed_operator_prefixes": "a3b23016214e4a255a91439ec0a7cc00654155607dc28cfbe981fc813cd1b296",
-    "kyoresuas_standard_ipv4": "2d3912d55ea4c2ad5e723da2943919874126345de70e0eadcc2536b05de0a588",
+    "kyoresuas_standard_ipv4": "86cea2ba340be2cb3af19c95dfb91d23a749ff03ac1e806a31dd9b7f879905cd",
     "kyoresuas_standard_ipv6": "ad7bf0de43a7f1cf3b4c5e9ab996b4094a9fc8c96ec836af52125a42d0011079",
-    "kyoresuas_services_json": "d7f1e5b8d9c0daab56f6088bc2cafb952654189d143da2b01512a6278047d648",
-    "w1zardz_direct": "32bad19c15af994db606300bb199b389662037bf958f956279a189a62e920c48",
+    "kyoresuas_services_json": "af24376b4b1be1f1b14a7ef245c91be596d3fc12676332b457d772531029922b",
+    "w1zardz_direct": "9ff7e529bc8bca391dde34c82e1a51e865fb3e431fb8311781b7d274003a63ab",
     "hxehex_ipwhitelist": "8a3814375701decd9787718fc3ae769187aa4714e2a1b8fa5d96f94ad2bd4da0",
     "escapingworm_operator_whitelist": "cb36cdc22acd9d177a1402b074f5180f1a3286cd856fb6aba7afbf6333a795e4",
     "v37_blocked_base": "b1df58d96e159440af984509f97a831b7b52f1653f8990f7af93703b7013faba",
-    "corporate_company_asn_origin_prefixes": "5cb0722a57cef47399fdd02a2a90663d5c332574d11d51d23be0da1bdd67ef0b",
-    "corporate_core_prefixes": "0bfa8f824e1129afe0f1640a90f2ea528e38f2975d1bc984f27a646c438133e9",
-    "shared_infrastructure_prefixes": "60289e356007769d1dd538c90dc1146877a48233a8e4e4f97eadf5de4f342d09",
-    "regional_origin_prefixes": "bd657dedf8ca9b1f3652b81a7da3e20f3396bf730926050236e19461452cc6ad",
+    "corporate_company_asn_origin_prefixes": "2d646808111f305e131c8afd58207252b0d5ed8f488bc133e8bfce53b7cf64dd",
+    "corporate_core_prefixes": "67bc8f005a44e7dca8cdeadd570e9bf6e9ecf3ae44eedf16bb6b8d82339afbba",
+    "shared_infrastructure_prefixes": "ac1348157f748ad974dc740708344bc15ee978a8b7f00eac3cbdf49a75dc0dab",
+    "regional_origin_prefixes": "e9c4bf3b3082bcef3d23a24b4295dbc672baf6d05365b2569755bfe72f49cfa1",
     "blocked_exact_and_legacy": "d34d01aa2007a1da68eab9c4b7d8ac838ff58a1238bce254d392e7a1d04d424d",
     "blocked_resolver_only": "328bfd3b179fe47c5232cd77eea4139d20e93d2ba4f10de98f9180bf7cfd99d7",
     "antifilter_ipsum": "fcc4b99f43032375c7ec652ab156575d4b7d7f48cd575239b6cf319366da6a1f"
