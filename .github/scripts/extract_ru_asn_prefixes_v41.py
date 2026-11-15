@@ -6,6 +6,8 @@ import pathlib
 import sys
 import tarfile
 
+from verify_v41_ipverse_archive import MIN_AGGREGATED_RECORDS
+
 
 def read_rir_asns(path, label, minimum=25):
     result = set()
@@ -304,7 +306,7 @@ if missing_yandex_turkey_prefixes:
         "Yandex Turkey static DIRECT override regression: required prefixes were not inserted: "
         + ", ".join(missing_yandex_turkey_prefixes)
     )
-if archive_json_files < 10000:
+if archive_json_files < MIN_AGGREGATED_RECORDS:
     raise SystemExit(f"ipverse sanity check failed: only {archive_json_files} aggregated.json files")
 if malformed_json:
     raise SystemExit(f"ipverse archive contains {malformed_json} malformed JSON files; refusing partial data")
