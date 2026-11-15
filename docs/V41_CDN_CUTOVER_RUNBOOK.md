@@ -19,6 +19,9 @@ python3 .github/scripts/audit_v41_cdn_public.py --edges --compare-release
 
 A successful audit confirms that the current rolling GitHub assets, promoted
 Git tree and public CDN agree. It does not predict future cache propagation.
+As part of a post-run check, compare the `release_commit` printed by the
+audit to `snapshot_sha` in that run. On an unchanged CDN payload, the CDN
+SHA can legitimately stay the same even when the release SHA advances.
 
 ## After landing the change
 
