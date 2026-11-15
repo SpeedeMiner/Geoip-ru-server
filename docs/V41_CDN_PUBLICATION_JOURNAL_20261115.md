@@ -188,3 +188,8 @@
 
 - Старт с `072bcd9`; его v41, v39 и lint зелёные. PR №39 открыт, рабочие `main=596c93d`, `release=7eef1efc`, `cdn=80e3b14`. Слияние, production CI и live purge в этот проход не входят.
 - Аудит с двумя SHA уже проверяет rolling GitHub и CDN, но не проверяет независимую резервную ссылку точного запуска, на которую теперь направляет workflow. Добавляю проверку marker → tag → опубликованные бинарники и контрольные суммы.
+
+## 15.11.2026 15:29 UTC+05 — сквозная сверка версионированного fallback
+
+- `--verify-snapshot` читает marker из закреплённого `release`. `--snapshot-tag` дополнительно фиксирует имя выпуска из конкретного запуска. Tag должен разрешаться в тот же release SHA, а три скачиваемых бинарника и три checksum — совпадать с pinned Raw, rolling GitHub и jsDelivr. Tag и обе рабочие ветки перепроверяются после скачивания.
+- 16 целевых тестов прошли. Они отклоняют неправильный marker, rolling alias, moved tag, старые binaries/checksum и проверяют lightweight/annotated tags. Это проверка текущих байтов, не обещание неизменности GitHub Release: API действующего snapshot показывает `immutable=false`.

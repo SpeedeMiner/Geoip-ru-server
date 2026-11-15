@@ -17,6 +17,8 @@ CANONICAL = ("cdn.jsdelivr.net",)
 EDGES = (*CANONICAL, "fastly.jsdelivr.net", "gcore.jsdelivr.net")
 REPO_RE = re.compile(r"[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+")
 SHA_RE = re.compile(r"[0-9a-f]{40}")
+TAG_RE = re.compile(r"v41\.(?:0|[1-9][0-9]{0,5})|geoip-v41-snapshot-[0-9]{1,20}\.[0-9]{1,10}")
+SNAPSHOT_MARKER = "geoip_RU_ipverse_snapshot_tag.txt"
 ASSET_SIZE = 8 * 1024 * 1024
 INDEX_SIZE = 64 * 1024
 Fetch = Callable[[str, int], bytes]
@@ -32,6 +34,44 @@ def get_commit(repo: str, branch: str) -> str:
     if not SHA_RE.fullmatch(commit) or response_ref != ref:
         raise ValueError(f"unexpected response for {ref}")
     return commit
+
+
+def validated_snapshot_tag(tag: str) -> str:
+    if not TAG_RE.fullmatch(tag):
+        raise ValueError("expected a versioned v41 snapshot tag, not the rolling alias")
+    return tag
+
+
+def get_tag_commit(repo: str, tag: str) -> str:
+    ref = "refs/tags/" + validated_snapshot_tag(tag)
+    response = subprocess.run(
+        ["git", "ls-remote", "--exit-code", f"https://github.com/{repo}.git", ref, ref + "^{}"],
+        capture_output=True, text=True, timeout=30, check=True,
+    )
+    result = {}
+    for line in response.stdout.splitlines():
+        commit, response_ref = line.split("\t")
+        if not SHA_RE.fullmatch(commit) or response_ref not in {ref, ref + "^{}"} or response_ref in result:
+            raise ValueError(f"unexpected response for {ref}")
+        result[response_ref] = commit
+    if ref not in result:
+        raise ValueError(f"missing tag ref {ref}")
+    return result.get(ref + "^{}", result[ref])
+
+
+def checked_snapshot_tag(repo: str, release: str, expected: str | None,
+                         fetch: Fetch | None = None) -> str:
+    fetch = fetch or fetch_https
+    marker_url = f"https://raw.githubusercontent.com/{repo}/{release}/{SNAPSHOT_MARKER}"
+    raw = fetch(marker_url, 128)
+    tag = validated_snapshot_tag(raw.removesuffix(b"\n").decode("ascii"))
+    if raw != f"{tag}\n".encode("ascii"):
+        raise ValueError("noncanonical release snapshot marker")
+    if expected is not None and tag != expected:
+        raise ValueError("release snapshot marker does not match expected tag")
+    if get_tag_commit(repo, tag) != release:
+        raise ValueError("versioned snapshot tag does not point to promoted release")
+    return tag
 
 
 def parse_inventory(payload: bytes, *, flat: bool) -> dict[str, tuple[int, bytes]]:
@@ -76,11 +116,15 @@ def fetch_https(url: str, limit: int) -> bytes:
 
 
 def audit(repo: str, commit: str, hosts: tuple[str, ...], fetch: Fetch = fetch_https,
-          *, release_commit: str | None = None) -> dict:
+          *, release_commit: str | None = None, versioned_tag: str | None = None) -> dict:
     if not REPO_RE.fullmatch(repo) or not SHA_RE.fullmatch(commit):
         raise ValueError("expected owner/repository and a full cdn commit SHA")
     if release_commit is not None and not SHA_RE.fullmatch(release_commit):
         raise ValueError("expected a full release commit SHA")
+    if versioned_tag is not None:
+        validated_snapshot_tag(versioned_tag)
+        if release_commit is None:
+            raise ValueError("versioned fallback requires a promoted release commit")
     if not hosts or not set(hosts).issubset(EDGES):
         raise ValueError("expected supported jsDelivr endpoints")
     index = f"https://data.jsdelivr.com/v1/package/gh/{repo}@cdn"
@@ -116,7 +160,11 @@ def audit(repo: str, commit: str, hosts: tuple[str, ...], fetch: Fetch = fetch_h
     }
     if release_commit is not None:
         release_base = f"https://raw.githubusercontent.com/{repo}/{release_commit}"
-        rolling_base = f"https://github.com/{repo}/releases/download/latest-geoip-client-v41"
+        downloads = [(f"https://github.com/{repo}/releases/download/latest-geoip-client-v41",
+                      "rolling GitHub Release")]
+        if versioned_tag is not None:
+            downloads.append((f"https://github.com/{repo}/releases/download/{versioned_tag}",
+                              "versioned GitHub snapshot"))
 
         def verify_release(name):
             data = fetch(f"{release_base}/{name}", ASSET_SIZE)
@@ -126,15 +174,18 @@ def audit(repo: str, commit: str, hosts: tuple[str, ...], fetch: Fetch = fetch_h
             expected = f"{digest.hexdigest()}  {name}\n".encode()
             if fetch(f"{release_base}/{name}.sha256sum", 512) != expected:
                 raise ValueError(f"promoted release checksum differs: {name}")
-            if fetch(f"{rolling_base}/{name}", ASSET_SIZE) != data:
-                raise ValueError(f"rolling GitHub Release bytes differ: {name}")
-            if fetch(f"{rolling_base}/{name}.sha256sum", 512) != expected:
-                raise ValueError(f"rolling GitHub Release checksum differs: {name}")
+            for base, description in downloads:
+                if fetch(f"{base}/{name}", ASSET_SIZE) != data:
+                    raise ValueError(f"{description} bytes differ: {name}")
+                if fetch(f"{base}/{name}.sha256sum", 512) != expected:
+                    raise ValueError(f"{description} checksum differs: {name}")
 
         with ThreadPoolExecutor(max_workers=3) as pool:
             list(pool.map(verify_release, FILES))
         result["release_commit"] = release_commit
         result["rolling_release_verified"] = True
+        if versioned_tag is not None:
+            result["versioned_snapshot_verified"] = versioned_tag
     return result
 
 
@@ -146,24 +197,36 @@ def main() -> int:
     parser.add_argument("--edges", action="store_true", help="also read Fastly and Gcore endpoints")
     parser.add_argument("--compare-release", action="store_true",
                         help="require the current promoted release and checksums to match")
+    parser.add_argument("--verify-snapshot", action="store_true",
+                        help="verify the versioned fallback from the promoted release marker")
+    parser.add_argument("--snapshot-tag", help="full expected snapshot tag; implies --verify-snapshot")
     args = parser.parse_args()
     if not REPO_RE.fullmatch(args.repo):
         parser.error("--repo must be owner/repository")
     for option, sha in (("--cdn-sha", args.cdn_sha), ("--release-sha", args.release_sha)):
         if sha is not None and not SHA_RE.fullmatch(sha):
             parser.error(f"{option} must be a full commit SHA")
-    compare_release = args.compare_release or args.release_sha is not None
+    if args.snapshot_tag is not None and not TAG_RE.fullmatch(args.snapshot_tag):
+        parser.error("--snapshot-tag must be a versioned v41 snapshot tag")
+    verify_snapshot = args.verify_snapshot or args.snapshot_tag is not None
+    compare_release = args.compare_release or args.release_sha is not None or verify_snapshot
     try:
         commit = args.cdn_sha or get_commit(args.repo, "cdn")
         release = get_commit(args.repo, "release") if compare_release else None
         if args.release_sha is not None and args.release_sha != release:
             raise ValueError("current release does not match expected release SHA")
-        result = audit(args.repo, commit, EDGES if args.edges else CANONICAL, release_commit=release)
+        tag = checked_snapshot_tag(args.repo, release, args.snapshot_tag) if verify_snapshot else None
+        refs = {"release_commit": release}
+        if tag is not None:
+            refs["versioned_tag"] = tag
+        result = audit(args.repo, commit, EDGES if args.edges else CANONICAL, **refs)
         if compare_release:
             # Moving refs are not a pass, even for internally consistent bytes.
             if (get_commit(args.repo, "release") != release
                     or get_commit(args.repo, "cdn") != commit):
                 raise ValueError("release or CDN branch moved during audit; rerun the check")
+        if tag is not None and get_tag_commit(args.repo, tag) != release:
+            raise ValueError("versioned snapshot tag moved during audit; rerun the check")
     except (KeyError, TypeError, OSError, ValueError, subprocess.SubprocessError) as exc:
         print(f"GeoIP CDN audit failed: {exc}", file=sys.stderr)
         return 1

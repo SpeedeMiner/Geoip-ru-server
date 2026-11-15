@@ -3,6 +3,7 @@ import contextlib
 import io
 import hashlib
 import json
+import subprocess
 from pathlib import Path
 import unittest
 from unittest.mock import patch
@@ -145,6 +146,67 @@ class PublicCdnAuditTests(unittest.TestCase):
                 else:
                     run.assert_called_once_with(REPO, SHA, audit.CANONICAL,
                                                release_commit=expected_release)
+
+    def test_snapshot_marker_is_pinned_to_the_promoted_commit(self):
+        release, tag = "c" * 40, "geoip-v41-snapshot-42.1"
+        raw = f"{tag}\n".encode()
+        snapshots = {
+            "valid": (raw, tag, release, None),
+            "tag-mismatch": (raw, "v41.2", release, "does not match expected tag"),
+            "moved-tag": (raw, tag, SHA, "does not point"),
+            "rolling-alias": (b"latest-geoip-client-v41\n", None, release, "not the rolling alias"),
+            "no-newline": (tag.encode(), tag, release, "noncanonical"),
+            "too-many-lines": (raw + b"v41.2\n", None, release, "expected a versioned"),
+        }
+        for label, (marker, expected, tag_commit, err) in snapshots.items():
+            with self.subTest(label=label), patch.object(audit, "get_tag_commit", return_value=tag_commit):
+                def fetch(url, limit):
+                    self.assertEqual(url, f"https://raw.githubusercontent.com/{REPO}/{release}/{audit.SNAPSHOT_MARKER}")
+                    self.assertEqual(limit, 128)
+                    return marker
+                if err:
+                    with self.assertRaisesRegex(ValueError, err):
+                        audit.checked_snapshot_tag(REPO, release, expected, fetch)
+                else:
+                    self.assertEqual(audit.checked_snapshot_tag(REPO, release, expected, fetch), tag)
+
+    def test_resolves_both_lightweight_and_annotated_tags(self):
+        tag = "v41.2"
+        ref = "refs/tags/" + tag
+        for lines, expected in ((f"{SHA}\t{ref}\n", SHA),
+                                (f"{SHA}\t{ref}\n{'c' * 40}\t{ref}^{{}}\n", "c" * 40)):
+            with self.subTest(lines=lines), patch.object(
+                audit.subprocess, "run", return_value=subprocess.CompletedProcess([], 0, stdout=lines)
+            ) as git:
+                self.assertEqual(audit.get_tag_commit(REPO, tag), expected)
+                self.assertEqual(git.call_args.args[0][-2:], [ref, ref + "^{}"])
+
+    def test_fallback_checks_all_binaries_and_sidecars(self):
+        release, tag = "c" * 40, "v41.2"
+        base = f"https://github.com/{REPO}/releases/download/{tag}/"
+        result = self.check(release_commit=release, versioned_tag=tag)
+        self.assertEqual(len(self.calls), 32)
+        self.assertEqual(result["versioned_snapshot_verified"], tag)
+        for name in audit.FILES:
+            self.assertIn(base + name, self.calls)
+            self.assertIn(base + name + ".sha256sum", self.calls)
+        for filename, kind in (("geoip_RU.srs", "bytes"), ("geoip_PRIVATE.srs.sha256sum", "checksum")):
+            with self.subTest(filename=filename):
+                self.stale = {base + filename}
+                with self.assertRaisesRegex(ValueError, f"versioned GitHub snapshot {kind} differ"):
+                    self.check(release_commit=release, versioned_tag=tag)
+
+    def test_rejects_a_tag_changed_after_bytes_were_read(self):
+        release, tag = "c" * 40, "v41.2"
+        cli = ["audit", "--repo", REPO, "--cdn-sha", SHA, "--snapshot-tag", tag]
+        with patch.object(audit.sys, "argv", cli), \
+                patch.object(audit, "get_commit", side_effect=lambda _, branch: release if branch == "release" else SHA), \
+                patch.object(audit, "checked_snapshot_tag", return_value=tag), \
+                patch.object(audit, "get_tag_commit", return_value="d" * 40), \
+                patch.object(audit, "audit", return_value={}), \
+                contextlib.redirect_stderr(io.StringIO()) as err:
+            self.assertEqual(audit.main(), 1)
+        self.assertIn("tag moved during audit", err.getvalue())
 
     def test_inventory_matches_the_shell_publisher(self):
         shell = Path(audit.__file__).with_name("v41_cdn_files.sh").read_text()

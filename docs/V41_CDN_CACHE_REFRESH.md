@@ -75,7 +75,7 @@ GITHUB_REPOSITORY=SpeedeMiner/Geoip-ru-server bash .github/scripts/purge_v41_jsd
 ## Audit the public channel without publishing
 
 ```sh
-python3 .github/scripts/audit_v41_cdn_public.py --edges --compare-release
+python3 .github/scripts/audit_v41_cdn_public.py --edges --verify-snapshot
 ```
 
 This read-only command uses git to resolve the current `cdn` commit and
@@ -87,7 +87,10 @@ from both the current pinned release commit and the rolling GitHub Release
 asset URLs. It fails if either branch moves during the check. Without this flag it checks internal CDN consistency only.
 When verifying a specific publication, pass both `--cdn-sha` and
 `--release-sha` from its publish log. The latter also enables release
-comparison without requiring `--compare-release`.
+comparison without requiring `--compare-release`. The `--verify-snapshot`
+flag also verifies the exact versioned fallback and its checksums using the
+tag recorded in the promoted release. To check a specific run, pass its
+`--snapshot-tag` explicitly.
 A mismatch exits nonzero. During normal cache propagation, retry or use
 GitHub Release directly. This command neither purges nor changes a ref.
 
