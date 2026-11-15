@@ -14,8 +14,9 @@ Old `@release` CDN links are not refreshed or supported. This design
 does not revoke previously cached URLs or stop someone from requesting a
 different public GitHub ref through a third-party cache.
 
-Only the production v41 job publishes the CDN branch, after publishing and
-verifying the release. It derives a fresh tree from the three checked
+The production v41 job publishes the CDN branch after publishing and
+verifying the release. The manual repair path reuses an existing release.
+Both derive a fresh tree from the three checked
 GitHub blobs, never from an unrestricted copy of `release`. The branch
 starts from a root commit and subsequent updates are fast-forward and
 compare-and-swap protected. Unchanged bytes do not create another commit.
@@ -28,6 +29,21 @@ public read-back compares what jsDelivr serves against the new bytes.
 If it reports a failure, use the run-specific GitHub Release and its
 checksums. A GitHub release may still be edited unless the repository
 enforces immutable releases.
+
+## Repair CDN from the current GitHub release
+
+In GitHub Actions, run **Repair GeoIP v41 client CDN** on `main`. GitHub
+offers this action once the workflow is present on the default branch.
+It does not build GeoIP, retag anything, update `release`, or upload
+GitHub assets. It waits in the same bounded queue as production v41,
+so neither workflow replaces another queued production run.
+
+Before touching `cdn`, repair checks the exact three client files and
+their GitHub checksum sidecars against the promoted `release` commit.
+If the GitHub rolling release is missing or out of sync, repair stops
+without moving `cdn`. If the public CDN fails read-back after the branch
+is updated, repair reports failure. Once GitHub is correct, running
+repair again is safe and does not create an extra commit for the same bytes.
 
 For a manual retry of the cache refresh only, first confirm the intended
 `cdn` commit, then run the script from the source checkout.

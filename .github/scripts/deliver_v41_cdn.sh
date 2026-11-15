@@ -15,6 +15,10 @@ if ! bash "$scripts/purge_v41_jsdelivr.sh"; then
   echo "::warning::jsDelivr purge was not confirmed for all client files"
 fi
 if ! bash "$scripts/verify_v41_cdn_readback.sh"; then
+  if [[ "${V41_REQUIRE_CDN_READBACK:-0}" == 1 ]]; then
+    echo "::error::CDN ref $CDN_SHA is set, but public CDN bytes were not confirmed. Use GitHub Release and retry repair."
+    exit 1
+  fi
   echo "::warning::jsDelivr public bytes were not confirmed. Use GitHub Release."
 fi
 printf 'cdn_sha=%s\n' "$CDN_SHA" >> "$GITHUB_OUTPUT"

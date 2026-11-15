@@ -15,6 +15,7 @@ on:
     branches: [main, hardening/v41-release-integrity, policy/v41-1-service-and-regional, policy/v41-2-legacy-host-reclassification]
     paths:
       - ".github/workflows/geoip-v41.yml"
+      - ".github/workflows/geoip-v41-cdn-repair.yml"
       - ".github/scripts/build_rir_rukzby_prefixes.py"
       - ".github/scripts/build_v41_overlay.py"
       - ".github/scripts/build_v41_srs.py"
@@ -59,6 +60,7 @@ on:
 concurrency:
   group: geoip-direct-ru-by-kz-v41-${{ github.ref }}
   cancel-in-progress: false
+  queue: max
 
 permissions:
   contents: read

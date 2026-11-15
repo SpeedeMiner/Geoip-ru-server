@@ -214,7 +214,7 @@ out.write_text("stale" if stale else filename)
 
 
 class DeliveryStepTests(unittest.TestCase):
-    def invoke(self, *, publish_status=0, purge_status=0, readback_status=0):
+    def invoke(self, *, publish_status=0, purge_status=0, readback_status=0, strict=False):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
             delivery = root / "deliver_v41_cdn.sh"
@@ -231,7 +231,8 @@ class DeliveryStepTests(unittest.TestCase):
             result = subprocess.run(["bash", str(delivery)], text=True, capture_output=True,
                                     env={**os.environ, "TEST_SHA": sha, "CALLS": str(calls),
                                          "GITHUB_OUTPUT": str(outputs), "PUBLISH_STATUS": str(publish_status),
-                                         "PURGE_STATUS": str(purge_status), "READBACK_STATUS": str(readback_status)})
+                                         "PURGE_STATUS": str(purge_status), "READBACK_STATUS": str(readback_status),
+                                         "V41_REQUIRE_CDN_READBACK": str(int(strict))})
             return result, calls.read_text().splitlines(), outputs.read_text() if outputs.exists() else None
 
     def test_required_ref_write_and_independent_best_effort_cache_steps(self):
@@ -243,6 +244,17 @@ class DeliveryStepTests(unittest.TestCase):
         failure, calls, out = self.invoke(publish_status=1)
         self.assertEqual(failure.returncode, 1)
         self.assertEqual(calls, ["publish"])
+        self.assertIsNone(out)
+
+    def test_manual_repair_requires_cdn_bytes_but_not_a_purge_confirmation(self):
+        res, calls, out = self.invoke(purge_status=1, strict=True)
+        self.assertEqual(res.returncode, 0, res.stderr)
+        self.assertEqual(calls, ["publish", "purge", "readback"])
+        self.assertEqual(out, f"cdn_sha={'1' * 40}\n")
+        failure, calls, out = self.invoke(readback_status=1, strict=True)
+        self.assertEqual(failure.returncode, 1)
+        self.assertEqual(calls, ["publish", "purge", "readback"])
+        self.assertIn("is set, but public CDN bytes were not confirmed", failure.stdout)
         self.assertIsNone(out)
 
 
