@@ -716,5 +716,211 @@
       "2a0b:4e07:6310::/48": 1208925819614629174706176,
       "2a0b:4e07:63ff::/48": 1208925819614629174706176
     }
+  },
+  "merge_matrix_35_42": {
+    "heads": {
+      "35": "9998fc61fd77e934b9337d6d4d9bfeb6254cd19d",
+      "36": "e1baab6971270c9d64af56c3c9ff0b86aed1b50e",
+      "37": "198bbe12e0bb35727f6b21fe2173bbec42131e9d",
+      "38": "38ee141847e1f2a2028721a825b245c9b738e010",
+      "39": "099b222c0447f1cf57970f69997d283771d44a0f",
+      "40": "08ae7d0befbe9ca370582eb1d640fa2a75efe628",
+      "41": "ee690cc6f60becc05ad7921218c37c2aaee3a33b",
+      "42": "5fb8e6c36338b1ff843f8c089fdac66d182780e5"
+    },
+    "pairs": [
+      {
+        "a": 35,
+        "b": 36,
+        "conflict_paths": [],
+        "tree_candidate": "14e6ffbf12c55cd395382338bd2a7ddeaf5c11fd"
+      },
+      {
+        "a": 35,
+        "b": 37,
+        "conflict_paths": [],
+        "tree_candidate": "77c9838f55708f7cf9dc91ca9eae7d9af4b7e788"
+      },
+      {
+        "a": 35,
+        "b": 38,
+        "conflict_paths": [],
+        "tree_candidate": "1530b6d0d3a8426452e41bdea7e6fcde0e520bbf"
+      },
+      {
+        "a": 35,
+        "b": 39,
+        "conflict_paths": [],
+        "tree_candidate": "21f03bb9b967e14d26f67b381bacfc3c418c6e1c"
+      },
+      {
+        "a": 35,
+        "b": 40,
+        "conflict_paths": [
+          ".github/scripts/bundle_v41_registry_inputs.py"
+        ],
+        "tree_candidate": "11b800e82d521d323bcb1225a8914651cafd9758"
+      },
+      {
+        "a": 35,
+        "b": 41,
+        "conflict_paths": [
+          "docs/V41_EXECUTION_JOURNAL.md"
+        ],
+        "tree_candidate": "20c52da357f1166e5043656648790067ce435809"
+      },
+      {
+        "a": 35,
+        "b": 42,
+        "conflict_paths": [],
+        "tree_candidate": "4e6c0ccea2618a3d507100be9d731df58089d564"
+      },
+      {
+        "a": 36,
+        "b": 37,
+        "conflict_paths": [],
+        "tree_candidate": "6cf3b2d325865e2c7cb383c23b5ce5f489b48154"
+      },
+      {
+        "a": 36,
+        "b": 38,
+        "conflict_paths": [],
+        "tree_candidate": "f601e33ae2d4ff11d81c2177aeca373c6188b57c"
+      },
+      {
+        "a": 36,
+        "b": 39,
+        "conflict_paths": [],
+        "tree_candidate": "b3ec06337e6834910af11105d094d1b67b900c7a"
+      },
+      {
+        "a": 36,
+        "b": 40,
+        "conflict_paths": [],
+        "tree_candidate": "2569276e1fd5096cee1e5a85207ec4f4f77b2ad3"
+      },
+      {
+        "a": 36,
+        "b": 41,
+        "conflict_paths": [],
+        "tree_candidate": "32f8c3e1601a814f5f0ba981ba9f317a6841ed19"
+      },
+      {
+        "a": 36,
+        "b": 42,
+        "conflict_paths": [],
+        "tree_candidate": "1ec3cb051eded6fccdba3c0bbce96e2a372cfc9f"
+      },
+      {
+        "a": 37,
+        "b": 38,
+        "conflict_paths": [],
+        "tree_candidate": "3077fd78d1d7fcad448c8f9affb04bd840cbb6a6"
+      },
+      {
+        "a": 37,
+        "b": 39,
+        "conflict_paths": [],
+        "tree_candidate": "01bfdbddc8fd4b931a902a9d1bebadff1eb094f1"
+      },
+      {
+        "a": 37,
+        "b": 40,
+        "conflict_paths": [],
+        "tree_candidate": "424dfd052e322c9e39dab92a9775099f2a31506d"
+      },
+      {
+        "a": 37,
+        "b": 41,
+        "conflict_paths": [],
+        "tree_candidate": "772eea1cbdcda51521155f6f294f3fd96495ccf6"
+      },
+      {
+        "a": 37,
+        "b": 42,
+        "conflict_paths": [],
+        "tree_candidate": "bebb3bace528ee53a13c4c0e05787a42ecbc83c9"
+      },
+      {
+        "a": 38,
+        "b": 39,
+        "conflict_paths": [],
+        "tree_candidate": "05799a283ff3d6d640e93aa7fbdc4ef9b16cba6a"
+      },
+      {
+        "a": 38,
+        "b": 40,
+        "conflict_paths": [],
+        "tree_candidate": "d5e5eef97dc45cbfb7567f6dcd1fca86db500ad7"
+      },
+      {
+        "a": 38,
+        "b": 41,
+        "conflict_paths": [],
+        "tree_candidate": "f4b16fb4c9569fdaf91b8b23c1a9a29e8b4db1df"
+      },
+      {
+        "a": 38,
+        "b": 42,
+        "conflict_paths": [
+          ".github/scripts/validate_v41_overlay.py",
+          ".github/workflows/geoip-v41.yml"
+        ],
+        "tree_candidate": "5f2506ec78ab55f9c6b068f96b29af7d866e6c39"
+      },
+      {
+        "a": 39,
+        "b": 40,
+        "conflict_paths": [],
+        "tree_candidate": "2ce9a26d1fa862e6cd51a2cf6933a84be87294bf"
+      },
+      {
+        "a": 39,
+        "b": 41,
+        "conflict_paths": [],
+        "tree_candidate": "78bc93aad5058744beaacf5e2beda5d55b0c49a9"
+      },
+      {
+        "a": 39,
+        "b": 42,
+        "conflict_paths": [],
+        "tree_candidate": "52a1db3a43fa96e1c14f80ec75c44146fdd9e4f2"
+      },
+      {
+        "a": 40,
+        "b": 41,
+        "conflict_paths": [],
+        "tree_candidate": "1d5d504de39858b7fab6f9c8ea54f78ecfa07264"
+      },
+      {
+        "a": 40,
+        "b": 42,
+        "conflict_paths": [
+          ".github/scripts/validate_v41_overlay.py"
+        ],
+        "tree_candidate": "36f1373642c00a59d01f122e91f9c9625a83bb8d"
+      },
+      {
+        "a": 41,
+        "b": 42,
+        "conflict_paths": [],
+        "tree_candidate": "4327ffb25f5a481827c0da18e52d3175d3abc36f"
+      }
+    ]
+  },
+  "composition_pr38_42_same_input": {
+    "v4_removed": 262,
+    "v4_routes_removed": [
+      "143.20.177.3/32",
+      "172.67.73.142/32",
+      "104.26.7.129/32",
+      "172.67.73.25/32",
+      "172.64.150.18/32",
+      "104.26.6.129/32",
+      "38.244.136.0/24"
+    ],
+    "v6_delta": [],
+    "candidate_dat_sha256": "6c85b18e91325379d95e454a399e8592e273620ec2cb78892393c37e4ec84840",
+    "baseline_dat_sha256": "259ee23b1aea59d69140cd42877b43689b921bda62e8bfab3169708d4a410c67"
   }
 }
