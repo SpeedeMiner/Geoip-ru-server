@@ -1,5 +1,7 @@
 # GeoIP v41 CDN cutover runbook
 
+> **Status:** The CDN cutover from PR #39 landed via PR #43. The steps below apply to subsequent updates and historical verification. See [the current v41 checkpoint](V41_CURRENT_STATUS.md) for confirmed refs.
+
 The supported client channel is `SpeedeMiner/Geoip-ru-server@cdn`.
 It distributes only `geoip_RU.dat`, `geoip_RU.srs` and
 `geoip_PRIVATE.srs`. Keep audit data, checksums and source downloads on GitHub.

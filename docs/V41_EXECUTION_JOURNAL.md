@@ -1,5 +1,7 @@
 # v41 durable execution journal
 
+> **Current status:** PRs #35–#42 landed together via PR #43. Entries below record the status at the time of each check. For the current refs, open work and published snapshot, see [the v41 checkpoint](V41_CURRENT_STATUS.md).
+
 ## 2026-11-12 16:00 +0500 — recovery and branch setup
 
 - Resumed from PR #12 recovery note `docs/V39_PR12_RECOVERY_20261112.md`.
