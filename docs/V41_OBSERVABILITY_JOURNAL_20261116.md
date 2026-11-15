@@ -30,3 +30,38 @@
   exact-head CI; isolate the ASN, global-network and Hydra advisory reports
   from #44 without duplicating changes already in main. Keep unknown provider
   coverage, missing baselines and actual observed losses distinct from zero.
+
+## 2026-11-16 — validated integration and advisory composition
+
+- PR #50 head `139e9ddd9d550a5f2dde74d29ef54e633cbd5c53` passed [v41](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43751030476),
+  [v39](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43751030427),
+  [prefix audit](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43751030493)
+  and [lint](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43751030397).
+  The PR publish job was skipped. The GitHub merge commit
+  `c06bfd9df6212ef820d01f57d71291f1fd09da08` and PR head have tree
+  `92946da44806a19538b005fbe72cadcb089dc5d9`.
+- Candidate ZIP [14175914609](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43751030476/artifacts/14175914609),
+  SHA-256 `fe18a60abbaa782882c3dba69cc6ba3dc7b74b7e5e932b819cae1010b02d6102`,
+  passed CRC and release-manifest validation. DAT, both SRS, effective block
+  mask and input provenance match pinned release `e20cf733` byte-for-byte.
+  Its exact DIRECT artifact reports IPv4 +0/−0, IPv6 +0/−0, and unchanged
+  PRIVATE. The Antifilter report has no normalized feed or layer delta and
+  does not claim upstream freshness.
+- Go 1.26.10 tests and build passed. The retained RIR, IANA, ipverse,
+  Telegram and mandatory Antifilter inputs passed the new staged validators
+  with original UTC date 2026-11-15. LACNIC's published ASN count discrepancy
+  was logged; address record totals still matched. The v37 base was rebuilt
+  byte-for-byte from retained inputs, SHA-256
+  `3b196ba746ee67f9b993337e2725887f130a280e4e76e53cb57448bf94d1eb8a`.
+  Rebuilt v41 DAT SHA-256
+  `b17fe26ccdcb8d272e6233ec9686a514b309e9d75e75653313a75f329b70fae7`
+  also matched; all three blocked layers and effective mask matched.
+- PR #51 head `f8a2dcbe112f532b93ec0915e075ec7c8d858281` isolates
+  ASN/IPv6/provider/Hydra advisory reporting; its retained inputs, exact
+  evidence and 285-test local result are documented in
+  [the advisory journal](V41_ADVISORY_EXECUTION_JOURNAL_20261116.md).
+- Composition of #50 and #51 required one conflict resolution in
+  `extract_ru_asn_prefixes_v41.py`: keep both the shared ASN classifier
+  import and the shared minimum ipverse record-count import. Workflow changes
+  merged automatically. Composition tests and exact-head Actions are pending.
+  No production refs or PR #5 were changed in this checkpoint.
