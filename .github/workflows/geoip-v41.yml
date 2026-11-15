@@ -700,25 +700,13 @@ jobs:
             candidate/geoip_RU_global_bgp_prefixes.txt
           body_path: docs/V41_ROLLING_RELEASE_NOTES.md
 
-      - name: Publish exactly three client binaries to the cdn branch
-        id: cdn_ref
+      - name: Purge jsDelivr compatibility URLs
         shell: bash
+        id: cdn_ref
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SNAPSHOT_SHA: ${{ steps.snapshot_ref.outputs.snapshot_sha }}
-        run: bash ../.github/scripts/publish_v41_cdn_branch.sh
-
-      - name: Purge only jsDelivr client binary URLs
-        shell: bash
-        continue-on-error: true
-        run: bash ../.github/scripts/purge_v41_jsdelivr.sh
-
-      - name: Verify public jsDelivr client binaries
-        shell: bash
-        continue-on-error: true
-        env:
-          CDN_SHA: ${{ steps.cdn_ref.outputs.cdn_sha }}
-        run: bash ../.github/scripts/verify_v41_cdn_readback.sh
+        run: bash ../.github/scripts/deliver_v41_cdn.sh
 
       - name: Print download and audit URLs
         if: github.ref == 'refs/heads/main'
@@ -726,6 +714,7 @@ jobs:
         run: |
           echo "GitHub Release: ${{ github.server_url }}/${{ github.repository }}/releases/download/latest-geoip-client-v41/geoip_RU.dat"
           echo "Raw release branch: https://raw.githubusercontent.com/${{ github.repository }}/release/geoip_RU.dat"
+          echo "CDN commit: ${{ steps.cdn_ref.outputs.cdn_sha }}"
           echo "jsDelivr DAT: https://cdn.jsdelivr.net/gh/${{ github.repository }}@cdn/geoip_RU.dat"
           echo "jsDelivr RU SRS: https://cdn.jsdelivr.net/gh/${{ github.repository }}@cdn/geoip_RU.srs"
           echo "jsDelivr PRIVATE SRS: https://cdn.jsdelivr.net/gh/${{ github.repository }}@cdn/geoip_PRIVATE.srs"

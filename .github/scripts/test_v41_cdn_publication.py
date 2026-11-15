@@ -213,5 +213,38 @@ out.write_text("stale" if stale else filename)
         self.assertTrue(calls[-1].endswith(FILES[-1]))
 
 
+class DeliveryStepTests(unittest.TestCase):
+    def invoke(self, *, publish_status=0, purge_status=0, readback_status=0):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            delivery = root / "deliver_v41_cdn.sh"
+            delivery.write_bytes((SCRIPTS / delivery.name).read_bytes())
+            (root / "publish_v41_cdn_branch.sh").write_text(
+                'echo publish >> "$CALLS"\nprintf "cdn_sha=%s\\n" "$TEST_SHA" >>"$GITHUB_OUTPUT"\n'
+                'exit "$PUBLISH_STATUS"\n')
+            (root / "purge_v41_jsdelivr.sh").write_text('echo purge >> "$CALLS"\nexit "$PURGE_STATUS"\n')
+            (root / "verify_v41_cdn_readback.sh").write_text(
+                'echo readback >> "$CALLS"\n[[ "$CDN_SHA" == "$TEST_SHA" ]] || exit 92\n'
+                'exit "$READBACK_STATUS"\n')
+            calls, outputs = root / "calls", root / "outputs"
+            sha = "1" * 40
+            result = subprocess.run(["bash", str(delivery)], text=True, capture_output=True,
+                                    env={**os.environ, "TEST_SHA": sha, "CALLS": str(calls),
+                                         "GITHUB_OUTPUT": str(outputs), "PUBLISH_STATUS": str(publish_status),
+                                         "PURGE_STATUS": str(purge_status), "READBACK_STATUS": str(readback_status)})
+            return result, calls.read_text().splitlines(), outputs.read_text() if outputs.exists() else None
+
+    def test_required_ref_write_and_independent_best_effort_cache_steps(self):
+        res, calls, out = self.invoke(purge_status=1, readback_status=1)
+        self.assertEqual(res.returncode, 0, res.stderr)
+        self.assertEqual(calls, ["publish", "purge", "readback"])
+        self.assertEqual(out, f"cdn_sha={'1' * 40}\n")
+        self.assertIn("not confirmed", res.stdout)
+        failure, calls, out = self.invoke(publish_status=1)
+        self.assertEqual(failure.returncode, 1)
+        self.assertEqual(calls, ["publish"])
+        self.assertIsNone(out)
+
+
 if __name__ == "__main__":
     unittest.main()
