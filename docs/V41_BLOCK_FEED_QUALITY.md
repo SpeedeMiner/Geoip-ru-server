@@ -31,7 +31,19 @@ Community and Re-filter remain review-only and record degraded status if
 no usable rows are present. A downloaded but unusable HXEHEX **host**
 file or Antifilter `ipsum.lst` is excluded from diagnostic calculations
 and explicitly marked as degraded. Neither can exempt or remove an IP from
-DIRECT. Archive and downloader contracts are unchanged. Loss of transport
-for currently mandatory diagnostic downloads, including Antifilter
-`ipsum.lst` and the catalog-hosted HXEHEX files, is not handled by this
-patch. HXEHEX CIDR ingestion in the legacy v37 diagnostic path is unchanged.
+DIRECT.
+
+If Antifilter `ipsum.lst` or either HXEHEX file cannot be downloaded, the
+build records `diagnostic-unavailable` and consumes a deterministic
+comment-only placeholder. This status is accepted only for these three
+specific inputs. Rolling-source archives bind the exact placeholder bytes
+to that provenance. HXEHEX metadata or blob identity mismatches are not
+silently treated as outages. Required routing inputs keep their existing
+checks. Triggering fallback does not add or remove DIRECT addresses.
+
+Publication also compares the SHA-256 of each of the three live block feeds
+against the previous release's input provenance, when it is available.
+Unchanged and changed bytes are reported independently of count changes
+and never block publication. An unchanged hash can be entirely legitimate,
+and a changed hash need not reflect a new upstream snapshot. Resolver
+fallback, and missing or unusable prior data, are not live baselines.

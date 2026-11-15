@@ -10,6 +10,8 @@ import subprocess
 from tempfile import TemporaryDirectory
 from urllib.parse import quote
 
+from v41_diagnostic_sources import HXEHEX_FILES, HXEHEX_REPO, STATUS, placeholder
+
 CAP = 64 * 1024 * 1024
 PART = re.compile(r"[A-Za-z0-9_.-]+")
 SHA1 = re.compile(r"[0-9a-f]{40}")
@@ -23,6 +25,14 @@ def safe_path(value):
     )
 
 
+class TransferError(RuntimeError):
+    """A remote fetch failed, distinct from malformed metadata or a wrong hash."""
+
+    def __init__(self, url):
+        super().__init__(f"upstream transfer failed: {url}")
+        self.url = url
+
+
 def download(url, output, cap, *, metadata=False):
     cmd = ["curl", "--fail", "--location", "--silent", "--show-error",
            "--proto", "=https", "--proto-redir", "=https", "--connect-timeout", "20",
@@ -34,11 +44,19 @@ def download(url, output, cap, *, metadata=False):
         if not re.fullmatch(r"[A-Za-z0-9_.-]+", token):
             raise ValueError("invalid GitHub API token format")
         cmd += ["--header", "@-"]
-    subprocess.run([*cmd, "--output", str(output), url],
-                   input=f"Authorization: Bearer {token}\n".encode() if token else None,
-                   check=True)
-    if not 0 < output.stat().st_size <= cap:
-        raise ValueError(f"empty or oversized response: {url}")
+    try:
+        subprocess.run([*cmd, "--output", str(output), url],
+                       input=f"Authorization: Bearer {token}\n".encode() if token else None,
+                       check=True)
+    except subprocess.CalledProcessError as exc:
+        # Local write, invocation and TLS trust failures are not source outages.
+        if exc.returncode in {5, 6, 7, 16, 18, 22, 28, 52, 55, 56, 92, 95, 96}:
+            raise TransferError(url) from exc
+        raise
+    if output.stat().st_size == 0:
+        raise TransferError(url)
+    if output.stat().st_size > cap:
+        raise ValueError(f"oversized response: {url}")
 
 
 def resolve(group, get):
@@ -106,13 +124,39 @@ def fetch(catalog, provenance, root=Path("."), *, transfer=download):
             return json.loads(path.read_bytes())
 
         rows = []
+
+        def unavailable(name, url):
+            (staging / name).write_bytes(placeholder(url))
+            rows.append(f"ROLLING {name}\t{name}\t{url}\t-\t0\t{STATUS}\n")
+            print(f"::warning::{name}: diagnostic input unavailable, no routing change", flush=True)
+
         for group in groups:
-            for name, url, size, git_hash, release_hash in resolve(group, get):
+            diagnostic = group == {"repository": HXEHEX_REPO, "branch": "main", "files": HXEHEX_FILES}
+            # Resolve all paths together, so a metadata outage cannot mix commits
+            # or leave partially staged output for this publisher.
+            try:
+                entries = list(resolve(group, get))
+            except TransferError as exc:
+                if not diagnostic:
+                    raise
+                for name in group["files"]:
+                    if name in seen:
+                        raise ValueError(f"duplicate source: {name}") from exc
+                    seen.add(name)
+                    unavailable(name, exc.url)
+                continue
+            for name, url, size, git_hash, release_hash in entries:
                 if name in seen or type(size) is not int or not 0 < size <= CAP:
                     raise ValueError(f"duplicate or invalid source: {name}")
                 seen.add(name)
                 part = staging / name
-                transfer(url, part, size)
+                try:
+                    transfer(url, part, size)
+                except TransferError:
+                    if not diagnostic:
+                        raise
+                    unavailable(name, url)
+                    continue
                 data = part.read_bytes()
                 actual = hashlib.sha256(data).hexdigest()
                 if (len(data) != size or (release_hash and actual != release_hash)

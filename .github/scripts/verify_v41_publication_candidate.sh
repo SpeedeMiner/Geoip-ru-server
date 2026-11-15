@@ -21,10 +21,19 @@ previous_block_stats="$RUNNER_TEMP/previous-block-feed-stats.tsv"
 curl --fail --location --silent --show-error --proto '=https' --proto-redir '=https' \
   --connect-timeout 15 --max-time 90 --max-filesize 65536 \
   "https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/${ref}/geoip_RU_blocked_source_stats.txt" -o "$previous_block_stats"
+previous_provenance="$RUNNER_TEMP/previous-block-feed-provenance.tsv"
+feed_provenance=()
+if curl --fail --location --silent --show-error --proto '=https' --proto-redir '=https' \
+  --connect-timeout 15 --max-time 30 --max-filesize 1048576 \
+  "https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/${ref}/geoip_RU_input_provenance.tsv" -o "$previous_provenance"; then
+  feed_provenance=(--provenance "$previous_provenance" "$INPUT_PROVENANCE")
+else
+  echo "::warning::Previous release input provenance unavailable; skipping feed content comparison."
+fi
 python3 ../.github/scripts/validate_v41_block_feed_counts.py \
   --previous "$previous_block_stats" --candidate "$BLOCKED_STATS_INPUT" \
   --feeds "$BLOCKED_IP_RAW_INPUT" "$BLOCKED_IPRESOLVE_INPUT" "$BLOCKED_SUBNET_INPUT" \
-  --reviewed-sha256 "${REVIEWED_BLOCK_FEEDS_SHA:-}" | tee -a "$GITHUB_STEP_SUMMARY"
+  "${feed_provenance[@]}" --reviewed-sha256 "${REVIEWED_BLOCK_FEEDS_SHA:-}" | tee -a "$GITHUB_STEP_SUMMARY"
 curl --fail --location --silent --show-error --proto '=https' --proto-redir '=https' \
   --connect-timeout 15 --max-time 90 --max-filesize 8388608 \
   "https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/${ref}/geoip_RU.dat" -o "$RUNNER_TEMP/previous-geoip.dat"

@@ -62,7 +62,7 @@ download_file() {
 }
 
 download_optional_file() {
-  local label="$1" output="$2" url="$3" tmp="${2}.part"
+  local label="$1" output="$2" url="$3" tmp="${2}.part" status="${4:-unavailable}"
   rm -f "$tmp"
   if curl --fail --location --silent --show-error --proto "=https" --proto-redir "=https" --max-filesize 67108864 --connect-timeout 20 --max-time 180 \
        --retry 2 --retry-all-errors --retry-delay 2 --output "$tmp" "$url" && [[ -s "$tmp" ]]; then
@@ -72,8 +72,8 @@ download_optional_file() {
   else
     rm -f "$tmp"
     printf '# Optional source unavailable during this build: %s\n' "$url" > "$output"
-    record_source_download "$label" "$output" "$url" "unavailable"
-    echo "::warning::Optional source unavailable: ${label}; see blocked-source stats for fallback status."
+    record_source_download "$label" "$output" "$url" "$status"
+    echo "::warning::Optional source unavailable: ${label}; input provenance status=${status}."
   fi
 }
 
@@ -184,8 +184,8 @@ download_file "ANTIFILTER SUBNET LIST" "$BLOCKED_SUBNET_INPUT" \
 # Officially described by the aggregator as /24 summarization of individual
 # RKN-derived IPs. The v41 builder applies it separately and reports its
 # wider shared-hosting/CDN collateral risk instead of hiding it in subnet.lst.
-download_file "ANTIFILTER IPSUM IPV4 /24 SUMMARY" "$BLOCKED_IPSUM_INPUT" \
-  "https://antifilter.download/list/ipsum.lst"
+download_optional_file "ANTIFILTER IPSUM IPV4 /24 SUMMARY" "$BLOCKED_IPSUM_INPUT" \
+  "https://antifilter.download/list/ipsum.lst" "diagnostic-unavailable"
 
 # Community and Re-filter are intentionally review-only. They must never
 # be silently promoted into automatic DIRECT exclusions.

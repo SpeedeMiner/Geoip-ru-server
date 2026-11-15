@@ -16,6 +16,8 @@ import tarfile
 import tempfile
 import zlib
 
+from v41_diagnostic_sources import STATUS, unavailable_metadata
+
 MEMBERS = (
     "delegated-afrinic-latest", "delegated-apnic-latest",
     "delegated-arin-extended-latest", "delegated-lacnic-latest",
@@ -52,6 +54,12 @@ def metadata(provenance, members=MEMBERS):
         if row["LOCAL_FILE"] not in members:
             continue
         name = row["LOCAL_FILE"]
+        if row["STATUS"] == STATUS:
+            if name in rows or None in row:
+                raise ValueError(f"duplicate or malformed diagnostic input: {name}")
+            data = unavailable_metadata(name, row["SOURCE"], row["FETCH_URL"], row["SHA256"], row["BYTES"])
+            rows[name] = {"size": len(data), "sha256": sha(data)}
+            continue
         if name in rows or None in row or row["STATUS"] != "downloaded":
             raise ValueError(f"duplicate, malformed or unavailable registry input: {name}")
         if not SHA.fullmatch(row["SHA256"] or "") or not re.fullmatch(r"[0-9]{1,8}", row["BYTES"] or ""):

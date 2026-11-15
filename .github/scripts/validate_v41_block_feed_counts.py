@@ -5,6 +5,7 @@ import csv
 import hashlib
 import json
 from pathlib import Path
+import re
 
 REQUIRED = ("antifilter-ip.lst", "antifilter-ipresolve.lst", "antifilter-subnet.lst")
 FALLBACK = "EMPTY_FALLBACK_V38_PINNED_BASELINE"
@@ -62,6 +63,40 @@ def compare_counts(previous, candidate):
     return results
 
 
+def read_feed_hashes(path):
+    header = ["SOURCE", "LOCAL_FILE", "FETCH_URL", "SHA256", "BYTES", "STATUS"]
+    hashes = {}
+    with path.open(encoding="utf-8", newline="") as stream:
+        rows = csv.DictReader(stream, delimiter="\t")
+        if rows.fieldnames != header:
+            raise ValueError("unexpected input provenance header")
+        for row in rows:
+            name = row["LOCAL_FILE"]
+            if name not in REQUIRED:
+                continue
+            if name in hashes or None in row:
+                raise ValueError(f"duplicate or malformed input provenance: {name}")
+            digest = row["SHA256"]
+            if row["STATUS"] == "downloaded" and re.fullmatch(r"[0-9a-f]{64}", digest or ""):
+                hashes[name] = digest
+            else:
+                hashes[name] = None
+    return hashes
+
+
+def compare_content(previous, candidate, counts):
+    for row in counts:
+        name = row["source"]
+        old, new = previous.get(name), candidate.get(name)
+        if None in (old, new) or row["verdict"] in {"resolver-fallback-v38", "no-usable-prior-count"}:
+            verdict = "no-live-baseline"
+        elif old == new:
+            verdict = "unchanged-since-previous-release"
+        else:
+            verdict = "changed-since-previous-release"
+        yield {"source": name, "content": verdict}
+
+
 def review_digest(stats, feeds):
     # Bind the review to the statistics and to the source bytes, not just counts.
     digest = hashlib.sha256(b"geoip-v41-block-feed-review-v1\n")
@@ -77,6 +112,7 @@ def main():
     parser.add_argument("--candidate", type=Path, required=True)
     parser.add_argument("--feeds", type=Path, nargs=3, required=True, metavar=("IP", "IPRESOLVE", "SUBNET"))
     parser.add_argument("--reviewed-sha256", default="")
+    parser.add_argument("--provenance", type=Path, nargs=2, metavar=("PREVIOUS", "CANDIDATE"))
     args = parser.parse_args()
     try:
         results = compare_counts(read_stats(args.previous), read_stats(args.candidate))
@@ -84,6 +120,15 @@ def main():
         parser.exit(1, f"ERROR: blocked-feed comparison: {exc}\n")
     for row in results:
         print(json.dumps(row, sort_keys=True))
+    if args.provenance:
+        try:
+            previous, candidate = (read_feed_hashes(path) for path in args.provenance)
+        except (OSError, ValueError):
+            print("::warning::Feed content comparison unavailable (missing or invalid provenance)")
+        else:
+            for row in compare_content(previous, candidate, results):
+                print(json.dumps(row, sort_keys=True))
+            print("Content equality is advisory only and does not determine upstream freshness.")
     unusual = [row["source"] for row in results if row["verdict"] == "abrupt-count-change"]
     if unusual:
         try:
