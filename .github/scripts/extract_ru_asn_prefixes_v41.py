@@ -6,6 +6,8 @@ import pathlib
 import sys
 import tarfile
 
+from v41_asn_observations import parse_announced_prefixes
+
 
 def read_rir_asns(path, label, minimum=25):
     result = set()
@@ -65,25 +67,6 @@ def is_selected_asn(asn, rir_ru_asns, rir_by_kz_asns, company_asns):
     # Country metadata is not an inclusion filter for selected RU/BY/KZ regional ASNs or affiliates.
     return (asn in rir_ru_asns or asn in rir_by_kz_asns
             or (asn in company_asns and asn not in REGIONAL_ONLY_CLASSIFIED_ASNS))
-
-
-def parse_announced_prefixes(prefixes):
-    parsed = []
-    invalid = normalized = 0
-    for family, version in (("ipv4", 4), ("ipv6", 6)):
-        for raw_prefix in prefixes.get(family, []) or []:
-            try:
-                token = str(raw_prefix)
-                network = ipaddress.ip_network(token, strict=False)
-                if network.version != version or network.prefixlen == 0:
-                    invalid += 1
-                    continue
-            except ValueError:
-                invalid += 1
-                continue
-            normalized += ipaddress.ip_address(token.split("/", 1)[0]) != network.network_address
-            parsed.append((family, network))
-    return parsed, invalid, normalized
 
 
 def add_static_prefix_overrides(prefix_origins, overrides):
