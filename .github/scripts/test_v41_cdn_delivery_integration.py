@@ -65,6 +65,9 @@ if host == "github.com":
     assert url.path == "/example/geoip/releases/download/" + tag + "/" + name
     assert name.removesuffix(".sha256sum") in files
     data = (Path(os.environ["RELEASE_FILES"]) / name).read_bytes()
+    if mode == "move-tag-during-readback" and tag == "geoip-v41-snapshot-42.1" and name == "geoip_PRIVATE.srs.sha256sum":
+        subprocess.check_call(["git", "-C", os.environ["REMOTE"], "update-ref",
+                               "refs/tags/geoip-v41-snapshot-42.1", os.environ["OTHER_TAG_TARGET"]])
     if mode == "bad-snapshot" and tag == "geoip-v41-snapshot-42.1" and name == "geoip_RU.srs":
         data = b"stale snapshot SRS"
     if mode == "bad-rolling" and tag == "latest-geoip-client-v41" and name == "geoip_RU.srs.sha256sum":
@@ -109,7 +112,7 @@ Path(sys.argv[sys.argv.index("--output") + 1]).write_bytes(data)
     def git(directory, *args):
         return subprocess.check_output(["git", "-C", str(directory), *args], stderr=subprocess.PIPE)
 
-    def invoke(self, mode, *, manual=False):
+    def invoke(self, mode, *, manual=False, **overrides):
         log, out, summary = [self.root / n for n in ("http", "out", "summary")]
         for path in (log, out, summary, log.with_suffix(".raw-retried")):
             path.unlink(missing_ok=True)
@@ -124,6 +127,7 @@ Path(sys.argv[sys.argv.index("--output") + 1]).write_bytes(data)
             "V41_REQUIRE_CDN_READBACK": "0",
             "GIT_CONFIG_COUNT": "1", "GIT_CONFIG_KEY_0": f"url.{self.remote.as_uri()}.insteadOf",
             "GIT_CONFIG_VALUE_0": ORIGIN, "PATH": f"{self.bin}:{os.environ['PATH']}",
+            **overrides,
         }
         result = subprocess.run(["bash", str(SCRIPTS / script)], cwd=self.root, env=args,
                                 capture_output=True, text=True, timeout=30)
@@ -131,7 +135,7 @@ Path(sys.argv[sys.argv.index("--output") + 1]).write_bytes(data)
         self.assertEqual(self.git(self.remote, "rev-parse", "refs/heads/release").strip().decode(),
                          self.release)
         self.assertEqual(self.git(self.remote, "tag", "--list").strip().decode(), TAG)
-        return result, log.read_text().splitlines(), out.read_text() if out.exists() else "", (
+        return result, (log.read_text().splitlines() if log.exists() else []), out.read_text() if out.exists() else "", (
             summary.read_text() if summary.exists() else "")
 
     def cdn(self):
@@ -169,6 +173,34 @@ Path(sys.argv[sys.argv.index("--output") + 1]).write_bytes(data)
         self.assertEqual(output, "")
         self.assertTrue(all(line.startswith("github.com ") for line in calls))
         self.assertFalse(self.git(self.remote, "branch", "--list", "cdn"))
+
+    def other_release_commit(self):
+        tree = self.git(self.remote, "rev-parse", self.release + "^{tree}").strip().decode()
+        return self.git(self.remote, "-c", "user.name=Fixture", "-c", "user.email=fixture@example.test",
+                        "commit-tree", tree, "-p", self.release, "-m", "different snapshot").strip().decode()
+
+    def test_production_rejects_retargeted_fallback_before_http(self):
+        previous_tag = self.git(self.remote, "rev-parse", f"refs/tags/{TAG}").strip().decode()
+        other = self.other_release_commit()
+        self.git(self.remote, "update-ref", f"refs/tags/{TAG}", other, previous_tag)
+        denied, calls, output, _ = self.invoke("ok")
+        self.assertNotEqual(denied.returncode, 0)
+        self.assertIn("versioned snapshot tag or marker does not match", denied.stdout)
+        self.assertEqual(calls, [])
+        self.assertEqual(output, "")
+        self.assertFalse(self.git(self.remote, "branch", "--list", "cdn"))
+        self.assertEqual(self.git(self.remote, "rev-parse", f"refs/tags/{TAG}").strip().decode(), other)
+
+    def test_production_rechecks_snapshot_tag_after_last_download(self):
+        other = self.other_release_commit()
+        denied, calls, output, _ = self.invoke("move-tag-during-readback", OTHER_TAG_TARGET=other)
+        self.assertNotEqual(denied.returncode, 0)
+        self.assertIn("versioned snapshot tag moved during", denied.stdout)
+        self.assertEqual(len(calls), 12)
+        self.assertTrue(all(line.startswith("github.com ") for line in calls))
+        self.assertEqual(output, "")
+        self.assertFalse(self.git(self.remote, "branch", "--list", "cdn"))
+        self.assertEqual(self.git(self.remote, "rev-parse", f"refs/tags/{TAG}").strip().decode(), other)
 
     def test_manual_repair_is_strict_but_reusing_a_valid_ref_is_idempotent(self):
         blocked, calls, output, _ = self.invoke("raw-down", manual=True)

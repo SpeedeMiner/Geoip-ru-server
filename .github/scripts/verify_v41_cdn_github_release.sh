@@ -24,12 +24,16 @@ fi
 base="https://github.com/$GITHUB_REPOSITORY/releases/download"
 rolling="$base/latest-geoip-client-v41"
 versioned=""
+tag_ref=""
+fetch_versioned_tag() {
+  git -C "$tmp/repo" fetch --quiet --no-tags --depth=1 "$origin" "+$tag_ref:$tag_ref" &&
+    [[ "$(git -C "$tmp/repo" rev-parse "$tag_ref^{commit}")" == "$snapshot" ]]
+}
 if [[ "$fallback_tag" != latest-geoip-client-v41 ]]; then
   tag_ref="refs/tags/$fallback_tag"
   if ! git -C "$tmp/repo" show "$snapshot:geoip_RU_ipverse_snapshot_tag.txt" > "$tmp/tag-marker" ||
      ! printf '%s\n' "$fallback_tag" | cmp -s - "$tmp/tag-marker" ||
-     ! git -C "$tmp/repo" fetch --quiet --no-tags --depth=1 "$origin" "$tag_ref:$tag_ref" ||
-     [[ "$(git -C "$tmp/repo" rev-parse "$tag_ref^{commit}")" != "$snapshot" ]]; then
+     ! fetch_versioned_tag; then
     echo "::error::GitHub versioned snapshot tag or marker does not match $snapshot. CDN was not updated."
     exit 1
   fi
@@ -64,6 +68,10 @@ for file in "${V41_CDN_FILES[@]}"; do
   fi
 done
 
+if [[ -n "$versioned" ]] && ! fetch_versioned_tag; then
+  echo "::error::GitHub versioned snapshot tag moved during client readback. CDN was not updated."
+  exit 1
+fi
 echo "GitHub rolling client binaries and checksums match $snapshot"
 if [[ -n "$versioned" ]]; then
   echo "GitHub versioned client binaries and checksums match $snapshot ($fallback_tag)"
