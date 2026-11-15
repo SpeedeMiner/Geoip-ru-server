@@ -10,6 +10,7 @@ on:
       - ".github/workflows/geoip-v41-lint.yml"
       - ".github/scripts/*v41*.py"
       - ".github/data/geoip_RU_company_*.tsv"
+      - ".github/data/v41-reviewed-ipv6-admission-exclusions.tsv"
 jobs:
   lint:
     runs-on: ubuntu-latest

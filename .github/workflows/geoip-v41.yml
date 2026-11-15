@@ -35,6 +35,8 @@ on:
       - ".github/data/v41-reviewed-rkn-ip-records.tsv"
       - ".github/data/v41-reviewed-operator-prefixes.tsv"
       - ".github/data/v41-regional-admission-exclusions.tsv"
+      - ".github/data/v41-reviewed-ipv6-admission-exclusions.tsv"
+      - ".github/scripts/v41_reviewed_ipv6_admission.py"
       - ".github/scripts/validate_v41_overlay.py"
       - ".github/scripts/validate_v41_release_gate.py"
       - ".github/scripts/validate_v41_telegram.py"
@@ -310,6 +312,7 @@ jobs:
             --shared-infrastructure-prefixes "$SHARED_INFRASTRUCTURE_PREFIXES" \
             --regional-origin-prefixes "$REGIONAL_ORIGIN_PREFIXES" \
             --regional-admission-exclusions .github/data/v41-regional-admission-exclusions.tsv \
+            --reviewed-ipv6-admission-exclusions .github/data/v41-reviewed-ipv6-admission-exclusions.tsv \
             --reviewed-operator-prefixes .github/data/v41-reviewed-operator-prefixes.tsv \
             --ipsum "$BLOCKED_IPSUM_INPUT" \
             --output "$V41_OUTPUT_FILE" \
@@ -374,6 +377,7 @@ jobs:
             --hxehex-ip "$HXEHEX_IP_INPUT" \
             --escapingworm "$ESCAPINGWORM_OPERATOR_INPUT" \
             --regional-admission-exclusions .github/data/v41-regional-admission-exclusions.tsv \
+            --reviewed-ipv6-admission-exclusions .github/data/v41-reviewed-ipv6-admission-exclusions.tsv \
             --reviewed-operator-prefixes .github/data/v41-reviewed-operator-prefixes.tsv \
             --effective-blocked "$V41_BLOCKED_FILE" \
             --manifest "$V41_MANIFEST" \
@@ -423,6 +427,7 @@ jobs:
             --current-subnet-feed "$BLOCKED_SUBNET_INPUT" \
             --confirmed-ip-records .github/data/v41-reviewed-rkn-ip-records.tsv \
             --regional-admission-exclusions .github/data/v41-regional-admission-exclusions.tsv \
+            --reviewed-ipv6-admission-exclusions .github/data/v41-reviewed-ipv6-admission-exclusions.tsv \
             --reviewed-operator-prefixes .github/data/v41-reviewed-operator-prefixes.tsv \
             --effective "$V41_BLOCKED_FILE" \
             --core "$CORE_COMPANY_PREFIXES" \
@@ -601,6 +606,12 @@ jobs:
         env:
           REVIEWED_SHA: ${{ inputs.reviewed_geoip_sha256 }}
         run: bash ../.github/scripts/verify_v41_publication_candidate.sh
+
+      - name: Verify reviewed IPv6 admission in the downloaded candidate
+        run: |
+          python3 ../.github/scripts/v41_reviewed_ipv6_admission.py \
+            --table ../.github/data/v41-reviewed-ipv6-admission-exclusions.tsv \
+            --manifest "$V41_MANIFEST" --geoip "$V41_OUTPUT_FILE"
 
       - name: Stage the versioned snapshot tag
         id: snapshot_ref

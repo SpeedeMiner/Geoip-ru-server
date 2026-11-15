@@ -11,6 +11,7 @@ from pathlib import Path
 
 import build_v41_overlay as builder
 from validate_v41_telegram import PINNED_FEED, read_telegram_feed
+from v41_reviewed_ipv6_admission import verify_reviewed_ipv6_admission_manifest
 
 
 def sha256(path: Path) -> str:
@@ -28,6 +29,18 @@ def assert_hxehex_diagnostic_only(ru, independently_admitted, hxehex):
                                        builder.intervals(hxehex, version))
         if builder.subtract(candidates, builder.intervals(independently_admitted, version)):
             raise ValueError(f"HXEHEX-only admission in IPv{version} DIRECT")
+
+
+def verify_ipv6_admission_effect(ru, admitted, private, effective, regional, reviewed):
+    """Check final IPv6 address space and measure removal against the no-IPv6-rule baseline."""
+    def iv(networks):
+        return builder.intervals(networks, 6)
+    pre = builder.subtract(iv(admitted), iv(private))
+    before = builder.subtract(builder.subtract(pre, iv(effective)), iv(regional))
+    after = builder.subtract(before, iv(reviewed))
+    if iv(ru) != after:
+        raise ValueError("Reviewed IPv6 admission changed DIRECT outside the expected exact output")
+    return builder.interval_size(builder.subtract(before, after))
 
 
 def validate(args: argparse.Namespace) -> dict:
@@ -71,7 +84,10 @@ def validate(args: argparse.Namespace) -> dict:
     if output_blocked != effective:
         raise ValueError("Published v41 effective block output differs from the class-aware policy calculation")
 
-    admission = builder.parse_regional_admission_exclusions(args.regional_admission_exclusions)
+    manifest = json.loads(args.manifest.read_text(encoding="utf-8"))
+    regional_admission = builder.parse_regional_admission_exclusions(args.regional_admission_exclusions)
+    ipv6_admission = verify_reviewed_ipv6_admission_manifest(args.reviewed_ipv6_admission_exclusions, manifest)
+    admission = set(regional_admission) | set(ipv6_admission)
     builder.assert_regional_admission_disjoint(decoded["RU"], admission)
     builder.assert_reviewed_operator_coverage(decoded["RU"], decoded["PRIVATE"], blocked_exact | telegram, admission, reviewed)
     for version in (4, 6):
@@ -127,14 +143,17 @@ def validate(args: argparse.Namespace) -> dict:
     if set(base) != {"RU", "PRIVATE"}:
         raise ValueError("Expected v37 base categories RU and PRIVATE")
     hxehex = builder.parse_cidr_file(args.hxehex_ip)[0]
-    assert_hxehex_diagnostic_only(
-        decoded["RU"],
-        builder.union_networks(base["RU"], regional_resources, regional_all, company_all, reviewed,
-                               *service_sources.values(), *hydra_sources.values()),
-        hxehex,
+    admitted = builder.union_networks(
+        base["RU"], regional_resources, regional_all, company_all, reviewed,
+        *service_sources.values(), *hydra_sources.values(),
     )
+    assert_hxehex_diagnostic_only(decoded["RU"], admitted, hxehex)
+    removed_ipv6 = verify_ipv6_admission_effect(
+        decoded["RU"], admitted, decoded["PRIVATE"], output_blocked, regional_admission, ipv6_admission
+    )
+    if manifest.get("reviewed_ipv6_admission_exclusions", {}).get("removed_after_block_policy") != {"ipv6": removed_ipv6}:
+        raise ValueError("Reviewed IPv6 admission removal count mismatch")
 
-    manifest = json.loads(args.manifest.read_text(encoding="utf-8"))
     hxehex_info = manifest.get("diagnostic_sources", {}).get("hxehex-mobile-hosts", {})
     if (manifest.get("base_v37_sha256") != sha256(args.base)
             or manifest.get("input_sha256", {}).get("hxehex_ipwhitelist") != sha256(args.hxehex_ip)
@@ -143,7 +162,7 @@ def validate(args: argparse.Namespace) -> dict:
             or "hxehex-mobile-hosts" in manifest.get("service_sources", {})):
         raise ValueError("HXEHEX diagnostic source provenance mismatch")
     if (manifest.get("input_sha256", {}).get("regional_admission_exclusions") != sha256(args.regional_admission_exclusions)
-            or manifest.get("regional_admission_exclusions", {}).get("records") != list(admission.values())):
+            or manifest.get("regional_admission_exclusions", {}).get("records") != list(regional_admission.values())):
         raise ValueError("Regional admission exclusion provenance mismatch")
     if manifest.get("input_sha256", {}).get("reviewed_operator_prefixes") != sha256(args.reviewed_operator_prefixes):
         raise ValueError("Reviewed operator prefix input SHA-256 mismatch")
@@ -240,6 +259,7 @@ def main() -> int:
         "kyoresuas_v4", "kyoresuas_v6", "kyoresuas_services", "w1zardz",
         "hxehex_ip", "escapingworm", "effective_blocked",
         "manifest", "quality", "rir", "regional_admission_exclusions", "reviewed_operator_prefixes",
+        "reviewed_ipv6_admission_exclusions",
     ):
         parser.add_argument("--" + name.replace("_", "-"), type=Path, required=True)
     parser.add_argument("--telegram-feed", type=Path, default=PINNED_FEED)

@@ -110,3 +110,11 @@ The v41 overlay excludes exact IPv4 prefixes in [the reviewed admission table](.
 - `31.204.28.0/22` stays in DIRECT for this revision. Its exact US assignment and foreign origin are noted, but the holder remains RU-associated and the operator geofeed does not cover it. Retain the rest of the unresolved queue without a bulk change.
 
 The [additional-source follow-up](v41-additional-reviewed-operator-release-20261114.json) admits nine exact RU operator /24s only after independent RIPE assignment, operator geofeed, exact RPKI-valid RIS and matching frozen ipverse origin evidence. One-source GeoIP membership is discovery evidence, not a new admission rule. On the fixed release inputs these rows recover only 15 exact resolver-excluded IPv4 addresses. The table remains bounded to 121 rows, with hard, Telegram, PRIVATE and reviewed admission exclusions unchanged.
+
+### Exact IPv6 admission exceptions
+
+The [separate IPv6 table](../.github/data/v41-reviewed-ipv6-admission-exclusions.tsv) is limited to individually reviewed public /48s. It records the observed origin ASN, the country of each exact assignment, and links to its exact RIPE RDAP object and registry-linked geofeed. The origin is evidence of the admission path, not an instruction to exclude an ASN or a runtime matching condition. The ASN's country and the parent resource delegation are different facts and are not substituted for the exact assignment.
+
+Two rows are proposed here. AS218750's `2a0b:4e07:63f0::/48` is labelled KP by its exact RDAP assignment and operator geofeed, and `2a0b:4e07:63f1::/48` is labelled IN. Their common /47 in the ipverse input is an aggregate of separate /48 routes. The v41 overlay subtracts only the two exact CIDRs from final RU/DIRECT, after all admission sources are combined. It leaves the v37 base, PRIVATE, IPv4, ASN/RIR inputs, and Telegram and RKN masks unchanged. No other route of AS218750 is excluded. Neither geofeed nor RPKI proves physical location or reachability. Recheck any reassignment before updating the exact list.
+
+The input hash and rows are recorded in the v41 manifest and checked by both build validators. See the [verification journal](V41_IPV6_ADMISSION_JOURNAL_20261115.md) for the evidence, frozen inputs and measured routing delta.

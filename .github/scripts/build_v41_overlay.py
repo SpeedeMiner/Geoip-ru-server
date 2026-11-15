@@ -20,6 +20,7 @@ from pathlib import Path
 from typing import Iterable
 
 from validate_v41_telegram import PINNED_FEED, read_telegram_feed
+from v41_reviewed_ipv6_admission import RECORD_KEY, read_reviewed_ipv6_admission
 
 SOURCE_REFS = {
     "kyoresuas-standard": {
@@ -692,6 +693,7 @@ def main():
     parser.add_argument("--regional-origin-prefixes", type=Path, required=True)
     parser.add_argument("--reviewed-operator-prefixes", type=Path, required=True)
     parser.add_argument("--regional-admission-exclusions", type=Path, required=True)
+    parser.add_argument("--reviewed-ipv6-admission-exclusions", type=Path, required=True)
     parser.add_argument("--ipsum", type=Path, required=True)
     parser.add_argument("--telegram-feed", type=Path, default=PINNED_FEED)
     parser.add_argument("--input-provenance", type=Path)
@@ -809,6 +811,16 @@ def main():
             "service": row["delegated_country"] + " -> " + row["assignment_country"],
             "tier": "", "asn_list": row["origin_asn"], "domains": "", "prefix": row["prefix"],
         })
+    ipv6_admission = read_reviewed_ipv6_admission(args.reviewed_ipv6_admission_exclusions)
+    for row in ipv6_admission.values():
+        prefix_rows.append({
+            "source_id": "reviewed-ipv6-admission-exclusion",
+            "category": "Reviewed foreign IPv6 assignment",
+            "service": row["assignment_country"],
+            "tier": row["basis"], "asn_list": row["origin_asn"],
+            "domains": "", "prefix": row["prefix"],
+        })
+    admission_mask = set(admission_exclusions) | set(ipv6_admission)
     preblock = base_ru | additions
     preblock_iv = {v: intervals(preblock, v) for v in (4, 6)}
     core_company_iv = {v: intervals(core_company_prefixes, v) for v in (4, 6)}
@@ -823,9 +835,9 @@ def main():
     # CIDR set difference is not address-space subtraction: e.g. removing
     # 203.0.113.128/25 from a covering 203.0.113.0/24 must retain only the /25.
     # Convert to exact intervals before subtracting PRIVATE and RKN block prefixes.
-    routing_exclusions = blocked | set(admission_exclusions)
+    routing_exclusions = blocked | admission_mask
     final = set(collapse(subtract_networks(preblock, private, routing_exclusions)))
-    admission_iv = {v: intervals(admission_exclusions, v) for v in (4, 6)}
+    admission_iv = {v: intervals(admission_mask, v) for v in (4, 6)}
     admission_removed = {
         v: interval_size(intersect(subtract(subtract(preblock_iv[v], private_iv[v]), blocked_iv[v]), admission_iv[v]))
         for v in (4, 6)
@@ -992,7 +1004,7 @@ def main():
         raise ValueError("PRIVATE precedence violation in v41")
     if any(intersect(intervals(decoded["RU"],v),blocked_iv[v]) for v in (4,6)):
         raise ValueError("Non-corporate RKN blocked destination remains in DIRECT v41")
-    assert_regional_admission_disjoint(decoded["RU"], admission_exclusions)
+    assert_regional_admission_disjoint(decoded["RU"], admission_mask)
     for v in (4,6):
         company_expected = normalize_interval_union(
             core_company_iv[v], shared_infrastructure_iv[v], regional_only_iv[v],
@@ -1047,6 +1059,8 @@ def main():
         "- Regional registration and service sources remain DIRECT except for explicitly reviewed admission conflicts.",
         "- Regional admission exclusions (not RKN): " + ", ".join(row["prefix"] for row in admission_exclusions.values()),
         f"- IPv4 removed by regional admission exclusions after PRIVATE and block policy: {admission_removed[4]}",
+        "- Reviewed IPv6 admission exclusions (not RKN): " + ", ".join(map(str, ipv6_admission)),
+        f"- IPv6 removed by reviewed admission exclusions after PRIVATE and block policy: {admission_removed[6]}",
         "- PRIVATE has absolute precedence.",
         "- CORE_CORPORATE exact origin prefixes are protected from the resolver layer only.",
         "- SHARED_INFRA exact origin prefixes are protected only against the resolver-only layer.",
@@ -1142,7 +1156,11 @@ def main():
         "rir_inventory":{"rows":rir_rows,"countries":{c:len(rir[c]) for c in ("RU","BY","KZ")}},
         "regional_admission_exclusions": {
             "records": list(admission_exclusions.values()),
-            "removed_after_block_policy": {f"ipv{v}": count for v, count in admission_removed.items()},
+            "removed_after_block_policy": {"ipv4": admission_removed[4], "ipv6": 0},
+        },
+        RECORD_KEY: {
+            "records": list(ipv6_admission.values()),
+            "removed_after_block_policy": {"ipv6": admission_removed[6]},
         },
         "service_sources":source_stats,
         "diagnostic_sources": {
@@ -1233,6 +1251,7 @@ def main():
             "hydra_geoip":sha256(args.hydra.read_bytes()),
             "regional_rir_inventory":sha256(args.rir.read_bytes()),
             "regional_admission_exclusions":sha256(args.regional_admission_exclusions.read_bytes()),
+            RECORD_KEY:sha256(args.reviewed_ipv6_admission_exclusions.read_bytes()),
             "reviewed_operator_prefixes":source_stats[reviewed_source]["input_sha256"],
             "kyoresuas_standard_ipv4":sha256(args.kyoresuas_v4.read_bytes()),
             "kyoresuas_standard_ipv6":sha256(args.kyoresuas_v6.read_bytes()),
