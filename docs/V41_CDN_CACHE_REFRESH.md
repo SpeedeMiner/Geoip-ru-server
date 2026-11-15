@@ -89,4 +89,4 @@ Use `--cdn-sha` when verifying a specific expected publication.
 A mismatch exits nonzero. During normal cache propagation, retry or use
 GitHub Release directly. This command neither purges nor changes a ref.
 
-[Publication journal](V41_CDN_PUBLICATION_JOURNAL_20261115.md).
+[Cutover runbook](V41_CDN_CUTOVER_RUNBOOK.md) · [Publication journal](V41_CDN_PUBLICATION_JOURNAL_20261115.md).
