@@ -37,6 +37,7 @@ on:
       - ".github/scripts/verify_v41_ipverse_archive.py"
       - ".github/scripts/bundle_v41_registry_inputs.py"
       - ".github/scripts/v41_release_manifest.py"
+      - ".github/scripts/audit_v41_block_feed_delta.py"
       - ".github/data/v41-upstream-sources.json"
       - ".github/scripts/build_company_asn_prefixes.py"
       - ".github/scripts/build_company_asn_prefix_classes_v41.py"
@@ -610,6 +611,26 @@ jobs:
             kyoresuas-services.json
             refilter-ipsum.lst
             w1zardz-ru-ipv4.txt
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Report exact Antifilter delta and last verified live resolver input
+        if: github.event_name == 'pull_request'
+        continue-on-error: true
+        timeout-minutes: 7
+        shell: bash
+        run: |
+          python3 .github/scripts/audit_v41_block_feed_delta.py \
+            --repository "$GITHUB_REPOSITORY" --candidate . \
+            --output "$RUNNER_TEMP/v41-block-feed-delta.json" --summary "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload advisory Antifilter report
+        if: github.event_name == 'pull_request'
+        continue-on-error: true
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: v41-block-feed-delta-advisory
+          path: ${{ runner.temp }}/v41-block-feed-delta.json
           if-no-files-found: error
           retention-days: 30
 
