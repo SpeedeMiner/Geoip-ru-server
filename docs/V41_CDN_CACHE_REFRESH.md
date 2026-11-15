@@ -17,7 +17,10 @@ different public GitHub ref through a third-party cache.
 The production v41 job publishes the CDN branch after publishing and
 verifying the release. The manual repair path reuses an existing release.
 Both compare the public rolling GitHub assets with the promoted release
-commit before writing to CDN. They derive a fresh tree from the three checked
+commit before writing to CDN. A production run also checks the fallback tag,
+the snapshot marker and the versioned downloads before updating `cdn`.
+The separate repair workflow reuses the verified rolling release. Both
+derive a fresh tree from the three checked
 GitHub blobs, never from an unrestricted copy of `release`. The branch
 starts from a root commit and subsequent updates are fast-forward and
 compare-and-swap protected. Unchanged bytes do not create another commit.

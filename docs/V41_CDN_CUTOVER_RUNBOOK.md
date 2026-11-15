@@ -43,7 +43,7 @@ python3 .github/scripts/audit_v41_cdn_public.py --edges --verify-git-tree --cdn-
 | `origin_unconfirmed` | The CDN Git ref was set, but pinned GitHub Raw was not confirmed. Purge was skipped. Check the GitHub release, then use the separate repair workflow if needed. |
 | `public_unconfirmed` | The CDN Git ref was set, but jsDelivr did not confirm all bytes. Keep the versioned GitHub fallback and rerun the read-only audit before repairing. |
 | Versioned fallback audit failed | Check the pinned marker, Git tag and versioned assets. Use a GitHub download only after its bytes and checksum have been verified. Do not repair CDN to fix a missing snapshot asset. |
-| GitHub asset preflight failed | The CDN step must leave `cdn` unchanged. Inspect rolling GitHub assets and their checksums before attempting to repair the CDN. |
+| GitHub asset preflight failed | The CDN step leaves `cdn` unchanged. Read its diagnostic to distinguish the rolling asset from the versioned snapshot. Repairing CDN does not repair a bad GitHub download. |
 
 If jsDelivr or the mutable rolling GitHub download is unavailable, validate
 only the fallback for the expected release. This command does not query the

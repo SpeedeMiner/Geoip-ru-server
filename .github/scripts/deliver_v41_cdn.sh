@@ -10,7 +10,7 @@ scripts="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)"
 tmp="$(mktemp -d)"
 trap 'rm -rf -- "$tmp"' EXIT
 mkdir "$tmp/binaries"
-bash "$scripts/verify_v41_cdn_github_release.sh" "$SNAPSHOT_SHA" "$tmp/binaries"
+bash "$scripts/verify_v41_cdn_github_release.sh" "$SNAPSHOT_SHA" "$tmp/binaries" "$fallback_tag"
 output="$tmp/output"
 # Publishing the branch is a required Git update.
 GITHUB_OUTPUT="$output" bash "$scripts/publish_v41_cdn_branch.sh"

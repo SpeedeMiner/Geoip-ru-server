@@ -35,6 +35,7 @@ class DeliveryIntegrationTests(unittest.TestCase):
                 f"{hashlib.sha256(data).hexdigest()}  {name}\n")
         for name in ("geoip_RU_v41_manifest.json", "hydra-geoip.dat", "other.srs", "journal.md"):
             (self.work / name).write_text("not a supported CDN asset\n")
+        (self.work / "geoip_RU_ipverse_snapshot_tag.txt").write_text(TAG + "\n")
         self.git(self.work, "add", "--all")
         self.git(self.work, "commit", "-qm", "validated release")
         self.git(self.work, "tag", TAG)
@@ -59,10 +60,14 @@ log = Path(os.environ["LOG"])
 with log.open("a") as stream:
     print(host, name, file=stream)
 if host == "github.com":
-    assert url.path == "/example/geoip/releases/download/latest-geoip-client-v41/" + name
+    tag = url.path.split("/")[-2]
+    assert tag in ("latest-geoip-client-v41", "geoip-v41-snapshot-42.1")
+    assert url.path == "/example/geoip/releases/download/" + tag + "/" + name
     assert name.removesuffix(".sha256sum") in files
     data = (Path(os.environ["RELEASE_FILES"]) / name).read_bytes()
-    if mode == "bad-rolling" and name == "geoip_RU.srs.sha256sum":
+    if mode == "bad-snapshot" and tag == "geoip-v41-snapshot-42.1" and name == "geoip_RU.srs":
+        data = b"stale snapshot SRS"
+    if mode == "bad-rolling" and tag == "latest-geoip-client-v41" and name == "geoip_RU.srs.sha256sum":
         data = b"stale sidecar"
 elif host == "purge.jsdelivr.net":
     assert url.path == "/gh/example/geoip@cdn/" + name and name in files
@@ -136,7 +141,7 @@ Path(sys.argv[sys.argv.index("--output") + 1]).write_bytes(data)
         run, calls, output, summary = self.invoke("raw-lag")
         self.assertEqual(run.returncode, 0, run.stderr)
         self.assertEqual([line.split()[0] for line in calls],
-                         ["github.com"] * 6 + ["raw.githubusercontent.com"] * 4
+                         ["github.com"] * 12 + ["raw.githubusercontent.com"] * 4
                          + ["purge.jsdelivr.net"] * 3 + ["cdn.jsdelivr.net"] * 3)
         self.assertEqual(output, f"cdn_sha={self.cdn()}\ncdn_status=verified\n")
         self.assertIn(f"/releases/tag/{TAG}", summary)
@@ -156,6 +161,14 @@ Path(sys.argv[sys.argv.index("--output") + 1]).write_bytes(data)
         before = self.cdn()
         self.assertNotEqual(self.invoke("bad-rolling")[0].returncode, 0)
         self.assertEqual(self.cdn(), before)
+
+    def test_production_rejects_bad_versioned_fallback_before_creating_cdn(self):
+        denied, calls, output, _ = self.invoke("bad-snapshot")
+        self.assertNotEqual(denied.returncode, 0)
+        self.assertIn("versioned snapshot", denied.stdout)
+        self.assertEqual(output, "")
+        self.assertTrue(all(line.startswith("github.com ") for line in calls))
+        self.assertFalse(self.git(self.remote, "branch", "--list", "cdn"))
 
     def test_manual_repair_is_strict_but_reusing_a_valid_ref_is_idempotent(self):
         blocked, calls, output, _ = self.invoke("raw-down", manual=True)
