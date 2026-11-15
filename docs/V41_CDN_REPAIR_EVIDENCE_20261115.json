@@ -1,0 +1,31 @@
+{
+  "artifact": "v41-pr39-wrap-14155200201.zip",
+  "artifact_sha256": "e9946c54721737aafd65ef3b4ade09b66f096f3bc1a4fff13c19866a98d4ee87",
+  "stale_github_refused_before_delivery": true,
+  "stale_calls": [
+    "github.com geoip_RU.dat",
+    "github.com geoip_RU.dat.sha256sum",
+    "github.com geoip_RU.srs",
+    "github.com geoip_RU.srs.sha256sum"
+  ],
+  "successful_calls": [
+    "github.com geoip_RU.dat",
+    "github.com geoip_RU.dat.sha256sum",
+    "github.com geoip_RU.srs",
+    "github.com geoip_RU.srs.sha256sum",
+    "github.com geoip_PRIVATE.srs",
+    "github.com geoip_PRIVATE.srs.sha256sum",
+    "purge.jsdelivr.net geoip_RU.dat",
+    "purge.jsdelivr.net geoip_RU.srs",
+    "purge.jsdelivr.net geoip_PRIVATE.srs",
+    "raw.githubusercontent.com geoip_RU.dat",
+    "raw.githubusercontent.com geoip_RU.srs",
+    "raw.githubusercontent.com geoip_PRIVATE.srs",
+    "cdn.jsdelivr.net geoip_RU.dat",
+    "cdn.jsdelivr.net geoip_RU.srs",
+    "cdn.jsdelivr.net geoip_PRIVATE.srs"
+  ],
+  "only_cdn_moved": true,
+  "duplicate_repair_was_noop": true,
+  "local_remote_only": true
+}

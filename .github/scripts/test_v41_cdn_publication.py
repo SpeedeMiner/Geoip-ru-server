@@ -161,7 +161,7 @@ class CdnPublicationTests(unittest.TestCase):
 
 
 class CdnReadbackTests(unittest.TestCase):
-    def invoke(self, *, mismatch=None, transient=False):
+    def invoke(self, *, mismatch=None, transient=False, raw_timeout=False):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
             for filename in FILES:
@@ -179,6 +179,11 @@ with Path("calls").open("a") as f:
 assert url.netloc in ("raw.githubusercontent.com", "cdn.jsdelivr.net")
 assert ("@cdn/" in url.path) == (url.netloc == "cdn.jsdelivr.net")
 out=Path(sys.argv[sys.argv.index("--output")+1])
+if url.netloc == "raw.githubusercontent.com" and filename=="geoip_RU.dat":
+    raw_timeout=os.environ["TEST_RAW_TIMEOUT"]
+    if raw_timeout=="always" or raw_timeout=="once" and not Path("raw-retried").exists():
+        Path("raw-retried").touch()
+        sys.exit(28)
 stale=os.environ.get("TEST_MISMATCH")==filename and url.netloc=="cdn.jsdelivr.net"
 if stale and os.environ.get("TEST_TRANSIENT")=="1":
     stale=not Path("retried").exists()
@@ -193,7 +198,8 @@ out.write_text("stale" if stale else filename)
                                cwd=root, capture_output=True, text=True, env={
                 **os.environ, "PATH": f"{root}:{os.environ['PATH']}",
                 "GITHUB_REPOSITORY": "example/geoip", "CDN_SHA": "a" * 40,
-                "TEST_MISMATCH": mismatch or "", "TEST_TRANSIENT": str(int(transient))})
+                "TEST_MISMATCH": mismatch or "", "TEST_TRANSIENT": str(int(transient)),
+                "TEST_RAW_TIMEOUT": raw_timeout or ""})
             return p, (root / "calls").read_text().splitlines()
 
     def test_correct_bytes_for_every_client_file(self):
@@ -211,6 +217,17 @@ out.write_text("stale" if stale else filename)
         self.assertIn("Use GitHub Release", r.stdout)
         self.assertEqual(len(calls), 8)
         self.assertTrue(calls[-1].endswith(FILES[-1]))
+
+
+    def test_pinned_raw_retries_transient_transport_error_but_fails_closed(self):
+        r, calls = self.invoke(raw_timeout="once")
+        self.assertEqual(r.returncode, 0, r.stderr)
+        self.assertEqual(len(calls), 7)
+        self.assertEqual(calls[:2], ["raw.githubusercontent.com geoip_RU.dat"] * 2)
+        r, calls = self.invoke(raw_timeout="always")
+        self.assertEqual(r.returncode, 1)
+        self.assertEqual(calls, ["raw.githubusercontent.com geoip_RU.dat"] * 3)
+        self.assertIn("bytes not confirmed after retries", r.stdout)
 
 
 class DeliveryStepTests(unittest.TestCase):
