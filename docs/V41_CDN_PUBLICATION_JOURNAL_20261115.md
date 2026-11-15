@@ -234,3 +234,8 @@
 
 - [Полный v41 CI коммита `a127dc4`](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43705091160) завершён успешно. Publish в PR штатно пропущен. [Архив 14158033438](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43705091160/artifacts/14158033438) проверен по полному ZIP SHA-256 и контрольным суммам бинарников. Три клиентских файла совпали с контрольным кандидатом. После `a127dc4` добавлена только проверка обязательных snapshot-параметров в lint и журнал.
 - Девять контрольных URL в `@cdn` вернули 404, включая все три sidecars, журнал, отчёт, манифест, исходный Hydra DAT и архив. PR остаётся открытым без конфликтов. №35, №41, №42 и production не изменены.
+
+## 15.11.2026 15:46 UTC+05 — итог проверки резервного выпуска
+
+- [Последний code CI v41 для `30ff722`](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43705189431) прошёл, production publish пропущен. [ZIP 14157943765](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43705189431/artifacts/14157943765) и три sidecars проверены, байты всех трёх файлов совпадают с контрольным CI-кандидатом. Последующие изменения — только этот журнал.
+- Итог: live `@cdn` подтверждён на трёх адресах, GitHub Raw и по полному дереву GitHub, содержит ровно три клиентских файла. Рабочий fallback совпадает с promoted release. Ветка PR проверяет fallback перед обновлением CDN, включая перенос тега во время скачивания. `main=596c93d`, `release=7eef1efc`, `cdn=80e3b14`; никаких слияний, production запусков или live purge.
