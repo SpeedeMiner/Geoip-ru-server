@@ -208,6 +208,35 @@ class PublicCdnAuditTests(unittest.TestCase):
             self.assertEqual(audit.main(), 1)
         self.assertIn("tag moved during audit", err.getvalue())
 
+    def test_fallback_only_ignores_rolling_and_cdn(self):
+        release, tag = "c" * 40, "v41.2"
+        self.stale.add(f"https://github.com/{REPO}/releases/download/latest-geoip-client-v41/geoip_RU.dat")
+        result = audit.audit_fallback(REPO, release, tag, self.fetch)
+        self.assertEqual(result["scope"], "versioned GitHub fallback only")
+        self.assertEqual(len(self.calls), 12)
+        self.assertTrue(all(url.startswith((
+            f"https://raw.githubusercontent.com/{REPO}/{release}/",
+            f"https://github.com/{REPO}/releases/download/{tag}/",
+        )) for url in self.calls))
+
+    def test_fallback_only_cli_never_resolves_the_cdn_ref(self):
+        release, tag = "c" * 40, "v41.2"
+        cli = ["audit", "--repo", REPO, "--release-sha", release,
+               "--snapshot-tag", tag, "--fallback-only"]
+        result = {"scope": "versioned GitHub fallback only"}
+        stdout = io.StringIO()
+        with patch.object(audit.sys, "argv", cli), \
+                patch.object(audit, "get_commit", return_value=release) as refs, \
+                patch.object(audit, "checked_snapshot_tag", return_value=tag), \
+                patch.object(audit, "get_tag_commit", return_value=release), \
+                patch.object(audit, "audit", side_effect=AssertionError("unexpected CDN check")), \
+                patch.object(audit, "audit_fallback", return_value=result) as fallback, \
+                contextlib.redirect_stdout(stdout):
+            self.assertEqual(audit.main(), 0)
+        self.assertEqual(json.loads(stdout.getvalue()), result)
+        self.assertEqual([item.args for item in refs.call_args_list], [(REPO, "release")] * 2)
+        fallback.assert_called_once_with(REPO, release, tag)
+
     def test_inventory_matches_the_shell_publisher(self):
         shell = Path(audit.__file__).with_name("v41_cdn_files.sh").read_text()
         line = next(line for line in shell.splitlines() if "V41_CDN_FILES=" in line)

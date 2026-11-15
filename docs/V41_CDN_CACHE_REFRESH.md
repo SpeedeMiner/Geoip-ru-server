@@ -90,7 +90,9 @@ When verifying a specific publication, pass both `--cdn-sha` and
 comparison without requiring `--compare-release`. The `--verify-snapshot`
 flag also verifies the exact versioned fallback and its checksums using the
 tag recorded in the promoted release. To check a specific run, pass its
-`--snapshot-tag` explicitly.
+`--snapshot-tag` explicitly. Use `--fallback-only` to check the versioned
+GitHub assets and promoted Git commit while skipping the CDN and rolling
+GitHub downloads, for example during a CDN outage.
 A mismatch exits nonzero. During normal cache propagation, retry or use
 GitHub Release directly. This command neither purges nor changes a ref.
 

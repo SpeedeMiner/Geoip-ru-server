@@ -45,6 +45,17 @@ python3 .github/scripts/audit_v41_cdn_public.py --edges --cdn-sha "$CDN_SHA" --r
 | Versioned fallback audit failed | Check the pinned marker, Git tag and versioned assets. Use a GitHub download only after its bytes and checksum have been verified. Do not repair CDN to fix a missing snapshot asset. |
 | GitHub asset preflight failed | The CDN step must leave `cdn` unchanged. Inspect rolling GitHub assets and their checksums before attempting to repair the CDN. |
 
+If jsDelivr or the mutable rolling GitHub download is unavailable, validate
+only the fallback for the expected release. This command does not query the
+CDN, the CDN branch or the rolling GitHub assets.
+
+```sh
+python3 .github/scripts/audit_v41_cdn_public.py --fallback-only --release-sha "$RELEASE_SHA" --snapshot-tag "$SNAPSHOT_TAG"
+```
+
+Passing this check verifies the versioned GitHub snapshot, not recovery of
+the public CDN. The expected release must still be the promoted release.
+
 When release bytes and checksums are correct, **Repair GeoIP v41 client CDN**
 can repair the channel from an existing release. If the binary tree already matches,
 it does not create a new CDN commit. Do not reset Git refs or edit published

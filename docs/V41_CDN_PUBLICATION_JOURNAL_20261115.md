@@ -193,3 +193,8 @@
 
 - `--verify-snapshot` читает marker из закреплённого `release`. `--snapshot-tag` дополнительно фиксирует имя выпуска из конкретного запуска. Tag должен разрешаться в тот же release SHA, а три скачиваемых бинарника и три checksum — совпадать с pinned Raw, rolling GitHub и jsDelivr. Tag и обе рабочие ветки перепроверяются после скачивания.
 - 16 целевых тестов прошли. Они отклоняют неправильный marker, rolling alias, moved tag, старые binaries/checksum и проверяют lightweight/annotated tags. Это проверка текущих байтов, не обещание неизменности GitHub Release: API действующего snapshot показывает `immutable=false`.
+
+## 15.11.2026 15:31 UTC+05 — независимая проверка на случай отказа CDN
+
+- Полная живая сверка показала `versioned_snapshot_verified=geoip-v41-snapshot-43617500418.1`, `release=7eef1efc` и `cdn=80e3b14`. Замечание: если CDN не отвечает, полный аудит останавливается раньше проверки GitHub snapshot. Добавлен режим `--fallback-only`, который читает только promoted release, его marker/tag и шесть соответствующих файлов GitHub. Он ни разу не читает CDN ref, CDN URL или rolling GitHub assets.
+- 18 тестов публичного аудита прошли. Независимость режима проверена при старом rolling asset, а CLI не принимает совместные флаги адресов CDN. Предыдущий полный проход прошёл 207 локальных и 241 составной тест. Живой запуск нового режима ожидает ответа GitHub.
