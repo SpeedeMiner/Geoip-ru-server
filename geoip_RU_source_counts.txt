@@ -14,7 +14,7 @@ w1zardz-ru	0	955	0	0	955
 ru-asn-bgp	0	0	0	23611	23611
 rir-ru	0	0	0	13684	13684
 global-bgp	0	0	0	520438	520438
-iana-non-global	0	0	30	0	30
+iana-non-global	0	0	33	0	33
 iana-global-exceptions	0	0	0	14	14
 blocked-direct-exclusions	0	0	0	200391	200391
-TOTAL	155048	133352	58	758138	1046596
+TOTAL	155048	133352	61	758138	1046599

@@ -1,0 +1,60 @@
+{
+  "assets": {
+    "as-ip-blocks.tar.gz": {
+      "bytes": 16286885,
+      "sha256": "5d3b254a78d4fbbd225d6e18b317a9a29e799f418a6f7b57dbe617b1d1beeb41"
+    },
+    "geoip_PRIVATE.srs": {
+      "bytes": 228,
+      "sha256": "b9ea6381ea61e286298aea76c10cb85a252ff0d20c49d6de3527be1353c107c4"
+    },
+    "geoip_PRIVATE.srs.sha256sum": {
+      "bytes": 84,
+      "sha256": "17ca2e8246a3609d825cd5f611e76c9c039f75573f4d19238c83759fc96fd915"
+    },
+    "geoip_RU.dat": {
+      "bytes": 512533,
+      "sha256": "b17fe26ccdcb8d272e6233ec9686a514b309e9d75e75653313a75f329b70fae7"
+    },
+    "geoip_RU.dat.sha256sum": {
+      "bytes": 79,
+      "sha256": "2694f6a3ca691d05cd19b57d370ea8acae453f1d3748da090b2eede233815f85"
+    },
+    "geoip_RU.srs": {
+      "bytes": 128392,
+      "sha256": "c60b8a1de5d4d67478850d7f72b272044f536d7d592591fbbf75ac50129002b1"
+    },
+    "geoip_RU.srs.sha256sum": {
+      "bytes": 79,
+      "sha256": "8ea462bfd2dafd9a4a9bbf980bed31026c06d6d20a45b469351109817ca34060"
+    },
+    "geoip_RU_input_provenance.tsv": {
+      "bytes": 8479,
+      "sha256": "196ce9f6c1f686fb58d01cecc1ea3848575b88aa5090d48cb914197918f151e1"
+    },
+    "geoip_RU_quality_report.txt": {
+      "bytes": 7921,
+      "sha256": "6e23cccc566e21a8f20f02e3828bcfd67dba392c3deed92d03ac08a9c8be5576"
+    },
+    "geoip_RU_v41_manifest.json": {
+      "bytes": 14910,
+      "sha256": "c69fad8d4e83136159da2e47e30aa9d8ecc3c3225adca3d8ca7bb3d6c334d79a"
+    },
+    "v41-block-inputs.tar.gz": {
+      "bytes": 1912571,
+      "sha256": "e9e8955671950d52ca7cf29b8710791fd79da7797cf206e2bd42bb32d93ad7df"
+    },
+    "v41-registry-inputs.tar.gz": {
+      "bytes": 4812148,
+      "sha256": "fc5b6f416cb3ff53c067635c8c264c5bbf8a65c413ca27d0dcbc8468ec67b851"
+    },
+    "v41-upstream-inputs.tar.gz": {
+      "bytes": 5986738,
+      "sha256": "c2b6209c806d3c066ee77854affe5756e34db9d8e3766f00e8a3877354086742"
+    }
+  },
+  "run_attempt": 1,
+  "schema": 1,
+  "source_commit": "75a0a4086cedab43f21e3c0b5da3a476f6dbe3df",
+  "workflow_run": "https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43712000505"
+}

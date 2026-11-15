@@ -1,1 +1,1 @@
-geoip-v41-snapshot-43709200004.1
+geoip-v41-snapshot-43712000505.1

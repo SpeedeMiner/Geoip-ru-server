@@ -1,7 +1,7 @@
 # v41.1 exact BGP prefixes with a curated corporate or RIR-RU/BY/KZ origin ASN
 # Prefixes come from the same pinned ipverse archive-derived selected-origin input used by the v37 base build.
-# selected_origin_input_sha256=eb8f6e897c3be811b54cf29a6849fde62326012d17ea3ef4b31efdc3f4375751
-# company_asn_registry_sha256=671dfb9885f4a006468921c0baf527deecdbcd188319e1f731154c0cb152142d
+# selected_origin_input_sha256=af5db0a41509e7b193f69d7d16c32f4ec7799251d6e26799c3aaa17cbc8ddd14
+# company_asn_registry_sha256=f20adb453f33e4a67070484663ef9e75ae5cd93278f3210e76df6aedeae8136b
 # rir_ru_asn_registry_sha256=fae1b8aa4b8064f5948f5e57ef5277d26a1209d62edaf7bf2423bc560bae25e5
 # rir_by_kz_asn_registry_sha256=0a9aff6e579a860b1f7ce94cfa5a8fb664330f8710817652e542c15cb6bf7e07
 2.16.20.0/23 # AS12389

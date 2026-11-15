@@ -99,10 +99,10 @@ Direct/whitelist candidate CIDR inputs: 133352
 RU/BY/KZ RIR/company ASN BGP CIDR inputs: 23611
 RIR-RU CIDR inputs: 13684
 Global ipverse BGP CIDR inputs: 520438
-Reconciled source role totals: RU=155048 candidate=133352 PRIVATE=58 other_evidence=758138 total=1046596
+Reconciled source role totals: RU=155048 candidate=133352 PRIVATE=61 other_evidence=758138 total=1046599
 Source contribution report separates builder-assigned roles; geoip_RU_category_audit.tsv additionally counts valid CIDR rows by each raw GeoIP category and assigned role, including ignored categories.
 Raw GeoIP category audit rows (category/role combinations): 283
-IANA non-global CIDR inputs: 30
+IANA non-global CIDR inputs: 33
 IANA globally-reachable exceptions: 14
 Approved blocked-prefix entries (other evidence role): 200391
 
@@ -121,33 +121,33 @@ Inclusion policy: prefixes originated by allowlisted company ASNs are included r
 Country metadata policy: ipverse countryCode is audit-only and is never an inclusion filter for allowlisted company-ASN origins.
 Per-ASN evidence and prefix counts: geoip_RU_company_asn_manifest.tsv
 
-Generated UTC: 2026-11-15T11:31:04.526080+00:00
+Generated UTC: 2026-11-15T12:05:41.097291+00:00
 ipverse aggregated.json files: 97503
 RIR delegated-stats registered RU ASNs: 5772
 RIR delegated-stats registered BY/KZ ASNs: 387
-Curated Russian-company ASN allowlist entries: 57
-Curated company ASNs with ipverse BGP data: 53
+Curated Russian-company ASN allowlist entries: 105
+Curated company ASNs with ipverse BGP data: 101
 Selected RIR-RU/BY/KZ or company ASNs with ipverse BGP data: 5343
 Active BY/KZ RIR ASNs with ipverse announcements: 333
 Unique prefixes originated by RIR-RU ASNs: 21494
 Unique prefixes originated by RIR-BY/KZ ASNs: 2083
-Unique prefixes originated by curated Russian-company/affiliate ASNs (observed in ipverse): 3378
-Unique prefixes in DIRECT company-ASN layer (observed + static overrides): 3378
+Unique prefixes originated by curated Russian-company/affiliate ASNs (observed in ipverse): 3992
+Unique prefixes in DIRECT company-ASN layer (observed + static overrides): 3992
 Yandex Turkey AS212066 static DIRECT overrides: 45.148.65.0/24, 2a14:48c6::/48
 Yandex Turkey AS212066 ipverse-observed prefixes at build time: 2 of 2
 Yandex Turkey AS212066 required DIRECT prefixes covered: 2 of 2
 Unique prefixes in DIRECT ASN-origin/pinned layer (RIR-RU/BY/KZ OR company allowlist): 23611
 Raw selected IPv4 prefix records (RIR-RU OR company allowlist): 21570
 Raw selected IPv6 prefix records (RIR-RU OR company allowlist): 2151
-Raw company-allowlisted IPv4 prefix records: 3146
-Raw company-allowlisted IPv6 prefix records: 239
+Raw company-allowlisted IPv4 prefix records: 3725
+Raw company-allowlisted IPv6 prefix records: 279
 Raw RIR-RU IPv4 prefix records: 19695
 Raw RIR-RU IPv6 prefix records: 1895
 Unique global ipverse prefixes: 520438
 Raw global IPv4 prefix records: 427529
 Raw global IPv6 prefix records: 97402
 Prefixes originated by multiple selected ASNs: 103
-Company ASN ipverse countryCode distribution (audit only): CH=1, KZ=2, RU=51, TR=1
+Company ASN ipverse countryCode distribution (audit only): CH=1, KZ=2, RU=99, TR=1
 RIR-RU ASN ipverse countryCode mismatches (audit only): UNKNOWN=264
 RIR-BY/KZ ASN ipverse countryCode mismatches (audit only): UNKNOWN=10
 Invalid/default prefixes skipped: 0
@@ -177,7 +177,7 @@ TOTAL_REVIEW_ROWS	-	-	-	0	28567	-
 
 Source snapshots and normalized checksum manifest: geoip_RU_blocked_sources.sha256
 f5b63e9200cd05d5e0440a208793783512bc436637c8570942dc4e78022b02fe  antifilter-ip.lst  source=antifilter-ip.lst
-6b29a534c362b7f762caaaa70b9fabee0a06464d7a71f96eeb83a2b99b8c91c2  antifilter-ipresolve.lst  source=antifilter-ipresolve.lst
+8d8d11605a299da96006df6303a90b08b4ae25d35c1d1a199708cb83f84cdf44  antifilter-ipresolve.lst  source=antifilter-ipresolve.lst
 2554552742bc0da516a321db66b36fa6cece28c4b3c64b66ff6d12320b33bdb6  antifilter-subnet.lst  source=antifilter-subnet.lst
 5819f3db0139519c2bbe8900c21481da37e127bb3c42e917ecede99caa0ce5f5  antifilter-community.lst  source=community-antifilter-community.lst
 daef14e23e2dad9988c55917c0f3aea0dbc308244cfa6f790d3daf371f3303f7  refilter-ipsum.lst  source=re-filter-ipsum.lst
