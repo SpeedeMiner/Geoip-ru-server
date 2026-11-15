@@ -655,5 +655,32 @@
         "more_specific_origins": {}
       }
     }
+  },
+  "antifilter_conditional_get_observations": {
+    "ip.lst": {
+      "status": 304,
+      "date": "Sun, 15 Nov 2026 08:04:46 GMT",
+      "etag": "\"6af88c04-ae81b\"",
+      "last_modified": "Sat, 14 Nov 2026 16:27:48 GMT"
+    },
+    "ipresolve.lst": {
+      "status": 200,
+      "same_sha256": true,
+      "date": "Sun, 15 Nov 2026 08:04:47 GMT",
+      "etag": "\"6af966d5-2803f2\"",
+      "last_modified": "Sun, 15 Nov 2026 08:01:25 GMT"
+    },
+    "subnet.lst": {
+      "status": 304,
+      "date": "Sun, 15 Nov 2026 08:04:46 GMT",
+      "etag": "\"6af88c1d-455\"",
+      "last_modified": "Sat, 14 Nov 2026 16:28:13 GMT"
+    },
+    "ipsum.lst": {
+      "status": 304,
+      "date": "Sun, 15 Nov 2026 08:04:46 GMT",
+      "etag": "\"6af88c1c-48100\"",
+      "last_modified": "Sat, 14 Nov 2026 16:28:12 GMT"
+    }
   }
 }
