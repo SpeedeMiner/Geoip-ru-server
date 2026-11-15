@@ -19,3 +19,26 @@
 - sing-box 1.13.12 archive downloaded and verified against the workflow SHA-256 `1540533adb3df24f5ad5f14b5c7ca3dbc2401b10a1c1eb278fcadcada47ec6c4`.
 - CI: not submitted yet. Fixed-input full replay and manifest verification pending. No claim that the released DAT lost IPv6.
 - Next: verify all snapshot assets, rebuild the base/overlay on the same inputs, compare DAT and SRS, then save evidence and open Draft PR. Phase B follows phase A acceptance evidence.
+
+## 2026-11-15 — phase A, checkpoint 2: fixed-input replay
+
+- Draft PR: https://github.com/SpeedeMiner/Geoip-ru-server/pull/44 . Initial remote code commit `dc11a7568e8332236273feab16c3d7d7c8f9eaec`, tree `9fffbe0e9c54f38b7e9811fbe191c681f03835fb`.
+- All 13 assets bound by the release manifest were verified by byte length and SHA-256, including the four retained input archives. Snapshot HTTP readback was additionally requested for the client files, sidecars, manifests, provenance and quality report. All 10 HTTP readbacks matched the pinned files byte for byte.
+- Reconstructed v37 from the retained upstream files, published ASN/RIR sidecars and freshly derived IANA masks. Base SHA-256 `3b196ba746ee67f9b993337e2725887f130a280e4e76e53cb57448bf94d1eb8a` exactly matches the pinned v41 manifest.
+- Replayed the original overlay in a detached worktree at `38f3682`, then the patched overlay on the identical base and retained inputs. Compiled and decompiled both SRS for each result with the verified sing-box binary. All three client binaries are byte-identical before/after and equal to the published snapshot. Patch delta: IPv4 +0/-0; IPv6 +0/-0; PRIVATE unchanged. Effective exclusions are byte-identical.
+- Independently decoded the retained DAT with v2fly's actual generated Go types and matched both categories, every address and prefix length against the decompiled RU/PRIVATE SRS. This replay test uses `V41_COMPAT_DIRECTORY`; CI always runs the synthetic upstream compatibility test, while retained-artifact replay explicitly supplies the directory.
+- Hard/effective exclusions and PRIVATE have zero address-space intersection with final RU in either family. Official Telegram validator passes all 14 prefixes.
+- Full local suite: 258 Python tests PASS; Go suite PASS with Go 1.26.10; CDN workflow guard PASS; git diff --check PASS.
+- Previous release files were restored from immutable Git commit `a23b381e4844ed4cb84bf67e1f5984027e68769c` and checked against that commit's sidecars. That historical commit does not contain a release-manifest JSON; no fallback to a rolling ref was used. Its DAT SHA-256 is `93f6a3a5ac2551a681e7067df735a6c13c9ebbe7cc50e6d30e4a722dac64e46d`.
+- Historical release-to-release delta (NOT caused by this patch): IPv4 +0/-262, IPv6 +0/-4835703278458516698824704. This is distinct from the zero patch delta.
+- Machine-readable evidence: [V41_AUDIT_PHASE_A_EVIDENCE_20261115.json](V41_AUDIT_PHASE_A_EVIDENCE_20261115.json). Large IPv6 counts are decimal strings.
+- Initial PR CI: v41 https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43718348532 succeeded; all build validation steps succeeded; publish skipped. Lint https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43718348557 succeeded. v39 still running when this checkpoint was written.
+- Protected remote refs rechecked after creating the Draft PR and remain at the checkpoint-1 SHAs. The failed unauthenticated git push made no remote update; branch and commits were saved through the connected GitHub API instead.
+- Next: save the final artifact decoder check and evidence to the same Draft PR; verify CI for its exact new head. Then proceed to phase B, reporting global-network and Hydra-only intersections without changing admission policy.
+
+### Replay contract
+
+1. Restore the pinned snapshot release manifest, its 13 hashed assets and published sidecars from `79bddd4c51a36a8d3c2771e234e5171f574104c8`. Verify SHA-256/size before use. Restore the four archives without extracting arbitrary archive paths. The JSON evidence contains exact asset digests.
+2. Derive the two IANA masks with `build_v41_iana_special_prefixes.py`. Rebuild the v37 base using the argument order in `.github/workflows/geoip-v41.yml` at `38f3682`, substituting only retained file paths. Require the recorded base SHA.
+3. Run `build_v41_overlay.py` from baseline and PR on that same base, published input sidecars and unchanged reviewed tables. Use separate output directories and explicit `--manifest` paths when invoking `build_v41_srs.py`.
+4. Compare DAT, both SRS and effective exclusions byte for byte. Decompile SRS to `RU.json` and `PRIVATE.json` alongside each DAT, then run `V41_COMPAT_DIRECTORY=/absolute/replay/directory go test -C .github/scripts/geoip-v37-builder -mod=readonly ./...` with Go 1.26.10. Re-run the official Telegram validator on each output.

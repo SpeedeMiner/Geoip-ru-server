@@ -1,0 +1,138 @@
+{
+  "schema": 1,
+  "baseline_code": "38f36820f0e10066f7beb7eed97b00ec36c43820",
+  "initial_pr_code": "dc11a7568e8332236273feab16c3d7d7c8f9eaec",
+  "initial_pr_tree": "9fffbe0e9c54f38b7e9811fbe191c681f03835fb",
+  "snapshot": "geoip-v41-snapshot-43712216767.1",
+  "release_commit": "79bddd4c51a36a8d3c2771e234e5171f574104c8",
+  "previous_snapshot": "geoip-v41-snapshot-43709200004.1",
+  "previous_release_commit": "a23b381e4844ed4cb84bf67e1f5984027e68769c",
+  "input_assets": {
+    "as-ip-blocks.tar.gz": {
+      "bytes": 16286885,
+      "sha256": "5d3b254a78d4fbbd225d6e18b317a9a29e799f418a6f7b57dbe617b1d1beeb41"
+    },
+    "geoip_PRIVATE.srs": {
+      "bytes": 228,
+      "sha256": "b9ea6381ea61e286298aea76c10cb85a252ff0d20c49d6de3527be1353c107c4"
+    },
+    "geoip_PRIVATE.srs.sha256sum": {
+      "bytes": 84,
+      "sha256": "17ca2e8246a3609d825cd5f611e76c9c039f75573f4d19238c83759fc96fd915"
+    },
+    "geoip_RU.dat": {
+      "bytes": 512533,
+      "sha256": "b17fe26ccdcb8d272e6233ec9686a514b309e9d75e75653313a75f329b70fae7"
+    },
+    "geoip_RU.dat.sha256sum": {
+      "bytes": 79,
+      "sha256": "2694f6a3ca691d05cd19b57d370ea8acae453f1d3748da090b2eede233815f85"
+    },
+    "geoip_RU.srs": {
+      "bytes": 128392,
+      "sha256": "c60b8a1de5d4d67478850d7f72b272044f536d7d592591fbbf75ac50129002b1"
+    },
+    "geoip_RU.srs.sha256sum": {
+      "bytes": 79,
+      "sha256": "8ea462bfd2dafd9a4a9bbf980bed31026c06d6d20a45b469351109817ca34060"
+    },
+    "geoip_RU_input_provenance.tsv": {
+      "bytes": 8479,
+      "sha256": "196ce9f6c1f686fb58d01cecc1ea3848575b88aa5090d48cb914197918f151e1"
+    },
+    "geoip_RU_quality_report.txt": {
+      "bytes": 7921,
+      "sha256": "2bdcafe83f2382da22f7f7cb53809d06689f5d408652ec98dabd746e500e1293"
+    },
+    "geoip_RU_v41_manifest.json": {
+      "bytes": 14910,
+      "sha256": "e84ee45f7ae0a2227f894a75eb949dc64f57258d4b55193e9706f7eaa8bdd81b"
+    },
+    "v41-block-inputs.tar.gz": {
+      "bytes": 1912571,
+      "sha256": "e9e8955671950d52ca7cf29b8710791fd79da7797cf206e2bd42bb32d93ad7df"
+    },
+    "v41-registry-inputs.tar.gz": {
+      "bytes": 4812148,
+      "sha256": "fc5b6f416cb3ff53c067635c8c264c5bbf8a65c413ca27d0dcbc8468ec67b851"
+    },
+    "v41-upstream-inputs.tar.gz": {
+      "bytes": 5986738,
+      "sha256": "c2b6209c806d3c066ee77854affe5756e34db9d8e3766f00e8a3877354086742"
+    }
+  },
+  "release_manifest_sha256": "568c8f46ab08514fc03c684f046f006846e24ba60f58c2e3ca0cb4ad4b39e8a3",
+  "rir_snapshot_dates": {
+    "delegated-ripencc-latest": "20261114",
+    "delegated-lacnic-latest": "20261113",
+    "delegated-arin-extended-latest": "20261114",
+    "delegated-apnic-latest": "20261113",
+    "delegated-afrinic-latest": "20261115"
+  },
+  "tools": {
+    "go": "1.26.10",
+    "v2fly": "v5.56.0",
+    "protobuf_go": "v1.36.12",
+    "sing_box": "1.13.12",
+    "sing_box_archive_sha256": "1540533adb3df24f5ad5f14b5c7ca3dbc2401b10a1c1eb278fcadcada47ec6c4"
+  },
+  "checks": {
+    "python_tests": 258,
+    "red_before_fix": {
+      "tests": 7,
+      "failures": 3
+    },
+    "go_suite": "PASS",
+    "independent_upstream_protobuf_vs_decompiled_srs": "PASS",
+    "hard_effective_private_disjoint": "PASS",
+    "official_telegram_cidrs": 14,
+    "cdn_workflow_guard": "PASS",
+    "diff_check": "PASS",
+    "snapshot_http_readback": "PASS (10 files)"
+  },
+  "base_sha256": "3b196ba746ee67f9b993337e2725887f130a280e4e76e53cb57448bf94d1eb8a",
+  "outputs": {
+    "geoip_RU.dat": {
+      "sha256": "b17fe26ccdcb8d272e6233ec9686a514b309e9d75e75653313a75f329b70fae7",
+      "bytes": 512533,
+      "before_after_release_byte_identical": true
+    },
+    "geoip_RU.srs": {
+      "sha256": "c60b8a1de5d4d67478850d7f72b272044f536d7d592591fbbf75ac50129002b1",
+      "bytes": 128392,
+      "before_after_release_byte_identical": true
+    },
+    "geoip_PRIVATE.srs": {
+      "sha256": "b9ea6381ea61e286298aea76c10cb85a252ff0d20c49d6de3527be1353c107c4",
+      "bytes": 228,
+      "before_after_release_byte_identical": true
+    }
+  },
+  "patch_address_delta": {
+    "4": {
+      "added": "0",
+      "removed": "0"
+    },
+    "6": {
+      "added": "0",
+      "removed": "0"
+    }
+  },
+  "historical_release_delta_not_caused_by_patch": {
+    "4": {
+      "added": "0",
+      "removed": "262"
+    },
+    "6": {
+      "added": "0",
+      "removed": "4835703278458516698824704"
+    }
+  },
+  "ci_initial": {
+    "v41": "https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43718348532",
+    "v41_status": "success",
+    "publish": "skipped",
+    "lint": "https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43718348557",
+    "lint_status": "success"
+  }
+}
