@@ -18,6 +18,25 @@ def nets(*values):
 
 
 class DirectProvenanceAuditTests(unittest.TestCase):
+    def test_new_provider_overlap_warning_distinguishes_feed_and_dat_changes(self):
+        def family(added, feed):
+            return {'candidate':'10', 'added':str(added), 'removed':'0',
+                    'provider_snapshot_effect_on_previous_dat':feed}
+        report = {'provider_snapshot_fetched_at':'new', 'previous_provider_snapshot_fetched_at':'old',
+                  'providers': {'p':{'status':'AVAILABLE', 'families':{
+                      '4':family(0, {'added':'2','removed':'0'}), '6':family(0, None)}},
+                      'missing':{'status':'UNAVAILABLE', 'families':{}}},
+                  'hydra': {'4':{'only_counterfactual':'1'}, '6':{'only_counterfactual':'0'}}}
+        self.assertTrue(audit.has_new_provider_overlap(report))
+        out = io.StringIO()
+        audit.write_summary(report, out)
+        self.assertIn('Provider-feed effect on previous DAT: +2/−0', out.getvalue())
+        self.assertIn('Provider-feed effect on the previous DAT: unknown', out.getvalue())
+        report['providers']['p']['families']['4']['provider_snapshot_effect_on_previous_dat']['added'] = '0'
+        self.assertFalse(audit.has_new_provider_overlap(report))
+        report['providers']['p']['families']['6']['added'] = '1'
+        self.assertTrue(audit.has_new_provider_overlap(report))
+
     def test_summary_reports_unavailable_provider_and_baseline_as_unknown(self):
         report = {
             'provider_snapshot_fetched_at': '2026-11-15T00:00:00Z',

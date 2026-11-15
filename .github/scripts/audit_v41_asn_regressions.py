@@ -307,6 +307,11 @@ def write_summary(report, stream):
     print("\nCounts are ASN/family pairs, not unique IP totals. Observations and removals do not prove service reachability or failure; the artifact contains exact CIDRs.\n", file=stream)
 
 
+def has_direct_loss(report):
+    impact = report["direct_impact_summary"]
+    return bool(impact["baseline_available"] and impact["affected_pairs"]["space_lost_from_final_direct"])
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--watchlist", required=True, type=Path)
@@ -338,6 +343,8 @@ def main():
         if args.summary:
             with args.summary.open("a", encoding="utf-8") as stream:
                 write_summary(report, stream)
+            if has_direct_loss(report):
+                print("::warning::A watched ASN lost previous selected DIRECT coverage; review exact CIDRs.")
     except (OSError, ValueError, KeyError, TypeError, tarfile.TarError, EOFError) as exc:
         parser.exit(1, f"priority ASN audit unavailable: {exc}\n")
 

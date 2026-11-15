@@ -384,10 +384,31 @@ def write_summary(report, stream):
             print(f'- {name}: unavailable; overlap is unknown.', file=stream)
             continue
         counts = info['families']
-        print(f"- {name}: DIRECT overlap IPv4={counts['4']['candidate']}, IPv6={counts['6']['candidate']} addresses.", file=stream)
+        print(f'- {name}:', file=stream)
+        for family in ('4', '6'):
+            data = counts[family]
+            print(f"  - IPv{family}: overlap={data['candidate']} addresses; "
+                  f"DIRECT delta +{data['added']}/−{data['removed']}.", file=stream)
+            feed_delta = data.get('provider_snapshot_effect_on_previous_dat')
+            if feed_delta is None:
+                print('    Provider-feed effect on the previous DAT: unknown.', file=stream)
+            else:
+                print(f"    Provider-feed effect on previous DAT: +{feed_delta['added']}/−{feed_delta['removed']} addresses.", file=stream)
     hydra = report['hydra']
     print(f"- Hydra-only counterfactual: IPv4={hydra['4']['only_counterfactual']}, IPv6={hydra['6']['only_counterfactual']} addresses.", file=stream)
-    print('\nProvider scopes overlap and must not be added. Membership is not proof of service ownership, geography or reachability; exact CIDRs and feed changes are in the artifact.\n', file=stream)
+    print('\nHydra-only is the current counterfactual; historical Hydra-only attribution is unknown. Provider scopes overlap and must not be added. Membership is not proof of service ownership, geography or reachability; exact CIDRs are in the artifact.\n', file=stream)
+
+
+def has_new_provider_overlap(report):
+    """Signal review for either DAT changes or provider-feed scope changes."""
+    for name, info in report['providers'].items():
+        if name.startswith('routing:') or info['status'] != 'AVAILABLE':
+            continue
+        for data in info['families'].values():
+            feed = data.get('provider_snapshot_effect_on_previous_dat')
+            if int(data['added']) > 0 or (feed is not None and int(feed['added']) > 0):
+                return True
+    return False
 
 
 def main():
@@ -458,6 +479,8 @@ def main():
     if args.summary:
         with args.summary.open('a', encoding='utf-8') as stream:
             write_summary(report, stream)
+        if has_new_provider_overlap(report):
+            print('::warning::New scoped provider overlap or provider-feed effect; review the advisory artifact.')
 
 
 if __name__ == '__main__':

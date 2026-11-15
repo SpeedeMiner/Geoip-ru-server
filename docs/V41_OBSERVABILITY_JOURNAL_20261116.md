@@ -132,3 +132,9 @@
   checksum and failed-fetch fixtures still
   verify that no baseline SHA is emitted on failure. Local/full and GitHub CI
   for this updated production-workflow scope are required before integration.
+- Provider summaries show IPv4/IPv6 additions and removals separately for the
+  DAT transition and for the provider-feed change against the dated fixed
+  capture. New scoped overlaps produce an advisory warning. A watched ASN
+  previously selected in DIRECT and actually absent from the new final DAT
+  likewise produces an advisory warning; loss of origin attribution alone
+  does not. Historical Hydra-only attribution remains unknown.

@@ -8,7 +8,7 @@ import unittest
 
 from audit_v41_asn_regressions import (
     ARCHIVE, compare, read_observed, read_selected, read_watchlist,
-    summarize_impact, summarize_observed_changes, write_summary,
+    summarize_impact, summarize_observed_changes, write_summary, has_direct_loss,
 )
 from build_v41_overlay import intervals
 from v41_asn_observations import parse_announced_prefixes
@@ -28,6 +28,7 @@ class PriorityASNTests(unittest.TestCase):
         write_summary(report, out)
         self.assertIn("coverage changes are unknown", out.getvalue())
         self.assertNotIn("lost from final DIRECT: 0", out.getvalue())
+        self.assertFalse(has_direct_loss(report))
 
     def test_invalid_default_wrong_family_and_normalization_keep_extraction_semantics(self):
         rows, rejected, normalized = parse_announced_prefixes({
@@ -96,6 +97,7 @@ class PriorityASNTests(unittest.TestCase):
                 self.assertEqual(sum(int(v["addresses"]) for v in impact.values()), NET(whole).num_addresses)
                 self.assertEqual(summarize_impact(rows)["affected_pairs"],
                                  {"attribution_loss_direct_retained": 1, "space_lost_from_final_direct": 1})
+                self.assertTrue(has_direct_loss({"direct_impact_summary": summarize_impact(rows)}))
 
     def test_no_baseline_is_unknown_and_unrelated_loss_is_not_attributed(self):
         net = NET("192.0.2.0/24")
