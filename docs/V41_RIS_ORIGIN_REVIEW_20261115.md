@@ -50,3 +50,19 @@
 ## Состояние изменений по исходному аудиту
 
 PR #35–#40 открыты, не слиты. Для последних head PR #40 завершились успешно сборки v41 и v39, и lint ([v41](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43682934371), [v39](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43682934379), [lint](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43682934373)). Исключение 262 IPv4 из источника W1ZARDZ находится в PR #38, в проверенном production его нет. Остальное по инженерному аудиту — коррекция терминологии и provenance BGP, верификация двух спорных CIDR и вопросы защиты веток, неизменяемости выпусков и документации/атрибуции.
+
+## Fixed-input follow-up — isolate origin and Hydra layers
+
+Rebuilt the v37 Go base and v41 Python overlay on the same released input bytes. Control reproduced the released v37 base, v41 DAT and effective exclusion mask byte for byte. Shadows are not release candidates. In the origin-only experiment, omit exactly the two CIDR rows from the selected-origin input of the base and the v41 regional-origin sidecar, keeping the global observation set unchanged. In the Hydra-only experiment, subtract exactly the same two address ranges from Hydra DIRECT, with PRIVATE and WHITELIST unchanged. The combined experiment applies both isolated input changes. All other inputs are identical.
+
+| Fixed-input test | v37 base loss | Final v41 DIRECT loss |
+| --- | ---: | ---: |
+| Selected-origin records only | 256 IPv4 (`195.178.4.0/24`) | 0, DAT byte-identical |
+| Hydra DIRECT only | 0 | 0, DAT byte-identical |
+| Both layers | 256 IPv4 (`195.178.4.0/24`) | 256 IPv4 (`195.178.4.0/24`) |
+
+No additions, no IPv6 or PRIVATE changes. The effective block mask is byte-identical in every case. The combined shadow DAT SHA-256 is `e05e6f02df363e3477fe165c422325ecd3d67994c50f974ac03774846c216f0a`. Baseline DAT, rather than a live-updated input run, is the comparator.
+
+- The published Hydra [202611141017](https://github.com/hydraponique/roscomvpn-geoip/releases/tag/202611141017) text archive and the upstream binary pinned in v41 place both exact CIDRs in `DIRECT`, not `WHITELIST`. Neither address range intersects the three manual CUSTOM lists in the tagged tree. Hydra's build uses both RU/BY geolocation inputs and ASN datasets, with AS204720 explicitly in the configuration. The frozen per-input databases needed to identify the exact Hydra upstream cause are not attested by the text output or config alone. The release tag's Git-tree copy of `release/geoip.dat` does not have the cited release asset's checksum. For this check use the actual asset pinned by the v41 provenance, not the Git-tree copy. [Hydra input config](https://github.com/hydraponique/roscomvpn-geoip/blob/e8fa068fb4927970a8e5677269f0095c57352b6d/config.json)
+- `151.249.128.0/17` is in the trusted Loyalsoldier and v2fly BY inputs. Davoyan RU also covers it, independently of the output labels in the ASN sidecar. Preserve until the actual BY service or assignment evidence is reviewed separately.
+- `195.178.5.0/24` is in both trusted v2fly and Loyalsoldier RU inputs and in several additional feeds. The adjacent `195.178.4.0/24` is in the Davoyan RU feed but not in those two trusted RU inputs or the Digne/Grimbird/Golukon RU categories of this snapshot. Outside Hydra and selected ASN there is therefore not enough admitting evidence for that half under this replay. Source overlaps are not claims of independent observations. Focus the next address-level assignment and service check on `195.178.4.0/24`; don't exclude the whole /23 or treat the simulated 256-address loss as a publication decision.
