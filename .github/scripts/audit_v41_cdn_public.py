@@ -22,15 +22,15 @@ INDEX_SIZE = 64 * 1024
 Fetch = Callable[[str, int], bytes]
 
 
-def get_cdn_commit(repo: str) -> str:
+def get_commit(repo: str, branch: str) -> str:
+    ref = f"refs/heads/{branch}"
     result = subprocess.run(
-        ["git", "ls-remote", "--exit-code", "--refs", f"https://github.com/{repo}.git",
-         "refs/heads/cdn"],
+        ["git", "ls-remote", "--exit-code", "--refs", f"https://github.com/{repo}.git", ref],
         capture_output=True, text=True, timeout=30, check=True,
     )
-    commit, ref = result.stdout.strip().split("\t")
-    if not SHA_RE.fullmatch(commit) or ref != "refs/heads/cdn":
-        raise ValueError("unexpected response for refs/heads/cdn")
+    commit, response_ref = result.stdout.strip().split("\t")
+    if not SHA_RE.fullmatch(commit) or response_ref != ref:
+        raise ValueError(f"unexpected response for {ref}")
     return commit
 
 
@@ -65,9 +65,12 @@ def fetch_https(url: str, limit: int) -> bytes:
     return data
 
 
-def audit(repo: str, commit: str, hosts: tuple[str, ...], fetch: Fetch = fetch_https) -> dict:
+def audit(repo: str, commit: str, hosts: tuple[str, ...], fetch: Fetch = fetch_https,
+          *, release_commit: str | None = None) -> dict:
     if not REPO_RE.fullmatch(repo) or not SHA_RE.fullmatch(commit):
         raise ValueError("expected owner/repository and a full cdn commit SHA")
+    if release_commit is not None and not SHA_RE.fullmatch(release_commit):
+        raise ValueError("expected a full release commit SHA")
     if not hosts or not set(hosts).issubset(EDGES):
         raise ValueError("expected supported jsDelivr endpoints")
     index = f"https://data.jsdelivr.com/v1/package/gh/{repo}@cdn"
@@ -93,7 +96,7 @@ def audit(repo: str, commit: str, hosts: tuple[str, ...], fetch: Fetch = fetch_h
     with ThreadPoolExecutor(max_workers=6) as pool:
         list(pool.map(verify, checks))
 
-    return {
+    result = {
         "repo": repo,
         "cdn_commit": commit,
         "inventory": ["tree", "flat"],
@@ -101,6 +104,22 @@ def audit(repo: str, commit: str, hosts: tuple[str, ...], fetch: Fetch = fetch_h
         "files": {name: {"bytes": size, "sha256": digest.hex()}
                   for name, (size, digest) in tree.items()},
     }
+    if release_commit is not None:
+        release_base = f"https://raw.githubusercontent.com/{repo}/{release_commit}"
+
+        def verify_release(name):
+            data = fetch(f"{release_base}/{name}", ASSET_SIZE)
+            digest = hashlib.sha256(data)
+            if (len(data), digest.digest()) != tree[name]:
+                raise ValueError(f"promoted release bytes differ from CDN: {name}")
+            expected = f"{digest.hexdigest()}  {name}\n".encode()
+            if fetch(f"{release_base}/{name}.sha256sum", 512) != expected:
+                raise ValueError(f"promoted release checksum differs: {name}")
+
+        with ThreadPoolExecutor(max_workers=3) as pool:
+            list(pool.map(verify_release, FILES))
+        result["release_commit"] = release_commit
+    return result
 
 
 def main() -> int:
@@ -108,12 +127,20 @@ def main() -> int:
     parser.add_argument("--repo", default="SpeedeMiner/Geoip-ru-server")
     parser.add_argument("--cdn-sha", help="full expected CDN commit; default: current origin/cdn")
     parser.add_argument("--edges", action="store_true", help="also read Fastly and Gcore endpoints")
+    parser.add_argument("--compare-release", action="store_true",
+                        help="require the current promoted release and checksums to match")
     args = parser.parse_args()
     if not REPO_RE.fullmatch(args.repo):
         parser.error("--repo must be owner/repository")
     try:
-        commit = args.cdn_sha or get_cdn_commit(args.repo)
-        result = audit(args.repo, commit, EDGES if args.edges else CANONICAL)
+        commit = args.cdn_sha or get_commit(args.repo, "cdn")
+        release = get_commit(args.repo, "release") if args.compare_release else None
+        result = audit(args.repo, commit, EDGES if args.edges else CANONICAL, release_commit=release)
+        if args.compare_release:
+            # Moving refs are not a pass, even for internally consistent bytes.
+            if (get_commit(args.repo, "release") != release
+                    or get_commit(args.repo, "cdn") != commit):
+                raise ValueError("release or CDN branch moved during audit; rerun the check")
     except (KeyError, TypeError, OSError, ValueError, subprocess.SubprocessError) as exc:
         print(f"GeoIP CDN audit failed: {exc}", file=sys.stderr)
         return 1

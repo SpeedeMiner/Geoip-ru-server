@@ -37,6 +37,19 @@ jsDelivr download URLs as verified when all three public downloads match.
 A GitHub release may still be edited unless the repository enforces immutable
 releases.
 
+## Move clients from `@release` to `@cdn`
+
+- For this repository's Xray DAT or sing-box rule-set URL, replace only
+  `@release` with `@cdn`. Keep the filename and client rule configuration.
+- Leave checksum and audit URLs on GitHub Release or GitHub Raw. Do not
+  append a checksum suffix to a jsDelivr client URL.
+- For a reproducible deployment, choose a versioned GitHub snapshot and
+  verify the downloaded file using the checksum from that same snapshot.
+  Do not mix a rolling binary with a checksum from another release.
+- Removing the published legacy links and purge calls does not remove
+  previously cached URLs. Other public GitHub refs are outside the
+  scope of the client-only `@cdn` branch.
+
 ## Repair CDN from the current GitHub release
 
 In GitHub Actions, run **Repair GeoIP v41 client CDN** on `main`. GitHub
@@ -62,14 +75,17 @@ GITHUB_REPOSITORY=SpeedeMiner/Geoip-ru-server bash .github/scripts/purge_v41_jsd
 ## Audit the public channel without publishing
 
 ```sh
-python3 .github/scripts/audit_v41_cdn_public.py --edges
+python3 .github/scripts/audit_v41_cdn_public.py --edges --compare-release
 ```
 
 This read-only command uses git to resolve the current `cdn` commit and
 requires the jsDelivr tree and flat inventories to contain exactly the
 three client files. It compares their hashes and sizes with pinned GitHub
 Raw and the actual CDN downloads. With `--edges` it also checks Fastly and
-Gcore. Use `--cdn-sha` when verifying a specific expected publication.
+Gcore. With `--compare-release` it also reads all three files and sidecars
+from the current pinned release commit, and fails if either branch moves
+during the check. Without this flag it checks internal CDN consistency only.
+Use `--cdn-sha` when verifying a specific expected publication.
 A mismatch exits nonzero. During normal cache propagation, retry or use
 GitHub Release directly. This command neither purges nor changes a ref.
 

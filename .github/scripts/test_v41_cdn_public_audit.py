@@ -1,8 +1,11 @@
 import base64
+import contextlib
+import io
 import hashlib
 import json
 from pathlib import Path
 import unittest
+from unittest.mock import patch
 
 import audit_v41_cdn_public as audit
 
@@ -28,10 +31,16 @@ class PublicCdnAuditTests(unittest.TestCase):
             rows = self.flat if url.endswith("/flat") else self.rows
             return json.dumps({"files": rows}).encode()
         name = url.rsplit("/", 1)[1]
-        return b"stale" if url in self.stale else self.blobs[name]
+        if name.endswith(".sha256sum"):
+            binary = name.removesuffix(".sha256sum")
+            digest = hashlib.sha256(self.blobs[binary]).hexdigest()
+            data = f"{digest}  {binary}\n".encode()
+        else:
+            data = self.blobs[name]
+        return b"stale" if url in self.stale else data
 
-    def check(self):
-        return audit.audit(REPO, SHA, audit.EDGES, self.fetch)
+    def check(self, **opts):
+        return audit.audit(REPO, SHA, audit.EDGES, self.fetch, **opts)
 
     def test_inventory_checks_pinned_raw_and_all_requested_cdn_downloads(self):
         result = self.check()
@@ -70,6 +79,42 @@ class PublicCdnAuditTests(unittest.TestCase):
         self.stale.add(f"https://raw.githubusercontent.com/{REPO}/{SHA}/geoip_RU.dat")
         with self.assertRaisesRegex(ValueError, "geoip_RU.dat at raw.githubusercontent.com"):
             self.check()
+
+    def test_cutover_checks_release_raw_and_its_checksums(self):
+        release = "c" * 40
+        result = self.check(release_commit=release)
+        self.assertEqual(result["release_commit"], release)
+        self.assertEqual(len(self.calls), 20)
+        for name in audit.FILES:
+            base = f"https://raw.githubusercontent.com/{REPO}/{release}/{name}"
+            self.assertIn(base, self.calls)
+            self.assertIn(base + ".sha256sum", self.calls)
+
+    def test_consistently_stale_cdn_relative_to_release_is_rejected(self):
+        release = "c" * 40
+        self.stale.add(f"https://raw.githubusercontent.com/{REPO}/{release}/geoip_RU.srs")
+        with self.assertRaisesRegex(ValueError, "promoted release"):
+            self.check(release_commit=release)
+
+    def test_bad_release_sidecar_is_rejected(self):
+        release = "c" * 40
+        self.stale.add(f"https://raw.githubusercontent.com/{REPO}/{release}/geoip_RU.dat.sha256sum")
+        with self.assertRaisesRegex(ValueError, "promoted release checksum"):
+            self.check(release_commit=release)
+
+    def test_main_rejects_a_ref_change_in_either_branch(self):
+        release = "c" * 40
+        for release_after, cdn_after in (("d" * 40, SHA), (release, "d" * 40)):
+            with self.subTest(release=release_after, cdn=cdn_after):
+                stdout, stderr = io.StringIO(), io.StringIO()
+                cli = ["audit", "--repo", REPO, "--compare-release"]
+                with patch.object(audit.sys, "argv", cli), \
+                        patch.object(audit, "get_commit", side_effect=(SHA, release, release_after, cdn_after)), \
+                        patch.object(audit, "audit", return_value={"files": {}}), \
+                        contextlib.redirect_stdout(stdout), contextlib.redirect_stderr(stderr):
+                    self.assertEqual(audit.main(), 1)
+                self.assertEqual(stdout.getvalue(), "")
+                self.assertIn("branch moved during audit", stderr.getvalue())
 
     def test_inventory_matches_the_shell_publisher(self):
         shell = Path(audit.__file__).with_name("v41_cdn_files.sh").read_text()
