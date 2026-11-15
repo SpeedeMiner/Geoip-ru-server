@@ -11,6 +11,7 @@ on:
       - ".github/scripts/*v41*cdn*.sh"
       - ".github/workflows/geoip-v41-lint.yml"
       - ".github/scripts/*v41*.py"
+      - "docs/V41_ROLLING_RELEASE_NOTES.md"
       - ".github/data/geoip_RU_company_*.tsv"
 jobs:
   lint:
@@ -37,3 +38,6 @@ jobs:
 
       - name: Verify CDN publication and repair workflow boundaries
         run: python3 .github/scripts/validate_v41_cdn_workflows.py
+
+      - name: Verify released and advertised CDN client links
+        run: python3 -m unittest discover -s .github/scripts -p test_v41_cdn_client_links.py

@@ -54,6 +54,16 @@ def parse_inventory(payload: bytes, *, flat: bool) -> dict[str, tuple[int, bytes
     return result
 
 
+def validate_release_links(content: str, repo: str) -> None:
+    """Require exactly the supported client links for this repo in public copy."""
+    cdn_host = r"[a-z0-9-]+\.jsdelivr\.net"
+    prefix = rf"https://{cdn_host}/gh/{re.escape(repo)}"
+    links = re.findall(rf'{prefix}(?=[@/])[^"<>\s)]+', content, flags=re.IGNORECASE)
+    expected = {f"https://cdn.jsdelivr.net/gh/{repo}@cdn/{name}" for name in FILES}
+    if len(links) != len(expected) or set(links) != expected:
+        raise ValueError("public client links must contain exactly the three canonical @cdn URLs")
+
+
 def fetch_https(url: str, limit: int) -> bytes:
     request = Request(url, headers={"User-Agent": "GeoIP-v41 CDN audit / SpeedeMiner/Geoip-ru-server"})
     with urlopen(request, timeout=20) as response:
