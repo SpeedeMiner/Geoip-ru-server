@@ -19,13 +19,17 @@ from v41_reviewed_ipv6_admission import (
 DATA = Path(__file__).resolve().parent.parent / "data/v41-reviewed-ipv6-admission-exclusions.tsv"
 KP = ipaddress.ip_network("2a0b:4e07:63f0::/48")
 IN = ipaddress.ip_network("2a0b:4e07:63f1::/48")
+NL = ipaddress.ip_network("2a0b:4e07:6300::/48")
+DE = ipaddress.ip_network("2a0b:4e07:6310::/48")
+RU = ipaddress.ip_network("2a0b:4e07:6301::/48")
+ANYCAST = ipaddress.ip_network("2a0b:4e07:63ff::/48")
 
 
 class ReviewedIPv6AdmissionTests(unittest.TestCase):
     def test_production_records_are_the_individually_reviewed_routes(self):
         records = read_reviewed_ipv6_admission(DATA)
-        self.assertEqual(set(records), {KP, IN})
-        self.assertEqual([records[p]["assignment_country"] for p in (KP, IN)], ["KP", "IN"])
+        self.assertEqual({p: r["assignment_country"] for p, r in records.items()},
+                         {KP: "KP", IN: "IN", NL: "NL", DE: "DE"})
         self.assertTrue(all(r["origin_asn"] == "AS218750" for r in records.values()))
 
     def test_exact_exclusion_preserves_both_sides_and_other_families(self):
@@ -41,8 +45,18 @@ class ReviewedIPv6AdmissionTests(unittest.TestCase):
             builder.subtract_networks(result, {IN}), {KP, IN}
         )
 
+    def test_production_exclusions_split_nl_ru_aggregate_and_preserve_anycast(self):
+        records = read_reviewed_ipv6_admission(DATA)
+        before = {NL.supernet(), KP.supernet(), DE, ANYCAST}
+        self.assertEqual(builder.subtract_networks(before, records), {RU, ANYCAST})
+        self.assertEqual(
+            verify_ipv6_admission_effect({RU, ANYCAST}, before, set(), set(), {}, records),
+            4 * NL.num_addresses,
+        )
+
     def test_invalid_rows_do_not_widen_or_obscure_the_mask(self):
-        good = DATA.read_text(encoding="utf-8").splitlines()[1]
+        good = next(line for line in DATA.read_text(encoding="utf-8").splitlines()
+                    if line.startswith(f"{KP}\t"))
         for row in (
             good.replace("/48", "/47"), good.replace("/48", "/49"),
             good.replace(str(KP), "8.8.8.0/24"),
@@ -104,10 +118,10 @@ class ReviewedIPv6AdmissionTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as td:
             p = Path(td)
             dat, manifest = p / "geoip.dat", p / "manifest.json"
-            for network, return_code in (("2a0b:4e07:6301::/48", 0), (str(KP), 1)):
+            for network, return_code in ((RU, 0), (ANYCAST, 0), (KP, 1), (NL, 1), (DE, 1)):
                 with self.subTest(network=network):
                     blob = builder.encode_geoip({
-                        "RU": {ipaddress.ip_network(network)},
+                        "RU": {network},
                         "PRIVATE": {ipaddress.ip_network("fc00::/7")},
                     })
                     dat.write_bytes(blob)

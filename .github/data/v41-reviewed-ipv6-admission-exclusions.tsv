@@ -1,3 +1,5 @@
 prefix	origin_asn	assignment_country	basis	checked_on	rdap_url	geofeed_url
+2a0b:4e07:6300::/48	AS218750	NL	selected_origin_ASN	2026-11-15	https://rdap.db.ripe.net/ip/2a0b:4e07:6300::/48	https://raw.githubusercontent.com/egor-white/geofeed/551d3fb527c36a71875319e47bba4df7709b9d33/geofeed.csv
+2a0b:4e07:6310::/48	AS218750	DE	selected_origin_ASN	2026-11-15	https://rdap.db.ripe.net/ip/2a0b:4e07:6310::/48	https://raw.githubusercontent.com/egor-white/geofeed/551d3fb527c36a71875319e47bba4df7709b9d33/geofeed.csv
 2a0b:4e07:63f0::/48	AS218750	KP	selected_origin_ASN	2026-11-15	https://rdap.db.ripe.net/ip/2a0b:4e07:63f0::/48	https://raw.githubusercontent.com/egor-white/geofeed/551d3fb527c36a71875319e47bba4df7709b9d33/geofeed.csv
 2a0b:4e07:63f1::/48	AS218750	IN	selected_origin_ASN	2026-11-15	https://rdap.db.ripe.net/ip/2a0b:4e07:63f1::/48	https://raw.githubusercontent.com/egor-white/geofeed/551d3fb527c36a71875319e47bba4df7709b9d33/geofeed.csv
