@@ -85,3 +85,32 @@
   zero hard/DIRECT intersections for both families; all 14 official Telegram
   CIDRs passed. The shared-baseline change adds workflow and reporting logic;
   its combined exact-head CI and full local test run are pending.
+
+## 2026-11-16 — complete combined CI and retained evidence
+
+- Exact code head `f7230e5180587fc078737e15c10c982197b3c4e9` passed [v41](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43752966991),
+  [v39](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43752965990),
+  [prefix audit](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43752966030)
+  and [lint](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43752966017).
+  The publish job was skipped. CI merge commit
+  `949321ecf163bf5b739f3b032d9b7481f24f720f` and code head have identical tree
+  `b7017e82bf1151efc5731a75446cc3d6a7b8a1b2`. Full local run: 303 Python
+  tests; Go tests, CDN guard and actual-shell baseline failure fixtures passed.
+- Verified [candidate ZIP 14177570596](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43752966991/artifacts/14177570596),
+  SHA-256 `86cfc5b0d48f1887db93660c1f61bce89b42bd2800fd21a8d428236451de4d28`,
+  all ZIP CRCs and release manifest. Its DAT, both SRS, effective block mask
+  and input provenance are byte-identical to release `e20cf733`. The direct
+  delta is IPv4 +0/−0 and IPv6 +0/−0, with PRIVATE unchanged.
+- Verified [ASN/provider ZIP 14177017480](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43752966991/artifacts/14177017480),
+  SHA-256 `947f8a07619bb9ef1c88c32e89bf8b0002632659001d41f779b6f9c53c0e7e77`.
+  All seven ASN candidate and seven baseline input hashes, all 35 provider
+  input bindings and all 11,124 TSV/JSON rows match. Cloudflare, AWS and
+  Google scoped inputs were available; Akamai and Discord remained unknown.
+  For 118 watched ASN/family pairs, there are no final-DIRECT loss pairs;
+  21 absent observations remain unconfirmed.
+- The verified DIRECT, Antifilter, ASN and provider artifacts all identify
+  release `e20cf733a13d92040134895ebd580b7c9060fa3b` as the comparison.
+  The Antifilter report records unknown upstream freshness. GitHub `main`,
+  `release`, `cdn` and PR #5 were not modified. Next: validate this
+  documentation-only checkpoint and recheck current refs and source drift
+  before any production integration.
