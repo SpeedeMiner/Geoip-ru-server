@@ -1,10 +1,13 @@
 import gzip
 import hashlib
 import ipaddress
+import io
 import json
 from pathlib import Path
 from tempfile import TemporaryDirectory
 import unittest
+from unittest.mock import patch
+import tarfile
 
 import audit_v41_direct_provenance as audit
 from build_v41_overlay import encode_geoip
@@ -65,6 +68,45 @@ class DirectProvenanceAuditTests(unittest.TestCase):
         f=r['providers']['p']['families']['4']
         self.assertEqual(f['added'],'0')
         self.assertEqual(f['provider_snapshot_effect_on_previous_dat']['added'],'128')
+        self.assertEqual([row['cidr'] for row in r['rows'] if row['status']=='provider-snapshot-new' and row['family']==4], ['192.0.2.128/25'])
+
+    def test_exact_moas_retains_unselected_origin_without_attributing_covering_prefix(self):
+        with TemporaryDirectory() as tmp:
+            path = Path(tmp)
+            origins = {'origin:AS10[RIR-RU]': nets('192.0.2.0/24')}
+            with tarfile.open(path/'as-ip-blocks.tar.gz', 'w:gz') as archive:
+                for asn, v4 in ((10, '192.0.2.0/24'), (11, '192.0.2.0/24'), (12, '192.0.2.0/23')):
+                    payload = json.dumps({'asn':asn,'prefixes':{'ipv4':[v4]}}).encode()
+                    info = tarfile.TarInfo(f'as/{asn}/aggregated.json')
+                    info.size = len(payload)
+                    archive.addfile(info,io.BytesIO(payload))
+            with patch.object(audit,'verify_archive') as verify:
+                self.assertEqual(audit.add_exact_moas_evidence(path,origins),1)
+            verify.assert_called_once()
+            self.assertEqual(set(origins),{'origin:AS10[RIR-RU]',
+                'observed-exact-moas:AS10','observed-exact-moas:AS11'})
+
+    def test_effective_mask_cannot_be_replaced_by_unrelated_ranges(self):
+        telegram = '149.154.160.0/20\n2001:b28:f23d::/48\n'
+        layers = {label:set() for label in ('rir-RU','rir-BY','rir-KZ',
+            'selected-origins','corporate','w1zardz-service-direct','reviewed-operators')}
+        with TemporaryDirectory() as tmp:
+            root=Path(tmp)
+            hashes={'telegram_official':{'input_sha256':hashlib.sha256(telegram.encode()).hexdigest()}}
+            (root/'telegram-official-cidrs.txt').write_text(telegram)
+            (root/'geoip_RU_v41_blocked_ip_exclusions.txt').write_text('4.4.4.4/32\n')
+            for name in ('geoip_RU_blocked_ip_exact_and_legacy_hard.txt',
+                         'geoip_RU_blocked_ipresolve_resolver_only.txt',
+                         'geoip_RU_company_asn_core_bgp_prefixes.txt',
+                         'geoip_RU_shared_infrastructure_bgp_prefixes.txt','w1zardz-ru-ipv4.txt'):
+                (root/name).write_text('8.8.8.8/32\n')
+            (root/'geoip_RU_shared_infrastructure_bgp_prefixes.txt').write_text('9.9.9.9/32\n')
+            with patch.object(audit.b,'build_service_protection_masks',return_value=(set(),set())):
+                with self.assertRaisesRegex(ValueError,'effective exclusions differ'):
+                    audit.verified_effective_mask(root,layers,hashes)
+                (root/'geoip_RU_v41_blocked_ip_exclusions.txt').write_text(telegram+'8.8.8.8/32\n')
+                self.assertEqual(audit.verified_effective_mask(root,layers,hashes),
+                    nets('149.154.160.0/20','2001:b28:f23d::/48','8.8.8.8/32'))
 
     def test_new_and_removed_segments_are_not_blended(self):
         old=nets('192.0.2.0/25','2001:db8::/48')

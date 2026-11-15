@@ -9,11 +9,14 @@ import ipaddress
 import json
 from pathlib import Path
 import subprocess
+import tarfile
 from tempfile import TemporaryDirectory
 from types import SimpleNamespace
 
 import build_v41_overlay as b
 from validate_v41_publication_bounds import read as read_dat
+from validate_v41_telegram import read_telegram_feed
+from verify_v41_ipverse_archive import verify_archive
 
 CAP = 16 * 1024 * 1024
 
@@ -93,7 +96,10 @@ def collect(catalog, output):
             else:
                 provider_networks(spec, [cache[url] for url in spec['urls']])
                 snapshot['status'][spec['id']] = 'AVAILABLE'
-    output.write_bytes(gzip.compress(json.dumps(snapshot, sort_keys=True).encode(), mtime=0))
+    serialized = json.dumps(snapshot, sort_keys=True).encode()
+    if len(serialized) > CAP:
+        raise ValueError('oversized snapshot')
+    output.write_bytes(gzip.compress(serialized, mtime=0))
 
 
 def load_snapshot(path):
@@ -176,6 +182,59 @@ def read_layers(root, base, data):
     return layers, origins
 
 
+
+def add_exact_moas_evidence(root, origins):
+    # Retained ipverse only. Match exact selected prefixes, not covering routes.
+    archive_path = root / 'as-ip-blocks.tar.gz'
+    verify_archive(root / 'geoip_RU_input_provenance.tsv', archive_path)
+    selected = b.union_networks(*(ns for label, ns in origins.items() if label.startswith('origin:')))
+    observed = {}
+    with tarfile.open(archive_path, 'r|gz') as archive:
+        for member in archive:
+            if not member.isfile() or not member.name.endswith('/aggregated.json'):
+                continue
+            if not 0 < member.size <= CAP:
+                raise ValueError('invalid ipverse ASN item size')
+            with archive.extractfile(member) as stream:
+                item = json.load(stream)
+            asn = int(item['asn'])
+            for version in (4, 6):
+                for token in (item.get('prefixes') or {}).get(f'ipv{version}', []) or []:
+                    try:
+                        net = ipaddress.ip_network(token, strict=False)
+                    except ValueError:
+                        continue
+                    if net.version == version and net in selected:
+                        observed.setdefault(net, set()).add(asn)
+    for net, asns in observed.items():
+        if len(asns) > 1:
+            for asn in asns:
+                origins.setdefault(f'observed-exact-moas:AS{asn}', set()).add(net)
+    return sum(len(asns) > 1 for asns in observed.values())
+
+
+def verified_effective_mask(root, layers, manifest):
+    telegram_path = root/'telegram-official-cidrs.txt'
+    if digest(telegram_path.read_bytes()) != manifest['telegram_official']['input_sha256']:
+        raise ValueError('Telegram differs from the bound policy input')
+    telegram = read_telegram_feed(telegram_path)
+    rir = {cc:layers['rir-'+cc] for cc in ('RU','BY','KZ')}
+    regional = b.subtract_networks(layers['selected-origins'], layers['corporate'])
+    service_exact, service_resolver = b.build_service_protection_masks(
+        rir, layers, w1zardz_literal_hosts=b.original_w1zardz_hosts(
+            root/'w1zardz-ru-ipv4.txt', layers['w1zardz-service-direct']))
+    effective, _ = b.class_aware_effective_block_set(
+        b.parse_blocked_base(root/'geoip_RU_blocked_ip_exact_and_legacy_hard.txt'),
+        b.parse_blocked_base(root/'geoip_RU_blocked_ipresolve_resolver_only.txt'),
+        b.parse_cidr_file(root/'geoip_RU_company_asn_core_bgp_prefixes.txt', allow_hosts=False)[0],
+        b.parse_cidr_file(root/'geoip_RU_shared_infrastructure_bgp_prefixes.txt', allow_hosts=False)[0],
+        regional | b.union_networks(*rir.values()), service_exact, service_resolver,
+        non_exempt=telegram, reviewed_operator_prefixes=layers['reviewed-operators'])
+    actual = b.parse_blocked_base(root/'geoip_RU_v41_blocked_ip_exclusions.txt')
+    if any(b.intervals(actual,v) != b.intervals(effective,v) for v in (4,6)):
+        raise ValueError('effective exclusions differ from the bound policy inputs')
+    return effective
+
 def verify_inputs(root, base, candidate, data):
     manifest = json.loads((root/'geoip_RU_v41_manifest.json').read_bytes())
     if digest(candidate.read_bytes()) != manifest['output_sha256']:
@@ -185,6 +244,10 @@ def verify_inputs(root, base, candidate, data):
         'hydra_geoip':root/'hydra-geoip.dat',
         'regional_rir_inventory':root/'geoip_RU_BY_KZ_rir_registered_prefixes.tsv',
         'corporate_company_asn_origin_prefixes':root/'geoip_RU_company_asn_bgp_prefixes.txt',
+        'corporate_core_prefixes':root/'geoip_RU_company_asn_core_bgp_prefixes.txt',
+        'shared_infrastructure_prefixes':root/'geoip_RU_shared_infrastructure_bgp_prefixes.txt',
+        'blocked_exact_and_legacy':root/'geoip_RU_blocked_ip_exact_and_legacy_hard.txt',
+        'blocked_resolver_only':root/'geoip_RU_blocked_ipresolve_resolver_only.txt',
         'regional_origin_prefixes':root/'geoip_RU_v41_rir_ru_and_company_origin_prefixes.txt',
         'kyoresuas_standard_ipv4':root/'kyoresuas-ru-standard-ipv4.txt',
         'kyoresuas_standard_ipv6':root/'kyoresuas-ru-standard-ipv6.txt',
@@ -202,12 +265,19 @@ def verify_inputs(root, base, candidate, data):
     provenance = root/'geoip_RU_input_provenance.tsv'
     if digest(provenance.read_bytes()) != manifest['input_provenance_sha256']:
         raise ValueError('input provenance differs from retained manifest')
+    names = {'v2fly-geoip.dat','loyalsoldier-ru.dat','loyalsoldier-by.dat',
+             'davoyan-geoip.dat','digne-geoip.dat','golukon-geoip.dat','grimbird-geoip.dat'}
+    seen = set()
     with provenance.open() as stream:
         for row in csv.DictReader(stream, delimiter='\t'):
-            if row['LOCAL_FILE'] in {'v2fly-geoip.dat','loyalsoldier-ru.dat','loyalsoldier-by.dat',
-                    'davoyan-geoip.dat','digne-geoip.dat','golukon-geoip.dat','grimbird-geoip.dat'}:
-                if digest((root/row['LOCAL_FILE']).read_bytes()) != row['SHA256']:
-                    raise ValueError('upstream raw evidence differs from provenance')
+            name = row['LOCAL_FILE']
+            if name in names:
+                if name in seen or row['STATUS'] != 'downloaded' or digest((root/name).read_bytes()) != row['SHA256']:
+                    raise ValueError('upstream raw evidence differs from provenance: '+name)
+                seen.add(name)
+    if seen != names:
+        raise ValueError('missing upstream raw provenance: '+','.join(sorted(names-seen)))
+    return manifest
 
 
 def build_report(previous, candidate, providers, layers, masks, origins=None, previous_providers=None):
@@ -223,7 +293,15 @@ def build_report(previous, candidate, providers, layers, masks, origins=None, pr
     only = b.subtract_networks(final, no_hydra)
     outside = b.subtract_networks(b.subtract_networks(hydra, masks), regional)
     before, _ = read_dat(previous)
-    read_dat(candidate)  # Strict independent decoding and PRIVATE/default-route bounds.
+    decoded, _ = read_dat(candidate)
+    if any(decoded['RU'][v] != b.intervals(final,v) for v in (4,6)):
+        raise ValueError('independent DAT reader disagrees with the audit decoder')
+    evidence_by_family = {
+        v: {**{name:b.intervals(ns,v) for name,ns in {**layers, **(origins or {})}.items()},
+            'hydra-only-counterfactual':b.intervals(only,v),
+            'hydra-outside-regional-corporate':b.intervals(outside,v)}
+        for v in (4,6)
+    }
     known = b.union_networks(*(ns for _,ns in providers.values() if ns is not None))
     providers = {**providers,
         'routing:hydra-only': ({'scope':'Derived counterfactual: final RU minus the identical assembly without Hydra', 'owner':'routing-intent'}, only),
@@ -254,21 +332,27 @@ def build_report(previous, candidate, providers, layers, masks, origins=None, pr
             else:
                 prior = previous_providers.get(provider)
                 previous_networks = None if prior is None else prior[1]
-                info['families'][str(version)]['provider_snapshot_effect_on_previous_dat'] = (
-                    None if previous_networks is None else {
-                    'added': measure(b.subtract(old, b.intersect(before['RU'][version], b.intervals(previous_networks, version)))),
-                    'removed': measure(b.subtract(b.intersect(before['RU'][version], b.intervals(previous_networks, version)), old))})
-            evidence = {name: b.intervals(ns, version) for name, ns in {**layers, **(origins or {})}.items()}
-            evidence['hydra-only-counterfactual'] = b.intervals(only, version)
-            evidence['hydra-outside-regional-corporate'] = b.intervals(outside, version)
+                family_stats = info['families'][str(version)]
+                if previous_networks is None:
+                    family_stats['provider_snapshot_effect_on_previous_dat'] = None
+                else:
+                    old_scope = b.intersect(before['RU'][version], b.intervals(previous_networks,version))
+                    feed_added, feed_removed = b.subtract(old,old_scope), b.subtract(old_scope,old)
+                    family_stats['provider_snapshot_effect_on_previous_dat'] = {
+                        'added':measure(feed_added), 'removed':measure(feed_removed)}
+                    states.update({'provider-snapshot-new':feed_added, 'provider-snapshot-removed':feed_removed})
             for state, xs in states.items():
+                if not xs:
+                    continue
+                evidence = {name: overlap for name, ranges in evidence_by_family[version].items()
+                            if (overlap := b.intersect(xs, ranges))}
                 for lo, hi, labels in split_evidence(xs, evidence):
                     for net in sorted(b.networks_from_intervals([(lo, hi)], version),
                                       key=lambda n: (int(n.network_address), n.prefixlen)):
                         rows.append({'provider':provider, 'family':version, 'cidr':str(net),
                             'addresses':str(net.num_addresses), 'status':state,
                             'candidate_evidence':list(labels),
-                            'evidence_time':'candidate_inputs_only' if state == 'removed' else 'candidate',
+                            'evidence_time':'candidate_inputs_only' if state == 'removed' or state.startswith('provider-snapshot-') else 'candidate',
                             'proposal':'review'})
     return {'schema':1, 'mode':'report-only', 'providers':summary,
         'known_provider_union_overlap':{str(v):measure(b.intersect(b.intervals(final,v),b.intervals(known,v))) for v in (4,6)},
@@ -301,21 +385,37 @@ def main():
         p.error('audit requires --snapshot --previous --candidate --inputs --base --output')
     snapshot, providers = load_snapshot(args.snapshot)
     previous_providers = load_snapshot(args.previous_snapshot)[1] if args.previous_snapshot else None
-    verify_inputs(args.inputs, args.base, args.candidate, args.data)
+    manifest = verify_inputs(args.inputs, args.base, args.candidate, args.data)
     layers, origins = read_layers(args.inputs, args.base, args.data)
     private = b.parse_geoip_dat(args.candidate)['PRIVATE']
-    effective = b.parse_cidr_file(args.inputs/'geoip_RU_v41_blocked_ip_exclusions.txt')[0]
+    moas = add_exact_moas_evidence(args.inputs, origins)
+    effective = verified_effective_mask(args.inputs, layers, manifest)
     admission = set(b.parse_regional_admission_exclusions(args.data/'v41-regional-admission-exclusions.tsv'))
     admission.update(b.read_reviewed_ipv6_admission(args.data/'v41-reviewed-ipv6-admission-exclusions.tsv'))
     report = build_report(args.previous,args.candidate,providers,layers,private|effective|admission,origins,previous_providers)
-    files = [args.snapshot,args.previous,args.candidate,args.base]
+    files = {'provider_snapshot':args.snapshot, 'previous_dat':args.previous,
+             'candidate_dat':args.candidate, 'base_dat':args.base}
     if args.previous_snapshot:
-        files.append(args.previous_snapshot)
-    files += sorted(x for x in args.inputs.iterdir() if x.is_file() and (x.suffix in {'.txt','.tsv','.json','.dat'}))
-    files += sorted(args.data.glob('v41-*exclusions*'))
-    files += [args.data/'v41-reviewed-operator-prefixes.tsv', b.W1ZARDZ_EXCLUSIONS]
-    report['input_sha256'] = {str(x):digest(x.read_bytes()) for x in files}
+        files['previous_provider_snapshot'] = args.previous_snapshot
+    used = ['as-ip-blocks.tar.gz', 'geoip_RU_input_provenance.tsv', 'geoip_RU_v41_manifest.json',
+            'geoip_RU_BY_KZ_asn_bgp_prefixes.txt', 'geoip_RU_BY_KZ_rir_registered_prefixes.tsv',
+            'geoip_RU_company_asn_bgp_prefixes.txt', 'geoip_RU_company_asn_core_bgp_prefixes.txt',
+            'geoip_RU_shared_infrastructure_bgp_prefixes.txt', 'geoip_RU_v41_rir_ru_and_company_origin_prefixes.txt',
+            'geoip_RU_blocked_ip_exact_and_legacy_hard.txt','geoip_RU_blocked_ipresolve_resolver_only.txt',
+            'geoip_RU_v41_blocked_ip_exclusions.txt','telegram-official-cidrs.txt','hydra-geoip.dat',
+            'v2fly-geoip.dat','loyalsoldier-ru.dat','loyalsoldier-by.dat','davoyan-geoip.dat',
+            'digne-geoip.dat','golukon-geoip.dat','grimbird-geoip.dat','kyoresuas-ru-standard-ipv4.txt',
+            'kyoresuas-ru-standard-ipv6.txt','kyoresuas-services.json','w1zardz-ru-ipv4.txt',
+            'escapingworm-operator-cidr.txt']
+    files.update({f'inputs/{name}':args.inputs/name for name in used})
+    for name in ('v41-regional-admission-exclusions.tsv','v41-reviewed-ipv6-admission-exclusions.tsv',
+                 'v41-reviewed-operator-prefixes.tsv'):
+        files[f'policy/{name}'] = args.data/name
+    files['policy/'+b.W1ZARDZ_EXCLUSIONS.name] = b.W1ZARDZ_EXCLUSIONS
+    report['input_sha256'] = {k:digest(path.read_bytes()) for k,path in sorted(files.items())}
     report['provider_snapshot_fetched_at'] = snapshot['fetched_at']
+    report['provider_catalog_sha256'] = snapshot['catalog_sha256']
+    report['observed_exact_moas_prefixes_with_selected_evidence'] = moas
     args.output.write_text(json.dumps(report,indent=2)+'\n')
     with args.output.with_suffix('.tsv').open('w') as stream:
         writer = csv.DictWriter(stream, fieldnames=['provider','family','cidr','addresses','status','candidate_evidence','evidence_time','proposal'],delimiter='\t')
