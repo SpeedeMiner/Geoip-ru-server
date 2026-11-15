@@ -1842,5 +1842,61 @@
       "matches_raw": true,
       "sha256": "2721616b3007c8aa6e894255909ee53c63564392f94b4be36918d96b6aef6786"
     }
+  },
+  "public_release_tree_sizes": {
+    "commit": "7eef1efcaafbdbe259f3aa4e56a07c38979afbfb",
+    "trackfiles": 57,
+    "total_uncompressed_bytes": 75753191,
+    "top": [
+      [
+        16590427,
+        "geoip_RU_blocked_ipresolve_resolver_only.txt"
+      ],
+      [
+        14451488,
+        "geoip_RU_blocked_ip_exclusions.txt"
+      ],
+      [
+        13354221,
+        "geoip_RU_v41_prefix_provenance.tsv"
+      ],
+      [
+        9378321,
+        "geoip_RU_v41_blocked_provenance.tsv"
+      ],
+      [
+        8344148,
+        "geoip_RU_global_bgp_prefixes.txt"
+      ],
+      [
+        3290594,
+        "geoip_RU_v38_approved_blocked_baseline.txt"
+      ],
+      [
+        2644681,
+        "geoip_RU_blocked_review_candidates.tsv"
+      ],
+      [
+        2023313,
+        "geoip_RU_v41_blocked_ip_exclusions.txt"
+      ],
+      [
+        1757478,
+        "hxehex-ipwhitelist.txt"
+      ],
+      [
+        840839,
+        "geoip_RU_BY_KZ_asn_bgp_prefixes.txt"
+      ],
+      [
+        612494,
+        "geoip_RU_v41_rir_ru_and_company_origin_prefixes.txt"
+      ],
+      [
+        531527,
+        "geoip_RU_BY_KZ_rir_registered_prefixes.tsv"
+      ]
+    ],
+    "byte_size_of_client_files_only": 640787
   }
 }
