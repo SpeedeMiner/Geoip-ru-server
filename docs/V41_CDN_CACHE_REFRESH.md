@@ -57,4 +57,18 @@ For a manual retry of the cache refresh only, first confirm the intended
 GITHUB_REPOSITORY=SpeedeMiner/Geoip-ru-server bash .github/scripts/purge_v41_jsdelivr.sh
 ```
 
+## Audit the public channel without publishing
+
+```sh
+python3 .github/scripts/audit_v41_cdn_public.py --edges
+```
+
+This read-only command uses git to resolve the current `cdn` commit and
+requires the jsDelivr tree and flat inventories to contain exactly the
+three client files. It compares their hashes and sizes with pinned GitHub
+Raw and the actual CDN downloads. With `--edges` it also checks Fastly and
+Gcore. Use `--cdn-sha` when verifying a specific expected publication.
+A mismatch exits nonzero. During normal cache propagation, retry or use
+GitHub Release directly. This command neither purges nor changes a ref.
+
 [Publication journal](V41_CDN_PUBLICATION_JOURNAL_20261115.md).
