@@ -702,7 +702,7 @@ jobs:
             candidate/geoip_RU_global_bgp_prefixes.txt
           body_path: docs/V41_ROLLING_RELEASE_NOTES.md
 
-      - name: Purge jsDelivr compatibility URLs
+      - name: Publish jsDelivr client binaries and verify delivery
         shell: bash
         id: cdn_ref
         env:
