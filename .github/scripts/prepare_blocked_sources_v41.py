@@ -124,6 +124,22 @@ def subnet_auto_approved(net: ipaddress._BaseNetwork) -> bool:
     return net.prefixlen >= (16 if net.version == 4 else 112)
 
 
+def validate_host_feed_counts(source: str, approved: int, unique: int, lines: int, invalid: int) -> None:
+    if approved < MIN_HOST_FEED_APPROVED:
+        raise ValueError(f"{source} unexpectedly small: approved_unique_hosts={approved}, "
+                         f"minimum={MIN_HOST_FEED_APPROVED}, valid_unique={unique}, lines={lines}")
+    if invalid > max(10, int(lines * 0.001)):
+        raise ValueError(f"{source} has too many invalid rows: {invalid}/{lines}")
+
+
+def validate_subnet_feed_counts(approved: int, lines: int, invalid: int) -> None:
+    if not approved:
+        raise ValueError("antifilter-subnet.lst has no approved unique bounded prefixes; "
+                         "refusing to build without the primary network block source")
+    if invalid > max(10, int(lines * 0.01)):
+        raise ValueError(f"antifilter subnet.lst has too many invalid rows: {invalid}/{lines}")
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--ip-list", type=Path, required=True)
@@ -250,11 +266,10 @@ def main() -> int:
             else:
                 review.add((source, value, "non-host prefix in host-IP feed"))
                 review_count += 1
-        if approved < MIN_HOST_FEED_APPROVED:
-            raise SystemExit(f"{source} unexpectedly small: approved_unique_hosts={approved}, "
-                             f"minimum={MIN_HOST_FEED_APPROVED}, valid_unique={len(unique)}, lines={lines}")
-        if invalid > max(10, int(lines * 0.001)):
-            raise SystemExit(f"{source} has too many invalid rows: {invalid}/{lines}")
+        try:
+            validate_host_feed_counts(source, approved, len(unique), lines, invalid)
+        except ValueError as exc:
+            raise SystemExit(str(exc)) from exc
         rows[source] = {"data_lines": lines, "valid_unique": len(unique), "approved": approved,
                         "review": review_count, "invalid": invalid}
 
@@ -274,11 +289,10 @@ def main() -> int:
         else:
             review.add((source, value, "broader than auto-carve threshold (/16 IPv4, /112 IPv6; 65,536 addresses max)"))
             review_count += 1
-    if not approved:
-        raise SystemExit("antifilter-subnet.lst has no approved unique bounded prefixes; "
-                         "refusing to build without the primary network block source")
-    if invalid > max(10, int(lines * 0.01)):
-        raise SystemExit(f"antifilter subnet.lst has too many invalid rows: {invalid}/{lines}")
+    try:
+        validate_subnet_feed_counts(approved, lines, invalid)
+    except ValueError as exc:
+        raise SystemExit(str(exc)) from exc
     rows[source] = {"data_lines": lines, "valid_unique": len(unique), "approved": approved,
                     "review": review_count, "invalid": invalid}
 

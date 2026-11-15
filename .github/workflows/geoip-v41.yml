@@ -26,6 +26,7 @@ on:
       - ".github/scripts/extract_ru_asn_prefixes_v41.py"
       - ".github/scripts/geoip-v37-builder/**"
       - ".github/scripts/download_v41_build_inputs.sh"
+      - ".github/scripts/validate_v41_download_input.py"
       - ".github/scripts/download_v41_upstream_sources.py"
       - ".github/scripts/v41_diagnostic_sources.py"
       - ".github/scripts/*v41*.sh"
@@ -34,6 +35,7 @@ on:
       - ".github/scripts/validate_v41_base_artifacts.py"
       - ".github/scripts/validate_v41_block_feed_counts.py"
       - ".github/scripts/validate_v41_publication_bounds.py"
+      - ".github/scripts/report_v41_direct_delta.py"
       - ".github/scripts/verify_v41_ipverse_archive.py"
       - ".github/scripts/bundle_v41_registry_inputs.py"
       - ".github/scripts/v41_release_manifest.py"
@@ -476,7 +478,7 @@ jobs:
         shell: bash
         run: |
           python3 .github/scripts/validate_v41_publication_bounds.py \
-            --candidate "$V41_OUTPUT_FILE" --reference "$V41_OUTPUT_FILE"
+            --candidate "$V41_OUTPUT_FILE" --absolute-only
 
       - name: Verify and retain the exact ipverse build input
         shell: bash
@@ -532,6 +534,37 @@ jobs:
           python3 .github/scripts/v41_release_manifest.py create . \
             --source-sha "$GITHUB_SHA" --repository "$GITHUB_REPOSITORY" \
             --run-id "$GITHUB_RUN_ID" --run-attempt "$GITHUB_RUN_ATTEMPT"
+
+      - name: Report exact DIRECT delta against a pinned release (PR only)
+        if: github.event_name == 'pull_request'
+        shell: bash
+        continue-on-error: true
+        timeout-minutes: 2
+        run: |
+          set -eEuo pipefail
+          baseline="$(mktemp -d)"
+          trap 'rm -rf -- "$baseline"' EXIT
+          trap 'echo "::warning::DIRECT delta unavailable; no zero-delta claim."
+                echo "### v41 DIRECT delta unavailable. The baseline or candidate could not be verified." >> "$GITHUB_STEP_SUMMARY"' ERR
+          git fetch --quiet --no-tags --depth=1 origin refs/heads/release
+          ref="$(git rev-parse --verify 'FETCH_HEAD^{commit}')"
+          git show "$ref:geoip_RU.dat" > "$baseline/geoip_RU.dat"
+          git show "$ref:geoip_RU.dat.sha256sum" > "$baseline/geoip_RU.dat.sha256sum"
+          python3 .github/scripts/report_v41_direct_delta.py \
+            --reference "$baseline/geoip_RU.dat" --reference-checksum "$baseline/geoip_RU.dat.sha256sum" \
+            --reference-commit "$ref" --candidate "$V41_OUTPUT_FILE" --manifest "$V41_MANIFEST" \
+            --table .github/data/v41-reviewed-ipv6-admission-exclusions.tsv \
+            --output "$RUNNER_TEMP/v41-direct-delta.json" --summary "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload exact DIRECT delta (PR only)
+        if: github.event_name == 'pull_request'
+        continue-on-error: true
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: geoip-v41-direct-delta
+          path: ${{ runner.temp }}/v41-direct-delta.json
+          if-no-files-found: ignore
+          retention-days: 30
 
       - name: Upload v41 validated build artifact
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02

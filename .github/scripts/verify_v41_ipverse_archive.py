@@ -14,6 +14,7 @@ from urllib.parse import urlsplit
 ARCHIVE = "as-ip-blocks.tar.gz"
 MIN_BYTES = 5_000_000
 MAX_BYTES = 64 * 1024 * 1024
+MIN_AGGREGATED_RECORDS = 10_000
 HEADER = ["SOURCE", "LOCAL_FILE", "FETCH_URL", "SHA256", "BYTES", "STATUS"]
 SNAPSHOT_TAG_RE = rb"(?:v41\.(?:0|[1-9][0-9]{0,5})|geoip-v41-snapshot-[0-9]{1,20}\.[0-9]{1,10})\n"
 
