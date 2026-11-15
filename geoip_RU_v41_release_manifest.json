@@ -34,11 +34,11 @@
     },
     "geoip_RU_quality_report.txt": {
       "bytes": 7921,
-      "sha256": "2f671ba8c056f089bd94b359b505f5b7f0eaedfd5551bc4a901922b710811ff3"
+      "sha256": "98711eb9f822384d325960d3d32bcefd200d2107f5eb57530584fd7487f4f467"
     },
     "geoip_RU_v41_manifest.json": {
       "bytes": 14910,
-      "sha256": "055156236564ae00665aa5075438711d71ca421c6f4e383af9661cf39d9e6224"
+      "sha256": "1dd7fb50a81c5015480068b8f9920c3e7ee2386446381753cc4ca12e1c262184"
     },
     "v41-block-inputs.tar.gz": {
       "bytes": 1912571,
@@ -55,6 +55,6 @@
   },
   "run_attempt": 1,
   "schema": 1,
-  "source_commit": "fab8870dd14e0dcad217fd60f5c5b86d3713609a",
-  "workflow_run": "https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43739779700"
+  "source_commit": "c0d2a01ba1fb5f5c0e48965d614945348083a900",
+  "workflow_run": "https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43747743430"
 }
