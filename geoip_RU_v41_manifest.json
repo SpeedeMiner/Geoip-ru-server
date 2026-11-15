@@ -1,6 +1,6 @@
 {
   "schema": 2,
-  "generated_at": "2026-11-15T12:10:08.953023+00:00",
+  "generated_at": "2026-11-15T17:14:41.931592+00:00",
   "base_v37_sha256": "3b196ba746ee67f9b993337e2725887f130a280e4e76e53cb57448bf94d1eb8a",
   "output_sha256": "b17fe26ccdcb8d272e6233ec9686a514b309e9d75e75653313a75f329b70fae7",
   "output_bytes": 512533,
@@ -37,7 +37,7 @@
       "license": "MIT"
     }
   },
-  "input_provenance_sha256": "196ce9f6c1f686fb58d01cecc1ea3848575b88aa5090d48cb914197918f151e1",
+  "input_provenance_sha256": "da2455666d5943804bea892c56e731c89ac63027b532fa4b5a40b27f53bb418b",
   "telegram_official": {
     "cidrs": 14,
     "input_sha256": "3ecd072cedf72eceee6961b18a51e37f905d5ce4a656a5d24cf5fea63e6ec651"
