@@ -22,22 +22,32 @@ jobs:
         run: |
           set -euo pipefail
           python3 - <<'PY'
-          import hashlib,ipaddress,json,pathlib,urllib.request,time
+          import hashlib,ipaddress,json,pathlib,urllib.request
           O=pathlib.Path("audit-v41-v34");O.mkdir(exist_ok=True)
-          U={"v34":("SpeedeMiner/Geoip-ru-light","latest-geoip-client-v34","geoip_RU.dat"),"v41":("SpeedeMiner/Geoip-ru-server","latest-geoip-client-v41","geoip_RU.dat"),"blocked":("SpeedeMiner/Geoip-ru-server","latest-geoip-client-v41","geoip_RU_v41_blocked_ip_exclusions.txt"),"hydra":("SpeedeMiner/Geoip-ru-server","latest-geoip-client-v41","hydra-geoip.dat")}
-          H={"v34":"33c91a0b703c03580810af807d0062c5179c55e2c7ed4a1cc34a79c63e99a6dd","v41":"534d4d80caf45df54566105d8c1930e0aaa293718891f46537256da63b56bf1f"}
+          # Fixed 2026-11-15 comparison. See the matching v41 snapshot
+          # geoip-v41-snapshot-43709200004.1 and its input provenance.
+          # Never fall back to a rolling branch, asset or unverified byte stream.
+          U={
+            "v34":(
+              "https://raw.githubusercontent.com/SpeedeMiner/Geoip-ru-light/71b1b0c3ce14eec9ea131c1c620a7bb166e35c77/geoip_RU.dat",
+              "077fa57cdc957bfb9db408a57590e9d759bcfb50f18984c7befa3168c0a873ce"),
+            "v41":(
+              "https://raw.githubusercontent.com/SpeedeMiner/Geoip-ru-server/a23b381e4844ed4cb84bf67e1f5984027e68769c/geoip_RU.dat",
+              "93f6a3a5ac2551a681e7067df735a6c13c9ebbe7cc50e6d30e4a722dac64e46d"),
+            "blocked":(
+              "https://raw.githubusercontent.com/SpeedeMiner/Geoip-ru-server/a23b381e4844ed4cb84bf67e1f5984027e68769c/geoip_RU_v41_blocked_ip_exclusions.txt",
+              "13de956f4c72b6d8e5a245931ec6cc4d376705cd652bf47a100810fd7c6cfdae"),
+            "hydra":(
+              "https://github.com/hydraponique/roscomvpn-geoip/releases/download/202611151046/geoip.dat",
+              "c0c56874ee8c8859c94d5ecc7dd509ff683630315287bb1c88789f4968d593d8"),
+          }
           D={};info={}
-          for key,(repo,tag,name) in U.items():
-            error=None
-            for url in [f"https://github.com/{repo}/releases/download/{tag}/{name}",f"https://raw.githubusercontent.com/{repo}/release/{name}"]:
-              try:
-                with urllib.request.urlopen(urllib.request.Request(url,headers={"User-Agent":"geoip-comparison"}),timeout=60) as r: data=r.read()
-                if not data: raise ValueError("empty response")
-                break
-              except Exception as exc: error=exc;time.sleep(2)
-            else: raise RuntimeError(f"{key}: {error}")
+          for key,(url,expected) in U.items():
+            with urllib.request.urlopen(urllib.request.Request(url,headers={"User-Agent":"geoip-comparison"}),timeout=60) as r:
+              data=r.read(32*1024*1024+1)
+            if not data or len(data)>32*1024*1024: raise ValueError(f"{key}: invalid size")
             digest=hashlib.sha256(data).hexdigest()
-            if key in H and digest!=H[key]: raise ValueError(f"{key} hash changed: {digest}")
+            if digest!=expected: raise ValueError(f"{key} hash changed: {digest}")
             D[key]=data;info[key]={"bytes":len(data),"sha256":digest,"url":url};print(key,info[key],flush=True)
           def varint(b,p):
             n=s=0

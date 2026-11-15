@@ -1,0 +1,322 @@
+[
+  [
+    "177.29.252.0/24",
+    "ris",
+    {
+      "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=177.29.252.0%2F24&timestamp=2026-11-15T06%3A42%3A00",
+      "sha256": "43cccf42d00e5d5debd945c0de177ab5767474543c4822a27660ffbef3ddea3b",
+      "time": "2026-11-15T03:59:56",
+      "exact": {
+        "219305": 324
+      },
+      "total": 324,
+      "more_specific": []
+    }
+  ],
+  [
+    "177.29.252.0/24",
+    "rdap",
+    {
+      "url": "https://rdap.lacnic.net/rdap/ip/177.29.252.0/24",
+      "sha256": "f3c4c0a8332eacaca4f79d1f025433084e40bae5f6707fe0ff2b71573a6d3231",
+      "name": "Novacart-Commerce-llc",
+      "country": "HK",
+      "handle": "177.29.252.0 - 177.29.252.255",
+      "startAddress": "177.29.252.0",
+      "endAddress": "177.29.252.255"
+    }
+  ],
+  [
+    "177.29.253.0/24",
+    "ris",
+    {
+      "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=177.29.253.0%2F24&timestamp=2026-11-15T06%3A42%3A00",
+      "sha256": "da3d55a567e38911ff4ea4e48b28438bc053104a4e49ae065cf6a4bb77215303",
+      "time": "2026-11-15T03:59:56",
+      "exact": {
+        "219306": 324
+      },
+      "total": 324,
+      "more_specific": []
+    }
+  ],
+  [
+    "177.29.253.0/24",
+    "rdap",
+    {
+      "url": "https://rdap.lacnic.net/rdap/ip/177.29.253.0/24",
+      "sha256": "e96b5d282ac68e82a1d48adb33ac882e58bd567f58446fd2d13b7c6e68a97282",
+      "name": "Novacart-Commerce-llc",
+      "country": "HK",
+      "handle": "177.29.253.0 - 177.29.253.255",
+      "startAddress": "177.29.253.0",
+      "endAddress": "177.29.253.255"
+    }
+  ],
+  [
+    "177.166.78.0/24",
+    "ris",
+    {
+      "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=177.166.78.0%2F24&timestamp=2026-11-15T06%3A42%3A00",
+      "sha256": "5b08fd10de516a4f13dbd839323048db355b083b06c8aeec0311c9d2f4e38d8f",
+      "time": "2026-11-15T03:59:56",
+      "exact": {
+        "219238": 323
+      },
+      "total": 323,
+      "more_specific": []
+    }
+  ],
+  [
+    "177.166.78.0/24",
+    "rdap",
+    {
+      "url": "https://rdap.lacnic.net/rdap/ip/177.166.78.0/24",
+      "sha256": "3fe109f8dd21bf056acf11375f1ce34bd5bd30a4fc8f94a0ee753fd8fbd125ed",
+      "name": "Novacart-Commerce-llc",
+      "country": "HK",
+      "handle": "177.166.78.0 - 177.166.78.255",
+      "startAddress": "177.166.78.0",
+      "endAddress": "177.166.78.255"
+    }
+  ],
+  [
+    "177.122.241.0/24",
+    "ris",
+    {
+      "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=177.122.241.0%2F24&timestamp=2026-11-15T06%3A42%3A00",
+      "sha256": "01f582c3e20bf28e7678609305318e2f1d081ce188691a2893d056cc6cb492a7",
+      "time": "2026-11-15T03:59:56",
+      "exact": {
+        "218568": 325
+      },
+      "total": 325,
+      "more_specific": []
+    }
+  ],
+  [
+    "177.122.241.0/24",
+    "rdap",
+    {
+      "url": "https://rdap.lacnic.net/rdap/ip/177.122.241.0/24",
+      "sha256": "3ff2421c3964248198db43620e169e401a54c99c459143716e467547aaf99cee",
+      "name": "Novacart-Commerce-llc",
+      "country": "HK",
+      "handle": "177.122.241.0 - 177.122.241.255",
+      "startAddress": "177.122.241.0",
+      "endAddress": "177.122.241.255"
+    }
+  ],
+  [
+    "85.92.154.0/24",
+    "ris",
+    {
+      "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=85.92.154.0%2F24&timestamp=2026-11-15T06%3A42%3A00",
+      "sha256": "663a9de86ce1dc5d120286ae1d6cd3fbcf2d56786cfa7a467af997f4d2f20b17",
+      "time": "2026-11-15T03:59:56",
+      "exact": {
+        "41745": 329
+      },
+      "total": 329,
+      "more_specific": []
+    }
+  ],
+  [
+    "85.92.154.0/24",
+    "rdap",
+    {
+      "url": "https://rdap.db.ripe.net/ip/85.92.154.0/24",
+      "sha256": "fc288f93fece1d0edef4f145aed1e07f86851311e97241976ebf593314915b90",
+      "name": "net-IPbnb-LLC",
+      "country": "US",
+      "handle": "85.92.154.0 - 85.92.154.255",
+      "startAddress": "85.92.154.0",
+      "endAddress": "85.92.154.255"
+    }
+  ],
+  [
+    "85.92.153.0/24",
+    "ris",
+    {
+      "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=85.92.153.0%2F24&timestamp=2026-11-15T06%3A42%3A00",
+      "sha256": "cfb941d38f11ab059b20b9f7a264f8a1c4959dc03a8d0ba2e790a6bfb1233d66",
+      "time": "2026-11-15T03:59:56",
+      "exact": {
+        "41745": 329
+      },
+      "total": 329,
+      "more_specific": []
+    }
+  ],
+  [
+    "85.92.153.0/24",
+    "rdap",
+    {
+      "url": "https://rdap.db.ripe.net/ip/85.92.153.0/24",
+      "sha256": "e9f6800970fac49becfa7b7661a11161e0dcd6abff7d1bab615308dc3af36210",
+      "name": "net-IPbnb-LLC",
+      "country": "US",
+      "handle": "85.92.153.0 - 85.92.153.255",
+      "startAddress": "85.92.153.0",
+      "endAddress": "85.92.153.255"
+    }
+  ],
+  [
+    "177.122.229.0/24",
+    "ris",
+    {
+      "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=177.122.229.0%2F24&timestamp=2026-11-15T06%3A42%3A00",
+      "sha256": "e0ca7255bc725f05389a54b4b26c760891c5fda19929b4d652f175a9c23f8bc8",
+      "time": "2026-11-15T03:59:56",
+      "exact": {
+        "219216": 325
+      },
+      "total": 325,
+      "more_specific": []
+    }
+  ],
+  [
+    "177.122.229.0/24",
+    "rdap",
+    {
+      "url": "https://rdap.lacnic.net/rdap/ip/177.122.229.0/24",
+      "sha256": "f3370e87f95a0f107ea29cbb0b699407da06e88a23c3f33bb4eff0e64f4b65fc",
+      "name": "Novacart-Commerce-llc",
+      "country": "HK",
+      "handle": "177.122.229.0 - 177.122.229.255",
+      "startAddress": "177.122.229.0",
+      "endAddress": "177.122.229.255"
+    }
+  ],
+  [
+    "177.166.74.0/24",
+    "ris",
+    {
+      "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=177.166.74.0%2F24&timestamp=2026-11-15T06%3A42%3A00",
+      "sha256": "f0eca58826da6eab87b0e044c91486c6eeb78a85f3c80414c9bb97a6264f3720",
+      "time": "2026-11-15T03:59:56",
+      "exact": {
+        "219262": 323
+      },
+      "total": 323,
+      "more_specific": []
+    }
+  ],
+  [
+    "177.166.74.0/24",
+    "rdap",
+    {
+      "url": "https://rdap.lacnic.net/rdap/ip/177.166.74.0/24",
+      "sha256": "35815d713470e6dd9761ecf2dfa1ad97987e028168dc98405b0b5c63fc74a7d7",
+      "name": "Novacart-Commerce-llc",
+      "country": "HK",
+      "handle": "177.166.74.0 - 177.166.74.255",
+      "startAddress": "177.166.74.0",
+      "endAddress": "177.166.74.255"
+    }
+  ],
+  [
+    "177.166.21.0/24",
+    "ris",
+    {
+      "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=177.166.21.0%2F24&timestamp=2026-11-15T06%3A42%3A00",
+      "sha256": "391c9416ac8835120faa04a3146db11c4b4bd11e27080908620697c4c4b72640",
+      "time": "2026-11-15T03:59:56",
+      "exact": {
+        "219284": 324
+      },
+      "total": 324,
+      "more_specific": []
+    }
+  ],
+  [
+    "177.166.21.0/24",
+    "rdap",
+    {
+      "url": "https://rdap.lacnic.net/rdap/ip/177.166.21.0/24",
+      "sha256": "747bfb0635cb69d997b30fa65e8a906bf6cbcea64947556c2c0a62493bce33ed",
+      "name": "Novacart-Commerce-llc",
+      "country": "HK",
+      "handle": "177.166.21.0 - 177.166.21.255",
+      "startAddress": "177.166.21.0",
+      "endAddress": "177.166.21.255"
+    }
+  ],
+  [
+    "2a0b:4e07:63f0::/48",
+    "ris",
+    {
+      "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=2a0b%3A4e07%3A63f0%3A%3A%2F48&timestamp=2026-11-15T06%3A42%3A00",
+      "sha256": "2459f94e7a837d091fd1453ae4a5d3a228b7535e40e9eda4a5d7234a251b5ad6",
+      "time": "2026-11-15T03:59:56",
+      "exact": {
+        "218750": 352
+      },
+      "total": 352,
+      "more_specific": []
+    }
+  ],
+  [
+    "2a0b:4e07:63f0::/48",
+    "rdap",
+    {
+      "url": "https://rdap.db.ripe.net/ip/2a0b:4e07:63f0::/48",
+      "sha256": "e54b95422c8663fef7bb865144121b54eb55d4d6dbe24edd2bdf92695a7c867a",
+      "name": "test-subnet",
+      "country": "KP",
+      "handle": "2a0b:4e07:63f0::/48",
+      "startAddress": "2a0b:4e07:63f0::",
+      "endAddress": "2a0b:4e07:63f0:ffff:ffff:ffff:ffff:ffff"
+    }
+  ],
+  [
+    "212.193.25.0/24",
+    "ris",
+    {
+      "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=212.193.25.0%2F24&timestamp=2026-11-15T06%3A42%3A00",
+      "sha256": "f6b6a1cc2d78e3afa376f0e9c081fd3e760ded069de6c3efdb4f987667b77212",
+      "time": "2026-11-15T03:59:56",
+      "exact": {},
+      "total": 0,
+      "more_specific": []
+    }
+  ],
+  [
+    "212.193.25.0/24",
+    "rdap",
+    {
+      "url": "https://rdap.db.ripe.net/ip/212.193.25.0/24",
+      "sha256": "446725bc0ed01c498ea54456bf5d6622ea4aae8ceb7f10993a2ca752088ccc4a",
+      "name": "WOLLE-DEVELOPMENT-LIMITED",
+      "country": "RU",
+      "handle": "212.193.25.0 - 212.193.25.255",
+      "startAddress": "212.193.25.0",
+      "endAddress": "212.193.25.255"
+    }
+  ],
+  [
+    "2a0b:4e07:63f0::/47",
+    "ris",
+    {
+      "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=2a0b%3A4e07%3A63f0%3A%3A%2F47&timestamp=2026-11-15T06%3A42%3A00",
+      "sha256": "4d0e22d1b559531686f6c47125243000bb12ca30b9d3c419233d5e0cbad4b535",
+      "time": "2026-11-15T03:59:56",
+      "exact": {},
+      "total": 0,
+      "more_specific": []
+    }
+  ],
+  [
+    "2a0b:4e07:63f0::/47",
+    "rdap",
+    {
+      "url": "https://rdap.db.ripe.net/ip/2a0b:4e07:63f0::/47",
+      "sha256": "1531e2b7e5f7b4148185372989be258ec4837dd0b2a6539becb73912a4068e0a",
+      "name": "CHEESE-AS",
+      "country": "RU",
+      "handle": "2a0b:4e07:6300::/40",
+      "startAddress": "2a0b:4e07:6300::",
+      "endAddress": "2a0b:4e07:63ff:ffff:ffff:ffff:ffff:ffff"
+    }
+  ]
+]

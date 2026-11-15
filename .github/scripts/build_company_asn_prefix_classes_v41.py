@@ -156,20 +156,23 @@ def build_company_prefix_classes(selected_prefixes: Path, company_registry: Path
 
     write_prefixes(all_output, "all allowlisted company-ASN origin prefixes", all_prefixes,
                    selected_prefixes, company_registry, policy_file)
-    write_prefixes(core_output, "CORE_CORPORATE origin prefixes (protected from all approved blocks)", core_prefixes,
+    write_prefixes(core_output, "CORE_CORPORATE origin prefixes (protected from resolver-only blocks)", core_prefixes,
                    selected_prefixes, company_registry, policy_file)
     write_prefixes(shared_output, "SHARED_INFRA origin prefixes (protected from resolver-only blocks)", shared_prefixes,
                    selected_prefixes, company_registry, policy_file)
 
     def metrics(prefixes: dict[str, set[int]]) -> dict[str, int]:
         counts = {4: 0, 6: 0}
-        addresses = {4: 0, 6: 0}
+        networks = {4: [], 6: []}
         asns: set[int] = set()
         for prefix, origins in prefixes.items():
             net = ipaddress.ip_network(prefix)
             counts[net.version] += 1
-            addresses[net.version] += net.num_addresses
+            networks[net.version].append(net)
             asns.update(origins)
+        # Keep exact origin rows unchanged, but measure each family as a union.
+        addresses = {f: sum(n.num_addresses for n in ipaddress.collapse_addresses(rows))
+                     for f, rows in networks.items()}
         return {
             "prefixes": len(prefixes),
             "active_origin_asns": len(asns),

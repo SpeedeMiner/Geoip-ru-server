@@ -1,4 +1,4 @@
-# v41 selected corporate ASN registry: reviewed v39 set plus validated v40 additions.
+# v41 selected corporate and infrastructure origin ASN registry.
 # ASN\tGROUP\tENTITY\tEVIDENCE
 AS13238	Yandex	YANDEX LLC	https://iamroot.tech/asndatabase/?search=AS13238
 AS200350	Yandex	Yandex.Cloud LLC	https://wbdt.ru/AS200350
@@ -56,3 +56,52 @@ AS35022	Gazprombank	Gazprombank JSC	https://2ip.io/as/35022/
 AS47724	HeadHunter	HEADHUNTER LLC (hh.ru)	https://2ip.io/ru/ip/94.124.200.0/
 AS197068	Qrator	HLL LLC (High Load Lab / Qrator DDoS mitigation)	https://bgp.tools/as/197068
 AS51115	Qrator	HLL LLC (High Load Lab / Qrator)	https://bgp.tools/as/51115
+AS197695	REG.RU	Domain names registrar REG.RU Ltd	https://rdap.db.ripe.net/autnum/197695
+AS50339	NSPK	JSC National System of Payment Cards	https://rdap.db.ripe.net/autnum/50339
+AS21292	NSPK	JSC National System of Payment Cards	https://rdap.db.ripe.net/autnum/21292
+AS41185	NSPK	JSC National System of Payment Cards (NSPK-EC)	https://rdap.db.ripe.net/autnum/41185
+AS41187	NSPK	JSC National System of Payment Cards (NSPK-SBP)	https://rdap.db.ripe.net/autnum/41187
+AS60967	NSPK	JSC National System of Payment Cards (IPPS)	https://rdap.db.ripe.net/autnum/60967
+AS8901	Moscow City	GKU Mosgortelecom (municipal infrastructure)	https://rdap.db.ripe.net/autnum/8901
+AS207353	RUTUBE	Ruform LLC	https://rdap.db.ripe.net/autnum/207353
+AS48061	RUTUBE	GPM Digital Technologies LLC (group infrastructure)	https://rdap.db.ripe.net/autnum/48061
+AS24638	Rambler	Rambler Internet Holding LLC (Rambler Telecom)	https://rdap.db.ripe.net/autnum/24638
+AS42481	Rambler	Rambler Internet Holding LLC (Begun)	https://rdap.db.ripe.net/autnum/42481
+AS44696	Rambler	Rambler Internet Holding LLC (SUP)	https://rdap.db.ripe.net/autnum/44696
+AS57306	Rambler	Rambler Internet Holding LLC (Webprimegroup)	https://rdap.db.ripe.net/autnum/57306
+AS42231	PSB	PJSC Promsvyazbank	https://rdap.db.ripe.net/autnum/42231
+AS42554	PSB	PJSC Promsvyazbank (Sviaz-Bank legacy origin)	https://rdap.db.ripe.net/autnum/42554
+AS42758	PSB	PJSC Promsvyazbank (Pervobank legacy origin)	https://rdap.db.ripe.net/autnum/42758
+AS197258	Sovcombank	PJSC Sovkombank	https://rdap.db.ripe.net/autnum/197258
+AS209973	Sovcombank	PJSC Sovkombank (Moscow origin)	https://rdap.db.ripe.net/autnum/209973
+AS51136	Sovcombank	PJSC Sovkombank (HCFBank legacy origin)	https://rdap.db.ripe.net/autnum/51136
+AS31174	Raiffeisenbank RU	AO Raiffeisenbank	https://rdap.db.ripe.net/autnum/31174
+AS202273	MKB	Credit Bank of Moscow PJSC	https://rdap.db.ripe.net/autnum/202273
+AS50464	MKB	Credit Bank of Moscow PJSC	https://rdap.db.ripe.net/autnum/50464
+AS39267	MKB	Credit Bank of Moscow PJSC (Koltsourala legacy origin)	https://rdap.db.ripe.net/autnum/39267
+AS57898	DNS Retail	DNS Retail Ltd	https://rdap.db.ripe.net/autnum/57898
+AS52047	M.Video	MVM LLC	https://rdap.db.ripe.net/autnum/52047
+AS198610	Beget	Beget LLC	https://rdap.db.ripe.net/autnum/198610
+AS213533	Beget	Beget LLC (regional origin)	https://rdap.db.ripe.net/autnum/213533
+AS214822	RuVDS	MT Finance LLC	https://rdap.db.ripe.net/autnum/214822
+AS49238	Dr.Web	Doctor Web LLC	https://rdap.db.ripe.net/autnum/49238
+AS59446	Dr.Web	Doctor Web Ltd	https://rdap.db.ripe.net/autnum/59446
+AS8732	Akado	JSC Comcor	https://rdap.db.ripe.net/autnum/8732
+AS12768	ER-Telecom	JSC ER-Telecom Holding	https://rdap.db.ripe.net/autnum/12768
+AS56330	ER-Telecom	JSC ER-Telecom Holding (Kurgan origin)	https://rdap.db.ripe.net/autnum/56330
+AS12772	ER-Telecom	JSC ER-Telecom Holding (ENFORTA-AS)	https://rdap.db.ripe.net/autnum/12772
+AS62287	ER-Telecom	JSC ER-Telecom Holding (REGION-AS, Magadan)	https://rdap.db.ripe.net/autnum/62287
+AS31483	ER-Telecom	JSC ER-Telecom Holding (ERTELECOM-DC-AS)	https://rdap.db.ripe.net/autnum/31483
+AS56981	ER-Telecom	JSC ER-Telecom Holding (TOMSK-AS)	https://rdap.db.ripe.net/autnum/56981
+AS41733	ER-Telecom	JSC ER-Telecom Holding (ZTELECOM-AS, InterZet)	https://rdap.db.ripe.net/autnum/41733
+AS31200	ER-Telecom	Novotelecom Ltd (Electronic City, subsidiary)	https://rdap.db.ripe.net/autnum/31200
+AS25159	MegaFon	PJSC MegaFon (SONICDUO-AS)	https://rdap.db.ripe.net/autnum/25159
+AS31163	MegaFon	PJSC MegaFon (MF-KAVKAZ-AS)	https://rdap.db.ripe.net/autnum/31163
+AS35298	MegaFon	PJSC MegaFon (MF-MGSM-AS)	https://rdap.db.ripe.net/autnum/35298
+AS24866	MegaFon	PJSC MegaFon (Cloud-Megafon)	https://rdap.db.ripe.net/autnum/24866
+AS47395	MegaFon	PJSC MegaFon (SCARTEL-AS, Yota)	https://rdap.db.ripe.net/autnum/47395
+AS39374	Tele2/T2	T2 Mobile LLC (RU-DI-EX-AS)	https://rdap.db.ripe.net/autnum/39374
+AS48092	Tele2/T2	T2 Mobile LLC (NSB-AS)	https://rdap.db.ripe.net/autnum/48092
+AS28812	Rostelecom	PJSC Bashinformsvyaz (Rostelecom subsidiary)	https://rdap.db.ripe.net/autnum/28812
+AS13118	Rostelecom	PJSC Rostelecom (ASN-YARTELECOM)	https://rdap.db.ripe.net/autnum/13118
+AS12380	Rostelecom	PJSC Rostelecom (LENSVYAZ)	https://rdap.db.ripe.net/autnum/12380

@@ -5,7 +5,7 @@ import argparse
 import csv
 import ipaddress
 import re
-from collections import Counter
+from collections import Counter, defaultdict
 from pathlib import Path
 
 OUTPUT_FIELDS = (
@@ -23,6 +23,11 @@ ALLOWED_CLASSES = {
     "MORE_SPECIFIC_ONLY_NO_EXACT_VERDICT",
 }
 ASN_RE = re.compile(r"AS[0-9]+\Z")
+UNSEEDED_CLASS = "UNSEEDED_CURRENT_RPKI_INVALID_NEEDS_SPOT_CHECK"
+UNSEEDED_FIELDS = (
+    "PREFIX", "ORIGIN_ASN", "RPKI_STATUS", "RPKI_URL", "RECONCILIATION_CLASS",
+    "REQUIRED_NEXT_ACTION", "STATUS",
+)
 
 def read_tsv(path: Path) -> list[dict[str, str]]:
     with path.open(encoding="utf-8", newline="") as stream:
@@ -46,7 +51,8 @@ def split_set(value: str) -> set[str]:
     return {item.strip() for item in value.replace(",", "|").split("|") if item.strip()}
 
 def build_reconciliation(evidence_dir: Path, seed_path: Path, output_path: Path,
-                         stats_path: Path, expected_count: int | None = 19) -> dict[str, object]:
+                         stats_path: Path, expected_count: int | None = 19, *,
+                         unseeded_path: Path | None = None) -> dict[str, object]:
     triage = unique(read_tsv(evidence_dir / "priority_prefix_triage.tsv"), "PREFIX", "triage prefix")
     worklist = unique(read_tsv(evidence_dir / "priority_prefix_review_worklist.tsv"), "PREFIX", "worklist prefix")
     spots = unique(read_tsv(evidence_dir / "priority_prefix_external_spot_checks_v37.tsv"), "PREFIX", "spot-check prefix")
@@ -64,35 +70,69 @@ def build_reconciliation(evidence_dir: Path, seed_path: Path, output_path: Path,
         prefix for prefix, row in triage.items()
         if "RPKI_INVALID_ASN" in split_set(row.get("TRIAGE_FLAGS", ""))
     }
-    if expected_count is not None and len(invalid_prefixes) != expected_count:
-        raise ValueError(f"archived invalid-prefix scope changed: expected {expected_count}, got {len(invalid_prefixes)}")
-    if set(seed) != invalid_prefixes:
+    if expected_count is not None and len(seed) != expected_count:
+        raise ValueError(f"archived invalid seed scope changed: expected {expected_count}, got {len(seed)}")
+    if not set(seed) <= invalid_prefixes:
         raise ValueError(
             f"curated reconciliation inventory differs from archive; "
-            f"missing={sorted(invalid_prefixes-set(seed))}, extra={sorted(set(seed)-invalid_prefixes)}"
+            f"historical prefixes missing from invalid triage={sorted(set(seed)-invalid_prefixes)}"
         )
 
-    output = []
-    classes = Counter()
-    for prefix in sorted(seed, key=lambda p: (ipaddress.ip_network(p).version,
-                                               int(ipaddress.ip_network(p).network_address),
-                                               ipaddress.ip_network(p).prefixlen)):
-        ipaddress.ip_network(prefix, strict=True)
+    current_by_prefix = defaultdict(set)
+    for (prefix, asn), row in rpki.items():
+        if row.get("QUERY_STATUS") == "OK" and row.get("RPKI_STATUS") == "invalid_asn":
+            current_by_prefix[prefix].add(asn)
+    if set(current_by_prefix) != invalid_prefixes:
+        raise ValueError("archived invalid RPKI pair missing or changed, or triage omits a current invalid prefix")
+
+    historical_by_prefix = {}
+    for prefix, row in seed.items():
+        historical = split_set(row.get("ARCHIVED_INVALID_RPKI_ORIGINS", ""))
+        if not historical or any(not ASN_RE.fullmatch(asn) for asn in historical):
+            raise ValueError(f"missing or invalid archived seed origin for {prefix}")
+        if not historical <= current_by_prefix[prefix]:
+            raise ValueError(
+                f"archived invalid RPKI pair missing or changed for {prefix}: "
+                f"{sorted(historical-current_by_prefix[prefix])}"
+            )
+        historical_by_prefix[prefix] = historical
+
+    def prefix_key(prefix):
+        net = ipaddress.ip_network(prefix, strict=True)
+        return net.version, int(net.network_address), net.prefixlen
+
+    unseeded = []
+    for prefix in sorted(invalid_prefixes, key=prefix_key):
         tri = triage[prefix]
         wl = worklist.get(prefix)
         if wl is None or tri.get("STATUS") != "REVIEW" or wl.get("STATUS") != "REVIEW":
             raise ValueError(f"non-REVIEW or missing source row for {prefix}")
         invalid_asns = split_set(tri.get("RPKI_INVALID_ORIGINS", ""))
         origins = split_set(tri.get("GLOBAL_BGP_ORIGIN_ASNS", ""))
-        if not invalid_asns or not invalid_asns.issubset(origins):
-            raise ValueError(f"invalid-origin set does not fit archived BGP origins for {prefix}")
-        for asn in invalid_asns | origins:
-            if not ASN_RE.fullmatch(asn):
-                raise ValueError(f"invalid ASN token for {prefix}: {asn}")
-        for asn in invalid_asns:
-            obj = rpki.get((prefix, asn))
-            if not obj or obj.get("RPKI_STATUS") != "invalid_asn" or obj.get("QUERY_STATUS") != "OK":
-                raise ValueError(f"archived invalid RPKI pair missing or changed for {prefix} {asn}")
+        if invalid_asns != current_by_prefix[prefix] or not invalid_asns <= origins:
+            raise ValueError(f"invalid-origin set does not match RPKI and observed BGP for {prefix}")
+        if any(not ASN_RE.fullmatch(asn) for asn in origins):
+            raise ValueError(f"invalid ASN token for {prefix}")
+        for asn in sorted(invalid_asns - historical_by_prefix.get(prefix, set())):
+            url = rpki[(prefix, asn)].get("RPKI_URL", "").strip()
+            if not url.startswith("https://"):
+                raise ValueError(f"missing HTTPS RPKI evidence for {prefix} {asn}")
+            unseeded.append({
+                "PREFIX": prefix,
+                "ORIGIN_ASN": asn,
+                "RPKI_STATUS": "invalid_asn",
+                "RPKI_URL": url,
+                "RECONCILIATION_CLASS": UNSEEDED_CLASS,
+                "REQUIRED_NEXT_ACTION": "Check exact NLRI and origin against a fresh full RIB and current VRPs.",
+                "STATUS": "REVIEW",
+            })
+
+    output = []
+    classes = Counter()
+    for prefix in sorted(seed, key=prefix_key):
+        wl = worklist[prefix]
+        invalid_asns = historical_by_prefix[prefix]
+        origins = split_set(triage[prefix].get("GLOBAL_BGP_ORIGIN_ASNS", ""))
 
         spot = spots.get(prefix)
         if spot is None or wl.get("EXTERNAL_SPOT_CHECK_STATUS") != "CHECKED_2026-11-10":
@@ -154,9 +194,18 @@ def build_reconciliation(evidence_dir: Path, seed_path: Path, output_path: Path,
         writer.writeheader()
         writer.writerows(output)
 
+    if unseeded_path is None:
+        unseeded_path = output_path.with_name("unseeded_rpki_invalid_review.tsv")
+    unseeded_path.parent.mkdir(parents=True, exist_ok=True)
+    with unseeded_path.open("w", encoding="utf-8", newline="") as stream:
+        writer = csv.DictWriter(stream, fieldnames=UNSEEDED_FIELDS, delimiter="\t", lineterminator="\n")
+        writer.writeheader()
+        writer.writerows(unseeded)
+
     stats = [
         "Artifact: v37 archived-invalid RPKI exact-NLRI reconciliation",
         f"Archived invalid prefixes: {len(output)}",
+        f"Unseeded invalid prefix/origin pairs for REVIEW: {len(unseeded)}",
         f"Rows with exact-scope external observations: {sum(r['EXTERNAL_NLRI_SCOPE_RELATION'] != 'MORE_SPECIFIC_ONLY' for r in output)}",
         f"Rows with more-specific-only observations: {sum(r['EXTERNAL_NLRI_SCOPE_RELATION'] == 'MORE_SPECIFIC_ONLY' for r in output)}",
         "All rows: STATUS=REVIEW",
@@ -167,7 +216,7 @@ def build_reconciliation(evidence_dir: Path, seed_path: Path, output_path: Path,
     stats.extend(f"Class {name}: {count}" for name, count in sorted(classes.items()))
     stats_path.parent.mkdir(parents=True, exist_ok=True)
     stats_path.write_text("\n".join(stats) + "\n", encoding="utf-8")
-    return {"rows": len(output), "classes": dict(classes)}
+    return {"rows": len(output), "classes": dict(classes), "unseeded_pairs": len(unseeded)}
 
 def spot_relation(prefix: str, row: dict[str, str]) -> str:
     target = ipaddress.ip_network(prefix, strict=True)
@@ -198,9 +247,11 @@ def main() -> int:
     parser.add_argument("--seed", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--stats", type=Path, required=True)
+    parser.add_argument("--unseeded-output", type=Path)
     args = parser.parse_args()
     try:
-        print(build_reconciliation(args.evidence_dir, args.seed, args.output, args.stats))
+        print(build_reconciliation(args.evidence_dir, args.seed, args.output, args.stats,
+                                   unseeded_path=args.unseeded_output))
     except (OSError, ValueError) as exc:
         print(f"ERROR: {exc}")
         return 1

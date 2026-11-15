@@ -1,0 +1,32 @@
+name: Repair GeoIP v41 client CDN
+
+on:
+  workflow_dispatch:
+
+# Share the production publisher's main-ref group so repair never runs
+# between promotion of release and publication of its GitHub assets.
+concurrency:
+  group: geoip-direct-ru-by-kz-v41-${{ github.ref }}
+  cancel-in-progress: false
+  queue: max
+
+permissions:
+  contents: read
+
+jobs:
+  repair:
+    if: github.ref == 'refs/heads/main' && github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    timeout-minutes: 18
+    permissions:
+      contents: write
+    steps:
+      - name: Check out v41 delivery scripts
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+
+      - name: Verify the current GitHub release and repair the client CDN
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: bash .github/scripts/repair_v41_cdn.sh

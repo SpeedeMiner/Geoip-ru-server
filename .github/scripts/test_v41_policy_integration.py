@@ -3,11 +3,13 @@ import unittest
 
 from build_v41_overlay import (
     class_aware_effective_block_set,
-    build_ru_service_protection_mask,
-    intervals,
+    build_service_protection_masks,
+    addr_counts,
     normalize_interval_union,
 )
 
+
+from validate_v41_overlay import assert_hxehex_diagnostic_only
 
 def n(*ranges):
     return {ipaddress.ip_network(value) for value in ranges}
@@ -22,12 +24,12 @@ class V41PolicyIntegrationTests(unittest.TestCase):
         )
         self.assertEqual(observed, [(150, 299), (400, 600), (1000, 1250)])
 
-    def test_core_company_survives_exact_and_resolved(self):
+    def test_core_company_survives_resolver_but_not_exact(self):
         exact = n("198.51.100.0/24")
         resolved = n("203.0.113.0/24")
         core = n("198.51.100.128/25", "203.0.113.128/25")
         result, _ = class_aware_effective_block_set(exact, resolved, core, set())
-        self.assertEqual(result, n("198.51.100.0/25", "203.0.113.0/25"))
+        self.assertEqual(result, n("198.51.100.0/24", "203.0.113.0/25"))
 
     def test_shared_and_rir_are_resolver_only_not_hard_exempt(self):
         exact = n("192.0.2.0/24", "198.51.100.0/24")
@@ -37,30 +39,73 @@ class V41PolicyIntegrationTests(unittest.TestCase):
         result, _ = class_aware_effective_block_set(exact, resolved, set(), shared, regional)
         self.assertEqual(result, n("192.0.2.0/24", "198.51.100.0/24", "203.0.113.0/25"))
 
-    def test_verified_service_exact_exception_is_preserved_from_v39(self):
-        exact = n("77.88.5.5/32", "104.16.0.5/32")
+    def test_neither_literal_hosts_nor_service_subnets_override_hard(self):
+        exact = n("77.88.5.5/32", "77.88.5.6/32", "77.88.5.7/32",
+                  "104.16.0.5/32", "185.32.184.6/32", "2001:db8::5/128",
+                  "2001:db8::6/128")
+        resolved = n("77.88.5.8/32", "185.32.184.7/32", "2001:db8::7/128")
         sources = {
-            "kyoresuas-standard": n("77.88.0.0/18"),
-            "hxehex-mobile-hosts": n("91.107.80.1/32"),
-            "operator-whitelist": n("185.32.184.0/23"),
-            "w1zardz-service-direct": n("85.192.10.0/24", "104.16.0.0/24"),
+            "kyoresuas-standard": n("77.88.0.0/18", "77.88.5.6/32", "77.88.5.7/32", "2001:db8::/48"),
+            "hxehex-mobile-hosts": n("2001:db8::6/128"),
+            "operator-whitelist": n("185.32.184.0/23", "185.32.184.6/32"),
+            "w1zardz-service-direct": n("104.16.0.0/24"),
         }
-        _, protected = build_ru_service_protection_mask(
-            set(), rir_ru=n("85.192.0.0/16"), service_sources=sources
+        hosts, resolver = build_service_protection_masks({"RU": set(), "BY": set(), "KZ": set()}, sources)
+        self.assertEqual(hosts, n("77.88.5.6/32", "77.88.5.7/32"))
+        effective, _ = class_aware_effective_block_set(
+            exact, resolved, set(), n("77.88.0.0/18"), set(), hosts, resolver,
         )
-        self.assertIn(ipaddress.ip_network("77.88.0.0/18"), protected)
-        self.assertIn(ipaddress.ip_network("85.192.10.0/24"), protected)
-        self.assertNotIn(ipaddress.ip_network("104.16.0.0/24"), protected)
-        effective, _ = class_aware_effective_block_set(exact, set(), set(), set(), set(), protected)
-        self.assertEqual(effective, n("104.16.0.5/32"))
+        self.assertEqual(addr_counts(effective), addr_counts(exact))
+        self.assertEqual(addr_counts(effective | exact), addr_counts(exact))
+
+    def test_hxehex_does_not_protect_dns_evidence_but_independent_sources_do(self):
+        hxehex_only = n("192.0.2.1/32")
+        also_kyoresuas = n("198.51.100.1/32")
+        regions = {country: set() for country in ("RU", "BY", "KZ")}
+        sources = {"hxehex-mobile-hosts": hxehex_only | also_kyoresuas,
+                   "kyoresuas-standard": also_kyoresuas}
+        hosts, resolver = build_service_protection_masks(regions, sources)
+        self.assertEqual(hosts, also_kyoresuas)
+        self.assertEqual(resolver, also_kyoresuas)
+        effective, _ = class_aware_effective_block_set(
+            set(), hxehex_only | also_kyoresuas, set(), set(), set(), hosts, resolver)
+        self.assertEqual(effective, hxehex_only)
+
+    def test_hxehex_direct_leak_fails_but_other_admission_is_valid(self):
+        observed = n("192.0.2.1/32", "198.51.100.1/32")
+        independently_admitted = n("198.51.100.0/24")
+        assert_hxehex_diagnostic_only(n("198.51.100.1/32"), independently_admitted, observed)
+        with self.assertRaisesRegex(ValueError, "HXEHEX-only admission"):
+            assert_hxehex_diagnostic_only(observed, independently_admitted, observed)
+
+    def test_w1zardz_regional_intersection_cannot_synthesize_a_hard_exception(self):
+        hosts, resolver = build_service_protection_masks(
+            {"RU": n("192.0.2.1/32", "192.0.2.4/31"),
+             "BY": n("198.51.100.1/32"), "KZ": n("2001:db8::1/128")},
+            {"w1zardz-service-direct": n("192.0.2.0/30", "192.0.2.4/32", "192.0.2.5/32",
+                                         "198.51.100.1/32", "2001:db8::/64")},
+        )
+        self.assertEqual(hosts, n("192.0.2.4/32", "192.0.2.5/32"))
+        self.assertEqual(addr_counts(resolver), {"ipv4": 4, "ipv6": 1})
+        exact = n("192.0.2.1/32", "198.51.100.1/32")
+        effective, _ = class_aware_effective_block_set(
+            exact, n("2001:db8::1/128"), set(), set(), set(), hosts, resolver,
+        )
+        self.assertEqual(effective, exact)
+
+    def test_subnet_cannot_be_passed_as_hard_service_exception(self):
+        with self.assertRaisesRegex(ValueError, "literal host"):
+            class_aware_effective_block_set(
+                set(), set(), set(), set(), service_exact_hosts=n("192.0.2.0/31"),
+            )
 
     def test_ipv6_and_private_precedence_has_no_auto_promotion(self):
         exact = n("2001:db8:100::/48")
         core = n("2001:db8:100:8000::/49")
         output, _ = class_aware_effective_block_set(exact, set(), core, set())
-        self.assertEqual(output, n("2001:db8:100::/49"))
+        self.assertEqual(output, exact)
 
-    def test_legacy_unclassified_baseline_stays_hard_for_rir(self):
+    def test_explicit_subnet_stays_hard_for_rir(self):
         exact = n("203.0.113.0/24")
         resolver = n("203.0.113.0/24")
         regional = n("203.0.113.0/24")

@@ -199,12 +199,20 @@ class CompanyPrefixReviewTests(unittest.TestCase):
 
 
 
+    def test_static_labels_are_canonicalized_in_both_formats(self):
+        from build_company_prefix_review import parse_selected_origins
+
+        for pin in ("AS212066[Yandex][STATIC-DIRECT]", "AS212066[Yandex+STATIC-DIRECT]"):
+            with self.subTest(pin=pin):
+                self.assertEqual(parse_selected_origins(f"{pin},AS12389[RIR-RU]"),
+                                 [(212066, {"Yandex", "STATIC-DIRECT"}), (12389, {"RIR-RU"})])
+
     def test_static_direct_pin_missing_from_snapshot_is_retained_as_not_observed(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
             company, manifest, prefixes, provenance, archive = self.make_inputs(root)
             with prefixes.open("a", encoding="utf-8") as handle:
-                handle.write("192.0.2.0/24 # AS64500[Yandex+STATIC-DIRECT]\n")
+                handle.write("192.0.2.0/24 # AS64500[Yandex][STATIC-DIRECT]\n")
             output = root / "review.tsv"
             stats = root / "stats.txt"
             build_review(company, manifest, prefixes, provenance, archive, output, stats)
@@ -213,6 +221,7 @@ class CompanyPrefixReviewTests(unittest.TestCase):
             self.assertEqual(len(rows), 1)
             data = dict(zip(BGP_HEADER, rows[0]))
             self.assertEqual(data["GLOBAL_BGP_ORIGIN_ASNS"], "")
+            self.assertEqual(data["SELECTED_ORIGIN_LABELS"], "AS64500[STATIC-DIRECT+Yandex]")
             self.assertEqual(data["GLOBAL_BGP_OBSERVATION"], "NOT_OBSERVED_STATIC_DIRECT_PIN")
             self.assertEqual(data["STATUS"], "REVIEW")
 

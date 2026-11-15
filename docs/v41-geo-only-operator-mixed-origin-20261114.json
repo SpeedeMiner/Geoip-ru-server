@@ -1,0 +1,221 @@
+{
+  "parent_candidate_sha256": "2082e29d0dc372f5c1d4b51bac270dfbb0e8b6e52b8a0484213f2cce290e0ab9",
+  "cohort_before": 649,
+  "restored_ipv4": 12,
+  "cohort_after": 637,
+  "admitted": [
+    {
+      "prefix": "5.252.116.0/24",
+      "country": "RU",
+      "origin": "AS207569",
+      "netname": "PSERVERS-CLOUD-HOSTING",
+      "rdap": "https://rdap.db.ripe.net/ip/5.252.116.0%2F24",
+      "inetnum": "https://rest.db.ripe.net/ripe/inetnum/5.252.116.0%20-%205.252.116.255.json",
+      "ris": "https://stat.ripe.net/data/routing-status/data.json?resource=5.252.116.0%2F24",
+      "ris_query_time": "2026-11-14T00:00:00",
+      "ris_origins": [
+        207569
+      ],
+      "ris_more_specifics": [],
+      "ris_peers": {
+        "ris_peers_seeing": 318,
+        "total_ris_peers": 320
+      },
+      "geofeed": "https://geofeed.power-servers.net/ih_geofeed.csv",
+      "geofeed_sha256": "e3ab163fce08d816cd398a59134b715f341ca4f444566f4ef8f0b97b9c2e5269",
+      "matched_geofeed_cidrs": [
+        "5.252.116.0/24"
+      ],
+      "restored_ips": [
+        "5.252.116.17",
+        "5.252.116.110"
+      ]
+    },
+    {
+      "prefix": "31.76.227.0/24",
+      "country": "RU",
+      "origin": "AS206134",
+      "netname": "it-garage",
+      "rdap": "https://rdap.db.ripe.net/ip/31.76.227.0%2F24",
+      "inetnum": "https://rest.db.ripe.net/ripe/inetnum/31.76.227.0%20-%2031.76.227.255.json",
+      "ris": "https://stat.ripe.net/data/routing-status/data.json?resource=31.76.227.0%2F24",
+      "ris_query_time": "2026-11-14T00:00:00",
+      "ris_origins": [
+        206134
+      ],
+      "ris_more_specifics": [],
+      "ris_peers": {
+        "ris_peers_seeing": 318,
+        "total_ris_peers": 320
+      },
+      "geofeed": "https://geofeed.it-garage.pro/subnet.csv",
+      "geofeed_sha256": "6ca1a8807333722cfced828388bc980e5fa2de13dd5dc6d567f24650a38cbb16",
+      "matched_geofeed_cidrs": [
+        "31.76.227.0/24"
+      ],
+      "restored_ips": [
+        "31.76.227.88"
+      ]
+    },
+    {
+      "prefix": "31.76.230.0/24",
+      "country": "RU",
+      "origin": "AS215590",
+      "netname": "xorekcloud-msk",
+      "rdap": "https://rdap.db.ripe.net/ip/31.76.230.0%2F24",
+      "inetnum": "https://rest.db.ripe.net/ripe/inetnum/31.76.230.0%20-%2031.76.230.255.json",
+      "ris": "https://stat.ripe.net/data/routing-status/data.json?resource=31.76.230.0%2F24",
+      "ris_query_time": "2026-11-14T00:00:00",
+      "ris_origins": [
+        215590
+      ],
+      "ris_more_specifics": [],
+      "ris_peers": {
+        "ris_peers_seeing": 320,
+        "total_ris_peers": 320
+      },
+      "geofeed": "https://xorek.cloud/subnet.csv",
+      "geofeed_sha256": "0d69d3ea292b152f8177a6883c66003be1827000bfaddee3a6887778f9e0244e",
+      "matched_geofeed_cidrs": [
+        "31.76.230.0/24"
+      ],
+      "restored_ips": [
+        "31.76.230.227"
+      ]
+    },
+    {
+      "prefix": "85.209.135.0/24",
+      "country": "RU",
+      "origin": "AS215590",
+      "netname": "xorekcloud-msk",
+      "rdap": "https://rdap.db.ripe.net/ip/85.209.135.0%2F24",
+      "inetnum": "https://rest.db.ripe.net/ripe/inetnum/85.209.135.0%20-%2085.209.135.255.json",
+      "ris": "https://stat.ripe.net/data/routing-status/data.json?resource=85.209.135.0%2F24",
+      "ris_query_time": "2026-11-14T00:00:00",
+      "ris_origins": [
+        215590
+      ],
+      "ris_more_specifics": [],
+      "ris_peers": {
+        "ris_peers_seeing": 320,
+        "total_ris_peers": 320
+      },
+      "geofeed": "https://xorek.cloud/subnet.csv",
+      "geofeed_sha256": "0d69d3ea292b152f8177a6883c66003be1827000bfaddee3a6887778f9e0244e",
+      "matched_geofeed_cidrs": [
+        "85.209.135.0/24"
+      ],
+      "restored_ips": [
+        "85.209.135.43",
+        "85.209.135.79"
+      ]
+    },
+    {
+      "prefix": "93.185.159.0/24",
+      "country": "RU",
+      "origin": "AS216127",
+      "netname": "AS216127-RU-iPv4",
+      "rdap": "https://rdap.db.ripe.net/ip/93.185.159.0%2F24",
+      "inetnum": "https://rest.db.ripe.net/ripe/inetnum/93.185.159.0%20-%2093.185.159.255.json",
+      "ris": "https://stat.ripe.net/data/routing-status/data.json?resource=93.185.159.0%2F24",
+      "ris_query_time": "2026-11-14T00:00:00",
+      "ris_origins": [
+        216127
+      ],
+      "ris_more_specifics": [],
+      "ris_peers": {
+        "ris_peers_seeing": 319,
+        "total_ris_peers": 320
+      },
+      "geofeed": "https://geofeed.nuxt.cloud/subnet.csv",
+      "geofeed_sha256": "0928b12bb40bccd16e9a15f31d1ac30bf1e56fa29d60f045294c154f2b95f7cc",
+      "matched_geofeed_cidrs": [
+        "93.185.159.0/24"
+      ],
+      "restored_ips": [
+        "93.185.159.153"
+      ]
+    },
+    {
+      "prefix": "144.31.201.0/24",
+      "country": "RU",
+      "origin": "AS216127",
+      "netname": "nuxtcloud",
+      "rdap": "https://rdap.db.ripe.net/ip/144.31.201.0%2F24",
+      "inetnum": "https://rest.db.ripe.net/ripe/inetnum/144.31.201.0%20-%20144.31.201.255.json",
+      "ris": "https://stat.ripe.net/data/routing-status/data.json?resource=144.31.201.0%2F24",
+      "ris_query_time": "2026-11-14T00:00:00",
+      "ris_origins": [
+        216127
+      ],
+      "ris_more_specifics": [],
+      "ris_peers": {
+        "ris_peers_seeing": 319,
+        "total_ris_peers": 320
+      },
+      "geofeed": "https://geofeed.nuxt.cloud/subnet.csv",
+      "geofeed_sha256": "0928b12bb40bccd16e9a15f31d1ac30bf1e56fa29d60f045294c154f2b95f7cc",
+      "matched_geofeed_cidrs": [
+        "144.31.201.0/24"
+      ],
+      "restored_ips": [
+        "144.31.201.36",
+        "144.31.201.38"
+      ]
+    },
+    {
+      "prefix": "144.31.222.0/24",
+      "country": "RU",
+      "origin": "AS202831",
+      "netname": "msk-sh-1",
+      "rdap": "https://rdap.db.ripe.net/ip/144.31.222.0%2F24",
+      "inetnum": "https://rest.db.ripe.net/ripe/inetnum/144.31.222.0%20-%20144.31.222.255.json",
+      "ris": "https://stat.ripe.net/data/routing-status/data.json?resource=144.31.222.0%2F24",
+      "ris_query_time": "2026-11-14T00:00:00",
+      "ris_origins": [
+        202831
+      ],
+      "ris_more_specifics": [],
+      "ris_peers": {
+        "ris_peers_seeing": 320,
+        "total_ris_peers": 320
+      },
+      "geofeed": "https://vdsok.guru/api/geofeed",
+      "geofeed_sha256": "d53d24dd08ceb7492dfddccca3cac48b388461d52d5fd6ddb9eb2ea0019fc8e1",
+      "matched_geofeed_cidrs": [
+        "144.31.222.0/24"
+      ],
+      "restored_ips": [
+        "144.31.222.55",
+        "144.31.222.92",
+        "144.31.222.153"
+      ]
+    }
+  ],
+  "held_examples": [
+    {
+      "prefix": "176.126.103.0/24",
+      "reason": "Exact RU RIPE assignment and RIS AS210546 match. The registry-linked geofeed returned HTTP 503 twice. Do not admit until the feed can be corroborated."
+    },
+    {
+      "prefix": "31.76.231.0/24",
+      "reason": "Xorek operator geofeed identifies FI. RIS observes AS215590 on both /24s. No /23-wide admission."
+    },
+    {
+      "prefix": "144.31.200.0/24",
+      "reason": "Nuxt operator geofeed identifies NL. RIS observes AS216127 on both /24s. No /23-wide admission."
+    },
+    {
+      "prefix": "103.82.103.0/24",
+      "reason": "Exact RIPE RDAP assignment is FI despite the same pinned AS207569 as the verified Russian PSERVERS assignment."
+    },
+    {
+      "prefix": "185.180.230.0/24",
+      "reason": "Pinned ipverse attributed the cohort addresses to AS50113. RIS currently sees AS204997. Keep this case out pending reconciliation of the routing inputs."
+    },
+    {
+      "prefix": "91.241.59.0/24",
+      "reason": "Exact RIPE assignment is KZ and RIS sees AS59454, but no geofeed pointer appears in the exact registry object."
+    }
+  ]
+}

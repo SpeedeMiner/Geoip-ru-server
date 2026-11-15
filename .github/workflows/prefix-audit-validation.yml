@@ -4,7 +4,11 @@ on:
   pull_request:
     branches: [main]
     paths:
+      - ".github/scripts/extract_ru_asn_prefixes_v41.py"
       - ".github/scripts/build_company_prefix_review.py"
+      - ".github/scripts/fetch_v41_audit_ipverse.sh"
+      - ".github/scripts/verify_v41_ipverse_archive.py"
+      - ".github/scripts/test_verify_v41_ipverse_archive.py"
       - ".github/scripts/build_selected_origin_prefix_review.py"
       - ".github/scripts/test_build_company_prefix_review.py"
       - ".github/scripts/test_build_selected_origin_prefix_review.py"
@@ -56,6 +60,9 @@ jobs:
 
       - name: Run audit unit tests
         run: python3 -m unittest discover -s .github/scripts -p 'test_build_*prefix*.py' -v
+
+      - name: Test retained ipverse input handling
+        run: python3 -m unittest discover -s .github/scripts -p 'test_verify_v41_ipverse_archive.py' -v
 
       - name: Validate v37 legal-evidence additions TSV
         run: |
@@ -191,54 +198,8 @@ jobs:
             test -s "$file" || { echo "::error::Empty release input: $file"; exit 1; }
           done
 
-          read -r snapshot_url snapshot_sha snapshot_bytes < <(python3 - <<'PY'
-          import csv
-          import re
-
-          with open("geoip_RU_input_provenance.tsv", encoding="utf-8", newline="") as stream:
-              rows = list(csv.DictReader(stream, delimiter="\t"))
-          matches = [row for row in rows if row["LOCAL_FILE"] == "as-ip-blocks.tar.gz"]
-          if len(matches) != 1:
-              raise SystemExit("Expected exactly one ipverse archive row in release provenance")
-          row = matches[0]
-          if row["STATUS"] != "downloaded":
-              raise SystemExit(f"ipverse archive status is not downloaded: {row['STATUS']}")
-          if not re.fullmatch(r"[0-9a-f]{64}", row["SHA256"]):
-              raise SystemExit("Invalid ipverse archive SHA-256 in release provenance")
-          if not row["BYTES"].isdigit() or int(row["BYTES"]) < 5_000_000:
-              raise SystemExit("Invalid or implausible ipverse archive size in release provenance")
-          if not row["FETCH_URL"].startswith("https://"):
-              raise SystemExit("ipverse archive provenance URL must use HTTPS")
-          print(row["FETCH_URL"], row["SHA256"], row["BYTES"])
-          PY
-          )
-
-          curl --fail --location --silent --show-error \
-            --retry 3 --retry-all-errors --connect-timeout 15 --max-time 600 \
-            "$snapshot_url" -o as-ip-blocks.tar.gz
-
-          python3 - <<'PY'
-          import csv
-          import gzip
-          import hashlib
-          from pathlib import Path
-
-          with open("geoip_RU_input_provenance.tsv", encoding="utf-8", newline="") as stream:
-              rows = list(csv.DictReader(stream, delimiter="\t"))
-          row = next(item for item in rows if item["LOCAL_FILE"] == "as-ip-blocks.tar.gz")
-          archive = Path("as-ip-blocks.tar.gz").read_bytes()
-          if len(archive) != int(row["BYTES"]):
-              raise SystemExit(f"ipverse archive size mismatch: {len(archive)} != {row['BYTES']}")
-          digest = hashlib.sha256(archive).hexdigest()
-          if digest != row["SHA256"]:
-              raise SystemExit(f"ipverse archive SHA-256 mismatch: {digest} != {row['SHA256']}")
-          try:
-              with gzip.open("as-ip-blocks.tar.gz", "rb") as stream:
-                  stream.read(1)
-          except OSError as exc:
-              raise SystemExit(f"ipverse archive is not valid gzip: {exc}")
-          print(f"Verified ipverse archive: {len(archive)} bytes, SHA256={digest}")
-          PY
+          bash .github/scripts/fetch_v41_audit_ipverse.sh \
+            "$GITHUB_REPOSITORY" "$release_sha" geoip_RU_input_provenance.tsv as-ip-blocks.tar.gz
 
           sha256sum \
             geoip_RU_company_asns.txt \
@@ -290,6 +251,10 @@ jobs:
 
           report = Path("geoip_RU_v37_base_quality_report.txt").read_text(encoding="utf-8")
           expected_company = re.search(
+              r"^Unique prefixes in DIRECT company-ASN layer \(observed \+ static overrides\): ([0-9]+)$",
+              report, re.MULTILINE,
+          )
+          legacy_observed_company = re.search(
               r"^Unique prefixes originated by curated Russian-company/affiliate ASNs: ([0-9]+)$",
               report, re.MULTILINE,
           )
@@ -297,9 +262,8 @@ jobs:
               r"^Unique prefixes in DIRECT ASN-origin/pinned layer .+: ([0-9]+)$",
               report, re.MULTILINE,
           )
-          if not expected_company or not expected_selected:
+          if not (expected_company or legacy_observed_company) or not expected_selected:
               raise SystemExit("Could not find selected-prefix baselines in v37 production quality report")
-          expected_company_count = int(expected_company.group(1))
           expected_selected_count = int(expected_selected.group(1))
 
           def read_queue(path):
@@ -327,6 +291,21 @@ jobs:
 
           company_rows, company_prefixes = read_queue(Path("prefix-audit/company_origin_prefix_review.tsv"))
           selected_rows, selected_prefixes = read_queue(Path("prefix-audit/selected_origin_prefix_review.tsv"))
+
+          if expected_company:
+              expected_company_count = int(expected_company.group(1))
+          else:
+              # The currently published report predates the explicit selected-company metric.
+              # Count pins without a matching observed company origin (even if another ASN
+              # announced the same prefix). Do not count a pin twice when it was observed.
+              def asns(value):
+                  return {token.strip() for token in value.split(",") if token.strip()}
+              static_only = sum(
+                  "STATIC-DIRECT" in row["SELECTED_ORIGIN_LABELS"]
+                  and not asns(row["COMPANY_ASNS"]) & asns(row["GLOBAL_BGP_ORIGIN_ASNS"])
+                  for row in company_rows
+              )
+              expected_company_count = int(legacy_observed_company.group(1)) + static_only
 
           if len(company_rows) != expected_company_count:
               raise SystemExit(
@@ -757,6 +736,7 @@ jobs:
             --evidence-dir "$evidence" \
             --seed .github/audits/priority_prefix_rpki_invalid_assessment_v37.tsv \
             --output "$evidence/priority_prefix_rpki_invalid_reconciliation.tsv" \
+            --unseeded-output "$evidence/unseeded_rpki_invalid_review.tsv" \
             --stats "$evidence/priority_prefix_rpki_invalid_reconciliation_stats.txt"
 
           python3 - <<'PY'
@@ -774,10 +754,11 @@ jobs:
           triage = read_tsv(base / "priority_prefix_triage.tsv")
           worklist = read_tsv(base / "priority_prefix_review_worklist.tsv")
           result = read_tsv(base / "priority_prefix_rpki_invalid_reconciliation.tsv")
-          expected = {
-              row["PREFIX"] for row in triage
-              if "RPKI_INVALID_ASN" in {x.strip() for x in row["TRIAGE_FLAGS"].split("|")}
-          }
+          seed = read_tsv(Path(".github/audits/priority_prefix_rpki_invalid_assessment_v37.tsv"))
+          historical_by = {r["PREFIX"]: set(r["ARCHIVED_INVALID_RPKI_ORIGINS"].split("|")) for r in seed}
+          expected = set(historical_by)
+          if len(seed) != 19 or sum(map(len, historical_by.values())) != 20:
+              raise SystemExit("Unexpected historical RPKI seed inventory")
           actual = {row["PREFIX"] for row in result}
           if len(result) != 19 or len(actual) != 19 or actual != expected:
               raise SystemExit("RPKI reconciliation must contain exactly the 19 archived invalid prefixes")
@@ -791,7 +772,7 @@ jobs:
               triage_invalid = {
                   x.strip() for x in triage_by[prefix]["RPKI_INVALID_ORIGINS"].replace(",", "|").split("|") if x.strip()
               }
-              if archived_invalid != triage_invalid:
+              if archived_invalid != historical_by[prefix] or not archived_invalid <= triage_invalid:
                   raise SystemExit(f"Archived invalid-origin set drift for {prefix}")
               if row["EXTERNAL_NLRI_SCOPE_RELATION"] != worklist_by[prefix]["EXTERNAL_SPOT_CHECK_SCOPE_RELATION"]:
                   raise SystemExit(f"External NLRI scope mismatch for {prefix}")
@@ -799,6 +780,21 @@ jobs:
                   raise SystemExit(f"Incomplete RPKI reconciliation row: {prefix}")
               if row["EXTERNAL_NLRI_SCOPE_RELATION"] == "MORE_SPECIFIC_ONLY" and row["EXTERNAL_EXACT_ORIGIN_ASNS"]:
                   raise SystemExit(f"Child-route evidence was projected onto exact prefix {prefix}")
+          current_pairs = {
+              (r["PREFIX"], r["ORIGIN_ASN"]) for r in read_tsv(base / "rpki_by_origin.tsv")
+              if r["QUERY_STATUS"] == "OK" and r["RPKI_STATUS"] == "invalid_asn"
+          }
+          historical_pairs = {(prefix, asn) for prefix, asns in historical_by.items() for asn in asns}
+          unseeded = read_tsv(base / "unseeded_rpki_invalid_review.tsv")
+          actual_unseeded = {(r["PREFIX"], r["ORIGIN_ASN"]) for r in unseeded}
+          if (not historical_pairs <= current_pairs or len(unseeded) != len(actual_unseeded)
+                  or actual_unseeded != current_pairs - historical_pairs):
+              raise SystemExit("Unseeded RPKI review pairs do not match current minus historical evidence")
+          for row in unseeded:
+              if (row["STATUS"] != "REVIEW" or row["RPKI_STATUS"] != "invalid_asn"
+                      or row["RECONCILIATION_CLASS"] != "UNSEEDED_CURRENT_RPKI_INVALID_NEEDS_SPOT_CHECK"
+                      or not row["RPKI_URL"].startswith("https://") or not row["REQUIRED_NEXT_ACTION"]):
+                  raise SystemExit("Invalid unseeded RPKI review row")
           counts = Counter(row["RECONCILIATION_CLASS"] for row in result)
           expected_counts = {
               "EXACT_ORIGIN_SET_CHANGED": 16,
@@ -811,6 +807,7 @@ jobs:
           stats = (base / "priority_prefix_rpki_invalid_reconciliation_stats.txt").read_text(encoding="utf-8")
           for required in (
               "Archived invalid prefixes: 19",
+              f"Unseeded invalid prefix/origin pairs for REVIEW: {len(unseeded)}",
               "Rows with exact-scope external observations: 18",
               "Rows with more-specific-only observations: 1",
               "All rows: STATUS=REVIEW",

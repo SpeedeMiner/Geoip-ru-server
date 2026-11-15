@@ -1,0 +1,92 @@
+{
+  "davoyan-geoip.dat": {
+    "url": "https://raw.githubusercontent.com/Davoyan/xray-routing/a5f9f127f5c9aa7bfb0da9bf2acf199cba714aa2/release/geoip.dat",
+    "sha256": "2de5cced2e69a668fb75f1a96387e2cb939562897f98a822e76f44f68e848a7e",
+    "bytes": 681978
+  },
+  "digne-geoip.dat": {
+    "url": "https://raw.githubusercontent.com/DigneZzZ/routing/0dd4a18e4400fe69955151acbcdc7388848f9250/v2ray/geoip.dat",
+    "sha256": "2afe2ccc7862c4557f42ee9e777c2f2985370e56b3f20839eafbdf02261158fa",
+    "bytes": 809687
+  },
+  "escapingworm-operator-cidr.txt": {
+    "url": "https://raw.githubusercontent.com/escapingworm/russia-whitelist/2bb6c0788f21986b7928d986ea2577c6ebc11b36/ru-whitelist-cidr.txt",
+    "sha256": "cb36cdc22acd9d177a1402b074f5180f1a3286cd856fb6aba7afbf6333a795e4",
+    "bytes": 1395
+  },
+  "golukon-geoip.dat": {
+    "url": "https://raw.githubusercontent.com/golukon/russia-only-geoip/48b948a48774dff736212d82bd369dec449be54c/geoip.dat",
+    "sha256": "22c60f68b6bdf2c5a24a18a46a9797d9467961f9c47b16c7bf5b10fed70c8f08",
+    "bytes": 131218
+  },
+  "grimbird-geoip.dat": {
+    "url": "https://raw.githubusercontent.com/GrimbirdUsers/ru-routing-dat/bea48cd34166485ef8d999e1981d8cf3ca297253/geoip.dat",
+    "sha256": "b0f063b499019ccafa95c692d803ab0ad47619a4a0aa0b0ab6bace7e9708fe1d",
+    "bytes": 398808
+  },
+  "hxehex-cidrwhitelist.txt": {
+    "url": "https://raw.githubusercontent.com/hxehex/russia-mobile-internet-whitelist/fad3653ebd4b212643774a4d10af3eb33838e4ff/cidrwhitelist.txt",
+    "sha256": "149d27a8e3502b95b9a378817854c87af6417c2a9bbf0b17eb8f7affef1f3868",
+    "bytes": 470393
+  },
+  "hxehex-ipwhitelist.txt": {
+    "url": "https://raw.githubusercontent.com/hxehex/russia-mobile-internet-whitelist/fad3653ebd4b212643774a4d10af3eb33838e4ff/ipwhitelist.txt",
+    "sha256": "8a3814375701decd9787718fc3ae769187aa4714e2a1b8fa5d96f94ad2bd4da0",
+    "bytes": 1757478
+  },
+  "hydra-geoip.dat": {
+    "url": "https://github.com/hydraponique/roscomvpn-geoip/releases/download/202611121058/geoip.dat",
+    "sha256": "2ed3df4a369de869ce1b2def14ff1aef7135b7e056bb8faf1c9c45ac40cc2999",
+    "bytes": 440492
+  },
+  "kirill-geoip.dat": {
+    "url": "https://github.com/kirilllavrov/RU-domain-list-for-whitelist/releases/download/0.3.11/geoip.dat",
+    "sha256": "81c8b59e121fa38e00fe6efaa0f2919bc2de174deff54e53a5c4c05681c03059",
+    "bytes": 328405
+  },
+  "kyoresuas-ru-standard-ipv4.txt": {
+    "url": "https://raw.githubusercontent.com/kyoresuas/ru-direct/0781793a159f9a53c5e68da2f46b0a64855f8cb6/ru-standard.ipv4.txt",
+    "sha256": "867de404e49974c1711ba199dfd82537927a6812fbe28d0db8f46bcbecb3cecc",
+    "bytes": 10305
+  },
+  "kyoresuas-ru-standard-ipv6.txt": {
+    "url": "https://raw.githubusercontent.com/kyoresuas/ru-direct/0781793a159f9a53c5e68da2f46b0a64855f8cb6/ru-standard.ipv6.txt",
+    "sha256": "ccad517f54f8d33989fb9303f8c1489308d0b091e0b3e6cc7b6df81b8e0b8d23",
+    "bytes": 1401
+  },
+  "kyoresuas-services.json": {
+    "url": "https://raw.githubusercontent.com/kyoresuas/ru-direct/0781793a159f9a53c5e68da2f46b0a64855f8cb6/services.json",
+    "sha256": "97a9ad1438bfc4f501664e57f7ee294d42c10954744fc5c9ed925b602061ba9d",
+    "bytes": 63100
+  },
+  "loyalsoldier-by.dat": {
+    "url": "https://raw.githubusercontent.com/Loyalsoldier/geoip/ec6f8d0f6b5c6c6924d9230f2ed893f69585d38c/dat/by.dat",
+    "sha256": "baac721e10f384222261b4fe9d8bed5572fb03300a5840ff015ce84b3705bd7e",
+    "bytes": 11629
+  },
+  "loyalsoldier-private.dat": {
+    "url": "https://raw.githubusercontent.com/Loyalsoldier/geoip/ec6f8d0f6b5c6c6924d9230f2ed893f69585d38c/dat/private.dat",
+    "sha256": "4acc277c0425871bf1171a06302a60fec1d7ced5db204bb5b4090a5b6e0efe99",
+    "bytes": 436
+  },
+  "loyalsoldier-ru.dat": {
+    "url": "https://raw.githubusercontent.com/Loyalsoldier/geoip/ec6f8d0f6b5c6c6924d9230f2ed893f69585d38c/dat/ru.dat",
+    "sha256": "72745d626cfec819b36221825bb05c3a27e086a7f48871265411827cc86ff9cb",
+    "bytes": 398794
+  },
+  "v2fly-geoip.dat": {
+    "url": "https://github.com/v2fly/geoip/releases/download/202611080027/geoip.dat",
+    "sha256": "eedb24b3b9fcba27e06b92c0428dab90d9496083091ae4cf39e11387fd99d0e2",
+    "bytes": 23876117
+  },
+  "v2fly-geoip.dat.sha256sum": {
+    "url": "https://github.com/v2fly/geoip/releases/download/202611080027/geoip.dat.sha256sum",
+    "sha256": "22b576c674dd9f2535bc90eb9c334431b400e3101ccb525be3e085bcf56bb8aa",
+    "bytes": 76
+  },
+  "w1zardz-ru-ipv4.txt": {
+    "url": "https://raw.githubusercontent.com/w1zardz/amnezia-vpn-russia-split-tunneling/6157cdfb55f1748c98cab121cde008b5f69d325d/dist/ru-direct-ipv4.txt",
+    "sha256": "eb4e35274762494acbee235e75413046ddb9e83d838095ecd71e647648cd7e7c",
+    "bytes": 16217
+  }
+}

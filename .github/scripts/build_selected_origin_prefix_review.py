@@ -12,13 +12,12 @@ import csv
 import datetime as dt
 import ipaddress
 import json
-import re
 from collections import defaultdict
 from pathlib import Path
 from typing import Iterable
 
 from build_company_prefix_review import (
-    ASN_RE,
+    parse_selected_origins,
     _prefix_sort_key,
     _union_addresses,
     read_bgp_snapshot,
@@ -94,15 +93,7 @@ def build_review(
                 f"{selected_prefixes}:{line_no}: invalid prefix {prefix_token.strip()!r}"
             ) from exc
 
-        origins: list[tuple[int, set[str]]] = []
-        for match in ASN_RE.finditer(comment):
-            asn = int(match.group("asn"))
-            labels = {
-                part.strip()
-                for part in match.group("labels").split("+")
-                if part.strip()
-            }
-            origins.append((asn, labels))
+        origins = parse_selected_origins(comment)
         if not origins:
             raise ValueError(
                 f"{selected_prefixes}:{line_no}: selected prefix has no parsed origin ASN annotation"

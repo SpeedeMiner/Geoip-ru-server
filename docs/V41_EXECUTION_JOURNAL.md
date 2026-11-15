@@ -92,3 +92,215 @@
 - Both workflow modifications are in the SAME v41 PR to avoid a transient dual-publisher state after merging.
 - Release gate: validate lint/CI after these trigger changes, transition PR #13 from Draft, merge using expected head SHA, then independently verify v41 GitHub Release and `release` branch hashes. If CI or release fails, record the failure rather than claiming publication.
 - Excluded from all operations: PR #5 and `feature/reachability-full-ru-kz-by`; PRs #6–#9 kept Draft.
+
+## 2026-11-13 — publication and source integrity
+
+See [v41 release hardening](V41_RELEASE_HARDENING.md). Routing-policy changes are evaluated separately. PR #5 and its head branch are out of scope.
+
+## 2026-11-13 — v41.1 routing policy candidate
+
+- Branch `policy/v41-1-service-and-regional` is stacked on Draft PR #17 so routing policy and source/publication hardening can be reviewed separately.
+- Hard exemptions are restricted to CORE and explicitly sourced /32 or /128 service entries. A service CIDR, an Escapingworm operator whitelist entry, or a W1ZARDZ BY/KZ overlap is resolver-only. The release policy gate reconstructs allowed hard host entries separately from the overlay's mask logic.
+- The exact BGP origin sidecar now consumes both RU and BY/KZ RIR ASN registries, with separate hashes. No entry or hard-block exception was added to the curated 56-ASN company registry.
+- The active ip.lst classification, historical v38 baseline, review-only /24 behavior, PRIVATE precedence and public asset filenames remain unchanged. No main, release, tags, PR #5 or production changes.
+- Same-input replay against the published DAT `576bf92bf1dc57a85ff5292e9dd2519f1400aabc160503721b1ae0a4431fb1eb` produced `b257cc32bb0504de1e0d9bad645b66c759e2572d7a0911897efea330859a32d8`. Independent address-space comparison: IPv4 +696 / −91 (net +605), IPv6 and PRIVATE unchanged. Existing publication envelope permits the delta. The replay admitted 333 active origins from 387 BY/KZ registry ASNs.
+
+## 2026-11-13 — v41.2 historical host candidate
+
+- Branch `policy/v41-2-legacy-host-reclassification` is stacked on PR #18. The existing build prepares block layers after ASN selection and uses both the regional origin and SHARED masks.
+- Keep the pinned v38 approved union intact. Move only eligible regional legacy-only IPv4 /32 to resolver-only, with explicit provenance. Any current prefix covering the host vetoes the move. The rule is disabled when a current feed is missing or has tolerated invalid data.
+- The original 213-host review queue used a different snapshot and required prior v34 membership. It is not an expected count for this policy or a claim about unblocking.
+- Same-input replay versus PR #18 moved 268 IPv4 /32, with exactly 265 additions to DIRECT and no removals (three already DIRECT). IPv6 and PRIVATE unchanged. 259 of the 265 additions are present in the SHA-256-pinned v34 DAT used by the historical audit. The approved-union sidecar is byte-identical. Candidate DAT SHA-256: `53d235e89a9255709efd61df5c5f3c98f291398e1f94be448ee12ec24c5fadfd`.
+
+## 2026-11-13 — v41.3 versioned publication candidate
+
+- Branch `workflow/v41-3-versioned-publication` is stacked on PR #19. No routing policy, source list, production branch, tag or repository setting is changed by this candidate.
+- Move the remaining Python heredocs and the publication/source shell logic to files. The workflow shrinks from 1,511 to 640 lines. Five RIR/IANA routing inputs regenerated from the same snapshots were byte-identical.
+- Manual `snapshot_version` supports one-time `v41.N` tags. Daily jobs retain their run ID tags. The GitHub snapshot uses a create-only path, and the rolling compatibility release remains unchanged. Tests against a local bare Git remote verify fast-forward, refusal to overwrite a snapshot, and refusal to publish from a stale reference.
+
+## 2026-11-13 — reviewed operator suballocations
+
+- Scope is three exact IPv4 prefixes only, without adding ASN-wide rules, modifying any protection masks, or importing a mutable geofeed into the nightly build. IPv6 evidence stays out of scope.
+- `153.52.151.0/24` (RU, AS402931), `179.253.86.0/24` (BY, AS207957), and `178.92.244.0/23` (KZ, AS215294) match the exact country/prefix in operator geofeed and the corresponding RDAP object. RIPE RIS observed exact announcements, and RPKI was valid for each checked pair. Registration and route visibility are not substitutes for application reachability.
+- One IPv4 address in each prefix answered all three ICMP requests from each of two probes in RU, BY, and KZ. Globalping measurements: `2EVq8atmcFyKnJyqx00021UoQ` (RU prefix), `2t8jczQpf6IUEvF3v00021UoQ` (BY prefix), and `2YyCXde8KJbrFXlSs00021UoQ` (KZ prefix). No inference is made about all hosts or ports in the three prefixes.
+- Expected snapshot delta relative to the published PR #21 DAT: exactly +1,024 IPv4 addresses, no removals, IPv6/PRIVATE and effective hard/resolver policy unchanged. No production publication is part of this candidate.
+
+| Prefix | Operator geofeed | Registration | Current exact route |
+|---|---|---|---|
+| `153.52.151.0/24` | [ipbnb](https://api.ipbnb.com/geofeed/153.52.151.0.24.txt) | [RDAP](https://rdap.db.ripe.net/ip/153.52.151.0/24) | [RIS](https://stat.ripe.net/data/prefix-overview/data.json?resource=153.52.151.0/24) |
+| `179.253.86.0/24` | [SERV.HOST](https://status.serv.host/geofeed/subnet.csv) | [RDAP](https://rdap.db.ripe.net/ip/179.253.86.0/24) | [RIS](https://stat.ripe.net/data/prefix-overview/data.json?resource=179.253.86.0/24) |
+| `178.92.244.0/23` | [Lumina](https://luminabroadband.com/geofeed.txt) | [RDAP](https://rdap.db.ripe.net/ip/178.92.244.0/23) | [RIS](https://stat.ripe.net/data/prefix-overview/data.json?resource=178.92.244.0/23) |
+
+## 2026-11-13 — Telegram DIRECT overlap
+
+- The official Telegram [CIDR feed](https://core.telegram.org/resources/cidr.txt) contained nine IPv4 and five IPv6 ranges. The published PR #21 DAT and the initial PR #22 candidate intersected it at exactly `185.76.151.1/32`; the v37 base did not intersect it.
+- The pinned HXEHEX `ipwhitelist.txt` emitted this exact host as `hxehex-mobile-hosts`, which qualified as a literal service exception and cut a hole in the already-hard `185.76.151.0/24` range. Filter conflicting HXEHEX entries before classifying service exceptions. Do not modify the upstream snapshot or the separate legacy Telegram ranges.
+- All official Telegram IPv4/IPv6 ranges are non-exempt in v41 even if another DIRECT source, a corporate prefix, or a literal service rule overlaps. The strict DAT validator checks the full pinned feed, build CI compares it against the official endpoint, and the publish job checks the downloaded candidate again before pushing refs.
+- Expected net change relative to the published PR #21 DAT is the same three operator prefixes (+1,024 IPv4) and removal of exactly `185.76.151.1/32`; IPv6 and PRIVATE are unchanged.
+
+## 2026-11-13 — Moscow IPv6 PoP candidate
+
+- Only `2001:ad0:2000:1::/64` is proposed. The [operator geofeed](https://gf.data.ee/geofeed.csv) lists this exact Moscow subnet. [RDAP](https://rdap.db.ripe.net/ip/2001:ad0:2000:1::/64) identifies the covering Moscow M9 /48; [RIPE RIS](https://stat.ripe.net/data/prefix-overview/data.json?resource=2001:ad0:2000:1::/64) sees the covering /32 from AS3327, with valid RPKI for that /32. Neither parent prefix is added.
+- [IPv6 ICMP measurement](https://globalping.io/measurements/2dlik7BCSNn749dkN00021UpP) for `2001:ad0:2000:1::1` received 13/15 responses, including responses from all five RU/BY/KZ probes. This tests one address and does not establish reachability for every host or application.
+- HATS /48 entries `2a13:a5c7:25bf::/48` (RU), `2a13:a5c7:2524::/48` (BY), and `2a13:a5c7:257d::/48` (KZ) were confirmed in the [operator geofeed](https://hatsnet.io/geofeed/all.csv?s=ripe_asn) and in exact RDAP objects. RIS saw only AS203314 covering /41s, valid in RPKI for the covering prefixes. None of the three sampled `::1` addresses replied to ICMP from the five probes. This does not establish that the subnets are unreachable. They are not included in this change.
+- The reviewed list still gives no block exception or ASN-wide permission. The exact PoP /64 was disjoint from published DIRECT, PRIVATE, approved hard/resolver layers, and the official Telegram list. Expected fixed-input delta is one IPv6 /64 only; no IPv4 removals or additions.
+
+## 2026-11-13 — Regional DIRECT and explicit IP evidence
+
+- Base main `54ac34b`. Separate policy branch supersedes the per-host workaround in drafts #24 and #25 without editing either PR. PR #5, main and release are out of scope.
+- Treat both Antifilter DNS feeds and v38 unverified history as advisory. Retain their pinned inputs, approved union and provenance. A current bounded subnet or a separately reviewed direct registry IP record remains hard, including inside CORE, SHARED and literal service hosts. Telegram and PRIVATE precedence remain intact.
+- Classify REG.RU AS197695 as SHARED_INFRA without admitting it via the company allowlist alone. Verify exact address-space equality for the selected-origin set before/after. Check both protocol families, eight reviewed hosts, and all removals against hard evidence on fixed inputs.
+
+## 2026-11-13 — Current mirror cross-check for PR #26
+
+- The public official checker did not return records. Do not interpret this as an empty registry or as a check of live reachability. The dated [public registry mirror snapshot](https://registry.ctreserve.de/api/v3/snapshot/) has SHA-256 `893ca06a64e6440e5c627beb7dbb0fb812da7c0a1a3b8ce240ce72b6e468afa3` (uncompressed JSON, Last-Modified 09:18:42 UTC). Its [flat IP endpoint](https://registry.ctreserve.de/api/v3/ips/) was used only as a consistency check (SHA-256 `eae983fe3a34fcd24351a1859ab0bde181782c100fbfd57995102c5e5d12264c`). This is mirror evidence, not a signed operator export or individual live verification against the official checker.
+- Compared all 7,990 proposed new IPv4 addresses. The snapshot matched 4,158 with some record, of which 742 have direct IP-only records and 3,531 have a domain/URL record, including 115 in both groups. All 742 are exact /32 entries with empty domains/URLs, status 1 in the current mirror, and decision metadata (746 address-to-record associations, 41 unique record IDs). The flat feed contains all 742 exact addresses. Individual mirror record endpoints did not provide usable detail for the old IDs, so the pinned snapshot is the evidence source.
+- Entered only those exact reviewed hosts in the existing hard-evidence table. Do not import the entire mirror, treat hostname/URL matches as direct IP records, or widen matches to surrounding networks. The rest of the regional coverage and original inputs are unchanged.
+- [Pinned evidence extract](v41-pr26-direct-ip-evidence-20261113.json) for the exact hosts, with mirror record IDs: 309721, 309722, 309723, 312836, 319687, 319689, 322483, 322484, 323962, 324353, 464136, 550080, 745572, 780178, 788862, 795917, 821792, 858296, 862479, 862480, 1639617, 1939194, 1939195, 1940098, 1940107, 2097494, 2238206, 2257807, 2268787, 2296707, 2311636, 2311682, 2311696, 2318151, 2421508, 2478377, 2689066, 2991346, 3085579, 3591646, 3787019.
+- Fixed-input replay expectation versus the published snapshot: IPv4 +7,248 / -6, IPv6 and PRIVATE unchanged. Tilda, REG.RU and the eight earlier service controls should remain in DIRECT. PR #26 stays Draft, and no merge or release is part of this check.
+
+## 2026-11-13 — Separate exact regional admission correction
+
+- Draft PR #26 follow-up. The 99 blocked Leaseweb-origin hosts are in one BY-delegated /22 whose six more-specific DE assignments cover every address. Two RU-delegated prefixes announced by the same origin have exact DE assignment records. See [regional admission policy and RIPE evidence](GEOIP_RU_V41_POLICY.md#reviewed-regional-admission-conflicts).
+- Scope is `185.49.68.0/22`, `185.17.120.0/22` and `195.54.32.0/23` only. Keep all RIR/source inputs, the 742 reviewed IP-only exclusions, the effective RKN mask, IPv6, PRIVATE and other AS28753 coverage unchanged.
+- Fixed-input replay must show exactly 2,461 IPv4 removed relative to prior PR #26 candidate and IPv4 +7,223 / -2,442 versus the published snapshot, with both IPv6 and PRIVATE unchanged. No merge or production publication in this step.
+
+## 2026-11-13 — Broader regional admission review
+
+- Screened 19,402 observed IPv4 routes overlapping the regional inventory. The most-specific route screen found 993 prefix/region pairs covering 573,952 addresses in the previous draft. Foreign origin metadata alone is insufficient. HOSTKEY AS50867 is a counterexample with RU records and Moscow infrastructure. No bulk or ASN-wide exclusion is applied.
+- Checked the first 35 candidates against RIPE RDAP and RIS. Promote only the three independently corroborated exact assignments inside `145.249.0.0/16` in this batch. SY and DE records and matching current origins are documented in the policy. Remaining candidates are unchanged.
+- Previous draft head `5b15ef8`. Expected exact delta to its DAT: IPv4 -26,624 only. Preserve 38,912 other addresses in the /16, including all 32,768 addresses in the Kazakhstan /17, plus IPv6, PRIVATE, RIR inventory and all block policy masks. No merge or publication.
+
+## 2026-11-13 — Exact US assignments in RU and KZ parent allocations
+
+- Draft PR #26 head before this check: `3319960`. RIPE RDAP child records and the RIS 2026-11-13T08:00Z view support only `31.204.8.0/21` (RU parent, US-FIXED, AS209372) and `109.238.168.0/21` (KZ parent, IPXO with two covering US /22 assignments, AS26548) in this batch. Both exact routes were seen by 319/319 RIS peers without more-specifics.
+- Preserve `31.204.2.0/24` (RU assignment, same origin), `109.238.160.0/21` and all other IPv4 coverage outside the two /21s. Leave `212.124.96.0/19` unchanged: a DE value on the allocation and a CH origin do not settle the relationship to the RU registrant MnogoByte at child level.
+- Fixed-input replay expectation: IPv4 -4,096 only relative to the previous draft, and IPv4 +7,223 / -33,162 versus the published DAT. No changes to IPv6, PRIVATE, RIR inventory or hard/resolver/effective block masks. No merge or publication.
+
+## 2026-11-13 — PR #26 release checkpoint
+
+- Exact new regional admission exclusions: `31.204.16.0/21` (US), `31.204.32.0/20` and `31.204.56.0/21` (AU), and `212.124.106.0/24` (US). See the policy for child routes, RDAP and operator geofeed evidence. Keep `31.204.28.0/22`, the rest of MnogoByte and the unresolved review queue unchanged.
+- Exact delta to previous candidate `4c0c913`: IPv4 -8,448 only. Prior rolling DAT comparison: +7,223 / -41,610 IPv4, IPv6 and PRIVATE unchanged. The input inventory and block masks must match the previous candidate byte-for-byte.
+- Align the rolling release description with the effective v41 policy. Release via the existing main-push workflow only after matching the fixed-input and PR builds. Verify the production workflow, rolling DAT, immutable snapshot and release-branch DAT after publication. Do not touch PR #5.
+
+## 2026-11-13 — Follow-up on exact operator routes and workflow edge cases
+
+- Starting point is the published PR #26 snapshot. Keep the same four reviewed operator rows and give only those exact CIDRs resolver-only protection. The overlay validator and independent hard/publication gate verify the input digest and coverage after PRIVATE, explicit hard blocks and reviewed regional exclusions.
+- Geography-only source rows retain existing eligibility. Do not add v2fly/Loyalsoldier to the exemption mask, change operator rows or touch PR #5.
+- Normalize upstream BGP and legacy RIR IPv6 host bits at the supplied prefix length and count normalizations. Keep project-maintained policy TSVs strict.
+- Pass the BY/KZ ASN inventory into the compatibility-only v39 mask. Fix release-ref working-directory handling and fail before invoking gh when any snapshot asset is missing, unreadable or empty.
+
+## 2026-11-13 — Geography-only cohort follow-up
+
+- The pinned v2fly/Loyalsoldier, v41 block and regional RIR/BGP inputs identify 961 IPv4 and zero IPv6 candidates. The pinned ipverse archive assigns 297 addresses to the two Cloudflare origins AS13335/AS209242, while 63 have no covering route in that archive. No ASN-wide exception or geolocation-source protection is granted.
+- In the dated public registry mirror, 649 addresses have an active domain/URL record, 310 have no active match and four have an exact active IP-only record. Two of the latter also match domain/URL records. Keep only the four exact IP tokens as reviewed hard evidence, without inferring that the mirror is official or signed. See [the evidence extract](v41-geo-only-exact-ip-evidence-20261113.json).
+- Restore only the 110 addresses previously lost to advisory DNS evidence inside six exact independently reviewed operator ranges. The rest of each of these ranges was already in DIRECT. See [the routing policy evidence](GEOIP_RU_V41_POLICY.md#reviewed-operator-prefixes-and-geography-only-inputs). Do not extend by ASN, BGP aggregate, tenant, geolocation feed, or registry absence alone.
+- Hold HOSTKEY and TIME-HOST and other mixed-location rows for individual checks. In particular IHOR geolocated-RU origin space contains assignments in both RU and FI. Leave all unresolved rows unchanged. No PR #5 work or production publication.
+
+## 2026-11-14 — Second exact geography-only review
+
+- Start from PR #27 head `e17846c`. Selected 22 exact RU assignments across HOSTKEY (2), FIRSTSERVER (10), IHOR/PSERVERS (6), TIME-HOST (4). This keeps the existing 32-row operator cap (10 + 22). Prioritize exact corroboration and greater observed DIRECT recovery. See [pinned evidence](v41-geo-only-operator-evidence-20261114.json). No BGP aggregate or ASN-wide exception.
+- Expected incremental DIRECT delta: +85 IPv4 (2 + 42 + 17 + 24), no removals, zero IPv6/PRIVATE change. The hard masks and registry evidence remain unchanged. Verify `185.174.138.82/32` stays hard and both RU/FI-conflicting IHOR candidate prefixes remain unapproved.
+- Unmodified from the remaining cohort: 762 IPv4. Draft only. No changes to main, the release, or PR #5.
+
+## 2026-11-14 — Bounded expansion of the reviewed operator table
+
+- Start from PR #27 head `84c48c7`. Raise the row ceiling from 32 to 64, test both sides of the boundary, and retain the minimum /23 IPv4 and /64 IPv6 prefix lengths, overlap checks, exact manual scope and both publication validators.
+- Add six exact RU FIRSTSERVER assignments and ten IHOR/PSERVERS assignments with matching registry-linked geofeeds and complete same-origin RIS coverage. The three IHOR /23 rows without an exact route are covered by their paired /24 announcements. Expected delta is +19 IPv4 (6 FIRSTSERVER, 13 IHOR), no removals and no changes to IPv6, PRIVATE, hard or regional-exclusion masks. Evidence is [pinned here](v41-geo-only-operator-followup-20261114.json).
+- Keep mixed RU/FI IHOR entries unchanged. Also leave `62.3.58.0/24` unchanged: its exact RIS announcement and RU assignment description do not make the RDAP assignment covering .0 through .254 an exact /24. PR #27 stays draft. No production or PR #5 change.
+
+## 2026-11-14 — Fourth exact geography-only review (RU/KZ)
+
+- Start from PR #27 head `95c0360` and recover the 743-address remainder from the pinned v2fly/Loyalsoldier files, previous CI artifact and pinned ipverse archive. Reproduce the previous DAT and effective block sidecar from fixed inputs.
+- [Evidence](v41-geo-only-operator-rukz-20261114.json) records 30 verified /24s. Use the 16 existing table slots for the highest observed cohort recovery, breaking ties by numeric network address. Keep the 64-row cap. Approve 15 RU and one KZ exact assignments, with expected DIRECT delta +59 IPv4, no removals, no changes to IPv6, PRIVATE, or higher-priority masks.
+- Keep the other 14 verified /24s (14 cohort IPv4 addresses) unmodified. The CY-assigned `194.67.193.0/24` alone accounts for 44 unchanged addresses. Total unresolved or deferred: 684 IPv4. Draft only. No production, release or PR #5 changes.
+
+## 2026-11-14 — Finish PR #27 for production
+
+- Start from verified draft head `1a50c3e` and admit all 14 deferred exact /24s listed in [the evidence file](v41-geo-only-operator-rukz-20261114.json). Raise the reviewed-row ceiling from 64 to 80 for 78 entries. The existing regression tests exercise the accepted and rejected boundaries. No changes to the prefix admission criteria or hard/PRIVATE/Telegram precedence.
+- Expected policy-only delta for this final batch: +14 IPv4, no removals and no IPv6 or PRIVATE changes on the same inputs. Keep the other 670 unresolved addresses in the original cohort unchanged. Compare production separately because its upstream BGP and Antifilter sources move.
+- Publish through the existing v41 workflow after PR checks. Verify the rolling asset, versioned snapshot, release branch, and their checksums. PR #5 is outside scope.
+
+## 2026-11-14 — Post-release exact operator check
+
+- Start from published DAT `66f3dbe3bcebad386207d026b5e7ebbd7113a1d45d86420996d7dc0742112166`. All 670 addresses left in the original cohort still intersect effective resolver-only policy outside DIRECT.
+- [Evidence](v41-geo-only-operator-post-release-20261114.json) verifies eight exact RU prefixes. Admit only `31.76.6.0/24` and `45.90.216.0/23` using the last two slots. The FIRSTSERVER /23 is exactly covered by two AS205090 /24 announcements. Expected fixed-input delta is +4 IPv4 only. No change to hard precedence or the 80-row limit.
+- Six other exact prefixes remain documented but unadmitted. Leave the broader FIRSTSERVER /24 over a confirmed /25 and the Dutch 3NT neighbor of the existing KZ exception unchanged. No ASN-wide admission. Draft only.
+
+## 2026-11-14 — Complete the confirmed post-release queue
+
+- Start from draft PR #28 head `80f4810`. Recheck exact RIPE assignments, linked operator geofeeds and RIS for the [six remaining verified routes](v41-geo-only-operator-deferred-confirmation-20261114.json).
+- Raise the bounded manual table from 80 to 96 for 86 entries. No changes to exact-prefix eligibility or higher-priority exclusions. Expected fixed-input effect is +6 IPv4 against the prior draft and +10 against the published v41. The other 660 addresses in the original cohort remain unchanged. No publication or PR #5 changes.
+
+## 2026-11-14 — Exact Gcore and EDIS assignment review
+
+- Start from draft PR #28 head `c9cf96f` and the previous fixed-input CI artifact. Add 6 exact assignments from [the evidence](v41-geo-only-operator-gcore-edis-20261114.json) under the existing 96-row bound. Expected policy-only DIRECT delta +11 IPv4 versus the prior candidate, +21 versus published v41.
+- Do not extend Gcore protection to the surrounding /22: exact registry objects and geofeed list LU and US for the other /24s, despite the same current RIS origin. Defer RU-labelled ranges lacking a usable registry-linked geofeed or exact routing evidence. No publication or PR #5 changes.
+
+## 2026-11-14 — Exact assignments in mixed-origin networks
+
+- Start from draft PR #28 head `0bdc266`. Verify 7 exact RU assignments in the 649-address remaining DNS-only cohort by RIPE, registry-linked operator geofeeds and RIS. See [prefix evidence and hold decisions](v41-geo-only-operator-mixed-origin-20261114.json).
+- The candidate now holds 99 rows under a 112-row bound. Expected +12 IPv4 versus the previous candidate, +33 versus the released DAT on fixed inputs. Hard exclusions, IPv6, PRIVATE and all address space outside the target cohort stay unchanged.
+- Keep the foreign Xorek and Nuxt siblings, Finnish PSERVERS assignment and the FIRSTSERVER origin disagreement unmodified. No production or PR #5 changes.
+
+## 2026-11-14 — Registry re-screen on fixed inputs
+
+- Start from draft PR #28 head `5ae27ee`. Reproduced both previous PR artifacts byte-for-byte (DAT and effective mask). The seven preceding assignments restore exactly 12 IPv4 addresses. The draft was +33 IPv4 versus the published DAT.
+- The [re-screen](v41-geo-only-operator-ripe-rescreen-20261114.json) recalculates 638 IPv4 and zero IPv6 outside DIRECT in the resolver-only geography cohort. That is one more than the earlier journal tally, not an extra DIRECT delta. Screened all 121 IPv4 /24 buckets via RIPE RDAP and retried errors against the IANA-bootstrap registries.
+- Add four exact prefixes supported by RIPE RDAP, registry-linked geofeeds and exact same-origin RIS. The existing 112-row cap is unchanged (103 rows). On identical inputs, only four /32s return to DIRECT, with zero removals and no changes to IPv6, PRIVATE, hard or raw resolver inputs. This is +37 IPv4 versus published v41. Candidate DAT SHA-256 `8311e0072cd51e5ec68cf61541bdd6848ca2d208cf615ebb56b16ba3f712ff76`.
+- Next, check the ARIN Kazakhstan reassignments and exact Russian ARIN records found by the fallback separately. Keep registry-only assignments, inaccessible geofeeds and the unresolved FIRSTSERVER origin disagreement unchanged. Draft only. No production, release or PR #5 changes.
+
+## 2026-11-14 — Exact ARIN Kazakhstan reassignments
+
+- Start from draft PR #28 head `eca7b16`. [CI](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43568893438) passed and publication was skipped. The DAT and effective mask matched the local fixed-input replay byte-for-byte.
+- [ARIN, 3NT geofeed, RIS and pinned BGP evidence](v41-geo-only-operator-arin-kz-20261114.json) corroborates eight exact AS58061 /24s in Kazakhstan. Admit just these rows, bringing the table to 111 out of 112 without raising the cap. Keep the corroborated /22 and RU registry-only records unchanged.
+- Verified fixed-input delta: +20 IPv4 versus the previous draft and +57 versus published v41. No removals, IPv6, PRIVATE or hard-mask changes. 614 IPv4 remain outside DIRECT in the recalculated review cohort. DAT SHA-256 `d163e934c89519e3812552fb2ca842b7498db13e9615672f71d4ed141ee2122b`. Draft only. No production, release or PR #5 changes.
+
+## 2026-11-14 — Close the frozen resolver-only queue
+
+- Reconstructed the exact cohort from the `0cda10e` CI artifact and pinned inputs. Reviewed all 614 IPv4 across 109 buckets, with registry and RIS evidence for every bucket and 126 per-address registry checks for covering or more-specific allocations and non-RIPE fallbacks. [Decision ledger](v41-geo-only-queue-decisions-20261114.tsv) has no unclassified addresses. Its 612 hold decisions are snapshot-specific and make no claim of permanent exclusion or lack of reachability.
+- Admit `193.162.143.0/24` (AS205090) only. The two Moscow /25 child assignments cover all 256 addresses and match the linked operator geofeed. Exact RIS BGP state has 379 paths with the same origin and the route is RPKI-valid. Preserve the existing /23 scope rule and 112-row table limit. Separately hold `185.180.230.0/24`: RIS BGP state saw two exact origins, both authorized by ROAs. [Evidence and totals](v41-geo-only-queue-closure-20261114.json).
+- Fixed-input DAT changes only `193.162.143.13/32` and `193.162.143.254/32` to DIRECT. This is +2 IPv4 versus the prior PR head and +59 versus published v41, without removals or changes to IPv6, PRIVATE, hard or raw resolver inputs. All 14 official Telegram ranges remain outside DIRECT. Candidate SHA-256 `8d807b8d6069791b2e006bc561c4c69cc1a3172521cde0271c62b9305ce1c391`. No main, release or PR #5 changes.
+
+## 2026-11-14 — Keep prefix audit correct with unobserved pins and new RPKI results
+
+- Both audit queues recognize `AS212066[Yandex][STATIC-DIRECT]` and `AS212066[Yandex+STATIC-DIRECT]`. Extraction reports observed company origins separately from the unique selected company layer, including pins. The audit reads the selected-company metric and also reconciles older reports against exact static-only rows. No selected or global prefix output, DIRECT rule or pin changed.
+- The v37 reconciliation seed still requires the same 19 prefixes and all 20 exact prefix/origin pairs, checked against [the archived audit artifact](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43383174561/artifacts/14016919373). Extra `invalid_asn` pairs, including a new origin on a seeded prefix, go to `unseeded_rpki_invalid_review.tsv` as REVIEW. CI requires the exact current-minus-historical pair set. Historical losses, status drift or inconsistent triage still fail.
+- Verification uses the PR #28 production snapshot, a copy of its ipverse archive with both AS212066 pins removed, and the historical evidence artifact. No production publication is part of this change.
+
+## 2026-11-14 — Restore the independently verified additional-source operator routes
+
+- The [additional-source audit](https://github.com/SpeedeMiner/Geoip-ru-server/blob/062d504a4032b52684808ec6cac3d6a7c2ffaa8d/docs/v41-additional-feed-resolver-audit-43579021611.json) found zero DNS-only loss in the accepted v37 coverage. The [separate one-group discovery queue](https://github.com/SpeedeMiner/Geoip-ru-server/blob/062d504a4032b52684808ec6cac3d6a7c2ffaa8d/docs/v41-additional-one-group-discovery-43579021611.json) is not admitted by feed membership. It supplies only independently confirmed candidates for the existing reviewed-operator table.
+- [Exact release evidence](v41-additional-reviewed-operator-release-20261114.json) confirms nine /24 assignments using RIPE, registry-linked operator geofeeds, exact single-origin RPKI-valid RIS and same-origin pinned ipverse (exact or containing announcement). The reviewed table increases from 112 to 121 entries under a 121-row cap, with the existing minimum prefix sizes and non-overlap checks intact.
+- Expected fixed-input effect: +15 exact IPv4, zero IPv4 removals, zero IPv6 or PRIVATE changes. The other addresses inside the nine /24s are already DIRECT. Hard, Telegram, raw resolver and admission exclusions stay unchanged. No PR #5 changes.
+
+## 2026-11-14 — Close the v41 release input and readback gaps
+
+- Follow-up to the [full repository audit](https://github.com/SpeedeMiner/Geoip-ru-server/blob/e521e60ea9bbbc7d154e01ae336af3d812ce070a/docs/V41_FULL_REPOSITORY_AUDIT_20261114.md), based on production source `596c93df`.
+- The candidate retains all ten current and historical block inputs in a checked versioned archive, including exact optional fallback files. The release manifest links the input provenance and build commit to the actual DAT, SRS, checksums and archives. Snapshot download verification precedes release promotion. Rolling DAT and SRS readback fails on persistent drift after promotion.
+- Local integration tests verify fail-closed behavior for a missing block archive, mismatched public SRS, stale rolling output and competing release updates. Scope is build and publication only. W1ZARDZ admission, historical block policy, main, existing releases and PR #5 are not changed by this candidate.
+
+## 2026-11-15 — Classify verified payment, public-service and hosting origins
+
+- Reviewed 22 submitted ASN-to-company mappings against RIPE RDAP and RIS. Only AS8732, AS12768 and AS56330 matched as submitted. Added those three and 29 verified alternatives/related origins to the registry and class policy. No non-observed origins, upstreams or third-party CDN ASNs were newly imported. The [decision record](V41_ASN_COVERAGE_REVIEW_20261115.md) includes the 19 rejected mappings.
+- Registry 57 → 89 (24 new CORE, 8 new SHARED). All 32 additions were already selected through RIR-RU. On the published snapshot their 248 aggregated CIDRs are already fully DIRECT. Fixed-input replay retained v37 and v41 DAT, both SRS, PRIVATE and both exclusion masks byte for byte. Selected and global BGP CIDR key sets are unchanged.
+- Public DNS/BGP sample: 33 of 34 unique returned IPs already DIRECT. `ruvds.com` resolves in this sample to `186.2.163.33` on third-party AS59692. Keep that /24 and ASN out of the RuVDS company list. No merge, production or release changes, and no changes to #5, #35 or #40.
+- Independently checked the missing RuVDS frontend IP in RIPEstat DNS Chain, then verified that the published Geosite-ru-light RU SRS already matches `ruvds.com` and `www.ruvds.com` by suffix. No reason to add a shared third-party /24 for a domain-aware client.
+
+## 2026-11-15 — Verify regional telecom infrastructure origins
+
+- Reviewed 18 submitted operator mappings and three corrected/related origins. Added 16 SHARED_INFRA rows on top of PR #41 (89 → 105). Kept the existing AS12768 and AS56330 entries. Used RIPE registration and observed origins, not AS-set membership. See [operator decisions](V41_OPERATOR_ASN_REVIEW_20261115.md).
+- Held AS13116 at ASN level because RIPE records Tele2 Sverige AB. Its three RIS-observed Russian /24s are already fully DIRECT. Replaced wrong InterZet and Novotelecom associations with AS41733 and AS31200, and recorded AS47395 as SCARTEL-AS separately from MegaFon's AS25159. All 16 origins were previously selected through RIR-RU. No changes to PR #5, main or published artifacts.
+- Hash-verified replay preserved the v37 and v41 DATs, both SRS files and both block masks byte-for-byte. No added or removed DIRECT addresses. All 371 aggregate CIDR keys for the 16 origins were already covered. 164 Python tests, Go tests and release gates passed locally. Evidence in [per-ASN coverage](V41_OPERATOR_ASN_EVIDENCE_20261115.tsv).
+
+## 2026-11-15 — Verify live PR #41 artifact and AS13116 exact routes
+
+- Compared CI artifact 14150353641 against release `7eef1efc`: +2,304 / −256 RU IPv4, +one RU IPv6 /48, no PRIVATE delta. Restoring the old registry on the same live inputs reproduced CI binaries and block masks byte for byte. Replacing only the release ipverse archive also reproduced CI final DAT/SRS, so final routing drift comes from ipverse, not the PR's registry entries. See [control replay and exact deltas](V41_PR41_LIVE_DELTA_20261115.md).
+- All three exact TELE2RU /24s are completely DIRECT in both snapshots, with no block-mask overlap. The RIS snapshot records MOAS for `193.138.149.0/24` (AS48092 and AS13116). No new pins or ASN admission, and no routing change.
+- New `2a0b:4e07:63f0::/48` is labelled KP by its exact RDAP and registry-linked geofeed despite an RU origin ASN. Its already-present sibling is IN in the same geofeed. Nine new IPv4 /24s have nonregional exact RDAP labels, requiring corroboration before changing the routing policy. PR #5, main and production are untouched.
+
+## 2026-11-15 — Rehearse precise dual-stack admission exclusions without changing policy
+
+- Reviewed the two AS218750 /48s against exact RDAP, the pinned operator geofeed and RIPE RIS/RPKI. KP/IN are exact assignments, while the parent RIPE delegation is IL and AS218750 is RU. The live /47 comes from ipverse aggregation; RIS shows the two /48s separately. Each is already in the v37 layer wherever it appears in final DIRECT.
+- A local shadow replay removing exactly those two /48s changed only the IN /48 on the release inputs and both /48s on CI inputs. IPv4, PRIVATE, block masks and other AS218750 coverage were unchanged. Overlay, hard/PRIVATE, Telegram, delta and DAT/SRS validation passed. See [evidence and implementation boundary](V41_AS218750_IPV6_SHADOW_20261115.md).
+- Keep both production routing and PR #41 scope unchanged. If implementing a policy later, do not mislabel the IL resource delegation or use an ASN-wide exception. Existing IPv4 regional-exclusions schema cannot honestly describe this IPv6 case.
