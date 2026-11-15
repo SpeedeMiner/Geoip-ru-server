@@ -114,3 +114,20 @@
   `release`, `cdn` and PR #5 were not modified. Next: validate this
   documentation-only checkpoint and recheck current refs and source drift
   before any production integration.
+
+## 2026-11-16 — monitor scheduled production inputs as well as PRs
+
+- PR-only diagnostics would miss fresh source changes in daily scheduled
+  builds. The shared-baseline DIRECT, Antifilter, ASN and provider/Hydra
+  reports are therefore enabled for both pull requests and builds on main,
+  including scheduled and manual runs. Their inputs are compared before the
+  publish job using one previously verified release commit.
+- Diagnostic failures remain advisory (`continue-on-error`); missing inputs
+  are unknown, and no new publication gate or routing change is introduced.
+  Reports and provider snapshots are Actions artifacts, not CDN assets. The
+  publish job waits for the build job, so diagnostic execution can delay
+  publication until it completes or its bounded step timeout expires.
+- Added regression assertions for main and PR execution conditions, bounded
+  timeouts and advisory-only failures; checksum and failed-fetch fixtures still
+  verify that no baseline SHA is emitted on failure. Local/full and GitHub CI
+  for this updated production-workflow scope are required before integration.

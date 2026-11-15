@@ -98,6 +98,7 @@ class DirectDeltaTests(unittest.TestCase):
         self.assertNotIn('--reference "$V41_OUTPUT_FILE"', build)
         report = build.split("      - name: Report exact DIRECT delta", 1)[1]
         for step in report.split("\n      - name: ")[:2]:
-            self.assertIn("if: github.event_name == 'pull_request'", step)
+            self.assertIn("github.event_name == 'pull_request'", step)
+            self.assertIn("github.ref == 'refs/heads/main'", step)
             self.assertIn("continue-on-error: true", step)
         self.assertNotIn("report_v41_direct_delta.py", publisher)

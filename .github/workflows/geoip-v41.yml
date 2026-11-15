@@ -541,9 +541,9 @@ jobs:
             --source-sha "$GITHUB_SHA" --repository "$GITHUB_REPOSITORY" \
             --run-id "$GITHUB_RUN_ID" --run-attempt "$GITHUB_RUN_ATTEMPT"
 
-      - name: Pin one release for all PR advisories
+      - name: Pin one release for all advisory reports
         id: advisory_baseline
-        if: github.event_name == 'pull_request'
+        if: github.event_name == 'pull_request' || github.ref == 'refs/heads/main'
         continue-on-error: true
         timeout-minutes: 2
         shell: bash
@@ -560,8 +560,8 @@ jobs:
           printf 'release_sha=%s\n' "$ref" >> "$GITHUB_OUTPUT"
           printf 'All advisory comparison baseline: `%s`\n' "$ref" >> "$GITHUB_STEP_SUMMARY"
 
-      - name: Report exact DIRECT delta against a pinned release (PR only)
-        if: github.event_name == 'pull_request' && steps.advisory_baseline.outputs.release_sha != ''
+      - name: Report exact DIRECT delta against a pinned release
+        if: (github.event_name == 'pull_request' || github.ref == 'refs/heads/main') && steps.advisory_baseline.outputs.release_sha != ''
         shell: bash
         continue-on-error: true
         timeout-minutes: 2
@@ -578,8 +578,8 @@ jobs:
             --table .github/data/v41-reviewed-ipv6-admission-exclusions.tsv \
             --output "$RUNNER_TEMP/v41-direct-delta.json" --summary "$GITHUB_STEP_SUMMARY"
 
-      - name: Upload exact DIRECT delta (PR only)
-        if: github.event_name == 'pull_request'
+      - name: Upload exact DIRECT delta
+        if: github.event_name == 'pull_request' || github.ref == 'refs/heads/main'
         continue-on-error: true
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
@@ -670,7 +670,7 @@ jobs:
           retention-days: 30
 
       - name: Report exact Antifilter delta and last verified live resolver input
-        if: github.event_name == 'pull_request' && steps.advisory_baseline.outputs.release_sha != ''
+        if: (github.event_name == 'pull_request' || github.ref == 'refs/heads/main') && steps.advisory_baseline.outputs.release_sha != ''
         continue-on-error: true
         timeout-minutes: 7
         env:
@@ -682,17 +682,17 @@ jobs:
             --output "$RUNNER_TEMP/v41-block-feed-delta.json" --summary "$GITHUB_STEP_SUMMARY"
 
       - name: Upload advisory Antifilter report
-        if: github.event_name == 'pull_request'
+        if: github.event_name == 'pull_request' || github.ref == 'refs/heads/main'
         continue-on-error: true
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
           name: v41-block-feed-delta-advisory
           path: ${{ runner.temp }}/v41-block-feed-delta.json
-          if-no-files-found: error
+          if-no-files-found: warn
           retention-days: 30
 
-      - name: Report priority ASN and IPv6 coverage (PR only)
-        if: github.event_name == 'pull_request'
+      - name: Report priority ASN and IPv6 coverage
+        if: github.event_name == 'pull_request' || github.ref == 'refs/heads/main'
         continue-on-error: true
         timeout-minutes: 5
         env:
@@ -730,9 +730,9 @@ jobs:
             --watchlist .github/data/v41-audit-priority-asns.tsv --candidate . \
             "${options[@]}" --output "$RUNNER_TEMP/v41-priority-asn.json" --summary "$GITHUB_STEP_SUMMARY"
 
-      - name: Capture current scoped provider feeds (PR only)
+      - name: Capture current scoped provider feeds
         id: provider_capture
-        if: github.event_name == 'pull_request'
+        if: github.event_name == 'pull_request' || github.ref == 'refs/heads/main'
         continue-on-error: true
         timeout-minutes: 7
         shell: bash
@@ -743,8 +743,8 @@ jobs:
             --catalog .github/data/v41-audit-global-networks.json \
             --collect-snapshot "$RUNNER_TEMP/v41-provider-snapshot.json.gz"
 
-      - name: Report scoped provider and Hydra provenance (PR only)
-        if: github.event_name == 'pull_request' && steps.advisory_baseline.outputs.release_sha != '' && steps.provider_capture.outcome == 'success'
+      - name: Report scoped provider and Hydra provenance
+        if: (github.event_name == 'pull_request' || github.ref == 'refs/heads/main') && steps.advisory_baseline.outputs.release_sha != '' && steps.provider_capture.outcome == 'success'
         continue-on-error: true
         timeout-minutes: 5
         env:
@@ -761,8 +761,8 @@ jobs:
             --candidate "$V41_OUTPUT_FILE" --inputs . --base "$OUTPUT_FILE" \
             --output "$RUNNER_TEMP/v41-direct-provenance.json" --summary "$GITHUB_STEP_SUMMARY"
 
-      - name: Upload ASN and scoped provider advisories (PR only)
-        if: github.event_name == 'pull_request'
+      - name: Upload ASN and scoped provider advisories
+        if: github.event_name == 'pull_request' || github.ref == 'refs/heads/main'
         continue-on-error: true
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
