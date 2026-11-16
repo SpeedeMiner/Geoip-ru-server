@@ -1,0 +1,36 @@
+{
+  "AS12389": {
+    "excluded_counts": {
+      "default-route": 2,
+      "ipv4-mapped-ipv6": 0
+    },
+    "ipv4": {
+      "ipverse_only_addresses": "0",
+      "ris_only_addresses": "0"
+    },
+    "ipv6": {
+      "ipverse_only_addresses": "0",
+      "ris_only_addresses": "5192376086697341892868089873170432"
+    },
+    "window": "partial-window",
+    "window_end": "2026-11-16T08:00:00",
+    "window_start": "2026-11-15T19:17:47"
+  },
+  "AS9198": {
+    "excluded_counts": {
+      "default-route": 0,
+      "ipv4-mapped-ipv6": 28
+    },
+    "ipv4": {
+      "ipverse_only_addresses": "0",
+      "ris_only_addresses": "33280"
+    },
+    "ipv6": {
+      "ipverse_only_addresses": "0",
+      "ris_only_addresses": "184467440737095516212"
+    },
+    "window": "partial-window",
+    "window_end": "2026-11-16T08:00:00",
+    "window_start": "2026-11-15T19:17:47"
+  }
+}
