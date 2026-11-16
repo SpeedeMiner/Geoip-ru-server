@@ -9,6 +9,7 @@ import re
 from build_v41_overlay import intersect, networks_from_intervals, subtract
 import validate_v41_publication_bounds as gate
 from v41_reviewed_ipv6_admission import RECORD_KEY, verify_reviewed_ipv6_admission_manifest
+from v41_direct_admission import ROLE
 
 
 SOURCES = ("rir-RU", "rir-BY", "rir-KZ", "corporate-company-asn-origins",
@@ -33,8 +34,9 @@ def exact_delta(candidate, reference, checksum, manifest, reviewed_ipv6, revisio
     if policy.get("output_sha256") != new_sha:
         raise ValueError("candidate manifest does not bind the DAT")
     reviewed = verify_reviewed_ipv6_admission_manifest(reviewed_ipv6, policy)
-    if policy[RECORD_KEY].get("role") != "geography-review-only":
-        raise ValueError("reviewed IPv6 geography must be advisory, not an exclusion")
+    role = policy[RECORD_KEY].get("role")
+    if role not in {"geography-review-only", ROLE}:
+        raise ValueError("unrecognized reviewed IPv6 geography role")
     direct = {}
     for family in (4, 6):
         old, new = before["RU"][family], after["RU"][family]
@@ -63,7 +65,7 @@ def exact_delta(candidate, reference, checksum, manifest, reviewed_ipv6, revisio
         "candidate_dat_sha256": new_sha,
         "private_changed": {f"ipv{f}": before["PRIVATE"][f] != after["PRIVATE"][f] for f in (4, 6)},
         "direct": direct,
-        "ipv6_geography": {"role": "geography-review-only",
+        "ipv6_geography": {"role": role,
                            "table_sha256": policy["input_sha256"][RECORD_KEY],
                            "changed_overlaps": geography},
     }
@@ -131,7 +133,7 @@ def main():
     with args.summary.open("a", encoding="utf-8") as stream:
         stream.write(output + "\n")
         stream.write("\nExact CIDRs are in the v41-pr-direct-delta artifact. "
-                     "Geographic IPv6 overlaps are advisory and do not imply reachability.\n")
+                     "Geographic IPv6 overlaps do not imply reachability.\n")
     print(output, flush=True)
     result = gate.validate(args.candidate, args.reference, enforce_delta=False)
     if result["needs_review"]:

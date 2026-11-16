@@ -23,6 +23,7 @@ from validate_v41_telegram import PINNED_FEED, read_telegram_feed
 from v41_reviewed_ipv6_admission import RECORD_KEY, read_reviewed_ipv6_admission
 from v41_static_overrides import DEFAULT_PATH as STATIC_OVERRIDES_PATH, read_overrides
 from v41_reviewed_unreachable import DEFAULT_PATH as UNREACHABLE_PATH, read_reviewed as read_unreachable
+from v41_direct_admission import CDN_KEY, CDN_PATH, ROLE, cdn_networks, read_cdn
 
 W1ZARDZ_EXCLUSIONS = Path(__file__).resolve().parent.parent / "data/v41-w1zardz-gaming-exclusions.txt"
 
@@ -356,8 +357,8 @@ def parse_hydra_direct_whitelist(path: Path):
 
 
 def hydra_expected_after_policy(hydra_sources, private, blocked):
-    """Exact address-space set of Hydra candidates eligible for DIRECT."""
-    return subtract_networks(union_networks(*hydra_sources.values()), private, blocked)
+    """Only explicit DIRECT can admit; WHITELIST is retained as evidence."""
+    return subtract_networks(hydra_sources["hydra-direct"], private, blocked)
 
 
 def encode_varint(value: int) -> bytes:
@@ -726,7 +727,7 @@ def load_service_inputs(args):
         for net in sorted(networks, key=lambda n:(n.version,int(n.network_address),n.prefixlen)):
             provenance_rows.append({
                 "source_id":source_id,
-                "category":"",
+                "category":"candidate-not-standalone" if source_id == "operator-whitelist" else "",
                 "service":"",
                 "tier":"",
                 "asn_list":"",
@@ -801,10 +802,13 @@ def main():
     for hydra_id, hydra_nets in hydra_sources.items():
         source_stats[hydra_id] = {"raw_files": [args.hydra.name], "valid_rows": len(hydra_nets)}
         for net in sorted(hydra_nets, key=lambda n: (n.version, int(n.network_address), n.prefixlen)):
-            prefix_rows.append({"source_id": hydra_id, "category": "routing-intent",
+            prefix_rows.append({"source_id": hydra_id,
+                "category": "routing-intent" if hydra_id == "hydra-direct" else "diagnostic-only",
                 "service": "", "tier": "", "asn_list": "", "domains": "", "prefix": str(net)})
-    service_union = union_networks(*service_sources.values())
     regional_union = union_networks(*rir.values())
+    # A generic whitelist cannot add an address or grant resolver protection
+    # unless the address already has explicit regional/DIRECT provenance.
+    operator_candidates = service_sources["operator-whitelist"]
     blocked_base = parse_blocked_base(args.blocked_base)
     blocked_exact = parse_blocked_base(args.blocked_exact)
     blocked_resolved = parse_blocked_base(args.blocked_resolved)
@@ -824,6 +828,17 @@ def main():
         raise ValueError("CORE/SHARED prefix masks must exactly partition the all-company prefix set")
     regional_with_companies, regional_origin_stats = parse_cidr_file(args.regional_origin_prefixes, allow_hosts=False)
     regional_only = subtract_networks(regional_with_companies, company_prefixes)
+    reviewed = parse_reviewed_operator_prefixes(args.reviewed_operator_prefixes)
+    reviewed_prefixes = set(reviewed)
+    corroborated = (base_ru | regional_union | regional_with_companies | company_prefixes | reviewed_prefixes
+                    | hydra_sources["hydra-direct"] | service_sources["kyoresuas-standard"]
+                    | service_sources["w1zardz-service-direct"])
+    service_sources["operator-whitelist"] = {
+        net for f in (4, 6) for net in networks_from_intervals(
+            intersect(intervals(operator_candidates, f), intervals(corroborated, f)), f)
+    }
+    source_stats["operator-whitelist"]["role"] = "corroborated-only"
+    service_union = union_networks(*service_sources.values())
     service_exact, service_resolver = build_service_protection_masks(
         rir, service_sources,
         w1zardz_literal_hosts=original_w1zardz_hosts(args.w1zardz, service_sources["w1zardz-service-direct"]),
@@ -831,8 +846,6 @@ def main():
 
     ipsum, ipsum_stats = parse_ipsum(args.ipsum)
 
-    reviewed = parse_reviewed_operator_prefixes(args.reviewed_operator_prefixes)
-    reviewed_prefixes = set(reviewed)
     # DNS and unverified history cannot cut registered regional resources or exact reviewed operator routes.
     # Explicit subnet/IP evidence and Telegram remain unconditional.
     blocked, resolved_only = class_aware_effective_block_set(
@@ -845,10 +858,8 @@ def main():
         | service_resolver | reviewed_prefixes
     )
 
-    # Hydra's DIRECT and WHITELIST signal user-requested routes, not geography or
-    # first-party ownership. Never include Hydra in CORE/service exemptions.
-    hydra_union = union_networks(*hydra_sources.values())
-    additions = regional_union | service_union | company_prefixes | regional_only | hydra_union
+    # Hydra DIRECT is explicit routing intent, not geography or a block exemption.
+    additions = regional_union | service_union | company_prefixes | regional_only | hydra_sources["hydra-direct"]
     source_stats["all-company-asn-origins"] = company_prefix_stats
     source_stats["core-company-asn-origins"] = core_company_stats
     source_stats["shared-infrastructure-asn-origins"] = shared_infrastructure_stats
@@ -894,7 +905,7 @@ def main():
     for row in admission_exclusions.values():
         prefix_rows.append({
             "source_id": "regional-admission-exclusion",
-            "category": "Foreign assignment evidence (review only)",
+            "category": "Exact foreign admission review",
             "service": row["delegated_country"] + " -> " + row["assignment_country"],
             "tier": "", "asn_list": row["origin_asn"], "domains": "", "prefix": row["prefix"],
         })
@@ -902,7 +913,7 @@ def main():
     for row in ipv6_admission.values():
         prefix_rows.append({
             "source_id": "reviewed-ipv6-admission-exclusion",
-            "category": "Foreign IPv6 assignment evidence (review only)",
+            "category": "Exact IPv6 foreign admission review",
             "service": row["assignment_country"],
             "tier": row["basis"], "asn_list": row["origin_asn"],
             "domains": "", "prefix": row["prefix"],
@@ -910,10 +921,20 @@ def main():
     unreachable_records = read_unreachable()
     protected_core = regional_union | company_prefixes | regional_only | reviewed_prefixes
     unreachable_mask = reviewed_unreachable_mask(unreachable_records, protected_core)
-    # Registry/geofeed country is review evidence, not proof of IP unreachability.
-    # Preserve the rows for audit, but only reviewed IP-layer unreachability carves DIRECT.
-    geographic_admission_mask = set()
-    admission_mask = unreachable_mask
+    cdn = read_cdn()
+    cdn_hosts = cdn_networks(cdn)
+    additions.update(cdn_hosts)
+    for addr, row in cdn.items():
+        prefix_rows.append({"source_id": "reviewed-reachable-cdn", "category": "measured-russian-reachability",
+                            "service": row["provider"], "tier": row["review_after"],
+                            "asn_list": row["ru_asn"], "domains": "",
+                            "prefix": f"{addr}/{addr.max_prefixlen}"})
+    # Exact reviewed foreign assignments are not regional admission. Preserve an
+    # independent DIRECT contribution from Hydra or a measured CDN host.
+    geographic_admission_mask = subtract_networks(set(admission_exclusions) | set(ipv6_admission),
+                                                  hydra_sources["hydra-direct"], cdn_hosts)
+    # A current positive measurement does not override a reviewed IP-layer block.
+    admission_mask = geographic_admission_mask | unreachable_mask
     for prefix, row in unreachable_records.items():
         prefix_rows.append({"source_id": "reviewed-unreachable", "category": row["kind"],
                             "service": row["evidence"], "tier": row["review_after"],
@@ -945,7 +966,7 @@ def main():
     }
     hydra_expected = hydra_expected_after_policy(hydra_sources, private, routing_exclusions)
     if any(subtract(intervals(hydra_expected, v), intervals(final, v)) for v in (4, 6)):
-        raise ValueError("Hydra DIRECT/WHITELIST coverage missing after PRIVATE/block policy")
+        raise ValueError("Hydra DIRECT coverage missing after PRIVATE/block policy")
     final_iv = {v: intervals(final, v) for v in (4, 6)}
     final_private = set(collapse(private))
 
@@ -997,6 +1018,7 @@ def main():
         ("rir-rukzby-selected-origin-protected", regional_only),
         ("verified-service-exact-hosts", service_exact),
         ("verified-service-resolver-protected", service_resolver),
+        ("reviewed-reachable-cdn", cdn_hosts),
     ]
     measured_sources.append((reviewed_source, reviewed_prefixes))
     for source_id, networks in measured_sources + list(service_sources.items()) + list(hydra_sources.items()):
@@ -1008,6 +1030,8 @@ def main():
             eligible = subtract(src_iv, private_iv[v])
             eligible = subtract(subtract(eligible, blocked_iv[v]), admission_iv[v])
             row[f"ipv{v}_new_after_policy"] = interval_size(subtract(eligible, base_ru_iv[v]))
+            if source_id == "hydra-whitelist":
+                row[f"ipv{v}_new_after_policy"] = 0
         row.update({k:str(v) for k,v in source_stats.get(source_id,{}).items() if isinstance(v,(str,int))})
         metrics_rows.append(row)
 
@@ -1158,7 +1182,7 @@ def main():
         "v41 GeoIP SHA-256: "+sha256(payload),
         "",
         "POLICY",
-        "- Geographic assignment records are review-only and do not independently exclude DIRECT routes.",
+        "- Only reviewed exact foreign conflicts constrain geographic admission; independent Hydra DIRECT or a measured CDN IP can survive.",
         f"- Geographic evidence records: IPv4={len(admission_exclusions)} IPv6={len(ipv6_admission)}",
         f"- Reviewed IP-unreachable exclusions after core protection: IPv4={unreachable_removed[4]} IPv6={unreachable_removed[6]}",
         "- PRIVATE has absolute precedence.",
@@ -1198,7 +1222,7 @@ def main():
         "HYDRA ROUTING-INTENT COVERAGE",
         f"Hydra DIRECT CIDRs: {len(hydra_sources['hydra-direct'])}",
         f"Hydra WHITELIST CIDRs: {len(hydra_sources['hydra-whitelist'])}",
-        f"Hydra eligible after PRIVATE and v41 blocks: {addr_counts(hydra_expected)}",
+        f"Hydra DIRECT eligible after PRIVATE and v41 blocks: {addr_counts(hydra_expected)}",
         "Hydra is routing-intent, not a geolocation or corporate attribution; it does not override blocked/PRIVATE.",
         "",
         "SERVICE DIRECT INPUTS",
@@ -1209,7 +1233,7 @@ def main():
         f"Literal service hosts (resolver protection only): {len(service_exact)}",
         f"Service resolver-protected address space: {addr_counts(service_resolver)}",
         "Service and operator whitelist routes are separate from geographic/RIR resource evidence.",
-        "Service datasets can include foreign-located or shared-provider endpoints; no country geolocation filter was applied.",
+        "Explicit service DIRECT can overlap shared providers; only reviewed exact foreign conflicts constrain geographic admission.",
         "",
         f"HXEHEX diagnostic-only prefixes: {len(hxehex_diagnostics)}",
         f"HXEHEX host diagnostic input status: {hxehex_stats['status']}",
@@ -1259,12 +1283,12 @@ def main():
         "rir_inventory":{"rows":rir_rows,"countries":{c:len(rir[c]) for c in ("RU","BY","KZ")}},
         "regional_admission_exclusions": {
             "records": list(admission_exclusions.values()),
-            "role": "geography-review-only",
+            "role": ROLE,
             "removed_after_block_policy": {"ipv4": admission_removed[4], "ipv6": 0},
         },
         RECORD_KEY: {
             "records": list(ipv6_admission.values()),
-            "role": "geography-review-only",
+            "role": ROLE,
             "removed_after_block_policy": {"ipv6": admission_removed[6]},
         },
         "reviewed_unreachable": {
@@ -1273,6 +1297,7 @@ def main():
             "removed_after_other_policy": {f"ipv{v}": unreachable_removed[v] for v in (4, 6)},
             "core_protection": "regional resources, selected regional origins, company ASNs and reviewed operators",
         },
+        CDN_KEY: {"records": list(cdn.values())},
         "service_sources":source_stats,
         "diagnostic_sources": {
             "antifilter-ipsum": {**ipsum_stats, "role": "diagnostic-only"},
@@ -1285,7 +1310,8 @@ def main():
             "direct_cidrs": len(hydra_sources["hydra-direct"]),
             "whitelist_cidrs": len(hydra_sources["hydra-whitelist"]),
             "combined_eligible_address_space": addr_counts(hydra_expected),
-            "precedence": "PRIVATE > effective v41 blocked set > Hydra DIRECT/WHITELIST",
+            "precedence": "PRIVATE > effective v41 blocked set > Hydra DIRECT",
+            "whitelist_role": "diagnostic-only",
             "input_sha256": sha256(args.hydra.read_bytes()),
         },
         "corporate_company_asn_prefixes":{
@@ -1344,7 +1370,7 @@ def main():
             "this_builder_modifies_production_main":False,
             "this_builder_publishes_release":False,
             "release_workflow_is_main_only":True,
-            "geolocation_used_as_admission_gate":False,
+            "bulk_country_geolocation_used_as_admission_gate":False,
             "private_precedence_applied":True,
             "rkn_exact_ip_and_subnet_blocks_apply_to_shared_infrastructure":True,
             "confirmed_ip_subnet_precedes_all_direct_exceptions":True,
@@ -1355,7 +1381,7 @@ def main():
             "all_direct_protection_masks_are_resolver_only":True,
             "private_precedence_over_all_exceptions":True,
             "ipsum_24_auto_carved":False,
-            "hydra_direct_whitelist_added_without_block_exemption":True,
+            "hydra_direct_added_without_block_exemption":True,
             "candidate_status":"REVIEW",
         },
         "input_sha256":{
@@ -1365,6 +1391,7 @@ def main():
             "regional_admission_exclusions":sha256(args.regional_admission_exclusions.read_bytes()),
             RECORD_KEY:sha256(args.reviewed_ipv6_admission_exclusions.read_bytes()),
             "reviewed_unreachable":sha256(UNREACHABLE_PATH.read_bytes()),
+            CDN_KEY:sha256(CDN_PATH.read_bytes()),
             "reviewed_operator_prefixes":source_stats[reviewed_source]["input_sha256"],
             "kyoresuas_standard_ipv4":sha256(args.kyoresuas_v4.read_bytes()),
             "kyoresuas_standard_ipv6":sha256(args.kyoresuas_v6.read_bytes()),

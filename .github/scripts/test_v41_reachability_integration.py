@@ -13,11 +13,12 @@ import build_v41_overlay as builder
 import validate_v41_overlay as validator
 from v41_reviewed_ipv6_admission import HEADER as IPV6_HEADER
 from v41_reviewed_unreachable import read_reviewed
+import v41_direct_admission as admission
 from validate_v41_telegram import PINNED_FEED
 
 
 class ReachabilityIntegrationTests(unittest.TestCase):
-    def test_builder_and_validator_preserve_core_and_ignore_country_alone(self):
+    def test_builder_and_validator_require_exact_review_for_foreign_and_cdn(self):
         with TemporaryDirectory() as folder:
             root = Path(folder)
             def write(name, content):
@@ -34,13 +35,20 @@ class ReachabilityIntegrationTests(unittest.TestCase):
             base = dat("base.dat", {"RU": ["11.0.0.0/24", "12.0.0.0/24", "13.0.0.0/24",
                                             "2001:4860:1234::/48", "2001:4860:5678::/48", "2001:4860:aa::/48"],
                                     "PRIVATE": ["10.0.0.0/8", "fc00::/7"]})
-            hydra = dat("hydra.dat", {"DIRECT": ["12.0.0.0/24"], "WHITELIST": ["19.0.0.1/32"]})
+            hydra = dat("hydra.dat", {"DIRECT": ["12.0.0.0/24", "11.0.0.0/26"],
+                                      "WHITELIST": ["25.0.0.1/32", "11.0.0.64/26"]})
             rir = write("rir.tsv", "country\tprefix\tregistry\tstatus\nRU\t11.0.0.0/24\tripencc\tallocated\nBY\t16.0.0.0/24\tripencc\tallocated\nKZ\t17.0.0.0/24\tripencc\tallocated\n")
             geo = write("geo.tsv", "prefix\tdelegated_country\tassignment_country\torigin_asn\tchecked_on\n11.0.0.0/25\tRU\tUS\tAS123\t2026-11-13\n")
             geo6 = write("geo6.tsv", "\t".join(IPV6_HEADER) + "\n"
                          "2001:4860:1234::/48\tAS123\tDE\tselected_origin_ASN\t2026-11-15\t"
                          "https://rdap.db.ripe.net/ip/2001:4860:1234::/48\thttps://example.test/geofeed.csv\n")
             operator = write("operator.tsv", "country\tprefix\torigin_asn\nRU\t23.0.0.0/24\tAS123\n")
+            cdn_path = write("cdn.tsv", "\t".join(admission.HEADER) + "\n"
+                             "11.0.0.99\tCDN example\thttps://example.test/provider\tAS321\t"
+                             "https://example.test/measurement\t2020-01-01\t2099-01-01\n"
+                             "13.0.0.129\tCDN example\thttps://example.test/provider\tAS321\t"
+                             "https://example.test/hard-block-check\t2020-01-01\t2099-01-01\n")
+            cdn = admission.read_cdn(cdn_path)
             unreachable = write("unreachable.tsv", "cidr\tkind\tevidence\tverified_on\treview_after\n"
                                 "12.0.0.0/25\tIP_LAYER_BLOCK\thttps://example.test/a\t2020-01-01\t2099-01-01\n"
                                 "13.0.0.0/25\tINBOUND_GEO_IP_BLOCK\thttps://example.test/b\t2020-01-01\t2099-01-01\n"
@@ -72,16 +80,22 @@ class ReachabilityIntegrationTests(unittest.TestCase):
             for key, value in (files | outputs).items():
                 argv.extend(("--" + key, str(value)))
             records = read_reviewed(unreachable)
-            with patch.object(builder, "UNREACHABLE_PATH", unreachable), patch.object(builder, "read_unreachable", return_value=records), patch.object(sys, "argv", argv):
+            with patch.object(builder, "UNREACHABLE_PATH", unreachable), patch.object(builder, "read_unreachable", return_value=records), patch.object(builder, "CDN_PATH", cdn_path), patch.object(builder, "read_cdn", return_value=cdn), patch.object(sys, "argv", argv):
                 self.assertEqual(builder.main(), 0)
             result = builder.parse_geoip_dat(outputs["output"])["RU"]
             contains = lambda addr: any(ipaddress.ip_address(addr) in net for net in result)
-            self.assertTrue(contains("11.0.0.1"), "foreign registration alone must not remove a regional address")
+            self.assertTrue(contains("11.0.0.1"), "explicit Hydra DIRECT must survive a geographic conflict")
+            self.assertFalse(contains("11.0.0.70"), "a whitelist cannot override exact foreign assignment")
+            self.assertTrue(contains("11.0.0.99"), "measured CDN host may override only geographic admission")
+            self.assertFalse(contains("11.0.0.100"), "do not promote adjacent CDN IPs")
+            self.assertTrue(contains("11.0.0.130"), "preserve regional neighbor")
+            self.assertFalse(contains("25.0.0.1"), "Hydra WHITELIST is diagnostic")
+            self.assertFalse(contains("20.0.0.1"), "uncorroborated operator WHITELIST is not DIRECT")
             self.assertFalse(contains("12.0.0.1"), "reviewed IP-layer exclusion applies outside core")
             self.assertTrue(contains("12.0.0.200"), "neighboring addresses must remain")
             self.assertTrue(contains("13.0.0.1"), "core company is protected from the new exclusion")
             self.assertFalse(contains("13.0.0.129"), "existing hard evidence must still win")
-            self.assertTrue(contains("2001:4860:1234::1"), "foreign IPv6 assignment alone must not carve")
+            self.assertFalse(contains("2001:4860:1234::1"), "exact reviewed foreign IPv6 waits for positive evidence")
             self.assertFalse(contains("2001:4860:5678::1"), "unprotected IPv6 is subject to reviewed exclusions")
             self.assertTrue(contains("2001:4860:aa::1"), "IPv6 core company is protected")
             args = SimpleNamespace(
@@ -95,7 +109,7 @@ class ReachabilityIntegrationTests(unittest.TestCase):
                 quality=outputs["quality"], rir=rir, regional_admission_exclusions=geo,
                 reviewed_operator_prefixes=operator, reviewed_ipv6_admission_exclusions=geo6, telegram_feed=PINNED_FEED,
             )
-            with patch.object(validator, "UNREACHABLE_PATH", unreachable), patch.object(validator, "read_reviewed", return_value=records):
+            with patch.object(validator, "UNREACHABLE_PATH", unreachable), patch.object(validator, "read_reviewed", return_value=records), patch.object(validator, "verify_cdn_manifest", side_effect=lambda m: admission.verify_cdn_manifest(m, cdn_path)):
                 self.assertEqual(validator.validate(args)["status"], "VALID")
                 original = outputs["output"].read_bytes()
                 original_manifest = outputs["manifest"].read_text(encoding="utf-8")

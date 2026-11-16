@@ -15,6 +15,7 @@ from pathlib import Path
 import build_v41_overlay as builder
 from v41_reviewed_ipv6_admission import verify_reviewed_ipv6_admission_manifest
 from validate_v41_overlay import verify_unreachable_manifest
+from v41_direct_admission import ROLE, cdn_networks, verify_cdn_manifest
 from prepare_blocked_sources_v41 import (
     CONFIRMED_IP, HARD_SOURCE_LABELS, TELEGRAM_PREFIXES,
     read_confirmed_ip_records, read_feed, subnet_auto_approved,
@@ -28,6 +29,7 @@ SOURCE_KEYS = {
     "rir": "regional_rir_inventory",
     "regional_origin_prefixes": "regional_origin_prefixes",
     "regional_admission_exclusions": "regional_admission_exclusions",
+    "hydra": "hydra_geoip",
     "reviewed_operator_prefixes": "reviewed_operator_prefixes",
     "kyoresuas_v4": "kyoresuas_standard_ipv4",
     "kyoresuas_v6": "kyoresuas_standard_ipv6",
@@ -198,7 +200,7 @@ def format_quality_section(result: dict) -> str:
 
 def main() -> int:
     p = argparse.ArgumentParser(description=__doc__)
-    for field in ("geoip", "manifest", "quality", "hard", "effective", "core",
+    for field in ("geoip", "manifest", "quality", "hard", "effective", "core", "hydra",
                   "shared", "rir", "kyoresuas_v4", "kyoresuas_v6",
                   "kyoresuas_services", "w1zardz", "hxehex_ip", "escapingworm", "regional_origin_prefixes"):
         p.add_argument("--" + field.replace("_", "-"), type=Path, required=True)
@@ -215,12 +217,14 @@ def main() -> int:
         if set(categories) != {"RU", "PRIVATE"}:
             raise ValueError("Expected GeoIP categories RU and PRIVATE only")
         regional_review = builder.parse_regional_admission_exclusions(a.regional_admission_exclusions)
-        verify_reviewed_ipv6_admission_manifest(a.reviewed_ipv6_admission_exclusions, manifest)
+        ipv6_review = verify_reviewed_ipv6_admission_manifest(a.reviewed_ipv6_admission_exclusions, manifest)
         if (manifest.get("regional_admission_exclusions", {}).get("records") != list(regional_review.values())
-                or manifest.get("regional_admission_exclusions", {}).get("role") != "geography-review-only"
-                or manifest.get("reviewed_ipv6_admission_exclusions", {}).get("role") != "geography-review-only"):
-            raise ValueError("Geographic assignment data must be review-only")
-        admission = set()
+                or manifest.get("regional_admission_exclusions", {}).get("role") != ROLE
+                or manifest.get("reviewed_ipv6_admission_exclusions", {}).get("role") != ROLE):
+            raise ValueError("Missing exact foreign admission policy")
+        hydra_direct = builder.parse_hydra_direct_whitelist(a.hydra)["hydra-direct"]
+        cdn = cdn_networks(verify_cdn_manifest(manifest))
+        admission = builder.subtract_networks(set(regional_review) | set(ipv6_review), hydra_direct, cdn)
         effective = builder.parse_cidr_file(a.effective)[0]
         core = builder.parse_cidr_file(a.core, allow_hosts=False)[0]
         shared = builder.parse_cidr_file(a.shared, allow_hosts=False)[0]

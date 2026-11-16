@@ -45,7 +45,7 @@ class HydraDirectWhitelistCoverageTests(unittest.TestCase):
         )
         self.assertEqual(
             intervals(final, 4),
-            intervals(net("198.51.100.128/25", "203.0.113.0/25"), 4),
+            intervals(net("198.51.100.128/25"), 4),
         )
 
     def test_missing_whitelist_fails_closed(self):

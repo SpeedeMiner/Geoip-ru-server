@@ -67,7 +67,7 @@ class PullRequestReportTests(unittest.TestCase):
         for malformed, error in (
             ({**valid, "output_sha256": "0" * 64}, "manifest does not bind"),
             ({**valid, "input_sha256": {}}, "provenance mismatch"),
-            ({**valid, RECORD_KEY: {**valid[RECORD_KEY], "role": "active-mask"}}, "must be advisory"),
+            ({**valid, RECORD_KEY: {**valid[RECORD_KEY], "role": "active-mask"}}, "unrecognized"),
         ):
             with self.subTest(error=error):
                 p.write_text(json.dumps(malformed), encoding="utf-8")

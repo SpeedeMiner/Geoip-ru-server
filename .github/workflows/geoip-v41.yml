@@ -22,6 +22,8 @@ on:
       - ".github/workflows/geoip-v41-cdn-repair.yml"
       - ".github/scripts/build_rir_rukzby_prefixes.py"
       - ".github/scripts/build_v41_overlay.py"
+      - ".github/scripts/v41_direct_admission.py"
+      - ".github/data/v41-reviewed-reachable-cdn.tsv"
       - ".github/scripts/build_v41_srs.py"
       - ".github/scripts/extract_ru_asn_prefixes_v41.py"
       - ".github/scripts/check_v41_bgp_observations.py"
@@ -461,6 +463,7 @@ jobs:
           sha256sum -c "$V41_BLOCKED_SHA"
           python3 .github/scripts/validate_v41_release_gate.py \
             --geoip "$V41_OUTPUT_FILE" \
+            --hydra "$HYDRA_INPUT" \
             --manifest "$V41_MANIFEST" \
             --quality "$V41_QUALITY_REPORT" \
             --hard "$BLOCKED_IP_EXACT_INPUT" \
@@ -787,6 +790,8 @@ jobs:
         run: |
           python3 ../.github/scripts/v41_reviewed_ipv6_admission.py \
             --table ../.github/data/v41-reviewed-ipv6-admission-exclusions.tsv \
+            --regional-table ../.github/data/v41-regional-admission-exclusions.tsv \
+            --hydra "$HYDRA_INPUT" \
             --manifest "$V41_MANIFEST" --geoip "$V41_OUTPUT_FILE"
 
       - name: Stage the versioned snapshot tag
