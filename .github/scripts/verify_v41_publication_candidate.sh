@@ -50,4 +50,7 @@ printf '%s  %s\n' "$expected" "$RUNNER_TEMP/previous-geoip.dat" | sha256sum -c -
 python3 ../.github/scripts/validate_v41_publication_bounds.py \
   --candidate "$V41_OUTPUT_FILE" --reference "$RUNNER_TEMP/previous-geoip.dat" \
   --reviewed-sha256 "$REVIEWED_SHA" | tee -a "$GITHUB_STEP_SUMMARY"
+python3 ../.github/scripts/validate_v41_publication_review.py \
+  --candidate "$V41_OUTPUT_FILE" --reference "$RUNNER_TEMP/previous-geoip.dat" \
+  --table ../.github/data/v41-publication-review-prefixes.tsv | tee -a "$GITHUB_STEP_SUMMARY"
 printf 'PREVIOUS_RELEASE_SHA=%s\n' "$ref" >> "$GITHUB_ENV"

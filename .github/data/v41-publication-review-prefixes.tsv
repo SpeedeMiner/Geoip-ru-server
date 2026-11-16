@@ -1,0 +1,8 @@
+direction	prefix	reason
+removed	177.29.253.0/24	CURATOR-CDN service identity and RU reachability unresolved
+removed	177.122.229.0/24	RU reachability unresolved after origin transition
+removed	177.122.241.0/24	RU reachability unresolved after origin transition
+removed	177.166.74.0/24	RU reachability unresolved after origin transition
+removed	177.166.78.0/24	RU reachability unresolved after origin transition
+added	48.103.230.0/24	Selected AS219095 conflicts with validated parallel origin AS401152
+added	201.58.141.0/24	Selected AS219095 conflicts with validated parallel origin AS401152

@@ -14,6 +14,7 @@ on:
       - "docs/V41_ROLLING_RELEASE_NOTES.md"
       - ".github/data/geoip_RU_company_*.tsv"
       - ".github/data/v41-reviewed-ipv6-admission-exclusions.tsv"
+      - ".github/data/v41-publication-review-prefixes.tsv"
 jobs:
   lint:
     runs-on: ubuntu-latest

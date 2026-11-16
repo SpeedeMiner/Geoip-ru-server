@@ -69,3 +69,22 @@
   tag is a stable URL for mutable assets, not a source-code checkout of the
   newest artifact. For raw URLs, use the versioned snapshot commit or
   `release` for the current published tree.
+
+## Temporary scoped publication review
+
+- The ordinary build and candidate artifact are unchanged. Before the first
+  public write, the publisher checks the approved previous release DAT against
+  the candidate DAT for directions listed in
+  [the review table](../.github/data/v41-publication-review-prefixes.tsv).
+  Any actual address loss within a `removed` row or addition within an
+  `added` row holds the candidate. Existing coverage in both files, changes
+  outside the table, and changes in the opposite direction do not match.
+- The preflight prints exact changed CIDRs, address counts and the SHA-256
+  of both DATs and the table. This is a publication hold, not a list of
+  DIRECT pins, hard blocks, or RPKI-based routing rules. A hold leaves the
+  previous release and CDN unchanged. Missing or malformed review data also
+  prevents publication.
+- The ordinary relative-delta SHA override does not bypass the scoped hold.
+  Resolve the corresponding table rows with dated evidence and rerun the
+  normal preflight. Retire the table and its preflight invocation together
+  when the last temporary item is resolved.

@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       reviewed_geoip_sha256:
-        description: SHA-256 of an independently reviewed candidate (only for relative delta overruns)
+        description: SHA-256 for published size bounds and PRIVATE review only; does not bypass scoped route holds
         required: false
         type: string
       reviewed_block_feeds_sha256:
@@ -34,6 +34,8 @@ on:
       - ".github/scripts/validate_v41_base_artifacts.py"
       - ".github/scripts/validate_v41_block_feed_counts.py"
       - ".github/scripts/validate_v41_publication_bounds.py"
+      - ".github/scripts/validate_v41_publication_review.py"
+      - ".github/data/v41-publication-review-prefixes.tsv"
       - ".github/scripts/verify_v41_ipverse_archive.py"
       - ".github/scripts/bundle_v41_registry_inputs.py"
       - ".github/scripts/v41_release_manifest.py"
