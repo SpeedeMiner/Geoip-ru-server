@@ -239,6 +239,117 @@ def audit(repo: str, commit: str, hosts: tuple[str, ...], fetch: Fetch = fetch_h
     return result
 
 
+
+def diagnose_planes(repo: str, commit: str, hosts: tuple[str, ...], *,
+                    release_commit: str, versioned_tag: str | None = None,
+                    fetch: Fetch = fetch_https) -> dict:
+    """Report independent readback planes against the exact GitHub CDN tree."""
+    if not REPO_RE.fullmatch(repo) or not SHA_RE.fullmatch(commit):
+        raise ValueError("expected owner/repository and a full cdn commit SHA")
+    if not SHA_RE.fullmatch(release_commit):
+        raise ValueError("expected a full release commit SHA")
+    if not hosts or not set(hosts).issubset(EDGES):
+        raise ValueError("expected supported jsDelivr endpoints")
+    api = f"https://api.github.com/repos/{repo}/git/trees/{commit}"
+    raw = f"https://raw.githubusercontent.com/{repo}/{commit}"
+    index = f"https://data.jsdelivr.com/v1/package/gh/{repo}@"
+
+    def capture(fn):
+        try:
+            return {"status": "PASS", "observed": fn()}
+        except (KeyError, TypeError, OSError, ValueError) as exc:
+            return {"status": "ERROR", "error": str(exc)}
+
+    def expectation():
+        data = json.loads(fetch(api, INDEX_SIZE))
+        if data.get("truncated") is not False:
+            raise ValueError("pinned GitHub CDN tree is truncated")
+        entries = {}
+        for row in data["tree"]:
+            name = row["path"]
+            if (name not in FILES or name in entries or row.get("type") != "blob"
+                    or row.get("mode") != "100644" or type(row.get("size")) is not int
+                    or not 0 < row["size"] <= ASSET_SIZE or not SHA_RE.fullmatch(row["sha"])):
+                raise ValueError("pinned GitHub CDN tree has unexpected entries")
+            entries[name] = row
+        if set(entries) != set(FILES):
+            raise ValueError("pinned GitHub CDN tree is missing a client file")
+        reference = {}
+        for name in FILES:
+            data = fetch(f"{raw}/{name}", ASSET_SIZE)
+            size = len(data)
+            git_oid = hashlib.sha1(f"blob {size}\0".encode("ascii") + data).hexdigest()
+            if size != entries[name]["size"] or git_oid != entries[name]["sha"]:
+                raise ValueError(f"pinned GitHub Raw bytes do not match Git blob: {name}")
+            reference[name] = (size, hashlib.sha256(data).digest())
+        return reference
+
+    def compare(observed, expected):
+        outcome = {}
+        for name in FILES:
+            size, sha = observed[name]
+            outcome[name] = {"bytes": size, "sha256": sha.hex(), "matches_pinned": observed[name] == expected[name]}
+        return {"status": "PASS" if all(x["matches_pinned"] for x in outcome.values()) else "MISMATCH",
+                "files": outcome}
+
+    def read_edge(host, name):
+        payload = fetch(f"https://{host}/gh/{repo}@cdn/{name}", ASSET_SIZE)
+        return len(payload), hashlib.sha256(payload).digest()
+
+    baseline = capture(expectation)
+    targets = (("pinned_tree", commit, False), ("pinned_flat", commit, True),
+               ("rolling_tree", "cdn", False), ("rolling_flat", "cdn", True))
+    if baseline["status"] != "PASS":
+        return {
+            "repo": repo, "status": "FAIL", "cdn_commit": commit,
+            "release_commit": release_commit, "pinned_reference": baseline,
+            "catalog": {label: {"status": "UNVERIFIED"} for label, _, _ in targets},
+            "delivery": {host: {"status": "UNVERIFIED"} for host in hosts},
+            "github_release": {"status": "UNVERIFIED"},
+        }
+    expected = baseline["observed"]
+
+    def inv(ref, flat):
+        endpoint = index + ref + ("/flat" if flat else "")
+        return compare(parse_inventory(fetch(endpoint, INDEX_SIZE), flat=flat), expected)
+
+    release_urls = ((f"https://github.com/{repo}/releases/download/latest-geoip-client-v41",
+                     "rolling GitHub Release"),)
+    if versioned_tag is not None:
+        release_urls += (versioned_download(repo, versioned_tag),)
+
+    with ThreadPoolExecutor(max_workers=6) as pool:
+        catalogs = {label: pool.submit(capture, lambda r=ref, f=flat: inv(r, f))
+                    for label, ref, flat in targets}
+        edge_checks = {(h, n): pool.submit(capture, lambda h=h, n=n: read_edge(h, n))
+                       for h in hosts for n in FILES}
+        gh_release = pool.submit(capture, lambda: verify_release_assets(
+            repo, release_commit, release_urls, expect=expected, fetch=fetch))
+        catalog = {}
+        for label, future in catalogs.items():
+            data = future.result()
+            catalog[label] = data["observed"] if data["status"] == "PASS" else data
+        delivery = {}
+        for host in hosts:
+            results = {}
+            for name in FILES:
+                data = edge_checks[host, name].result()
+                if data["status"] == "PASS":
+                    size, digest = data["observed"]
+                    data = {"status": "PASS" if (size, digest) == expected[name] else "MISMATCH",
+                            "bytes": size, "sha256": digest.hex()}
+                results[name] = data
+            states = {x["status"] for x in results.values()}
+            delivery[host] = {"status": "ERROR" if "ERROR" in states else
+                              ("MISMATCH" if "MISMATCH" in states else "PASS"), "files": results}
+        github = gh_release.result()
+    ok = all(part["status"] == "PASS" for part in (*catalog.values(), *delivery.values(), github))
+    return {"repo": repo, "status": "PASS" if ok else "FAIL", "cdn_commit": commit,
+            "release_commit": release_commit, "pinned_reference": compare(expected, expected),
+            "catalog": catalog, "delivery": delivery, "github_release": github,
+            **({"snapshot_tag": versioned_tag} if versioned_tag is not None else {})}
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--repo", default="SpeedeMiner/Geoip-ru-server")
@@ -256,6 +367,8 @@ def main() -> int:
                         help="allow fallback-only verification of a pinned non-current release")
     parser.add_argument("--verify-git-tree", action="store_true",
                         help="compare the pinned GitHub CDN root with jsDelivr inventories")
+    parser.add_argument("--diagnose-planes", action="store_true",
+                        help="read catalog, delivery, and GitHub release against pinned Git; report all and fail on drift")
     args = parser.parse_args()
     if not REPO_RE.fullmatch(args.repo):
         parser.error("--repo must be owner/repository")
@@ -264,12 +377,13 @@ def main() -> int:
             parser.error(f"{option} must be a full commit SHA")
     if args.snapshot_tag is not None and not TAG_RE.fullmatch(args.snapshot_tag):
         parser.error("--snapshot-tag must be a versioned v41 snapshot tag")
-    if args.fallback_only and (args.cdn_sha is not None or args.edges or args.verify_git_tree):
+    if args.fallback_only and (args.cdn_sha is not None or args.edges
+                              or args.verify_git_tree or args.diagnose_planes):
         parser.error("--fallback-only does not accept CDN options")
     if args.historical_snapshot and not (args.fallback_only and args.release_sha and args.snapshot_tag):
         parser.error("--historical-snapshot requires --fallback-only, --release-sha and --snapshot-tag")
     verify_snapshot = args.verify_snapshot or args.snapshot_tag is not None or args.fallback_only
-    compare_release = args.compare_release or args.release_sha is not None or verify_snapshot
+    compare_release = args.compare_release or args.release_sha is not None or verify_snapshot or args.diagnose_planes
     try:
         commit = None if args.fallback_only else args.cdn_sha or get_commit(args.repo, "cdn")
         if args.historical_snapshot:
@@ -283,6 +397,9 @@ def main() -> int:
             result = audit_fallback(args.repo, release, tag)
             if args.historical_snapshot:
                 result["scope"] = "specified historical GitHub snapshot only"
+        elif args.diagnose_planes:
+            result = diagnose_planes(repo=args.repo, commit=commit, hosts=EDGES if args.edges else CANONICAL,
+                                     release_commit=release, versioned_tag=tag)
         else:
             refs = {"release_commit": release}
             if tag is not None:
@@ -301,7 +418,7 @@ def main() -> int:
         print(f"GeoIP CDN audit failed: {exc}", file=sys.stderr)
         return 1
     print(json.dumps(result, indent=2, sort_keys=True))
-    return 0
+    return int(args.diagnose_planes and result["status"] != "PASS")
 
 
 if __name__ == "__main__":

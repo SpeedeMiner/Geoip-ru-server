@@ -102,4 +102,20 @@ uses the public, unauthenticated GitHub API and does not require a token.
 A mismatch exits nonzero. During normal cache propagation, retry or use
 GitHub Release directly. This command neither purges nor changes a ref.
 
+When the CDN index and actual downloads disagree, run the optional
+plane-by-plane diagnostic:
+
+```sh
+python3 .github/scripts/audit_v41_cdn_public.py --diagnose-planes --edges --verify-snapshot
+```
+
+The reference is the exact three-file Git tree and its pinned Raw blobs,
+verified against their Git object IDs and then hashed with SHA-256. The
+report compares rolling and SHA-pinned tree/flat catalogs, checks every
+expected download from the selected endpoints, and verifies the promoted
+and rolling GitHub Release. Here `--verify-snapshot` adds the versioned
+fallback. An outdated catalog is reported separately from outdated
+download bytes. Either still fails the command. This flag only adds
+read-only diagnostics and is not used by the publishing workflows.
+
 [Cutover runbook](V41_CDN_CUTOVER_RUNBOOK.md) · [Publication journal](V41_CDN_PUBLICATION_JOURNAL_20261115.md).
