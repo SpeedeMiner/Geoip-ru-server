@@ -1,0 +1,2691 @@
+{
+  "as_observed": {
+    "cdn_purge_not_requested": true,
+    "latest_main_run": 43747743430,
+    "no_static_addition_or_removal_proposed": true,
+    "release_workflow_not_dispatched": true,
+    "same_name_cdn_tag_found": false
+  },
+  "build_input_coverage": {
+    "candidate": {
+      "archive_sha256": "244e1b30a734b7bbf93c5b6a14ec07ef5cf19f875ef87fee3f512cdf723e7d5a",
+      "artifact": "v41-pr53-92fa97e.alt.zip",
+      "files": {
+        "hydra-geoip.dat": {
+          "overlap_addresses_by_prefix_and_category": {
+            "177.122.229.0/24": {},
+            "177.122.241.0/24": {},
+            "177.166.74.0/24": {},
+            "177.166.78.0/24": {},
+            "177.29.252.0/24": {},
+            "177.29.253.0/24": {},
+            "201.58.141.0/24": {},
+            "213.226.121.0/24": {},
+            "48.103.230.0/24": {}
+          },
+          "sha256": "c0c56874ee8c8859c94d5ecc7dd509ff683630315287bb1c88789f4968d593d8",
+          "source_url": "https://github.com/hydraponique/roscomvpn-geoip/releases/download/202611151046/geoip.dat"
+        },
+        "loyalsoldier-by.dat": {
+          "overlap_addresses_by_prefix_and_category": {
+            "177.122.229.0/24": {},
+            "177.122.241.0/24": {},
+            "177.166.74.0/24": {},
+            "177.166.78.0/24": {},
+            "177.29.252.0/24": {},
+            "177.29.253.0/24": {},
+            "201.58.141.0/24": {},
+            "213.226.121.0/24": {},
+            "48.103.230.0/24": {}
+          },
+          "sha256": "baac721e10f384222261b4fe9d8bed5572fb03300a5840ff015ce84b3705bd7e",
+          "source_url": "https://raw.githubusercontent.com/Loyalsoldier/geoip/ec6f8d0f6b5c6c6924d9230f2ed893f69585d38c/dat/by.dat"
+        },
+        "loyalsoldier-private.dat": {
+          "overlap_addresses_by_prefix_and_category": {
+            "177.122.229.0/24": {},
+            "177.122.241.0/24": {},
+            "177.166.74.0/24": {},
+            "177.166.78.0/24": {},
+            "177.29.252.0/24": {},
+            "177.29.253.0/24": {},
+            "201.58.141.0/24": {},
+            "213.226.121.0/24": {},
+            "48.103.230.0/24": {}
+          },
+          "sha256": "4acc277c0425871bf1171a06302a60fec1d7ced5db204bb5b4090a5b6e0efe99",
+          "source_url": "https://raw.githubusercontent.com/Loyalsoldier/geoip/ec6f8d0f6b5c6c6924d9230f2ed893f69585d38c/dat/private.dat"
+        },
+        "loyalsoldier-ru.dat": {
+          "overlap_addresses_by_prefix_and_category": {
+            "177.122.229.0/24": {},
+            "177.122.241.0/24": {},
+            "177.166.74.0/24": {},
+            "177.166.78.0/24": {},
+            "177.29.252.0/24": {},
+            "177.29.253.0/24": {},
+            "201.58.141.0/24": {},
+            "213.226.121.0/24": {},
+            "48.103.230.0/24": {}
+          },
+          "sha256": "72745d626cfec819b36221825bb05c3a27e086a7f48871265411827cc86ff9cb",
+          "source_url": "https://raw.githubusercontent.com/Loyalsoldier/geoip/ec6f8d0f6b5c6c6924d9230f2ed893f69585d38c/dat/ru.dat"
+        },
+        "v2fly-geoip.dat": {
+          "overlap_addresses_by_prefix_and_category": {
+            "177.122.229.0/24": {
+              "US": 256
+            },
+            "177.122.241.0/24": {
+              "US": 256
+            },
+            "177.166.74.0/24": {
+              "DE": 256
+            },
+            "177.166.78.0/24": {
+              "DE": 256
+            },
+            "177.29.252.0/24": {
+              "US": 256
+            },
+            "177.29.253.0/24": {
+              "US": 256
+            },
+            "201.58.141.0/24": {
+              "DE": 256
+            },
+            "213.226.121.0/24": {
+              "UA": 256
+            },
+            "48.103.230.0/24": {
+              "US": 256
+            }
+          },
+          "sha256": "eedb24b3b9fcba27e06b92c0428dab90d9496083091ae4cf39e11387fd99d0e2",
+          "source_url": "https://github.com/v2fly/geoip/releases/download/202611080027/geoip.dat"
+        }
+      }
+    },
+    "published": {
+      "archive_sha256": "802f67fac2058bcd4f460e8d8572280ca2a5dadc4e29acc22ec3e54190801779",
+      "artifact": "published-43747743430.zip",
+      "files": {
+        "hydra-geoip.dat": {
+          "overlap_addresses_by_prefix_and_category": {
+            "177.122.229.0/24": {},
+            "177.122.241.0/24": {},
+            "177.166.74.0/24": {},
+            "177.166.78.0/24": {},
+            "177.29.252.0/24": {},
+            "177.29.253.0/24": {},
+            "201.58.141.0/24": {},
+            "213.226.121.0/24": {},
+            "48.103.230.0/24": {}
+          },
+          "sha256": "c0c56874ee8c8859c94d5ecc7dd509ff683630315287bb1c88789f4968d593d8",
+          "source_url": "https://github.com/hydraponique/roscomvpn-geoip/releases/download/202611151046/geoip.dat"
+        },
+        "loyalsoldier-by.dat": {
+          "overlap_addresses_by_prefix_and_category": {
+            "177.122.229.0/24": {},
+            "177.122.241.0/24": {},
+            "177.166.74.0/24": {},
+            "177.166.78.0/24": {},
+            "177.29.252.0/24": {},
+            "177.29.253.0/24": {},
+            "201.58.141.0/24": {},
+            "213.226.121.0/24": {},
+            "48.103.230.0/24": {}
+          },
+          "sha256": "baac721e10f384222261b4fe9d8bed5572fb03300a5840ff015ce84b3705bd7e",
+          "source_url": "https://raw.githubusercontent.com/Loyalsoldier/geoip/ec6f8d0f6b5c6c6924d9230f2ed893f69585d38c/dat/by.dat"
+        },
+        "loyalsoldier-private.dat": {
+          "overlap_addresses_by_prefix_and_category": {
+            "177.122.229.0/24": {},
+            "177.122.241.0/24": {},
+            "177.166.74.0/24": {},
+            "177.166.78.0/24": {},
+            "177.29.252.0/24": {},
+            "177.29.253.0/24": {},
+            "201.58.141.0/24": {},
+            "213.226.121.0/24": {},
+            "48.103.230.0/24": {}
+          },
+          "sha256": "4acc277c0425871bf1171a06302a60fec1d7ced5db204bb5b4090a5b6e0efe99",
+          "source_url": "https://raw.githubusercontent.com/Loyalsoldier/geoip/ec6f8d0f6b5c6c6924d9230f2ed893f69585d38c/dat/private.dat"
+        },
+        "loyalsoldier-ru.dat": {
+          "overlap_addresses_by_prefix_and_category": {
+            "177.122.229.0/24": {},
+            "177.122.241.0/24": {},
+            "177.166.74.0/24": {},
+            "177.166.78.0/24": {},
+            "177.29.252.0/24": {},
+            "177.29.253.0/24": {},
+            "201.58.141.0/24": {},
+            "213.226.121.0/24": {},
+            "48.103.230.0/24": {}
+          },
+          "sha256": "72745d626cfec819b36221825bb05c3a27e086a7f48871265411827cc86ff9cb",
+          "source_url": "https://raw.githubusercontent.com/Loyalsoldier/geoip/ec6f8d0f6b5c6c6924d9230f2ed893f69585d38c/dat/ru.dat"
+        },
+        "v2fly-geoip.dat": {
+          "overlap_addresses_by_prefix_and_category": {
+            "177.122.229.0/24": {
+              "US": 256
+            },
+            "177.122.241.0/24": {
+              "US": 256
+            },
+            "177.166.74.0/24": {
+              "DE": 256
+            },
+            "177.166.78.0/24": {
+              "DE": 256
+            },
+            "177.29.252.0/24": {
+              "US": 256
+            },
+            "177.29.253.0/24": {
+              "US": 256
+            },
+            "201.58.141.0/24": {
+              "DE": 256
+            },
+            "213.226.121.0/24": {
+              "UA": 256
+            },
+            "48.103.230.0/24": {
+              "US": 256
+            }
+          },
+          "sha256": "eedb24b3b9fcba27e06b92c0428dab90d9496083091ae4cf39e11387fd99d0e2",
+          "source_url": "https://github.com/v2fly/geoip/releases/download/202611080027/geoip.dat"
+        }
+      }
+    }
+  },
+  "draft_54_exact_head_actions": {
+    "candidate_under_draft_53_preflight": {
+      "exit": 1,
+      "ordinary_numeric_gate": {
+        "candidate_sha256": "3161fdd5eda4d9c2f962a3c8d1bd0c187e5cab9260284a13679b289a9a6d0855",
+        "delta": {
+          "4": {
+            "added": 2048,
+            "after": 53403045,
+            "before": 53402277,
+            "limit": 267011,
+            "removed": 1280
+          },
+          "6": {
+            "added": 2417851639229258349412352,
+            "after": 1205876351759496091800887657234432,
+            "before": 1205876349341644452571629307822080,
+            "limit": 12058763493416444525716293078220,
+            "removed": 0
+          }
+        },
+        "needs_review": false,
+        "private_changed": false
+      },
+      "publication_baseline_exported": false,
+      "scoped_gate": {
+        "candidate_sha256": "3161fdd5eda4d9c2f962a3c8d1bd0c187e5cab9260284a13679b289a9a6d0855",
+        "reference_sha256": "b17fe26ccdcb8d272e6233ec9686a514b309e9d75e75653313a75f329b70fae7",
+        "review_table_sha256": "aeb438051a38f079a8e98c12fe51c8c328767d6671cb887ab8f3a0ea15a75fff",
+        "status": "HOLD",
+        "watched_addresses": {
+          "added": 512,
+          "removed": 1280
+        },
+        "watched_changes": [
+          {
+            "addresses": 256,
+            "cidrs": [
+              "48.103.230.0/24"
+            ],
+            "direction": "added",
+            "prefix": "48.103.230.0/24",
+            "reason": "Selected AS219095 conflicts with validated parallel origin AS401152"
+          },
+          {
+            "addresses": 256,
+            "cidrs": [
+              "201.58.141.0/24"
+            ],
+            "direction": "added",
+            "prefix": "201.58.141.0/24",
+            "reason": "Selected AS219095 conflicts with validated parallel origin AS401152"
+          },
+          {
+            "addresses": 256,
+            "cidrs": [
+              "177.29.253.0/24"
+            ],
+            "direction": "removed",
+            "prefix": "177.29.253.0/24",
+            "reason": "CURATOR-CDN service identity and RU reachability unresolved"
+          },
+          {
+            "addresses": 256,
+            "cidrs": [
+              "177.122.229.0/24"
+            ],
+            "direction": "removed",
+            "prefix": "177.122.229.0/24",
+            "reason": "RU reachability unresolved after origin transition"
+          },
+          {
+            "addresses": 256,
+            "cidrs": [
+              "177.122.241.0/24"
+            ],
+            "direction": "removed",
+            "prefix": "177.122.241.0/24",
+            "reason": "RU reachability unresolved after origin transition"
+          },
+          {
+            "addresses": 256,
+            "cidrs": [
+              "177.166.74.0/24"
+            ],
+            "direction": "removed",
+            "prefix": "177.166.74.0/24",
+            "reason": "RU reachability unresolved after origin transition"
+          },
+          {
+            "addresses": 256,
+            "cidrs": [
+              "177.166.78.0/24"
+            ],
+            "direction": "removed",
+            "prefix": "177.166.78.0/24",
+            "reason": "RU reachability unresolved after origin transition"
+          }
+        ]
+      }
+    },
+    "head": "3ddbc5a28d0afd6dbd867a958838fb385c93a5aa",
+    "lint": {
+      "conclusion": "success",
+      "id": 43834698920
+    },
+    "python_tests": 269,
+    "synthetic_merge_commit": "7ecbda64310cfccbb5d824e18f87e2a577545ebe",
+    "synthetic_merge_parents": [
+      "c0d2a01ba1fb5f5c0e48965d614945348083a900",
+      "3ddbc5a28d0afd6dbd867a958838fb385c93a5aa"
+    ],
+    "v39": {
+      "conclusion": "success",
+      "id": 43834698883
+    },
+    "v41": {
+      "conclusion": "success",
+      "id": 43834698881,
+      "publish": "skipped"
+    },
+    "verified_artifact": {
+      "artifact_id": 14209749013,
+      "manifest_assets_verified": 13,
+      "run_id": 43834698881,
+      "same_as_pr53_artifact_14208608312": {
+        "as-ip-blocks.tar.gz": true,
+        "geoip_PRIVATE.srs": true,
+        "geoip_RU.dat": true,
+        "geoip_RU.srs": true,
+        "geoip_RU_input_provenance.tsv": false,
+        "v41-block-inputs.tar.gz": false,
+        "v41-registry-inputs.tar.gz": false,
+        "v41-upstream-inputs.tar.gz": false
+      },
+      "sha256": {
+        "as-ip-blocks.tar.gz": "84af740b9546cf54448ff0782f5ddc15d458e15b0d2409fcff8de3d5733baa34",
+        "geoip_PRIVATE.srs": "b9ea6381ea61e286298aea76c10cb85a252ff0d20c49d6de3527be1353c107c4",
+        "geoip_RU.dat": "3161fdd5eda4d9c2f962a3c8d1bd0c187e5cab9260284a13679b289a9a6d0855",
+        "geoip_RU.srs": "44aae10d55111f40ec0b1de856716f6ba81992842be245d00ccd9d80aa24089b",
+        "geoip_RU_input_provenance.tsv": "2b1b00884290c2697089a3c1e059273cb699ed022197ebecfb1b61089b117673",
+        "v41-block-inputs.tar.gz": "805765b495018a543421f6dd36850c01b1be7390a94ebf92c5c78f1cbd78cfb2",
+        "v41-registry-inputs.tar.gz": "a3436dd15c5880cc4984d55955382c801296dd47afa7f79d06867d276b67b1d4",
+        "v41-upstream-inputs.tar.gz": "e32ac030224edfd63f588b145cd6ad0784d56b3276e93aee46b81f0a340cc8c5"
+      },
+      "zip_sha256": "2e2f56c07e8c7e549043a29c335d2ed4ec73f7da4c07c555313fce0ae5d4b1e6"
+    }
+  },
+  "draft_54_initial_build": {
+    "archive_member_comparison_with_53": {
+      "archive_members": {
+        "v41-block-inputs.tar.gz": {
+          "changed_member_names": [
+            "registry-inputs.json"
+          ],
+          "same_member_hashes": false
+        },
+        "v41-registry-inputs.tar.gz": {
+          "changed_member_names": [
+            "registry-inputs.json"
+          ],
+          "same_member_hashes": false
+        },
+        "v41-upstream-inputs.tar.gz": {
+          "changed_member_names": [
+            "registry-inputs.json"
+          ],
+          "same_member_hashes": false
+        }
+      },
+      "provenance_deltas": [
+        {
+          "changed_fields": [
+            "FETCH_URL"
+          ],
+          "name": "davoyan-geoip.dat",
+          "new_sha256": "2d91cd562dff5bb33300b3e40bf3f54ea1a8372b1ef0e7e7af8ab6fcec1f7b36",
+          "new_url": "https://raw.githubusercontent.com/Davoyan/xray-routing/5d4f7873ea9d216fa4358997e378a6a6124451c2/release/geoip.dat",
+          "old_sha256": "2d91cd562dff5bb33300b3e40bf3f54ea1a8372b1ef0e7e7af8ab6fcec1f7b36",
+          "old_url": "https://raw.githubusercontent.com/Davoyan/xray-routing/c432e2f1df7ccf116041239153a9de45525eea59/release/geoip.dat"
+        }
+      ]
+    },
+    "head": "d1855d43823824461b78a88811194ab18d1d8d7c",
+    "publish": "skipped",
+    "verified_artifact": {
+      "artifact_id": 14210396293,
+      "manifest_assets_verified": 13,
+      "run_id": 43833891616,
+      "same_as_pr53_artifact_14208608312": {
+        "as-ip-blocks.tar.gz": true,
+        "geoip_PRIVATE.srs": true,
+        "geoip_RU.dat": true,
+        "geoip_RU.srs": true,
+        "geoip_RU_input_provenance.tsv": false,
+        "v41-block-inputs.tar.gz": false,
+        "v41-registry-inputs.tar.gz": false,
+        "v41-upstream-inputs.tar.gz": false
+      },
+      "sha256": {
+        "as-ip-blocks.tar.gz": "84af740b9546cf54448ff0782f5ddc15d458e15b0d2409fcff8de3d5733baa34",
+        "geoip_PRIVATE.srs": "b9ea6381ea61e286298aea76c10cb85a252ff0d20c49d6de3527be1353c107c4",
+        "geoip_RU.dat": "3161fdd5eda4d9c2f962a3c8d1bd0c187e5cab9260284a13679b289a9a6d0855",
+        "geoip_RU.srs": "44aae10d55111f40ec0b1de856716f6ba81992842be245d00ccd9d80aa24089b",
+        "geoip_RU_input_provenance.tsv": "2b1b00884290c2697089a3c1e059273cb699ed022197ebecfb1b61089b117673",
+        "v41-block-inputs.tar.gz": "805765b495018a543421f6dd36850c01b1be7390a94ebf92c5c78f1cbd78cfb2",
+        "v41-registry-inputs.tar.gz": "a3436dd15c5880cc4984d55955382c801296dd47afa7f79d06867d276b67b1d4",
+        "v41-upstream-inputs.tar.gz": "e32ac030224edfd63f588b145cd6ad0784d56b3276e93aee46b81f0a340cc8c5"
+      },
+      "zip_sha256": "b716df38244b3625f6eed78d353eaa76653d21c6b09c41d3a9d814c09d472034"
+    }
+  },
+  "exact_diagnostic_head_readonly_run": {
+    "exit": 1,
+    "report": {
+      "catalog": {
+        "pinned_flat": {
+          "files": {
+            "geoip_PRIVATE.srs": {
+              "bytes": 228,
+              "matches_pinned": true,
+              "sha256": "b9ea6381ea61e286298aea76c10cb85a252ff0d20c49d6de3527be1353c107c4"
+            },
+            "geoip_RU.dat": {
+              "bytes": 512533,
+              "matches_pinned": true,
+              "sha256": "b17fe26ccdcb8d272e6233ec9686a514b309e9d75e75653313a75f329b70fae7"
+            },
+            "geoip_RU.srs": {
+              "bytes": 128392,
+              "matches_pinned": true,
+              "sha256": "c60b8a1de5d4d67478850d7f72b272044f536d7d592591fbbf75ac50129002b1"
+            }
+          },
+          "status": "PASS"
+        },
+        "pinned_tree": {
+          "files": {
+            "geoip_PRIVATE.srs": {
+              "bytes": 228,
+              "matches_pinned": true,
+              "sha256": "b9ea6381ea61e286298aea76c10cb85a252ff0d20c49d6de3527be1353c107c4"
+            },
+            "geoip_RU.dat": {
+              "bytes": 512533,
+              "matches_pinned": true,
+              "sha256": "b17fe26ccdcb8d272e6233ec9686a514b309e9d75e75653313a75f329b70fae7"
+            },
+            "geoip_RU.srs": {
+              "bytes": 128392,
+              "matches_pinned": true,
+              "sha256": "c60b8a1de5d4d67478850d7f72b272044f536d7d592591fbbf75ac50129002b1"
+            }
+          },
+          "status": "PASS"
+        },
+        "rolling_flat": {
+          "files": {
+            "geoip_PRIVATE.srs": {
+              "bytes": 228,
+              "matches_pinned": true,
+              "sha256": "b9ea6381ea61e286298aea76c10cb85a252ff0d20c49d6de3527be1353c107c4"
+            },
+            "geoip_RU.dat": {
+              "bytes": 512067,
+              "matches_pinned": false,
+              "sha256": "5d7e9dd0eb66bd507eb5f695b83441493fb20b2307ef71125de16c8b3809fa7d"
+            },
+            "geoip_RU.srs": {
+              "bytes": 128250,
+              "matches_pinned": false,
+              "sha256": "21c54a6b83c7292ec51c8fff33f19e54cc869750cb6e3cea87d7662df87684e0"
+            }
+          },
+          "status": "MISMATCH"
+        },
+        "rolling_tree": {
+          "files": {
+            "geoip_PRIVATE.srs": {
+              "bytes": 228,
+              "matches_pinned": true,
+              "sha256": "b9ea6381ea61e286298aea76c10cb85a252ff0d20c49d6de3527be1353c107c4"
+            },
+            "geoip_RU.dat": {
+              "bytes": 512067,
+              "matches_pinned": false,
+              "sha256": "5d7e9dd0eb66bd507eb5f695b83441493fb20b2307ef71125de16c8b3809fa7d"
+            },
+            "geoip_RU.srs": {
+              "bytes": 128250,
+              "matches_pinned": false,
+              "sha256": "21c54a6b83c7292ec51c8fff33f19e54cc869750cb6e3cea87d7662df87684e0"
+            }
+          },
+          "status": "MISMATCH"
+        }
+      },
+      "cdn_commit": "8a226b83c82323c869054ca5b299612ad3a91e2d",
+      "delivery": {
+        "cdn.jsdelivr.net": {
+          "files": {
+            "geoip_PRIVATE.srs": {
+              "bytes": 228,
+              "sha256": "b9ea6381ea61e286298aea76c10cb85a252ff0d20c49d6de3527be1353c107c4",
+              "status": "PASS"
+            },
+            "geoip_RU.dat": {
+              "bytes": 512533,
+              "sha256": "b17fe26ccdcb8d272e6233ec9686a514b309e9d75e75653313a75f329b70fae7",
+              "status": "PASS"
+            },
+            "geoip_RU.srs": {
+              "bytes": 128392,
+              "sha256": "c60b8a1de5d4d67478850d7f72b272044f536d7d592591fbbf75ac50129002b1",
+              "status": "PASS"
+            }
+          },
+          "status": "PASS"
+        },
+        "fastly.jsdelivr.net": {
+          "files": {
+            "geoip_PRIVATE.srs": {
+              "bytes": 228,
+              "sha256": "b9ea6381ea61e286298aea76c10cb85a252ff0d20c49d6de3527be1353c107c4",
+              "status": "PASS"
+            },
+            "geoip_RU.dat": {
+              "bytes": 512533,
+              "sha256": "b17fe26ccdcb8d272e6233ec9686a514b309e9d75e75653313a75f329b70fae7",
+              "status": "PASS"
+            },
+            "geoip_RU.srs": {
+              "bytes": 128392,
+              "sha256": "c60b8a1de5d4d67478850d7f72b272044f536d7d592591fbbf75ac50129002b1",
+              "status": "PASS"
+            }
+          },
+          "status": "PASS"
+        },
+        "gcore.jsdelivr.net": {
+          "files": {
+            "geoip_PRIVATE.srs": {
+              "bytes": 228,
+              "sha256": "b9ea6381ea61e286298aea76c10cb85a252ff0d20c49d6de3527be1353c107c4",
+              "status": "PASS"
+            },
+            "geoip_RU.dat": {
+              "bytes": 512533,
+              "sha256": "b17fe26ccdcb8d272e6233ec9686a514b309e9d75e75653313a75f329b70fae7",
+              "status": "PASS"
+            },
+            "geoip_RU.srs": {
+              "bytes": 128392,
+              "sha256": "c60b8a1de5d4d67478850d7f72b272044f536d7d592591fbbf75ac50129002b1",
+              "status": "PASS"
+            }
+          },
+          "status": "PASS"
+        }
+      },
+      "github_release": {
+        "observed": {
+          "geoip_PRIVATE.srs": {
+            "bytes": 228,
+            "sha256": "b9ea6381ea61e286298aea76c10cb85a252ff0d20c49d6de3527be1353c107c4"
+          },
+          "geoip_RU.dat": {
+            "bytes": 512533,
+            "sha256": "b17fe26ccdcb8d272e6233ec9686a514b309e9d75e75653313a75f329b70fae7"
+          },
+          "geoip_RU.srs": {
+            "bytes": 128392,
+            "sha256": "c60b8a1de5d4d67478850d7f72b272044f536d7d592591fbbf75ac50129002b1"
+          }
+        },
+        "status": "PASS"
+      },
+      "pinned_reference": {
+        "files": {
+          "geoip_PRIVATE.srs": {
+            "bytes": 228,
+            "matches_pinned": true,
+            "sha256": "b9ea6381ea61e286298aea76c10cb85a252ff0d20c49d6de3527be1353c107c4"
+          },
+          "geoip_RU.dat": {
+            "bytes": 512533,
+            "matches_pinned": true,
+            "sha256": "b17fe26ccdcb8d272e6233ec9686a514b309e9d75e75653313a75f329b70fae7"
+          },
+          "geoip_RU.srs": {
+            "bytes": 128392,
+            "matches_pinned": true,
+            "sha256": "c60b8a1de5d4d67478850d7f72b272044f536d7d592591fbbf75ac50129002b1"
+          }
+        },
+        "status": "PASS"
+      },
+      "release_commit": "e20cf733a13d92040134895ebd580b7c9060fa3b",
+      "repo": "SpeedeMiner/Geoip-ru-server",
+      "snapshot_tag": "geoip-v41-snapshot-43747743430.1",
+      "status": "FAIL"
+    }
+  },
+  "git": {
+    "branch_at_start": "223ca03fbecfa44530df2bc757a86e3426f20e67",
+    "cdn": "8a226b83c82323c869054ca5b299612ad3a91e2d",
+    "draft_53": "92fa97e13317db01ca43aad31386d091eb249a2a",
+    "draft_54": "3ddbc5a28d0afd6dbd867a958838fb385c93a5aa",
+    "main": "c0d2a01ba1fb5f5c0e48965d614945348083a900",
+    "pr5": "30e797f05ddb8e38ccc2c44938b64846b4fce2fb",
+    "release": "e20cf733a13d92040134895ebd580b7c9060fa3b"
+  },
+  "jsdelivr_client_revalidation_request": [
+    {
+      "asked_client_revalidate": true,
+      "file_sha256": {
+        "geoip_PRIVATE.srs": "b9ea6381ea61e286298aea76c10cb85a252ff0d20c49d6de3527be1353c107c4",
+        "geoip_RU.dat": "5d7e9dd0eb66bd507eb5f695b83441493fb20b2307ef71125de16c8b3809fa7d",
+        "geoip_RU.srs": "21c54a6b83c7292ec51c8fff33f19e54cc869750cb6e3cea87d7662df87684e0"
+      },
+      "headers": {
+        "Age": "1713",
+        "Cache-Control": "public, max-age=31536000, stale-while-revalidate=86400, stale-if-error=86400",
+        "Date": "Mon, 16 Nov 2026 08:55:42 GMT",
+        "ETag": "W/\"226-mENSGtOzsLclbcuWpqjUiiVjaec\"",
+        "X-Cache": "HIT"
+      },
+      "http": 200,
+      "observed_at": "2026-11-16T08:55:42+00:00",
+      "sha256": "a78f36f042b2ea428591663516808c49a3fcd6963075a2fd9c85346b6323324b",
+      "url": "https://data.jsdelivr.com/v1/package/gh/SpeedeMiner/Geoip-ru-server@cdn"
+    },
+    {
+      "asked_client_revalidate": true,
+      "file_sha256": {
+        "geoip_PRIVATE.srs": "b9ea6381ea61e286298aea76c10cb85a252ff0d20c49d6de3527be1353c107c4",
+        "geoip_RU.dat": "5d7e9dd0eb66bd507eb5f695b83441493fb20b2307ef71125de16c8b3809fa7d",
+        "geoip_RU.srs": "21c54a6b83c7292ec51c8fff33f19e54cc869750cb6e3cea87d7662df87684e0"
+      },
+      "headers": {
+        "Age": "1708",
+        "Cache-Control": "public, max-age=31536000, stale-while-revalidate=86400, stale-if-error=86400",
+        "Date": "Mon, 16 Nov 2026 08:55:42 GMT",
+        "ETag": "W/\"1f0-IjnQsfJqKg+hFpB0Ik5+RbbcAqg\"",
+        "X-Cache": "HIT"
+      },
+      "http": 200,
+      "observed_at": "2026-11-16T08:55:42+00:00",
+      "sha256": "a08e289c47fd41df394ddca5dcfc1df1ef264837d26243008191a19e9f90c8ff",
+      "url": "https://data.jsdelivr.com/v1/package/gh/SpeedeMiner/Geoip-ru-server@cdn/flat"
+    },
+    {
+      "asked_client_revalidate": true,
+      "file_sha256": {
+        "geoip_PRIVATE.srs": "b9ea6381ea61e286298aea76c10cb85a252ff0d20c49d6de3527be1353c107c4",
+        "geoip_RU.dat": "5d7e9dd0eb66bd507eb5f695b83441493fb20b2307ef71125de16c8b3809fa7d",
+        "geoip_RU.srs": "21c54a6b83c7292ec51c8fff33f19e54cc869750cb6e3cea87d7662df87684e0"
+      },
+      "headers": {
+        "Age": "847",
+        "Cache-Control": "public, max-age=31536000, stale-while-revalidate=86400, stale-if-error=86400",
+        "Date": "Mon, 16 Nov 2026 08:55:42 GMT",
+        "ETag": "W/\"267-9TRbF+RAX83E/+Q/cQ2m/PqNVfY\"",
+        "X-Cache": "HIT"
+      },
+      "http": 200,
+      "observed_at": "2026-11-16T08:55:42+00:00",
+      "sha256": "b762130f786ac439905e1d53c1e52f0b3df7604ef2136b95b96edecb7168cd1f",
+      "url": "https://data.jsdelivr.com/v1/packages/gh/SpeedeMiner/Geoip-ru-server@cdn?structure=tree"
+    },
+    {
+      "asked_client_revalidate": true,
+      "file_sha256": {
+        "geoip_PRIVATE.srs": "b9ea6381ea61e286298aea76c10cb85a252ff0d20c49d6de3527be1353c107c4",
+        "geoip_RU.dat": "5d7e9dd0eb66bd507eb5f695b83441493fb20b2307ef71125de16c8b3809fa7d",
+        "geoip_RU.srs": "21c54a6b83c7292ec51c8fff33f19e54cc869750cb6e3cea87d7662df87684e0"
+      },
+      "headers": {
+        "Age": "848",
+        "Cache-Control": "public, max-age=31536000, stale-while-revalidate=86400, stale-if-error=86400",
+        "Date": "Mon, 16 Nov 2026 08:55:42 GMT",
+        "ETag": "W/\"231-myidbFwiy6ye6G1H2gPJTFP9hwU\"",
+        "X-Cache": "HIT"
+      },
+      "http": 200,
+      "observed_at": "2026-11-16T08:55:42+00:00",
+      "sha256": "1adce4d4502599eb9abcc7884fe3f8d4b313a3fe14c771e2ccd5207116cbfb62",
+      "url": "https://data.jsdelivr.com/v1/packages/gh/SpeedeMiner/Geoip-ru-server@cdn?structure=flat"
+    }
+  ],
+  "larus_published_geofeed": {
+    "bad_rows": 0,
+    "bytes": 82916,
+    "content_type": "text/csv; charset=UTF-8",
+    "effective_url": "https://larus.net/geofeed-trusted",
+    "etag": null,
+    "http": 200,
+    "last_modified": null,
+    "observed_at": "2026-11-16T08:49:32+00:00",
+    "overlaps": {
+      "177.122.229.0/24": [],
+      "177.122.241.0/24": [],
+      "177.166.74.0/24": [],
+      "177.166.78.0/24": [],
+      "177.29.252.0/24": [],
+      "177.29.253.0/24": []
+    },
+    "sha256": "52416d4921efcb25803faf17375352d5b89ef00ee7515f4543bcc53281412a69",
+    "signature_markers": [],
+    "url": "https://larus.net/geofeed-trusted",
+    "valid_network_rows": 2546
+  },
+  "local_composition": {
+    "clean_merge": true,
+    "existing_cdn_workflow_boundary_check": "PASS",
+    "heads": [
+      "9988a7c8b1377fa9924c561b6e505faf423d8325",
+      "92fa97e13317db01ca43aad31386d091eb249a2a",
+      "3ddbc5a28d0afd6dbd867a958838fb385c93a5aa"
+    ],
+    "python_tests": 321,
+    "tree": "41db6c588c08b1878cbce0730db6c1c1adbe41fa"
+  },
+  "loyalsoldier_extra_country_checks_outside_build": {
+    "de.dat": {
+      "category": "DE",
+      "counts": {
+        "177.122.229.0/24": 0,
+        "177.122.241.0/24": 0,
+        "177.166.74.0/24": 0,
+        "177.166.78.0/24": 0,
+        "177.29.252.0/24": 0,
+        "177.29.253.0/24": 0,
+        "201.58.141.0/24": 0,
+        "213.226.121.0/24": 0,
+        "48.103.230.0/24": 0
+      },
+      "git_oid": "21c46f6b3e71b3472693c5a4c247b92269867b2d",
+      "retrieved_at": "2026-11-16T08:48:02+00:00",
+      "sha256": "1ea931e78b03a33135ecedc9159be3e1fa3b28d01012bd7f5e59024f10176c4b",
+      "source_url": "https://raw.githubusercontent.com/Loyalsoldier/geoip/ec6f8d0f6b5c6c6924d9230f2ed893f69585d38c/dat/de.dat"
+    },
+    "kz.dat": {
+      "category": "KZ",
+      "counts": {
+        "177.122.229.0/24": 0,
+        "177.122.241.0/24": 0,
+        "177.166.74.0/24": 0,
+        "177.166.78.0/24": 0,
+        "177.29.252.0/24": 0,
+        "177.29.253.0/24": 0,
+        "201.58.141.0/24": 0,
+        "213.226.121.0/24": 0,
+        "48.103.230.0/24": 0
+      },
+      "git_oid": "1a1b41d15813f20fc68815831120819f8cfaaba9",
+      "retrieved_at": "2026-11-16T08:48:00+00:00",
+      "sha256": "726db330c157b00d86412ee76f3a49e0d3110995d56e39f142682206593e82af",
+      "source_url": "https://raw.githubusercontent.com/Loyalsoldier/geoip/ec6f8d0f6b5c6c6924d9230f2ed893f69585d38c/dat/kz.dat"
+    },
+    "ua.dat": {
+      "category": "UA",
+      "counts": {
+        "177.122.229.0/24": 0,
+        "177.122.241.0/24": 0,
+        "177.166.74.0/24": 0,
+        "177.166.78.0/24": 0,
+        "177.29.252.0/24": 0,
+        "177.29.253.0/24": 0,
+        "201.58.141.0/24": 0,
+        "213.226.121.0/24": 256,
+        "48.103.230.0/24": 0
+      },
+      "git_oid": "6eb69e07400eff4ac3a2ff69b5ab26770e3259c4",
+      "retrieved_at": "2026-11-16T08:48:00+00:00",
+      "sha256": "94f2aa02e1fa67104337782ec4f1cd38b4c05e815d8d872ba4389544a9264478",
+      "source_url": "https://raw.githubusercontent.com/Loyalsoldier/geoip/ec6f8d0f6b5c6c6924d9230f2ed893f69585d38c/dat/ua.dat"
+    },
+    "us.dat": {
+      "category": "US",
+      "counts": {
+        "177.122.229.0/24": 0,
+        "177.122.241.0/24": 0,
+        "177.166.74.0/24": 0,
+        "177.166.78.0/24": 0,
+        "177.29.252.0/24": 0,
+        "177.29.253.0/24": 0,
+        "201.58.141.0/24": 256,
+        "213.226.121.0/24": 0,
+        "48.103.230.0/24": 256
+      },
+      "git_oid": "d15e317c35e85ec4ebca946c882d432917981190",
+      "retrieved_at": "2026-11-16T08:48:06+00:00",
+      "sha256": "c16b2ee1abf7f4e945ae9b00deedbe36a625230f72aa1e782da97d5c3cb5b9ea",
+      "source_url": "https://raw.githubusercontent.com/Loyalsoldier/geoip/ec6f8d0f6b5c6c6924d9230f2ed893f69585d38c/dat/us.dat"
+    }
+  },
+  "loyalsoldier_full_country_only_not_a_build_input": {
+    "categories": 260,
+    "overlaps_ipv4": {
+      "177.122.229.0/24": {
+        "VG": 256
+      },
+      "177.122.241.0/24": {
+        "VG": 256
+      },
+      "177.166.74.0/24": {
+        "VG": 256
+      },
+      "177.166.78.0/24": {
+        "VG": 256
+      },
+      "177.29.252.0/24": {
+        "VG": 256
+      },
+      "177.29.253.0/24": {
+        "VG": 256
+      },
+      "201.58.141.0/24": {
+        "US": 256
+      },
+      "213.226.121.0/24": {
+        "UA": 256
+      },
+      "48.103.230.0/24": {
+        "US": 256
+      }
+    },
+    "repo_git_blob": "e97bac057af11cd4fdb99bad500638c1ff49d7ff",
+    "sha256": "304ac8a1cbcc8166e4f5a4f32955e4d0fb77a1bd713583e371b30ee27f3659d8",
+    "url": "https://raw.githubusercontent.com/Loyalsoldier/geoip/ec6f8d0f6b5c6c6924d9230f2ed893f69585d38c/geoip.dat"
+  },
+  "not_established": [
+    "the identity of a live service in a removed /24",
+    "residential reachability from RU",
+    "provider root cause for rolling metadata drift"
+  ],
+  "passive_dns": [
+    {
+      "forward_checks": [],
+      "http": 200,
+      "ip": "177.29.253.1",
+      "passive_entry_count": 0,
+      "retrieved_at": "2026-11-16T08:48:19+00:00",
+      "sha256": "d69e09063d2e81e437bed8954869f8ce8fab7ab9b81845f2681634e527fed826",
+      "status": "ok",
+      "url": "https://freeapi.robtex.com/ipquery/177.29.253.1"
+    },
+    {
+      "forward_checks": [],
+      "http": 200,
+      "ip": "177.29.253.2",
+      "passive_entry_count": 0,
+      "retrieved_at": "2026-11-16T08:48:20+00:00",
+      "sha256": "d69e09063d2e81e437bed8954869f8ce8fab7ab9b81845f2681634e527fed826",
+      "status": "ok",
+      "url": "https://freeapi.robtex.com/ipquery/177.29.253.2"
+    },
+    {
+      "forward_checks": [],
+      "http": 200,
+      "ip": "177.122.229.2",
+      "passive_entry_count": 0,
+      "retrieved_at": "2026-11-16T08:48:26+00:00",
+      "sha256": "abfcae11bf207fe0ca46b9e165b13c2d00a6b2a4c1707b06feccb59a9deb11a3",
+      "status": "ok",
+      "url": "https://freeapi.robtex.com/ipquery/177.122.229.2"
+    },
+    {
+      "forward_checks": [],
+      "http": 200,
+      "ip": "177.122.241.1",
+      "passive_entry_count": 0,
+      "retrieved_at": "2026-11-16T08:48:24+00:00",
+      "sha256": "abfcae11bf207fe0ca46b9e165b13c2d00a6b2a4c1707b06feccb59a9deb11a3",
+      "status": "ok",
+      "url": "https://freeapi.robtex.com/ipquery/177.122.241.1"
+    },
+    {
+      "forward_checks": [],
+      "http": 200,
+      "ip": "177.166.74.1",
+      "passive_entry_count": 0,
+      "retrieved_at": "2026-11-16T08:48:33+00:00",
+      "sha256": "589938aadda6de8daecdd33977b00d5e8ac40cd366e4a936cb48aad2337e6148",
+      "status": "ok",
+      "url": "https://freeapi.robtex.com/ipquery/177.166.74.1"
+    },
+    {
+      "forward_checks": [],
+      "http": 200,
+      "ip": "177.166.78.1",
+      "passive_entry_count": 0,
+      "retrieved_at": "2026-11-16T08:48:35+00:00",
+      "sha256": "589938aadda6de8daecdd33977b00d5e8ac40cd366e4a936cb48aad2337e6148",
+      "status": "ok",
+      "url": "https://freeapi.robtex.com/ipquery/177.166.78.1"
+    },
+    {
+      "forward_checks": [],
+      "http": 200,
+      "ip": "108.62.48.16",
+      "passive_entry_count": 0,
+      "retrieved_at": "2026-11-16T08:48:38+00:00",
+      "sha256": "6f447036263751df848a55f5b63e6d44452fbc363ee546374e25ee2cd20026c2",
+      "status": "ok",
+      "url": "https://freeapi.robtex.com/ipquery/108.62.48.16"
+    },
+    {
+      "http": 200,
+      "ip": "8.8.8.8",
+      "passive_entry_count": 100,
+      "retrieved_at": "2026-11-16T08:48:38+00:00",
+      "sha256": "15d1fc52244bfbf556541bca9e63ad501c9f1c7acf57932b098de4ffc09da033",
+      "status": "ok",
+      "url": "https://freeapi.robtex.com/ipquery/8.8.8.8"
+    }
+  ],
+  "prefix_and_cdn_endpoint_observations": [
+    {
+      "headers": {
+        "Date": "Mon, 16 Nov 2026 08:42:18 GMT"
+      },
+      "http": 200,
+      "key": "177.29.253.0/24",
+      "kind": "routing_status",
+      "observation": {
+        "origins": [
+          {
+            "origin": 137410,
+            "route_objects": [
+              "RADB",
+              "RIPE"
+            ]
+          }
+        ],
+        "query_time": "2026-11-16T00:00:00",
+        "visibility": {
+          "v4": {
+            "ris_peers_seeing": 317,
+            "total_ris_peers": 319
+          },
+          "v6": {
+            "ris_peers_seeing": 0,
+            "total_ris_peers": 0
+          }
+        }
+      },
+      "retrieved_at": "2026-11-16T08:42:19+00:00",
+      "sha256": "29deb5772e8cf1ab70eeeb65b63f63b3dbe9755b18500d1d86f4b0efbe830ced",
+      "url": "https://stat.ripe.net/data/routing-status/data.json?resource=177.29.253.0%2F24&timestamp=2026-11-16T08%3A00%3A00Z&min_peers_seeing=1"
+    },
+    {
+      "headers": {
+        "Date": "Mon, 16 Nov 2026 08:42:20 GMT"
+      },
+      "http": 200,
+      "key": "177.29.253.0/24",
+      "kind": "ris_state",
+      "observation": {
+        "effective_timestamp": "2026-11-16T05:59:57",
+        "exact_origin_rows": {
+          "137410": 343
+        },
+        "total_returned_paths": 343
+      },
+      "retrieved_at": "2026-11-16T08:42:20+00:00",
+      "sha256": "8dbad74c637aeaa4111e9e31380056b8835bf79bc8ee6bb858fecbfb0a6764e8",
+      "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=177.29.253.0%2F24&timestamp=2026-11-16T08%3A25%3A00Z"
+    },
+    {
+      "headers": {
+        "Date": "Mon, 16 Nov 2026 08:42:23 GMT"
+      },
+      "http": 200,
+      "key": "177.29.253.0/24",
+      "kind": "routeviews",
+      "observation": {
+        "137410": {
+          "collectors": [
+            "amsix.ams",
+            "ix-br2.gru",
+            "route-views.linx",
+            "route-views.napafrica",
+            "route-views.sydney",
+            "route-views3",
+            "route-views4",
+            "route-views5"
+          ],
+          "first_route_update": "2026-11-15T14:14:45Z",
+          "last_route_update": "2026-11-16T08:32:49Z",
+          "rows": 155,
+          "rows_dated_16_nov_utc": 153,
+          "rpki": "valid"
+        }
+      },
+      "retrieved_at": "2026-11-16T08:42:23+00:00",
+      "sha256": "9e83873b46c1d1c8a2ac03c3b00bfc745bb8792b3db5a4dd207121b471b25a71",
+      "url": "https://api.routeviews.org/prefix/177.29.253.0/24"
+    },
+    {
+      "headers": {
+        "Date": "Mon, 16 Nov 2026 08:42:18 GMT"
+      },
+      "http": 200,
+      "key": "177.29.253.0/24",
+      "kind": "rpki",
+      "observation": {
+        "origin": 137410,
+        "status": "valid",
+        "validator": "routinator"
+      },
+      "retrieved_at": "2026-11-16T08:42:19+00:00",
+      "sha256": "b9d26b36ba6004cdc3e6cd0a6152c116120c7ffce3514ac91f943a35a1397722",
+      "url": "https://stat.ripe.net/data/rpki-validation/data.json?resource=AS137410&prefix=177.29.253.0%2F24"
+    },
+    {
+      "headers": {
+        "Date": "Mon, 16 Nov 2026 08:42:18 GMT"
+      },
+      "http": 200,
+      "key": "177.29.253.0/24",
+      "kind": "rpki",
+      "observation": {
+        "origin": 219306,
+        "status": "valid",
+        "validator": "routinator"
+      },
+      "retrieved_at": "2026-11-16T08:42:19+00:00",
+      "sha256": "af7fb4226c52948a240797cca0970a4a32d694ec45cf24ba16f576605f7d3940",
+      "url": "https://stat.ripe.net/data/rpki-validation/data.json?resource=AS219306&prefix=177.29.253.0%2F24"
+    },
+    {
+      "headers": {
+        "Date": "Mon, 16 Nov 2026 08:42:18 GMT"
+      },
+      "http": 200,
+      "key": "177.122.229.0/24",
+      "kind": "routing_status",
+      "observation": {
+        "origins": [
+          {
+            "origin": 137410,
+            "route_objects": [
+              "RADB",
+              "RIPE"
+            ]
+          }
+        ],
+        "query_time": "2026-11-16T00:00:00",
+        "visibility": {
+          "v4": {
+            "ris_peers_seeing": 317,
+            "total_ris_peers": 319
+          },
+          "v6": {
+            "ris_peers_seeing": 0,
+            "total_ris_peers": 0
+          }
+        }
+      },
+      "retrieved_at": "2026-11-16T08:42:19+00:00",
+      "sha256": "10cf57593114c9ed1e80be9fcd79d21f08210886716f663e7ace16700221b974",
+      "url": "https://stat.ripe.net/data/routing-status/data.json?resource=177.122.229.0%2F24&timestamp=2026-11-16T08%3A00%3A00Z&min_peers_seeing=1"
+    },
+    {
+      "headers": {
+        "Date": "Mon, 16 Nov 2026 08:42:20 GMT"
+      },
+      "http": 200,
+      "key": "177.122.229.0/24",
+      "kind": "ris_state",
+      "observation": {
+        "effective_timestamp": "2026-11-16T05:59:57",
+        "exact_origin_rows": {
+          "137410": 343
+        },
+        "total_returned_paths": 343
+      },
+      "retrieved_at": "2026-11-16T08:42:20+00:00",
+      "sha256": "b456888fa6f4620b42756cf66bb9f9a6a0c875f22fb9367763362a0ce4db9b51",
+      "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=177.122.229.0%2F24&timestamp=2026-11-16T08%3A25%3A00Z"
+    },
+    {
+      "headers": {
+        "Date": "Mon, 16 Nov 2026 08:42:22 GMT"
+      },
+      "http": 200,
+      "key": "177.122.229.0/24",
+      "kind": "routeviews",
+      "observation": {
+        "137410": {
+          "collectors": [
+            "amsix.ams",
+            "ix-br2.gru",
+            "route-views.linx",
+            "route-views.napafrica",
+            "route-views.sydney",
+            "route-views3",
+            "route-views4",
+            "route-views5"
+          ],
+          "first_route_update": "2026-11-15T14:15:04Z",
+          "last_route_update": "2026-11-16T08:28:17Z",
+          "rows": 160,
+          "rows_dated_16_nov_utc": 9,
+          "rpki": "valid"
+        },
+        "17561": {
+          "collectors": [
+            "route-views.sg"
+          ],
+          "first_route_update": "2026-11-07T00:00:09Z",
+          "last_route_update": "2026-11-07T00:00:09Z",
+          "rows": 20,
+          "rows_dated_16_nov_utc": 0,
+          "rpki": "valid"
+        }
+      },
+      "retrieved_at": "2026-11-16T08:42:22+00:00",
+      "sha256": "50df9b7c9e4e0029d8ee9120af0f9e07f5b1969f0f518b1fa4e436f45aae2bfd",
+      "url": "https://api.routeviews.org/prefix/177.122.229.0/24"
+    },
+    {
+      "headers": {
+        "Date": "Mon, 16 Nov 2026 08:42:23 GMT"
+      },
+      "http": 200,
+      "key": "177.122.229.0/24",
+      "kind": "rpki",
+      "observation": {
+        "origin": 137410,
+        "status": "valid",
+        "validator": "routinator"
+      },
+      "retrieved_at": "2026-11-16T08:42:23+00:00",
+      "sha256": "6266ff85e90bb49cad0c02a04ecc0040b80f368fe0f21f17d762752ed28b861f",
+      "url": "https://stat.ripe.net/data/rpki-validation/data.json?resource=AS137410&prefix=177.122.229.0%2F24"
+    },
+    {
+      "headers": {
+        "Date": "Mon, 16 Nov 2026 08:42:23 GMT"
+      },
+      "http": 200,
+      "key": "177.122.229.0/24",
+      "kind": "rpki",
+      "observation": {
+        "origin": 219216,
+        "status": "valid",
+        "validator": "routinator"
+      },
+      "retrieved_at": "2026-11-16T08:42:23+00:00",
+      "sha256": "c291ccee17eeb31a3eb2aa6dcd384e386745f50a51a390bf456f54875ef965f4",
+      "url": "https://stat.ripe.net/data/rpki-validation/data.json?resource=AS219216&prefix=177.122.229.0%2F24"
+    },
+    {
+      "headers": {
+        "Date": "Mon, 16 Nov 2026 08:42:23 GMT"
+      },
+      "http": 200,
+      "key": "177.122.241.0/24",
+      "kind": "routing_status",
+      "observation": {
+        "origins": [
+          {
+            "origin": 137410,
+            "route_objects": [
+              "RADB",
+              "RIPE"
+            ]
+          }
+        ],
+        "query_time": "2026-11-16T00:00:00",
+        "visibility": {
+          "v4": {
+            "ris_peers_seeing": 317,
+            "total_ris_peers": 319
+          },
+          "v6": {
+            "ris_peers_seeing": 0,
+            "total_ris_peers": 0
+          }
+        }
+      },
+      "retrieved_at": "2026-11-16T08:42:23+00:00",
+      "sha256": "299dd3d6552e14b0327141240dbeb59cba5cdd38f72f92f44e7ccd81b87a6ad7",
+      "url": "https://stat.ripe.net/data/routing-status/data.json?resource=177.122.241.0%2F24&timestamp=2026-11-16T08%3A00%3A00Z&min_peers_seeing=1"
+    },
+    {
+      "headers": {
+        "Date": "Mon, 16 Nov 2026 08:42:23 GMT"
+      },
+      "http": 200,
+      "key": "177.122.241.0/24",
+      "kind": "ris_state",
+      "observation": {
+        "effective_timestamp": "2026-11-16T05:59:57",
+        "exact_origin_rows": {
+          "137410": 343
+        },
+        "total_returned_paths": 343
+      },
+      "retrieved_at": "2026-11-16T08:42:23+00:00",
+      "sha256": "835d5fc6594502beabbc8c095bbb57c3d25206f2f310b36e28488be00a5452b3",
+      "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=177.122.241.0%2F24&timestamp=2026-11-16T08%3A25%3A00Z"
+    },
+    {
+      "headers": {
+        "Date": "Mon, 16 Nov 2026 08:42:25 GMT"
+      },
+      "http": 200,
+      "key": "177.122.241.0/24",
+      "kind": "routeviews",
+      "observation": {
+        "137410": {
+          "collectors": [
+            "amsix.ams",
+            "ix-br2.gru",
+            "route-views.linx",
+            "route-views.napafrica",
+            "route-views.sydney",
+            "route-views3",
+            "route-views4",
+            "route-views5"
+          ],
+          "first_route_update": "2026-11-16T07:15:37Z",
+          "last_route_update": "2026-11-16T08:32:49Z",
+          "rows": 155,
+          "rows_dated_16_nov_utc": 155,
+          "rpki": "valid"
+        },
+        "17561": {
+          "collectors": [
+            "route-views.sg"
+          ],
+          "first_route_update": "2026-11-07T00:00:09Z",
+          "last_route_update": "2026-11-07T00:00:09Z",
+          "rows": 20,
+          "rows_dated_16_nov_utc": 0,
+          "rpki": "valid"
+        }
+      },
+      "retrieved_at": "2026-11-16T08:42:26+00:00",
+      "sha256": "03dca31fa63188553a67b17ddd6df36b0fb5abc81a65f5097afc941e0d15b051",
+      "url": "https://api.routeviews.org/prefix/177.122.241.0/24"
+    },
+    {
+      "headers": {
+        "Date": "Mon, 16 Nov 2026 08:42:23 GMT"
+      },
+      "http": 200,
+      "key": "177.122.241.0/24",
+      "kind": "rpki",
+      "observation": {
+        "origin": 137410,
+        "status": "valid",
+        "validator": "routinator"
+      },
+      "retrieved_at": "2026-11-16T08:42:23+00:00",
+      "sha256": "d25e70e54c4462af131a07d410dcd8f576728bdebeccae0cd8be6d2b0de6869c",
+      "url": "https://stat.ripe.net/data/rpki-validation/data.json?resource=AS137410&prefix=177.122.241.0%2F24"
+    },
+    {
+      "headers": {
+        "Date": "Mon, 16 Nov 2026 08:42:23 GMT"
+      },
+      "http": 200,
+      "key": "177.122.241.0/24",
+      "kind": "rpki",
+      "observation": {
+        "origin": 218568,
+        "status": "valid",
+        "validator": "routinator"
+      },
+      "retrieved_at": "2026-11-16T08:42:23+00:00",
+      "sha256": "43e2c772fee8a852990b996ca6921996ff319b85f903cbfd991a19471ec6158f",
+      "url": "https://stat.ripe.net/data/rpki-validation/data.json?resource=AS218568&prefix=177.122.241.0%2F24"
+    },
+    {
+      "headers": {
+        "Date": "Mon, 16 Nov 2026 08:42:27 GMT"
+      },
+      "http": 200,
+      "key": "177.166.74.0/24",
+      "kind": "routing_status",
+      "observation": {
+        "origins": [
+          {
+            "origin": 137410,
+            "route_objects": [
+              "RADB",
+              "RIPE"
+            ]
+          }
+        ],
+        "query_time": "2026-11-16T00:00:00",
+        "visibility": {
+          "v4": {
+            "ris_peers_seeing": 316,
+            "total_ris_peers": 319
+          },
+          "v6": {
+            "ris_peers_seeing": 0,
+            "total_ris_peers": 0
+          }
+        }
+      },
+      "retrieved_at": "2026-11-16T08:42:27+00:00",
+      "sha256": "c31907158b17931b0ddeeb29cbc52268c73b9cd804fbcd69f96554812d31bb42",
+      "url": "https://stat.ripe.net/data/routing-status/data.json?resource=177.166.74.0%2F24&timestamp=2026-11-16T08%3A00%3A00Z&min_peers_seeing=1"
+    },
+    {
+      "headers": {
+        "Date": "Mon, 16 Nov 2026 08:42:27 GMT"
+      },
+      "http": 200,
+      "key": "177.166.74.0/24",
+      "kind": "ris_state",
+      "observation": {
+        "effective_timestamp": "2026-11-16T05:59:57",
+        "exact_origin_rows": {
+          "137410": 327
+        },
+        "total_returned_paths": 327
+      },
+      "retrieved_at": "2026-11-16T08:42:27+00:00",
+      "sha256": "b94b3f3ea19755a89b3a2f502861abab23209527f1e216cb97ca3aa21895957d",
+      "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=177.166.74.0%2F24&timestamp=2026-11-16T08%3A25%3A00Z"
+    },
+    {
+      "headers": {
+        "Date": "Mon, 16 Nov 2026 08:42:29 GMT"
+      },
+      "http": 200,
+      "key": "177.166.74.0/24",
+      "kind": "routeviews",
+      "observation": {
+        "137410": {
+          "collectors": [
+            "amsix.ams",
+            "ix-br2.gru",
+            "route-views.linx",
+            "route-views.napafrica",
+            "route-views.sydney",
+            "route-views3",
+            "route-views4",
+            "route-views5"
+          ],
+          "first_route_update": "2026-11-15T18:03:55Z",
+          "last_route_update": "2026-11-16T08:32:53Z",
+          "rows": 155,
+          "rows_dated_16_nov_utc": 24,
+          "rpki": "valid"
+        },
+        "17561": {
+          "collectors": [
+            "route-views.sg"
+          ],
+          "first_route_update": "2026-11-07T00:00:09Z",
+          "last_route_update": "2026-11-07T00:00:09Z",
+          "rows": 20,
+          "rows_dated_16_nov_utc": 0,
+          "rpki": "valid"
+        }
+      },
+      "retrieved_at": "2026-11-16T08:42:29+00:00",
+      "sha256": "102e00c3447178a6ff4408a1e77d74c792369865e7cae516295985ff1f92e882",
+      "url": "https://api.routeviews.org/prefix/177.166.74.0/24"
+    },
+    {
+      "headers": {
+        "Date": "Mon, 16 Nov 2026 08:42:27 GMT"
+      },
+      "http": 200,
+      "key": "177.166.74.0/24",
+      "kind": "rpki",
+      "observation": {
+        "origin": 137410,
+        "status": "valid",
+        "validator": "routinator"
+      },
+      "retrieved_at": "2026-11-16T08:42:27+00:00",
+      "sha256": "2e6c37e3534f45c54cd8a31468c5676459593a741d39ad73009c123020eda876",
+      "url": "https://stat.ripe.net/data/rpki-validation/data.json?resource=AS137410&prefix=177.166.74.0%2F24"
+    },
+    {
+      "headers": {
+        "Date": "Mon, 16 Nov 2026 08:42:27 GMT"
+      },
+      "http": 200,
+      "key": "177.166.74.0/24",
+      "kind": "rpki",
+      "observation": {
+        "origin": 219262,
+        "status": "valid",
+        "validator": "routinator"
+      },
+      "retrieved_at": "2026-11-16T08:42:27+00:00",
+      "sha256": "185e4b2f9141bcbeab7dbfd29f0c4ffbb42ea87a634623a62b557838f6bd9f26",
+      "url": "https://stat.ripe.net/data/rpki-validation/data.json?resource=AS219262&prefix=177.166.74.0%2F24"
+    },
+    {
+      "headers": {
+        "Date": "Mon, 16 Nov 2026 08:42:27 GMT"
+      },
+      "http": 200,
+      "key": "177.166.78.0/24",
+      "kind": "routing_status",
+      "observation": {
+        "origins": [
+          {
+            "origin": 137410,
+            "route_objects": [
+              "RADB",
+              "RIPE"
+            ]
+          }
+        ],
+        "query_time": "2026-11-16T00:00:00",
+        "visibility": {
+          "v4": {
+            "ris_peers_seeing": 317,
+            "total_ris_peers": 319
+          },
+          "v6": {
+            "ris_peers_seeing": 0,
+            "total_ris_peers": 0
+          }
+        }
+      },
+      "retrieved_at": "2026-11-16T08:42:27+00:00",
+      "sha256": "09850de4d5ba60d0cc56de1adcbf1a65f6b794e7014fd417250e9bd84ad4023f",
+      "url": "https://stat.ripe.net/data/routing-status/data.json?resource=177.166.78.0%2F24&timestamp=2026-11-16T08%3A00%3A00Z&min_peers_seeing=1"
+    },
+    {
+      "headers": {
+        "Date": "Mon, 16 Nov 2026 08:42:27 GMT"
+      },
+      "http": 200,
+      "key": "177.166.78.0/24",
+      "kind": "ris_state",
+      "observation": {
+        "effective_timestamp": "2026-11-16T05:59:57",
+        "exact_origin_rows": {
+          "137410": 343
+        },
+        "total_returned_paths": 343
+      },
+      "retrieved_at": "2026-11-16T08:42:27+00:00",
+      "sha256": "f2bea5a7da3dd5c4ad8b9b154196acab36062e05cbe8bc934c5b2014857951fd",
+      "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=177.166.78.0%2F24&timestamp=2026-11-16T08%3A25%3A00Z"
+    },
+    {
+      "headers": {
+        "Date": "Mon, 16 Nov 2026 08:42:33 GMT"
+      },
+      "http": 200,
+      "key": "177.166.78.0/24",
+      "kind": "routeviews",
+      "observation": {
+        "137410": {
+          "collectors": [
+            "amsix.ams",
+            "ix-br2.gru",
+            "route-views.linx",
+            "route-views.napafrica",
+            "route-views.sydney",
+            "route-views3",
+            "route-views4",
+            "route-views5"
+          ],
+          "first_route_update": "2026-11-16T07:15:00Z",
+          "last_route_update": "2026-11-16T08:32:49Z",
+          "rows": 155,
+          "rows_dated_16_nov_utc": 155,
+          "rpki": "valid"
+        },
+        "17561": {
+          "collectors": [
+            "route-views.sg"
+          ],
+          "first_route_update": "2026-11-07T00:00:09Z",
+          "last_route_update": "2026-11-07T00:00:09Z",
+          "rows": 20,
+          "rows_dated_16_nov_utc": 0,
+          "rpki": "valid"
+        }
+      },
+      "retrieved_at": "2026-11-16T08:42:33+00:00",
+      "sha256": "09500dd71e2cf4fd64a49e199091f77d8fe355dc1fdbddfa8e5414077a2c7b36",
+      "url": "https://api.routeviews.org/prefix/177.166.78.0/24"
+    },
+    {
+      "headers": {
+        "Date": "Mon, 16 Nov 2026 08:42:31 GMT"
+      },
+      "http": 200,
+      "key": "177.166.78.0/24",
+      "kind": "rpki",
+      "observation": {
+        "origin": 137410,
+        "status": "valid",
+        "validator": "routinator"
+      },
+      "retrieved_at": "2026-11-16T08:42:31+00:00",
+      "sha256": "3a00d1404dd1a6687d9e44ea6aae876bcfe22a93f2a0ecf016e6fce0f64272ca",
+      "url": "https://stat.ripe.net/data/rpki-validation/data.json?resource=AS137410&prefix=177.166.78.0%2F24"
+    },
+    {
+      "headers": {
+        "Date": "Mon, 16 Nov 2026 08:42:31 GMT"
+      },
+      "http": 200,
+      "key": "177.166.78.0/24",
+      "kind": "rpki",
+      "observation": {
+        "origin": 219238,
+        "status": "valid",
+        "validator": "routinator"
+      },
+      "retrieved_at": "2026-11-16T08:42:31+00:00",
+      "sha256": "ad000b0f179593f3ba33e7e8034b2bcf8b5f95fd6af728b2e213b212270bb43a",
+      "url": "https://stat.ripe.net/data/rpki-validation/data.json?resource=AS219238&prefix=177.166.78.0%2F24"
+    },
+    {
+      "headers": {
+        "Date": "Mon, 16 Nov 2026 08:42:31 GMT"
+      },
+      "http": 200,
+      "key": "177.29.252.0/24",
+      "kind": "routing_status",
+      "observation": {
+        "origins": [
+          {
+            "origin": 219305,
+            "route_objects": [
+              "RADB",
+              "RIPE"
+            ]
+          }
+        ],
+        "query_time": "2026-11-16T00:00:00",
+        "visibility": {
+          "v4": {
+            "ris_peers_seeing": 318,
+            "total_ris_peers": 319
+          },
+          "v6": {
+            "ris_peers_seeing": 0,
+            "total_ris_peers": 0
+          }
+        }
+      },
+      "retrieved_at": "2026-11-16T08:42:31+00:00",
+      "sha256": "72b3238cb6c600b5aceb08a267afb2a70038a42f463e65b8b59169987b9194fc",
+      "url": "https://stat.ripe.net/data/routing-status/data.json?resource=177.29.252.0%2F24&timestamp=2026-11-16T08%3A00%3A00Z&min_peers_seeing=1"
+    },
+    {
+      "headers": {
+        "Date": "Mon, 16 Nov 2026 08:42:31 GMT"
+      },
+      "http": 200,
+      "key": "177.29.252.0/24",
+      "kind": "ris_state",
+      "observation": {
+        "effective_timestamp": "2026-11-16T05:59:57",
+        "exact_origin_rows": {
+          "219305": 324
+        },
+        "total_returned_paths": 324
+      },
+      "retrieved_at": "2026-11-16T08:42:31+00:00",
+      "sha256": "2ce3b15abf6197458644797e128f8aa4493f3cfb5dbc54e2dbe1836e8e0e2d70",
+      "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=177.29.252.0%2F24&timestamp=2026-11-16T08%3A25%3A00Z"
+    },
+    {
+      "headers": {
+        "Date": "Mon, 16 Nov 2026 08:42:33 GMT"
+      },
+      "http": 200,
+      "key": "177.29.252.0/24",
+      "kind": "routeviews",
+      "observation": {
+        "219305": {
+          "collectors": [
+            "amsix.ams",
+            "ix-br2.gru",
+            "route-views.linx",
+            "route-views.napafrica",
+            "route-views.sydney",
+            "route-views3",
+            "route-views4",
+            "route-views5"
+          ],
+          "first_route_update": "2026-11-14T16:21:39Z",
+          "last_route_update": "2026-11-16T08:29:37Z",
+          "rows": 148,
+          "rows_dated_16_nov_utc": 8,
+          "rpki": "valid"
+        }
+      },
+      "retrieved_at": "2026-11-16T08:42:33+00:00",
+      "sha256": "3e8fb56f7b7ee077039d2c5c25ec1e35068c64cda839f18175b49c8fad7ba411",
+      "url": "https://api.routeviews.org/prefix/177.29.252.0/24"
+    },
+    {
+      "headers": {
+        "Date": "Mon, 16 Nov 2026 08:42:31 GMT"
+      },
+      "http": 200,
+      "key": "177.29.252.0/24",
+      "kind": "rpki",
+      "observation": {
+        "origin": 219305,
+        "status": "valid",
+        "validator": "routinator"
+      },
+      "retrieved_at": "2026-11-16T08:42:31+00:00",
+      "sha256": "4a19c6e41280c4e3bdd0ca49b63763eb02db33b7a6827951ab3eabefdbbe5f05",
+      "url": "https://stat.ripe.net/data/rpki-validation/data.json?resource=AS219305&prefix=177.29.252.0%2F24"
+    },
+    {
+      "headers": {
+        "Date": "Mon, 16 Nov 2026 08:42:31 GMT"
+      },
+      "http": 200,
+      "key": "177.29.252.0/24",
+      "kind": "rpki",
+      "observation": {
+        "origin": 137410,
+        "status": "invalid_asn",
+        "validator": "routinator"
+      },
+      "retrieved_at": "2026-11-16T08:42:31+00:00",
+      "sha256": "5eb98560d0433c9cd13a5862bf60574081827840d53b5e8e129366bc61e3f25c",
+      "url": "https://stat.ripe.net/data/rpki-validation/data.json?resource=AS137410&prefix=177.29.252.0%2F24"
+    },
+    {
+      "headers": {
+        "Date": "Mon, 16 Nov 2026 08:42:36 GMT"
+      },
+      "http": 200,
+      "key": "48.103.230.0/24",
+      "kind": "routing_status",
+      "observation": {
+        "origins": [
+          {
+            "origin": 401152,
+            "route_objects": []
+          },
+          {
+            "origin": 219095,
+            "route_objects": [
+              "RIPE"
+            ]
+          }
+        ],
+        "query_time": "2026-11-16T00:00:00",
+        "visibility": {
+          "v4": {
+            "ris_peers_seeing": 319,
+            "total_ris_peers": 319
+          },
+          "v6": {
+            "ris_peers_seeing": 0,
+            "total_ris_peers": 0
+          }
+        }
+      },
+      "retrieved_at": "2026-11-16T08:42:36+00:00",
+      "sha256": "ce8af47a8853d621dc202c9d09b32b0a85789bb93911024ccdcb79539b0f9860",
+      "url": "https://stat.ripe.net/data/routing-status/data.json?resource=48.103.230.0%2F24&timestamp=2026-11-16T08%3A00%3A00Z&min_peers_seeing=1"
+    },
+    {
+      "headers": {
+        "Date": "Mon, 16 Nov 2026 08:42:36 GMT"
+      },
+      "http": 200,
+      "key": "48.103.230.0/24",
+      "kind": "ris_state",
+      "observation": {
+        "effective_timestamp": "2026-11-16T05:59:57",
+        "exact_origin_rows": {
+          "219095": 8,
+          "401152": 323
+        },
+        "total_returned_paths": 331
+      },
+      "retrieved_at": "2026-11-16T08:42:36+00:00",
+      "sha256": "9bfa88000ee764c0f8f9baabd130d9de2779b414d89232c14c6ab2f078ccb14a",
+      "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=48.103.230.0%2F24&timestamp=2026-11-16T08%3A25%3A00Z"
+    },
+    {
+      "headers": {
+        "Date": "Mon, 16 Nov 2026 08:42:36 GMT"
+      },
+      "http": 200,
+      "key": "48.103.230.0/24",
+      "kind": "routeviews",
+      "observation": {
+        "219095": {
+          "collectors": [
+            "amsix.ams",
+            "route-views.linx"
+          ],
+          "first_route_update": "2026-11-15T21:10:35Z",
+          "last_route_update": "2026-11-15T21:10:35Z",
+          "rows": 2,
+          "rows_dated_16_nov_utc": 0,
+          "rpki": "invalid"
+        },
+        "401152": {
+          "collectors": [
+            "amsix.ams",
+            "ix-br2.gru",
+            "route-views.linx",
+            "route-views.napafrica",
+            "route-views.sg",
+            "route-views.sydney",
+            "route-views3",
+            "route-views4",
+            "route-views5"
+          ],
+          "first_route_update": "2026-11-07T00:00:02Z",
+          "last_route_update": "2026-11-16T08:27:48Z",
+          "rows": 173,
+          "rows_dated_16_nov_utc": 7,
+          "rpki": "valid"
+        }
+      },
+      "retrieved_at": "2026-11-16T08:42:37+00:00",
+      "sha256": "d6baf8c6e291c359ec3ac16d8d0d03cd7d85be3d7c63239537b4171629a9bbeb",
+      "url": "https://api.routeviews.org/prefix/48.103.230.0/24"
+    },
+    {
+      "headers": {
+        "Date": "Mon, 16 Nov 2026 08:42:36 GMT"
+      },
+      "http": 200,
+      "key": "48.103.230.0/24",
+      "kind": "rpki",
+      "observation": {
+        "origin": 401152,
+        "status": "valid",
+        "validator": "routinator"
+      },
+      "retrieved_at": "2026-11-16T08:42:36+00:00",
+      "sha256": "d4876758adac651e246acf6fea1fb0de83fce233947fb2b3847c8ce9d7973197",
+      "url": "https://stat.ripe.net/data/rpki-validation/data.json?resource=AS401152&prefix=48.103.230.0%2F24"
+    },
+    {
+      "headers": {
+        "Date": "Mon, 16 Nov 2026 08:42:35 GMT"
+      },
+      "http": 200,
+      "key": "48.103.230.0/24",
+      "kind": "rpki",
+      "observation": {
+        "origin": 219095,
+        "status": "invalid_asn",
+        "validator": "routinator"
+      },
+      "retrieved_at": "2026-11-16T08:42:36+00:00",
+      "sha256": "0277be2e3a12279e4ad4996b4c5276393cfad71c6d9c7b1b39b1a411ebf3c2b3",
+      "url": "https://stat.ripe.net/data/rpki-validation/data.json?resource=AS219095&prefix=48.103.230.0%2F24"
+    },
+    {
+      "headers": {
+        "Date": "Mon, 16 Nov 2026 08:42:36 GMT"
+      },
+      "http": 200,
+      "key": "201.58.141.0/24",
+      "kind": "routing_status",
+      "observation": {
+        "origins": [
+          {
+            "origin": 401152,
+            "route_objects": []
+          },
+          {
+            "origin": 219095,
+            "route_objects": [
+              "RIPE"
+            ]
+          }
+        ],
+        "query_time": "2026-11-16T00:00:00",
+        "visibility": {
+          "v4": {
+            "ris_peers_seeing": 316,
+            "total_ris_peers": 319
+          },
+          "v6": {
+            "ris_peers_seeing": 0,
+            "total_ris_peers": 0
+          }
+        }
+      },
+      "retrieved_at": "2026-11-16T08:42:36+00:00",
+      "sha256": "5d9c9e022598ee4088c8927145c6e293d367597dce78618b5c6f78737919c741",
+      "url": "https://stat.ripe.net/data/routing-status/data.json?resource=201.58.141.0%2F24&timestamp=2026-11-16T08%3A00%3A00Z&min_peers_seeing=1"
+    },
+    {
+      "headers": {
+        "Date": "Mon, 16 Nov 2026 08:42:36 GMT"
+      },
+      "http": 200,
+      "key": "201.58.141.0/24",
+      "kind": "ris_state",
+      "observation": {
+        "effective_timestamp": "2026-11-16T05:59:57",
+        "exact_origin_rows": {
+          "219095": 8,
+          "401152": 320
+        },
+        "total_returned_paths": 328
+      },
+      "retrieved_at": "2026-11-16T08:42:36+00:00",
+      "sha256": "e8f3052be585b928072166fc51e27a48d2c952a2f941d314378987fb8d10a198",
+      "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=201.58.141.0%2F24&timestamp=2026-11-16T08%3A25%3A00Z"
+    },
+    {
+      "headers": {
+        "Date": "Mon, 16 Nov 2026 08:42:39 GMT"
+      },
+      "http": 200,
+      "key": "201.58.141.0/24",
+      "kind": "routeviews",
+      "observation": {
+        "214647": {
+          "collectors": [
+            "route-views.sg"
+          ],
+          "first_route_update": "2026-11-07T00:00:13Z",
+          "last_route_update": "2026-11-07T00:00:13Z",
+          "rows": 21,
+          "rows_dated_16_nov_utc": 0,
+          "rpki": "invalid"
+        },
+        "219095": {
+          "collectors": [
+            "amsix.ams",
+            "route-views.linx"
+          ],
+          "first_route_update": "2026-11-15T21:10:35Z",
+          "last_route_update": "2026-11-15T21:10:35Z",
+          "rows": 2,
+          "rows_dated_16_nov_utc": 0,
+          "rpki": "invalid"
+        },
+        "401152": {
+          "collectors": [
+            "amsix.ams",
+            "ix-br2.gru",
+            "route-views.linx",
+            "route-views.napafrica",
+            "route-views.sydney",
+            "route-views3",
+            "route-views4",
+            "route-views5"
+          ],
+          "first_route_update": "2026-11-14T06:00:06Z",
+          "last_route_update": "2026-11-16T08:30:33Z",
+          "rows": 149,
+          "rows_dated_16_nov_utc": 6,
+          "rpki": "valid"
+        }
+      },
+      "retrieved_at": "2026-11-16T08:42:39+00:00",
+      "sha256": "65d42ce689c045c8b2d546223c847e3257eecab30691322c1da7a7595becd24f",
+      "url": "https://api.routeviews.org/prefix/201.58.141.0/24"
+    },
+    {
+      "headers": {
+        "Date": "Mon, 16 Nov 2026 08:42:40 GMT"
+      },
+      "http": 200,
+      "key": "201.58.141.0/24",
+      "kind": "rpki",
+      "observation": {
+        "origin": 401152,
+        "status": "valid",
+        "validator": "routinator"
+      },
+      "retrieved_at": "2026-11-16T08:42:40+00:00",
+      "sha256": "b3ca3ab0fdd6fa515c0677aead161286ea5b15dd6b0dc3380837d5d1119a1871",
+      "url": "https://stat.ripe.net/data/rpki-validation/data.json?resource=AS401152&prefix=201.58.141.0%2F24"
+    },
+    {
+      "headers": {
+        "Date": "Mon, 16 Nov 2026 08:42:40 GMT"
+      },
+      "http": 200,
+      "key": "201.58.141.0/24",
+      "kind": "rpki",
+      "observation": {
+        "origin": 219095,
+        "status": "invalid_asn",
+        "validator": "routinator"
+      },
+      "retrieved_at": "2026-11-16T08:42:40+00:00",
+      "sha256": "01ae805de8643e9593f8221e21d4c6d9b884542935c24d8e2dc4578749874d14",
+      "url": "https://stat.ripe.net/data/rpki-validation/data.json?resource=AS219095&prefix=201.58.141.0%2F24"
+    },
+    {
+      "headers": {
+        "Date": "Mon, 16 Nov 2026 08:42:40 GMT"
+      },
+      "http": 200,
+      "key": "213.226.121.0/24",
+      "kind": "routing_status",
+      "observation": {
+        "origins": [
+          {
+            "origin": 62146,
+            "route_objects": [
+              "RIPE"
+            ]
+          },
+          {
+            "origin": 44790,
+            "route_objects": [
+              "RIPE"
+            ]
+          }
+        ],
+        "query_time": "2026-11-16T00:00:00",
+        "visibility": {
+          "v4": {
+            "ris_peers_seeing": 319,
+            "total_ris_peers": 319
+          },
+          "v6": {
+            "ris_peers_seeing": 0,
+            "total_ris_peers": 0
+          }
+        }
+      },
+      "retrieved_at": "2026-11-16T08:42:40+00:00",
+      "sha256": "191024c016320a8fb7424e93e87d6661fa72e2fef727fe985085f21f572f1c34",
+      "url": "https://stat.ripe.net/data/routing-status/data.json?resource=213.226.121.0%2F24&timestamp=2026-11-16T08%3A00%3A00Z&min_peers_seeing=1"
+    },
+    {
+      "headers": {
+        "Date": "Mon, 16 Nov 2026 08:42:40 GMT"
+      },
+      "http": 200,
+      "key": "213.226.121.0/24",
+      "kind": "ris_state",
+      "observation": {
+        "effective_timestamp": "2026-11-16T05:59:57",
+        "exact_origin_rows": {
+          "44790": 76,
+          "62146": 266
+        },
+        "total_returned_paths": 342
+      },
+      "retrieved_at": "2026-11-16T08:42:40+00:00",
+      "sha256": "f5071d91023d1c1c084165f1e837bf3d69cc69d04418aa23e1b41fa1cf0d101b",
+      "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=213.226.121.0%2F24&timestamp=2026-11-16T08%3A25%3A00Z"
+    },
+    {
+      "headers": {
+        "Date": "Mon, 16 Nov 2026 08:42:39 GMT"
+      },
+      "http": 200,
+      "key": "213.226.121.0/24",
+      "kind": "routeviews",
+      "observation": {
+        "44790": {
+          "collectors": [
+            "amsix.ams",
+            "ix-br2.gru",
+            "route-views.linx",
+            "route-views.napafrica",
+            "route-views.sg",
+            "route-views.sydney",
+            "route-views3",
+            "route-views4",
+            "route-views5"
+          ],
+          "first_route_update": "2026-11-07T00:00:14Z",
+          "last_route_update": "2026-11-16T03:32:50Z",
+          "rows": 47,
+          "rows_dated_16_nov_utc": 1,
+          "rpki": "not-found"
+        },
+        "62146": {
+          "collectors": [
+            "amsix.ams",
+            "ix-br2.gru",
+            "route-views.linx",
+            "route-views.napafrica",
+            "route-views.sg",
+            "route-views.sydney",
+            "route-views3",
+            "route-views4",
+            "route-views5"
+          ],
+          "first_route_update": "2026-11-07T00:00:14Z",
+          "last_route_update": "2026-11-16T08:30:40Z",
+          "rows": 150,
+          "rows_dated_16_nov_utc": 12,
+          "rpki": "not-found"
+        }
+      },
+      "retrieved_at": "2026-11-16T08:42:40+00:00",
+      "sha256": "25244c349fcb743b18d1cb533e5686358137ded63810b5bbf1f93139c2ad5a9c",
+      "url": "https://api.routeviews.org/prefix/213.226.121.0/24"
+    },
+    {
+      "headers": {
+        "Date": "Mon, 16 Nov 2026 08:42:40 GMT"
+      },
+      "http": 200,
+      "key": "213.226.121.0/24",
+      "kind": "rpki",
+      "observation": {
+        "origin": 44790,
+        "status": "unknown",
+        "validator": "routinator"
+      },
+      "retrieved_at": "2026-11-16T08:42:40+00:00",
+      "sha256": "844afbb972b7e7bd9468d1f57f740477d34965fe53058cbf866ab3a392fdc246",
+      "url": "https://stat.ripe.net/data/rpki-validation/data.json?resource=AS44790&prefix=213.226.121.0%2F24"
+    },
+    {
+      "headers": {
+        "Date": "Mon, 16 Nov 2026 08:42:40 GMT"
+      },
+      "http": 200,
+      "key": "213.226.121.0/24",
+      "kind": "rpki",
+      "observation": {
+        "origin": 62146,
+        "status": "unknown",
+        "validator": "routinator"
+      },
+      "retrieved_at": "2026-11-16T08:42:40+00:00",
+      "sha256": "f7a140cb102bfc4dbc4801a670f6f6eb68bedc78962f94545892ff21d223f602",
+      "url": "https://stat.ripe.net/data/rpki-validation/data.json?resource=AS62146&prefix=213.226.121.0%2F24"
+    },
+    {
+      "headers": {
+        "Age": "934",
+        "Cache-Control": "public, max-age=31536000, stale-while-revalidate=86400, stale-if-error=86400",
+        "Date": "Mon, 16 Nov 2026 08:42:43 GMT",
+        "ETag": "W/\"226-mENSGtOzsLclbcuWpqjUiiVjaec\"",
+        "X-Cache": "HIT"
+      },
+      "http": 200,
+      "key": "cdn",
+      "kind": "legacy_tree",
+      "observation": {
+        "geoip_PRIVATE.srs": {
+          "bytes": 228,
+          "sha256": "b9ea6381ea61e286298aea76c10cb85a252ff0d20c49d6de3527be1353c107c4"
+        },
+        "geoip_RU.dat": {
+          "bytes": 512067,
+          "sha256": "5d7e9dd0eb66bd507eb5f695b83441493fb20b2307ef71125de16c8b3809fa7d"
+        },
+        "geoip_RU.srs": {
+          "bytes": 128250,
+          "sha256": "21c54a6b83c7292ec51c8fff33f19e54cc869750cb6e3cea87d7662df87684e0"
+        }
+      },
+      "retrieved_at": "2026-11-16T08:42:43+00:00",
+      "sha256": "a78f36f042b2ea428591663516808c49a3fcd6963075a2fd9c85346b6323324b",
+      "url": "https://data.jsdelivr.com/v1/package/gh/SpeedeMiner/Geoip-ru-server@cdn"
+    },
+    {
+      "headers": {
+        "Age": "929",
+        "Cache-Control": "public, max-age=31536000, stale-while-revalidate=86400, stale-if-error=86400",
+        "Date": "Mon, 16 Nov 2026 08:42:43 GMT",
+        "ETag": "W/\"1f0-IjnQsfJqKg+hFpB0Ik5+RbbcAqg\"",
+        "X-Cache": "HIT"
+      },
+      "http": 200,
+      "key": "cdn",
+      "kind": "legacy_flat",
+      "observation": {
+        "geoip_PRIVATE.srs": {
+          "bytes": 228,
+          "sha256": "b9ea6381ea61e286298aea76c10cb85a252ff0d20c49d6de3527be1353c107c4"
+        },
+        "geoip_RU.dat": {
+          "bytes": 512067,
+          "sha256": "5d7e9dd0eb66bd507eb5f695b83441493fb20b2307ef71125de16c8b3809fa7d"
+        },
+        "geoip_RU.srs": {
+          "bytes": 128250,
+          "sha256": "21c54a6b83c7292ec51c8fff33f19e54cc869750cb6e3cea87d7662df87684e0"
+        }
+      },
+      "retrieved_at": "2026-11-16T08:42:43+00:00",
+      "sha256": "a08e289c47fd41df394ddca5dcfc1df1ef264837d26243008191a19e9f90c8ff",
+      "url": "https://data.jsdelivr.com/v1/package/gh/SpeedeMiner/Geoip-ru-server@cdn/flat"
+    },
+    {
+      "headers": {
+        "Age": "68",
+        "Cache-Control": "public, max-age=31536000, stale-while-revalidate=86400, stale-if-error=86400",
+        "Date": "Mon, 16 Nov 2026 08:42:43 GMT",
+        "ETag": "W/\"267-9TRbF+RAX83E/+Q/cQ2m/PqNVfY\"",
+        "X-Cache": "HIT"
+      },
+      "http": 200,
+      "key": "cdn",
+      "kind": "current_tree",
+      "observation": {
+        "geoip_PRIVATE.srs": {
+          "bytes": 228,
+          "sha256": "b9ea6381ea61e286298aea76c10cb85a252ff0d20c49d6de3527be1353c107c4"
+        },
+        "geoip_RU.dat": {
+          "bytes": 512067,
+          "sha256": "5d7e9dd0eb66bd507eb5f695b83441493fb20b2307ef71125de16c8b3809fa7d"
+        },
+        "geoip_RU.srs": {
+          "bytes": 128250,
+          "sha256": "21c54a6b83c7292ec51c8fff33f19e54cc869750cb6e3cea87d7662df87684e0"
+        }
+      },
+      "retrieved_at": "2026-11-16T08:42:43+00:00",
+      "sha256": "b762130f786ac439905e1d53c1e52f0b3df7604ef2136b95b96edecb7168cd1f",
+      "url": "https://data.jsdelivr.com/v1/packages/gh/SpeedeMiner/Geoip-ru-server@cdn?structure=tree"
+    },
+    {
+      "headers": {
+        "Age": "68",
+        "Cache-Control": "public, max-age=31536000, stale-while-revalidate=86400, stale-if-error=86400",
+        "Date": "Mon, 16 Nov 2026 08:42:43 GMT",
+        "ETag": "W/\"231-myidbFwiy6ye6G1H2gPJTFP9hwU\"",
+        "X-Cache": "HIT"
+      },
+      "http": 200,
+      "key": "cdn",
+      "kind": "current_flat",
+      "observation": {
+        "geoip_PRIVATE.srs": {
+          "bytes": 228,
+          "sha256": "b9ea6381ea61e286298aea76c10cb85a252ff0d20c49d6de3527be1353c107c4"
+        },
+        "geoip_RU.dat": {
+          "bytes": 512067,
+          "sha256": "5d7e9dd0eb66bd507eb5f695b83441493fb20b2307ef71125de16c8b3809fa7d"
+        },
+        "geoip_RU.srs": {
+          "bytes": 128250,
+          "sha256": "21c54a6b83c7292ec51c8fff33f19e54cc869750cb6e3cea87d7662df87684e0"
+        }
+      },
+      "retrieved_at": "2026-11-16T08:42:43+00:00",
+      "sha256": "1adce4d4502599eb9abcc7884fe3f8d4b313a3fe14c771e2ccd5207116cbfb62",
+      "url": "https://data.jsdelivr.com/v1/packages/gh/SpeedeMiner/Geoip-ru-server@cdn?structure=flat"
+    },
+    {
+      "headers": {
+        "Age": "872",
+        "Cache-Control": "public, max-age=31536000, stale-while-revalidate=86400, stale-if-error=86400",
+        "Date": "Mon, 16 Nov 2026 08:42:43 GMT",
+        "ETag": "W/\"226-CwAsnouUCm/G/aM+4qC00mY5Pog\"",
+        "X-Cache": "HIT"
+      },
+      "http": 200,
+      "key": "8a226b83c82323c869054ca5b299612ad3a91e2d",
+      "kind": "legacy_tree",
+      "observation": {
+        "geoip_PRIVATE.srs": {
+          "bytes": 228,
+          "sha256": "b9ea6381ea61e286298aea76c10cb85a252ff0d20c49d6de3527be1353c107c4"
+        },
+        "geoip_RU.dat": {
+          "bytes": 512533,
+          "sha256": "b17fe26ccdcb8d272e6233ec9686a514b309e9d75e75653313a75f329b70fae7"
+        },
+        "geoip_RU.srs": {
+          "bytes": 128392,
+          "sha256": "c60b8a1de5d4d67478850d7f72b272044f536d7d592591fbbf75ac50129002b1"
+        }
+      },
+      "retrieved_at": "2026-11-16T08:42:43+00:00",
+      "sha256": "b9b749e28a2ca9d151557f48ee6cbfb26b4a9e4477c1bac4919164a18b38e86e",
+      "url": "https://data.jsdelivr.com/v1/package/gh/SpeedeMiner/Geoip-ru-server@8a226b83c82323c869054ca5b299612ad3a91e2d"
+    },
+    {
+      "headers": {
+        "Age": "872",
+        "Cache-Control": "public, max-age=31536000, stale-while-revalidate=86400, stale-if-error=86400",
+        "Date": "Mon, 16 Nov 2026 08:42:43 GMT",
+        "ETag": "W/\"1f0-+zxYnacWKlg/3MGElfvEguekxCE\"",
+        "X-Cache": "HIT"
+      },
+      "http": 200,
+      "key": "8a226b83c82323c869054ca5b299612ad3a91e2d",
+      "kind": "legacy_flat",
+      "observation": {
+        "geoip_PRIVATE.srs": {
+          "bytes": 228,
+          "sha256": "b9ea6381ea61e286298aea76c10cb85a252ff0d20c49d6de3527be1353c107c4"
+        },
+        "geoip_RU.dat": {
+          "bytes": 512533,
+          "sha256": "b17fe26ccdcb8d272e6233ec9686a514b309e9d75e75653313a75f329b70fae7"
+        },
+        "geoip_RU.srs": {
+          "bytes": 128392,
+          "sha256": "c60b8a1de5d4d67478850d7f72b272044f536d7d592591fbbf75ac50129002b1"
+        }
+      },
+      "retrieved_at": "2026-11-16T08:42:43+00:00",
+      "sha256": "942cf8a7f031bc61567f73cc6000e44c74783497f75b15c9c8f2925cb5989811",
+      "url": "https://data.jsdelivr.com/v1/package/gh/SpeedeMiner/Geoip-ru-server@8a226b83c82323c869054ca5b299612ad3a91e2d/flat"
+    },
+    {
+      "headers": {
+        "Age": "68",
+        "Cache-Control": "public, max-age=31536000, stale-while-revalidate=86400, stale-if-error=86400",
+        "Date": "Mon, 16 Nov 2026 08:42:43 GMT",
+        "ETag": "W/\"2b1-TCRA9v+ZlCTWDO+dybiPIFhDDMI\"",
+        "X-Cache": "HIT"
+      },
+      "http": 200,
+      "key": "8a226b83c82323c869054ca5b299612ad3a91e2d",
+      "kind": "current_tree",
+      "observation": {
+        "geoip_PRIVATE.srs": {
+          "bytes": 228,
+          "sha256": "b9ea6381ea61e286298aea76c10cb85a252ff0d20c49d6de3527be1353c107c4"
+        },
+        "geoip_RU.dat": {
+          "bytes": 512533,
+          "sha256": "b17fe26ccdcb8d272e6233ec9686a514b309e9d75e75653313a75f329b70fae7"
+        },
+        "geoip_RU.srs": {
+          "bytes": 128392,
+          "sha256": "c60b8a1de5d4d67478850d7f72b272044f536d7d592591fbbf75ac50129002b1"
+        }
+      },
+      "retrieved_at": "2026-11-16T08:42:43+00:00",
+      "sha256": "ffad6ac9766c300609e209e162bc913263b3af8fd31b0d93b91e41bb2a98c2b8",
+      "url": "https://data.jsdelivr.com/v1/packages/gh/SpeedeMiner/Geoip-ru-server@8a226b83c82323c869054ca5b299612ad3a91e2d?structure=tree"
+    },
+    {
+      "headers": {
+        "Age": "68",
+        "Cache-Control": "public, max-age=31536000, stale-while-revalidate=86400, stale-if-error=86400",
+        "Date": "Mon, 16 Nov 2026 08:42:43 GMT",
+        "ETag": "W/\"27b-eNcjtFL9dzgGlE6wKow4QxN4AbE\"",
+        "X-Cache": "HIT"
+      },
+      "http": 200,
+      "key": "8a226b83c82323c869054ca5b299612ad3a91e2d",
+      "kind": "current_flat",
+      "observation": {
+        "geoip_PRIVATE.srs": {
+          "bytes": 228,
+          "sha256": "b9ea6381ea61e286298aea76c10cb85a252ff0d20c49d6de3527be1353c107c4"
+        },
+        "geoip_RU.dat": {
+          "bytes": 512533,
+          "sha256": "b17fe26ccdcb8d272e6233ec9686a514b309e9d75e75653313a75f329b70fae7"
+        },
+        "geoip_RU.srs": {
+          "bytes": 128392,
+          "sha256": "c60b8a1de5d4d67478850d7f72b272044f536d7d592591fbbf75ac50129002b1"
+        }
+      },
+      "retrieved_at": "2026-11-16T08:42:43+00:00",
+      "sha256": "a7235d63f9d28dda6dc72cc05a60c054a0a029ba88013a46e4d2ec575cc60108",
+      "url": "https://data.jsdelivr.com/v1/packages/gh/SpeedeMiner/Geoip-ru-server@8a226b83c82323c869054ca5b299612ad3a91e2d?structure=flat"
+    },
+    {
+      "headers": {
+        "Age": "68",
+        "Cache-Control": "public, max-age=31536000, stale-while-revalidate=86400, stale-if-error=86400",
+        "Date": "Mon, 16 Nov 2026 08:42:47 GMT",
+        "ETag": "W/\"226-mENSGtOzsLclbcuWpqjUiiVjaec\"",
+        "X-Cache": "HIT"
+      },
+      "http": 200,
+      "key": "80e3b14",
+      "kind": "legacy_tree",
+      "observation": {
+        "geoip_PRIVATE.srs": {
+          "bytes": 228,
+          "sha256": "b9ea6381ea61e286298aea76c10cb85a252ff0d20c49d6de3527be1353c107c4"
+        },
+        "geoip_RU.dat": {
+          "bytes": 512067,
+          "sha256": "5d7e9dd0eb66bd507eb5f695b83441493fb20b2307ef71125de16c8b3809fa7d"
+        },
+        "geoip_RU.srs": {
+          "bytes": 128250,
+          "sha256": "21c54a6b83c7292ec51c8fff33f19e54cc869750cb6e3cea87d7662df87684e0"
+        }
+      },
+      "retrieved_at": "2026-11-16T08:42:47+00:00",
+      "sha256": "a78f36f042b2ea428591663516808c49a3fcd6963075a2fd9c85346b6323324b",
+      "url": "https://data.jsdelivr.com/v1/package/gh/SpeedeMiner/Geoip-ru-server@80e3b14"
+    },
+    {
+      "headers": {
+        "Age": "68",
+        "Cache-Control": "public, max-age=31536000, stale-while-revalidate=86400, stale-if-error=86400",
+        "Date": "Mon, 16 Nov 2026 08:42:47 GMT",
+        "ETag": "W/\"1f0-IjnQsfJqKg+hFpB0Ik5+RbbcAqg\"",
+        "X-Cache": "HIT"
+      },
+      "http": 200,
+      "key": "80e3b14",
+      "kind": "legacy_flat",
+      "observation": {
+        "geoip_PRIVATE.srs": {
+          "bytes": 228,
+          "sha256": "b9ea6381ea61e286298aea76c10cb85a252ff0d20c49d6de3527be1353c107c4"
+        },
+        "geoip_RU.dat": {
+          "bytes": 512067,
+          "sha256": "5d7e9dd0eb66bd507eb5f695b83441493fb20b2307ef71125de16c8b3809fa7d"
+        },
+        "geoip_RU.srs": {
+          "bytes": 128250,
+          "sha256": "21c54a6b83c7292ec51c8fff33f19e54cc869750cb6e3cea87d7662df87684e0"
+        }
+      },
+      "retrieved_at": "2026-11-16T08:42:47+00:00",
+      "sha256": "a08e289c47fd41df394ddca5dcfc1df1ef264837d26243008191a19e9f90c8ff",
+      "url": "https://data.jsdelivr.com/v1/package/gh/SpeedeMiner/Geoip-ru-server@80e3b14/flat"
+    },
+    {
+      "headers": {
+        "Age": "68",
+        "Cache-Control": "public, max-age=31536000, stale-while-revalidate=86400, stale-if-error=86400",
+        "Date": "Mon, 16 Nov 2026 08:42:47 GMT",
+        "ETag": "W/\"26f-hRX0u7aYa5FCmJ6Nryz8QKTDhI4\"",
+        "X-Cache": "HIT"
+      },
+      "http": 200,
+      "key": "80e3b14",
+      "kind": "current_tree",
+      "observation": {
+        "geoip_PRIVATE.srs": {
+          "bytes": 228,
+          "sha256": "b9ea6381ea61e286298aea76c10cb85a252ff0d20c49d6de3527be1353c107c4"
+        },
+        "geoip_RU.dat": {
+          "bytes": 512067,
+          "sha256": "5d7e9dd0eb66bd507eb5f695b83441493fb20b2307ef71125de16c8b3809fa7d"
+        },
+        "geoip_RU.srs": {
+          "bytes": 128250,
+          "sha256": "21c54a6b83c7292ec51c8fff33f19e54cc869750cb6e3cea87d7662df87684e0"
+        }
+      },
+      "retrieved_at": "2026-11-16T08:42:47+00:00",
+      "sha256": "b5384573a4fb801ffec518eca91e221b17c8cc72fd2b5b6cb1dd8d4c4726e252",
+      "url": "https://data.jsdelivr.com/v1/packages/gh/SpeedeMiner/Geoip-ru-server@80e3b14?structure=tree"
+    },
+    {
+      "headers": {
+        "Age": "68",
+        "Cache-Control": "public, max-age=31536000, stale-while-revalidate=86400, stale-if-error=86400",
+        "Date": "Mon, 16 Nov 2026 08:42:47 GMT",
+        "ETag": "W/\"239-oSR1AcjEujNq0SWkwD1MbEZWIlc\"",
+        "X-Cache": "HIT"
+      },
+      "http": 200,
+      "key": "80e3b14",
+      "kind": "current_flat",
+      "observation": {
+        "geoip_PRIVATE.srs": {
+          "bytes": 228,
+          "sha256": "b9ea6381ea61e286298aea76c10cb85a252ff0d20c49d6de3527be1353c107c4"
+        },
+        "geoip_RU.dat": {
+          "bytes": 512067,
+          "sha256": "5d7e9dd0eb66bd507eb5f695b83441493fb20b2307ef71125de16c8b3809fa7d"
+        },
+        "geoip_RU.srs": {
+          "bytes": 128250,
+          "sha256": "21c54a6b83c7292ec51c8fff33f19e54cc869750cb6e3cea87d7662df87684e0"
+        }
+      },
+      "retrieved_at": "2026-11-16T08:42:47+00:00",
+      "sha256": "1027e2556a059dbd0690daa4a365a8793012535af0ef13dcd77cb6fab5ea1445",
+      "url": "https://data.jsdelivr.com/v1/packages/gh/SpeedeMiner/Geoip-ru-server@80e3b14?structure=flat"
+    }
+  ],
+  "ripe_inetnum_geofeed": [
+    {
+      "prefix": "177.29.253.0/24",
+      "retrieved_at": "2026-11-16T08:48:51+00:00",
+      "rows": [
+        {
+          "country": "EU",
+          "inetnum": "0.0.0.0 - 255.255.255.255",
+          "netname": "IANA-BLK",
+          "remarks_with_geofeed": [],
+          "status": "ALLOCATED UNSPECIFIED"
+        },
+        {
+          "remarks_with_geofeed": []
+        },
+        {
+          "remarks_with_geofeed": []
+        },
+        {
+          "country": "DE",
+          "inetnum": "177.28.0.0 - 177.29.255.255",
+          "netname": "VG-LARUS-20110105",
+          "remarks_with_geofeed": [
+            "Geofeed https://larus.net/geofeed-trusted"
+          ],
+          "status": "ALLOCATED PA"
+        },
+        {
+          "country": "VG",
+          "remarks_with_geofeed": []
+        },
+        {
+          "remarks_with_geofeed": []
+        },
+        {
+          "country": "HK",
+          "inetnum": "177.29.253.0 - 177.29.253.255",
+          "netname": "Novacart-Commerce-llc",
+          "remarks_with_geofeed": [],
+          "status": "ASSIGNED PA"
+        },
+        {
+          "remarks_with_geofeed": []
+        }
+      ],
+      "sha256": "3f7ccec62d4f6b5c03472c473cc03a012f3a6e03a82fcb07fbece7351718d46a",
+      "status": "OK",
+      "url": "https://rest.db.ripe.net/search.json?query-string=177.29.253.0%2F24&type-filter=inetnum&flags=L&source=ripe"
+    },
+    {
+      "prefix": "177.122.229.0/24",
+      "retrieved_at": "2026-11-16T08:48:51+00:00",
+      "rows": [
+        {
+          "country": "EU",
+          "inetnum": "0.0.0.0 - 255.255.255.255",
+          "netname": "IANA-BLK",
+          "remarks_with_geofeed": [],
+          "status": "ALLOCATED UNSPECIFIED"
+        },
+        {
+          "remarks_with_geofeed": []
+        },
+        {
+          "remarks_with_geofeed": []
+        },
+        {
+          "country": "DE",
+          "inetnum": "177.122.0.0 - 177.122.255.255",
+          "netname": "VG-LARUS-20120817",
+          "remarks_with_geofeed": [
+            "Geofeed https://larus.net/geofeed-trusted"
+          ],
+          "status": "ALLOCATED PA"
+        },
+        {
+          "country": "VG",
+          "remarks_with_geofeed": []
+        },
+        {
+          "remarks_with_geofeed": []
+        },
+        {
+          "country": "HK",
+          "inetnum": "177.122.229.0 - 177.122.229.255",
+          "netname": "Novacart-Commerce-llc",
+          "remarks_with_geofeed": [],
+          "status": "ASSIGNED PA"
+        },
+        {
+          "remarks_with_geofeed": []
+        }
+      ],
+      "sha256": "3c4a931bc1ada95d57a6ffa71d057875862330fcc5336aef3b4984a1fcde6376",
+      "status": "OK",
+      "url": "https://rest.db.ripe.net/search.json?query-string=177.122.229.0%2F24&type-filter=inetnum&flags=L&source=ripe"
+    },
+    {
+      "prefix": "177.122.241.0/24",
+      "retrieved_at": "2026-11-16T08:48:51+00:00",
+      "rows": [
+        {
+          "country": "EU",
+          "inetnum": "0.0.0.0 - 255.255.255.255",
+          "netname": "IANA-BLK",
+          "remarks_with_geofeed": [],
+          "status": "ALLOCATED UNSPECIFIED"
+        },
+        {
+          "remarks_with_geofeed": []
+        },
+        {
+          "remarks_with_geofeed": []
+        },
+        {
+          "country": "DE",
+          "inetnum": "177.122.0.0 - 177.122.255.255",
+          "netname": "VG-LARUS-20120817",
+          "remarks_with_geofeed": [
+            "Geofeed https://larus.net/geofeed-trusted"
+          ],
+          "status": "ALLOCATED PA"
+        },
+        {
+          "country": "VG",
+          "remarks_with_geofeed": []
+        },
+        {
+          "remarks_with_geofeed": []
+        },
+        {
+          "country": "HK",
+          "inetnum": "177.122.241.0 - 177.122.241.255",
+          "netname": "Novacart-Commerce-llc",
+          "remarks_with_geofeed": [],
+          "status": "ASSIGNED PA"
+        },
+        {
+          "remarks_with_geofeed": []
+        }
+      ],
+      "sha256": "ec0af8789a5ea59ceffd8a5cbf4236659759f5fb092420d55d5a762c3bb752e6",
+      "status": "OK",
+      "url": "https://rest.db.ripe.net/search.json?query-string=177.122.241.0%2F24&type-filter=inetnum&flags=L&source=ripe"
+    },
+    {
+      "prefix": "177.166.74.0/24",
+      "retrieved_at": "2026-11-16T08:48:56+00:00",
+      "rows": [
+        {
+          "country": "EU",
+          "inetnum": "0.0.0.0 - 255.255.255.255",
+          "netname": "IANA-BLK",
+          "remarks_with_geofeed": [],
+          "status": "ALLOCATED UNSPECIFIED"
+        },
+        {
+          "remarks_with_geofeed": []
+        },
+        {
+          "remarks_with_geofeed": []
+        },
+        {
+          "country": "DE",
+          "inetnum": "177.166.0.0 - 177.166.255.255",
+          "netname": "VG-LARUS-20120601",
+          "remarks_with_geofeed": [
+            "Geofeed https://larus.net/geofeed-trusted"
+          ],
+          "status": "ALLOCATED PA"
+        },
+        {
+          "country": "VG",
+          "remarks_with_geofeed": []
+        },
+        {
+          "remarks_with_geofeed": []
+        },
+        {
+          "country": "HK",
+          "inetnum": "177.166.74.0 - 177.166.74.255",
+          "netname": "Novacart-Commerce-llc",
+          "remarks_with_geofeed": [],
+          "status": "ASSIGNED PA"
+        },
+        {
+          "remarks_with_geofeed": []
+        }
+      ],
+      "sha256": "7c23ba4da19afaf432b58503b0573b0eb1b0899df39a3b7287ac49d8c96eab46",
+      "status": "OK",
+      "url": "https://rest.db.ripe.net/search.json?query-string=177.166.74.0%2F24&type-filter=inetnum&flags=L&source=ripe"
+    },
+    {
+      "prefix": "177.166.78.0/24",
+      "retrieved_at": "2026-11-16T08:48:56+00:00",
+      "rows": [
+        {
+          "country": "EU",
+          "inetnum": "0.0.0.0 - 255.255.255.255",
+          "netname": "IANA-BLK",
+          "remarks_with_geofeed": [],
+          "status": "ALLOCATED UNSPECIFIED"
+        },
+        {
+          "remarks_with_geofeed": []
+        },
+        {
+          "remarks_with_geofeed": []
+        },
+        {
+          "country": "DE",
+          "inetnum": "177.166.0.0 - 177.166.255.255",
+          "netname": "VG-LARUS-20120601",
+          "remarks_with_geofeed": [
+            "Geofeed https://larus.net/geofeed-trusted"
+          ],
+          "status": "ALLOCATED PA"
+        },
+        {
+          "country": "VG",
+          "remarks_with_geofeed": []
+        },
+        {
+          "remarks_with_geofeed": []
+        },
+        {
+          "country": "HK",
+          "inetnum": "177.166.78.0 - 177.166.78.255",
+          "netname": "Novacart-Commerce-llc",
+          "remarks_with_geofeed": [],
+          "status": "ASSIGNED PA"
+        },
+        {
+          "remarks_with_geofeed": []
+        }
+      ],
+      "sha256": "2d545f59682e38f4ac48b6b099ff2054606fb59c2f59c465b662d61b7fe09e82",
+      "status": "OK",
+      "url": "https://rest.db.ripe.net/search.json?query-string=177.166.78.0%2F24&type-filter=inetnum&flags=L&source=ripe"
+    },
+    {
+      "prefix": "177.29.252.0/24",
+      "retrieved_at": "2026-11-16T08:48:56+00:00",
+      "rows": [
+        {
+          "country": "EU",
+          "inetnum": "0.0.0.0 - 255.255.255.255",
+          "netname": "IANA-BLK",
+          "remarks_with_geofeed": [],
+          "status": "ALLOCATED UNSPECIFIED"
+        },
+        {
+          "remarks_with_geofeed": []
+        },
+        {
+          "remarks_with_geofeed": []
+        },
+        {
+          "country": "DE",
+          "inetnum": "177.28.0.0 - 177.29.255.255",
+          "netname": "VG-LARUS-20110105",
+          "remarks_with_geofeed": [
+            "Geofeed https://larus.net/geofeed-trusted"
+          ],
+          "status": "ALLOCATED PA"
+        },
+        {
+          "country": "VG",
+          "remarks_with_geofeed": []
+        },
+        {
+          "remarks_with_geofeed": []
+        },
+        {
+          "country": "HK",
+          "inetnum": "177.29.252.0 - 177.29.252.255",
+          "netname": "Novacart-Commerce-llc",
+          "remarks_with_geofeed": [],
+          "status": "ASSIGNED PA"
+        },
+        {
+          "remarks_with_geofeed": []
+        }
+      ],
+      "sha256": "8ec797384086d94fe191e6d42654f87af017307fbb6bdb6196b35dd8133ee08a",
+      "status": "OK",
+      "url": "https://rest.db.ripe.net/search.json?query-string=177.29.252.0%2F24&type-filter=inetnum&flags=L&source=ripe"
+    }
+  ],
+  "schema": 1
+}
