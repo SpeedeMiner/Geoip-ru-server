@@ -262,6 +262,8 @@ def diagnose_planes(repo: str, commit: str, hosts: tuple[str, ...], *,
 
     def expectation():
         data = json.loads(fetch(api, INDEX_SIZE))
+        if not isinstance(data, dict) or not isinstance(data.get("tree"), list):
+            raise ValueError("invalid pinned GitHub CDN tree response")
         if data.get("truncated") is not False:
             raise ValueError("pinned GitHub CDN tree is truncated")
         entries = {}
@@ -278,7 +280,9 @@ def diagnose_planes(repo: str, commit: str, hosts: tuple[str, ...], *,
         for name in FILES:
             data = fetch(f"{raw}/{name}", ASSET_SIZE)
             size = len(data)
-            git_oid = hashlib.sha1(f"blob {size}\0".encode("ascii") + data).hexdigest()
+            # SHA-1 here is the repository's object format, not the audit digest.
+            git_oid = hashlib.sha1(f"blob {size}\0".encode("ascii") + data,
+                                  usedforsecurity=False).hexdigest()
             if size != entries[name]["size"] or git_oid != entries[name]["sha"]:
                 raise ValueError(f"pinned GitHub Raw bytes do not match Git blob: {name}")
             reference[name] = (size, hashlib.sha256(data).digest())

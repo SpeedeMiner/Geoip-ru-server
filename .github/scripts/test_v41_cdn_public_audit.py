@@ -112,6 +112,16 @@ class PublicCdnAuditTests(unittest.TestCase):
         self.assertEqual(result["catalog"]["pinned_tree"]["status"], "UNVERIFIED")
         self.assertTrue(all("data.jsdelivr.com" not in url for url in self.calls))
 
+    def test_diagnostic_reports_malformed_tree_without_calling_any_other_plane(self):
+        def fetch(url, limit):
+            self.assertTrue(url.startswith("https://api.github.com/"))
+            return b"[]"
+        result = self.planes(fetch)
+        self.assertEqual(result["status"], "FAIL")
+        self.assertIn("invalid pinned GitHub CDN tree response", result["pinned_reference"]["error"])
+        self.assertEqual(result["github_release"]["status"], "UNVERIFIED")
+        self.assertTrue(all(x["status"] == "UNVERIFIED" for x in result["catalog"].values()))
+
     def test_diagnostic_cli_emits_json_but_returns_nonzero_for_mismatch(self):
         release = "c" * 40
         cli = ["audit", "--repo", REPO, "--diagnose-planes", "--edges"]
