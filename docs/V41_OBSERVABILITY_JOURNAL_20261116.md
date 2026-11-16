@@ -478,3 +478,10 @@ Progress rule: append dated evidence, artifact identities, decisions and remaini
 
 - Resumed from `ab0a056`. PR #52 and #53 remain drafts, and the latest listed production v41 run is still `43747743430`.
 - Reconstruct the versioned release from public input assets, pinned source code and a rebuilt compiler, without using the retained CI ZIP as a build input. Compare regenerated DAT/SRS with published bytes. Then compare the retained rolling ipverse only as an explicitly frozen counterfactual. No live workflow dispatch, merge, publication, CDN write or PR #5 change.
+
+## 2026-11-16 14:32 UTC+05 — public inputs and independent toolchain verified
+
+- Downloaded the five manifest-bound build input assets and all eight comparison assets from the versioned release, in separate directories. The manifest exactly matched pinned Git Raw at `e20cf73` and identified build source `c0d2a01`. No earlier Actions ZIP or previously rebuilt DAT is passed into either reconstruction.
+- Verified the Go 1.26.10 and sing-box 1.13.12 distribution archives by their pinned SHA-256 values. Rebuilt the v37 executable from the published source with a fresh Go module cache. Module verification and Go tests passed before the reconstruction. The pinned sing-box executable will check decompiled address coverage as well as writing SRS.
+- Used checked-in restore functions to prove a valid block archive restores ten files. A one-bit alteration, truncation, trailing bytes, or modified provenance all failed without creating an output directory. A pre-existing directory was rejected without changing its marker.
+- The fixed-reference comparison also distinguishes the published clean DAT from the disputed DAT even if a rolling baseline changes. It reported PASS +0/−0 and HOLD +512/−1,280 respectively. It is an offline comparison using a known historical snapshot, not a new production gate or automatic rollback.
