@@ -410,3 +410,8 @@ Progress rule: append dated evidence, artifact identities, decisions and remaini
 - Compared the guard's clipping and exact subtraction in both directions against a naive per-address oracle on 20,000 deterministic randomized /24 windows. No mismatches. This supplements the committed tests and does not exercise any network or publish path.
 - At 13:33 UTC+05, rolling and SHA-pinned jsDelivr tree/flat endpoints repeated the previous metadata split byte-for-byte. GitHub's rolling and versioned release APIs still report the same expected digests for all three client assets. The available read-only evidence does not support calling it widespread CDN file corruption or clearing caches preemptively.
 - Rechecked the Actions API independently: latest listed production v41 run on main remains `43747743430`; latest listed scheduled event is `43709200004` on 15 Nov. No newer production build was visible at this checkpoint, but the schedule remains enabled. Approval of the isolated hold, or independently reviewed evidence resolving the rows, remains the next decision. Do not dispatch or retry publication merely to test this draft.
+
+## 2026-11-16 13:40 UTC+05 — follow-up started
+
+- Resumed at `223ca03`. GitHub confirms #52 and #53 remain drafts on `c0d2a01`, and the latest listed main v41 build is still `43747743430`. No publishing or destructive operation is planned.
+- Refresh independent exact-prefix BGP and RPKI evidence. Compare old and current jsDelivr catalog endpoints with the checksum-verified release. If the two CDN planes still disagree, prepare an opt-in read-only diagnostic that explicitly reports catalog and delivery results separately and still fails on any mismatch. No weakening of the default strict check and no change to DIRECT.
