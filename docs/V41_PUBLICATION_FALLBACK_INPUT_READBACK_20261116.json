@@ -1,0 +1,84 @@
+{
+  "all_match": true,
+  "inputs": [
+    {
+      "expected": {
+        "bytes": 16286885,
+        "sha256": "5d3b254a78d4fbbd225d6e18b317a9a29e799f418a6f7b57dbe617b1d1beeb41"
+      },
+      "got": {
+        "bytes": 16286885,
+        "sha256": "5d3b254a78d4fbbd225d6e18b317a9a29e799f418a6f7b57dbe617b1d1beeb41"
+      },
+      "http": 200,
+      "matched": true,
+      "name": "as-ip-blocks.tar.gz",
+      "retrieved_at": "2026-11-16T09:22:52+00:00",
+      "url": "https://github.com/SpeedeMiner/Geoip-ru-server/releases/download/geoip-v41-snapshot-43747743430.1/as-ip-blocks.tar.gz"
+    },
+    {
+      "expected": {
+        "bytes": 4812169,
+        "sha256": "50a6172db9a9c8e9aff75df589e56ff22b1d93de2baec382bdd6693fb551213c"
+      },
+      "got": {
+        "bytes": 4812169,
+        "sha256": "50a6172db9a9c8e9aff75df589e56ff22b1d93de2baec382bdd6693fb551213c"
+      },
+      "http": 200,
+      "matched": true,
+      "name": "v41-registry-inputs.tar.gz",
+      "retrieved_at": "2026-11-16T09:22:52+00:00",
+      "url": "https://github.com/SpeedeMiner/Geoip-ru-server/releases/download/geoip-v41-snapshot-43747743430.1/v41-registry-inputs.tar.gz"
+    },
+    {
+      "expected": {
+        "bytes": 5986732,
+        "sha256": "802f67fac2058bcd4f460e8d8572280ca2a5dadc4e29acc22ec3e54190801779"
+      },
+      "got": {
+        "bytes": 5986732,
+        "sha256": "802f67fac2058bcd4f460e8d8572280ca2a5dadc4e29acc22ec3e54190801779"
+      },
+      "http": 200,
+      "matched": true,
+      "name": "v41-upstream-inputs.tar.gz",
+      "retrieved_at": "2026-11-16T09:22:52+00:00",
+      "url": "https://github.com/SpeedeMiner/Geoip-ru-server/releases/download/geoip-v41-snapshot-43747743430.1/v41-upstream-inputs.tar.gz"
+    },
+    {
+      "expected": {
+        "bytes": 1912571,
+        "sha256": "3bf56bd68a5b91d4c7379e4e5c7516c1e436bfe106e349de22d367b790d39060"
+      },
+      "got": {
+        "bytes": 1912571,
+        "sha256": "3bf56bd68a5b91d4c7379e4e5c7516c1e436bfe106e349de22d367b790d39060"
+      },
+      "http": 200,
+      "matched": true,
+      "name": "v41-block-inputs.tar.gz",
+      "retrieved_at": "2026-11-16T09:22:52+00:00",
+      "url": "https://github.com/SpeedeMiner/Geoip-ru-server/releases/download/geoip-v41-snapshot-43747743430.1/v41-block-inputs.tar.gz"
+    },
+    {
+      "expected": {
+        "bytes": 8479,
+        "sha256": "da2455666d5943804bea892c56e731c89ac63027b532fa4b5a40b27f53bb418b"
+      },
+      "got": {
+        "bytes": 8479,
+        "sha256": "da2455666d5943804bea892c56e731c89ac63027b532fa4b5a40b27f53bb418b"
+      },
+      "http": 200,
+      "matched": true,
+      "name": "geoip_RU_input_provenance.tsv",
+      "retrieved_at": "2026-11-16T09:22:51+00:00",
+      "url": "https://github.com/SpeedeMiner/Geoip-ru-server/releases/download/geoip-v41-snapshot-43747743430.1/geoip_RU_input_provenance.tsv"
+    }
+  ],
+  "manifest_is_byte_identical_between_pinned_git_versioned_assets_and_retained_ci": true,
+  "manifest_sha256": "628a40ddce0118c47dce1b1e9a1b2028868caeb88a69946e837e6d4cac2c6d19",
+  "release": "e20cf733a13d92040134895ebd580b7c9060fa3b",
+  "tag": "geoip-v41-snapshot-43747743430.1"
+}
