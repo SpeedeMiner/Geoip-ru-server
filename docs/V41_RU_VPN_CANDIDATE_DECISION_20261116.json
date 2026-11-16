@@ -1,0 +1,242 @@
+{
+  "artifact_id": 14220306027,
+  "candidate_dat_sha256": "3161fdd5eda4d9c2f962a3c8d1bd0c187e5cab9260284a13679b289a9a6d0855",
+  "current_candidate_decision": "DO NOT PROMOTE THIS FROZEN CANDIDATE; keep currently published coverage for the five lost prefixes, do not pin them permanently; do not approve the AS219095 additions or promote the OPTI addition on this evidence.",
+  "diagnostic_commit": "240e9dbb34e745398ea82dc3dccf4a653aa849b9",
+  "known_exit_asns_ripe_stat": {
+    "12389": "ROSTELECOM-AS PJSC Rostelecom",
+    "56420": "RYAZAN-AS JSC ER-Telecom Holding"
+  },
+  "older_five_prefix_run": {
+    "artifact_id": 14203711322,
+    "control_http": 200,
+    "exit_asn": 15774,
+    "run_id": 43818392218,
+    "unattributed_samples_inconclusive": 10,
+    "unattributed_samples_tested": 10,
+    "zip_sha256": "3c376333a529ec16434acdc696c4d293c556c43faf61fb4f183f0c16bd3e4f18"
+  },
+  "policy_change_executed": false,
+  "published_sha": "e20cf733a13d92040134895ebd580b7c9060fa3b",
+  "report_sha256": "426f71e42f81b75a4fe4e30357f4239725bbbde06ccf032511ada51a5eab0f89",
+  "route_coverage": {
+    "108.62.48.16": {
+      "candidate": false,
+      "published": false
+    },
+    "177.122.229.2": {
+      "candidate": false,
+      "published": true
+    },
+    "212.44.136.74": {
+      "candidate": true,
+      "published": true
+    },
+    "213.226.121.10": {
+      "candidate": true,
+      "published": false
+    },
+    "31.131.197.240": {
+      "candidate": true,
+      "published": true
+    }
+  },
+  "run_id": 43854016733,
+  "schema": 1,
+  "test_data": {
+    "access_type": "PUBLIC_VPN_RU_EGRESS_NOT_HOUSEHOLD_ATTESTED",
+    "distinct_public_ip_sessions_with_measurements": 2,
+    "meaning": "A result covers only the reported endpoint. Timeout and TLS errors are inconclusive. No automatic route change.",
+    "runner_reference": [
+      {
+        "observed_at": "2026-11-16T11:01:46.515654+00:00",
+        "result": {
+          "error": "",
+          "http": 200,
+          "ip": "104.20.23.154",
+          "resolved_by": "system",
+          "status": "HTTP_RESPONSE"
+        },
+        "target": "example.com",
+        "target_id": "control-example",
+        "vantage": "github_runner_direct",
+        "vantage_metadata": {
+          "asn": 8075,
+          "country": "US",
+          "org": "Microsoft Limited",
+          "status": "TWO_SOURCE_CONSENSUS"
+        }
+      },
+      {
+        "observed_at": "2026-11-16T11:01:47.222545+00:00",
+        "result": {
+          "error": "ConnectionResetError",
+          "http": null,
+          "ip": "213.226.121.10",
+          "resolved_by": "system",
+          "status": "INCONCLUSIVE"
+        },
+        "target": "opti.su",
+        "target_id": "opti-public-homepage",
+        "vantage": "github_runner_direct",
+        "vantage_metadata": {
+          "asn": 8075,
+          "country": "US",
+          "org": "Microsoft Limited",
+          "status": "TWO_SOURCE_CONSENSUS"
+        }
+      },
+      {
+        "observed_at": "2026-11-16T11:01:49.132570+00:00",
+        "result": {
+          "error": "",
+          "http": 200,
+          "ip": "108.62.48.16",
+          "resolved_by": "system",
+          "status": "HTTP_RESPONSE"
+        },
+        "target": "13b2g841.p.crcdn.pro",
+        "target_id": "curator-public-asset",
+        "vantage": "github_runner_direct",
+        "vantage_metadata": {
+          "asn": 8075,
+          "country": "US",
+          "org": "Microsoft Limited",
+          "status": "TWO_SOURCE_CONSENSUS"
+        }
+      },
+      {
+        "observed_at": "2026-11-16T11:01:49.548156+00:00",
+        "result": {
+          "error": "",
+          "ip": "177.122.229.2",
+          "status": "TCP_CONNECTED"
+        },
+        "target": "177.122.229.2",
+        "target_id": "previous-responsive-tcp-sample",
+        "vantage": "github_runner_direct",
+        "vantage_metadata": {
+          "asn": 8075,
+          "country": "US",
+          "org": "Microsoft Limited",
+          "status": "TWO_SOURCE_CONSENSUS"
+        }
+      }
+    ],
+    "vpn_measurements": [
+      {
+        "DNS_A_ADDRESSES": "8.47.69.0|8.6.112.0",
+        "EXIT_ASN": 56420,
+        "EXIT_ASN_CONFLICT": false,
+        "EXIT_COUNTRY": "RU",
+        "HTTPS_IPV4_DNS_SOURCE": "system",
+        "HTTPS_IPV4_TESTED_ADDRESS": "8.47.69.0",
+        "HTTPS_RESULT": "HTTP_RESPONSE",
+        "HTTP_STATUS": 200,
+        "OBSERVED_AT": "2026-11-16T11:02:19Z",
+        "TARGET_DOMAIN": "example.com",
+        "TARGET_ID": "control-example",
+        "session": 1
+      },
+      {
+        "DNS_A_ADDRESSES": "213.226.121.10",
+        "EXIT_ASN": 56420,
+        "EXIT_ASN_CONFLICT": false,
+        "EXIT_COUNTRY": "RU",
+        "HTTPS_IPV4_DNS_SOURCE": "system",
+        "HTTPS_IPV4_TESTED_ADDRESS": "213.226.121.10",
+        "HTTPS_RESULT": "INCONCLUSIVE",
+        "HTTP_STATUS": "",
+        "OBSERVED_AT": "2026-11-16T11:02:22Z",
+        "TARGET_DOMAIN": "opti.su",
+        "TARGET_ID": "opti-public-homepage",
+        "session": 1
+      },
+      {
+        "DNS_A_ADDRESSES": "31.131.197.240",
+        "EXIT_ASN": 56420,
+        "EXIT_ASN_CONFLICT": false,
+        "EXIT_COUNTRY": "RU",
+        "HTTPS_IPV4_DNS_SOURCE": "system",
+        "HTTPS_IPV4_TESTED_ADDRESS": "31.131.197.240",
+        "HTTPS_RESULT": "HTTP_RESPONSE",
+        "HTTP_STATUS": 200,
+        "OBSERVED_AT": "2026-11-16T11:02:28Z",
+        "TARGET_DOMAIN": "13b2g841.p.crcdn.pro",
+        "TARGET_ID": "curator-public-asset",
+        "session": 1
+      },
+      {
+        "DNS_A_ADDRESSES": "177.122.229.2",
+        "EXIT_ASN": 56420,
+        "EXIT_ASN_CONFLICT": false,
+        "EXIT_COUNTRY": "RU",
+        "HTTPS_IPV4_DNS_SOURCE": null,
+        "HTTPS_IPV4_TESTED_ADDRESS": null,
+        "HTTPS_RESULT": "INCONCLUSIVE",
+        "HTTP_STATUS": "",
+        "OBSERVED_AT": "2026-11-16T11:02:31Z",
+        "TARGET_DOMAIN": "177.122.229.2",
+        "TARGET_ID": "previous-responsive-tcp-sample",
+        "session": 1
+      },
+      {
+        "DNS_A_ADDRESSES": "8.47.69.0|8.6.112.0",
+        "EXIT_ASN": 12389,
+        "EXIT_ASN_CONFLICT": false,
+        "EXIT_COUNTRY": "RU",
+        "HTTPS_IPV4_DNS_SOURCE": "system",
+        "HTTPS_IPV4_TESTED_ADDRESS": "8.47.69.0",
+        "HTTPS_RESULT": "HTTP_RESPONSE",
+        "HTTP_STATUS": 200,
+        "OBSERVED_AT": "2026-11-16T11:02:43Z",
+        "TARGET_DOMAIN": "example.com",
+        "TARGET_ID": "control-example",
+        "session": 2
+      },
+      {
+        "DNS_A_ADDRESSES": "213.226.121.10",
+        "EXIT_ASN": 12389,
+        "EXIT_ASN_CONFLICT": false,
+        "EXIT_COUNTRY": "RU",
+        "HTTPS_IPV4_DNS_SOURCE": "system",
+        "HTTPS_IPV4_TESTED_ADDRESS": "213.226.121.10",
+        "HTTPS_RESULT": "INCONCLUSIVE",
+        "HTTP_STATUS": "",
+        "OBSERVED_AT": "2026-11-16T11:03:09Z",
+        "TARGET_DOMAIN": "opti.su",
+        "TARGET_ID": "opti-public-homepage",
+        "session": 2
+      },
+      {
+        "DNS_A_ADDRESSES": "212.44.136.74",
+        "EXIT_ASN": 12389,
+        "EXIT_ASN_CONFLICT": false,
+        "EXIT_COUNTRY": "RU",
+        "HTTPS_IPV4_DNS_SOURCE": "system",
+        "HTTPS_IPV4_TESTED_ADDRESS": "212.44.136.74",
+        "HTTPS_RESULT": "HTTP_RESPONSE",
+        "HTTP_STATUS": 200,
+        "OBSERVED_AT": "2026-11-16T11:03:12Z",
+        "TARGET_DOMAIN": "13b2g841.p.crcdn.pro",
+        "TARGET_ID": "curator-public-asset",
+        "session": 2
+      },
+      {
+        "DNS_A_ADDRESSES": "177.122.229.2",
+        "EXIT_ASN": 12389,
+        "EXIT_ASN_CONFLICT": false,
+        "EXIT_COUNTRY": "RU",
+        "HTTPS_IPV4_DNS_SOURCE": null,
+        "HTTPS_IPV4_TESTED_ADDRESS": null,
+        "HTTPS_RESULT": "INCONCLUSIVE",
+        "HTTP_STATUS": "",
+        "OBSERVED_AT": "2026-11-16T11:03:15Z",
+        "TARGET_DOMAIN": "177.122.229.2",
+        "TARGET_ID": "previous-responsive-tcp-sample",
+        "session": 2
+      }
+    ]
+  },
+  "zip_sha256": "4a39fd86ec2fd1f7178ca635c11d34a7f91d370443846e451b1f2a318fe298fa"
+}
