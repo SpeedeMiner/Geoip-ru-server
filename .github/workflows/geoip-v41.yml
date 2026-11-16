@@ -535,11 +535,12 @@ jobs:
               --retry 3 --connect-timeout 15 --max-time 90 --max-filesize 67108864 \
               "$base/$name" -o "$RUNNER_TEMP/previous-$name"
           done
-          expected="$(awk 'NR==1 {print $1}' "$RUNNER_TEMP/previous-geoip_RU.dat.sha256sum")"
-          [[ "$expected" =~ ^[0-9a-f]{64}$ ]]
-          printf '%s  %s\n' "$expected" "$RUNNER_TEMP/previous-geoip_RU.dat" | sha256sum -c -
           python3 .github/scripts/report_v41_pr_delta.py \
             --candidate "$V41_OUTPUT_FILE" --reference "$RUNNER_TEMP/previous-geoip_RU.dat" \
+            --reference-checksum "$RUNNER_TEMP/previous-geoip_RU.dat.sha256sum" \
+            --candidate-manifest "$V41_MANIFEST" \
+            --reviewed-ipv6 .github/data/v41-reviewed-ipv6-admission-exclusions.tsv \
+            --exact-output "$RUNNER_TEMP/v41-pr-direct-delta.json" \
             --current-metrics "$V41_METRICS" --previous-metrics "$RUNNER_TEMP/previous-geoip_RU_v41_source_metrics.tsv" \
             --revision "$ref" --summary "$GITHUB_STEP_SUMMARY"
           echo '### Priority ASN and country loss (input inventories)' >> "$GITHUB_STEP_SUMMARY"
@@ -553,6 +554,15 @@ jobs:
           python3 .github/scripts/validate_v41_source_health.py --report-only \
             --previous "$RUNNER_TEMP/previous-geoip_RU_input_provenance.tsv" --candidate "$INPUT_PROVENANCE" \
             --manifest "$V41_MANIFEST" --dat "$V41_OUTPUT_FILE" | tee -a "$GITHUB_STEP_SUMMARY"
+
+      - name: Retain exact pull request DIRECT delta
+        if: github.event_name == 'pull_request'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: v41-pr-direct-delta
+          path: ${{ runner.temp }}/v41-pr-direct-delta.json
+          if-no-files-found: error
+          retention-days: 30
 
       - name: Cross-check priority BGP origins (advisory)
         if: github.event_name == 'pull_request'
