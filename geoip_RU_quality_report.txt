@@ -1,7 +1,7 @@
 GeoIP DIRECT RU+BY+KZ CLIENT v41 — provenance-aware IP exclusions
-Generated UTC: 2026-11-15T18:38:58.203151+00:00
-Base v37 GeoIP SHA-256: 3b196ba746ee67f9b993337e2725887f130a280e4e76e53cb57448bf94d1eb8a
-v41 GeoIP SHA-256: b17fe26ccdcb8d272e6233ec9686a514b309e9d75e75653313a75f329b70fae7
+Generated UTC: 2026-11-16T12:05:19.321220+00:00
+Base v37 GeoIP SHA-256: e3f90be27813dbfbbb9703ab5351d18b210ad961f895f6a43035df66e51fb1c4
+v41 GeoIP SHA-256: 3dbbffd624d8bc4a50dac860135664578bd2e7742bdf66baa399beab3c65d3ec
 
 POLICY
 - Regional registration and service sources remain DIRECT except for explicitly reviewed admission conflicts.
@@ -23,15 +23,15 @@ POLICY
 - IP GeoIP cannot distinguish unrelated tenants on shared IPs; broad RKN summaries can overblock co-resident services.
 
 BASELINE V37
-RU CIDRs: 77804
-RU IPv4 addresses: 52669040
-RU IPv6 addresses: 1193154982600309682361957538070528
+RU CIDRs: 77807
+RU IPv4 addresses: 52669808
+RU IPv6 addresses: 1193154985018161321591215887482880
 
 V41 FINAL
-RU CIDRs: 32811
-RU IPv4 addresses: 53402277
-RU IPv6 addresses: 1205876349341644452571629307822080
-New IPv4 addresses vs v37 after PRIVATE/RKN/company-ASN exception: 733237
+RU CIDRs: 32802
+RU IPv4 addresses: 53407109
+RU IPv6 addresses: 1205876351759496091800887657234432
+New IPv4 addresses vs v37 after PRIVATE/RKN/company-ASN exception: 737301
 New IPv6 addresses vs v37 after PRIVATE/RKN/company-ASN exception: 12721371577038048668188468576256
 PRIVATE IPv4 addresses: 592708862
 PRIVATE IPv6 addresses: 4325545831231176725068219651071148031
@@ -44,17 +44,17 @@ RIR rows with registry/status provenance: 14621
 RIR registration is resource-holder evidence, not physical geolocation or proof of current BGP reachability.
 
 HYDRA ROUTING-INTENT COVERAGE
-Hydra DIRECT CIDRs: 37267
+Hydra DIRECT CIDRs: 37197
 Hydra WHITELIST CIDRs: 6710
-Hydra eligible after PRIVATE and v41 blocks: {'ipv4': 49155822, 'ipv6': 2847563117644718645949551869952}
+Hydra eligible after PRIVATE and v41 blocks: {'ipv4': 49156939, 'ipv6': 2847563117644718645949551869952}
 Hydra is routing-intent, not a geolocation or corporate attribution; it does not override blocked/PRIVATE.
 
 SERVICE DIRECT INPUTS
 Kyoresuas Standard services represented in service catalog: 90
-W1ZARDZ unique service/direct prefixes: 948
+W1ZARDZ unique service/direct prefixes: 946
 IPv4 addresses removed from the W1ZARDZ input by the gaming policy: 262
 Escapingworm operator whitelist prefixes: 88
-Literal service hosts (resolver protection only): 1118
+Literal service hosts (resolver protection only): 1115
 Service resolver-protected address space: {'ipv4': 824519, 'ipv6': 3243489945586708573536284311558}
 Service and operator whitelist routes are separate from geographic/RIR resource evidence.
 Service datasets can include foreign-located or shared-provider endpoints; no country geolocation filter was applied.
@@ -70,12 +70,12 @@ Total block addresses exempted: IPv4=10777 IPv6=0
 Total exempted addresses intersecting DIRECT after PRIVATE: IPv4=10777 IPv6=0
 CORE_CORPORATE exempted DIRECT addresses after PRIVATE: IPv4=35 IPv6=0
 SHARED_INFRA resolver-only exempted DIRECT addresses: IPv4=3251 IPv6=0
-All company origin prefixes: 3992; IPv4 addresses=21711616; IPv6 addresses=24797947012672546805288645165056
-CORE_CORPORATE origin prefixes: 329; SHARED_INFRA origin prefixes: 3663
+All company origin prefixes: 3988; IPv4 addresses=21711872; IPv6 addresses=24797947012672546805288645165056
+CORE_CORPORATE origin prefixes: 329; SHARED_INFRA origin prefixes: 3659
 Antifilter ipsum REVIEW-ONLY IPv4 /24 prefixes: 18889
 Antifilter ipsum raw/valid/invalid rows: 18889/18889/0
 Antifilter ipsum diagnostic input status: AVAILABLE
-Potential additional IPv4 DIRECT address space affected by /24 review candidates: 17279
+Potential additional IPv4 DIRECT address space affected by /24 review candidates: 17532
 Potential additional IPv6 DIRECT address space affected by /24 review candidates: 0
 ipsum /24 candidates remain review-only. DNS-derived and unverified historical evidence cannot carve selected origin or RIR-resource coverage. Explicit IP/subnet evidence and Telegram take precedence.
 The /24 impact estimate excludes the exact corporate company-ASN prefix space exempted by the v41 policy.
@@ -92,7 +92,7 @@ FILES
 - geoip_RU_v41_blocked_ip_exclusions.txt: effective non-corporate blocked set applied to v41.
 - geoip_RU_company_asn_bgp_prefixes.txt: exact prefixes originated by the curated corporate company-ASN allowlist.
 
-SHA-256 output: b17fe26ccdcb8d272e6233ec9686a514b309e9d75e75653313a75f329b70fae7
+SHA-256 output: 3dbbffd624d8bc4a50dac860135664578bd2e7742bdf66baa399beab3c65d3ec
 
 PRE_PUBLICATION_V41_HARD_POLICY_GATE
 Status: PASS
