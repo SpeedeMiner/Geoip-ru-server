@@ -23,3 +23,7 @@
 ## Что исключил переход с WHITELIST на явный DIRECT
 
 На закреплённом снимке 767 адресов из десяти точных CIDR потеряли единственное основание в Hydra WHITELIST. Для групп `103.111.114.0/24`, `185.141.216.0/24` (в дельте только 255 адресов) и `185.177.73.0/24` RIPEstat показал соответственно [AS8849](https://stat.ripe.net/data/prefix-overview/data.json?resource=103.111.114.0%2F24) через covering /22, [AS26832](https://stat.ripe.net/data/prefix-overview/data.json?resource=185.141.216.0%2F24) и [AS202448](https://stat.ripe.net/data/prefix-overview/data.json?resource=185.177.73.0%2F24). Наличие тестовой CDNvideo-точки в другом префиксе AS8849 не обосновывает возврат `103.111.114.0/24`. Это изменение допуска, не заключение об IP-блокировке.
+
+## Ранее существующее пересечение с Cloudflare
+
+Сверены [официальные сети Cloudflare](https://www.cloudflare.com/ips/) по IPv4 (15 CIDR, SHA-256 `f02c6d83bc01ab0ae8577160e036d700c7455359bce054df884e5d7d9e4e9e7b`) и IPv6 (7 CIDR, SHA-256 `9e9d39e3e83bad00c4decafd53c63fa62029f3d95db68de937d2be28234ca0a9`). В опубликованном `63b8abf` и новом кандидате одинаковое пересечение: 3 584 IPv4-адреса в 13 CIDR и 15 IPv6 `/48`. Эти CIDR уже присутствовали, новой Cloudflare-дельты нет. [Cloudflare поясняет](https://developers.cloudflare.com/fundamentals/concepts/cloudflare-ip-addresses/), что IP-диапазоны общие для проксируемых хостов. Это не подтверждает доступность сервисов из РФ. Для решения о сохранении/удалении проверить происхождение прежних включений и конкретные сервисы, не вычитать весь CDN по одному общему списку.
