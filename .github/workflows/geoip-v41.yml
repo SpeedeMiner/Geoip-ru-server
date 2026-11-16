@@ -640,7 +640,8 @@ jobs:
           "$compiler_dir/sing-box-${version}-linux-amd64/sing-box" rule-set decompile --output "$compiler_dir/private.json" geoip_PRIVATE.srs
           python3 .github/scripts/validate_v41_routing_matrix.py --dat "$V41_OUTPUT_FILE" \
             --ru-srs-source "$compiler_dir/ru.json" --private-srs-source "$compiler_dir/private.json" \
-            --fixtures .github/data/v41-routing-fixtures.tsv --summary "$GITHUB_STEP_SUMMARY"
+            --fixtures .github/data/v41-routing-fixtures.tsv --telegram-feed "$TELEGRAM_OFFICIAL_INPUT" \
+            --summary "$GITHUB_STEP_SUMMARY"
 
       - name: Retain output size and family metrics
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
