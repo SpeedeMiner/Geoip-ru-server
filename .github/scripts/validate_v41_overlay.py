@@ -79,9 +79,10 @@ def validate(args: argparse.Namespace) -> dict:
         raise ValueError("Approved blocked address-space union differs from exact + resolver sidecars")
 
     reviewed = set(builder.parse_reviewed_operator_prefixes(args.reviewed_operator_prefixes))
+    trusted = builder.parse_cidr_file(builder.USER_TRUSTED_PREFIXES, allow_hosts=False)[0]
     effective, resolved_only = builder.class_aware_effective_block_set(
         blocked_exact, blocked_resolved, company_core, shared, regional_only | regional_resources, service_exact, service_resolver,
-        non_exempt=telegram, reviewed_operator_prefixes=reviewed,
+        non_exempt=telegram, reviewed_operator_prefixes=reviewed | trusted,
     )
     output_blocked = builder.parse_cidr_file(args.effective_blocked)[0]
     if output_blocked != effective:
@@ -92,7 +93,7 @@ def validate(args: argparse.Namespace) -> dict:
     ipv6_admission = verify_reviewed_ipv6_admission_manifest(args.reviewed_ipv6_admission_exclusions, manifest)
     admission = set(regional_admission) | set(ipv6_admission)
     builder.assert_regional_admission_disjoint(decoded["RU"], admission)
-    builder.assert_reviewed_operator_coverage(decoded["RU"], decoded["PRIVATE"], blocked_exact | telegram, admission, reviewed)
+    builder.assert_reviewed_operator_coverage(decoded["RU"], decoded["PRIVATE"], blocked_exact | telegram, admission, reviewed | trusted)
     for version in (4, 6):
         ru_iv = builder.intervals(decoded["RU"], version)
         private_iv = builder.intervals(decoded["PRIVATE"], version)
@@ -187,6 +188,8 @@ def validate(args: argparse.Namespace) -> dict:
         raise ValueError("Regional admission exclusion provenance mismatch")
     if manifest.get("input_sha256", {}).get("reviewed_operator_prefixes") != sha256(args.reviewed_operator_prefixes):
         raise ValueError("Reviewed operator prefix input SHA-256 mismatch")
+    if manifest.get("input_sha256", {}).get("user_trusted_prefixes") != sha256(builder.USER_TRUSTED_PREFIXES):
+        raise ValueError("User-trusted prefix input SHA-256 mismatch")
     if manifest.get("input_sha256", {}).get("hydra_geoip") != sha256(args.hydra):
         raise ValueError("Hydra input SHA-256 mismatch")
     if manifest.get("hydra_routing_intent", {}).get("input_sha256") != sha256(args.hydra):

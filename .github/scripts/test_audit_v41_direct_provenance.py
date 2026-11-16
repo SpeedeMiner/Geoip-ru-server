@@ -121,7 +121,7 @@ class DirectProvenanceAuditTests(unittest.TestCase):
     def test_effective_mask_cannot_be_replaced_by_unrelated_ranges(self):
         telegram = '149.154.160.0/20\n2001:b28:f23d::/48\n'
         layers = {label:set() for label in ('rir-RU','rir-BY','rir-KZ',
-            'selected-origins','corporate','w1zardz-service-direct','reviewed-operators')}
+            'selected-origins','corporate','w1zardz-service-direct','reviewed-operators','user-trusted-prefixes')}
         with TemporaryDirectory() as tmp:
             root=Path(tmp)
             hashes={'telegram_official':{'input_sha256':hashlib.sha256(telegram.encode()).hexdigest()}}

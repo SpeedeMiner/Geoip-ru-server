@@ -234,8 +234,9 @@ def main() -> int:
         hard_rows = read_hard_sources(a.hard)
         verify_hard_evidence(hard_rows, a.current_subnet_feed, a.confirmed_ip_records)
         reviewed = builder.parse_reviewed_operator_prefixes(a.reviewed_operator_prefixes)
+        user_trusted = builder.parse_cidr_file(builder.USER_TRUSTED_PREFIXES, allow_hosts=False)[0]
         builder.assert_reviewed_operator_coverage(
-            categories["RU"], categories["PRIVATE"], {prefix for prefix, _ in hard_rows}, admission, reviewed
+            categories["RU"], categories["PRIVATE"], {prefix for prefix, _ in hard_rows}, admission, set(reviewed) | user_trusted
         )
         result = inspect_policy(categories["RU"], categories["PRIVATE"], effective,
                                 hard_rows, core, shared, service)
