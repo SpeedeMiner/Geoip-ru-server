@@ -121,6 +121,37 @@ class BGPObservationTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "stale"):
                 check.get_ris(123, now - timedelta(days=1), now)
 
+    def test_ris_excludes_defaults_and_ipv4_mapped_without_losing_ordinary_routes(self):
+        from datetime import datetime, timedelta, timezone
+        end = datetime(2026, 11, 16, tzinfo=timezone.utc)
+        data = {"resource": "123", "query_starttime": "2026-11-15T00:00:00",
+                "query_endtime": "2026-11-16T00:00:00", "latest_time": "2026-11-16T00:00:00"}
+        def row(prefix):
+            return {"prefix": prefix, "timelines": [{"starttime": data["query_starttime"],
+                                                     "endtime": data["query_endtime"]}]}
+        data["prefixes"] = [row(prefix) for prefix in ("0.0.0.0/0", "::/0", "::ffff:192.0.2.0/120",
+                                                       "192.0.2.0/24", "2001:db8::/120")]
+        class Response:
+            def __enter__(self): return self
+            def __exit__(self, *args): pass
+            def read(self, limit): return json.dumps({"status": "ok", "data": data}).encode()
+        with patch.object(check, "urlopen", return_value=Response()):
+            families, metadata = check.get_ris(123, end - timedelta(days=1), end)
+            self.assertEqual(families, {4: {ipaddress.ip_network("192.0.2.0/24")},
+                                        6: {ipaddress.ip_network("2001:db8::/120")}})
+            self.assertEqual(metadata["excluded_from_space_comparison"], {
+                "default-route": ["0.0.0.0/0", "::/0"], "ipv4-mapped-ipv6": ["::ffff:192.0.2.0/120"],
+            })
+            data["prefixes"] = data["prefixes"][:3]
+            with self.assertRaisesRegex(ValueError, "only out-of-scope"):
+                check.get_ris(123, end - timedelta(days=1), end)
+            data["prefixes"][0]["timelines"] = []
+            with self.assertRaisesRegex(ValueError, "missing timeline"):
+                check.get_ris(123, end - timedelta(days=1), end)
+            data["prefixes"] = []
+            families, _ = check.get_ris(123, end - timedelta(days=1), end)
+            self.assertEqual(families, {4: set(), 6: set()})
+
     def test_latest_available_may_be_later_than_historical_query_end(self):
         from datetime import datetime, timedelta, timezone
         end = datetime(2026, 11, 16, tzinfo=timezone.utc)

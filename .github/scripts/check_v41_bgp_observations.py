@@ -13,6 +13,7 @@ from urllib.request import Request, urlopen
 from build_v41_overlay import intervals, subtract, networks_from_intervals, interval_size
 
 MAX_JSON_BYTES = 10 * 1024 * 1024
+IPV4_MAPPED = ipaddress.IPv6Network("::ffff:0:0/96")
 
 
 def parse_timestamp(value, key):
@@ -86,9 +87,10 @@ def get_ris(asn, start, end):
             or latest > datetime.now(timezone.utc) + timedelta(hours=1)):
         raise ValueError("RIPEstat response window is stale or outside requested interval")
     families = {4: set(), 6: set()}
+    excluded = {"default-route": set(), "ipv4-mapped-ipv6": set()}
     for row in data["prefixes"]:
         net = ipaddress.ip_network(row["prefix"], strict=True)
-        if net.prefixlen == 0 or not isinstance(row.get("timelines"), list) or not row["timelines"]:
+        if not isinstance(row.get("timelines"), list) or not row["timelines"]:
             raise ValueError("invalid RIPEstat prefix or missing timeline")
         for timeline in row["timelines"]:
             if not isinstance(timeline, dict):
@@ -97,8 +99,19 @@ def get_ris(asn, start, end):
             last = parse_timestamp(timeline.get("endtime"), "timeline endtime")
             if first > last or last < query_start or first > query_end:
                 raise ValueError("RIPEstat timeline outside response window")
-        families[net.version].add(net)
-    return families, {key: data.get(key) for key in ("query_starttime", "query_endtime", "latest_time")}
+        # A default describes routing fallback, not originated address space.
+        # IPv4-mapped IPv6 is not independently routable IPv6; do not add it
+        # to IPv4 either. Preserve both classes separately for review.
+        if net.prefixlen == 0:
+            excluded["default-route"].add(row["prefix"])
+        elif net.version == 6 and net.subnet_of(IPV4_MAPPED):
+            excluded["ipv4-mapped-ipv6"].add(row["prefix"])
+        else:
+            families[net.version].add(net)
+    if data["prefixes"] and not any(families.values()):
+        raise ValueError("RIPEstat returned only out-of-scope routes")
+    return families, {**{key: data.get(key) for key in ("query_starttime", "query_endtime", "latest_time")},
+                      "excluded_from_space_comparison": {key: sorted(values) for key, values in excluded.items()}}
 
 
 def compare(ipverse, ris):
@@ -143,14 +156,17 @@ def main():
                 "asns": results}
     args.output.write_text(json.dumps(document, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     lines = ["## BGP cross-check: advisory", "", "RIPE RIS requested 24h, min_peers_seeing=1; actual data can lag (see JSON metadata). ipverse uses a different window. No automatic routing changes.", "",
-             "| ASN | Status | IPv4 RIS-only / ipverse-only addresses | IPv6 RIS-only / ipverse-only addresses |", "|---|---|---:|---:|"]
+             "| ASN | Status | IPv4 RIS-only / ipverse-only addresses | IPv6 RIS-only / ipverse-only addresses | RIS rows outside comparison (default / IPv4-mapped) |",
+             "|---|---|---:|---:|---:|"]
     for asn, row in results.items():
         if row["status"] in {"ok", "partial-window"}:
             values = [f"{row[f'ipv{v}']['ris_only_addresses']} / {row[f'ipv{v}']['ipverse_only_addresses']}" for v in (4, 6)]
-            lines.append(f"| {asn} | {row['status']} | {values[0]} | {values[1]} |")
+            excluded = row["ris_window"].get("excluded_from_space_comparison", {})
+            counters = " / ".join(str(len(excluded.get(k, ()))) for k in ("default-route", "ipv4-mapped-ipv6"))
+            lines.append(f"| {asn} | {row['status']} | {values[0]} | {values[1]} | {counters} |")
         else:
             # Only the exception class is printed; raw source messages stay in JSON.
-            lines.append(f"| {asn} | unavailable ({row['reason_type']}) | — | — |")
+            lines.append(f"| {asn} | unavailable ({row['reason_type']}) | — | — | — |")
     text = "\n".join(lines) + "\n"
     if args.summary:
         with args.summary.open("a", encoding="utf-8") as stream:
