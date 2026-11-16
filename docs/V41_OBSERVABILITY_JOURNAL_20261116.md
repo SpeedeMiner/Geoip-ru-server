@@ -520,3 +520,10 @@ Progress rule: append dated evidence, artifact identities, decisions and remaini
 - Restored all 38 inputs from the five local public assets with the new wrapper. The exact-source catalog came from Git rather than the working tree. All 38 files matched the independent reconstruction's input digests.
 - With network socket creation denied for the wrapper and children, the clean replay matched all six client files (exit 0). The known disputed replay differed only in the two RU files and their sidecars (exit 1); the PRIVATE pair matched. Tampering with the block bundle and a pre-existing output each produced exit 2, without creating or replacing the destination.
 - Ran 276 local unit tests and the CDN workflow boundary check. Next, repeat a full build from this wrapper's output and verify the exact draft's CI.
+
+## 2026-11-16 15:03 UTC+05 — offline tool draft and full reassembly
+
+- Opened independent [Draft PR #55](https://github.com/SpeedeMiner/Geoip-ru-server/pull/55) at `95168a2` from main. It contains only the offline command, tests, and operator instructions. No pipeline, DIRECT, CDN, or publication change.
+- A new full build from the 38 restored files completed with inherited socket-deny enforcement. All six client binaries/sidecars and 11 of 13 manifest-bound assets matched exactly. The two audit files differ only at their expected generation timestamp fields. [Replay evidence](V41_OFFLINE_SNAPSHOT_TOOL_EVIDENCE_20261116.json).
+- Exact-head [v41 CI](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43844682467) and [workflow lint](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43844682470) passed. The production publish job was skipped. The v39 job is still running.
+- The 08:00 UTC official raw RIS RRC13 dump is available independently of the lagging RIPEstat summary API. Its five peer ASNs all see AS137410 for each of the five lost /24s. The adjacent control still shows AS219305. Processing the contiguous MSK-IX collector update sample through 09:55 UTC. This is BGP visibility at one collector, not residential HTTPS access.
