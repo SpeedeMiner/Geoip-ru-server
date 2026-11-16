@@ -19,6 +19,7 @@ def validate_rir(path, registry, minimum_records=100):
     header = None
     declared = {}
     counts = Counter()
+    asn_units = 0
     with path.open(encoding="utf-8-sig") as stream:
         for number, raw in enumerate(stream, 1):
             line = raw.strip()
@@ -45,12 +46,17 @@ def validate_rir(path, registry, minimum_records=100):
             if len(fields) < 7 or fields[0].lower() != registry or fields[2].lower() not in {"asn", "ipv4", "ipv6"}:
                 raise ValueError(f"{path}:{number}: malformed resource record")
             counts[fields[2].lower()] += 1
+            if fields[2].lower() == "asn":
+                if not fields[4].isascii() or not fields[4].isdigit() or int(fields[4]) <= 0:
+                    raise ValueError(f"{path}:{number}: invalid ASN range size")
+                asn_units += int(fields[4])
     if header is None:
         raise ValueError(f"{path}: missing delegated header")
     if expected < minimum_records or sum(counts.values()) != expected:
         raise ValueError(f"{path}: declared record count differs from received data or is too small; "
                          f"declared={expected}, actual={sum(counts.values())}, "
-                         f"declared_by_type={dict(sorted(declared.items()))}, actual_by_type={dict(sorted(counts.items()))}")
+                         f"declared_by_type={dict(sorted(declared.items()))}, actual_by_type={dict(sorted(counts.items()))}, "
+                         f"asn_units={asn_units}")
     if not set(counts) <= set(declared) or any(declared[k] != counts[k] for k in declared):
         raise ValueError(f"{path}: per-family summary counts do not match records")
     return sum(counts.values())
