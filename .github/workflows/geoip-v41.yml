@@ -44,6 +44,7 @@ on:
       - ".github/scripts/build_v41_rir_legacy_inventory.py"
       - ".github/scripts/build_v41_iana_special_prefixes.py"
       - ".github/scripts/validate_v41_base_artifacts.py"
+      - ".github/scripts/v41_source_counts.py"
       - ".github/scripts/validate_v41_block_feed_counts.py"
       - ".github/scripts/validate_v41_publication_bounds.py"
       - ".github/scripts/validate_v41_priority_loss.py"
