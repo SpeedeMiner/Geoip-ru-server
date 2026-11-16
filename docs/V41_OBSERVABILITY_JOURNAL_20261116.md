@@ -514,3 +514,9 @@ Progress rule: append dated evidence, artifact identities, decisions and remaini
 
 - Resumed from verified journal head `bfc1e16`. GitHub still has `main=c0d2a01` and #53 is Draft at `92fa97e`. The previous pass proved reproducibility from pinned public inputs, but required disposable scripts.
 - Implement a small offline-only wrapper around the checked-in bundle validators. It will verify and restore the five manifest-bound inputs from a local directory and compare the six client assets of a replay against the same SHA-256-pinned manifest. Keep exact historical source and timestamps explicit. No new production workflow, cache action, review-table decision or PR #5 change.
+
+## 2026-11-16 14:58 UTC+05 — offline wrapper verified against the public snapshot
+
+- Restored all 38 inputs from the five local public assets with the new wrapper. The exact-source catalog came from Git rather than the working tree. All 38 files matched the independent reconstruction's input digests.
+- With network socket creation denied for the wrapper and children, the clean replay matched all six client files (exit 0). The known disputed replay differed only in the two RU files and their sidecars (exit 1); the PRIVATE pair matched. Tampering with the block bundle and a pre-existing output each produced exit 2, without creating or replacing the destination.
+- Ran 276 local unit tests and the CDN workflow boundary check. Next, repeat a full build from this wrapper's output and verify the exact draft's CI.
