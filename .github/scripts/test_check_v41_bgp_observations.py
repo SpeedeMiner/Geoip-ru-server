@@ -12,6 +12,19 @@ import check_v41_bgp_observations as check
 
 
 class BGPObservationTests(unittest.TestCase):
+    def test_unavailable_source_reasons_are_visible_without_error_text(self):
+        with TemporaryDirectory() as directory:
+            root = Path(directory)
+            output, summary = root / "report.json", root / "summary.md"
+            args = ["check", "--archive", "unused", "--asns", "123", "124", "--output", str(output), "--summary", str(summary)]
+            with patch.object(sys, "argv", args), patch.object(check, "read_ipverse", return_value={123: {4: set(), 6: set()}}), \
+                    patch.object(check, "get_ris", side_effect=TimeoutError("sensitive detail")):
+                check.main()
+            text = summary.read_text(encoding="utf-8")
+            self.assertIn("unavailable (TimeoutError)", text)
+            self.assertIn("unavailable (MissingIPVerse)", text)
+            self.assertNotIn("sensitive detail", text)
+
     def test_partial_window_is_preserved_in_json_and_summary(self):
         from datetime import timedelta
         with TemporaryDirectory() as directory:

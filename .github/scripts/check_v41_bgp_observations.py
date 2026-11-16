@@ -131,13 +131,13 @@ def main():
     for asn in args.asns:
         key = f"AS{asn}"
         if asn not in observed:
-            results[key] = {"status": "unavailable", "reason": "ASN absent from ipverse snapshot"}
+            results[key] = {"status": "unavailable", "reason_type": "MissingIPVerse", "reason": "ASN absent from ipverse snapshot"}
             continue
         try:
             ris, metadata = get_ris(asn, start, end)
             results[key] = {"status": window_status(metadata, start, end), "ris_window": metadata, **compare(observed[asn], ris)}
         except Exception as exc:  # One failed advisory source must be visible and cannot modify routing.
-            results[key] = {"status": "unavailable", "reason": f"{type(exc).__name__}: {exc}"}
+            results[key] = {"status": "unavailable", "reason_type": type(exc).__name__, "reason": f"{type(exc).__name__}: {exc}"}
     document = {"generated_at": end.isoformat(), "query_start": start.isoformat(), "query_end": end.isoformat(),
                 "min_peers_seeing": 1, "warning": "Different observation windows; discrepancies require review and are not route changes.",
                 "asns": results}
@@ -149,7 +149,8 @@ def main():
             values = [f"{row[f'ipv{v}']['ris_only_addresses']} / {row[f'ipv{v}']['ipverse_only_addresses']}" for v in (4, 6)]
             lines.append(f"| {asn} | {row['status']} | {values[0]} | {values[1]} |")
         else:
-            lines.append(f"| {asn} | unavailable | — | — |")
+            # Only the exception class is printed; raw source messages stay in JSON.
+            lines.append(f"| {asn} | unavailable ({row['reason_type']}) | — | — |")
     text = "\n".join(lines) + "\n"
     if args.summary:
         with args.summary.open("a", encoding="utf-8") as stream:
