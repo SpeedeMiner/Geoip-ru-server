@@ -1,4 +1,4 @@
-"""Read and verify manually reviewed IPv6 exclusions from final DIRECT only."""
+"""Read and verify geographic IPv6 assignment evidence (review-only)."""
 from __future__ import annotations
 
 import csv
@@ -71,7 +71,7 @@ def verify_reviewed_ipv6_admission_manifest(path: Path, manifest: dict) -> dict:
 
 
 def main() -> int:
-    """Recheck the exact exclusions on the downloaded candidate before staging tags."""
+    """Recheck evidence provenance on the downloaded candidate before staging tags."""
     import argparse
     import json
 
@@ -90,10 +90,11 @@ def main() -> int:
         categories = builder.parse_geoip_dat(args.geoip)
         if set(categories) != {"RU", "PRIVATE"}:
             raise ValueError("Expected GeoIP categories RU and PRIVATE only")
-        builder.assert_regional_admission_disjoint(categories["RU"], rows)
+        if manifest.get(RECORD_KEY, {}).get("role") != "geography-review-only":
+            raise ValueError("Geographic IPv6 records must be review-only")
     except (OSError, ValueError, KeyError, TypeError, AttributeError) as exc:
         parser.exit(1, f"ERROR: {exc}\n")
-    print(f"Reviewed IPv6 admission: verified {len(rows)} exact /48 records")
+    print(f"Reviewed IPv6 geography evidence: verified {len(rows)} exact /48 records; no country-only exclusions")
     return 0
 
 

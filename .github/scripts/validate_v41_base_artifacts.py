@@ -2,6 +2,7 @@
 import os, sys
 from collections import defaultdict
 from v41_diagnostic_sources import STATUS, verify_unavailable_file
+from v41_static_overrides import expected_quality_markers, read_overrides
 output, manifest, company_manifest, bgp_stats, rir_stats, counts, quality, provenance, category_audit, by_kz_asns, blocked_ips, blocked_review, blocked_stats, blocked_checksums, input_provenance = sys.argv[1:]
 minimums = ((output, 4), (manifest, 100), (company_manifest, 300), (bgp_stats, 100), (rir_stats, 100),
             (counts, 100), (quality, 1600), (provenance, 50), (category_audit, 50), (by_kz_asns, 100), (blocked_ips, 10000),
@@ -214,6 +215,7 @@ for required_group in ("Yandex", "VK/Mail.ru", "Wildberries", "Ozon", "Sberbank"
         raise SystemExit(f"Company ASN allowlist is missing required group: {required_group}")
 
 quality_text = open(quality, encoding="utf-8").read()
+static_overrides = read_overrides()
 required_quality_markers = (
     "UNIFIED DIRECT REGION RU+BY+KZ", "BLOCKED DESTINATION EXCLUSIONS",
     "Telemetry/privacy-risk labels are informational only", "telemetry stays DIRECT", "exact host IPs", "PRIVATE",
@@ -222,9 +224,7 @@ required_quality_markers = (
     "Loyalsoldier/v2fly overlap as share of union address space", "IPv6 address-space equivalent in /32-sized units",
     "Reconciled source role totals:", "Grimbird and Digne are treated as one correlated group",
     "curated Russian-company ASN allowlist", "regardless of ipverse countryCode",
-    "Yandex Turkey AS212066 static DIRECT overrides: 45.148.65.0/24, 2a14:48c6::/48",
-    "Yandex Turkey AS212066 required DIRECT prefixes covered: 2 of 2",
-    "Yandex Turkey AS212066 final DIRECT prefix checks (after PRIVATE/blocked carve): 2 of 2",
+    *expected_quality_markers(static_overrides),
     "Approved blocked prefix records loaded", "subnet.lst bounded CIDRs", "RunetFreedom's explicitly configured Telegram routes",
     "community.lst and Re-filter ipsum.lst are exported as review-only candidates",
 )

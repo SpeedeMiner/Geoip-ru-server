@@ -104,3 +104,10 @@ AS48092	SHARED_INFRA	Tele2/T2	Network operator, access or hosting infrastructure
 AS28812	SHARED_INFRA	Rostelecom	Network operator, access or hosting infrastructure; preserve all hard exclusions
 AS13118	SHARED_INFRA	Rostelecom	Network operator, access or hosting infrastructure; preserve all hard exclusions
 AS12380	SHARED_INFRA	Rostelecom	Network operator, access or hosting infrastructure; preserve all hard exclusions
+AS35673	SHARED_INFRA	Kaspi Bank	Bank-operated origin; no claim that all traffic is first-party; preserve all hard exclusions
+AS39433	SHARED_INFRA	Halyk Bank	Bank-operated origin; no claim that all traffic is first-party; preserve all hard exclusions
+AS51365	SHARED_INFRA	Belinvestbank	Bank-operated origin; no claim that all traffic is first-party; preserve all hard exclusions
+AS43601	SHARED_INFRA	Bank CenterCredit	Bank-operated origin; no claim that all traffic is first-party; preserve all hard exclusions
+AS43934	SHARED_INFRA	KISC	Payment infrastructure origin; no claim that all traffic is first-party; preserve all hard exclusions
+AS44288	SHARED_INFRA	Banks Processing Center	Payment infrastructure origin; no claim that all traffic is first-party; preserve all hard exclusions
+AS62170	SHARED_INFRA	Sberbank BY	Bank-operated origin; no claim that all traffic is first-party; preserve all hard exclusions

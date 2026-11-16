@@ -61,15 +61,35 @@ def compile_and_verify(sing_box, output, categories):
             file.replace(output / file.name)
 
 
+def size_metrics(full, categories):
+    result = {"dat_bytes": full.stat().st_size, "categories": {},
+              "note": "Files contain both families; bytes cannot be attributed independently without separate encodings."}
+    for category, name in SRS_NAMES.items():
+        networks = collapse(categories[category])
+        result["categories"][category] = {
+            "srs_bytes": (full.parent / name).stat().st_size,
+            "ipv4_cidrs": sum(n.version == 4 for n in networks),
+            "ipv6_cidrs": sum(n.version == 6 for n in networks),
+            "ipv4_addresses": str(sum(n.num_addresses for n in networks if n.version == 4)),
+            "ipv6_addresses": str(sum(n.num_addresses for n in networks if n.version == 6)),
+        }
+    return result
+
+
 def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("--full", type=Path, default=Path("geoip_RU.dat"))
     p.add_argument("--manifest", type=Path, default=Path("geoip_RU_v41_manifest.json"))
     p.add_argument("--sing-box", help="Compile and decompile with this binary. Omit for DAT checks only.")
+    p.add_argument("--metrics", type=Path, help="Write category counts and whole-file sizes after SRS verification.")
     a = p.parse_args()
     categories = check_dat(a.full, a.manifest)
     if a.sing_box:
         compile_and_verify(a.sing_box, a.full.parent, categories)
+        if a.metrics:
+            a.metrics.write_text(json.dumps(size_metrics(a.full, categories), indent=2) + "\n", encoding="utf-8")
+    elif a.metrics:
+        p.error("--metrics requires --sing-box")
 
 
 if __name__ == "__main__":

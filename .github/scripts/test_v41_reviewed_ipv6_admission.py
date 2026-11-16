@@ -112,13 +112,13 @@ class ReviewedIPv6AdmissionTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "outside the expected exact output"):
             verify_ipv6_admission_effect(set(), domain, set(), hard, {}, {KP, IN})
 
-    def test_prepublication_rejects_leak_even_with_matching_manifest_and_dat_digest(self):
+    def test_prepublication_treats_assignment_country_as_review_only(self):
         script = Path(__file__).with_name("v41_reviewed_ipv6_admission.py").resolve()
         records = read_reviewed_ipv6_admission(DATA)
         with tempfile.TemporaryDirectory() as td:
             p = Path(td)
             dat, manifest = p / "geoip.dat", p / "manifest.json"
-            for network, return_code in ((RU, 0), (ANYCAST, 0), (KP, 1), (NL, 1), (DE, 1)):
+            for network in (RU, ANYCAST, KP, NL, DE):
                 with self.subTest(network=network):
                     blob = builder.encode_geoip({
                         "RU": {network},
@@ -128,13 +128,11 @@ class ReviewedIPv6AdmissionTests(unittest.TestCase):
                     manifest.write_text(json.dumps({
                         "output_sha256": hashlib.sha256(blob).hexdigest(),
                         "input_sha256": {RECORD_KEY: hashlib.sha256(DATA.read_bytes()).hexdigest()},
-                        RECORD_KEY: {"records": list(records.values())},
+                        RECORD_KEY: {"records": list(records.values()), "role": "geography-review-only"},
                     }), encoding="utf-8")
                     result = subprocess.run(
                         [sys.executable, str(script), "--table", str(DATA),
                          "--manifest", str(manifest), "--geoip", str(dat)],
                         capture_output=True, text=True,
                     )
-                    self.assertEqual(result.returncode, return_code, result.stderr)
-                    if return_code:
-                        self.assertIn("IPv6 DIRECT intersects", result.stderr)
+                    self.assertEqual(result.returncode, 0, result.stderr)

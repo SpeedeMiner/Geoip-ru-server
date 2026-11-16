@@ -14,6 +14,7 @@ from pathlib import Path
 
 import build_v41_overlay as builder
 from v41_reviewed_ipv6_admission import verify_reviewed_ipv6_admission_manifest
+from validate_v41_overlay import verify_unreachable_manifest
 from prepare_blocked_sources_v41 import (
     CONFIRMED_IP, HARD_SOURCE_LABELS, TELEGRAM_PREFIXES,
     read_confirmed_ip_records, read_feed, subnet_auto_approved,
@@ -25,6 +26,7 @@ SOURCE_KEYS = {
     "core": "corporate_core_prefixes",
     "shared": "shared_infrastructure_prefixes",
     "rir": "regional_rir_inventory",
+    "regional_origin_prefixes": "regional_origin_prefixes",
     "regional_admission_exclusions": "regional_admission_exclusions",
     "reviewed_operator_prefixes": "reviewed_operator_prefixes",
     "kyoresuas_v4": "kyoresuas_standard_ipv4",
@@ -198,7 +200,7 @@ def main() -> int:
     p = argparse.ArgumentParser(description=__doc__)
     for field in ("geoip", "manifest", "quality", "hard", "effective", "core",
                   "shared", "rir", "kyoresuas_v4", "kyoresuas_v6",
-                  "kyoresuas_services", "w1zardz", "hxehex_ip", "escapingworm"):
+                  "kyoresuas_services", "w1zardz", "hxehex_ip", "escapingworm", "regional_origin_prefixes"):
         p.add_argument("--" + field.replace("_", "-"), type=Path, required=True)
     p.add_argument("--current-subnet-feed", type=Path, required=True)
     p.add_argument("--confirmed-ip-records", type=Path, required=True)
@@ -212,9 +214,13 @@ def main() -> int:
         categories = builder.parse_geoip_dat(a.geoip)
         if set(categories) != {"RU", "PRIVATE"}:
             raise ValueError("Expected GeoIP categories RU and PRIVATE only")
-        admission = set(builder.parse_regional_admission_exclusions(a.regional_admission_exclusions))
-        admission.update(verify_reviewed_ipv6_admission_manifest(a.reviewed_ipv6_admission_exclusions, manifest))
-        builder.assert_regional_admission_disjoint(categories["RU"], admission)
+        regional_review = builder.parse_regional_admission_exclusions(a.regional_admission_exclusions)
+        verify_reviewed_ipv6_admission_manifest(a.reviewed_ipv6_admission_exclusions, manifest)
+        if (manifest.get("regional_admission_exclusions", {}).get("records") != list(regional_review.values())
+                or manifest.get("regional_admission_exclusions", {}).get("role") != "geography-review-only"
+                or manifest.get("reviewed_ipv6_admission_exclusions", {}).get("role") != "geography-review-only"):
+            raise ValueError("Geographic assignment data must be review-only")
+        admission = set()
         effective = builder.parse_cidr_file(a.effective)[0]
         core = builder.parse_cidr_file(a.core, allow_hosts=False)[0]
         shared = builder.parse_cidr_file(a.shared, allow_hosts=False)[0]
@@ -234,6 +240,11 @@ def main() -> int:
         hard_rows = read_hard_sources(a.hard)
         verify_hard_evidence(hard_rows, a.current_subnet_feed, a.confirmed_ip_records)
         reviewed = builder.parse_reviewed_operator_prefixes(a.reviewed_operator_prefixes)
+        regional_origins = builder.parse_cidr_file(a.regional_origin_prefixes, allow_hosts=False)[0]
+        unreachable = verify_unreachable_manifest(manifest, builder.union_networks(*regions.values()),
+                                                   regional_origins, core | shared, set(reviewed))
+        admission.update(unreachable)
+        builder.assert_regional_admission_disjoint(categories["RU"], admission)
         builder.assert_reviewed_operator_coverage(
             categories["RU"], categories["PRIVATE"], {prefix for prefix, _ in hard_rows}, admission, reviewed
         )

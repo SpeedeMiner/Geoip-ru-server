@@ -21,6 +21,8 @@ from typing import Iterable
 
 from validate_v41_telegram import PINNED_FEED, read_telegram_feed
 from v41_reviewed_ipv6_admission import RECORD_KEY, read_reviewed_ipv6_admission
+from v41_static_overrides import DEFAULT_PATH as STATIC_OVERRIDES_PATH, read_overrides
+from v41_reviewed_unreachable import DEFAULT_PATH as UNREACHABLE_PATH, read_reviewed as read_unreachable
 
 W1ZARDZ_EXCLUSIONS = Path(__file__).resolve().parent.parent / "data/v41-w1zardz-gaming-exclusions.txt"
 
@@ -499,6 +501,12 @@ def subtract_networks(source, *masks):
         output.update(networks_from_intervals(remaining, version))
     return output
 
+
+def reviewed_unreachable_mask(records, protected):
+    """Remove only reviewed IP-layer unreachable space outside confirmed core."""
+    candidates = {ipaddress.ip_network(prefix, strict=True) for prefix in records}
+    return subtract_networks(candidates, protected)
+
 def read_w1zardz_exclusions(path: Path):
     networks = set()
     for number, row in enumerate(path.read_text(encoding="utf-8").splitlines(), 1):
@@ -835,6 +843,14 @@ def main():
     source_stats["rir-rukzby-selected-origin-protected"] = regional_origin_stats
     source_stats["verified-service-exact-hosts"] = {"valid_rows": len(service_exact), "invalid_rows": 0}
     source_stats["verified-service-resolver-protected"] = {"valid_rows": len(service_resolver), "invalid_rows": 0}
+    static_overrides = read_overrides()
+    static_override_networks = {ipaddress.ip_network(prefix) for prefix in static_overrides}
+    source_stats["static-override"] = {"valid_rows": len(static_overrides),
+                                      "input_sha256": sha256(STATIC_OVERRIDES_PATH.read_bytes())}
+    for prefix, row in static_overrides.items():
+        prefix_rows.append({"source_id": "static-override", "category": "reviewed static DIRECT override",
+                            "service": row["reason"], "tier": "", "asn_list": row["asn"],
+                            "domains": "", "prefix": prefix})
     for source_id, networks, category in (
         ("all-company-asn-origins", company_prefixes, "curated company ASN origin"),
         ("core-company-asn-origins", core_company_prefixes, "CORE_CORPORATE exact origin"),
@@ -866,7 +882,7 @@ def main():
     for row in admission_exclusions.values():
         prefix_rows.append({
             "source_id": "regional-admission-exclusion",
-            "category": "Reviewed foreign assignment",
+            "category": "Foreign assignment evidence (review only)",
             "service": row["delegated_country"] + " -> " + row["assignment_country"],
             "tier": "", "asn_list": row["origin_asn"], "domains": "", "prefix": row["prefix"],
         })
@@ -874,12 +890,22 @@ def main():
     for row in ipv6_admission.values():
         prefix_rows.append({
             "source_id": "reviewed-ipv6-admission-exclusion",
-            "category": "Reviewed foreign IPv6 assignment",
+            "category": "Foreign IPv6 assignment evidence (review only)",
             "service": row["assignment_country"],
             "tier": row["basis"], "asn_list": row["origin_asn"],
             "domains": "", "prefix": row["prefix"],
         })
-    admission_mask = set(admission_exclusions) | set(ipv6_admission)
+    unreachable_records = read_unreachable()
+    protected_core = regional_union | company_prefixes | regional_only | reviewed_prefixes
+    unreachable_mask = reviewed_unreachable_mask(unreachable_records, protected_core)
+    # Registry/geofeed country is review evidence, not proof of IP unreachability.
+    # Preserve the rows for audit, but only reviewed IP-layer unreachability carves DIRECT.
+    geographic_admission_mask = set()
+    admission_mask = unreachable_mask
+    for prefix, row in unreachable_records.items():
+        prefix_rows.append({"source_id": "reviewed-unreachable", "category": row["kind"],
+                            "service": row["evidence"], "tier": row["review_after"],
+                            "asn_list": "", "domains": "", "prefix": prefix})
     preblock = base_ru | additions
     preblock_iv = {v: intervals(preblock, v) for v in (4, 6)}
     core_company_iv = {v: intervals(core_company_prefixes, v) for v in (4, 6)}
@@ -898,7 +924,11 @@ def main():
     final = set(collapse(subtract_networks(preblock, private, routing_exclusions)))
     admission_iv = {v: intervals(admission_mask, v) for v in (4, 6)}
     admission_removed = {
-        v: interval_size(intersect(subtract(subtract(preblock_iv[v], private_iv[v]), blocked_iv[v]), admission_iv[v]))
+        v: interval_size(intersect(subtract(subtract(subtract(preblock_iv[v], private_iv[v]), blocked_iv[v]), intervals(unreachable_mask, v)), intervals(geographic_admission_mask, v)))
+        for v in (4, 6)
+    }
+    unreachable_removed = {
+        v: interval_size(intersect(subtract(subtract(subtract(preblock_iv[v], private_iv[v]), blocked_iv[v]), intervals(geographic_admission_mask, v)), intervals(unreachable_mask, v)))
         for v in (4, 6)
     }
     hydra_expected = hydra_expected_after_policy(hydra_sources, private, routing_exclusions)
@@ -951,6 +981,7 @@ def main():
     measured_sources = [
         ("rir-RU", rir["RU"]), ("rir-BY", rir["BY"]), ("rir-KZ", rir["KZ"]),
         ("corporate-company-asn-origins", company_prefixes),
+        ("static-override", static_override_networks),
         ("rir-rukzby-selected-origin-protected", regional_only),
         ("verified-service-exact-hosts", service_exact),
         ("verified-service-resolver-protected", service_resolver),
@@ -1115,11 +1146,9 @@ def main():
         "v41 GeoIP SHA-256: "+sha256(payload),
         "",
         "POLICY",
-        "- Regional registration and service sources remain DIRECT except for explicitly reviewed admission conflicts.",
-        "- Regional admission exclusions (not RKN): " + ", ".join(row["prefix"] for row in admission_exclusions.values()),
-        f"- IPv4 removed by regional admission exclusions after PRIVATE and block policy: {admission_removed[4]}",
-        "- Reviewed IPv6 admission exclusions (not RKN): " + ", ".join(map(str, ipv6_admission)),
-        f"- IPv6 removed by reviewed admission exclusions after PRIVATE and block policy: {admission_removed[6]}",
+        "- Geographic assignment records are review-only and do not independently exclude DIRECT routes.",
+        f"- Geographic evidence records: IPv4={len(admission_exclusions)} IPv6={len(ipv6_admission)}",
+        f"- Reviewed IP-unreachable exclusions after core protection: IPv4={unreachable_removed[4]} IPv6={unreachable_removed[6]}",
         "- PRIVATE has absolute precedence.",
         "- CORE_CORPORATE exact origin prefixes are protected from the resolver layer only.",
         "- SHARED_INFRA exact origin prefixes are protected only against the resolver-only layer.",
@@ -1218,11 +1247,19 @@ def main():
         "rir_inventory":{"rows":rir_rows,"countries":{c:len(rir[c]) for c in ("RU","BY","KZ")}},
         "regional_admission_exclusions": {
             "records": list(admission_exclusions.values()),
+            "role": "geography-review-only",
             "removed_after_block_policy": {"ipv4": admission_removed[4], "ipv6": 0},
         },
         RECORD_KEY: {
             "records": list(ipv6_admission.values()),
+            "role": "geography-review-only",
             "removed_after_block_policy": {"ipv6": admission_removed[6]},
+        },
+        "reviewed_unreachable": {
+            "records": list(unreachable_records.values()),
+            "effective_cidrs": len(unreachable_mask),
+            "removed_after_other_policy": {f"ipv{v}": unreachable_removed[v] for v in (4, 6)},
+            "core_protection": "regional resources, selected regional origins, company ASNs and reviewed operators",
         },
         "service_sources":source_stats,
         "diagnostic_sources": {
@@ -1315,6 +1352,7 @@ def main():
             "regional_rir_inventory":sha256(args.rir.read_bytes()),
             "regional_admission_exclusions":sha256(args.regional_admission_exclusions.read_bytes()),
             RECORD_KEY:sha256(args.reviewed_ipv6_admission_exclusions.read_bytes()),
+            "reviewed_unreachable":sha256(UNREACHABLE_PATH.read_bytes()),
             "reviewed_operator_prefixes":source_stats[reviewed_source]["input_sha256"],
             "kyoresuas_standard_ipv4":sha256(args.kyoresuas_v4.read_bytes()),
             "kyoresuas_standard_ipv6":sha256(args.kyoresuas_v6.read_bytes()),

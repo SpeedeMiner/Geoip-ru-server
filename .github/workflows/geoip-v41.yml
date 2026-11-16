@@ -24,8 +24,20 @@ on:
       - ".github/scripts/build_v41_overlay.py"
       - ".github/scripts/build_v41_srs.py"
       - ".github/scripts/extract_ru_asn_prefixes_v41.py"
+      - ".github/scripts/check_v41_bgp_observations.py"
+      - ".github/scripts/audit_v41_prefix_candidates.py"
+      - ".github/data/v41-coverage-candidates.tsv"
+      - ".github/scripts/v41_static_overrides.py"
+      - ".github/scripts/v41_reviewed_unreachable.py"
+      - ".github/data/v41-reviewed-unreachable.tsv"
+      - ".github/data/v41-service-inventory.tsv"
+      - ".github/scripts/validate_v41_service_inventory.py"
+      - ".github/scripts/validate_v41_routing_matrix.py"
+      - ".github/data/v41-routing-fixtures.tsv"
+      - ".github/data/v41-static-overrides.tsv"
       - ".github/scripts/geoip-v37-builder/**"
       - ".github/scripts/download_v41_build_inputs.sh"
+      - ".github/scripts/validate_v41_download.py"
       - ".github/scripts/download_v41_upstream_sources.py"
       - ".github/scripts/v41_diagnostic_sources.py"
       - ".github/scripts/*v41*.sh"
@@ -34,6 +46,10 @@ on:
       - ".github/scripts/validate_v41_base_artifacts.py"
       - ".github/scripts/validate_v41_block_feed_counts.py"
       - ".github/scripts/validate_v41_publication_bounds.py"
+      - ".github/scripts/validate_v41_priority_loss.py"
+      - ".github/scripts/validate_v41_source_health.py"
+      - ".github/data/v41-priority-asns.txt"
+      - ".github/scripts/report_v41_pr_delta.py"
       - ".github/scripts/verify_v41_ipverse_archive.py"
       - ".github/scripts/bundle_v41_registry_inputs.py"
       - ".github/scripts/v41_release_manifest.py"
@@ -187,6 +203,12 @@ jobs:
         with:
           go-version: "1.26.10"
           cache-dependency-path: .github/scripts/geoip-v37-builder/go.sum
+
+      - name: Validate critical-service evidence inventory
+        shell: bash
+        run: |
+          python3 .github/scripts/validate_v41_service_inventory.py \
+            --inventory .github/data/v41-service-inventory.tsv --summary "$GITHUB_STEP_SUMMARY"
 
       - name: Download RU/BY/KZ GeoIP sources, blocked-IP snapshot, RIR, IANA and BGP data
         shell: bash
@@ -448,6 +470,7 @@ jobs:
             --effective "$V41_BLOCKED_FILE" \
             --core "$CORE_COMPANY_PREFIXES" \
             --shared "$SHARED_INFRASTRUCTURE_PREFIXES" \
+            --regional-origin-prefixes "$REGIONAL_ORIGIN_PREFIXES" \
             --rir "$RIR_RUKZBY_PREFIX_INPUT" \
             --kyoresuas-v4 "$KY_STANDARD_V4_INPUT" \
             --kyoresuas-v6 "$KY_STANDARD_V6_INPUT" \
@@ -477,6 +500,78 @@ jobs:
         run: |
           python3 .github/scripts/validate_v41_publication_bounds.py \
             --candidate "$V41_OUTPUT_FILE" --reference "$V41_OUTPUT_FILE"
+
+      - name: Audit reviewed prefix coverage (advisory)
+        if: github.event_name == 'pull_request'
+        continue-on-error: true
+        shell: bash
+        run: |
+          python3 .github/scripts/audit_v41_prefix_candidates.py \
+            --dat "$V41_OUTPUT_FILE" --candidates .github/data/v41-coverage-candidates.tsv \
+            --output "$RUNNER_TEMP/v41-prefix-candidates.json" --summary "$GITHUB_STEP_SUMMARY"
+
+      - name: Retain reviewed prefix coverage report
+        if: github.event_name == 'pull_request'
+        continue-on-error: true
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: v41-prefix-candidates-advisory
+          path: ${{ runner.temp }}/v41-prefix-candidates.json
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Compare pull request candidate with published release
+        if: github.event_name == 'pull_request'
+        shell: bash
+        run: |
+          set -euo pipefail
+          ref="$(git ls-remote --exit-code "https://github.com/${GITHUB_REPOSITORY}.git" refs/heads/release | cut -f1)"
+          [[ "$ref" =~ ^[0-9a-f]{40}$ ]]
+          base="https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/${ref}"
+          for name in geoip_RU.dat geoip_RU.dat.sha256sum geoip_RU_v41_source_metrics.tsv geoip_RU_input_provenance.tsv "$RU_PREFIX_INPUT" "$RIR_RUKZBY_PREFIX_INPUT"; do
+            curl --fail --location --silent --show-error --proto '=https' --proto-redir '=https' \
+              --retry 3 --connect-timeout 15 --max-time 90 --max-filesize 67108864 \
+              "$base/$name" -o "$RUNNER_TEMP/previous-$name"
+          done
+          expected="$(awk 'NR==1 {print $1}' "$RUNNER_TEMP/previous-geoip_RU.dat.sha256sum")"
+          [[ "$expected" =~ ^[0-9a-f]{64}$ ]]
+          printf '%s  %s\n' "$expected" "$RUNNER_TEMP/previous-geoip_RU.dat" | sha256sum -c -
+          python3 .github/scripts/report_v41_pr_delta.py \
+            --candidate "$V41_OUTPUT_FILE" --reference "$RUNNER_TEMP/previous-geoip_RU.dat" \
+            --current-metrics "$V41_METRICS" --previous-metrics "$RUNNER_TEMP/previous-geoip_RU_v41_source_metrics.tsv" \
+            --revision "$ref" --summary "$GITHUB_STEP_SUMMARY"
+          echo '### Priority ASN and country loss (input inventories)' >> "$GITHUB_STEP_SUMMARY"
+          python3 .github/scripts/validate_v41_priority_loss.py --report-only \
+            --candidate-dat "$V41_OUTPUT_FILE" --manifest "$V41_MANIFEST" --company-prefixes "$COMPANY_ASN_PREFIXES" \
+            --priority-asns .github/data/v41-priority-asns.txt \
+            --previous-origins "$RUNNER_TEMP/previous-${RU_PREFIX_INPUT}" --candidate-origins "$RU_PREFIX_INPUT" \
+            --previous-rir "$RUNNER_TEMP/previous-${RIR_RUKZBY_PREFIX_INPUT}" --candidate-rir "$RIR_RUKZBY_PREFIX_INPUT" \
+            | tee -a "$GITHUB_STEP_SUMMARY"
+          echo '### Required source size health' >> "$GITHUB_STEP_SUMMARY"
+          python3 .github/scripts/validate_v41_source_health.py --report-only \
+            --previous "$RUNNER_TEMP/previous-geoip_RU_input_provenance.tsv" --candidate "$INPUT_PROVENANCE" \
+            --manifest "$V41_MANIFEST" --dat "$V41_OUTPUT_FILE" | tee -a "$GITHUB_STEP_SUMMARY"
+
+      - name: Cross-check priority BGP origins (advisory)
+        if: github.event_name == 'pull_request'
+        shell: bash
+        run: |
+          if ! python3 .github/scripts/check_v41_bgp_observations.py \
+            --archive "$IPVERSE_BGP_ARCHIVE" --asns 12389 13238 25106 208795 6697 9198 35673 39433 51365 43601 43934 44288 62170 \
+            --output "$RUNNER_TEMP/v41-bgp-crosscheck.json" --summary "$GITHUB_STEP_SUMMARY"; then
+            echo '::warning::BGP cross-check failed; no routing changes were made.'
+            echo 'BGP cross-check unavailable; inspect the job log.' >> "$GITHUB_STEP_SUMMARY"
+            printf '%s\n' '{"status":"unavailable","reason":"cross-check failed; see job log"}' > "$RUNNER_TEMP/v41-bgp-crosscheck.json"
+          fi
+
+      - name: Retain BGP advisory report
+        if: github.event_name == 'pull_request'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: v41-pr-bgp-crosscheck
+          path: ${{ runner.temp }}/v41-bgp-crosscheck.json
+          if-no-files-found: error
+          retention-days: 30
 
       - name: Verify and retain the exact ipverse build input
         shell: bash
@@ -523,8 +618,22 @@ jobs:
             --output "$compiler_dir/$archive" "https://github.com/SagerNet/sing-box/releases/download/v${version}/$archive"
           printf '%s  %s\n' "$digest" "$compiler_dir/$archive" | sha256sum -c -
           tar -xzf "$compiler_dir/$archive" -C "$compiler_dir" "sing-box-${version}-linux-amd64/sing-box"
-          python3 .github/scripts/build_v41_srs.py --sing-box "$compiler_dir/sing-box-${version}-linux-amd64/sing-box"
+          python3 .github/scripts/build_v41_srs.py --sing-box "$compiler_dir/sing-box-${version}-linux-amd64/sing-box" \
+            --metrics "$RUNNER_TEMP/v41-size-metrics.json"
           sha256sum -c geoip_RU.srs.sha256sum geoip_PRIVATE.srs.sha256sum
+          "$compiler_dir/sing-box-${version}-linux-amd64/sing-box" rule-set decompile --output "$compiler_dir/ru.json" geoip_RU.srs
+          "$compiler_dir/sing-box-${version}-linux-amd64/sing-box" rule-set decompile --output "$compiler_dir/private.json" geoip_PRIVATE.srs
+          python3 .github/scripts/validate_v41_routing_matrix.py --dat "$V41_OUTPUT_FILE" \
+            --ru-srs-source "$compiler_dir/ru.json" --private-srs-source "$compiler_dir/private.json" \
+            --fixtures .github/data/v41-routing-fixtures.tsv --summary "$GITHUB_STEP_SUMMARY"
+
+      - name: Retain output size and family metrics
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: v41-output-size-metrics
+          path: ${{ runner.temp }}/v41-size-metrics.json
+          if-no-files-found: error
+          retention-days: 30
 
       - name: Bind validated files to this build
         shell: bash

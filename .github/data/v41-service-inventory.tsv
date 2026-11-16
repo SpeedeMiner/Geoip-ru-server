@@ -1,0 +1,12 @@
+service_name	domains	asn_or_cidr	evidence_type	verified_date	evidence_url	source_scope	routing_hint
+Госуслуги РФ	gosuslugi.ru	-	OFFICIAL_DOMAIN	2026-11-16	https://sfr.gov.ru/about/smev/elek_uslugi_sfr/~2863	LOCAL_CRITICAL	DOMAIN_REVIEW
+Портал электронных услуг Беларуси	portal.gov.by	-	OFFICIAL_DOMAIN	2026-11-16	https://nalog.gov.by/news/24341/	LOCAL_CRITICAL	DOMAIN_REVIEW
+Электронное правительство Казахстана	egov.kz	-	OFFICIAL_DOMAIN	2026-11-16	https://www.gov.kz/org/aqmola-esil-dvurechnyi/activities/55237	LOCAL_CRITICAL	DOMAIN_REVIEW
+Сбербанк	sberbank.ru	-	OFFICIAL_DOMAIN	2026-11-16	https://www.cbr.ru/banking_sector/credit/cowebsites/	LOCAL_CRITICAL	DOMAIN_REVIEW
+Halyk Bank	halykbank.kz	-	OFFICIAL_DOMAIN	2026-11-16	https://halykbank.kz/kz/about/contacts/kontakty-i-rekvizity	LOCAL_CRITICAL	DOMAIN_REVIEW
+Т-Банк	tbank.ru	-	OFFICIAL_DOMAIN	2026-11-16	https://www.cbr.ru/finorg/foinfo/?ogrn=1027739642281	LOCAL_CRITICAL	DOMAIN_REVIEW
+Альфа-Банк	alfabank.ru	-	OFFICIAL_DOMAIN	2026-11-16	https://www.cbr.ru/banking_sector/credit/cowebsites/	LOCAL_CRITICAL	DOMAIN_REVIEW
+Kaspi.kz	kaspi.kz	-	OFFICIAL_DOMAIN	2026-11-16	https://guide.kaspi.kz/cdn/content/kkz/files/Document/e-service-agreement-ru-25-08-2023.pdf	LOCAL_CRITICAL	DOMAIN_REVIEW
+Беларусбанк	belarusbank.by	-	OFFICIAL_DOMAIN	2026-11-16	https://belarusbank.by/	LOCAL_CRITICAL	DOMAIN_REVIEW
+Банк ЦентрКредит	bcc.kz	-	OFFICIAL_DOMAIN	2026-11-16	https://www.bcc.kz/	LOCAL_CRITICAL	DOMAIN_REVIEW
+Национальная платёжная корпорация Казахстана	npck.kz	-	OFFICIAL_DOMAIN	2026-11-16	https://npck.kz/o-sozdanii-naczionalnoj-platezhnoj-korporaczii-naczionalnogo-banka-respubliki-kazahstan/	LOCAL_CRITICAL	DOMAIN_REVIEW

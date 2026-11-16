@@ -1,5 +1,24 @@
 # v41 integration policy — RU+BY+KZ unified DIRECT
 
+## Candidate update: Direct by Reachability (2026-11-16)
+
+This working candidate changes the earlier geographic-admission policy described
+in the historical sections below. The regional IPv4 and reviewed IPv6 assignment
+tables remain integrity-checked evidence for review, but a foreign country or
+geofeed location alone no longer removes addresses from DIRECT. This does not
+prove that any given address is reachable from Russia. Admission still requires
+an existing routing input; the evidence tables do not add routes by themselves.
+
+The separate `v41-reviewed-unreachable.tsv` contains only manually reviewed
+IP-layer blocks or inbound IP-level geoblocks with evidence and review dates.
+Its effective mask excludes protected regional resources, selected regional
+origins, company ASN origins and reviewed operator prefixes. A header-only table
+is an explicit empty mask. Expired evidence stops the build for review. The
+existing hard IP/subnet and Telegram blocks still take precedence over every
+DIRECT protection class; DNS-only and SNI-only evidence must not be entered in
+the new table. PRIVATE keeps precedence. The complete change against the
+published candidate must be reviewed before publication.
+
 The policy below describes the v41 publisher and the regional/block-provenance revision in PR #26. The rolling release and run-specific snapshots identify the deployed build.
 
 ## Preservation of v39 and v40

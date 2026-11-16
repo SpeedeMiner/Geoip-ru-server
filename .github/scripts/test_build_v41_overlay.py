@@ -1,7 +1,8 @@
 import ipaddress
+import random
 import unittest
 
-from build_v41_overlay import class_aware_effective_block_set, collapse
+from build_v41_overlay import class_aware_effective_block_set, collapse, subtract_networks
 
 
 def nets(*values):
@@ -29,6 +30,34 @@ class CollapseIterableTests(unittest.TestCase):
                     values = [ipaddress.ip_network(value) for value in source]
                     self.assertEqual(collapse(factory(values)),
                                      [ipaddress.ip_network(value) for value in expected])
+
+
+class IntervalSubtractionProperties(unittest.TestCase):
+    def test_random_small_spaces_equal_independent_address_sets(self):
+        rng = random.Random(41641)
+        for base in (ipaddress.ip_network("192.0.2.0/24"), ipaddress.ip_network("2001:db8::/120")):
+            maxbits = base.max_prefixlen
+            def sample():
+                address = ipaddress.ip_address(int(base.network_address) + rng.randrange(256))
+                return ipaddress.ip_network((address, rng.randint(maxbits - 8, maxbits)), strict=False)
+            for _ in range(100):
+                source = {sample() for _ in range(rng.randint(0, 8))}
+                masks = {sample() for _ in range(rng.randint(0, 8))}
+                expected = {address for net in source for address in net} - {address for net in masks for address in net}
+                result = subtract_networks(source, masks)
+                actual = {address for net in result for address in net}
+                self.assertEqual(actual, expected)
+                self.assertEqual(sum(net.num_addresses for net in result), len(actual))
+
+    def test_host_boundaries_and_complete_removal(self):
+        for parent, first, last in (("192.0.2.0/24", "192.0.2.0/32", "192.0.2.255/32"),
+                                    ("2001:db8::/120", "2001:db8::/128", "2001:db8::ff/128")):
+            source = nets(parent)
+            result = subtract_networks(source, nets(first, last))
+            self.assertEqual(sum(net.num_addresses for net in result), 254)
+            self.assertFalse(any(ipaddress.ip_network(first).network_address in net for net in result))
+            self.assertFalse(any(ipaddress.ip_network(last).network_address in net for net in result))
+            self.assertEqual(subtract_networks(source, source), set())
 
 
 class ClassAwareBlockPrecedenceTests(unittest.TestCase):

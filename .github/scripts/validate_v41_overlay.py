@@ -12,6 +12,7 @@ from pathlib import Path
 import build_v41_overlay as builder
 from validate_v41_telegram import PINNED_FEED, read_telegram_feed
 from v41_reviewed_ipv6_admission import verify_reviewed_ipv6_admission_manifest
+from v41_reviewed_unreachable import DEFAULT_PATH as UNREACHABLE_PATH, read_reviewed
 
 
 def sha256(path: Path) -> str:
@@ -29,6 +30,25 @@ def assert_hxehex_diagnostic_only(ru, independently_admitted, hxehex):
                                        builder.intervals(hxehex, version))
         if builder.subtract(candidates, builder.intervals(independently_admitted, version)):
             raise ValueError(f"HXEHEX-only admission in IPv{version} DIRECT")
+
+
+def verify_unreachable_manifest(manifest, regional, origins, companies, reviewed):
+    records = read_reviewed()
+    if (manifest.get("input_sha256", {}).get("reviewed_unreachable") != sha256(UNREACHABLE_PATH)
+            or manifest.get("reviewed_unreachable", {}).get("records") != list(records.values())):
+        raise ValueError("Reviewed unreachable evidence provenance mismatch")
+    protected = regional | origins | companies | reviewed
+    candidates = {ipaddress.ip_network(prefix, strict=True) for prefix in records}
+    mask = set()
+    for version in (4, 6):
+        remaining = builder.subtract(builder.intervals(candidates, version), builder.intervals(protected, version))
+        mask.update(builder.networks_from_intervals(remaining, version))
+    if manifest["reviewed_unreachable"].get("effective_cidrs") != len(mask):
+        raise ValueError("Reviewed unreachable effective mask mismatch")
+    for version in (4, 6):
+        if builder.intersect(builder.intervals(mask, version), builder.intervals(protected, version)):
+            raise ValueError("Reviewed unreachable mask intersects protected core")
+    return mask
 
 
 def verify_ipv6_admission_effect(ru, admitted, private, effective, regional, reviewed):
@@ -90,7 +110,8 @@ def validate(args: argparse.Namespace) -> dict:
     manifest = json.loads(args.manifest.read_text(encoding="utf-8"))
     regional_admission = builder.parse_regional_admission_exclusions(args.regional_admission_exclusions)
     ipv6_admission = verify_reviewed_ipv6_admission_manifest(args.reviewed_ipv6_admission_exclusions, manifest)
-    admission = set(regional_admission) | set(ipv6_admission)
+    unreachable = verify_unreachable_manifest(manifest, regional_resources, regional_all, company_all, reviewed)
+    admission = unreachable
     builder.assert_regional_admission_disjoint(decoded["RU"], admission)
     builder.assert_reviewed_operator_coverage(decoded["RU"], decoded["PRIVATE"], blocked_exact | telegram, admission, reviewed)
     for version in (4, 6):
@@ -162,11 +183,22 @@ def validate(args: argparse.Namespace) -> dict:
             or manifest.get("input_sha256", {}).get("w1zardz_gaming_exclusions") != sha256(builder.W1ZARDZ_EXCLUSIONS)
             or manifest.get("service_sources", {}).get("w1zardz-service-direct") != source_stats["w1zardz-service-direct"]):
         raise ValueError("W1ZARDZ source/exclusion provenance mismatch")
-    removed_ipv6 = verify_ipv6_admission_effect(
-        decoded["RU"], independently_admitted, decoded["PRIVATE"], output_blocked, regional_admission, ipv6_admission
-    )
-    if manifest.get("reviewed_ipv6_admission_exclusions", {}).get("removed_after_block_policy") != {"ipv6": removed_ipv6}:
-        raise ValueError("Reviewed IPv6 admission removal count mismatch")
+    for version in (4, 6):
+        expected = builder.subtract(builder.intervals(independently_admitted, version), builder.intervals(decoded["PRIVATE"], version))
+        expected = builder.subtract(expected, builder.intervals(output_blocked | unreachable, version))
+        if expected != builder.intervals(decoded["RU"], version):
+            raise ValueError(f"DIRECT IPv{version} differs from exact reachability policy")
+    if (manifest.get("regional_admission_exclusions", {}).get("role") != "geography-review-only"
+            or manifest.get("regional_admission_exclusions", {}).get("removed_after_block_policy") != {"ipv4": 0, "ipv6": 0}
+            or manifest.get("reviewed_ipv6_admission_exclusions", {}).get("role") != "geography-review-only"
+            or manifest.get("reviewed_ipv6_admission_exclusions", {}).get("removed_after_block_policy") != {"ipv6": 0}):
+        raise ValueError("Geographic evidence must be review-only and remove no addresses")
+    for version in (4, 6):
+        available = builder.subtract(builder.intervals(independently_admitted, version), builder.intervals(decoded["PRIVATE"], version))
+        available = builder.subtract(available, builder.intervals(output_blocked, version))
+        removed = builder.interval_size(builder.intersect(available, builder.intervals(unreachable, version)))
+        if manifest["reviewed_unreachable"]["removed_after_other_policy"][f"ipv{version}"] != removed:
+            raise ValueError(f"Reviewed unreachable IPv{version} removal count mismatch")
 
     hxehex_info = manifest.get("diagnostic_sources", {}).get("hxehex-mobile-hosts", {})
     if (manifest.get("base_v37_sha256") != sha256(args.base)

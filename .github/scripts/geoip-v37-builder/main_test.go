@@ -238,6 +238,30 @@ func TestInputCIDRDoesNotMaskHostBits(t *testing.T) {
 	}
 }
 
+func TestStaticDirectReadsOnlyMarkedCanonicalPrefixes(t *testing.T) {
+	path := filepath.Join(t.TempDir(), "selected.txt")
+	content := "# [STATIC-DIRECT] describes metadata\n192.0.2.0/24 # AS123[STATIC-DIRECT]\n2001:db8::/48 # AS123[STATIC-DIRECT]\n198.51.100.0/24 # AS456[observed]\n"
+	if err := os.WriteFile(path, []byte(content), 0600); err != nil {
+		t.Fatal(err)
+	}
+	got, err := readStaticDirectPrefixes(path)
+	if err != nil || len(got) != 2 || got[0] != mustPrefix(t, "192.0.2.0/24") || got[1] != mustPrefix(t, "2001:db8::/48") {
+		t.Fatalf("unexpected static prefixes: %v, %v", got, err)
+	}
+	for _, bad := range []string{
+		"192.0.2.1/24 # AS123[STATIC-DIRECT]\n",
+		"0.0.0.0/0 # AS123[STATIC-DIRECT]\n",
+		"192.0.2.0/24 # AS123[STATIC-DIRECT]\n192.0.2.0/24 # AS123[STATIC-DIRECT]\n",
+	} {
+		if err := os.WriteFile(path, []byte(bad), 0600); err != nil {
+			t.Fatal(err)
+		}
+		if _, err := readStaticDirectPrefixes(path); err == nil {
+			t.Errorf("accepted invalid static entry: %q", bad)
+		}
+	}
+}
+
 func TestSelectedDATRejectsInverseAndWideRoutes(t *testing.T) {
 	for _, tc := range []struct {
 		name    string

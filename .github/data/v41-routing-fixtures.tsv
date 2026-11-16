@@ -1,0 +1,3 @@
+service	address	expected	evidence_type	evidence_url	verified_date	review_after
+Yandex DNS Basic IPv4	77.88.8.8	DIRECT	OFFICIAL_SERVICE_IP	https://dns.yandex.com/	2026-11-16	2027-02-16
+Yandex DNS Basic IPv6	2a02:6b8::feed:ff	DIRECT	OFFICIAL_SERVICE_IP	https://dns.yandex.com/	2026-11-16	2027-02-16
