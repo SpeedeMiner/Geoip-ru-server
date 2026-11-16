@@ -30,3 +30,7 @@ Updated 2026-11-16. Each row is an exact /24 present in published DIRECT at rele
 ## Scheduled main can reproduce the loss without PR #52
 
 A read-only replay on unchanged production code isolated the loss to the rolling ipverse archive. The checked-in prepublication validator accepted the exact replay without overrides. The observed release is unchanged, but a later scheduled refresh can publish the loss. See the [same-code replay and admission review](V41_SCHEDULED_MAIN_IPVERSE_REPLAY_20261116.md). This does not change the five OPEN decisions or pin any disputed network.
+
+## Publication-readiness review
+
+The [isolated publication handoff](V41_PUBLICATION_READINESS_20261116.md) verifies that Draft #53 holds the disputed candidate before any snapshot tag is created against the clean current baseline. The two genuine public HTTPS controls still have no verified DNS address inside these five prefixes. A missing archive result, a route-origin change and divergent country labels each remain insufficient to settle the presence of a service. All five rows are still OPEN. This observation does not remove any prefix from the current public release.

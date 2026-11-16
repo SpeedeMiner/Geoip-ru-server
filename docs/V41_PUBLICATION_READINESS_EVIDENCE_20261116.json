@@ -1,0 +1,3500 @@
+{
+  "actions_observation": {
+    "in_progress": [],
+    "latest": [
+      {
+        "conclusion": "success",
+        "created_at": "2026-11-15T18:36:50Z",
+        "event": "push",
+        "head": "c0d2a01ba1fb5f5c0e48965d614945348083a900",
+        "id": 43747743430,
+        "status": "completed"
+      },
+      {
+        "conclusion": "success",
+        "created_at": "2026-11-15T17:12:16Z",
+        "event": "push",
+        "head": "fab8870dd14e0dcad217fd60f5c5b86d3713609a",
+        "id": 43739779700,
+        "status": "completed"
+      },
+      {
+        "conclusion": "success",
+        "created_at": "2026-11-15T12:07:13Z",
+        "event": "push",
+        "head": "38f36820f0e10066f7beb7eed97b00ec36c43820",
+        "id": 43712216767,
+        "status": "completed"
+      }
+    ],
+    "pending": [],
+    "pr53": [
+      53,
+      true,
+      true,
+      "92fa97e13317db01ca43aad31386d091eb249a2a",
+      "c0d2a01ba1fb5f5c0e48965d614945348083a900"
+    ],
+    "pr54": [
+      54,
+      true,
+      true,
+      "3ddbc5a28d0afd6dbd867a958838fb385c93a5aa",
+      "c0d2a01ba1fb5f5c0e48965d614945348083a900"
+    ],
+    "queued": [],
+    "requested": [],
+    "schedule": [
+      {
+        "conclusion": "success",
+        "created_at": "2026-11-15T11:30:00Z",
+        "event": "schedule",
+        "head": "596c93df3b65b36b34ef9a8c5472b9e9ee660691",
+        "id": 43709200004,
+        "status": "completed"
+      }
+    ],
+    "waiting": []
+  },
+  "archive_service_search": [
+    {
+      "domain": "p.crcdn.pro",
+      "http": 200,
+      "kind": "urlscan",
+      "known_controls": [],
+      "page_or_task_hosts": [],
+      "retrieved_at": "2026-11-16T09:09:29+00:00",
+      "returned": 0,
+      "sha256": "adddb9d86413402f05966fc3b4fcc80c35ef2d7eb2af39aad3f40f3539ec5e55",
+      "total": 0,
+      "url": "https://urlscan.io/api/v1/search/?q=domain%3Ap.crcdn.pro+AND+date%3A%3Enow-180d&size=35"
+    },
+    {
+      "domain": "p.qrcdn.net",
+      "http": 200,
+      "kind": "urlscan",
+      "known_controls": [],
+      "page_or_task_hosts": [],
+      "retrieved_at": "2026-11-16T09:09:29+00:00",
+      "returned": 0,
+      "sha256": "4e15e60d311916ae834b239ccf6cb4d1a248ef4b7bc5192ed1790c2326962f80",
+      "total": 0,
+      "url": "https://urlscan.io/api/v1/search/?q=domain%3Ap.qrcdn.net+AND+date%3A%3Enow-180d&size=35"
+    },
+    {
+      "domain": "curator.pro",
+      "http": 200,
+      "kind": "urlscan",
+      "known_controls": [],
+      "page_or_task_hosts": [
+        "curator.pro"
+      ],
+      "retrieved_at": "2026-11-16T09:09:29+00:00",
+      "returned": 1,
+      "sha256": "0c042e9efdd93f8760c1a9a0a6c765cd59509a51bcbaf6859e9bf653b3ea226f",
+      "total": 1,
+      "url": "https://urlscan.io/api/v1/search/?q=domain%3Acurator.pro+AND+date%3A%3Enow-180d&size=35"
+    },
+    {
+      "condition": "domain",
+      "domain": "p.crcdn.pro",
+      "error": "HTTP Error 504: Gateway Timeout",
+      "http": 504,
+      "kind": "common_crawl",
+      "retrieved_at": "2026-11-16T09:09:38+00:00",
+      "sha256": "4dfd31da49e8f63867a310d3ae57d3a0b492d5cc7ae382108f57738a8b577d4c",
+      "url": "https://index.commoncrawl.org/CC-MAIN-2026-43-index?url=p.crcdn.pro&output=json&matchType=domain&filter=status%3A200&collapse=urlkey&pageSize=1"
+    },
+    {
+      "condition": "domain",
+      "domain": "p.qrcdn.net",
+      "error": "HTTP Error 503: Service Unavailable",
+      "http": 503,
+      "kind": "common_crawl",
+      "retrieved_at": "2026-11-16T09:09:34+00:00",
+      "sha256": "2787389f3be4166dfc2976379a83fe4357622e59f4745850396bf32b299716b5",
+      "url": "https://index.commoncrawl.org/CC-MAIN-2026-43-index?url=p.qrcdn.net&output=json&matchType=domain&filter=status%3A200&collapse=urlkey&pageSize=1"
+    },
+    {
+      "condition": "host",
+      "domain": "curator.pro",
+      "error": "HTTP Error 503: Service Unavailable",
+      "http": 503,
+      "kind": "common_crawl",
+      "retrieved_at": "2026-11-16T09:09:34+00:00",
+      "sha256": "2787389f3be4166dfc2976379a83fe4357622e59f4745850396bf32b299716b5",
+      "url": "https://index.commoncrawl.org/CC-MAIN-2026-43-index?url=curator.pro&output=json&matchType=host&filter=status%3A200&collapse=urlkey&pageSize=1"
+    },
+    {
+      "condition": "domain",
+      "domain": "p.crcdn.pro",
+      "error": "HTTP Error 504: Gateway Timeout",
+      "http": 504,
+      "kind": "common_crawl",
+      "retrieved_at": "2026-11-16T09:09:44+00:00",
+      "sha256": "4dfd31da49e8f63867a310d3ae57d3a0b492d5cc7ae382108f57738a8b577d4c",
+      "url": "https://index.commoncrawl.org/CC-MAIN-2026-39-index?url=p.crcdn.pro&output=json&matchType=domain&filter=status%3A200&collapse=urlkey&pageSize=1"
+    },
+    {
+      "condition": "domain",
+      "domain": "p.qrcdn.net",
+      "error": "HTTP Error 504: Gateway Timeout",
+      "http": 504,
+      "kind": "common_crawl",
+      "retrieved_at": "2026-11-16T09:09:49+00:00",
+      "sha256": "4dfd31da49e8f63867a310d3ae57d3a0b492d5cc7ae382108f57738a8b577d4c",
+      "url": "https://index.commoncrawl.org/CC-MAIN-2026-39-index?url=p.qrcdn.net&output=json&matchType=domain&filter=status%3A200&collapse=urlkey&pageSize=1"
+    },
+    {
+      "condition": "host",
+      "domain": "curator.pro",
+      "error": "HTTP Error 503: Service Unavailable",
+      "http": 503,
+      "kind": "common_crawl",
+      "retrieved_at": "2026-11-16T09:09:39+00:00",
+      "sha256": "2787389f3be4166dfc2976379a83fe4357622e59f4745850396bf32b299716b5",
+      "url": "https://index.commoncrawl.org/CC-MAIN-2026-39-index?url=curator.pro&output=json&matchType=host&filter=status%3A200&collapse=urlkey&pageSize=1"
+    }
+  ],
+  "control_dns_and_historical_edge_DAT_coverage": {
+    "108.62.48.16": {
+      "in_DIRECT": {
+        "candidate": false,
+        "published": false
+      },
+      "source": "previous DNS sample, also documented by upstream issue #8710"
+    },
+    "185.199.9.17": {
+      "in_DIRECT": {
+        "candidate": true,
+        "published": true
+      },
+      "source": "previous Russian ECS sample"
+    },
+    "185.41.207.194": {
+      "in_DIRECT": {
+        "candidate": true,
+        "published": true
+      },
+      "source": "previous Russian ECS sample, also reported by upstream issue #8710"
+    },
+    "185.65.148.144": {
+      "in_DIRECT": {
+        "candidate": true,
+        "published": true
+      },
+      "source": "current curator.pro A answer"
+    },
+    "194.154.87.194": {
+      "in_DIRECT": {
+        "candidate": true,
+        "published": true
+      },
+      "source": "previous Russian ECS sample"
+    },
+    "195.218.152.218": {
+      "in_DIRECT": {
+        "candidate": true,
+        "published": true
+      },
+      "source": "historical AdGuard issue #8355, not a current DNS binding"
+    },
+    "23.82.138.118": {
+      "in_DIRECT": {
+        "candidate": false,
+        "published": false
+      },
+      "source": "current Google Public DNS sample"
+    },
+    "64.120.40.137": {
+      "in_DIRECT": {
+        "candidate": false,
+        "published": false
+      },
+      "source": "current Google Public DNS sample"
+    }
+  },
+  "control_fixture_sha256": "e9ff741bb474c6c698bb913f527df1616731dec80c92ec9920b2150c155829f7",
+  "curator_company_registry": {
+    "claim": "Existing verified Curator controls do not lose coverage in the candidate. This does not identify every edge or support a static prefix pin.",
+    "draft_52": {
+      "AS219306": "SHARED_INFRA"
+    },
+    "main": {
+      "AS197068": "SHARED_INFRA",
+      "AS219306": "RIR RU only",
+      "AS51115": "SHARED_INFRA"
+    },
+    "main_retained_ipverse_manifest": {
+      "AS197068": {
+        "IPv4_prefixes": 6,
+        "IPv6_prefixes": 9
+      },
+      "AS51115": {
+        "IPv4_prefixes": 7,
+        "IPv6_prefixes": 1
+      }
+    }
+  },
+  "current_cdn_diagnostic": {
+    "completed_at_utc": "2026-11-16T09:21:09.753544+00:00",
+    "draft54_head": "3ddbc5a28d0afd6dbd867a958838fb385c93a5aa",
+    "exit": 1,
+    "report": {
+      "catalog": {
+        "pinned_flat": {
+          "files": {
+            "geoip_PRIVATE.srs": {
+              "bytes": 228,
+              "matches_pinned": true,
+              "sha256": "b9ea6381ea61e286298aea76c10cb85a252ff0d20c49d6de3527be1353c107c4"
+            },
+            "geoip_RU.dat": {
+              "bytes": 512533,
+              "matches_pinned": true,
+              "sha256": "b17fe26ccdcb8d272e6233ec9686a514b309e9d75e75653313a75f329b70fae7"
+            },
+            "geoip_RU.srs": {
+              "bytes": 128392,
+              "matches_pinned": true,
+              "sha256": "c60b8a1de5d4d67478850d7f72b272044f536d7d592591fbbf75ac50129002b1"
+            }
+          },
+          "status": "PASS"
+        },
+        "pinned_tree": {
+          "files": {
+            "geoip_PRIVATE.srs": {
+              "bytes": 228,
+              "matches_pinned": true,
+              "sha256": "b9ea6381ea61e286298aea76c10cb85a252ff0d20c49d6de3527be1353c107c4"
+            },
+            "geoip_RU.dat": {
+              "bytes": 512533,
+              "matches_pinned": true,
+              "sha256": "b17fe26ccdcb8d272e6233ec9686a514b309e9d75e75653313a75f329b70fae7"
+            },
+            "geoip_RU.srs": {
+              "bytes": 128392,
+              "matches_pinned": true,
+              "sha256": "c60b8a1de5d4d67478850d7f72b272044f536d7d592591fbbf75ac50129002b1"
+            }
+          },
+          "status": "PASS"
+        },
+        "rolling_flat": {
+          "files": {
+            "geoip_PRIVATE.srs": {
+              "bytes": 228,
+              "matches_pinned": true,
+              "sha256": "b9ea6381ea61e286298aea76c10cb85a252ff0d20c49d6de3527be1353c107c4"
+            },
+            "geoip_RU.dat": {
+              "bytes": 512067,
+              "matches_pinned": false,
+              "sha256": "5d7e9dd0eb66bd507eb5f695b83441493fb20b2307ef71125de16c8b3809fa7d"
+            },
+            "geoip_RU.srs": {
+              "bytes": 128250,
+              "matches_pinned": false,
+              "sha256": "21c54a6b83c7292ec51c8fff33f19e54cc869750cb6e3cea87d7662df87684e0"
+            }
+          },
+          "status": "MISMATCH"
+        },
+        "rolling_tree": {
+          "files": {
+            "geoip_PRIVATE.srs": {
+              "bytes": 228,
+              "matches_pinned": true,
+              "sha256": "b9ea6381ea61e286298aea76c10cb85a252ff0d20c49d6de3527be1353c107c4"
+            },
+            "geoip_RU.dat": {
+              "bytes": 512067,
+              "matches_pinned": false,
+              "sha256": "5d7e9dd0eb66bd507eb5f695b83441493fb20b2307ef71125de16c8b3809fa7d"
+            },
+            "geoip_RU.srs": {
+              "bytes": 128250,
+              "matches_pinned": false,
+              "sha256": "21c54a6b83c7292ec51c8fff33f19e54cc869750cb6e3cea87d7662df87684e0"
+            }
+          },
+          "status": "MISMATCH"
+        }
+      },
+      "cdn_commit": "8a226b83c82323c869054ca5b299612ad3a91e2d",
+      "delivery": {
+        "cdn.jsdelivr.net": {
+          "files": {
+            "geoip_PRIVATE.srs": {
+              "bytes": 228,
+              "sha256": "b9ea6381ea61e286298aea76c10cb85a252ff0d20c49d6de3527be1353c107c4",
+              "status": "PASS"
+            },
+            "geoip_RU.dat": {
+              "bytes": 512533,
+              "sha256": "b17fe26ccdcb8d272e6233ec9686a514b309e9d75e75653313a75f329b70fae7",
+              "status": "PASS"
+            },
+            "geoip_RU.srs": {
+              "bytes": 128392,
+              "sha256": "c60b8a1de5d4d67478850d7f72b272044f536d7d592591fbbf75ac50129002b1",
+              "status": "PASS"
+            }
+          },
+          "status": "PASS"
+        },
+        "fastly.jsdelivr.net": {
+          "files": {
+            "geoip_PRIVATE.srs": {
+              "bytes": 228,
+              "sha256": "b9ea6381ea61e286298aea76c10cb85a252ff0d20c49d6de3527be1353c107c4",
+              "status": "PASS"
+            },
+            "geoip_RU.dat": {
+              "bytes": 512533,
+              "sha256": "b17fe26ccdcb8d272e6233ec9686a514b309e9d75e75653313a75f329b70fae7",
+              "status": "PASS"
+            },
+            "geoip_RU.srs": {
+              "bytes": 128392,
+              "sha256": "c60b8a1de5d4d67478850d7f72b272044f536d7d592591fbbf75ac50129002b1",
+              "status": "PASS"
+            }
+          },
+          "status": "PASS"
+        },
+        "gcore.jsdelivr.net": {
+          "files": {
+            "geoip_PRIVATE.srs": {
+              "bytes": 228,
+              "sha256": "b9ea6381ea61e286298aea76c10cb85a252ff0d20c49d6de3527be1353c107c4",
+              "status": "PASS"
+            },
+            "geoip_RU.dat": {
+              "bytes": 512533,
+              "sha256": "b17fe26ccdcb8d272e6233ec9686a514b309e9d75e75653313a75f329b70fae7",
+              "status": "PASS"
+            },
+            "geoip_RU.srs": {
+              "bytes": 128392,
+              "sha256": "c60b8a1de5d4d67478850d7f72b272044f536d7d592591fbbf75ac50129002b1",
+              "status": "PASS"
+            }
+          },
+          "status": "PASS"
+        }
+      },
+      "github_release": {
+        "observed": {
+          "geoip_PRIVATE.srs": {
+            "bytes": 228,
+            "sha256": "b9ea6381ea61e286298aea76c10cb85a252ff0d20c49d6de3527be1353c107c4"
+          },
+          "geoip_RU.dat": {
+            "bytes": 512533,
+            "sha256": "b17fe26ccdcb8d272e6233ec9686a514b309e9d75e75653313a75f329b70fae7"
+          },
+          "geoip_RU.srs": {
+            "bytes": 128392,
+            "sha256": "c60b8a1de5d4d67478850d7f72b272044f536d7d592591fbbf75ac50129002b1"
+          }
+        },
+        "status": "PASS"
+      },
+      "pinned_reference": {
+        "files": {
+          "geoip_PRIVATE.srs": {
+            "bytes": 228,
+            "matches_pinned": true,
+            "sha256": "b9ea6381ea61e286298aea76c10cb85a252ff0d20c49d6de3527be1353c107c4"
+          },
+          "geoip_RU.dat": {
+            "bytes": 512533,
+            "matches_pinned": true,
+            "sha256": "b17fe26ccdcb8d272e6233ec9686a514b309e9d75e75653313a75f329b70fae7"
+          },
+          "geoip_RU.srs": {
+            "bytes": 128392,
+            "matches_pinned": true,
+            "sha256": "c60b8a1de5d4d67478850d7f72b272044f536d7d592591fbbf75ac50129002b1"
+          }
+        },
+        "status": "PASS"
+      },
+      "release_commit": "e20cf733a13d92040134895ebd580b7c9060fa3b",
+      "repo": "SpeedeMiner/Geoip-ru-server",
+      "snapshot_tag": "geoip-v41-snapshot-43747743430.1",
+      "status": "FAIL"
+    }
+  },
+  "current_verified_versioned_github_fallback": {
+    "files": {
+      "geoip_PRIVATE.srs": {
+        "bytes": 228,
+        "sha256": "b9ea6381ea61e286298aea76c10cb85a252ff0d20c49d6de3527be1353c107c4"
+      },
+      "geoip_RU.dat": {
+        "bytes": 512533,
+        "sha256": "b17fe26ccdcb8d272e6233ec9686a514b309e9d75e75653313a75f329b70fae7"
+      },
+      "geoip_RU.srs": {
+        "bytes": 128392,
+        "sha256": "c60b8a1de5d4d67478850d7f72b272044f536d7d592591fbbf75ac50129002b1"
+      }
+    },
+    "release_commit": "e20cf733a13d92040134895ebd580b7c9060fa3b",
+    "repo": "SpeedeMiner/Geoip-ru-server",
+    "scope": "versioned GitHub fallback only",
+    "versioned_snapshot_verified": "geoip-v41-snapshot-43747743430.1"
+  },
+  "fixture_boundary": {
+    "expected_scope": "publication preflight, Git snapshot tag creation and release promotion only",
+    "git_transport": "file only",
+    "http_reads": "mocked using verified local Git and CI ZIP bytes",
+    "real_cdn_operation": false,
+    "real_github_asset_upload": false,
+    "rolling_release_api_tested": false
+  },
+  "fixture_scenarios": {
+    "draft_bad_review_table": {
+      "artifact_sha256": "01b661e70d58af4b5b1f93948ed5482aaf4b47c69736b12ee5b68aff84f7ebe9",
+      "candidate_dat_sha256": "b17fe26ccdcb8d272e6233ec9686a514b309e9d75e75653313a75f329b70fae7",
+      "preflight_exit": 1,
+      "refs_after_preflight": [
+        "refs/heads/release e20cf733a13d92040134895ebd580b7c9060fa3b"
+      ],
+      "refs_before": [
+        "refs/heads/release e20cf733a13d92040134895ebd580b7c9060fa3b"
+      ],
+      "relative_size_override_same_candidate": false,
+      "scenario": "draft_bad_review_table",
+      "source": "92fa97e13317db01ca43aad31386d091eb249a2a",
+      "stage_attempted": false,
+      "summary": [
+        {
+          "candidate": 50727,
+          "delta": 0,
+          "previous": 50727,
+          "source": "antifilter-ip.lst",
+          "verdict": "ok"
+        },
+        {
+          "candidate": 154157,
+          "delta": 0,
+          "previous": 154157,
+          "source": "antifilter-ipresolve.lst",
+          "verdict": "ok"
+        },
+        {
+          "candidate": 70,
+          "delta": 0,
+          "previous": 70,
+          "source": "antifilter-subnet.lst",
+          "verdict": "ok"
+        },
+        {
+          "content": "unchanged-since-previous-release",
+          "source": "antifilter-ip.lst"
+        },
+        {
+          "content": "unchanged-since-previous-release",
+          "source": "antifilter-ipresolve.lst"
+        },
+        {
+          "content": "unchanged-since-previous-release",
+          "source": "antifilter-subnet.lst"
+        },
+        {
+          "candidate_sha256": "b17fe26ccdcb8d272e6233ec9686a514b309e9d75e75653313a75f329b70fae7",
+          "delta": {
+            "4": {
+              "added": 0,
+              "after": 53402277,
+              "before": 53402277,
+              "limit": 267011,
+              "removed": 0
+            },
+            "6": {
+              "added": 0,
+              "after": 1205876349341644452571629307822080,
+              "before": 1205876349341644452571629307822080,
+              "limit": 12058763493416444525716293078220,
+              "removed": 0
+            }
+          },
+          "needs_review": false,
+          "private_changed": false
+        }
+      ]
+    },
+    "draft_corrupt_versioned_DAT_checksum": {
+      "artifact_sha256": "01b661e70d58af4b5b1f93948ed5482aaf4b47c69736b12ee5b68aff84f7ebe9",
+      "candidate_dat_sha256": "b17fe26ccdcb8d272e6233ec9686a514b309e9d75e75653313a75f329b70fae7",
+      "preflight_exit": 0,
+      "promote_exit": 1,
+      "refs_after_fixture_promotion": [
+        "refs/heads/release e20cf733a13d92040134895ebd580b7c9060fa3b",
+        "refs/tags/geoip-v41-snapshot-999999.1 eef93819c0b27f0a0a2c819a63ed462b3e7f5019"
+      ],
+      "refs_after_preflight": [
+        "refs/heads/release e20cf733a13d92040134895ebd580b7c9060fa3b"
+      ],
+      "refs_after_stage": [
+        "refs/heads/release e20cf733a13d92040134895ebd580b7c9060fa3b",
+        "refs/tags/geoip-v41-snapshot-999999.1 eef93819c0b27f0a0a2c819a63ed462b3e7f5019"
+      ],
+      "refs_before": [
+        "refs/heads/release e20cf733a13d92040134895ebd580b7c9060fa3b"
+      ],
+      "refs_immediately_before_fixture_promotion": [
+        "refs/heads/release e20cf733a13d92040134895ebd580b7c9060fa3b",
+        "refs/tags/geoip-v41-snapshot-999999.1 eef93819c0b27f0a0a2c819a63ed462b3e7f5019"
+      ],
+      "refs_immediately_before_stage": [
+        "refs/heads/release e20cf733a13d92040134895ebd580b7c9060fa3b"
+      ],
+      "relative_size_override_same_candidate": false,
+      "scenario": "draft_corrupt_versioned_DAT_checksum",
+      "source": "92fa97e13317db01ca43aad31386d091eb249a2a",
+      "stage_attempted": true,
+      "stage_exit": 0,
+      "staged_commit": "eef93819c0b27f0a0a2c819a63ed462b3e7f5019",
+      "staged_commit_parent": "e20cf733a13d92040134895ebd580b7c9060fa3b",
+      "summary": [
+        {
+          "candidate": 50727,
+          "delta": 0,
+          "previous": 50727,
+          "source": "antifilter-ip.lst",
+          "verdict": "ok"
+        },
+        {
+          "candidate": 154157,
+          "delta": 0,
+          "previous": 154157,
+          "source": "antifilter-ipresolve.lst",
+          "verdict": "ok"
+        },
+        {
+          "candidate": 70,
+          "delta": 0,
+          "previous": 70,
+          "source": "antifilter-subnet.lst",
+          "verdict": "ok"
+        },
+        {
+          "content": "unchanged-since-previous-release",
+          "source": "antifilter-ip.lst"
+        },
+        {
+          "content": "unchanged-since-previous-release",
+          "source": "antifilter-ipresolve.lst"
+        },
+        {
+          "content": "unchanged-since-previous-release",
+          "source": "antifilter-subnet.lst"
+        },
+        {
+          "candidate_sha256": "b17fe26ccdcb8d272e6233ec9686a514b309e9d75e75653313a75f329b70fae7",
+          "delta": {
+            "4": {
+              "added": 0,
+              "after": 53402277,
+              "before": 53402277,
+              "limit": 267011,
+              "removed": 0
+            },
+            "6": {
+              "added": 0,
+              "after": 1205876349341644452571629307822080,
+              "before": 1205876349341644452571629307822080,
+              "limit": 12058763493416444525716293078220,
+              "removed": 0
+            }
+          },
+          "needs_review": false,
+          "private_changed": false
+        },
+        {
+          "candidate_sha256": "b17fe26ccdcb8d272e6233ec9686a514b309e9d75e75653313a75f329b70fae7",
+          "reference_sha256": "b17fe26ccdcb8d272e6233ec9686a514b309e9d75e75653313a75f329b70fae7",
+          "review_table_sha256": "aeb438051a38f079a8e98c12fe51c8c328767d6671cb887ab8f3a0ea15a75fff",
+          "status": "PASS",
+          "watched_addresses": {
+            "added": 0,
+            "removed": 0
+          },
+          "watched_changes": []
+        }
+      ],
+      "versioned_downloads_issued": 14
+    },
+    "draft_corrupt_versioned_upstream_archive": {
+      "artifact_sha256": "01b661e70d58af4b5b1f93948ed5482aaf4b47c69736b12ee5b68aff84f7ebe9",
+      "candidate_dat_sha256": "b17fe26ccdcb8d272e6233ec9686a514b309e9d75e75653313a75f329b70fae7",
+      "preflight_exit": 0,
+      "promote_exit": 1,
+      "refs_after_fixture_promotion": [
+        "refs/heads/release e20cf733a13d92040134895ebd580b7c9060fa3b",
+        "refs/tags/geoip-v41-snapshot-999999.1 9230bb06471748b2617f710ee2d9cbf353893254"
+      ],
+      "refs_after_preflight": [
+        "refs/heads/release e20cf733a13d92040134895ebd580b7c9060fa3b"
+      ],
+      "refs_after_stage": [
+        "refs/heads/release e20cf733a13d92040134895ebd580b7c9060fa3b",
+        "refs/tags/geoip-v41-snapshot-999999.1 9230bb06471748b2617f710ee2d9cbf353893254"
+      ],
+      "refs_before": [
+        "refs/heads/release e20cf733a13d92040134895ebd580b7c9060fa3b"
+      ],
+      "refs_immediately_before_fixture_promotion": [
+        "refs/heads/release e20cf733a13d92040134895ebd580b7c9060fa3b",
+        "refs/tags/geoip-v41-snapshot-999999.1 9230bb06471748b2617f710ee2d9cbf353893254"
+      ],
+      "refs_immediately_before_stage": [
+        "refs/heads/release e20cf733a13d92040134895ebd580b7c9060fa3b"
+      ],
+      "relative_size_override_same_candidate": false,
+      "scenario": "draft_corrupt_versioned_upstream_archive",
+      "source": "92fa97e13317db01ca43aad31386d091eb249a2a",
+      "stage_attempted": true,
+      "stage_exit": 0,
+      "staged_commit": "9230bb06471748b2617f710ee2d9cbf353893254",
+      "staged_commit_parent": "e20cf733a13d92040134895ebd580b7c9060fa3b",
+      "summary": [
+        {
+          "candidate": 50727,
+          "delta": 0,
+          "previous": 50727,
+          "source": "antifilter-ip.lst",
+          "verdict": "ok"
+        },
+        {
+          "candidate": 154157,
+          "delta": 0,
+          "previous": 154157,
+          "source": "antifilter-ipresolve.lst",
+          "verdict": "ok"
+        },
+        {
+          "candidate": 70,
+          "delta": 0,
+          "previous": 70,
+          "source": "antifilter-subnet.lst",
+          "verdict": "ok"
+        },
+        {
+          "content": "unchanged-since-previous-release",
+          "source": "antifilter-ip.lst"
+        },
+        {
+          "content": "unchanged-since-previous-release",
+          "source": "antifilter-ipresolve.lst"
+        },
+        {
+          "content": "unchanged-since-previous-release",
+          "source": "antifilter-subnet.lst"
+        },
+        {
+          "candidate_sha256": "b17fe26ccdcb8d272e6233ec9686a514b309e9d75e75653313a75f329b70fae7",
+          "delta": {
+            "4": {
+              "added": 0,
+              "after": 53402277,
+              "before": 53402277,
+              "limit": 267011,
+              "removed": 0
+            },
+            "6": {
+              "added": 0,
+              "after": 1205876349341644452571629307822080,
+              "before": 1205876349341644452571629307822080,
+              "limit": 12058763493416444525716293078220,
+              "removed": 0
+            }
+          },
+          "needs_review": false,
+          "private_changed": false
+        },
+        {
+          "candidate_sha256": "b17fe26ccdcb8d272e6233ec9686a514b309e9d75e75653313a75f329b70fae7",
+          "reference_sha256": "b17fe26ccdcb8d272e6233ec9686a514b309e9d75e75653313a75f329b70fae7",
+          "review_table_sha256": "aeb438051a38f079a8e98c12fe51c8c328767d6671cb887ab8f3a0ea15a75fff",
+          "status": "PASS",
+          "watched_addresses": {
+            "added": 0,
+            "removed": 0
+          },
+          "watched_changes": []
+        }
+      ],
+      "versioned_downloads_issued": 3
+    },
+    "draft_current_public": {
+      "artifact_sha256": "01b661e70d58af4b5b1f93948ed5482aaf4b47c69736b12ee5b68aff84f7ebe9",
+      "candidate_dat_sha256": "b17fe26ccdcb8d272e6233ec9686a514b309e9d75e75653313a75f329b70fae7",
+      "preflight_exit": 0,
+      "promote_exit": 0,
+      "refs_after_fixture_promotion": [
+        "refs/heads/release 9bebc86d66cec96e07a66c2c7066cd2355034199",
+        "refs/tags/geoip-v41-snapshot-999999.1 9bebc86d66cec96e07a66c2c7066cd2355034199"
+      ],
+      "refs_after_preflight": [
+        "refs/heads/release e20cf733a13d92040134895ebd580b7c9060fa3b"
+      ],
+      "refs_after_stage": [
+        "refs/heads/release e20cf733a13d92040134895ebd580b7c9060fa3b",
+        "refs/tags/geoip-v41-snapshot-999999.1 9bebc86d66cec96e07a66c2c7066cd2355034199"
+      ],
+      "refs_before": [
+        "refs/heads/release e20cf733a13d92040134895ebd580b7c9060fa3b"
+      ],
+      "refs_immediately_before_fixture_promotion": [
+        "refs/heads/release e20cf733a13d92040134895ebd580b7c9060fa3b",
+        "refs/tags/geoip-v41-snapshot-999999.1 9bebc86d66cec96e07a66c2c7066cd2355034199"
+      ],
+      "refs_immediately_before_stage": [
+        "refs/heads/release e20cf733a13d92040134895ebd580b7c9060fa3b"
+      ],
+      "relative_size_override_same_candidate": false,
+      "scenario": "draft_current_public",
+      "source": "92fa97e13317db01ca43aad31386d091eb249a2a",
+      "stage_attempted": true,
+      "stage_exit": 0,
+      "staged_commit": "9bebc86d66cec96e07a66c2c7066cd2355034199",
+      "staged_commit_parent": "e20cf733a13d92040134895ebd580b7c9060fa3b",
+      "summary": [
+        {
+          "candidate": 50727,
+          "delta": 0,
+          "previous": 50727,
+          "source": "antifilter-ip.lst",
+          "verdict": "ok"
+        },
+        {
+          "candidate": 154157,
+          "delta": 0,
+          "previous": 154157,
+          "source": "antifilter-ipresolve.lst",
+          "verdict": "ok"
+        },
+        {
+          "candidate": 70,
+          "delta": 0,
+          "previous": 70,
+          "source": "antifilter-subnet.lst",
+          "verdict": "ok"
+        },
+        {
+          "content": "unchanged-since-previous-release",
+          "source": "antifilter-ip.lst"
+        },
+        {
+          "content": "unchanged-since-previous-release",
+          "source": "antifilter-ipresolve.lst"
+        },
+        {
+          "content": "unchanged-since-previous-release",
+          "source": "antifilter-subnet.lst"
+        },
+        {
+          "candidate_sha256": "b17fe26ccdcb8d272e6233ec9686a514b309e9d75e75653313a75f329b70fae7",
+          "delta": {
+            "4": {
+              "added": 0,
+              "after": 53402277,
+              "before": 53402277,
+              "limit": 267011,
+              "removed": 0
+            },
+            "6": {
+              "added": 0,
+              "after": 1205876349341644452571629307822080,
+              "before": 1205876349341644452571629307822080,
+              "limit": 12058763493416444525716293078220,
+              "removed": 0
+            }
+          },
+          "needs_review": false,
+          "private_changed": false
+        },
+        {
+          "candidate_sha256": "b17fe26ccdcb8d272e6233ec9686a514b309e9d75e75653313a75f329b70fae7",
+          "reference_sha256": "b17fe26ccdcb8d272e6233ec9686a514b309e9d75e75653313a75f329b70fae7",
+          "review_table_sha256": "aeb438051a38f079a8e98c12fe51c8c328767d6671cb887ab8f3a0ea15a75fff",
+          "status": "PASS",
+          "watched_addresses": {
+            "added": 0,
+            "removed": 0
+          },
+          "watched_changes": []
+        }
+      ]
+    },
+    "draft_disputed": {
+      "artifact_sha256": "2e2f56c07e8c7e549043a29c335d2ed4ec73f7da4c07c555313fce0ae5d4b1e6",
+      "candidate_dat_sha256": "3161fdd5eda4d9c2f962a3c8d1bd0c187e5cab9260284a13679b289a9a6d0855",
+      "preflight_exit": 1,
+      "refs_after_preflight": [
+        "refs/heads/release e20cf733a13d92040134895ebd580b7c9060fa3b"
+      ],
+      "refs_before": [
+        "refs/heads/release e20cf733a13d92040134895ebd580b7c9060fa3b"
+      ],
+      "relative_size_override_same_candidate": false,
+      "scenario": "draft_disputed",
+      "source": "92fa97e13317db01ca43aad31386d091eb249a2a",
+      "stage_attempted": false,
+      "summary": [
+        {
+          "candidate": 50727,
+          "delta": 0,
+          "previous": 50727,
+          "source": "antifilter-ip.lst",
+          "verdict": "ok"
+        },
+        {
+          "candidate": 154157,
+          "delta": 0,
+          "previous": 154157,
+          "source": "antifilter-ipresolve.lst",
+          "verdict": "ok"
+        },
+        {
+          "candidate": 70,
+          "delta": 0,
+          "previous": 70,
+          "source": "antifilter-subnet.lst",
+          "verdict": "ok"
+        },
+        {
+          "content": "unchanged-since-previous-release",
+          "source": "antifilter-ip.lst"
+        },
+        {
+          "content": "unchanged-since-previous-release",
+          "source": "antifilter-ipresolve.lst"
+        },
+        {
+          "content": "unchanged-since-previous-release",
+          "source": "antifilter-subnet.lst"
+        },
+        {
+          "candidate_sha256": "3161fdd5eda4d9c2f962a3c8d1bd0c187e5cab9260284a13679b289a9a6d0855",
+          "delta": {
+            "4": {
+              "added": 2048,
+              "after": 53403045,
+              "before": 53402277,
+              "limit": 267011,
+              "removed": 1280
+            },
+            "6": {
+              "added": 2417851639229258349412352,
+              "after": 1205876351759496091800887657234432,
+              "before": 1205876349341644452571629307822080,
+              "limit": 12058763493416444525716293078220,
+              "removed": 0
+            }
+          },
+          "needs_review": false,
+          "private_changed": false
+        },
+        {
+          "candidate_sha256": "3161fdd5eda4d9c2f962a3c8d1bd0c187e5cab9260284a13679b289a9a6d0855",
+          "reference_sha256": "b17fe26ccdcb8d272e6233ec9686a514b309e9d75e75653313a75f329b70fae7",
+          "review_table_sha256": "aeb438051a38f079a8e98c12fe51c8c328767d6671cb887ab8f3a0ea15a75fff",
+          "status": "HOLD",
+          "watched_addresses": {
+            "added": 512,
+            "removed": 1280
+          },
+          "watched_changes": [
+            {
+              "addresses": 256,
+              "cidrs": [
+                "48.103.230.0/24"
+              ],
+              "direction": "added",
+              "prefix": "48.103.230.0/24",
+              "reason": "Selected AS219095 conflicts with validated parallel origin AS401152"
+            },
+            {
+              "addresses": 256,
+              "cidrs": [
+                "201.58.141.0/24"
+              ],
+              "direction": "added",
+              "prefix": "201.58.141.0/24",
+              "reason": "Selected AS219095 conflicts with validated parallel origin AS401152"
+            },
+            {
+              "addresses": 256,
+              "cidrs": [
+                "177.29.253.0/24"
+              ],
+              "direction": "removed",
+              "prefix": "177.29.253.0/24",
+              "reason": "CURATOR-CDN service identity and RU reachability unresolved"
+            },
+            {
+              "addresses": 256,
+              "cidrs": [
+                "177.122.229.0/24"
+              ],
+              "direction": "removed",
+              "prefix": "177.122.229.0/24",
+              "reason": "RU reachability unresolved after origin transition"
+            },
+            {
+              "addresses": 256,
+              "cidrs": [
+                "177.122.241.0/24"
+              ],
+              "direction": "removed",
+              "prefix": "177.122.241.0/24",
+              "reason": "RU reachability unresolved after origin transition"
+            },
+            {
+              "addresses": 256,
+              "cidrs": [
+                "177.166.74.0/24"
+              ],
+              "direction": "removed",
+              "prefix": "177.166.74.0/24",
+              "reason": "RU reachability unresolved after origin transition"
+            },
+            {
+              "addresses": 256,
+              "cidrs": [
+                "177.166.78.0/24"
+              ],
+              "direction": "removed",
+              "prefix": "177.166.78.0/24",
+              "reason": "RU reachability unresolved after origin transition"
+            }
+          ]
+        }
+      ]
+    },
+    "draft_disputed_size_override": {
+      "artifact_sha256": "2e2f56c07e8c7e549043a29c335d2ed4ec73f7da4c07c555313fce0ae5d4b1e6",
+      "candidate_dat_sha256": "3161fdd5eda4d9c2f962a3c8d1bd0c187e5cab9260284a13679b289a9a6d0855",
+      "preflight_exit": 1,
+      "refs_after_preflight": [
+        "refs/heads/release e20cf733a13d92040134895ebd580b7c9060fa3b"
+      ],
+      "refs_before": [
+        "refs/heads/release e20cf733a13d92040134895ebd580b7c9060fa3b"
+      ],
+      "relative_size_override_same_candidate": true,
+      "scenario": "draft_disputed_size_override",
+      "source": "92fa97e13317db01ca43aad31386d091eb249a2a",
+      "stage_attempted": false,
+      "summary": [
+        {
+          "candidate": 50727,
+          "delta": 0,
+          "previous": 50727,
+          "source": "antifilter-ip.lst",
+          "verdict": "ok"
+        },
+        {
+          "candidate": 154157,
+          "delta": 0,
+          "previous": 154157,
+          "source": "antifilter-ipresolve.lst",
+          "verdict": "ok"
+        },
+        {
+          "candidate": 70,
+          "delta": 0,
+          "previous": 70,
+          "source": "antifilter-subnet.lst",
+          "verdict": "ok"
+        },
+        {
+          "content": "unchanged-since-previous-release",
+          "source": "antifilter-ip.lst"
+        },
+        {
+          "content": "unchanged-since-previous-release",
+          "source": "antifilter-ipresolve.lst"
+        },
+        {
+          "content": "unchanged-since-previous-release",
+          "source": "antifilter-subnet.lst"
+        },
+        {
+          "candidate_sha256": "3161fdd5eda4d9c2f962a3c8d1bd0c187e5cab9260284a13679b289a9a6d0855",
+          "delta": {
+            "4": {
+              "added": 2048,
+              "after": 53403045,
+              "before": 53402277,
+              "limit": 267011,
+              "removed": 1280
+            },
+            "6": {
+              "added": 2417851639229258349412352,
+              "after": 1205876351759496091800887657234432,
+              "before": 1205876349341644452571629307822080,
+              "limit": 12058763493416444525716293078220,
+              "removed": 0
+            }
+          },
+          "needs_review": false,
+          "private_changed": false
+        },
+        {
+          "candidate_sha256": "3161fdd5eda4d9c2f962a3c8d1bd0c187e5cab9260284a13679b289a9a6d0855",
+          "reference_sha256": "b17fe26ccdcb8d272e6233ec9686a514b309e9d75e75653313a75f329b70fae7",
+          "review_table_sha256": "aeb438051a38f079a8e98c12fe51c8c328767d6671cb887ab8f3a0ea15a75fff",
+          "status": "HOLD",
+          "watched_addresses": {
+            "added": 512,
+            "removed": 1280
+          },
+          "watched_changes": [
+            {
+              "addresses": 256,
+              "cidrs": [
+                "48.103.230.0/24"
+              ],
+              "direction": "added",
+              "prefix": "48.103.230.0/24",
+              "reason": "Selected AS219095 conflicts with validated parallel origin AS401152"
+            },
+            {
+              "addresses": 256,
+              "cidrs": [
+                "201.58.141.0/24"
+              ],
+              "direction": "added",
+              "prefix": "201.58.141.0/24",
+              "reason": "Selected AS219095 conflicts with validated parallel origin AS401152"
+            },
+            {
+              "addresses": 256,
+              "cidrs": [
+                "177.29.253.0/24"
+              ],
+              "direction": "removed",
+              "prefix": "177.29.253.0/24",
+              "reason": "CURATOR-CDN service identity and RU reachability unresolved"
+            },
+            {
+              "addresses": 256,
+              "cidrs": [
+                "177.122.229.0/24"
+              ],
+              "direction": "removed",
+              "prefix": "177.122.229.0/24",
+              "reason": "RU reachability unresolved after origin transition"
+            },
+            {
+              "addresses": 256,
+              "cidrs": [
+                "177.122.241.0/24"
+              ],
+              "direction": "removed",
+              "prefix": "177.122.241.0/24",
+              "reason": "RU reachability unresolved after origin transition"
+            },
+            {
+              "addresses": 256,
+              "cidrs": [
+                "177.166.74.0/24"
+              ],
+              "direction": "removed",
+              "prefix": "177.166.74.0/24",
+              "reason": "RU reachability unresolved after origin transition"
+            },
+            {
+              "addresses": 256,
+              "cidrs": [
+                "177.166.78.0/24"
+              ],
+              "direction": "removed",
+              "prefix": "177.166.78.0/24",
+              "reason": "RU reachability unresolved after origin transition"
+            }
+          ]
+        }
+      ]
+    },
+    "draft_existing_snapshot_tag": {
+      "artifact_sha256": "01b661e70d58af4b5b1f93948ed5482aaf4b47c69736b12ee5b68aff84f7ebe9",
+      "candidate_dat_sha256": "b17fe26ccdcb8d272e6233ec9686a514b309e9d75e75653313a75f329b70fae7",
+      "preflight_exit": 0,
+      "refs_after_preflight": [
+        "refs/heads/release e20cf733a13d92040134895ebd580b7c9060fa3b",
+        "refs/tags/geoip-v41-snapshot-999999.1 e20cf733a13d92040134895ebd580b7c9060fa3b"
+      ],
+      "refs_after_stage": [
+        "refs/heads/release e20cf733a13d92040134895ebd580b7c9060fa3b",
+        "refs/tags/geoip-v41-snapshot-999999.1 e20cf733a13d92040134895ebd580b7c9060fa3b"
+      ],
+      "refs_before": [
+        "refs/heads/release e20cf733a13d92040134895ebd580b7c9060fa3b",
+        "refs/tags/geoip-v41-snapshot-999999.1 e20cf733a13d92040134895ebd580b7c9060fa3b"
+      ],
+      "refs_immediately_before_stage": [
+        "refs/heads/release e20cf733a13d92040134895ebd580b7c9060fa3b",
+        "refs/tags/geoip-v41-snapshot-999999.1 e20cf733a13d92040134895ebd580b7c9060fa3b"
+      ],
+      "relative_size_override_same_candidate": false,
+      "scenario": "draft_existing_snapshot_tag",
+      "source": "92fa97e13317db01ca43aad31386d091eb249a2a",
+      "stage_attempted": true,
+      "stage_exit": 1,
+      "summary": [
+        {
+          "candidate": 50727,
+          "delta": 0,
+          "previous": 50727,
+          "source": "antifilter-ip.lst",
+          "verdict": "ok"
+        },
+        {
+          "candidate": 154157,
+          "delta": 0,
+          "previous": 154157,
+          "source": "antifilter-ipresolve.lst",
+          "verdict": "ok"
+        },
+        {
+          "candidate": 70,
+          "delta": 0,
+          "previous": 70,
+          "source": "antifilter-subnet.lst",
+          "verdict": "ok"
+        },
+        {
+          "content": "unchanged-since-previous-release",
+          "source": "antifilter-ip.lst"
+        },
+        {
+          "content": "unchanged-since-previous-release",
+          "source": "antifilter-ipresolve.lst"
+        },
+        {
+          "content": "unchanged-since-previous-release",
+          "source": "antifilter-subnet.lst"
+        },
+        {
+          "candidate_sha256": "b17fe26ccdcb8d272e6233ec9686a514b309e9d75e75653313a75f329b70fae7",
+          "delta": {
+            "4": {
+              "added": 0,
+              "after": 53402277,
+              "before": 53402277,
+              "limit": 267011,
+              "removed": 0
+            },
+            "6": {
+              "added": 0,
+              "after": 1205876349341644452571629307822080,
+              "before": 1205876349341644452571629307822080,
+              "limit": 12058763493416444525716293078220,
+              "removed": 0
+            }
+          },
+          "needs_review": false,
+          "private_changed": false
+        },
+        {
+          "candidate_sha256": "b17fe26ccdcb8d272e6233ec9686a514b309e9d75e75653313a75f329b70fae7",
+          "reference_sha256": "b17fe26ccdcb8d272e6233ec9686a514b309e9d75e75653313a75f329b70fae7",
+          "review_table_sha256": "aeb438051a38f079a8e98c12fe51c8c328767d6671cb887ab8f3a0ea15a75fff",
+          "status": "PASS",
+          "watched_addresses": {
+            "added": 0,
+            "removed": 0
+          },
+          "watched_changes": []
+        }
+      ]
+    },
+    "draft_release_moved_after_preflight": {
+      "artifact_sha256": "01b661e70d58af4b5b1f93948ed5482aaf4b47c69736b12ee5b68aff84f7ebe9",
+      "candidate_dat_sha256": "b17fe26ccdcb8d272e6233ec9686a514b309e9d75e75653313a75f329b70fae7",
+      "preflight_exit": 0,
+      "refs_after_preflight": [
+        "refs/heads/release e20cf733a13d92040134895ebd580b7c9060fa3b"
+      ],
+      "refs_after_stage": [
+        "refs/heads/release c0d2a01ba1fb5f5c0e48965d614945348083a900"
+      ],
+      "refs_before": [
+        "refs/heads/release e20cf733a13d92040134895ebd580b7c9060fa3b"
+      ],
+      "refs_immediately_before_stage": [
+        "refs/heads/release c0d2a01ba1fb5f5c0e48965d614945348083a900"
+      ],
+      "relative_size_override_same_candidate": false,
+      "scenario": "draft_release_moved_after_preflight",
+      "source": "92fa97e13317db01ca43aad31386d091eb249a2a",
+      "stage_attempted": true,
+      "stage_exit": 1,
+      "summary": [
+        {
+          "candidate": 50727,
+          "delta": 0,
+          "previous": 50727,
+          "source": "antifilter-ip.lst",
+          "verdict": "ok"
+        },
+        {
+          "candidate": 154157,
+          "delta": 0,
+          "previous": 154157,
+          "source": "antifilter-ipresolve.lst",
+          "verdict": "ok"
+        },
+        {
+          "candidate": 70,
+          "delta": 0,
+          "previous": 70,
+          "source": "antifilter-subnet.lst",
+          "verdict": "ok"
+        },
+        {
+          "content": "unchanged-since-previous-release",
+          "source": "antifilter-ip.lst"
+        },
+        {
+          "content": "unchanged-since-previous-release",
+          "source": "antifilter-ipresolve.lst"
+        },
+        {
+          "content": "unchanged-since-previous-release",
+          "source": "antifilter-subnet.lst"
+        },
+        {
+          "candidate_sha256": "b17fe26ccdcb8d272e6233ec9686a514b309e9d75e75653313a75f329b70fae7",
+          "delta": {
+            "4": {
+              "added": 0,
+              "after": 53402277,
+              "before": 53402277,
+              "limit": 267011,
+              "removed": 0
+            },
+            "6": {
+              "added": 0,
+              "after": 1205876349341644452571629307822080,
+              "before": 1205876349341644452571629307822080,
+              "limit": 12058763493416444525716293078220,
+              "removed": 0
+            }
+          },
+          "needs_review": false,
+          "private_changed": false
+        },
+        {
+          "candidate_sha256": "b17fe26ccdcb8d272e6233ec9686a514b309e9d75e75653313a75f329b70fae7",
+          "reference_sha256": "b17fe26ccdcb8d272e6233ec9686a514b309e9d75e75653313a75f329b70fae7",
+          "review_table_sha256": "aeb438051a38f079a8e98c12fe51c8c328767d6671cb887ab8f3a0ea15a75fff",
+          "status": "PASS",
+          "watched_addresses": {
+            "added": 0,
+            "removed": 0
+          },
+          "watched_changes": []
+        }
+      ]
+    },
+    "draft_release_moved_after_stage": {
+      "artifact_sha256": "01b661e70d58af4b5b1f93948ed5482aaf4b47c69736b12ee5b68aff84f7ebe9",
+      "candidate_dat_sha256": "b17fe26ccdcb8d272e6233ec9686a514b309e9d75e75653313a75f329b70fae7",
+      "preflight_exit": 0,
+      "promote_exit": 1,
+      "refs_after_fixture_promotion": [
+        "refs/heads/release c0d2a01ba1fb5f5c0e48965d614945348083a900",
+        "refs/tags/geoip-v41-snapshot-999999.1 3deffb5ebaa7bedafebf5b5d41acce867e758e07"
+      ],
+      "refs_after_preflight": [
+        "refs/heads/release e20cf733a13d92040134895ebd580b7c9060fa3b"
+      ],
+      "refs_after_stage": [
+        "refs/heads/release e20cf733a13d92040134895ebd580b7c9060fa3b",
+        "refs/tags/geoip-v41-snapshot-999999.1 3deffb5ebaa7bedafebf5b5d41acce867e758e07"
+      ],
+      "refs_before": [
+        "refs/heads/release e20cf733a13d92040134895ebd580b7c9060fa3b"
+      ],
+      "refs_immediately_before_fixture_promotion": [
+        "refs/heads/release c0d2a01ba1fb5f5c0e48965d614945348083a900",
+        "refs/tags/geoip-v41-snapshot-999999.1 3deffb5ebaa7bedafebf5b5d41acce867e758e07"
+      ],
+      "refs_immediately_before_stage": [
+        "refs/heads/release e20cf733a13d92040134895ebd580b7c9060fa3b"
+      ],
+      "relative_size_override_same_candidate": false,
+      "scenario": "draft_release_moved_after_stage",
+      "source": "92fa97e13317db01ca43aad31386d091eb249a2a",
+      "stage_attempted": true,
+      "stage_exit": 0,
+      "staged_commit": "3deffb5ebaa7bedafebf5b5d41acce867e758e07",
+      "staged_commit_parent": "e20cf733a13d92040134895ebd580b7c9060fa3b",
+      "summary": [
+        {
+          "candidate": 50727,
+          "delta": 0,
+          "previous": 50727,
+          "source": "antifilter-ip.lst",
+          "verdict": "ok"
+        },
+        {
+          "candidate": 154157,
+          "delta": 0,
+          "previous": 154157,
+          "source": "antifilter-ipresolve.lst",
+          "verdict": "ok"
+        },
+        {
+          "candidate": 70,
+          "delta": 0,
+          "previous": 70,
+          "source": "antifilter-subnet.lst",
+          "verdict": "ok"
+        },
+        {
+          "content": "unchanged-since-previous-release",
+          "source": "antifilter-ip.lst"
+        },
+        {
+          "content": "unchanged-since-previous-release",
+          "source": "antifilter-ipresolve.lst"
+        },
+        {
+          "content": "unchanged-since-previous-release",
+          "source": "antifilter-subnet.lst"
+        },
+        {
+          "candidate_sha256": "b17fe26ccdcb8d272e6233ec9686a514b309e9d75e75653313a75f329b70fae7",
+          "delta": {
+            "4": {
+              "added": 0,
+              "after": 53402277,
+              "before": 53402277,
+              "limit": 267011,
+              "removed": 0
+            },
+            "6": {
+              "added": 0,
+              "after": 1205876349341644452571629307822080,
+              "before": 1205876349341644452571629307822080,
+              "limit": 12058763493416444525716293078220,
+              "removed": 0
+            }
+          },
+          "needs_review": false,
+          "private_changed": false
+        },
+        {
+          "candidate_sha256": "b17fe26ccdcb8d272e6233ec9686a514b309e9d75e75653313a75f329b70fae7",
+          "reference_sha256": "b17fe26ccdcb8d272e6233ec9686a514b309e9d75e75653313a75f329b70fae7",
+          "review_table_sha256": "aeb438051a38f079a8e98c12fe51c8c328767d6671cb887ab8f3a0ea15a75fff",
+          "status": "PASS",
+          "watched_addresses": {
+            "added": 0,
+            "removed": 0
+          },
+          "watched_changes": []
+        }
+      ],
+      "versioned_downloads_issued": 0
+    },
+    "draft_release_moved_between_check_and_promotion_push": {
+      "artifact_sha256": "01b661e70d58af4b5b1f93948ed5482aaf4b47c69736b12ee5b68aff84f7ebe9",
+      "candidate_dat_sha256": "b17fe26ccdcb8d272e6233ec9686a514b309e9d75e75653313a75f329b70fae7",
+      "cas_rejected_stale_tip": true,
+      "preflight_exit": 0,
+      "promote_exit": 1,
+      "race_reached": true,
+      "refs_after_fixture_promotion": [
+        "refs/heads/release c0d2a01ba1fb5f5c0e48965d614945348083a900",
+        "refs/tags/geoip-v41-snapshot-999999.1 813fd2517523cc737e8533e65e91b1466d4fadb1"
+      ],
+      "refs_after_preflight": [
+        "refs/heads/release e20cf733a13d92040134895ebd580b7c9060fa3b"
+      ],
+      "refs_after_stage": [
+        "refs/heads/release e20cf733a13d92040134895ebd580b7c9060fa3b",
+        "refs/tags/geoip-v41-snapshot-999999.1 813fd2517523cc737e8533e65e91b1466d4fadb1"
+      ],
+      "refs_before": [
+        "refs/heads/release e20cf733a13d92040134895ebd580b7c9060fa3b"
+      ],
+      "refs_immediately_before_fixture_promotion": [
+        "refs/heads/release e20cf733a13d92040134895ebd580b7c9060fa3b",
+        "refs/tags/geoip-v41-snapshot-999999.1 813fd2517523cc737e8533e65e91b1466d4fadb1"
+      ],
+      "refs_immediately_before_stage": [
+        "refs/heads/release e20cf733a13d92040134895ebd580b7c9060fa3b"
+      ],
+      "relative_size_override_same_candidate": false,
+      "scenario": "draft_release_moved_between_check_and_promotion_push",
+      "source": "92fa97e13317db01ca43aad31386d091eb249a2a",
+      "stage_attempted": true,
+      "stage_exit": 0,
+      "staged_commit": "813fd2517523cc737e8533e65e91b1466d4fadb1",
+      "staged_commit_parent": "e20cf733a13d92040134895ebd580b7c9060fa3b",
+      "summary": [
+        {
+          "candidate": 50727,
+          "delta": 0,
+          "previous": 50727,
+          "source": "antifilter-ip.lst",
+          "verdict": "ok"
+        },
+        {
+          "candidate": 154157,
+          "delta": 0,
+          "previous": 154157,
+          "source": "antifilter-ipresolve.lst",
+          "verdict": "ok"
+        },
+        {
+          "candidate": 70,
+          "delta": 0,
+          "previous": 70,
+          "source": "antifilter-subnet.lst",
+          "verdict": "ok"
+        },
+        {
+          "content": "unchanged-since-previous-release",
+          "source": "antifilter-ip.lst"
+        },
+        {
+          "content": "unchanged-since-previous-release",
+          "source": "antifilter-ipresolve.lst"
+        },
+        {
+          "content": "unchanged-since-previous-release",
+          "source": "antifilter-subnet.lst"
+        },
+        {
+          "candidate_sha256": "b17fe26ccdcb8d272e6233ec9686a514b309e9d75e75653313a75f329b70fae7",
+          "delta": {
+            "4": {
+              "added": 0,
+              "after": 53402277,
+              "before": 53402277,
+              "limit": 267011,
+              "removed": 0
+            },
+            "6": {
+              "added": 0,
+              "after": 1205876349341644452571629307822080,
+              "before": 1205876349341644452571629307822080,
+              "limit": 12058763493416444525716293078220,
+              "removed": 0
+            }
+          },
+          "needs_review": false,
+          "private_changed": false
+        },
+        {
+          "candidate_sha256": "b17fe26ccdcb8d272e6233ec9686a514b309e9d75e75653313a75f329b70fae7",
+          "reference_sha256": "b17fe26ccdcb8d272e6233ec9686a514b309e9d75e75653313a75f329b70fae7",
+          "review_table_sha256": "aeb438051a38f079a8e98c12fe51c8c328767d6671cb887ab8f3a0ea15a75fff",
+          "status": "PASS",
+          "watched_addresses": {
+            "added": 0,
+            "removed": 0
+          },
+          "watched_changes": []
+        }
+      ]
+    },
+    "draft_release_moves_after_stage_parent_read_but_before_tag_push": {
+      "artifact_sha256": "01b661e70d58af4b5b1f93948ed5482aaf4b47c69736b12ee5b68aff84f7ebe9",
+      "candidate_dat_sha256": "b17fe26ccdcb8d272e6233ec9686a514b309e9d75e75653313a75f329b70fae7",
+      "preflight_exit": 0,
+      "promote_exit": 1,
+      "race_reached": true,
+      "refs_after_fixture_promotion": [
+        "refs/heads/release 992a2bf1c0bc4b72dd78c99b2b0cae17c2de0916",
+        "refs/tags/geoip-v41-snapshot-999999.1 771b6ba2fd88f41d8860f1d7cd3e407a9b1fcea6"
+      ],
+      "refs_after_preflight": [
+        "refs/heads/release e20cf733a13d92040134895ebd580b7c9060fa3b"
+      ],
+      "refs_after_stage": [
+        "refs/heads/release 992a2bf1c0bc4b72dd78c99b2b0cae17c2de0916",
+        "refs/tags/geoip-v41-snapshot-999999.1 771b6ba2fd88f41d8860f1d7cd3e407a9b1fcea6"
+      ],
+      "refs_before": [
+        "refs/heads/release e20cf733a13d92040134895ebd580b7c9060fa3b"
+      ],
+      "refs_immediately_before_fixture_promotion": [
+        "refs/heads/release 992a2bf1c0bc4b72dd78c99b2b0cae17c2de0916",
+        "refs/tags/geoip-v41-snapshot-999999.1 771b6ba2fd88f41d8860f1d7cd3e407a9b1fcea6"
+      ],
+      "refs_immediately_before_stage": [
+        "refs/heads/release e20cf733a13d92040134895ebd580b7c9060fa3b"
+      ],
+      "relative_size_override_same_candidate": false,
+      "rolling_promotion_rejected": true,
+      "scenario": "draft_release_moves_after_stage_parent_read_but_before_tag_push",
+      "source": "92fa97e13317db01ca43aad31386d091eb249a2a",
+      "stage_attempted": true,
+      "stage_exit": 0,
+      "staged_commit": "771b6ba2fd88f41d8860f1d7cd3e407a9b1fcea6",
+      "staged_commit_parent": "e20cf733a13d92040134895ebd580b7c9060fa3b",
+      "summary": [
+        {
+          "candidate": 50727,
+          "delta": 0,
+          "previous": 50727,
+          "source": "antifilter-ip.lst",
+          "verdict": "ok"
+        },
+        {
+          "candidate": 154157,
+          "delta": 0,
+          "previous": 154157,
+          "source": "antifilter-ipresolve.lst",
+          "verdict": "ok"
+        },
+        {
+          "candidate": 70,
+          "delta": 0,
+          "previous": 70,
+          "source": "antifilter-subnet.lst",
+          "verdict": "ok"
+        },
+        {
+          "content": "unchanged-since-previous-release",
+          "source": "antifilter-ip.lst"
+        },
+        {
+          "content": "unchanged-since-previous-release",
+          "source": "antifilter-ipresolve.lst"
+        },
+        {
+          "content": "unchanged-since-previous-release",
+          "source": "antifilter-subnet.lst"
+        },
+        {
+          "candidate_sha256": "b17fe26ccdcb8d272e6233ec9686a514b309e9d75e75653313a75f329b70fae7",
+          "delta": {
+            "4": {
+              "added": 0,
+              "after": 53402277,
+              "before": 53402277,
+              "limit": 267011,
+              "removed": 0
+            },
+            "6": {
+              "added": 0,
+              "after": 1205876349341644452571629307822080,
+              "before": 1205876349341644452571629307822080,
+              "limit": 12058763493416444525716293078220,
+              "removed": 0
+            }
+          },
+          "needs_review": false,
+          "private_changed": false
+        },
+        {
+          "candidate_sha256": "b17fe26ccdcb8d272e6233ec9686a514b309e9d75e75653313a75f329b70fae7",
+          "reference_sha256": "b17fe26ccdcb8d272e6233ec9686a514b309e9d75e75653313a75f329b70fae7",
+          "review_table_sha256": "aeb438051a38f079a8e98c12fe51c8c328767d6671cb887ab8f3a0ea15a75fff",
+          "status": "PASS",
+          "watched_addresses": {
+            "added": 0,
+            "removed": 0
+          },
+          "watched_changes": []
+        }
+      ],
+      "tag_only_from_stale_parent": true
+    },
+    "draft_same_disputed_dat_after_older_publisher_promoted_it": {
+      "artifact_sha256": "2e2f56c07e8c7e549043a29c335d2ed4ec73f7da4c07c555313fce0ae5d4b1e6",
+      "candidate_dat_sha256": "3161fdd5eda4d9c2f962a3c8d1bd0c187e5cab9260284a13679b289a9a6d0855",
+      "note": "read-only baseline is already on the disputed candidate; a delta guard is not a corrective rollback",
+      "preflight_baseline": "4194c38d93d676901755263b062c59cf0522a360",
+      "preflight_exit": 0,
+      "refs_after_preflight": [
+        "refs/heads/release 4194c38d93d676901755263b062c59cf0522a360"
+      ],
+      "refs_before": [
+        "refs/heads/release 4194c38d93d676901755263b062c59cf0522a360"
+      ],
+      "relative_size_override_same_candidate": false,
+      "scenario": "draft_same_disputed_dat_after_older_publisher_promoted_it",
+      "source": "92fa97e13317db01ca43aad31386d091eb249a2a",
+      "stage_attempted": false,
+      "summary": [
+        {
+          "candidate": 50727,
+          "delta": 0,
+          "previous": 50727,
+          "source": "antifilter-ip.lst",
+          "verdict": "ok"
+        },
+        {
+          "candidate": 154157,
+          "delta": 0,
+          "previous": 154157,
+          "source": "antifilter-ipresolve.lst",
+          "verdict": "ok"
+        },
+        {
+          "candidate": 70,
+          "delta": 0,
+          "previous": 70,
+          "source": "antifilter-subnet.lst",
+          "verdict": "ok"
+        },
+        {
+          "content": "unchanged-since-previous-release",
+          "source": "antifilter-ip.lst"
+        },
+        {
+          "content": "unchanged-since-previous-release",
+          "source": "antifilter-ipresolve.lst"
+        },
+        {
+          "content": "unchanged-since-previous-release",
+          "source": "antifilter-subnet.lst"
+        },
+        {
+          "candidate_sha256": "3161fdd5eda4d9c2f962a3c8d1bd0c187e5cab9260284a13679b289a9a6d0855",
+          "delta": {
+            "4": {
+              "added": 0,
+              "after": 53403045,
+              "before": 53403045,
+              "limit": 267015,
+              "removed": 0
+            },
+            "6": {
+              "added": 0,
+              "after": 1205876351759496091800887657234432,
+              "before": 1205876351759496091800887657234432,
+              "limit": 12058763517594960918008876572344,
+              "removed": 0
+            }
+          },
+          "needs_review": false,
+          "private_changed": false
+        },
+        {
+          "candidate_sha256": "3161fdd5eda4d9c2f962a3c8d1bd0c187e5cab9260284a13679b289a9a6d0855",
+          "reference_sha256": "3161fdd5eda4d9c2f962a3c8d1bd0c187e5cab9260284a13679b289a9a6d0855",
+          "review_table_sha256": "aeb438051a38f079a8e98c12fe51c8c328767d6671cb887ab8f3a0ea15a75fff",
+          "status": "PASS",
+          "watched_addresses": {
+            "added": 0,
+            "removed": 0
+          },
+          "watched_changes": []
+        }
+      ]
+    },
+    "draft_tag_created_between_check_and_push": {
+      "artifact_sha256": "01b661e70d58af4b5b1f93948ed5482aaf4b47c69736b12ee5b68aff84f7ebe9",
+      "candidate_dat_sha256": "b17fe26ccdcb8d272e6233ec9686a514b309e9d75e75653313a75f329b70fae7",
+      "preflight_exit": 0,
+      "race_reached": true,
+      "refs_after_preflight": [
+        "refs/heads/release e20cf733a13d92040134895ebd580b7c9060fa3b"
+      ],
+      "refs_after_stage": [
+        "refs/heads/release e20cf733a13d92040134895ebd580b7c9060fa3b",
+        "refs/tags/geoip-v41-snapshot-999999.1 e20cf733a13d92040134895ebd580b7c9060fa3b"
+      ],
+      "refs_before": [
+        "refs/heads/release e20cf733a13d92040134895ebd580b7c9060fa3b"
+      ],
+      "refs_immediately_before_stage": [
+        "refs/heads/release e20cf733a13d92040134895ebd580b7c9060fa3b"
+      ],
+      "relative_size_override_same_candidate": false,
+      "scenario": "draft_tag_created_between_check_and_push",
+      "source": "92fa97e13317db01ca43aad31386d091eb249a2a",
+      "stage_attempted": true,
+      "stage_exit": 1,
+      "summary": [
+        {
+          "candidate": 50727,
+          "delta": 0,
+          "previous": 50727,
+          "source": "antifilter-ip.lst",
+          "verdict": "ok"
+        },
+        {
+          "candidate": 154157,
+          "delta": 0,
+          "previous": 154157,
+          "source": "antifilter-ipresolve.lst",
+          "verdict": "ok"
+        },
+        {
+          "candidate": 70,
+          "delta": 0,
+          "previous": 70,
+          "source": "antifilter-subnet.lst",
+          "verdict": "ok"
+        },
+        {
+          "content": "unchanged-since-previous-release",
+          "source": "antifilter-ip.lst"
+        },
+        {
+          "content": "unchanged-since-previous-release",
+          "source": "antifilter-ipresolve.lst"
+        },
+        {
+          "content": "unchanged-since-previous-release",
+          "source": "antifilter-subnet.lst"
+        },
+        {
+          "candidate_sha256": "b17fe26ccdcb8d272e6233ec9686a514b309e9d75e75653313a75f329b70fae7",
+          "delta": {
+            "4": {
+              "added": 0,
+              "after": 53402277,
+              "before": 53402277,
+              "limit": 267011,
+              "removed": 0
+            },
+            "6": {
+              "added": 0,
+              "after": 1205876349341644452571629307822080,
+              "before": 1205876349341644452571629307822080,
+              "limit": 12058763493416444525716293078220,
+              "removed": 0
+            }
+          },
+          "needs_review": false,
+          "private_changed": false
+        },
+        {
+          "candidate_sha256": "b17fe26ccdcb8d272e6233ec9686a514b309e9d75e75653313a75f329b70fae7",
+          "reference_sha256": "b17fe26ccdcb8d272e6233ec9686a514b309e9d75e75653313a75f329b70fae7",
+          "review_table_sha256": "aeb438051a38f079a8e98c12fe51c8c328767d6671cb887ab8f3a0ea15a75fff",
+          "status": "PASS",
+          "watched_addresses": {
+            "added": 0,
+            "removed": 0
+          },
+          "watched_changes": []
+        }
+      ]
+    },
+    "main_disputed": {
+      "artifact_sha256": "2e2f56c07e8c7e549043a29c335d2ed4ec73f7da4c07c555313fce0ae5d4b1e6",
+      "candidate_dat_sha256": "3161fdd5eda4d9c2f962a3c8d1bd0c187e5cab9260284a13679b289a9a6d0855",
+      "preflight_exit": 0,
+      "promote_exit": 0,
+      "refs_after_fixture_promotion": [
+        "refs/heads/release 4194c38d93d676901755263b062c59cf0522a360",
+        "refs/tags/geoip-v41-snapshot-999999.1 4194c38d93d676901755263b062c59cf0522a360"
+      ],
+      "refs_after_preflight": [
+        "refs/heads/release e20cf733a13d92040134895ebd580b7c9060fa3b"
+      ],
+      "refs_after_stage": [
+        "refs/heads/release e20cf733a13d92040134895ebd580b7c9060fa3b",
+        "refs/tags/geoip-v41-snapshot-999999.1 4194c38d93d676901755263b062c59cf0522a360"
+      ],
+      "refs_before": [
+        "refs/heads/release e20cf733a13d92040134895ebd580b7c9060fa3b"
+      ],
+      "refs_immediately_before_fixture_promotion": [
+        "refs/heads/release e20cf733a13d92040134895ebd580b7c9060fa3b",
+        "refs/tags/geoip-v41-snapshot-999999.1 4194c38d93d676901755263b062c59cf0522a360"
+      ],
+      "refs_immediately_before_stage": [
+        "refs/heads/release e20cf733a13d92040134895ebd580b7c9060fa3b"
+      ],
+      "relative_size_override_same_candidate": false,
+      "scenario": "main_disputed",
+      "source": "c0d2a01ba1fb5f5c0e48965d614945348083a900",
+      "stage_attempted": true,
+      "stage_exit": 0,
+      "staged_commit": "4194c38d93d676901755263b062c59cf0522a360",
+      "staged_commit_parent": "e20cf733a13d92040134895ebd580b7c9060fa3b",
+      "summary": [
+        {
+          "candidate": 50727,
+          "delta": 0,
+          "previous": 50727,
+          "source": "antifilter-ip.lst",
+          "verdict": "ok"
+        },
+        {
+          "candidate": 154157,
+          "delta": 0,
+          "previous": 154157,
+          "source": "antifilter-ipresolve.lst",
+          "verdict": "ok"
+        },
+        {
+          "candidate": 70,
+          "delta": 0,
+          "previous": 70,
+          "source": "antifilter-subnet.lst",
+          "verdict": "ok"
+        },
+        {
+          "content": "unchanged-since-previous-release",
+          "source": "antifilter-ip.lst"
+        },
+        {
+          "content": "unchanged-since-previous-release",
+          "source": "antifilter-ipresolve.lst"
+        },
+        {
+          "content": "unchanged-since-previous-release",
+          "source": "antifilter-subnet.lst"
+        },
+        {
+          "candidate_sha256": "3161fdd5eda4d9c2f962a3c8d1bd0c187e5cab9260284a13679b289a9a6d0855",
+          "delta": {
+            "4": {
+              "added": 2048,
+              "after": 53403045,
+              "before": 53402277,
+              "limit": 267011,
+              "removed": 1280
+            },
+            "6": {
+              "added": 2417851639229258349412352,
+              "after": 1205876351759496091800887657234432,
+              "before": 1205876349341644452571629307822080,
+              "limit": 12058763493416444525716293078220,
+              "removed": 0
+            }
+          },
+          "needs_review": false,
+          "private_changed": false
+        }
+      ]
+    }
+  },
+  "generated_at_utc": "2026-11-16T09:19:58+00:00",
+  "ipverse_live_archive": {
+    "bytes": 16271861,
+    "pax_comment": "e23603237f0e178c026963fea2b36165d1badd75",
+    "retained_pr54_bytes_match": true,
+    "sha256": "84af740b9546cf54448ff0782f5ddc15d458e15b0d2409fcff8de3d5733baa34",
+    "url": "https://codeload.github.com/ipverse/as-ip-blocks/tar.gz/refs/heads/master"
+  },
+  "last_executed_check_at_utc": "2026-11-16T09:21:21+00:00",
+  "local_exact_head_validation": {
+    "existing_home_probe_and_ingest_tests_passed": 32,
+    "pr53_cdn_workflow_boundary": "PASS",
+    "pr53_python_tests_passed": 273
+  },
+  "not_established": [
+    "services in five disputed networks",
+    "matching HTTPS from RU access networks",
+    "future upstream input state",
+    "exact jsDelivr provider-side internal condition"
+  ],
+  "not_performed": [
+    "merge",
+    "production workflow dispatch",
+    "production release write",
+    "cdn purge",
+    "private service probing",
+    "contacting network operators",
+    "home or VPN observations"
+  ],
+  "origin_validation_and_compiled_registry_membership": {
+    "origin_checks": [
+      {
+        "compiled_source_registry_membership": {
+          "company": false,
+          "rir_by_kz": false,
+          "rir_ru": true
+        },
+        "covering_vrps": [
+          {
+            "max_length": 24,
+            "origin": "219306",
+            "prefix": "177.29.253.0/24",
+            "validity": "valid"
+          },
+          {
+            "max_length": 24,
+            "origin": "17561",
+            "prefix": "177.29.253.0/24",
+            "validity": "invalid_asn"
+          },
+          {
+            "max_length": 24,
+            "origin": "137410",
+            "prefix": "177.29.253.0/24",
+            "validity": "invalid_asn"
+          }
+        ],
+        "observed_at": "2026-11-16T09:16:38+00:00",
+        "origin": 219306,
+        "prefix": "177.29.253.0/24",
+        "response_sha256": "7879758af6a2d4c630825ef04af79fb3287b11123864611eb354640036d755e1",
+        "url": "https://stat.ripe.net/data/rpki-validation/data.json?resource=AS219306&prefix=177.29.253.0%2F24",
+        "validator": "routinator",
+        "verdict": "valid"
+      },
+      {
+        "compiled_source_registry_membership": {
+          "company": false,
+          "rir_by_kz": false,
+          "rir_ru": false
+        },
+        "covering_vrps": [
+          {
+            "max_length": 24,
+            "origin": "137410",
+            "prefix": "177.29.253.0/24",
+            "validity": "valid"
+          },
+          {
+            "max_length": 24,
+            "origin": "17561",
+            "prefix": "177.29.253.0/24",
+            "validity": "invalid_asn"
+          },
+          {
+            "max_length": 24,
+            "origin": "219306",
+            "prefix": "177.29.253.0/24",
+            "validity": "invalid_asn"
+          }
+        ],
+        "observed_at": "2026-11-16T09:16:38+00:00",
+        "origin": 137410,
+        "prefix": "177.29.253.0/24",
+        "response_sha256": "a08348a34219804f3e2f4dac27f54f3b06da812e051e8eddbaa0af597fda288b",
+        "url": "https://stat.ripe.net/data/rpki-validation/data.json?resource=AS137410&prefix=177.29.253.0%2F24",
+        "validator": "routinator",
+        "verdict": "valid"
+      },
+      {
+        "compiled_source_registry_membership": {
+          "company": false,
+          "rir_by_kz": false,
+          "rir_ru": true
+        },
+        "covering_vrps": [
+          {
+            "max_length": 24,
+            "origin": "219216",
+            "prefix": "177.122.229.0/24",
+            "validity": "valid"
+          },
+          {
+            "max_length": 24,
+            "origin": "17561",
+            "prefix": "177.122.229.0/24",
+            "validity": "invalid_asn"
+          },
+          {
+            "max_length": 24,
+            "origin": "137410",
+            "prefix": "177.122.229.0/24",
+            "validity": "invalid_asn"
+          }
+        ],
+        "observed_at": "2026-11-16T09:16:38+00:00",
+        "origin": 219216,
+        "prefix": "177.122.229.0/24",
+        "response_sha256": "953340de15ea5f13f67590eb88883328ad4307121d73348e192d60626364cf67",
+        "url": "https://stat.ripe.net/data/rpki-validation/data.json?resource=AS219216&prefix=177.122.229.0%2F24",
+        "validator": "routinator",
+        "verdict": "valid"
+      },
+      {
+        "compiled_source_registry_membership": {
+          "company": false,
+          "rir_by_kz": false,
+          "rir_ru": false
+        },
+        "covering_vrps": [
+          {
+            "max_length": 24,
+            "origin": "137410",
+            "prefix": "177.122.229.0/24",
+            "validity": "valid"
+          },
+          {
+            "max_length": 24,
+            "origin": "17561",
+            "prefix": "177.122.229.0/24",
+            "validity": "invalid_asn"
+          },
+          {
+            "max_length": 24,
+            "origin": "219216",
+            "prefix": "177.122.229.0/24",
+            "validity": "invalid_asn"
+          }
+        ],
+        "observed_at": "2026-11-16T09:16:38+00:00",
+        "origin": 137410,
+        "prefix": "177.122.229.0/24",
+        "response_sha256": "1fd73c130e01d5f0f870bb977b41dd3ce195c6cf40b0f85f45bfba9e4e5c8fca",
+        "url": "https://stat.ripe.net/data/rpki-validation/data.json?resource=AS137410&prefix=177.122.229.0%2F24",
+        "validator": "routinator",
+        "verdict": "valid"
+      },
+      {
+        "compiled_source_registry_membership": {
+          "company": false,
+          "rir_by_kz": false,
+          "rir_ru": true
+        },
+        "covering_vrps": [
+          {
+            "max_length": 24,
+            "origin": "218568",
+            "prefix": "177.122.241.0/24",
+            "validity": "valid"
+          },
+          {
+            "max_length": 24,
+            "origin": "17561",
+            "prefix": "177.122.241.0/24",
+            "validity": "invalid_asn"
+          },
+          {
+            "max_length": 24,
+            "origin": "137410",
+            "prefix": "177.122.241.0/24",
+            "validity": "invalid_asn"
+          }
+        ],
+        "observed_at": "2026-11-16T09:16:38+00:00",
+        "origin": 218568,
+        "prefix": "177.122.241.0/24",
+        "response_sha256": "8ec0faa2702227d635b3b10f1b7d34574ae1bb9a653f737f57b495360507695e",
+        "url": "https://stat.ripe.net/data/rpki-validation/data.json?resource=AS218568&prefix=177.122.241.0%2F24",
+        "validator": "routinator",
+        "verdict": "valid"
+      },
+      {
+        "compiled_source_registry_membership": {
+          "company": false,
+          "rir_by_kz": false,
+          "rir_ru": false
+        },
+        "covering_vrps": [
+          {
+            "max_length": 24,
+            "origin": "137410",
+            "prefix": "177.122.241.0/24",
+            "validity": "valid"
+          },
+          {
+            "max_length": 24,
+            "origin": "17561",
+            "prefix": "177.122.241.0/24",
+            "validity": "invalid_asn"
+          },
+          {
+            "max_length": 24,
+            "origin": "218568",
+            "prefix": "177.122.241.0/24",
+            "validity": "invalid_asn"
+          }
+        ],
+        "observed_at": "2026-11-16T09:16:43+00:00",
+        "origin": 137410,
+        "prefix": "177.122.241.0/24",
+        "response_sha256": "3bf93603049a184536e1c2805f720b498af989a53698730e88ab23cbb7416f26",
+        "url": "https://stat.ripe.net/data/rpki-validation/data.json?resource=AS137410&prefix=177.122.241.0%2F24",
+        "validator": "routinator",
+        "verdict": "valid"
+      },
+      {
+        "compiled_source_registry_membership": {
+          "company": false,
+          "rir_by_kz": false,
+          "rir_ru": true
+        },
+        "covering_vrps": [
+          {
+            "max_length": 24,
+            "origin": "219262",
+            "prefix": "177.166.74.0/24",
+            "validity": "valid"
+          },
+          {
+            "max_length": 24,
+            "origin": "17561",
+            "prefix": "177.166.74.0/24",
+            "validity": "invalid_asn"
+          },
+          {
+            "max_length": 24,
+            "origin": "137410",
+            "prefix": "177.166.74.0/24",
+            "validity": "invalid_asn"
+          }
+        ],
+        "observed_at": "2026-11-16T09:16:43+00:00",
+        "origin": 219262,
+        "prefix": "177.166.74.0/24",
+        "response_sha256": "201e1cbf07190845a1ec8adc5943afdc110f41abeb6f14b76c5fc854ad4af357",
+        "url": "https://stat.ripe.net/data/rpki-validation/data.json?resource=AS219262&prefix=177.166.74.0%2F24",
+        "validator": "routinator",
+        "verdict": "valid"
+      },
+      {
+        "compiled_source_registry_membership": {
+          "company": false,
+          "rir_by_kz": false,
+          "rir_ru": false
+        },
+        "covering_vrps": [
+          {
+            "max_length": 24,
+            "origin": "137410",
+            "prefix": "177.166.74.0/24",
+            "validity": "valid"
+          },
+          {
+            "max_length": 24,
+            "origin": "17561",
+            "prefix": "177.166.74.0/24",
+            "validity": "invalid_asn"
+          },
+          {
+            "max_length": 24,
+            "origin": "219262",
+            "prefix": "177.166.74.0/24",
+            "validity": "invalid_asn"
+          }
+        ],
+        "observed_at": "2026-11-16T09:16:45+00:00",
+        "origin": 137410,
+        "prefix": "177.166.74.0/24",
+        "response_sha256": "9e20a171a8ec650dfbf7b55e141ee993ec8b80e641e4cfb7b37ec047bf42febe",
+        "url": "https://stat.ripe.net/data/rpki-validation/data.json?resource=AS137410&prefix=177.166.74.0%2F24",
+        "validator": "routinator",
+        "verdict": "valid"
+      },
+      {
+        "compiled_source_registry_membership": {
+          "company": false,
+          "rir_by_kz": false,
+          "rir_ru": true
+        },
+        "covering_vrps": [
+          {
+            "max_length": 24,
+            "origin": "219238",
+            "prefix": "177.166.78.0/24",
+            "validity": "valid"
+          },
+          {
+            "max_length": 24,
+            "origin": "17561",
+            "prefix": "177.166.78.0/24",
+            "validity": "invalid_asn"
+          },
+          {
+            "max_length": 24,
+            "origin": "137410",
+            "prefix": "177.166.78.0/24",
+            "validity": "invalid_asn"
+          }
+        ],
+        "observed_at": "2026-11-16T09:16:43+00:00",
+        "origin": 219238,
+        "prefix": "177.166.78.0/24",
+        "response_sha256": "64198a39f436b8840ace7b0b3454a0d7b6f567e89aaea65f55ef6b797116d100",
+        "url": "https://stat.ripe.net/data/rpki-validation/data.json?resource=AS219238&prefix=177.166.78.0%2F24",
+        "validator": "routinator",
+        "verdict": "valid"
+      },
+      {
+        "compiled_source_registry_membership": {
+          "company": false,
+          "rir_by_kz": false,
+          "rir_ru": false
+        },
+        "covering_vrps": [
+          {
+            "max_length": 24,
+            "origin": "137410",
+            "prefix": "177.166.78.0/24",
+            "validity": "valid"
+          },
+          {
+            "max_length": 24,
+            "origin": "17561",
+            "prefix": "177.166.78.0/24",
+            "validity": "invalid_asn"
+          },
+          {
+            "max_length": 24,
+            "origin": "219238",
+            "prefix": "177.166.78.0/24",
+            "validity": "invalid_asn"
+          }
+        ],
+        "observed_at": "2026-11-16T09:16:43+00:00",
+        "origin": 137410,
+        "prefix": "177.166.78.0/24",
+        "response_sha256": "674ebf3f533197cc3f9b0244202dfd867e268a78dd5e31ed098a6392dacc4e78",
+        "url": "https://stat.ripe.net/data/rpki-validation/data.json?resource=AS137410&prefix=177.166.78.0%2F24",
+        "validator": "routinator",
+        "verdict": "valid"
+      },
+      {
+        "compiled_source_registry_membership": {
+          "company": false,
+          "rir_by_kz": false,
+          "rir_ru": true
+        },
+        "covering_vrps": [
+          {
+            "max_length": 24,
+            "origin": "219305",
+            "prefix": "177.29.252.0/24",
+            "validity": "valid"
+          },
+          {
+            "max_length": 24,
+            "origin": "17561",
+            "prefix": "177.29.252.0/24",
+            "validity": "invalid_asn"
+          }
+        ],
+        "observed_at": "2026-11-16T09:16:54+00:00",
+        "origin": 219305,
+        "prefix": "177.29.252.0/24",
+        "response_sha256": "43d69f42f85300672ede9a334a85e7262dbd2d678feabbb2be9e18485f4d1f1d",
+        "url": "https://stat.ripe.net/data/rpki-validation/data.json?resource=AS219305&prefix=177.29.252.0%2F24",
+        "validator": "routinator",
+        "verdict": "valid"
+      },
+      {
+        "compiled_source_registry_membership": {
+          "company": false,
+          "rir_by_kz": false,
+          "rir_ru": false
+        },
+        "covering_vrps": [
+          {
+            "max_length": 24,
+            "origin": "17561",
+            "prefix": "177.29.252.0/24",
+            "validity": "invalid_asn"
+          },
+          {
+            "max_length": 24,
+            "origin": "219305",
+            "prefix": "177.29.252.0/24",
+            "validity": "invalid_asn"
+          }
+        ],
+        "observed_at": "2026-11-16T09:16:54+00:00",
+        "origin": 137410,
+        "prefix": "177.29.252.0/24",
+        "response_sha256": "d3a811d210f1c9ba270286abc03b0e5028a291c0ebb4c5bd47c7fdd85730845c",
+        "url": "https://stat.ripe.net/data/rpki-validation/data.json?resource=AS137410&prefix=177.29.252.0%2F24",
+        "validator": "routinator",
+        "verdict": "invalid_asn"
+      },
+      {
+        "compiled_source_registry_membership": {
+          "company": false,
+          "rir_by_kz": false,
+          "rir_ru": true
+        },
+        "covering_vrps": [
+          {
+            "max_length": 24,
+            "origin": "401152",
+            "prefix": "48.103.230.0/24",
+            "validity": "invalid_asn"
+          }
+        ],
+        "observed_at": "2026-11-16T09:16:50+00:00",
+        "origin": 219095,
+        "prefix": "48.103.230.0/24",
+        "response_sha256": "cc241453fb750086163b6699a50d083ef29c06ac897d562ab687f80d806e9bd8",
+        "url": "https://stat.ripe.net/data/rpki-validation/data.json?resource=AS219095&prefix=48.103.230.0%2F24",
+        "validator": "routinator",
+        "verdict": "invalid_asn"
+      },
+      {
+        "compiled_source_registry_membership": {
+          "company": false,
+          "rir_by_kz": false,
+          "rir_ru": false
+        },
+        "covering_vrps": [
+          {
+            "max_length": 24,
+            "origin": "401152",
+            "prefix": "48.103.230.0/24",
+            "validity": "valid"
+          }
+        ],
+        "observed_at": "2026-11-16T09:16:52+00:00",
+        "origin": 401152,
+        "prefix": "48.103.230.0/24",
+        "response_sha256": "f5e288e168e0cba8fec5727283dc5fcd28a97fc14e0f762f27a0455a70248ae7",
+        "url": "https://stat.ripe.net/data/rpki-validation/data.json?resource=AS401152&prefix=48.103.230.0%2F24",
+        "validator": "routinator",
+        "verdict": "valid"
+      },
+      {
+        "compiled_source_registry_membership": {
+          "company": false,
+          "rir_by_kz": false,
+          "rir_ru": true
+        },
+        "covering_vrps": [
+          {
+            "max_length": 24,
+            "origin": "401152",
+            "prefix": "201.58.141.0/24",
+            "validity": "invalid_asn"
+          }
+        ],
+        "observed_at": "2026-11-16T09:16:49+00:00",
+        "origin": 219095,
+        "prefix": "201.58.141.0/24",
+        "response_sha256": "b627029ea3c6c991f7033010a881252894056f3c314377ce09d3242a8a11e71d",
+        "url": "https://stat.ripe.net/data/rpki-validation/data.json?resource=AS219095&prefix=201.58.141.0%2F24",
+        "validator": "routinator",
+        "verdict": "invalid_asn"
+      },
+      {
+        "compiled_source_registry_membership": {
+          "company": false,
+          "rir_by_kz": false,
+          "rir_ru": false
+        },
+        "covering_vrps": [
+          {
+            "max_length": 24,
+            "origin": "401152",
+            "prefix": "201.58.141.0/24",
+            "validity": "valid"
+          }
+        ],
+        "observed_at": "2026-11-16T09:16:55+00:00",
+        "origin": 401152,
+        "prefix": "201.58.141.0/24",
+        "response_sha256": "789da851eeb5f3e4e81723e9578a0d6b08903136ec81a38f62be74392881efc0",
+        "url": "https://stat.ripe.net/data/rpki-validation/data.json?resource=AS401152&prefix=201.58.141.0%2F24",
+        "validator": "routinator",
+        "verdict": "valid"
+      },
+      {
+        "compiled_source_registry_membership": {
+          "company": false,
+          "rir_by_kz": false,
+          "rir_ru": false
+        },
+        "covering_vrps": [
+          {
+            "max_length": 24,
+            "origin": "401152",
+            "prefix": "201.58.141.0/24",
+            "validity": "invalid_asn"
+          }
+        ],
+        "observed_at": "2026-11-16T09:16:59+00:00",
+        "origin": 214647,
+        "prefix": "201.58.141.0/24",
+        "response_sha256": "5d5b4066e53422c2d15d0cc6a6ae4ead753e3b03b538747f6517b8b6a185f7ac",
+        "url": "https://stat.ripe.net/data/rpki-validation/data.json?resource=AS214647&prefix=201.58.141.0%2F24",
+        "validator": "routinator",
+        "verdict": "invalid_asn"
+      },
+      {
+        "compiled_source_registry_membership": {
+          "company": false,
+          "rir_by_kz": false,
+          "rir_ru": true
+        },
+        "covering_vrps": [],
+        "observed_at": "2026-11-16T09:17:00+00:00",
+        "origin": 44790,
+        "prefix": "213.226.121.0/24",
+        "response_sha256": "9e6dd20e0dd8b320e8cb49907f92893f5a251a8b8260536a7e18230e27ac546c",
+        "url": "https://stat.ripe.net/data/rpki-validation/data.json?resource=AS44790&prefix=213.226.121.0%2F24",
+        "validator": "routinator",
+        "verdict": "unknown"
+      },
+      {
+        "compiled_source_registry_membership": {
+          "company": false,
+          "rir_by_kz": false,
+          "rir_ru": false
+        },
+        "covering_vrps": [],
+        "observed_at": "2026-11-16T09:17:00+00:00",
+        "origin": 62146,
+        "prefix": "213.226.121.0/24",
+        "response_sha256": "477df6cd81428c966f3466ecb6867bf7665cdb65d412857c74b07d2ad99e49b7",
+        "url": "https://stat.ripe.net/data/rpki-validation/data.json?resource=AS62146&prefix=213.226.121.0%2F24",
+        "validator": "routinator",
+        "verdict": "unknown"
+      },
+      {
+        "compiled_source_registry_membership": {
+          "company": false,
+          "rir_by_kz": false,
+          "rir_ru": true
+        },
+        "covering_vrps": [
+          {
+            "max_length": 24,
+            "origin": "41745",
+            "prefix": "85.92.155.0/24",
+            "validity": "valid"
+          }
+        ],
+        "observed_at": "2026-11-16T09:16:58+00:00",
+        "origin": 41745,
+        "prefix": "85.92.155.0/24",
+        "response_sha256": "754a08cd7aaa3e0f224eade49e915a67e0aa2328ca67fb0cb132e06c12b19665",
+        "url": "https://stat.ripe.net/data/rpki-validation/data.json?resource=AS41745&prefix=85.92.155.0%2F24",
+        "validator": "routinator",
+        "verdict": "valid"
+      },
+      {
+        "compiled_source_registry_membership": {
+          "company": false,
+          "rir_by_kz": false,
+          "rir_ru": true
+        },
+        "covering_vrps": [
+          {
+            "max_length": 24,
+            "origin": "41745",
+            "prefix": "85.92.156.0/24",
+            "validity": "valid"
+          }
+        ],
+        "observed_at": "2026-11-16T09:16:58+00:00",
+        "origin": 41745,
+        "prefix": "85.92.156.0/24",
+        "response_sha256": "61a3374fffcf83352e8b712adff1b7786cc94885ccc62c675904cbbe50a48009",
+        "url": "https://stat.ripe.net/data/rpki-validation/data.json?resource=AS41745&prefix=85.92.156.0%2F24",
+        "validator": "routinator",
+        "verdict": "valid"
+      },
+      {
+        "compiled_source_registry_membership": {
+          "company": false,
+          "rir_by_kz": false,
+          "rir_ru": true
+        },
+        "covering_vrps": [
+          {
+            "max_length": 24,
+            "origin": "219357",
+            "prefix": "152.234.249.0/24",
+            "validity": "valid"
+          }
+        ],
+        "observed_at": "2026-11-16T09:17:08+00:00",
+        "origin": 219357,
+        "prefix": "152.234.249.0/24",
+        "response_sha256": "fb2c311b79cfaab1d876c32299dc2a01cc4f160fe25b8c13f162ff848228fd22",
+        "url": "https://stat.ripe.net/data/rpki-validation/data.json?resource=AS219357&prefix=152.234.249.0%2F24",
+        "validator": "routinator",
+        "verdict": "valid"
+      },
+      {
+        "compiled_source_registry_membership": {
+          "company": false,
+          "rir_by_kz": true,
+          "rir_ru": false
+        },
+        "covering_vrps": [
+          {
+            "max_length": 24,
+            "origin": "216150",
+            "prefix": "201.58.148.0/24",
+            "validity": "valid"
+          }
+        ],
+        "observed_at": "2026-11-16T09:17:14+00:00",
+        "origin": 216150,
+        "prefix": "201.58.148.0/24",
+        "response_sha256": "2a18a215d147cb762ddba54c56be3ccdd4bdcc2964c6d03d53a77166cfb6806b",
+        "url": "https://stat.ripe.net/data/rpki-validation/data.json?resource=AS216150&prefix=201.58.148.0%2F24",
+        "validator": "routinator",
+        "verdict": "valid"
+      },
+      {
+        "compiled_source_registry_membership": {
+          "company": false,
+          "rir_by_kz": true,
+          "rir_ru": false
+        },
+        "covering_vrps": [
+          {
+            "max_length": 24,
+            "origin": "218184",
+            "prefix": "213.145.79.0/24",
+            "validity": "valid"
+          },
+          {
+            "max_length": 24,
+            "origin": "834",
+            "prefix": "213.145.78.0/23",
+            "validity": "invalid_asn"
+          },
+          {
+            "max_length": 24,
+            "origin": "834",
+            "prefix": "213.145.72.0/21",
+            "validity": "invalid_asn"
+          }
+        ],
+        "observed_at": "2026-11-16T09:17:06+00:00",
+        "origin": 218184,
+        "prefix": "213.145.79.0/24",
+        "response_sha256": "1ffc0209a0b94a6f512bfa3a2015cdd63de27a511e70818c9a7a3103033878d4",
+        "url": "https://stat.ripe.net/data/rpki-validation/data.json?resource=AS218184&prefix=213.145.79.0%2F24",
+        "validator": "routinator",
+        "verdict": "valid"
+      },
+      {
+        "compiled_source_registry_membership": {
+          "company": false,
+          "rir_by_kz": false,
+          "rir_ru": true
+        },
+        "covering_vrps": [
+          {
+            "max_length": 48,
+            "origin": "218330",
+            "prefix": "2a0b:4e07:f4::/46",
+            "validity": "valid"
+          }
+        ],
+        "observed_at": "2026-11-16T09:17:09+00:00",
+        "origin": 218330,
+        "prefix": "2a0b:4e07:f4::/48",
+        "response_sha256": "e175b1d101d0eea89b77a9741b4b1ce0bc9ba626eadfb0dcbe4245e49e4baa3e",
+        "url": "https://stat.ripe.net/data/rpki-validation/data.json?resource=AS218330&prefix=2a0b%3A4e07%3Af4%3A%3A%2F48",
+        "validator": "routinator",
+        "verdict": "valid"
+      },
+      {
+        "compiled_source_registry_membership": {
+          "company": false,
+          "rir_by_kz": true,
+          "rir_ru": false
+        },
+        "covering_vrps": [
+          {
+            "max_length": 48,
+            "origin": "218184",
+            "prefix": "2a0f:6280:10ac::/48",
+            "validity": "valid"
+          }
+        ],
+        "observed_at": "2026-11-16T09:17:03+00:00",
+        "origin": 218184,
+        "prefix": "2a0f:6280:10ac::/48",
+        "response_sha256": "fae76bf88922a163733c5a7da0d2d5e66620bda9eb3460b7a32467afe8480bfa",
+        "url": "https://stat.ripe.net/data/rpki-validation/data.json?resource=AS218184&prefix=2a0f%3A6280%3A10ac%3A%3A%2F48",
+        "validator": "routinator",
+        "verdict": "valid"
+      }
+    ],
+    "registry_files": {
+      "company": {
+        "rows": 105,
+        "sha256": "f20adb453f33e4a67070484663ef9e75ae5cd93278f3210e76df6aedeae8136b"
+      },
+      "rir_by_kz": {
+        "rows": 387,
+        "sha256": "0a9aff6e579a860b1f7ce94cfa5a8fb664330f8710817652e542c15cb6bf7e07"
+      },
+      "rir_ru": {
+        "rows": 5772,
+        "sha256": "fae1b8aa4b8064f5948f5e57ef5277d26a1209d62edaf7bf2423bc560bae25e5"
+      }
+    }
+  },
+  "pr53_ci_runs": [
+    {
+      "conclusion": "success",
+      "id": 43830879562,
+      "name": "Build Unified GeoIP DIRECT RU+BY+KZ CLIENT v41",
+      "status": "completed"
+    },
+    {
+      "conclusion": "success",
+      "id": 43830879144,
+      "name": "Build Unified GeoIP DIRECT RU+BY+KZ CLIENT v39",
+      "status": "completed"
+    },
+    {
+      "conclusion": "success",
+      "id": 43830879132,
+      "name": "GeoIP v41 workflow syntax and source lint",
+      "status": "completed"
+    }
+  ],
+  "project": "SpeedeMiner/Geoip-ru-server",
+  "public_control_checks": [
+    {
+      "answers": [
+        {
+          "overlap_removed": [],
+          "type": 1,
+          "value": "23.82.138.118"
+        }
+      ],
+      "authentic_data": false,
+      "dns_status": 0,
+      "effective_url": "https://dns.google/resolve?name=13b2g841.p.crcdn.pro&type=A",
+      "headers": {
+        "Cache-Control": "private, max-age=300",
+        "Content-Type": "application/json; charset=UTF-8",
+        "Date": "Mon, 16 Nov 2026 09:14:11 GMT",
+        "Server": "envoy"
+      },
+      "http": 200,
+      "kind": "dns",
+      "method": "GET",
+      "observed_at": "2026-11-16T09:14:11+00:00",
+      "sha256": "6410bf9b9478fa0ca4a2d0e0c1f4f65fd737ad8604ed8cb6e8e378094e30b98f",
+      "url": "https://dns.google/resolve?name=13b2g841.p.crcdn.pro&type=A"
+    },
+    {
+      "answers": [],
+      "authentic_data": false,
+      "dns_status": 0,
+      "effective_url": "https://dns.google/resolve?name=13b2g841.p.crcdn.pro&type=AAAA",
+      "headers": {
+        "Cache-Control": "private, max-age=60",
+        "Content-Type": "application/json; charset=UTF-8",
+        "Date": "Mon, 16 Nov 2026 09:14:11 GMT",
+        "Server": "envoy"
+      },
+      "http": 200,
+      "kind": "dns",
+      "method": "GET",
+      "observed_at": "2026-11-16T09:14:11+00:00",
+      "sha256": "3874750e815c13f987f03189ed31dd2f811261a12ec2a9cf25c06dbd93564096",
+      "url": "https://dns.google/resolve?name=13b2g841.p.crcdn.pro&type=AAAA"
+    },
+    {
+      "answers": [
+        {
+          "overlap_removed": [],
+          "type": 1,
+          "value": "64.120.40.137"
+        }
+      ],
+      "authentic_data": false,
+      "dns_status": 0,
+      "effective_url": "https://dns.google/resolve?name=17dbsmhw.p.qrcdn.net&type=A",
+      "headers": {
+        "Cache-Control": "private, max-age=300",
+        "Content-Type": "application/json; charset=UTF-8",
+        "Date": "Mon, 16 Nov 2026 09:14:11 GMT",
+        "Server": "envoy"
+      },
+      "http": 200,
+      "kind": "dns",
+      "method": "GET",
+      "observed_at": "2026-11-16T09:14:11+00:00",
+      "sha256": "38b6a46b292debd431e687663568b8dce2d12dc3209e91819909042c4adf2daf",
+      "url": "https://dns.google/resolve?name=17dbsmhw.p.qrcdn.net&type=A"
+    },
+    {
+      "answers": [],
+      "authentic_data": false,
+      "dns_status": 0,
+      "effective_url": "https://dns.google/resolve?name=17dbsmhw.p.qrcdn.net&type=AAAA",
+      "headers": {
+        "Cache-Control": "private, max-age=60",
+        "Content-Type": "application/json; charset=UTF-8",
+        "Date": "Mon, 16 Nov 2026 09:14:11 GMT",
+        "Server": "envoy"
+      },
+      "http": 200,
+      "kind": "dns",
+      "method": "GET",
+      "observed_at": "2026-11-16T09:14:11+00:00",
+      "sha256": "a5adc8abe7beb253b2560eb50b148c06bd0ee4640e7663294c06d508b01ff4bd",
+      "url": "https://dns.google/resolve?name=17dbsmhw.p.qrcdn.net&type=AAAA"
+    },
+    {
+      "answers": [
+        {
+          "overlap_removed": [],
+          "type": 5,
+          "value": "17dbsmhw.p.qrcdn.net."
+        },
+        {
+          "overlap_removed": [],
+          "type": 1,
+          "value": "23.82.138.118"
+        }
+      ],
+      "authentic_data": false,
+      "dns_status": 0,
+      "effective_url": "https://dns.google/resolve?name=static.adtidy.org&type=A",
+      "headers": {
+        "Cache-Control": "private, max-age=300",
+        "Content-Type": "application/json; charset=UTF-8",
+        "Date": "Mon, 16 Nov 2026 09:14:11 GMT",
+        "Server": "envoy"
+      },
+      "http": 200,
+      "kind": "dns",
+      "method": "GET",
+      "observed_at": "2026-11-16T09:14:11+00:00",
+      "sha256": "891ab83a0f59edae8e575eca60b00baf3f7c8e9a2fbcb12c93abd2fa138d359f",
+      "url": "https://dns.google/resolve?name=static.adtidy.org&type=A"
+    },
+    {
+      "answers": [
+        {
+          "overlap_removed": [],
+          "type": 5,
+          "value": "17dbsmhw.p.qrcdn.net."
+        }
+      ],
+      "authentic_data": false,
+      "dns_status": 0,
+      "effective_url": "https://dns.google/resolve?name=static.adtidy.org&type=AAAA",
+      "headers": {
+        "Cache-Control": "private, max-age=300",
+        "Content-Type": "application/json; charset=UTF-8",
+        "Date": "Mon, 16 Nov 2026 09:14:15 GMT",
+        "Server": "envoy"
+      },
+      "http": 200,
+      "kind": "dns",
+      "method": "GET",
+      "observed_at": "2026-11-16T09:14:15+00:00",
+      "sha256": "7235abec61b182aa6ce42657e2cb6359fc2c4d09290f647e83377049c3915ed0",
+      "url": "https://dns.google/resolve?name=static.adtidy.org&type=AAAA"
+    },
+    {
+      "answers": [
+        {
+          "overlap_removed": [],
+          "type": 1,
+          "value": "185.65.148.144"
+        }
+      ],
+      "authentic_data": false,
+      "dns_status": 0,
+      "effective_url": "https://dns.google/resolve?name=curator.pro&type=A",
+      "headers": {
+        "Cache-Control": "private, max-age=21600",
+        "Content-Type": "application/json; charset=UTF-8",
+        "Date": "Mon, 16 Nov 2026 09:14:15 GMT",
+        "Server": "envoy"
+      },
+      "http": 200,
+      "kind": "dns",
+      "method": "GET",
+      "observed_at": "2026-11-16T09:14:15+00:00",
+      "sha256": "fcc8d713a3f148cf5bce76fc11c5f4abe213f28874d1392db82708c51f2980ae",
+      "url": "https://dns.google/resolve?name=curator.pro&type=A"
+    },
+    {
+      "answers": [
+        {
+          "overlap_removed": [],
+          "type": 28,
+          "value": "2a03:70c0:0:663b::b941:9490"
+        }
+      ],
+      "authentic_data": false,
+      "dns_status": 0,
+      "effective_url": "https://dns.google/resolve?name=curator.pro&type=AAAA",
+      "headers": {
+        "Cache-Control": "private, max-age=21600",
+        "Content-Type": "application/json; charset=UTF-8",
+        "Date": "Mon, 16 Nov 2026 09:14:15 GMT",
+        "Server": "envoy"
+      },
+      "http": 200,
+      "kind": "dns",
+      "method": "GET",
+      "observed_at": "2026-11-16T09:14:15+00:00",
+      "sha256": "7d86527ed2bfc1b1ea90e0f51ffba2baef8ed69ef583fc3d5cd74a3fda56817c",
+      "url": "https://dns.google/resolve?name=curator.pro&type=AAAA"
+    },
+    {
+      "effective_url": "https://api.ooni.io/api/v1/measurements?domain=13b2g841.p.crcdn.pro&probe_cc=RU&test_name=web_connectivity&since=2026-11-10&until=2026-11-16&limit=5",
+      "headers": {
+        "Cache-Control": "max-age=60",
+        "Content-Length": "136",
+        "Content-Type": "application/json",
+        "Date": "Mon, 16 Nov 2026 09:14:14 GMT",
+        "Server": "envoy"
+      },
+      "http": 200,
+      "kind": "ooni",
+      "metadata": {
+        "count": -1,
+        "current_page": -1,
+        "limit": 5,
+        "next_url": null,
+        "offset": 0,
+        "pages": -1,
+        "query_time": 0.5493216514587402
+      },
+      "method": "GET",
+      "observed_at": "2026-11-16T09:14:14+00:00",
+      "public_summaries": [],
+      "returned": 0,
+      "sha256": "71a3ef03a8f4bb18e2991d8aa8c64ba3e1e7e0b40d2f83a45c6db24929d5ed24",
+      "url": "https://api.ooni.io/api/v1/measurements?domain=13b2g841.p.crcdn.pro&probe_cc=RU&test_name=web_connectivity&since=2026-11-10&until=2026-11-16&limit=5"
+    },
+    {
+      "effective_url": "https://api.ooni.io/api/v1/measurements?domain=17dbsmhw.p.qrcdn.net&probe_cc=RU&test_name=web_connectivity&since=2026-11-10&until=2026-11-16&limit=5",
+      "headers": {
+        "Cache-Control": "max-age=60",
+        "Content-Length": "136",
+        "Content-Type": "application/json",
+        "Date": "Mon, 16 Nov 2026 09:14:14 GMT",
+        "Server": "envoy"
+      },
+      "http": 200,
+      "kind": "ooni",
+      "metadata": {
+        "count": -1,
+        "current_page": -1,
+        "limit": 5,
+        "next_url": null,
+        "offset": 0,
+        "pages": -1,
+        "query_time": 0.5602726936340332
+      },
+      "method": "GET",
+      "observed_at": "2026-11-16T09:14:14+00:00",
+      "public_summaries": [],
+      "returned": 0,
+      "sha256": "bbc6b2cc296b6f8de05daebdeacb99d55303fc761cb76019a8dac82176abfb19",
+      "url": "https://api.ooni.io/api/v1/measurements?domain=17dbsmhw.p.qrcdn.net&probe_cc=RU&test_name=web_connectivity&since=2026-11-10&until=2026-11-16&limit=5"
+    },
+    {
+      "effective_url": "https://api.ooni.io/api/v1/measurements?domain=static.adtidy.org&probe_cc=RU&test_name=web_connectivity&since=2026-11-10&until=2026-11-16&limit=5",
+      "headers": {
+        "Cache-Control": "max-age=60",
+        "Content-Length": "137",
+        "Content-Type": "application/json",
+        "Date": "Mon, 16 Nov 2026 09:14:18 GMT",
+        "Server": "envoy"
+      },
+      "http": 200,
+      "kind": "ooni",
+      "metadata": {
+        "count": -1,
+        "current_page": -1,
+        "limit": 5,
+        "next_url": null,
+        "offset": 0,
+        "pages": -1,
+        "query_time": 0.14363431930541992
+      },
+      "method": "GET",
+      "observed_at": "2026-11-16T09:14:18+00:00",
+      "public_summaries": [],
+      "returned": 0,
+      "sha256": "70ae3777030f564949280d3190d6a5efc5c3e63916a1c6abede7e3fb0cd6d69b",
+      "url": "https://api.ooni.io/api/v1/measurements?domain=static.adtidy.org&probe_cc=RU&test_name=web_connectivity&since=2026-11-10&until=2026-11-16&limit=5"
+    },
+    {
+      "effective_url": "https://api.ooni.io/api/v1/measurements?domain=example.com&probe_cc=RU&test_name=web_connectivity&since=2026-11-10&until=2026-11-16&limit=5",
+      "headers": {
+        "Cache-Control": "max-age=60",
+        "Content-Length": "137",
+        "Content-Type": "application/json",
+        "Date": "Mon, 16 Nov 2026 09:14:18 GMT",
+        "Server": "envoy"
+      },
+      "http": 200,
+      "kind": "ooni",
+      "metadata": {
+        "count": -1,
+        "current_page": -1,
+        "limit": 5,
+        "next_url": null,
+        "offset": 0,
+        "pages": -1,
+        "query_time": 0.15331673622131348
+      },
+      "method": "GET",
+      "observed_at": "2026-11-16T09:14:18+00:00",
+      "public_summaries": [],
+      "returned": 0,
+      "sha256": "8a19a447c5eb6dc5dbfa426a4d0b419d2776bfa750b3683ef898cfd91349f569",
+      "url": "https://api.ooni.io/api/v1/measurements?domain=example.com&probe_cc=RU&test_name=web_connectivity&since=2026-11-10&until=2026-11-16&limit=5"
+    },
+    {
+      "effective_url": "https://13b2g841.p.crcdn.pro/img/banners/trial-simple/shield.svg",
+      "headers": {
+        "Content-Length": "6604",
+        "Content-Type": "image/svg+xml",
+        "Date": "Mon, 16 Nov 2026 09:14:22 GMT",
+        "Server": "envoy"
+      },
+      "http": 200,
+      "kind": "head",
+      "method": "HEAD",
+      "observed_at": "2026-11-16T09:14:22+00:00",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "url": "https://13b2g841.p.crcdn.pro/img/banners/trial-simple/shield.svg"
+    },
+    {
+      "effective_url": "https://static.adtidy.org/adguardhome/release/version.json",
+      "headers": {
+        "Content-Length": "3445",
+        "Content-Type": "application/json;charset=UTF-8",
+        "Date": "Mon, 16 Nov 2026 09:14:20 GMT",
+        "Server": "envoy"
+      },
+      "http": 200,
+      "kind": "head",
+      "method": "HEAD",
+      "observed_at": "2026-11-16T09:14:20+00:00",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "url": "https://static.adtidy.org/adguardhome/release/version.json"
+    },
+    {
+      "effective_url": "https://static.adtidy.org/adguardhome/release/version.json",
+      "headers": {
+        "Content-Length": "3445",
+        "Content-Type": "application/json;charset=UTF-8",
+        "Date": "Mon, 16 Nov 2026 09:14:20 GMT",
+        "Server": "envoy"
+      },
+      "http": 200,
+      "json_keys": [
+        "announcement",
+        "announcement_url",
+        "download_darwin_amd64",
+        "download_darwin_arm64",
+        "download_freebsd_386",
+        "download_freebsd_amd64",
+        "download_freebsd_arm64",
+        "download_freebsd_armv5",
+        "download_freebsd_armv6",
+        "download_freebsd_armv7",
+        "download_frontend",
+        "download_linux_386",
+        "download_linux_amd64",
+        "download_linux_arm64",
+        "download_linux_armv5",
+        "download_linux_armv6",
+        "download_linux_armv7",
+        "download_linux_mips64",
+        "download_linux_mips64_softfloat",
+        "download_linux_mips64le",
+        "download_linux_mips64le_softfloat",
+        "download_linux_mips_softfloat",
+        "download_linux_mipsle",
+        "download_linux_mipsle_softfloat",
+        "download_linux_ppc64le",
+        "download_linux_riscv64",
+        "download_openbsd_amd64",
+        "download_openbsd_arm64",
+        "download_windows_386",
+        "download_windows_amd64",
+        "download_windows_arm64",
+        "selfupdate_min_version",
+        "version"
+      ],
+      "json_version": "v0.107.80",
+      "kind": "version",
+      "method": "GET",
+      "observed_at": "2026-11-16T09:14:20+00:00",
+      "sha256": "8e300bc5bc8ed38dacb916ecf6940a256492e811b29cbaa4aada0286e2659048",
+      "url": "https://static.adtidy.org/adguardhome/release/version.json"
+    }
+  ],
+  "references": {
+    "cdn": "8a226b83c82323c869054ca5b299612ad3a91e2d",
+    "draft53": "92fa97e13317db01ca43aad31386d091eb249a2a",
+    "draft54": "3ddbc5a28d0afd6dbd867a958838fb385c93a5aa",
+    "initial_journal": "2683ae26cc555f8b65a4cae6e33730ee9e863255",
+    "main": "c0d2a01ba1fb5f5c0e48965d614945348083a900",
+    "reachability_pr5": "30e797f05ddb8e38ccc2c44938b64846b4fce2fb",
+    "release": "e20cf733a13d92040134895ebd580b7c9060fa3b",
+    "v41_candidate_zip_artifact": 14209749013
+  },
+  "routing_observations": [
+    {
+      "kind": "routing_status",
+      "origins": [
+        137410
+      ],
+      "prefix": "177.29.253.0/24",
+      "query_time": "2026-11-16T00:00:00",
+      "response_sha256": "6e431d4dd344213ac21dedb105d07be135a697d4b129e17e6a5c878e88dab67b",
+      "retrieved_at": "2026-11-16T09:08:34+00:00",
+      "url": "https://stat.ripe.net/data/routing-status/data.json?resource=177.29.253.0%2F24&timestamp=2026-11-16T08%3A00%3A00Z&min_peers_seeing=1",
+      "visible_v4": {
+        "ris_peers_seeing": 317,
+        "total_ris_peers": 319
+      }
+    },
+    {
+      "announcement_rows_by_origin": {},
+      "exact_update_rows": 0,
+      "exact_withdrawals": 0,
+      "kind": "bgp_updates",
+      "latest_exact_update": null,
+      "prefix": "177.29.253.0/24",
+      "query_endtime": "2026-11-16T05:59:57",
+      "query_starttime": "2026-11-16T05:59:57",
+      "response_sha256": "18a3cee6bb7b13938395754e97f10f87903ea7572189302cb404b5d974e5a5ab",
+      "retrieved_at": "2026-11-16T09:08:33+00:00",
+      "url": "https://stat.ripe.net/data/bgp-updates/data.json?resource=177.29.253.0%2F24&starttime=2026-11-16T08%3A00%3A00Z&endtime=2026-11-16T09%3A00%3A00Z"
+    },
+    {
+      "exact_origins": {
+        "137410": {
+          "collectors": 8,
+          "most_recent_update_timestamp": "2026-11-16T08:32:49Z",
+          "reporting_rows": 155,
+          "rows_date_utc_today": 153,
+          "rpki_state": "valid"
+        }
+      },
+      "kind": "routeviews",
+      "prefix": "177.29.253.0/24",
+      "response_sha256": "9e83873b46c1d1c8a2ac03c3b00bfc745bb8792b3db5a4dd207121b471b25a71",
+      "retrieved_at": "2026-11-16T09:08:39+00:00",
+      "url": "https://api.routeviews.org/prefix/177.29.253.0/24"
+    },
+    {
+      "kind": "routing_status",
+      "origins": [
+        137410
+      ],
+      "prefix": "177.122.229.0/24",
+      "query_time": "2026-11-16T00:00:00",
+      "response_sha256": "877528ab1b18f2120e476e9b11f75dd2d05e091414368df65326d7e96a065da5",
+      "retrieved_at": "2026-11-16T09:08:34+00:00",
+      "url": "https://stat.ripe.net/data/routing-status/data.json?resource=177.122.229.0%2F24&timestamp=2026-11-16T08%3A00%3A00Z&min_peers_seeing=1",
+      "visible_v4": {
+        "ris_peers_seeing": 317,
+        "total_ris_peers": 319
+      }
+    },
+    {
+      "announcement_rows_by_origin": {},
+      "exact_update_rows": 0,
+      "exact_withdrawals": 0,
+      "kind": "bgp_updates",
+      "latest_exact_update": null,
+      "prefix": "177.122.229.0/24",
+      "query_endtime": "2026-11-16T05:59:57",
+      "query_starttime": "2026-11-16T05:59:57",
+      "response_sha256": "dc28a24dec139b5124083b30d4f2c3eeb11ed7ecf0738d9fd791f6139a520851",
+      "retrieved_at": "2026-11-16T09:08:33+00:00",
+      "url": "https://stat.ripe.net/data/bgp-updates/data.json?resource=177.122.229.0%2F24&starttime=2026-11-16T08%3A00%3A00Z&endtime=2026-11-16T09%3A00%3A00Z"
+    },
+    {
+      "exact_origins": {
+        "137410": {
+          "collectors": 8,
+          "most_recent_update_timestamp": "2026-11-16T09:08:14Z",
+          "reporting_rows": 160,
+          "rows_date_utc_today": 9,
+          "rpki_state": "valid"
+        },
+        "17561": {
+          "collectors": 1,
+          "most_recent_update_timestamp": "2026-11-07T00:00:09Z",
+          "reporting_rows": 20,
+          "rows_date_utc_today": 0,
+          "rpki_state": "valid"
+        }
+      },
+      "kind": "routeviews",
+      "prefix": "177.122.229.0/24",
+      "response_sha256": "f85ccd2f95e47cbc0d275468392aa5eda37a66767831cbdda7afd108c44cb974",
+      "retrieved_at": "2026-11-16T09:08:38+00:00",
+      "url": "https://api.routeviews.org/prefix/177.122.229.0/24"
+    },
+    {
+      "kind": "routing_status",
+      "origins": [
+        137410
+      ],
+      "prefix": "177.122.241.0/24",
+      "query_time": "2026-11-16T00:00:00",
+      "response_sha256": "fe44046ab54b5954f50497daa990fd4d005fa9f87aecead39d7357a563a23e4e",
+      "retrieved_at": "2026-11-16T09:08:38+00:00",
+      "url": "https://stat.ripe.net/data/routing-status/data.json?resource=177.122.241.0%2F24&timestamp=2026-11-16T08%3A00%3A00Z&min_peers_seeing=1",
+      "visible_v4": {
+        "ris_peers_seeing": 317,
+        "total_ris_peers": 319
+      }
+    },
+    {
+      "announcement_rows_by_origin": {},
+      "exact_update_rows": 0,
+      "exact_withdrawals": 0,
+      "kind": "bgp_updates",
+      "latest_exact_update": null,
+      "prefix": "177.122.241.0/24",
+      "query_endtime": "2026-11-16T05:59:57",
+      "query_starttime": "2026-11-16T05:59:57",
+      "response_sha256": "0dc87ddbfd915b4642adc6556121aa21e494c170c63e627e9557a82f6092abee",
+      "retrieved_at": "2026-11-16T09:08:38+00:00",
+      "url": "https://stat.ripe.net/data/bgp-updates/data.json?resource=177.122.241.0%2F24&starttime=2026-11-16T08%3A00%3A00Z&endtime=2026-11-16T09%3A00%3A00Z"
+    },
+    {
+      "exact_origins": {
+        "137410": {
+          "collectors": 8,
+          "most_recent_update_timestamp": "2026-11-16T08:32:49Z",
+          "reporting_rows": 155,
+          "rows_date_utc_today": 155,
+          "rpki_state": "valid"
+        },
+        "17561": {
+          "collectors": 1,
+          "most_recent_update_timestamp": "2026-11-07T00:00:09Z",
+          "reporting_rows": 20,
+          "rows_date_utc_today": 0,
+          "rpki_state": "valid"
+        }
+      },
+      "kind": "routeviews",
+      "prefix": "177.122.241.0/24",
+      "response_sha256": "03dca31fa63188553a67b17ddd6df36b0fb5abc81a65f5097afc941e0d15b051",
+      "retrieved_at": "2026-11-16T09:08:42+00:00",
+      "url": "https://api.routeviews.org/prefix/177.122.241.0/24"
+    },
+    {
+      "kind": "routing_status",
+      "origins": [
+        137410
+      ],
+      "prefix": "177.166.74.0/24",
+      "query_time": "2026-11-16T00:00:00",
+      "response_sha256": "c4321f73d9ad33f5487b34cd5fd0f94bac13e6d5fe3a0ba055c64d24d6df513b",
+      "retrieved_at": "2026-11-16T09:08:38+00:00",
+      "url": "https://stat.ripe.net/data/routing-status/data.json?resource=177.166.74.0%2F24&timestamp=2026-11-16T08%3A00%3A00Z&min_peers_seeing=1",
+      "visible_v4": {
+        "ris_peers_seeing": 316,
+        "total_ris_peers": 319
+      }
+    },
+    {
+      "announcement_rows_by_origin": {},
+      "exact_update_rows": 0,
+      "exact_withdrawals": 0,
+      "kind": "bgp_updates",
+      "latest_exact_update": null,
+      "prefix": "177.166.74.0/24",
+      "query_endtime": "2026-11-16T05:59:57",
+      "query_starttime": "2026-11-16T05:59:57",
+      "response_sha256": "1465fd0743ced35985d39a942d460401b8100afb09ac4e6a30f3885d5b30e3b6",
+      "retrieved_at": "2026-11-16T09:08:41+00:00",
+      "url": "https://stat.ripe.net/data/bgp-updates/data.json?resource=177.166.74.0%2F24&starttime=2026-11-16T08%3A00%3A00Z&endtime=2026-11-16T09%3A00%3A00Z"
+    },
+    {
+      "exact_origins": {
+        "137410": {
+          "collectors": 8,
+          "most_recent_update_timestamp": "2026-11-16T08:32:53Z",
+          "reporting_rows": 155,
+          "rows_date_utc_today": 24,
+          "rpki_state": "valid"
+        },
+        "17561": {
+          "collectors": 1,
+          "most_recent_update_timestamp": "2026-11-07T00:00:09Z",
+          "reporting_rows": 20,
+          "rows_date_utc_today": 0,
+          "rpki_state": "valid"
+        }
+      },
+      "kind": "routeviews",
+      "prefix": "177.166.74.0/24",
+      "response_sha256": "102e00c3447178a6ff4408a1e77d74c792369865e7cae516295985ff1f92e882",
+      "retrieved_at": "2026-11-16T09:08:46+00:00",
+      "url": "https://api.routeviews.org/prefix/177.166.74.0/24"
+    },
+    {
+      "kind": "routing_status",
+      "origins": [
+        137410
+      ],
+      "prefix": "177.166.78.0/24",
+      "query_time": "2026-11-16T00:00:00",
+      "response_sha256": "2c0dde4e0aeba3652691ff603d89f23e991763b852a2aedce50c394d5b8adb68",
+      "retrieved_at": "2026-11-16T09:08:42+00:00",
+      "url": "https://stat.ripe.net/data/routing-status/data.json?resource=177.166.78.0%2F24&timestamp=2026-11-16T08%3A00%3A00Z&min_peers_seeing=1",
+      "visible_v4": {
+        "ris_peers_seeing": 317,
+        "total_ris_peers": 319
+      }
+    },
+    {
+      "announcement_rows_by_origin": {},
+      "exact_update_rows": 0,
+      "exact_withdrawals": 0,
+      "kind": "bgp_updates",
+      "latest_exact_update": null,
+      "prefix": "177.166.78.0/24",
+      "query_endtime": "2026-11-16T05:59:57",
+      "query_starttime": "2026-11-16T05:59:57",
+      "response_sha256": "97c5abaf277342afcf48fc23597ff8958beb739f97e1b6974d95c7cdd5927c25",
+      "retrieved_at": "2026-11-16T09:08:41+00:00",
+      "url": "https://stat.ripe.net/data/bgp-updates/data.json?resource=177.166.78.0%2F24&starttime=2026-11-16T08%3A00%3A00Z&endtime=2026-11-16T09%3A00%3A00Z"
+    },
+    {
+      "exact_origins": {
+        "137410": {
+          "collectors": 8,
+          "most_recent_update_timestamp": "2026-11-16T08:32:49Z",
+          "reporting_rows": 155,
+          "rows_date_utc_today": 155,
+          "rpki_state": "valid"
+        },
+        "17561": {
+          "collectors": 1,
+          "most_recent_update_timestamp": "2026-11-07T00:00:09Z",
+          "reporting_rows": 20,
+          "rows_date_utc_today": 0,
+          "rpki_state": "valid"
+        }
+      },
+      "kind": "routeviews",
+      "prefix": "177.166.78.0/24",
+      "response_sha256": "09500dd71e2cf4fd64a49e199091f77d8fe355dc1fdbddfa8e5414077a2c7b36",
+      "retrieved_at": "2026-11-16T09:08:47+00:00",
+      "url": "https://api.routeviews.org/prefix/177.166.78.0/24"
+    },
+    {
+      "kind": "routing_status",
+      "origins": [
+        219305
+      ],
+      "prefix": "177.29.252.0/24",
+      "query_time": "2026-11-16T00:00:00",
+      "response_sha256": "925330d3894e0c1627a37d736985b4d6d623f6709f6f673c6ed086c8370e271e",
+      "retrieved_at": "2026-11-16T09:08:48+00:00",
+      "url": "https://stat.ripe.net/data/routing-status/data.json?resource=177.29.252.0%2F24&timestamp=2026-11-16T08%3A00%3A00Z&min_peers_seeing=1",
+      "visible_v4": {
+        "ris_peers_seeing": 318,
+        "total_ris_peers": 319
+      }
+    },
+    {
+      "announcement_rows_by_origin": {},
+      "exact_update_rows": 0,
+      "exact_withdrawals": 0,
+      "kind": "bgp_updates",
+      "latest_exact_update": null,
+      "prefix": "177.29.252.0/24",
+      "query_endtime": "2026-11-16T05:59:57",
+      "query_starttime": "2026-11-16T05:59:57",
+      "response_sha256": "c20ec0ef8dd2b0123468db14a5a543eed714a9d12b4b240e720120d9cf394690",
+      "retrieved_at": "2026-11-16T09:08:47+00:00",
+      "url": "https://stat.ripe.net/data/bgp-updates/data.json?resource=177.29.252.0%2F24&starttime=2026-11-16T08%3A00%3A00Z&endtime=2026-11-16T09%3A00%3A00Z"
+    },
+    {
+      "exact_origins": {
+        "219305": {
+          "collectors": 8,
+          "most_recent_update_timestamp": "2026-11-16T08:29:37Z",
+          "reporting_rows": 148,
+          "rows_date_utc_today": 8,
+          "rpki_state": "valid"
+        }
+      },
+      "kind": "routeviews",
+      "prefix": "177.29.252.0/24",
+      "response_sha256": "3e8fb56f7b7ee077039d2c5c25ec1e35068c64cda839f18175b49c8fad7ba411",
+      "retrieved_at": "2026-11-16T09:08:50+00:00",
+      "url": "https://api.routeviews.org/prefix/177.29.252.0/24"
+    },
+    {
+      "kind": "routing_status",
+      "origins": [
+        401152,
+        219095
+      ],
+      "prefix": "48.103.230.0/24",
+      "query_time": "2026-11-16T00:00:00",
+      "response_sha256": "3584139ec01a3535d0043ffbd861daaa79ef17b8ac24403d0e725739626dce33",
+      "retrieved_at": "2026-11-16T09:08:48+00:00",
+      "url": "https://stat.ripe.net/data/routing-status/data.json?resource=48.103.230.0%2F24&timestamp=2026-11-16T08%3A00%3A00Z&min_peers_seeing=1",
+      "visible_v4": {
+        "ris_peers_seeing": 319,
+        "total_ris_peers": 319
+      }
+    },
+    {
+      "announcement_rows_by_origin": {},
+      "exact_update_rows": 0,
+      "exact_withdrawals": 0,
+      "kind": "bgp_updates",
+      "latest_exact_update": null,
+      "prefix": "48.103.230.0/24",
+      "query_endtime": "2026-11-16T05:59:57",
+      "query_starttime": "2026-11-16T05:59:57",
+      "response_sha256": "6768226cee954316770463b0e3e7d6d79ea622a31af4f4f13cb7f63ae31ae4e6",
+      "retrieved_at": "2026-11-16T09:08:47+00:00",
+      "url": "https://stat.ripe.net/data/bgp-updates/data.json?resource=48.103.230.0%2F24&starttime=2026-11-16T08%3A00%3A00Z&endtime=2026-11-16T09%3A00%3A00Z"
+    },
+    {
+      "exact_origins": {
+        "219095": {
+          "collectors": 2,
+          "most_recent_update_timestamp": "2026-11-15T21:10:35Z",
+          "reporting_rows": 2,
+          "rows_date_utc_today": 0,
+          "rpki_state": "invalid"
+        },
+        "401152": {
+          "collectors": 9,
+          "most_recent_update_timestamp": "2026-11-16T08:27:48Z",
+          "reporting_rows": 173,
+          "rows_date_utc_today": 7,
+          "rpki_state": "valid"
+        }
+      },
+      "kind": "routeviews",
+      "prefix": "48.103.230.0/24",
+      "response_sha256": "d6baf8c6e291c359ec3ac16d8d0d03cd7d85be3d7c63239537b4171629a9bbeb",
+      "retrieved_at": "2026-11-16T09:08:56+00:00",
+      "url": "https://api.routeviews.org/prefix/48.103.230.0/24"
+    },
+    {
+      "kind": "routing_status",
+      "origins": [
+        401152,
+        219095
+      ],
+      "prefix": "201.58.141.0/24",
+      "query_time": "2026-11-16T00:00:00",
+      "response_sha256": "fe8c09c79b07ecdacd7b0b2d07028c5ccf04a45e8beb16447b5cfe1165e13526",
+      "retrieved_at": "2026-11-16T09:08:52+00:00",
+      "url": "https://stat.ripe.net/data/routing-status/data.json?resource=201.58.141.0%2F24&timestamp=2026-11-16T08%3A00%3A00Z&min_peers_seeing=1",
+      "visible_v4": {
+        "ris_peers_seeing": 316,
+        "total_ris_peers": 319
+      }
+    },
+    {
+      "announcement_rows_by_origin": {},
+      "exact_update_rows": 0,
+      "exact_withdrawals": 0,
+      "kind": "bgp_updates",
+      "latest_exact_update": null,
+      "prefix": "201.58.141.0/24",
+      "query_endtime": "2026-11-16T05:59:57",
+      "query_starttime": "2026-11-16T05:59:57",
+      "response_sha256": "7c4b2785bf906b5f2bb1cc3d553234c549141f9d77717f0f9f43b7eff6a6f8be",
+      "retrieved_at": "2026-11-16T09:08:51+00:00",
+      "url": "https://stat.ripe.net/data/bgp-updates/data.json?resource=201.58.141.0%2F24&starttime=2026-11-16T08%3A00%3A00Z&endtime=2026-11-16T09%3A00%3A00Z"
+    },
+    {
+      "exact_origins": {
+        "214647": {
+          "collectors": 1,
+          "most_recent_update_timestamp": "2026-11-07T00:00:13Z",
+          "reporting_rows": 21,
+          "rows_date_utc_today": 0,
+          "rpki_state": "invalid"
+        },
+        "219095": {
+          "collectors": 2,
+          "most_recent_update_timestamp": "2026-11-15T21:10:35Z",
+          "reporting_rows": 2,
+          "rows_date_utc_today": 0,
+          "rpki_state": "invalid"
+        },
+        "401152": {
+          "collectors": 8,
+          "most_recent_update_timestamp": "2026-11-16T08:30:33Z",
+          "reporting_rows": 149,
+          "rows_date_utc_today": 6,
+          "rpki_state": "valid"
+        }
+      },
+      "kind": "routeviews",
+      "prefix": "201.58.141.0/24",
+      "response_sha256": "65d42ce689c045c8b2d546223c847e3257eecab30691322c1da7a7595becd24f",
+      "retrieved_at": "2026-11-16T09:08:55+00:00",
+      "url": "https://api.routeviews.org/prefix/201.58.141.0/24"
+    },
+    {
+      "kind": "routing_status",
+      "origins": [
+        62146,
+        44790
+      ],
+      "prefix": "213.226.121.0/24",
+      "query_time": "2026-11-16T00:00:00",
+      "response_sha256": "cbaca4cb457d795e6c68c89492ec9a3b107a60114a45a032293f8e2164590601",
+      "retrieved_at": "2026-11-16T09:08:54+00:00",
+      "url": "https://stat.ripe.net/data/routing-status/data.json?resource=213.226.121.0%2F24&timestamp=2026-11-16T08%3A00%3A00Z&min_peers_seeing=1",
+      "visible_v4": {
+        "ris_peers_seeing": 319,
+        "total_ris_peers": 319
+      }
+    },
+    {
+      "announcement_rows_by_origin": {},
+      "exact_update_rows": 0,
+      "exact_withdrawals": 0,
+      "kind": "bgp_updates",
+      "latest_exact_update": null,
+      "prefix": "213.226.121.0/24",
+      "query_endtime": "2026-11-16T05:59:57",
+      "query_starttime": "2026-11-16T05:59:57",
+      "response_sha256": "66e7698d4913016c41c537b1e55f2f179ea9c4631f2656d819a171c40e66e146",
+      "retrieved_at": "2026-11-16T09:08:51+00:00",
+      "url": "https://stat.ripe.net/data/bgp-updates/data.json?resource=213.226.121.0%2F24&starttime=2026-11-16T08%3A00%3A00Z&endtime=2026-11-16T09%3A00%3A00Z"
+    },
+    {
+      "exact_origins": {
+        "44790": {
+          "collectors": 9,
+          "most_recent_update_timestamp": "2026-11-15T12:27:37Z",
+          "reporting_rows": 46,
+          "rows_date_utc_today": 0,
+          "rpki_state": "not-found"
+        },
+        "62146": {
+          "collectors": 9,
+          "most_recent_update_timestamp": "2026-11-16T08:30:40Z",
+          "reporting_rows": 150,
+          "rows_date_utc_today": 12,
+          "rpki_state": "not-found"
+        }
+      },
+      "kind": "routeviews",
+      "prefix": "213.226.121.0/24",
+      "response_sha256": "1a313a439d59b7b34d6f1466ef5ca77708042538a610237477edb8e868d6c3ec",
+      "retrieved_at": "2026-11-16T09:08:59+00:00",
+      "url": "https://api.routeviews.org/prefix/213.226.121.0/24"
+    }
+  ],
+  "schema": 1
+}

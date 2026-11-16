@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "countries": ["RU", "KZ", "BY"],
+  "classification": "controls only; neither service is confirmed in any disputed prefix",
+  "targets": [
+    {
+      "id": "curator-first-party-cdn-control",
+      "domain": "13b2g841.p.crcdn.pro",
+      "role": "control",
+      "country_scope": ["RU"],
+      "port": 443,
+      "path": "/img/banners/trial-simple/shield.svg"
+    },
+    {
+      "id": "adguardhome-public-version-control",
+      "domain": "static.adtidy.org",
+      "role": "control",
+      "country_scope": ["RU"],
+      "port": 443,
+      "path": "/adguardhome/release/version.json"
+    },
+    {
+      "id": "neutral-https-control",
+      "domain": "example.com",
+      "role": "control",
+      "country_scope": ["RU"],
+      "port": 443,
+      "path": "/"
+    }
+  ]
+}
