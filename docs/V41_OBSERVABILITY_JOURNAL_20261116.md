@@ -509,3 +509,8 @@ Progress rule: append dated evidence, artifact identities, decisions and remaini
 
 - Latest observed main Actions run is still `43747743430`. Exact #53 remains Draft on `92fa97e` with green v41, v39 and lint. The verified release and all actual client download hashes are unchanged. Current and commit-pinned jsDelivr catalog views still differ on `geoip_RU.dat` and `geoip_RU.srs` at the rolling alias only. No repair or purge.
 - RouteViews still reports AS137410 for all five watched historical networks. RIS Routing Status still gives 00:00 UTC for the requested 08:00 point, while its Updates endpoint now reports an effective end of 07:59:53 UTC, still before the requested start. An empty update set does not establish stability over the missing interval. All seven watch rows remain unchanged, and no first-party service or residential reachability was established for the five removed networks. [End-of-pass observations](V41_SNAPSHOT_RECONSTRUCTION_END_CHECKS_20261116.json), SHA-256 `090fe65aba6e85dfedaeafa679ddf73e8858683931d964937a053baeedca253c`.
+
+## 2026-11-16 14:54 UTC+05 — offline snapshot tooling started
+
+- Resumed from verified journal head `bfc1e16`. GitHub still has `main=c0d2a01` and #53 is Draft at `92fa97e`. The previous pass proved reproducibility from pinned public inputs, but required disposable scripts.
+- Implement a small offline-only wrapper around the checked-in bundle validators. It will verify and restore the five manifest-bound inputs from a local directory and compare the six client assets of a replay against the same SHA-256-pinned manifest. Keep exact historical source and timestamps explicit. No new production workflow, cache action, review-table decision or PR #5 change.
