@@ -328,7 +328,7 @@ def fetch_rdap_sample(prefix: str, address: str,
     base = rdap_base_for_address(address, entries)
     encoded_address = urllib.parse.quote(address, safe=":")
     url = f"{base}ip/{encoded_address}"
-    status, payload, error = request_json(url)
+    status, payload, error = request_json(url, retries=0)
     row = {
         "PREFIX": prefix,
         "SAMPLE_ADDRESS": address,
@@ -355,7 +355,7 @@ def fetch_rpki_origin(prefix: str, asn: str) -> dict[str, str]:
     number = asn[2:] if asn.upper().startswith("AS") else asn
     query = urllib.parse.urlencode({"resource": number, "prefix": prefix})
     url = f"{RPKI_BASE}?{query}"
-    status, payload, error = request_json(url)
+    status, payload, error = request_json(url, retries=0)
     row = {
         "PREFIX": prefix,
         "ORIGIN_ASN": f"AS{number}",
@@ -512,7 +512,7 @@ def fetch_irr_prefix(prefix: str, sources: list[str],
     params.append(("flags", "no-referenced"))
     params.append(("limit", "1000"))
     url = f"{IRR_SEARCH_URL}?{urllib.parse.urlencode(params)}"
-    status, payload, error = request_json(url)
+    status, payload, error = request_json(url, retries=0)
     if status == 404:
         return "NO_OBJECTS_IN_QUERIED_SOURCES", url, []
     if status != 200 or payload is None:
@@ -608,8 +608,22 @@ def build_evidence(company_queue: Path, output_dir: Path, max_workers: int = 5) 
         for address in sample_addresses(network):
             rdap_tasks.append((network, address, bootstraps[ipaddress.ip_network(network).version]))
 
+    # Persist fully returned samples before the whole phase completes. This
+    # file is diagnostic only and is removed once the canonical TSV exists.
+    rdap_columns = [
+        "PREFIX", "SAMPLE_ADDRESS", "RDAP_URL", "HTTP_STATUS", "QUERY_STATUS",
+        "OBJECT_CLASS", "HANDLE", "NAME", "TYPE", "COUNTRY", "START_ADDRESS",
+        "END_ADDRESS", "REGISTERED_CIDRS", "RDAP_PREFIX_RELATION",
+        "REGISTRANT_ENTITIES", "ALL_ENTITIES", "ENTITY_HANDLES", "STATUS",
+    ]
     rdap_rows: list[dict[str, str]] = []
-    with concurrent.futures.ThreadPoolExecutor(max_workers=max_workers) as pool:
+    partial_path = output_dir / "rdap_samples_partial.tsv"
+    with partial_path.open("w", encoding="utf-8", newline="") as partial, \
+         concurrent.futures.ThreadPoolExecutor(max_workers=max_workers) as pool:
+        writer = csv.DictWriter(partial, fieldnames=rdap_columns, delimiter="\t",
+                                extrasaction="ignore", lineterminator="\n")
+        writer.writeheader()
+        partial.flush()
         futures = {
             pool.submit(fetch_rdap_sample, prefix, address, entries): (prefix, address)
             for prefix, address, entries in rdap_tasks
@@ -617,24 +631,23 @@ def build_evidence(company_queue: Path, output_dir: Path, max_workers: int = 5) 
         for future in completed_queries("RDAP", futures):
             prefix, address = futures[future]
             try:
-                rdap_rows.append(future.result())
+                result = future.result()
             except Exception as exc:  # preserve sample context; never turn it into "not registered"
-                rdap_rows.append({
+                result = {
                     "PREFIX": prefix, "SAMPLE_ADDRESS": address, "RDAP_URL": "",
                     "HTTP_STATUS": "0", "QUERY_STATUS": f"CLIENT_ERROR:{type(exc).__name__}:{exc}",
                     "OBJECT_CLASS": "", "HANDLE": "", "NAME": "", "TYPE": "", "COUNTRY": "",
                     "START_ADDRESS": "", "END_ADDRESS": "", "REGISTERED_CIDRS": "",
                     "REGISTRANT_ENTITIES": "", "ALL_ENTITIES": "", "ENTITY_HANDLES": "",
                     "STATUS": "", "RDAP_PREFIX_RELATION": "NOT_AVAILABLE",
-                })
+                }
+            rdap_rows.append(result)
+            writer.writerow(result)
+            partial.flush()
     rdap_rows.sort(key=lambda row: (row["PREFIX"], row["SAMPLE_ADDRESS"]))
-    rdap_columns = [
-        "PREFIX", "SAMPLE_ADDRESS", "RDAP_URL", "HTTP_STATUS", "QUERY_STATUS",
-        "OBJECT_CLASS", "HANDLE", "NAME", "TYPE", "COUNTRY", "START_ADDRESS",
-        "END_ADDRESS", "REGISTERED_CIDRS", "RDAP_PREFIX_RELATION",
-        "REGISTRANT_ENTITIES", "ALL_ENTITIES", "ENTITY_HANDLES", "STATUS",
-    ]
     write_tsv(output_dir / "rdap_samples.tsv", rdap_rows, rdap_columns)
+    partial_path.unlink()
+    print(f"RDAP usable samples: {sum(row['QUERY_STATUS'] == 'OK' for row in rdap_rows)}/{len(rdap_rows)}", flush=True)
 
     rpki_tasks: list[tuple[str, str]] = []
     for row in priority:

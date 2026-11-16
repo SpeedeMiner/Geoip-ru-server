@@ -13,6 +13,7 @@ from build_priority_prefix_evidence import (
     completed_queries,
     request_json_with_bytes,
     fetch_rdap_sample,
+    fetch_irr_prefix,
     fetch_rpki_origin,
     parse_bootstrap,
     parse_rdap_object,
@@ -219,6 +220,19 @@ class PriorityPrefixEvidenceTests(unittest.TestCase):
         ])
         self.assertTrue(all(c.kwargs.get("flush") for c in log.call_args_list))
 
+    def test_bulk_queries_do_not_requeue_slow_resources(self):
+        module = "build_priority_prefix_evidence"
+        with patch(f"{module}.request_json", return_value=(429, None, "HTTP_429")) as request:
+            rdap = fetch_rdap_sample("198.51.100.0/24", "198.51.100.1",
+                parse_bootstrap(4, {"services": [[["0.0.0.0/0"], ["https://rdap.test/"]]]}))
+            rpki = fetch_rpki_origin("198.51.100.0/24", "AS64500")
+            irr, _, routes = fetch_irr_prefix("198.51.100.0/24", ["RIPE"], {"AS64500"})
+        self.assertEqual([call.kwargs for call in request.call_args_list], [{"retries": 0}] * 3)
+        self.assertEqual((rdap["QUERY_STATUS"], rpki["QUERY_STATUS"], irr),
+                         ("HTTP_429", "HTTP_429", "HTTP_429"))
+        self.assertEqual(rpki["RPKI_STATUS"], "")
+        self.assertFalse(routes)
+
     def test_rpki_errors_are_not_converted_to_unknown(self):
         with patch(
             "build_priority_prefix_evidence.request_json",
@@ -364,6 +378,7 @@ class PriorityPrefixEvidenceTests(unittest.TestCase):
                 irr_unique_objects = list(csv.DictReader(handle, delimiter="\t"))
             self.assertEqual(len(priority), 56)
             self.assertEqual(len(rdap), 168)
+            self.assertFalse((output / "rdap_samples_partial.tsv").exists())
             self.assertEqual(len(rpki), 108)
             self.assertEqual(len(holder_summary), 56)
             self.assertEqual(len(irr_summary), 56)
