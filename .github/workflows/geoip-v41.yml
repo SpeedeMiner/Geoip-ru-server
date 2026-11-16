@@ -34,8 +34,6 @@ on:
       - ".github/scripts/validate_v41_base_artifacts.py"
       - ".github/scripts/validate_v41_block_feed_counts.py"
       - ".github/scripts/validate_v41_publication_bounds.py"
-      - ".github/scripts/validate_v41_publication_review.py"
-      - ".github/data/v41-publication-review-prefixes.tsv"
       - ".github/scripts/verify_v41_ipverse_archive.py"
       - ".github/scripts/bundle_v41_registry_inputs.py"
       - ".github/scripts/v41_release_manifest.py"
@@ -62,6 +60,8 @@ on:
       - "docs/V39_PUBLIC_RKN_SOURCE_CROSSCHECK.md"
       - "docs/V41_EXECUTION_JOURNAL.md"
       - "docs/V41_ROLLING_RELEASE_NOTES.md"
+      - ".github/scripts/validate_v41_publication_review.py"
+      - ".github/data/v41-publication-review-prefixes.tsv"
       - "geoip_RU_company_asns.txt"
       - ".github/scripts/build_v39_overlay.py"
   # v41 is the sole production publisher. v39 publishing is retired in this same PR.
