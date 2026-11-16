@@ -45,13 +45,22 @@ class HydraDirectWhitelistCoverageTests(unittest.TestCase):
         )
         self.assertEqual(
             intervals(final, 4),
-            intervals(net("198.51.100.128/25"), 4),
+            intervals(net("198.51.100.128/25", "203.0.113.0/25"), 4),
         )
 
     def test_missing_whitelist_fails_closed(self):
         path = self.make_hydra({"DIRECT": net("198.51.100.0/24")})
         with self.assertRaisesRegex(ValueError, "missing"):
             parse_hydra_direct_whitelist(path)
+
+    def test_foreign_country_category_does_not_contribute(self):
+        path = self.make_hydra({
+            "DIRECT": net("198.51.100.0/24"),
+            "WHITELIST": net("203.0.113.0/24"),
+            "DE": net("192.0.2.0/24", "2001:db8:1::/48"),
+        })
+        self.assertEqual(hydra_expected_after_policy(parse_hydra_direct_whitelist(path), set(), set()),
+                         net("198.51.100.0/24", "203.0.113.0/24"))
 
     def test_default_route_fails_closed(self):
         path = self.make_hydra({

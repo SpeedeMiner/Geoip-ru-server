@@ -222,9 +222,10 @@ def main() -> int:
                 or manifest.get("regional_admission_exclusions", {}).get("role") != ROLE
                 or manifest.get("reviewed_ipv6_admission_exclusions", {}).get("role") != ROLE):
             raise ValueError("Missing exact foreign admission policy")
-        hydra_direct = builder.parse_hydra_direct_whitelist(a.hydra)["hydra-direct"]
+        hydra = builder.parse_hydra_direct_whitelist(a.hydra)
         cdn = cdn_networks(verify_cdn_manifest(manifest))
-        admission = builder.subtract_networks(set(regional_review) | set(ipv6_review), hydra_direct, cdn)
+        admission = builder.subtract_networks(
+            set(regional_review) | set(ipv6_review), hydra["hydra-direct"], hydra["hydra-whitelist"], cdn)
         effective = builder.parse_cidr_file(a.effective)[0]
         core = builder.parse_cidr_file(a.core, allow_hosts=False)[0]
         shared = builder.parse_cidr_file(a.shared, allow_hosts=False)[0]

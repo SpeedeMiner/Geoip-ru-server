@@ -103,10 +103,11 @@ def main() -> int:
             raise ValueError("Reviewed IPv4 admission provenance mismatch")
         if manifest.get("input_sha256", {}).get("hydra_geoip") != hashlib.sha256(args.hydra.read_bytes()).hexdigest():
             raise ValueError("Hydra input SHA-256 mismatch")
-        hydra = builder.parse_hydra_direct_whitelist(args.hydra)["hydra-direct"]
+        hydra = builder.parse_hydra_direct_whitelist(args.hydra)
         cdn = cdn_networks(verify_cdn_manifest(manifest))
         builder.assert_regional_admission_disjoint(
-            categories["RU"], builder.subtract_networks(set(rows) | set(regional), hydra, cdn))
+            categories["RU"], builder.subtract_networks(
+                set(rows) | set(regional), hydra["hydra-direct"], hydra["hydra-whitelist"], cdn))
     except (OSError, ValueError, KeyError, TypeError, AttributeError) as exc:
         parser.exit(1, f"ERROR: {exc}\n")
     print(f"Reviewed foreign admission: verified {len(regional)} IPv4 and {len(rows)} IPv6 exact records")

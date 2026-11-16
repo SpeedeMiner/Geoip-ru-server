@@ -146,7 +146,7 @@ class ReviewedIPv6AdmissionTests(unittest.TestCase):
                          "--regional-table", str(geo4), "--hydra", str(hydra)],
                         capture_output=True, text=True,
                     )
-                    if network in {KP, DE}:
+                    if network == KP:
                         self.assertNotEqual(result.returncode, 0)
                         self.assertIn("DIRECT intersects", result.stderr)
                     else:

@@ -1,15 +1,18 @@
 # v41 integration policy — RU+BY+KZ unified DIRECT
 
-## Current candidate: RU + BY + KZ + explicit DIRECT (2026-11-16)
+## Current candidate: RU + BY + KZ + explicit DIRECT and WHITELIST (2026-11-17)
 
-Import only RU, BY and KZ country categories. Never admit a foreign country
-category, a global CDN category, a provider ASN or a generic WHITELIST as a
-standalone source. Existing reviewed regional/operator and company origins
-remain eligible subject to exact admission conflicts. Explicit service DIRECT
-retains its separate source policy. Hydra DIRECT is routing intent and can
-preserve an exact overlap with a reviewed foreign assignment. Hydra WHITELIST
-is diagnostic. Escapingworm WHITELIST can only corroborate independently
-admitted address space, not create a route on its own.
+Import only RU, BY and KZ as country categories. Do not import foreign country
+categories, arbitrary upstream allowlists, or whole global CDN/provider ASN
+ranges. Existing reviewed regional/operator and company origins remain
+eligible subject to exact admission conflicts. Explicit service DIRECT retains
+its separate source policy. Hydra DIRECT and WHITELIST are both routing-intent
+inputs. Their exact overlap with a reviewed foreign assignment can survive as
+explicit routing intent, not as regional geography. Escapingworm's explicitly
+configured operator WHITELIST is a service DIRECT source. It remains subject
+to exact admission conflicts and never overrides PRIVATE, hard IP/subnet or
+Telegram exclusions. Hydra lists do not grant a resolver-block exemption.
+Neither list constitutes evidence of reachability from Russia.
 
 The existing exact foreign assignments are admission conflicts, not a global
 country-based exclusion or an assertion of network unreachability. Their mask

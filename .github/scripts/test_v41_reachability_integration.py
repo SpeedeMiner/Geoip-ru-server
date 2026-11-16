@@ -35,8 +35,13 @@ class ReachabilityIntegrationTests(unittest.TestCase):
             base = dat("base.dat", {"RU": ["11.0.0.0/24", "12.0.0.0/24", "13.0.0.0/24",
                                             "2001:4860:1234::/48", "2001:4860:5678::/48", "2001:4860:aa::/48"],
                                     "PRIVATE": ["10.0.0.0/8", "fc00::/7"]})
-            hydra = dat("hydra.dat", {"DIRECT": ["12.0.0.0/24", "11.0.0.0/26"],
-                                      "WHITELIST": ["25.0.0.1/32", "11.0.0.64/26"]})
+            hydra = dat("hydra.dat", {
+                "DIRECT": ["12.0.0.0/24", "11.0.0.0/26"],
+                "WHITELIST": ["25.0.0.1/32", "11.0.0.64/27", "10.0.0.1/32",
+                              "13.0.0.129/32", "22.0.0.1/32", "91.108.4.1/32",
+                              "2001:4860:1234::/49", "2001:4860:5678::1/128"],
+                "DE": ["26.0.0.0/24"],
+            })
             rir = write("rir.tsv", "country\tprefix\tregistry\tstatus\nRU\t11.0.0.0/24\tripencc\tallocated\nBY\t16.0.0.0/24\tripencc\tallocated\nKZ\t17.0.0.0/24\tripencc\tallocated\n")
             geo = write("geo.tsv", "prefix\tdelegated_country\tassignment_country\torigin_asn\tchecked_on\n11.0.0.0/25\tRU\tUS\tAS123\t2026-11-13\n")
             geo6 = write("geo6.tsv", "\t".join(IPV6_HEADER) + "\n"
@@ -63,7 +68,7 @@ class ReachabilityIntegrationTests(unittest.TestCase):
                 "kyoresuas-services": service_json,
                 "w1zardz": write("w1", "19.0.0.1/32\n"),
                 "hxehex-ip": write("hxe", "24.0.0.1/32\n"),
-                "escapingworm": write("escape", "20.0.0.1/32\n"),
+                "escapingworm": write("escape", "20.0.0.1/32\n13.0.0.129/32\n"),
                 "blocked-base": write("blocked", "13.0.0.129/32\n22.0.0.1/32\n"),
                 "blocked-exact": write("exact", "13.0.0.129/32\n"),
                 "blocked-resolved": write("resolved", "22.0.0.1/32\n"),
@@ -85,17 +90,22 @@ class ReachabilityIntegrationTests(unittest.TestCase):
             result = builder.parse_geoip_dat(outputs["output"])["RU"]
             contains = lambda addr: any(ipaddress.ip_address(addr) in net for net in result)
             self.assertTrue(contains("11.0.0.1"), "explicit Hydra DIRECT must survive a geographic conflict")
-            self.assertFalse(contains("11.0.0.70"), "a whitelist cannot override exact foreign assignment")
+            self.assertTrue(contains("11.0.0.70"), "explicit Hydra WHITELIST survives the geographic conflict")
             self.assertTrue(contains("11.0.0.99"), "measured CDN host may override only geographic admission")
             self.assertFalse(contains("11.0.0.100"), "do not promote adjacent CDN IPs")
             self.assertTrue(contains("11.0.0.130"), "preserve regional neighbor")
-            self.assertFalse(contains("25.0.0.1"), "Hydra WHITELIST is diagnostic")
-            self.assertFalse(contains("20.0.0.1"), "uncorroborated operator WHITELIST is not DIRECT")
+            self.assertTrue(contains("25.0.0.1"), "Hydra WHITELIST is eligible independently")
+            self.assertTrue(contains("20.0.0.1"), "the explicit operator WHITELIST is eligible")
+            self.assertFalse(contains("26.0.0.1"), "a foreign country category is never routed")
+            self.assertFalse(contains("10.0.0.1"), "PRIVATE still wins")
+            self.assertFalse(contains("22.0.0.1"), "Hydra WHITELIST grants no resolver block exemption")
+            self.assertFalse(contains("91.108.4.1"), "Telegram remains excluded")
             self.assertFalse(contains("12.0.0.1"), "reviewed IP-layer exclusion applies outside core")
             self.assertTrue(contains("12.0.0.200"), "neighboring addresses must remain")
             self.assertTrue(contains("13.0.0.1"), "core company is protected from the new exclusion")
             self.assertFalse(contains("13.0.0.129"), "existing hard evidence must still win")
-            self.assertFalse(contains("2001:4860:1234::1"), "exact reviewed foreign IPv6 waits for positive evidence")
+            self.assertTrue(contains("2001:4860:1234::1"), "explicit IPv6 WHITELIST is eligible")
+            self.assertFalse(contains("2001:4860:1234:8000::1"), "do not restore an unlisted half of a foreign IPv6 prefix")
             self.assertFalse(contains("2001:4860:5678::1"), "unprotected IPv6 is subject to reviewed exclusions")
             self.assertTrue(contains("2001:4860:aa::1"), "IPv6 core company is protected")
             args = SimpleNamespace(
@@ -124,3 +134,13 @@ class ReachabilityIntegrationTests(unittest.TestCase):
                     validator.validate(args)
                 outputs["output"].write_bytes(original)
                 outputs["manifest"].write_text(original_manifest, encoding="utf-8")
+                categories = builder.parse_geoip_dat(outputs["output"])
+                categories["RU"] = builder.subtract_networks(
+                    categories["RU"], {ipaddress.ip_network("25.0.0.1/32")})
+                tampered = builder.encode_geoip(categories)
+                outputs["output"].write_bytes(tampered)
+                manifest = json.loads(original_manifest)
+                manifest["output_sha256"] = hashlib.sha256(tampered).hexdigest()
+                outputs["manifest"].write_text(json.dumps(manifest), encoding="utf-8")
+                with self.assertRaisesRegex(ValueError, "Hydra DIRECT/WHITELIST.*coverage missing"):
+                    validator.validate(args)

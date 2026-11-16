@@ -94,15 +94,8 @@ def validate(args: argparse.Namespace) -> dict:
     if set(base) != {"RU", "PRIVATE"}:
         raise ValueError("Expected v37 base categories RU and PRIVATE")
     hydra_sources = builder.parse_hydra_direct_whitelist(args.hydra)
+    hydra_routes = hydra_sources["hydra-direct"] | hydra_sources["hydra-whitelist"]
     reviewed = set(builder.parse_reviewed_operator_prefixes(args.reviewed_operator_prefixes))
-    corroborated = (base["RU"] | regional_resources | regional_all | company_all | reviewed
-                    | hydra_sources["hydra-direct"] | service_sources["kyoresuas-standard"]
-                    | service_sources["w1zardz-service-direct"])
-    service_sources["operator-whitelist"] = {
-        net for family in (4, 6) for net in builder.networks_from_intervals(
-            builder.intersect(builder.intervals(service_sources["operator-whitelist"], family),
-                              builder.intervals(corroborated, family)), family)
-    }
     service_exact, service_resolver = builder.build_service_protection_masks(
         rir_resources, service_sources,
         w1zardz_literal_hosts=builder.original_w1zardz_hosts(args.w1zardz, service_sources["w1zardz-service-direct"]),
@@ -126,7 +119,7 @@ def validate(args: argparse.Namespace) -> dict:
     cdn = cdn_networks(verify_cdn_manifest(manifest))
     unreachable = verify_unreachable_manifest(manifest, regional_resources, regional_all, company_all, reviewed)
     geography = set(regional_admission) | set(ipv6_admission)
-    exemptions = hydra_sources["hydra-direct"] | cdn
+    exemptions = hydra_routes | cdn
     foreign = builder.subtract_networks(geography, exemptions)
     admission = foreign | unreachable
     builder.assert_regional_admission_disjoint(decoded["RU"], admission)
@@ -172,18 +165,17 @@ def validate(args: argparse.Namespace) -> dict:
         if builder.subtract(blocked_shared, allowed_shared_hard):
             raise ValueError(f"Effective block intersects SHARED_INFRA outside exact/legacy hard blocks in IPv{version}")
 
-    # Independent full set inclusion check: only explicit Hydra DIRECT entries
-    # must survive except PRIVATE and the effective v41 blocked set.
-    expected_hydra = builder.hydra_expected_after_policy(hydra_sources, decoded["PRIVATE"], output_blocked | set(admission))
+    # Recompute expected coverage from both explicit Hydra categories.
+    expected_hydra = builder.subtract_networks(hydra_routes, decoded["PRIVATE"], output_blocked | admission)
     for version in (4, 6):
         if builder.subtract(builder.intervals(expected_hydra, version), builder.intervals(decoded["RU"], version)):
-            raise ValueError(f"Hydra DIRECT IPv{version} eligible coverage missing")
+            raise ValueError(f"Hydra DIRECT/WHITELIST IPv{version} eligible coverage missing")
 
     hxehex, hxehex_stats, _ = builder.load_hxehex_diagnostics(args.hxehex_ip)
     excluded = builder.read_w1zardz_exclusions(builder.W1ZARDZ_EXCLUSIONS)
     independently_admitted = builder.union_networks(
         base["RU"], regional_resources, regional_all, company_all, reviewed,
-        *service_sources.values(), hydra_sources["hydra-direct"], cdn,
+        *service_sources.values(), hydra_routes, cdn,
     )
     assert_hxehex_diagnostic_only(decoded["RU"], independently_admitted, hxehex)
     if builder.intersect(builder.intervals(excluded, 4),
@@ -244,11 +236,13 @@ def validate(args: argparse.Namespace) -> dict:
         raise ValueError("Hydra input SHA-256 mismatch")
     if manifest.get("hydra_routing_intent", {}).get("input_sha256") != sha256(args.hydra):
         raise ValueError("Hydra provenance SHA-256 mismatch")
-    if (manifest.get("safety", {}).get("hydra_direct_added_without_block_exemption") is not True
-            or manifest["hydra_routing_intent"].get("whitelist_role") != "diagnostic-only"
+    if (manifest.get("safety", {}).get("hydra_direct_whitelist_added_without_block_exemption") is not True
+            or manifest["hydra_routing_intent"].get("whitelist_role") != "routing-intent"
             or manifest.get("service_sources", {}).get("operator-whitelist", {}).get("role")
-            != "corroborated-only"):
-        raise ValueError("Hydra precedence safety flag missing")
+            != "operator-routing-intent"
+            or manifest["hydra_routing_intent"].get("combined_eligible_address_space")
+            != builder.addr_counts(expected_hydra)):
+        raise ValueError("DIRECT/WHITELIST policy provenance mismatch")
     if manifest.get("output_sha256") != sha256(args.geoip):
         raise ValueError("Manifest output SHA-256 does not match GeoIP protobuf")
     if manifest.get("input_sha256", {}).get("corporate_company_asn_origin_prefixes") != sha256(args.company_all):
