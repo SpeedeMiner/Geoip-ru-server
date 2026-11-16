@@ -127,7 +127,10 @@ download_file "ARIN DELEGATED STATS" "$ARIN_STATS" \
 download_file "LACNIC DELEGATED STATS" "$LACNIC_STATS" \
   "https://ftp.lacnic.net/pub/stats/lacnic/delegated-lacnic-latest" \
   "https://ftp.ripe.net/pub/stats/lacnic/delegated-lacnic-latest" \
-  "https://ftp.apnic.net/pub/stats/lacnic/delegated-lacnic-latest"
+  "https://ftp.apnic.net/pub/stats/lacnic/delegated-lacnic-latest" \
+  "https://ftp.lacnic.net/pub/stats/lacnic/delegated-lacnic-extended-latest" \
+  "https://ftp.ripe.net/pub/stats/lacnic/delegated-lacnic-extended-latest" \
+  "https://ftp.apnic.net/pub/stats/lacnic/delegated-lacnic-extended-latest"
 
 download_file "RIPE NCC DELEGATED STATS" "$RIPENCC_STATS" \
   "https://ftp.ripe.net/pub/stats/ripencc/delegated-ripencc-latest" \
