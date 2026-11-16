@@ -1,13 +1,17 @@
+import concurrent.futures
 import csv
 import hashlib
 import json
 import tempfile
 import unittest
+from urllib.error import HTTPError
 from pathlib import Path
 from unittest.mock import patch
 
 from build_priority_prefix_evidence import (
     build_evidence,
+    completed_queries,
+    request_json_with_bytes,
     fetch_rdap_sample,
     fetch_rpki_origin,
     parse_bootstrap,
@@ -168,6 +172,52 @@ class PriorityPrefixEvidenceTests(unittest.TestCase):
         self.assertEqual(rdap_relation("198.51.100.0/24", {
             **parsed, "REGISTERED_CIDRS": "198.51.100.0/25"
         }), "MORE_SPECIFIC_RESOURCE_AT_SAMPLE")
+
+    def test_requests_stop_after_two_attempts_and_keep_timeout_explicit(self):
+        module = "build_priority_prefix_evidence"
+        with patch(f"{module}.urllib.request.urlopen", side_effect=TimeoutError("slow read")) as request, \
+             patch(f"{module}.time.sleep") as sleep:
+            status, payload, error, raw = request_json_with_bytes("https://example.invalid")
+        self.assertEqual((status, payload, raw), (0, None, None))
+        self.assertEqual(error, "NETWORK_ERROR:TimeoutError:slow read")
+        self.assertEqual([c.kwargs["timeout"] for c in request.call_args_list], [10, 10])
+        sleep.assert_called_once_with(1.0)
+
+    def test_retry_after_above_budget_stays_explicit_and_never_retries_early(self):
+        module = "build_priority_prefix_evidence"
+        for retry_after in ("120", "Wed, 18 Nov 2026 00:00:00 GMT"):
+            with self.subTest(retry_after=retry_after):
+                err = HTTPError("https://example.invalid", 429, "rate limit", {"Retry-After": retry_after}, None)
+                with patch(f"{module}.urllib.request.urlopen", side_effect=err) as request, \
+                     patch(f"{module}.time.sleep") as sleep:
+                    self.assertEqual(request_json_with_bytes("https://example.invalid"), (429, None, "HTTP_429", None))
+                request.assert_called_once()
+                sleep.assert_not_called()
+
+    def test_response_cap_rejects_oversize_without_parsing(self):
+        module = "build_priority_prefix_evidence"
+        with patch(f"{module}.MAX_JSON_BYTES", 8), patch(f"{module}.urllib.request.urlopen") as opener:
+            resp = opener.return_value.__enter__.return_value
+            resp.status = 200
+            resp.read.return_value = b"012345678"
+            self.assertEqual(
+                request_json_with_bytes("https://example.invalid"), (200, None, "RESPONSE_TOO_LARGE", None)
+            )
+        resp.read.assert_called_once_with(9)
+
+    def test_query_progress_reports_idle_and_eventual_completion(self):
+        module = "build_priority_prefix_evidence"
+        done = concurrent.futures.Future()
+        done.set_result("ok")
+        with patch(f"{module}.time.monotonic", side_effect=(0, 0, 30, 30, 31)), \
+             patch(f"{module}.concurrent.futures.wait", side_effect=((set(), {done}), ({done}, set()))) as wait, \
+             patch("builtins.print") as log:
+            self.assertEqual(list(completed_queries("RDAP", {done: "task"})), [done])
+        self.assertEqual([c.kwargs["timeout"] for c in wait.call_args_list], [30, 30])
+        self.assertEqual([c.args[0] for c in log.call_args_list], [
+            "RDAP: 0/1 completed", "RDAP: 0/1 completed (30s elapsed)", "RDAP: 1/1 completed (31s elapsed)",
+        ])
+        self.assertTrue(all(c.kwargs.get("flush") for c in log.call_args_list))
 
     def test_rpki_errors_are_not_converted_to_unknown(self):
         with patch(

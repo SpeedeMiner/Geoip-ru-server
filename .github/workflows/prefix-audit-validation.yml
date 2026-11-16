@@ -37,6 +37,7 @@ concurrency:
 jobs:
   python-audit:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
@@ -355,15 +356,23 @@ jobs:
           PY
 
       - name: Collect RDAP resource-holder samples and per-origin RPKI status for priority prefixes
+        id: collect_prefix_evidence
+        timeout-minutes: 12
         shell: bash
         run: |
           set -euo pipefail
-          python3 .github/scripts/build_priority_prefix_evidence.py \
+          status=0
+          timeout --kill-after=15s 11m python3 -u .github/scripts/build_priority_prefix_evidence.py \
             --company-review prefix-audit/company_origin_prefix_review.tsv \
             --output-dir prefix-audit/priority-prefix-evidence \
-            --workers 5
+            --workers 5 || status=$?
+          if [[ "$status" == 124 || "$status" == 137 ]]; then
+            echo '::error title=Priority prefix audit exceeded its time budget::RDAP/RPKI/IRR collection did not finish within 11 minutes. Review the last progress line and incomplete artifact.'
+          fi
+          exit "$status"
 
       - name: Validate priority RDAP and RPKI evidence against company review queue
+        id: validate_prefix_evidence
         shell: bash
         run: |
           set -euo pipefail
@@ -420,6 +429,8 @@ jobs:
               raise SystemExit("RDAP contains a blank query status; failures must remain explicit")
           rdap_success = sum(row["QUERY_STATUS"] == "OK" for row in rdap)
           rdap_errors = Counter(row["QUERY_STATUS"] for row in rdap if row["QUERY_STATUS"] != "OK")
+          if not rdap_success:
+              raise SystemExit(f"RDAP returned no usable samples: {dict(rdap_errors)}")
 
           rpki = read_tsv(Path("prefix-audit/priority-prefix-evidence/rpki_by_origin.tsv"))
           actual_pairs = [(row["PREFIX"], row["ORIGIN_ASN"]) for row in rpki]
@@ -435,6 +446,8 @@ jobs:
                   raise SystemExit(f"Unexpected RIPEstat RPKI status: {row['RPKI_STATUS']}")
               if row["QUERY_STATUS"] != "OK" and row["RPKI_STATUS"]:
                   raise SystemExit("API error was incorrectly converted into an RPKI state")
+          if not any(row["QUERY_STATUS"] == "OK" for row in rpki):
+              raise SystemExit("RPKI returned no usable origin evidence")
           rpki_statuses = Counter(
               row["RPKI_STATUS"] if row["QUERY_STATUS"] == "OK" else row["QUERY_STATUS"]
               for row in rpki
@@ -475,6 +488,9 @@ jobs:
               raise SystemExit("IRR query summary is incomplete for the current priority prefixes")
           if any(not row["QUERY_STATUS"] for row in irr_summary):
               raise SystemExit("IRR query summary contains blank query statuses")
+          observed_irr = {"OK", "NO_EXACT_ROUTE_OBJECT_IN_QUERY_RESULTS", "NO_OBJECTS_IN_QUERIED_SOURCES"}
+          if not any(row["QUERY_STATUS"] in observed_irr for row in irr_summary):
+              raise SystemExit("IRR returned no successful lookups")
           for row in irr_summary:
               if row["STATUS"] != "REVIEW":
                   raise SystemExit(f"IRR summary has non-REVIEW status for {row['PREFIX']}")
@@ -819,6 +835,15 @@ jobs:
               stream.write(stats)
           print(stats)
           PY
+
+      - name: Retain incomplete prefix audit for diagnosis
+        if: ${{ failure() && (steps.collect_prefix_evidence.outcome == 'failure' || steps.validate_prefix_evidence.outcome == 'failure') }}
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+        with:
+          name: v37-prefix-audit-incomplete-${{ github.event.pull_request.number }}
+          path: prefix-audit/
+          if-no-files-found: warn
+          retention-days: 7
 
       - name: Upload prefix review queues as a CI artifact
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9

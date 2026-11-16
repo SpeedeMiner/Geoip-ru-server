@@ -13,8 +13,10 @@ import collections
 import concurrent.futures
 import csv
 import hashlib
+import http.client
 import ipaddress
 import json
+import math
 import time
 import urllib.error
 import urllib.parse
@@ -24,6 +26,11 @@ from typing import Any
 
 USER_AGENT = "Geoip-ru-prefix-audit/1.0 (+https://github.com/SpeedeMiner/Geoip-ru-server)"
 RETRYABLE_HTTP = {408, 425, 429, 500, 502, 503, 504}
+REQUEST_TIMEOUT_SECONDS = 10
+MAX_RETRIES = 1
+MAX_RETRY_DELAY_SECONDS = 10
+MAX_JSON_BYTES = 8 * 1024 * 1024
+PROGRESS_INTERVAL_SECONDS = 30
 RPKI_BASE = "https://stat.ripe.net/data/rpki-validation/data.json"
 BOOTSTRAP_URLS = {
     4: "https://data.iana.org/rdap/ipv4.json",
@@ -39,7 +46,7 @@ def sha256_bytes(value: bytes) -> str:
     return hashlib.sha256(value).hexdigest()
 
 
-def request_json_with_bytes(url: str, timeout: int = 30, retries: int = 3) -> tuple[int, dict[str, Any] | None, str, bytes | None]:
+def request_json_with_bytes(url: str, timeout: int = REQUEST_TIMEOUT_SECONDS, retries: int = MAX_RETRIES) -> tuple[int, dict[str, Any] | None, str, bytes | None]:
     """Fetch JSON with bounded retries; HTTP/API failures remain explicit."""
     for attempt in range(retries + 1):
         request = urllib.request.Request(
@@ -52,7 +59,9 @@ def request_json_with_bytes(url: str, timeout: int = 30, retries: int = 3) -> tu
         try:
             with urllib.request.urlopen(request, timeout=timeout) as response:
                 status = int(getattr(response, "status", 200))
-                payload_bytes = response.read()
+                payload_bytes = response.read(MAX_JSON_BYTES + 1)
+                if len(payload_bytes) > MAX_JSON_BYTES:
+                    return status, None, "RESPONSE_TOO_LARGE", None
                 try:
                     payload = json.loads(payload_bytes.decode("utf-8"))
                 except (UnicodeDecodeError, json.JSONDecodeError) as exc:
@@ -65,22 +74,25 @@ def request_json_with_bytes(url: str, timeout: int = 30, retries: int = 3) -> tu
             if code in RETRYABLE_HTTP and attempt < retries:
                 retry_after = exc.headers.get("Retry-After") if exc.headers else None
                 try:
-                    delay = min(30.0, max(1.0, float(retry_after))) if retry_after else min(20.0, 2.0 ** attempt)
+                    delay = float(retry_after) if retry_after else 2.0 ** attempt
                 except ValueError:
-                    delay = min(20.0, 2.0 ** attempt)
-                time.sleep(delay)
+                    # Do not retry a rate-limited request early if given an HTTP-date.
+                    return code, None, f"HTTP_{code}", None
+                if not math.isfinite(delay) or delay > MAX_RETRY_DELAY_SECONDS:
+                    return code, None, f"HTTP_{code}", None
+                time.sleep(max(1.0, delay))
                 continue
             return code, None, f"HTTP_{code}", None
-        except (urllib.error.URLError, TimeoutError, ConnectionError) as exc:
+        except (OSError, http.client.HTTPException) as exc:
             if attempt < retries:
-                time.sleep(min(20.0, 2.0 ** attempt))
+                time.sleep(min(MAX_RETRY_DELAY_SECONDS, 2.0 ** attempt))
                 continue
             reason = getattr(exc, "reason", exc)
             return 0, None, f"NETWORK_ERROR:{type(reason).__name__}:{reason}", None
     return 0, None, "RETRY_EXHAUSTED", None
 
 
-def request_json(url: str, timeout: int = 30, retries: int = 3) -> tuple[int, dict[str, Any] | None, str]:
+def request_json(url: str, timeout: int = REQUEST_TIMEOUT_SECONDS, retries: int = MAX_RETRIES) -> tuple[int, dict[str, Any] | None, str]:
     status, payload, error, _ = request_json_with_bytes(url, timeout, retries)
     return status, payload, error
 
@@ -509,6 +521,25 @@ def fetch_irr_prefix(prefix: str, sources: list[str],
     return query_status, url, rows
 
 
+def completed_queries(phase: str, futures: dict):
+    """Yield completed tasks with periodic progress even when none finish."""
+    total = len(futures)
+    print(f"{phase}: 0/{total} completed", flush=True)
+    pending = set(futures)
+    started = last_report = time.monotonic()
+    while pending:
+        remaining = max(0, PROGRESS_INTERVAL_SECONDS - (time.monotonic() - last_report))
+        done, pending = concurrent.futures.wait(
+            pending, timeout=remaining, return_when=concurrent.futures.FIRST_COMPLETED
+        )
+        now = time.monotonic()
+        if not pending or now - last_report >= PROGRESS_INTERVAL_SECONDS:
+            print(f"{phase}: {total - len(pending)}/{total} completed "
+                  f"({now - started:.0f}s elapsed)", flush=True)
+            last_report = now
+        yield from done
+
+
 def write_tsv(path: Path, rows: list[dict[str, str]], columns: list[str]) -> None:
     with path.open("w", encoding="utf-8", newline="") as stream:
         writer = csv.DictWriter(stream, fieldnames=columns, delimiter="\t", extrasaction="ignore",
@@ -543,6 +574,7 @@ def build_evidence(company_queue: Path, output_dir: Path, max_workers: int = 5) 
     bootstrap_hashes: dict[int, str] = {}
     bootstrap_errors: dict[int, str] = {}
     for family, url in BOOTSTRAP_URLS.items():
+        print(f"Fetching IANA RDAP bootstrap: IPv{family}", flush=True)
         status, payload, error, raw = request_json_with_bytes(url)
         if status != 200 or payload is None:
             bootstraps[family] = []
@@ -582,7 +614,7 @@ def build_evidence(company_queue: Path, output_dir: Path, max_workers: int = 5) 
             pool.submit(fetch_rdap_sample, prefix, address, entries): (prefix, address)
             for prefix, address, entries in rdap_tasks
         }
-        for future in concurrent.futures.as_completed(futures):
+        for future in completed_queries("RDAP", futures):
             prefix, address = futures[future]
             try:
                 rdap_rows.append(future.result())
@@ -616,7 +648,7 @@ def build_evidence(company_queue: Path, output_dir: Path, max_workers: int = 5) 
             pool.submit(fetch_rpki_origin, prefix, asn): (prefix, asn)
             for prefix, asn in rpki_tasks
         }
-        for future in concurrent.futures.as_completed(futures):
+        for future in completed_queries("RPKI", futures):
             prefix, asn = futures[future]
             try:
                 rpki_rows.append(future.result())
@@ -635,6 +667,7 @@ def build_evidence(company_queue: Path, output_dir: Path, max_workers: int = 5) 
 
     # RIPE Database GRS snapshots expose multiple regional IRR data sources.
     # Their scope is explicit in the output and is not claimed to be the entire IRR ecosystem.
+    print("Fetching RIPE IRR source metadata", flush=True)
     metadata_status, metadata_payload, metadata_error = request_json(IRR_METADATA_URL)
     if metadata_status == 200 and metadata_payload is not None:
         metadata_sources = _source_list_from_metadata(metadata_payload)
@@ -671,7 +704,7 @@ def build_evidence(company_queue: Path, output_dir: Path, max_workers: int = 5) 
             ): row["PREFIX"]
             for row in priority
         }
-        for future in concurrent.futures.as_completed(futures):
+        for future in completed_queries("IRR", futures):
             prefix = futures[future]
             try:
                 query_status, query_url, objects = future.result()
