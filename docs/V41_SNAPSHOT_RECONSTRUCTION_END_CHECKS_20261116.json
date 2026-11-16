@@ -1,0 +1,587 @@
+{
+  "catalog": [
+    {
+      "files": {
+        "geoip_PRIVATE.srs": {
+          "bytes": 228,
+          "sha256": "b9ea6381ea61e286298aea76c10cb85a252ff0d20c49d6de3527be1353c107c4"
+        },
+        "geoip_RU.dat": {
+          "bytes": 512067,
+          "sha256": "5d7e9dd0eb66bd507eb5f695b83441493fb20b2307ef71125de16c8b3809fa7d"
+        },
+        "geoip_RU.srs": {
+          "bytes": 128250,
+          "sha256": "21c54a6b83c7292ec51c8fff33f19e54cc869750cb6e3cea87d7662df87684e0"
+        }
+      },
+      "headers": {
+        "Age": "4508",
+        "Cache-Control": "public, max-age=31536000, stale-while-revalidate=86400, stale-if-error=86400",
+        "Date": "Mon, 16 Nov 2026 09:42:17 GMT",
+        "ETag": "W/\"226-mENSGtOzsLclbcuWpqjUiiVjaec\"",
+        "X-Cache": "HIT"
+      },
+      "http": 200,
+      "mismatch": [
+        "geoip_RU.dat",
+        "geoip_RU.srs"
+      ],
+      "queried_at": "2026-11-16T09:42:17+00:00",
+      "ref": "cdn",
+      "sha256": "a78f36f042b2ea428591663516808c49a3fcd6963075a2fd9c85346b6323324b",
+      "shape": "tree",
+      "url": "https://data.jsdelivr.com/v1/package/gh/SpeedeMiner/Geoip-ru-server@cdn"
+    },
+    {
+      "files": {
+        "geoip_PRIVATE.srs": {
+          "bytes": 228,
+          "sha256": "b9ea6381ea61e286298aea76c10cb85a252ff0d20c49d6de3527be1353c107c4"
+        },
+        "geoip_RU.dat": {
+          "bytes": 512067,
+          "sha256": "5d7e9dd0eb66bd507eb5f695b83441493fb20b2307ef71125de16c8b3809fa7d"
+        },
+        "geoip_RU.srs": {
+          "bytes": 128250,
+          "sha256": "21c54a6b83c7292ec51c8fff33f19e54cc869750cb6e3cea87d7662df87684e0"
+        }
+      },
+      "headers": {
+        "Age": "4503",
+        "Cache-Control": "public, max-age=31536000, stale-while-revalidate=86400, stale-if-error=86400",
+        "Date": "Mon, 16 Nov 2026 09:42:17 GMT",
+        "ETag": "W/\"1f0-IjnQsfJqKg+hFpB0Ik5+RbbcAqg\"",
+        "X-Cache": "HIT"
+      },
+      "http": 200,
+      "mismatch": [
+        "geoip_RU.dat",
+        "geoip_RU.srs"
+      ],
+      "queried_at": "2026-11-16T09:42:17+00:00",
+      "ref": "cdn",
+      "sha256": "a08e289c47fd41df394ddca5dcfc1df1ef264837d26243008191a19e9f90c8ff",
+      "shape": "flat",
+      "url": "https://data.jsdelivr.com/v1/package/gh/SpeedeMiner/Geoip-ru-server@cdn/flat"
+    },
+    {
+      "files": {
+        "geoip_PRIVATE.srs": {
+          "bytes": 228,
+          "sha256": "b9ea6381ea61e286298aea76c10cb85a252ff0d20c49d6de3527be1353c107c4"
+        },
+        "geoip_RU.dat": {
+          "bytes": 512533,
+          "sha256": "b17fe26ccdcb8d272e6233ec9686a514b309e9d75e75653313a75f329b70fae7"
+        },
+        "geoip_RU.srs": {
+          "bytes": 128392,
+          "sha256": "c60b8a1de5d4d67478850d7f72b272044f536d7d592591fbbf75ac50129002b1"
+        }
+      },
+      "headers": {
+        "Age": "4446",
+        "Cache-Control": "public, max-age=31536000, stale-while-revalidate=86400, stale-if-error=86400",
+        "Date": "Mon, 16 Nov 2026 09:42:17 GMT",
+        "ETag": "W/\"226-CwAsnouUCm/G/aM+4qC00mY5Pog\"",
+        "X-Cache": "HIT"
+      },
+      "http": 200,
+      "mismatch": [],
+      "queried_at": "2026-11-16T09:42:17+00:00",
+      "ref": "8a226b83c82323c869054ca5b299612ad3a91e2d",
+      "sha256": "b9b749e28a2ca9d151557f48ee6cbfb26b4a9e4477c1bac4919164a18b38e86e",
+      "shape": "tree",
+      "url": "https://data.jsdelivr.com/v1/package/gh/SpeedeMiner/Geoip-ru-server@8a226b83c82323c869054ca5b299612ad3a91e2d"
+    },
+    {
+      "files": {
+        "geoip_PRIVATE.srs": {
+          "bytes": 228,
+          "sha256": "b9ea6381ea61e286298aea76c10cb85a252ff0d20c49d6de3527be1353c107c4"
+        },
+        "geoip_RU.dat": {
+          "bytes": 512533,
+          "sha256": "b17fe26ccdcb8d272e6233ec9686a514b309e9d75e75653313a75f329b70fae7"
+        },
+        "geoip_RU.srs": {
+          "bytes": 128392,
+          "sha256": "c60b8a1de5d4d67478850d7f72b272044f536d7d592591fbbf75ac50129002b1"
+        }
+      },
+      "headers": {
+        "Age": "4446",
+        "Cache-Control": "public, max-age=31536000, stale-while-revalidate=86400, stale-if-error=86400",
+        "Date": "Mon, 16 Nov 2026 09:42:17 GMT",
+        "ETag": "W/\"1f0-+zxYnacWKlg/3MGElfvEguekxCE\"",
+        "X-Cache": "HIT"
+      },
+      "http": 200,
+      "mismatch": [],
+      "queried_at": "2026-11-16T09:42:17+00:00",
+      "ref": "8a226b83c82323c869054ca5b299612ad3a91e2d",
+      "sha256": "942cf8a7f031bc61567f73cc6000e44c74783497f75b15c9c8f2925cb5989811",
+      "shape": "flat",
+      "url": "https://data.jsdelivr.com/v1/package/gh/SpeedeMiner/Geoip-ru-server@8a226b83c82323c869054ca5b299612ad3a91e2d/flat"
+    }
+  ],
+  "routing": [
+    {
+      "kind": "routing_status",
+      "origins": [
+        137410
+      ],
+      "prefix": "177.29.253.0/24",
+      "query_time": "2026-11-16T00:00:00",
+      "response_sha256": "794f59caac97015120d6df48905befe0960e363206605fc20723eae231c49aed",
+      "retrieved_at": "2026-11-16T09:41:43+00:00",
+      "url": "https://stat.ripe.net/data/routing-status/data.json?resource=177.29.253.0%2F24&timestamp=2026-11-16T08%3A00%3A00Z&min_peers_seeing=1",
+      "visible_v4": {
+        "ris_peers_seeing": 317,
+        "total_ris_peers": 319
+      }
+    },
+    {
+      "announcement_rows_by_origin": {},
+      "exact_update_rows": 0,
+      "exact_withdrawals": 0,
+      "kind": "bgp_updates",
+      "latest_exact_update": null,
+      "prefix": "177.29.253.0/24",
+      "query_endtime": "2026-11-16T07:59:53",
+      "query_starttime": "2026-11-16T07:59:53",
+      "response_sha256": "cfa3044715ea61b85364d8dc2509a36adb133c448386915d700bee3f2d17164c",
+      "retrieved_at": "2026-11-16T09:41:41+00:00",
+      "url": "https://stat.ripe.net/data/bgp-updates/data.json?resource=177.29.253.0%2F24&starttime=2026-11-16T08%3A00%3A00Z&endtime=2026-11-16T09%3A00%3A00Z"
+    },
+    {
+      "exact_origins": {
+        "137410": {
+          "collectors": 8,
+          "most_recent_update_timestamp": "2026-11-16T08:32:49Z",
+          "reporting_rows": 155,
+          "rows_date_utc_today": 153,
+          "rpki_state": "valid"
+        }
+      },
+      "kind": "routeviews",
+      "prefix": "177.29.253.0/24",
+      "response_sha256": "5536d5ebe2bfe5697ed39cdcc7cb2887384e31f39d6de4f43efc4edd445a6fbd",
+      "retrieved_at": "2026-11-16T09:41:46+00:00",
+      "url": "https://api.routeviews.org/prefix/177.29.253.0/24"
+    },
+    {
+      "kind": "routing_status",
+      "origins": [
+        137410
+      ],
+      "prefix": "177.122.229.0/24",
+      "query_time": "2026-11-16T00:00:00",
+      "response_sha256": "6fda22b7a7cf89331aa107d60163d8254c005d298dcd704b08711a1bafe5f0ea",
+      "retrieved_at": "2026-11-16T09:41:42+00:00",
+      "url": "https://stat.ripe.net/data/routing-status/data.json?resource=177.122.229.0%2F24&timestamp=2026-11-16T08%3A00%3A00Z&min_peers_seeing=1",
+      "visible_v4": {
+        "ris_peers_seeing": 317,
+        "total_ris_peers": 319
+      }
+    },
+    {
+      "announcement_rows_by_origin": {},
+      "exact_update_rows": 0,
+      "exact_withdrawals": 0,
+      "kind": "bgp_updates",
+      "latest_exact_update": null,
+      "prefix": "177.122.229.0/24",
+      "query_endtime": "2026-11-16T07:59:53",
+      "query_starttime": "2026-11-16T07:59:53",
+      "response_sha256": "f671065e4f59fc2c3ff7d07d7a1646575cc97db1a9ac11e7133d9996d8ca8c23",
+      "retrieved_at": "2026-11-16T09:41:41+00:00",
+      "url": "https://stat.ripe.net/data/bgp-updates/data.json?resource=177.122.229.0%2F24&starttime=2026-11-16T08%3A00%3A00Z&endtime=2026-11-16T09%3A00%3A00Z"
+    },
+    {
+      "exact_origins": {
+        "137410": {
+          "collectors": 8,
+          "most_recent_update_timestamp": "2026-11-16T09:08:14Z",
+          "reporting_rows": 160,
+          "rows_date_utc_today": 9,
+          "rpki_state": "valid"
+        },
+        "17561": {
+          "collectors": 1,
+          "most_recent_update_timestamp": "2026-11-07T00:00:09Z",
+          "reporting_rows": 20,
+          "rows_date_utc_today": 0,
+          "rpki_state": "valid"
+        }
+      },
+      "kind": "routeviews",
+      "prefix": "177.122.229.0/24",
+      "response_sha256": "24d53712e5fc03a00af09f584c10a7d3da86c7acff9c582c0b85d1744a7b36fc",
+      "retrieved_at": "2026-11-16T09:41:45+00:00",
+      "url": "https://api.routeviews.org/prefix/177.122.229.0/24"
+    },
+    {
+      "kind": "routing_status",
+      "origins": [
+        137410
+      ],
+      "prefix": "177.122.241.0/24",
+      "query_time": "2026-11-16T00:00:00",
+      "response_sha256": "3c95aff26b0a3c23754f7e5584716ff5f50d718ae26d4a8f1187cdc13259a5d8",
+      "retrieved_at": "2026-11-16T09:41:47+00:00",
+      "url": "https://stat.ripe.net/data/routing-status/data.json?resource=177.122.241.0%2F24&timestamp=2026-11-16T08%3A00%3A00Z&min_peers_seeing=1",
+      "visible_v4": {
+        "ris_peers_seeing": 317,
+        "total_ris_peers": 319
+      }
+    },
+    {
+      "announcement_rows_by_origin": {},
+      "exact_update_rows": 0,
+      "exact_withdrawals": 0,
+      "kind": "bgp_updates",
+      "latest_exact_update": null,
+      "prefix": "177.122.241.0/24",
+      "query_endtime": "2026-11-16T07:59:53",
+      "query_starttime": "2026-11-16T07:59:53",
+      "response_sha256": "da1359129b19ef4a5100777db84434f417557fd442b7948e70e70239de2bd8a6",
+      "retrieved_at": "2026-11-16T09:41:47+00:00",
+      "url": "https://stat.ripe.net/data/bgp-updates/data.json?resource=177.122.241.0%2F24&starttime=2026-11-16T08%3A00%3A00Z&endtime=2026-11-16T09%3A00%3A00Z"
+    },
+    {
+      "exact_origins": {
+        "137410": {
+          "collectors": 8,
+          "most_recent_update_timestamp": "2026-11-16T08:32:49Z",
+          "reporting_rows": 155,
+          "rows_date_utc_today": 155,
+          "rpki_state": "valid"
+        },
+        "17561": {
+          "collectors": 1,
+          "most_recent_update_timestamp": "2026-11-07T00:00:09Z",
+          "reporting_rows": 20,
+          "rows_date_utc_today": 0,
+          "rpki_state": "valid"
+        }
+      },
+      "kind": "routeviews",
+      "prefix": "177.122.241.0/24",
+      "response_sha256": "013cda3596bc74a87ab86d1fe10e01657591111ed654ab6a9735734267d1667a",
+      "retrieved_at": "2026-11-16T09:41:52+00:00",
+      "url": "https://api.routeviews.org/prefix/177.122.241.0/24"
+    },
+    {
+      "kind": "routing_status",
+      "origins": [
+        137410
+      ],
+      "prefix": "177.166.74.0/24",
+      "query_time": "2026-11-16T00:00:00",
+      "response_sha256": "2d19c4fe14f6f4bd95450bd858e7c5c5046fcc612226f66d22e023b15ad71e62",
+      "retrieved_at": "2026-11-16T09:41:47+00:00",
+      "url": "https://stat.ripe.net/data/routing-status/data.json?resource=177.166.74.0%2F24&timestamp=2026-11-16T08%3A00%3A00Z&min_peers_seeing=1",
+      "visible_v4": {
+        "ris_peers_seeing": 316,
+        "total_ris_peers": 319
+      }
+    },
+    {
+      "announcement_rows_by_origin": {},
+      "exact_update_rows": 0,
+      "exact_withdrawals": 0,
+      "kind": "bgp_updates",
+      "latest_exact_update": null,
+      "prefix": "177.166.74.0/24",
+      "query_endtime": "2026-11-16T07:59:53",
+      "query_starttime": "2026-11-16T07:59:53",
+      "response_sha256": "1788c7b7fefcdc0e041184de901e7f4e801bc57885f361cf2553ea6bf02b05c0",
+      "retrieved_at": "2026-11-16T09:41:46+00:00",
+      "url": "https://stat.ripe.net/data/bgp-updates/data.json?resource=177.166.74.0%2F24&starttime=2026-11-16T08%3A00%3A00Z&endtime=2026-11-16T09%3A00%3A00Z"
+    },
+    {
+      "exact_origins": {
+        "137410": {
+          "collectors": 8,
+          "most_recent_update_timestamp": "2026-11-16T08:32:53Z",
+          "reporting_rows": 155,
+          "rows_date_utc_today": 24,
+          "rpki_state": "valid"
+        },
+        "17561": {
+          "collectors": 1,
+          "most_recent_update_timestamp": "2026-11-07T00:00:09Z",
+          "reporting_rows": 20,
+          "rows_date_utc_today": 0,
+          "rpki_state": "valid"
+        }
+      },
+      "kind": "routeviews",
+      "prefix": "177.166.74.0/24",
+      "response_sha256": "4e7acd628b39d5926acddd9839468a193a23d48431e0901387a7f7d1f00d87ed",
+      "retrieved_at": "2026-11-16T09:42:00+00:00",
+      "url": "https://api.routeviews.org/prefix/177.166.74.0/24"
+    },
+    {
+      "kind": "routing_status",
+      "origins": [
+        137410
+      ],
+      "prefix": "177.166.78.0/24",
+      "query_time": "2026-11-16T00:00:00",
+      "response_sha256": "25512898991cb57918f027d5d0ef657a4c704c9ff894bdfda48540726a997e55",
+      "retrieved_at": "2026-11-16T09:41:51+00:00",
+      "url": "https://stat.ripe.net/data/routing-status/data.json?resource=177.166.78.0%2F24&timestamp=2026-11-16T08%3A00%3A00Z&min_peers_seeing=1",
+      "visible_v4": {
+        "ris_peers_seeing": 317,
+        "total_ris_peers": 319
+      }
+    },
+    {
+      "announcement_rows_by_origin": {},
+      "exact_update_rows": 0,
+      "exact_withdrawals": 0,
+      "kind": "bgp_updates",
+      "latest_exact_update": null,
+      "prefix": "177.166.78.0/24",
+      "query_endtime": "2026-11-16T07:59:53",
+      "query_starttime": "2026-11-16T07:59:53",
+      "response_sha256": "e55ff4b1a92614d4fddc49d4cc7eac12a27cfd78b96009bbb72adeec9022d5d4",
+      "retrieved_at": "2026-11-16T09:41:50+00:00",
+      "url": "https://stat.ripe.net/data/bgp-updates/data.json?resource=177.166.78.0%2F24&starttime=2026-11-16T08%3A00%3A00Z&endtime=2026-11-16T09%3A00%3A00Z"
+    },
+    {
+      "exact_origins": {
+        "137410": {
+          "collectors": 8,
+          "most_recent_update_timestamp": "2026-11-16T08:32:49Z",
+          "reporting_rows": 155,
+          "rows_date_utc_today": 155,
+          "rpki_state": "valid"
+        },
+        "17561": {
+          "collectors": 1,
+          "most_recent_update_timestamp": "2026-11-07T00:00:09Z",
+          "reporting_rows": 20,
+          "rows_date_utc_today": 0,
+          "rpki_state": "valid"
+        }
+      },
+      "kind": "routeviews",
+      "prefix": "177.166.78.0/24",
+      "response_sha256": "1c98ff8277a947b499239d5f9c2bd8636f5563297bdfec35cdc7771ec9c707dd",
+      "retrieved_at": "2026-11-16T09:41:59+00:00",
+      "url": "https://api.routeviews.org/prefix/177.166.78.0/24"
+    },
+    {
+      "kind": "routing_status",
+      "origins": [
+        219305
+      ],
+      "prefix": "177.29.252.0/24",
+      "query_time": "2026-11-16T00:00:00",
+      "response_sha256": "3b9978cc3efb4eb66f116e61a37346a13d86627c0d842cd4cf7aa5a9865b9e91",
+      "retrieved_at": "2026-11-16T09:41:51+00:00",
+      "url": "https://stat.ripe.net/data/routing-status/data.json?resource=177.29.252.0%2F24&timestamp=2026-11-16T08%3A00%3A00Z&min_peers_seeing=1",
+      "visible_v4": {
+        "ris_peers_seeing": 318,
+        "total_ris_peers": 319
+      }
+    },
+    {
+      "announcement_rows_by_origin": {},
+      "exact_update_rows": 0,
+      "exact_withdrawals": 0,
+      "kind": "bgp_updates",
+      "latest_exact_update": null,
+      "prefix": "177.29.252.0/24",
+      "query_endtime": "2026-11-16T07:59:53",
+      "query_starttime": "2026-11-16T07:59:53",
+      "response_sha256": "3c29678a9de816245dc70636d5517d2c5a0e609b36f67a39781b8a91842cde03",
+      "retrieved_at": "2026-11-16T09:41:55+00:00",
+      "url": "https://stat.ripe.net/data/bgp-updates/data.json?resource=177.29.252.0%2F24&starttime=2026-11-16T08%3A00%3A00Z&endtime=2026-11-16T09%3A00%3A00Z"
+    },
+    {
+      "exact_origins": {
+        "219305": {
+          "collectors": 8,
+          "most_recent_update_timestamp": "2026-11-16T09:17:13Z",
+          "reporting_rows": 148,
+          "rows_date_utc_today": 9,
+          "rpki_state": "valid"
+        }
+      },
+      "kind": "routeviews",
+      "prefix": "177.29.252.0/24",
+      "response_sha256": "1a614e52a9bf4575d2d94dfcf25b078d38be9675ef55552fd8033724939bfdcb",
+      "retrieved_at": "2026-11-16T09:41:58+00:00",
+      "url": "https://api.routeviews.org/prefix/177.29.252.0/24"
+    },
+    {
+      "kind": "routing_status",
+      "origins": [
+        401152,
+        219095
+      ],
+      "prefix": "48.103.230.0/24",
+      "query_time": "2026-11-16T00:00:00",
+      "response_sha256": "f2b298311f9dab285778474cbd001d1c3c4e11a6786ea63cc9f152427bc27d5e",
+      "retrieved_at": "2026-11-16T09:41:56+00:00",
+      "url": "https://stat.ripe.net/data/routing-status/data.json?resource=48.103.230.0%2F24&timestamp=2026-11-16T08%3A00%3A00Z&min_peers_seeing=1",
+      "visible_v4": {
+        "ris_peers_seeing": 319,
+        "total_ris_peers": 319
+      }
+    },
+    {
+      "announcement_rows_by_origin": {},
+      "exact_update_rows": 0,
+      "exact_withdrawals": 0,
+      "kind": "bgp_updates",
+      "latest_exact_update": null,
+      "prefix": "48.103.230.0/24",
+      "query_endtime": "2026-11-16T07:59:53",
+      "query_starttime": "2026-11-16T07:59:53",
+      "response_sha256": "44a849900fc17fb9dd2126d698dc27eadfb7cf49339c76582d9732f9f1fe9332",
+      "retrieved_at": "2026-11-16T09:41:55+00:00",
+      "url": "https://stat.ripe.net/data/bgp-updates/data.json?resource=48.103.230.0%2F24&starttime=2026-11-16T08%3A00%3A00Z&endtime=2026-11-16T09%3A00%3A00Z"
+    },
+    {
+      "exact_origins": {
+        "219095": {
+          "collectors": 2,
+          "most_recent_update_timestamp": "2026-11-15T21:10:35Z",
+          "reporting_rows": 2,
+          "rows_date_utc_today": 0,
+          "rpki_state": "invalid"
+        },
+        "401152": {
+          "collectors": 9,
+          "most_recent_update_timestamp": "2026-11-16T08:27:48Z",
+          "reporting_rows": 173,
+          "rows_date_utc_today": 7,
+          "rpki_state": "valid"
+        }
+      },
+      "kind": "routeviews",
+      "prefix": "48.103.230.0/24",
+      "response_sha256": "142d202e181da7f5b99f3d2b0bb2b4c9d02f697b87430f85d2c62698af67fb86",
+      "retrieved_at": "2026-11-16T09:42:02+00:00",
+      "url": "https://api.routeviews.org/prefix/48.103.230.0/24"
+    },
+    {
+      "kind": "routing_status",
+      "origins": [
+        401152,
+        219095
+      ],
+      "prefix": "201.58.141.0/24",
+      "query_time": "2026-11-16T00:00:00",
+      "response_sha256": "2ea2a9e3da012b593a867853b15b6de2b31e38bdedd1814a695e7bf8dfaf8b7c",
+      "retrieved_at": "2026-11-16T09:42:00+00:00",
+      "url": "https://stat.ripe.net/data/routing-status/data.json?resource=201.58.141.0%2F24&timestamp=2026-11-16T08%3A00%3A00Z&min_peers_seeing=1",
+      "visible_v4": {
+        "ris_peers_seeing": 316,
+        "total_ris_peers": 319
+      }
+    },
+    {
+      "announcement_rows_by_origin": {},
+      "exact_update_rows": 0,
+      "exact_withdrawals": 0,
+      "kind": "bgp_updates",
+      "latest_exact_update": null,
+      "prefix": "201.58.141.0/24",
+      "query_endtime": "2026-11-16T07:59:53",
+      "query_starttime": "2026-11-16T07:59:53",
+      "response_sha256": "e5e5f9f651d23f665c996175d33236ad917e66766f8a32207ad142a17d06c161",
+      "retrieved_at": "2026-11-16T09:41:59+00:00",
+      "url": "https://stat.ripe.net/data/bgp-updates/data.json?resource=201.58.141.0%2F24&starttime=2026-11-16T08%3A00%3A00Z&endtime=2026-11-16T09%3A00%3A00Z"
+    },
+    {
+      "exact_origins": {
+        "214647": {
+          "collectors": 1,
+          "most_recent_update_timestamp": "2026-11-07T00:00:13Z",
+          "reporting_rows": 21,
+          "rows_date_utc_today": 0,
+          "rpki_state": "invalid"
+        },
+        "219095": {
+          "collectors": 2,
+          "most_recent_update_timestamp": "2026-11-15T21:10:35Z",
+          "reporting_rows": 2,
+          "rows_date_utc_today": 0,
+          "rpki_state": "invalid"
+        },
+        "401152": {
+          "collectors": 8,
+          "most_recent_update_timestamp": "2026-11-16T08:30:33Z",
+          "reporting_rows": 149,
+          "rows_date_utc_today": 6,
+          "rpki_state": "valid"
+        }
+      },
+      "kind": "routeviews",
+      "prefix": "201.58.141.0/24",
+      "response_sha256": "56e4c06981bfce4d9b574704872735400d550a8be1fdd6bba09793b87b442533",
+      "retrieved_at": "2026-11-16T09:42:08+00:00",
+      "url": "https://api.routeviews.org/prefix/201.58.141.0/24"
+    },
+    {
+      "kind": "routing_status",
+      "origins": [
+        62146,
+        44790
+      ],
+      "prefix": "213.226.121.0/24",
+      "query_time": "2026-11-16T00:00:00",
+      "response_sha256": "8fd39223c3a2159f2e1acb5cadaceaa1124fcdd9a0df44c3d87036ce6df973b1",
+      "retrieved_at": "2026-11-16T09:42:03+00:00",
+      "url": "https://stat.ripe.net/data/routing-status/data.json?resource=213.226.121.0%2F24&timestamp=2026-11-16T08%3A00%3A00Z&min_peers_seeing=1",
+      "visible_v4": {
+        "ris_peers_seeing": 319,
+        "total_ris_peers": 319
+      }
+    },
+    {
+      "announcement_rows_by_origin": {},
+      "exact_update_rows": 0,
+      "exact_withdrawals": 0,
+      "kind": "bgp_updates",
+      "latest_exact_update": null,
+      "prefix": "213.226.121.0/24",
+      "query_endtime": "2026-11-16T07:59:53",
+      "query_starttime": "2026-11-16T07:59:53",
+      "response_sha256": "c1c89d396f5f72e58dfb1dec911574429c8292d9710aff8aa3306a34580ae366",
+      "retrieved_at": "2026-11-16T09:42:02+00:00",
+      "url": "https://stat.ripe.net/data/bgp-updates/data.json?resource=213.226.121.0%2F24&starttime=2026-11-16T08%3A00%3A00Z&endtime=2026-11-16T09%3A00%3A00Z"
+    },
+    {
+      "exact_origins": {
+        "44790": {
+          "collectors": 9,
+          "most_recent_update_timestamp": "2026-11-16T09:08:24Z",
+          "reporting_rows": 47,
+          "rows_date_utc_today": 1,
+          "rpki_state": "not-found"
+        },
+        "62146": {
+          "collectors": 9,
+          "most_recent_update_timestamp": "2026-11-16T08:30:40Z",
+          "reporting_rows": 150,
+          "rows_date_utc_today": 12,
+          "rpki_state": "not-found"
+        }
+      },
+      "kind": "routeviews",
+      "prefix": "213.226.121.0/24",
+      "response_sha256": "d894bd7ebbabf74b61eaca9ab9c2f68e2c53890d97d4f8da8de89629790f6f03",
+      "retrieved_at": "2026-11-16T09:42:08+00:00",
+      "url": "https://api.routeviews.org/prefix/213.226.121.0/24"
+    }
+  ]
+}
