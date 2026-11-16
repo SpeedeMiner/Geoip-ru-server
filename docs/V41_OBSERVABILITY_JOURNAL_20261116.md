@@ -578,3 +578,8 @@ Progress rule: append dated evidence, artifact identities, decisions and remaini
 
 - Rechecked the existing diagnostic route and exact run 43820309250. Its public volunteer VPN exits are validated for RU country and ASN, not household access. The latest test only repeated one unauthenticated TCP/443 sample. Keep the owner's PR #5 and its branch unchanged.
 - Prepare a new bounded run on the existing isolated diagnostics branch, with matching direct and VPN controls, record the exact address used for HTTPS with hostname/certificate checks, and test the identified OPTI homepage separately from unresolved lost ranges. Repeating the one responsive TCP sample is a sample, not a prefix decision. Decide the fate of the current frozen release candidate separately from any permanent prefix policy.
+
+## 2026-11-16 16:01 UTC+05 — bounded VPN comparison launched
+
+- [VPNObratno run 43854016733](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43854016733) started on the isolated diagnostic branch at `240e9db`. No change to PR #5, its branch, main or published assets. All 116 relevant local tests passed. The release inventory is pinned to `e20cf73`.
+- The same short target list is tested from the runner and through verified RU VPN egress. For OPTI the chosen IPv4 must belong to `213.226.121.0/24`, with hostname, SNI and certificate verification. The Curator asset is a control, not evidence for `177.29.253.0/24`. The single previous TCP endpoint is only a transport sample. The public report omits exit IPs and records ASN and a session ordinal. An RU ISP ASN is not a household attestation.
