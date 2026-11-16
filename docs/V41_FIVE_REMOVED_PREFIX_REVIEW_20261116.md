@@ -23,3 +23,8 @@ Updated 2026-11-16. Each row is an exact /24 present in published DIRECT at rele
 - [Published workflow 43747743430](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43747743430), DAT `b17fe26ccdcb8d272e6233ec9686a514b309e9d75e75653313a75f329b70fae7`, ipverse `5d3b254a78d4fbbd225d6e18b317a9a29e799f418a6f7b57dbe617b1d1beeb41`.
 - [Verified PR workflow 43822933071](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43822933071), DAT `3161fdd5eda4d9c2f962a3c8d1bd0c187e5cab9260284a13679b289a9a6d0855`, ipverse `84af740b9546cf54448ff0782f5ddc15d458e15b0d2409fcff8de3d5733baa34`.
 - [Execution journal](V41_OBSERVABILITY_JOURNAL_20261116.md) and [traceable observation matrix](V41_FIVE_PREFIX_TRANSITION_EVIDENCE_20261116.json). Routing admission remains undecided. Next useful evidence is an operator-confirmed test hostname/URL or an independently authenticated service observed in a disputed range, followed by bounded DNS and HTTPS checks from verified RU access networks and a contemporaneous reference. A negative check against unnamed IP samples does not classify a /24. No operator was contacted as part of this pass.
+
+
+## Scheduled main can reproduce the loss without PR #52
+
+A read-only replay on unchanged production code isolated the loss to the rolling ipverse archive. The checked-in prepublication validator accepted the exact replay without overrides. The observed release is unchanged, but a later scheduled refresh can publish the loss. See the [same-code replay and admission review](V41_SCHEDULED_MAIN_IPVERSE_REPLAY_20261116.md). This does not change the five OPEN decisions or pin any disputed network.
