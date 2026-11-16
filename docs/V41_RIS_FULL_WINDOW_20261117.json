@@ -1,0 +1,208 @@
+{
+  "candidate_dat_sha256": "7f21cda9662f3f7345a7aaef674febd577804b591d0dbb86f01ad864705023bf",
+  "cases": {
+    "AS12389_p1": {
+      "eligible_ris_rows_by_family": {
+        "4": 3296,
+        "6": 544
+      },
+      "excluded_rows": {
+        "default-route": 2,
+        "ipv4-mapped-ipv6": 0
+      },
+      "ipv4": {
+        "ipverse_addresses": "9551616",
+        "ipverse_only_addresses": "0",
+        "ipverse_only_prefixes": [],
+        "ris_addresses": "9551616",
+        "ris_only_addresses": "0",
+        "ris_only_in_candidate_ru": "0",
+        "ris_only_prefixes": []
+      },
+      "ipv6": {
+        "ipverse_addresses": "10379199983304269184452156981248",
+        "ipverse_only_addresses": "0",
+        "ipverse_only_prefixes": [],
+        "ris_addresses": "5202755286680646162052542030151680",
+        "ris_only_addresses": "5192376086697341892868089873170432",
+        "ris_only_in_candidate_ru": "0",
+        "ris_only_prefixes": [
+          "2002::/16",
+          "2a0f:e7c1::/32"
+        ]
+      },
+      "min_peers_seeing": 1,
+      "response_sha256": "04a587dba94b9e517dec0c08d2ff0890e4ee14d120f79595c6c2954e6cfdda60",
+      "ris_window_status": "ok"
+    },
+    "AS12389_p5": {
+      "eligible_ris_rows_by_family": {
+        "4": 3277,
+        "6": 269
+      },
+      "excluded_rows": {
+        "default-route": 0,
+        "ipv4-mapped-ipv6": 0
+      },
+      "ipv4": {
+        "ipverse_addresses": "9551616",
+        "ipverse_only_addresses": "0",
+        "ipverse_only_prefixes": [],
+        "ris_addresses": "9551616",
+        "ris_only_addresses": "0",
+        "ris_only_in_candidate_ru": "0",
+        "ris_only_prefixes": []
+      },
+      "ipv6": {
+        "ipverse_addresses": "10379199983304269184452156981248",
+        "ipverse_only_addresses": "0",
+        "ipverse_only_prefixes": [],
+        "ris_addresses": "10458428145818533522045700931584",
+        "ris_only_addresses": "79228162514264337593543950336",
+        "ris_only_in_candidate_ru": "0",
+        "ris_only_prefixes": [
+          "2a0f:e7c1::/32"
+        ]
+      },
+      "min_peers_seeing": 5,
+      "response_sha256": "53f002808fd650ba7e63ab6e0c9786aeb6698be7b6c61d375f26bb8db76aba24",
+      "ris_window_status": "ok"
+    },
+    "AS9198_p1": {
+      "eligible_ris_rows_by_family": {
+        "4": 1128,
+        "6": 235
+      },
+      "excluded_rows": {
+        "default-route": 0,
+        "ipv4-mapped-ipv6": 28
+      },
+      "ipv4": {
+        "ipverse_addresses": "1494272",
+        "ipverse_only_addresses": "0",
+        "ipverse_only_prefixes": [],
+        "ris_addresses": "1527552",
+        "ris_only_addresses": "33280",
+        "ris_only_in_candidate_ru": "33280",
+        "ris_only_prefixes": [
+          "92.46.202.0/23",
+          "92.46.204.0/22",
+          "92.46.224.0/23",
+          "92.46.228.0/23",
+          "92.46.231.0/24",
+          "92.46.234.0/23",
+          "92.46.236.0/23",
+          "92.46.239.0/24",
+          "92.46.244.0/22",
+          "92.46.248.0/22",
+          "92.46.254.0/23",
+          "92.47.58.0/23",
+          "92.47.60.0/24",
+          "92.47.62.0/23",
+          "92.47.64.0/23",
+          "92.47.66.0/24",
+          "92.47.69.0/24",
+          "92.47.76.0/23",
+          "92.47.79.0/24",
+          "92.47.90.0/24",
+          "92.47.92.0/22",
+          "92.47.124.0/22",
+          "92.47.144.0/21",
+          "92.47.159.0/24",
+          "92.47.161.0/24",
+          "92.47.162.0/23",
+          "92.47.176.0/22",
+          "212.19.148.0/24",
+          "212.19.151.0/24",
+          "212.19.152.0/22",
+          "212.19.156.0/23",
+          "212.19.158.0/24",
+          "212.154.178.0/23",
+          "212.154.180.0/22",
+          "212.154.184.0/22",
+          "212.154.192.0/24",
+          "212.154.194.0/23",
+          "212.154.196.0/22",
+          "212.154.200.0/21",
+          "212.154.216.0/21",
+          "212.154.224.0/22",
+          "212.154.230.0/23",
+          "212.154.232.0/21",
+          "212.154.240.0/21",
+          "212.154.252.0/23",
+          "212.154.255.0/24"
+        ]
+      },
+      "ipv6": {
+        "ipverse_addresses": "79228162514264337593543950336",
+        "ipverse_only_addresses": "0",
+        "ipverse_only_prefixes": [],
+        "ris_addresses": "79228162698731778330639466548",
+        "ris_only_addresses": "184467440737095516212",
+        "ris_only_in_candidate_ru": "184467440737095516200",
+        "ris_only_prefixes": [
+          "2a0:12f8:502::14/126",
+          "2a0:12f8:502::18/125",
+          "2001:67c:9e8:c::/63",
+          "2001:67c:9e8:e::/64",
+          "2001:67c:9e8:10::/63",
+          "2001:67c:9e8:13::/64",
+          "2001:67c:9e8:18::/64",
+          "2a00:1248:5021:2::80/124",
+          "2a00:1440:0:c::2:0/126",
+          "2a00:1440:0:c::3:0/126",
+          "2a01:620:1:2291::/64",
+          "2a01:620:1:9035::/64",
+          "2a01:7640:0:5::/64",
+          "2a03:d000:27c0::4:1c/126",
+          "2a03:d000:27c0:16::/126",
+          "2a06:4080::/126",
+          "2a0a:dbc0::4/126"
+        ]
+      },
+      "min_peers_seeing": 1,
+      "response_sha256": "7666e658d9dfcf3f59faedb785adf94a7da089c18508ae496c7e2bbf8e5005f3",
+      "ris_window_status": "ok"
+    },
+    "AS9198_p5": {
+      "eligible_ris_rows_by_family": {
+        "4": 1012,
+        "6": 3
+      },
+      "excluded_rows": {
+        "default-route": 0,
+        "ipv4-mapped-ipv6": 0
+      },
+      "ipv4": {
+        "ipverse_addresses": "1494272",
+        "ipverse_only_addresses": "0",
+        "ipverse_only_prefixes": [],
+        "ris_addresses": "1495552",
+        "ris_only_addresses": "1280",
+        "ris_only_in_candidate_ru": "1280",
+        "ris_only_prefixes": [
+          "92.47.58.0/24",
+          "92.47.176.0/22"
+        ]
+      },
+      "ipv6": {
+        "ipverse_addresses": "79228162514264337593543950336",
+        "ipverse_only_addresses": "0",
+        "ipverse_only_prefixes": [],
+        "ris_addresses": "79228162514264337593543950336",
+        "ris_only_addresses": "0",
+        "ris_only_in_candidate_ru": "0",
+        "ris_only_prefixes": []
+      },
+      "min_peers_seeing": 5,
+      "response_sha256": "3d5d463a919009be0eaf563e4c85f041baa0665bf14691ca29c08453ba5f1d18",
+      "ris_window_status": "ok"
+    }
+  },
+  "ipverse_archive_sha256": "84af740b9546cf54448ff0782f5ddc15d458e15b0d2409fcff8de3d5733baa34",
+  "scope": "diagnostic; two RIS peer thresholds, not independent collectors; ipverse time window differs",
+  "window_utc": {
+    "end": "2026-11-16T08:00:00+00:00",
+    "start": "2026-11-15T08:00:00+00:00"
+  }
+}
