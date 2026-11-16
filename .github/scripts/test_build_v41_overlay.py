@@ -1,12 +1,53 @@
 import ipaddress
+import json
 import random
 import unittest
+from pathlib import Path
+from tempfile import TemporaryDirectory
+from types import SimpleNamespace
+from unittest.mock import patch
 
+import build_v41_overlay as builder
 from build_v41_overlay import class_aware_effective_block_set, collapse, subtract_networks
 
 
 def nets(*values):
     return {ipaddress.ip_network(value) for value in values}
+
+
+class ServiceProvenanceTests(unittest.TestCase):
+    def test_malformed_service_catalog_is_not_partially_accepted(self):
+        valid = {'name': 'fixture', 'tier': 'standard', 'ipv4': ['192.0.2.0/24'], 'ipv6': [], 'asns': []}
+        invalid = [None, {'name': 'bad', 'tier': 'standard', 'ipv4': '198.51.100.0/24'},
+                   {'name': 'bad', 'tier': 'standard', 'asns': 'AS123'},
+                   {'name': 'bad', 'tier': 'standard', 'ipv4': ['0.0.0.0/0']}]
+        with TemporaryDirectory() as directory:
+            path = Path(directory) / 'services.json'
+            for row in invalid:
+                path.write_text(json.dumps({'categories': [{'id': 'test', 'services': [valid, row]}]}), encoding='utf-8')
+                with self.subTest(row=row), self.assertRaises(ValueError):
+                    builder.parse_services_json(path)
+            path.write_text(json.dumps({'categories': [{'id': 'test', 'services': [valid]}]}), encoding='utf-8')
+            self.assertEqual(builder.parse_services_json(path)[0], nets('192.0.2.0/24'))
+
+    def test_aggregate_prefixes_do_not_inflate_json_only_metric(self):
+        args = SimpleNamespace(kyoresuas_services=Path('services.json'), kyoresuas_v4=Path('v4'),
+                               kyoresuas_v6=Path('v6'), w1zardz=Path('w1'), escapingworm=Path('esc'))
+        json_only = nets('192.0.2.0/24')
+        feeds = {'v4': nets('198.51.100.0/24'), 'v6': nets('2001:db8::/48'),
+                 'w1': nets('203.0.113.0/24'), 'esc': nets('203.0.113.0/24')}
+        stats = {'raw_rows': 1, 'valid_rows': 1, 'invalid_rows': 0}
+        with patch.object(builder, 'parse_services_json', return_value=(json_only, [], 50, None)), \
+                patch.object(builder, 'parse_cidr_file', side_effect=lambda p, allow_hosts: (feeds[p.name], dict(stats))), \
+                patch.object(builder, 'read_w1zardz_exclusions', return_value=set()), \
+                patch.object(builder, 'filter_w1zardz_routes', side_effect=lambda n, e: (n, set())), \
+                patch.object(builder, 'sha256', return_value='a' * 64), \
+                patch.object(builder.Path, 'read_bytes', return_value=b'fixture'):
+            sources, metrics, rows = builder.load_service_inputs(args)
+        self.assertEqual(len(json_only), 1)
+        self.assertEqual(len(sources['kyoresuas-standard']), 3)
+        self.assertEqual(metrics['kyoresuas-standard']['service_json_prefixes'], 1)
+        self.assertEqual(metrics['kyoresuas-standard']['aggregate_only_prefixes'], 2)
 
 
 class CollapseIterableTests(unittest.TestCase):

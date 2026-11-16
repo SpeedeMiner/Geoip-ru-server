@@ -212,6 +212,8 @@ def parse_rir_tsv(path: Path):
 
 def parse_services_json(path: Path):
     doc = json.loads(path.read_text(encoding="utf-8"))
+    if not isinstance(doc, dict):
+        raise ValueError("Kyoresuas services.json must be an object")
     categories = doc.get("categories")
     if not isinstance(categories, list):
         raise ValueError("Kyoresuas services.json does not contain categories[]")
@@ -219,24 +221,32 @@ def parse_services_json(path: Path):
     rows = []
     service_count = 0
     for category in categories:
-        if not isinstance(category, dict):
-            continue
+        if not isinstance(category, dict) or not isinstance(category.get("services"), list):
+            raise ValueError("Kyoresuas invalid category or services list")
         category_id = str(category.get("id", "unknown"))
-        for service in category.get("services", []) or []:
+        for service in category["services"]:
             if not isinstance(service, dict):
-                continue
+                raise ValueError("Kyoresuas invalid service entry")
             tier = str(service.get("tier", "")).lower()
             if tier not in {"lite", "standard"}:
                 continue
             service_count += 1
             name = str(service.get("name", "unknown")).replace("\t", " ").replace("\n", " ")
-            asns = ",".join(str(x) for x in service.get("asns", []) or [])
+            asn_values = service.get("asns", [])
+            if not isinstance(asn_values, list):
+                raise ValueError(f"Kyoresuas invalid ASN list: {name}")
+            asns = ",".join(str(x) for x in asn_values)
             domains = int(service.get("domains", 0) or 0)
+            if domains < 0:
+                raise ValueError(f"Kyoresuas invalid domain count: {name}")
             for family_key in ("ipv4", "ipv6"):
-                for token in service.get(family_key, []) or []:
+                family_rows = service.get(family_key, [])
+                if not isinstance(family_rows, list):
+                    raise ValueError(f"Kyoresuas invalid {family_key} list: {name}")
+                for token in family_rows:
                     net = ipaddress.ip_network(str(token), strict=True)
                     expected_version = 4 if family_key == "ipv4" else 6
-                    if net.version != expected_version:
+                    if net.version != expected_version or net.prefixlen == 0:
                         raise ValueError(f"Kyoresuas service family mismatch: {name} {token}")
                     networks.add(net)
                     rows.append({
@@ -658,7 +668,9 @@ def load_service_inputs(args):
     ky_service_prefixes, service_rows, service_count, services_generated = parse_services_json(args.kyoresuas_services)
     if service_count < 50:
         raise ValueError(f"Kyoresuas ru-standard service catalog unexpectedly small: {service_count} services")
-    sources["kyoresuas-standard"] = ky_service_prefixes
+    # Keep the JSON-only set separate: aggregate feeds are added below, and
+    # mutating this set would make the provenance metric report the union.
+    sources["kyoresuas-standard"] = set(ky_service_prefixes)
     # Preserve the publisher's aggregate IPv4/IPv6 files as a cross-check. Any
     # aggregate prefix not present in the service JSON remains attributed to the
     # same publisher/tier, rather than being dropped or misattributed.
