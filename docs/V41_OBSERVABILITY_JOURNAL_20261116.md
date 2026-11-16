@@ -473,3 +473,8 @@ Progress rule: append dated evidence, artifact identities, decisions and remaini
 
 - Downloaded and independently hashed all four source archives from the pinned production snapshot `geoip-v41-snapshot-43747743430.1` plus its input provenance TSV. All five matched both the snapshot manifest and the retained CI ZIP. The manifest itself is byte-identical on the pinned Git tree, the versioned download and retained CI. [Exact archive read-back](V41_PUBLICATION_FALLBACK_INPUT_READBACK_20261116.json), SHA-256 `d6f6d9282fe8f9878ff0a917bb2563b68d517336203db16a99a9fd502412f1a1`.
 - This supplements file-only fallback verification with reproducibility of the input snapshot. It did not restore or roll back any production channel. Next operator decision remains independent review/approval of #53, with a fresh check of the main queue and current release, and separate resolution of the five service rows.
+
+## 2026-11-16 14:27 UTC+05 — public-snapshot reconstruction started
+
+- Resumed from `ab0a056`. PR #52 and #53 remain drafts, and the latest listed production v41 run is still `43747743430`.
+- Reconstruct the versioned release from public input assets, pinned source code and a rebuilt compiler, without using the retained CI ZIP as a build input. Compare regenerated DAT/SRS with published bytes. Then compare the retained rolling ipverse only as an explicitly frozen counterfactual. No live workflow dispatch, merge, publication, CDN write or PR #5 change.
