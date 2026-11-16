@@ -549,3 +549,8 @@ Progress rule: append dated evidence, artifact identities, decisions and remaini
 
 - Resumed from `5d70fd9`. Verified live refs `main=c0d2a01`, `release=e20cf73`, `cdn=8a226b8`, and PR #5 head `30e797f`. PR #53 remains Draft at `92fa97e`, with three successful CI runs and no submitted reviews. No production publication, PR merge, or reachability-branch operation is planned.
 - Next: compare every actual added IPv4/IPv6 range, not just the two watched additions, with the frozen build evidence and public routing evidence. Keep the temporary publication hold separate from any decision to admit or exclude an individual range.
+
+## 2026-11-16 15:37 UTC+05 — independently decoded the complete build delta
+
+- Downloaded and SHA-256 checked PR #55 artifact `14215435155` and the pinned production DAT. All 13 internal manifest bindings matched. Independent exact address-set subtraction reproduces eight added IPv4 /24s, five removed IPv4 /24s, two added IPv6 /48s and unchanged PRIVATE.
+- The candidate's retained ipverse data differs from a strict exact-prefix view: `85.92.155.0/24` enters via covering `85.92.154.0/23` under AS41745, and `48.103.230.0/24` has AS401152 coverage via `48.103.230.0/23` even when no exact AS401152 /24 appears in the frozen archive. `213.226.121.0/24` has two exact observations, but admission selects only AS44790. Checking these source routes separately from public exact announcements and current authorization.
