@@ -22,7 +22,7 @@ All runs used real preflight, stage-tag and release-promotion shells from the st
 | Another writer fast-forwards release after the parent fetch but before the tag-only push | PASS | new tag may be created from the old parent | competing local tip retained; promotion rejects |
 | Another writer advances the release after readback, immediately before Git push | PASS | staged tag retained | competing local tip retained |
 
-The last case is intentional comparison semantics. #53 is a **delta hold**, not an invariant checker and not a rollback. It does not repair a disputed binary once an old publisher has already promoted it. A failure after tag creation can leave a snapshot tag while the rolling branch stays unchanged. Confirm versioned assets, `release`, rolling assets, and `cdn` independently after such a failure. The initial push updates only the new tag. Its atomic flag does not cover a separate release ref not being pushed. The later parent check and force-with-lease are the boundaries for rolling promotion; this local race did not test the intervening GitHub Release API call.
+The unchanged disputed-baseline case is intentional comparison semantics. #53 is a **delta hold**, not an invariant checker and not a rollback. It does not repair a disputed binary once an old publisher has already promoted it. A failure after tag creation can leave a snapshot tag while the rolling branch stays unchanged. Confirm versioned assets, `release`, rolling assets, and `cdn` independently after such a failure. The initial push updates only the new tag. Its atomic flag does not cover a separate release ref not being pushed. The later parent check and force-with-lease are the boundaries for rolling promotion; this local race did not test the intervening GitHub Release API call.
 
 ## If approving #53 later
 
@@ -46,3 +46,5 @@ The [controls-only fixture](V41_RU_ACCESS_CONTROL_TARGETS_20261116.json) validat
 - [Current main workflow trigger and queue](https://github.com/SpeedeMiner/Geoip-ru-server/blob/c0d2a01ba1fb5f5c0e48965d614945348083a900/.github/workflows/geoip-v41.yml#L65-L75)
 - [Draft #53 check placement](https://github.com/SpeedeMiner/Geoip-ru-server/blob/92fa97e13317db01ca43aad31386d091eb249a2a/.github/scripts/verify_v41_publication_candidate.sh#L47-L56)
 - [Existing local-access probe, diagnostic branch](https://github.com/SpeedeMiner/Geoip-ru-server/blob/b293cdf9061fb619c8788050fb699967af4de9e0/.github/reachability/home_probe.py)
+
+For a rehearsed recovery from public archives, exact client file fingerprints and the limits of a fixed-reference comparison, see the [public snapshot reconstruction runbook](V41_PUBLIC_SNAPSHOT_RECONSTRUCTION_20261116.md). No recovery was performed on production.
