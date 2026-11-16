@@ -12,6 +12,10 @@ class CompanyASNPrefixClassTests(unittest.TestCase):
         policy = read_policy(data / "geoip_RU_company_asn_policy.tsv", registry)
         self.assertEqual(registry[219306]["group"], "CURATOR-CDN")
         self.assertEqual(policy[219306]["class"], "SHARED_INFRA")
+        for asn in (57363, 204720, 201706):
+            self.assertEqual(policy[asn]["class"], "SHARED_INFRA")
+        for asn in (60068, 59796, 199524):
+            self.assertNotIn(asn, registry)
 
     def make_inputs(self, root: Path):
         registry = root / "registry.tsv"

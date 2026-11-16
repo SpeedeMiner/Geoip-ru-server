@@ -105,3 +105,6 @@ AS28812	SHARED_INFRA	Rostelecom	Network operator, access or hosting infrastructu
 AS13118	SHARED_INFRA	Rostelecom	Network operator, access or hosting infrastructure; preserve all hard exclusions
 AS12380	SHARED_INFRA	Rostelecom	Network operator, access or hosting infrastructure; preserve all hard exclusions
 AS219306	SHARED_INFRA	CURATOR-CDN	CDN infrastructure; preserve hard exclusions and protect against resolver-only noise
+AS57363	SHARED_INFRA	CDNvideo	Shared CDN or protection infrastructure; preserve hard exclusions
+AS204720	SHARED_INFRA	Global Cloud Network	Shared CDN or protection infrastructure; preserve hard exclusions
+AS201706	SHARED_INFRA	Servicepipe	Shared CDN or protection infrastructure; preserve hard exclusions
