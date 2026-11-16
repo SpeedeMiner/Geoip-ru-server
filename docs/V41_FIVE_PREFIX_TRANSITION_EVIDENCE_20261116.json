@@ -1,0 +1,5016 @@
+{
+ "as_path_count_warning": "BGP State and RouteViews path rows are not unique source networks; routing-status is its own full-feed RIS peer counter. Do not add counts across datasets.",
+ "asn_scope": {
+  "137410": {
+   "routing_status": [
+    {
+     "http": 200,
+     "observation": {
+      "announced_space": {
+       "v4": {
+        "ips": 32000,
+        "prefixes": 125
+       },
+       "v6": {
+        "48s": 0,
+        "prefixes": 0
+       }
+      },
+      "observed_neighbours": 3,
+      "query_time": "2026-11-15T00:00:00"
+     },
+     "retrieved_at": "2026-11-16T07:28:01+00:00",
+     "sha256": "eac8221a3bec0573cf09508feed2ade35f400c86dbeb10ba8d7962d991a60332",
+     "url": "https://stat.ripe.net/data/routing-status/data.json?resource=AS137410&timestamp=2026-11-15T00%3A00%3A00Z&min_peers_seeing=1"
+    },
+    {
+     "http": 200,
+     "observation": {
+      "announced_space": {
+       "v4": {
+        "ips": 32256,
+        "prefixes": 126
+       },
+       "v6": {
+        "48s": 0,
+        "prefixes": 0
+       }
+      },
+      "observed_neighbours": 3,
+      "query_time": "2026-11-15T08:00:00"
+     },
+     "retrieved_at": "2026-11-16T07:28:01+00:00",
+     "sha256": "1a9b16c0ddf9a3d582ba405f4f1ec7d8dce53ec262915a48f52debfcb7189ca5",
+     "url": "https://stat.ripe.net/data/routing-status/data.json?resource=AS137410&timestamp=2026-11-15T08%3A00%3A00Z&min_peers_seeing=1"
+    },
+    {
+     "http": 200,
+     "observation": {
+      "announced_space": {
+       "v4": {
+        "ips": 34304,
+        "prefixes": 134
+       },
+       "v6": {
+        "48s": 0,
+        "prefixes": 0
+       }
+      },
+      "observed_neighbours": 3,
+      "query_time": "2026-11-15T16:00:00"
+     },
+     "retrieved_at": "2026-11-16T07:28:01+00:00",
+     "sha256": "5808989fc4e307ccf2cf857d5f4e280880dc433f542379f10992d2f163b7a13c",
+     "url": "https://stat.ripe.net/data/routing-status/data.json?resource=AS137410&timestamp=2026-11-15T16%3A00%3A00Z&min_peers_seeing=1"
+    },
+    {
+     "http": 200,
+     "observation": {
+      "announced_space": {
+       "v4": {
+        "ips": 34304,
+        "prefixes": 134
+       },
+       "v6": {
+        "48s": 0,
+        "prefixes": 0
+       }
+      },
+      "observed_neighbours": 3,
+      "query_time": "2026-11-16T00:00:00"
+     },
+     "retrieved_at": "2026-11-16T07:28:02+00:00",
+     "sha256": "ed6278da91a2f770501ad4d0eb65b6dc543cb136b8f7f2249100f204f701565e",
+     "url": "https://stat.ripe.net/data/routing-status/data.json?resource=AS137410&timestamp=2026-11-16T00%3A00%3A00Z&min_peers_seeing=1"
+    }
+   ]
+  },
+  "218568": {
+   "announced_prefixes": {
+    "http": 200,
+    "observation": {
+     "prefixes": [
+      {
+       "prefix": "37.235.210.0/24",
+       "timelines": [
+        {
+         "endtime": "2026-11-16T00:00:00",
+         "starttime": "2026-11-15T00:00:00"
+        }
+       ]
+      },
+      {
+       "prefix": "185.98.63.0/24",
+       "timelines": [
+        {
+         "endtime": "2026-11-16T00:00:00",
+         "starttime": "2026-11-15T00:00:00"
+        }
+       ]
+      },
+      {
+       "prefix": "156.241.186.0/24",
+       "timelines": [
+        {
+         "endtime": "2026-11-16T00:00:00",
+         "starttime": "2026-11-15T00:00:00"
+        }
+       ]
+      },
+      {
+       "prefix": "48.103.132.0/24",
+       "timelines": [
+        {
+         "endtime": "2026-11-16T00:00:00",
+         "starttime": "2026-11-15T00:00:00"
+        }
+       ]
+      },
+      {
+       "prefix": "37.235.247.0/24",
+       "timelines": [
+        {
+         "endtime": "2026-11-16T00:00:00",
+         "starttime": "2026-11-15T00:00:00"
+        }
+       ]
+      },
+      {
+       "prefix": "48.103.133.0/24",
+       "timelines": [
+        {
+         "endtime": "2026-11-16T00:00:00",
+         "starttime": "2026-11-15T00:00:00"
+        }
+       ]
+      },
+      {
+       "prefix": "185.162.177.0/24",
+       "timelines": [
+        {
+         "endtime": "2026-11-16T00:00:00",
+         "starttime": "2026-11-15T00:00:00"
+        }
+       ]
+      },
+      {
+       "prefix": "163.5.56.0/24",
+       "timelines": [
+        {
+         "endtime": "2026-11-16T00:00:00",
+         "starttime": "2026-11-15T00:00:00"
+        }
+       ]
+      },
+      {
+       "prefix": "176.116.6.0/24",
+       "timelines": [
+        {
+         "endtime": "2026-11-16T00:00:00",
+         "starttime": "2026-11-15T00:00:00"
+        }
+       ]
+      },
+      {
+       "prefix": "163.5.209.0/24",
+       "timelines": [
+        {
+         "endtime": "2026-11-16T00:00:00",
+         "starttime": "2026-11-15T00:00:00"
+        }
+       ]
+      },
+      {
+       "prefix": "193.160.143.0/24",
+       "timelines": [
+        {
+         "endtime": "2026-11-16T00:00:00",
+         "starttime": "2026-11-15T00:00:00"
+        }
+       ]
+      },
+      {
+       "prefix": "193.160.141.0/24",
+       "timelines": [
+        {
+         "endtime": "2026-11-16T00:00:00",
+         "starttime": "2026-11-15T00:00:00"
+        }
+       ]
+      },
+      {
+       "prefix": "37.235.200.0/24",
+       "timelines": [
+        {
+         "endtime": "2026-11-16T00:00:00",
+         "starttime": "2026-11-15T00:00:00"
+        }
+       ]
+      },
+      {
+       "prefix": "147.45.47.0/24",
+       "timelines": [
+        {
+         "endtime": "2026-11-16T00:00:00",
+         "starttime": "2026-11-15T00:00:00"
+        }
+       ]
+      },
+      {
+       "prefix": "193.160.140.0/24",
+       "timelines": [
+        {
+         "endtime": "2026-11-16T00:00:00",
+         "starttime": "2026-11-15T00:00:00"
+        }
+       ]
+      },
+      {
+       "prefix": "45.154.247.0/24",
+       "timelines": [
+        {
+         "endtime": "2026-11-16T00:00:00",
+         "starttime": "2026-11-15T00:00:00"
+        }
+       ]
+      },
+      {
+       "prefix": "193.178.134.0/24",
+       "timelines": [
+        {
+         "endtime": "2026-11-16T00:00:00",
+         "starttime": "2026-11-15T00:00:00"
+        }
+       ]
+      },
+      {
+       "prefix": "177.122.241.0/24",
+       "timelines": [
+        {
+         "endtime": "2026-11-15T08:00:00",
+         "starttime": "2026-11-15T00:00:00"
+        }
+       ]
+      },
+      {
+       "prefix": "37.235.255.0/24",
+       "timelines": [
+        {
+         "endtime": "2026-11-16T00:00:00",
+         "starttime": "2026-11-15T00:00:00"
+        }
+       ]
+      },
+      {
+       "prefix": "193.223.105.0/24",
+       "timelines": [
+        {
+         "endtime": "2026-11-16T00:00:00",
+         "starttime": "2026-11-15T00:00:00"
+        }
+       ]
+      },
+      {
+       "prefix": "37.235.242.0/24",
+       "timelines": [
+        {
+         "endtime": "2026-11-16T00:00:00",
+         "starttime": "2026-11-15T00:00:00"
+        }
+       ]
+      },
+      {
+       "prefix": "193.124.200.0/24",
+       "timelines": [
+        {
+         "endtime": "2026-11-16T00:00:00",
+         "starttime": "2026-11-15T00:00:00"
+        }
+       ]
+      }
+     ],
+     "query_endtime": "2026-11-16T00:00:00",
+     "query_starttime": "2026-11-15T00:00:00"
+    },
+    "retrieved_at": "2026-11-16T07:27:47+00:00",
+    "sha256": "77677a890ad857469e7456fb03b7149b40087936fa7dfccef89e6f49fe20e976",
+    "url": "https://stat.ripe.net/data/announced-prefixes/data.json?resource=AS218568&starttime=2026-11-15T00%3A00%3A00Z&endtime=2026-11-16T00%3A00%3A00Z&min_peers_seeing=1"
+   },
+   "routing_status": [
+    {
+     "http": 200,
+     "observation": {
+      "announced_space": {
+       "v4": {
+        "ips": 5632,
+        "prefixes": 22
+       },
+       "v6": {
+        "48s": 0,
+        "prefixes": 0
+       }
+      },
+      "observed_neighbours": 2,
+      "query_time": "2026-11-15T00:00:00"
+     },
+     "retrieved_at": "2026-11-16T07:27:43+00:00",
+     "sha256": "1b6dffa04f5b6d41b8542872f45e2e8b04e57be79c75f9e5c276ca956c0bfebc",
+     "url": "https://stat.ripe.net/data/routing-status/data.json?resource=AS218568&timestamp=2026-11-15T00%3A00%3A00Z&min_peers_seeing=1"
+    },
+    {
+     "http": 200,
+     "observation": {
+      "announced_space": {
+       "v4": {
+        "ips": 5632,
+        "prefixes": 22
+       },
+       "v6": {
+        "48s": 0,
+        "prefixes": 0
+       }
+      },
+      "observed_neighbours": 2,
+      "query_time": "2026-11-15T08:00:00"
+     },
+     "retrieved_at": "2026-11-16T07:27:48+00:00",
+     "sha256": "fb33b68e72c4d5a454aa019e13f428768138224b78e06b0586d30dbe175f5727",
+     "url": "https://stat.ripe.net/data/routing-status/data.json?resource=AS218568&timestamp=2026-11-15T08%3A00%3A00Z&min_peers_seeing=1"
+    },
+    {
+     "http": 200,
+     "observation": {
+      "announced_space": {
+       "v4": {
+        "ips": 5376,
+        "prefixes": 21
+       },
+       "v6": {
+        "48s": 0,
+        "prefixes": 0
+       }
+      },
+      "observed_neighbours": 2,
+      "query_time": "2026-11-15T16:00:00"
+     },
+     "retrieved_at": "2026-11-16T07:27:48+00:00",
+     "sha256": "15edbfa6bec506438ac06a392da7b07591e10bbeb49894a3e76ac7c42d7f61db",
+     "url": "https://stat.ripe.net/data/routing-status/data.json?resource=AS218568&timestamp=2026-11-15T16%3A00%3A00Z&min_peers_seeing=1"
+    },
+    {
+     "http": 200,
+     "observation": {
+      "announced_space": {
+       "v4": {
+        "ips": 5376,
+        "prefixes": 21
+       },
+       "v6": {
+        "48s": 0,
+        "prefixes": 0
+       }
+      },
+      "observed_neighbours": 2,
+      "query_time": "2026-11-16T00:00:00"
+     },
+     "retrieved_at": "2026-11-16T07:27:48+00:00",
+     "sha256": "0222b89298887a7a406e5e4cbbefc7091d77d547036da516876ab4939bbd5679",
+     "url": "https://stat.ripe.net/data/routing-status/data.json?resource=AS218568&timestamp=2026-11-16T00%3A00%3A00Z&min_peers_seeing=1"
+    }
+   ]
+  },
+  "219216": {
+   "announced_prefixes": {
+    "http": 200,
+    "observation": {
+     "prefixes": [
+      {
+       "prefix": "2001:678:f7c::/48",
+       "timelines": [
+        {
+         "endtime": "2026-11-16T00:00:00",
+         "starttime": "2026-11-15T00:00:00"
+        }
+       ]
+      },
+      {
+       "prefix": "156.224.80.0/24",
+       "timelines": [
+        {
+         "endtime": "2026-11-16T00:00:00",
+         "starttime": "2026-11-15T00:00:00"
+        }
+       ]
+      },
+      {
+       "prefix": "212.15.44.0/24",
+       "timelines": [
+        {
+         "endtime": "2026-11-16T00:00:00",
+         "starttime": "2026-11-15T00:00:00"
+        }
+       ]
+      },
+      {
+       "prefix": "177.122.229.0/24",
+       "timelines": [
+        {
+         "endtime": "2026-11-15T08:00:00",
+         "starttime": "2026-11-15T00:00:00"
+        }
+       ]
+      }
+     ],
+     "query_endtime": "2026-11-16T00:00:00",
+     "query_starttime": "2026-11-15T00:00:00"
+    },
+    "retrieved_at": "2026-11-16T07:27:42+00:00",
+    "sha256": "29234ea91739cfcb81227270374eb603af4dbb7613e4712c0703f0bdad7b48d5",
+    "url": "https://stat.ripe.net/data/announced-prefixes/data.json?resource=AS219216&starttime=2026-11-15T00%3A00%3A00Z&endtime=2026-11-16T00%3A00%3A00Z&min_peers_seeing=1"
+   },
+   "routing_status": [
+    {
+     "http": 200,
+     "observation": {
+      "announced_space": {
+       "v4": {
+        "ips": 768,
+        "prefixes": 3
+       },
+       "v6": {
+        "48s": 1,
+        "prefixes": 1
+       }
+      },
+      "observed_neighbours": 3,
+      "query_time": "2026-11-15T00:00:00"
+     },
+     "retrieved_at": "2026-11-16T07:27:43+00:00",
+     "sha256": "948d34af50d0bbd9f89046f554cf496b959534b384ab6aa2beee4c2101f51502",
+     "url": "https://stat.ripe.net/data/routing-status/data.json?resource=AS219216&timestamp=2026-11-15T00%3A00%3A00Z&min_peers_seeing=1"
+    },
+    {
+     "http": 200,
+     "observation": {
+      "announced_space": {
+       "v4": {
+        "ips": 768,
+        "prefixes": 3
+       },
+       "v6": {
+        "48s": 1,
+        "prefixes": 1
+       }
+      },
+      "observed_neighbours": 3,
+      "query_time": "2026-11-15T08:00:00"
+     },
+     "retrieved_at": "2026-11-16T07:27:42+00:00",
+     "sha256": "36490f1434ab754f244510f2a1e5a46e18b7c095232e2c10e2b7f4141d3cdc9d",
+     "url": "https://stat.ripe.net/data/routing-status/data.json?resource=AS219216&timestamp=2026-11-15T08%3A00%3A00Z&min_peers_seeing=1"
+    },
+    {
+     "http": 200,
+     "observation": {
+      "announced_space": {
+       "v4": {
+        "ips": 512,
+        "prefixes": 2
+       },
+       "v6": {
+        "48s": 1,
+        "prefixes": 1
+       }
+      },
+      "observed_neighbours": 3,
+      "query_time": "2026-11-15T16:00:00"
+     },
+     "retrieved_at": "2026-11-16T07:27:43+00:00",
+     "sha256": "531851b84e51180b87b82b736205dc73b06212ec66d5a286dd1d3c24b92ba290",
+     "url": "https://stat.ripe.net/data/routing-status/data.json?resource=AS219216&timestamp=2026-11-15T16%3A00%3A00Z&min_peers_seeing=1"
+    },
+    {
+     "http": 200,
+     "observation": {
+      "announced_space": {
+       "v4": {
+        "ips": 512,
+        "prefixes": 2
+       },
+       "v6": {
+        "48s": 1,
+        "prefixes": 1
+       }
+      },
+      "observed_neighbours": 3,
+      "query_time": "2026-11-16T00:00:00"
+     },
+     "retrieved_at": "2026-11-16T07:27:43+00:00",
+     "sha256": "4a1fc30d78b3bf9d733971f24e3b6316882310cdb1cfffdf8a3c7b8f4baae8c0",
+     "url": "https://stat.ripe.net/data/routing-status/data.json?resource=AS219216&timestamp=2026-11-16T00%3A00%3A00Z&min_peers_seeing=1"
+    }
+   ]
+  },
+  "219238": {
+   "announced_prefixes": {
+    "http": 200,
+    "observation": {
+     "prefixes": [
+      {
+       "prefix": "177.166.78.0/24",
+       "timelines": [
+        {
+         "endtime": "2026-11-15T08:00:00",
+         "starttime": "2026-11-15T00:00:00"
+        }
+       ]
+      },
+      {
+       "prefix": "141.0.189.0/24",
+       "timelines": [
+        {
+         "endtime": "2026-11-16T00:00:00",
+         "starttime": "2026-11-15T00:00:00"
+        }
+       ]
+      }
+     ],
+     "query_endtime": "2026-11-16T00:00:00",
+     "query_starttime": "2026-11-15T00:00:00"
+    },
+    "retrieved_at": "2026-11-16T07:27:58+00:00",
+    "sha256": "76a3dc51d9b7cc69986fb22f308bc9eeebe4253419c5253cf2557d4532b29730",
+    "url": "https://stat.ripe.net/data/announced-prefixes/data.json?resource=AS219238&starttime=2026-11-15T00%3A00%3A00Z&endtime=2026-11-16T00%3A00%3A00Z&min_peers_seeing=1"
+   },
+   "routing_status": [
+    {
+     "http": 200,
+     "observation": {
+      "announced_space": {
+       "v4": {
+        "ips": 512,
+        "prefixes": 2
+       },
+       "v6": {
+        "48s": 0,
+        "prefixes": 0
+       }
+      },
+      "observed_neighbours": 2,
+      "query_time": "2026-11-15T00:00:00"
+     },
+     "retrieved_at": "2026-11-16T07:27:54+00:00",
+     "sha256": "8dafe6b79c00fcb642ad9b3fe931af7b9ec9a4520747f5255356d5f422894b15",
+     "url": "https://stat.ripe.net/data/routing-status/data.json?resource=AS219238&timestamp=2026-11-15T00%3A00%3A00Z&min_peers_seeing=1"
+    },
+    {
+     "http": 200,
+     "observation": {
+      "announced_space": {
+       "v4": {
+        "ips": 512,
+        "prefixes": 2
+       },
+       "v6": {
+        "48s": 0,
+        "prefixes": 0
+       }
+      },
+      "observed_neighbours": 2,
+      "query_time": "2026-11-15T08:00:00"
+     },
+     "retrieved_at": "2026-11-16T07:27:54+00:00",
+     "sha256": "509bf24be0704e2ed4d74bdcb6667f59ac972fff1b709f73b2588e744d9d6b66",
+     "url": "https://stat.ripe.net/data/routing-status/data.json?resource=AS219238&timestamp=2026-11-15T08%3A00%3A00Z&min_peers_seeing=1"
+    },
+    {
+     "http": 200,
+     "observation": {
+      "announced_space": {
+       "v4": {
+        "ips": 256,
+        "prefixes": 1
+       },
+       "v6": {
+        "48s": 0,
+        "prefixes": 0
+       }
+      },
+      "observed_neighbours": 1,
+      "query_time": "2026-11-15T16:00:00"
+     },
+     "retrieved_at": "2026-11-16T07:27:54+00:00",
+     "sha256": "bed48479c03945641dcc756308e45eb1a65cec3a6e564aa4dd6fa7cf62cb26e1",
+     "url": "https://stat.ripe.net/data/routing-status/data.json?resource=AS219238&timestamp=2026-11-15T16%3A00%3A00Z&min_peers_seeing=1"
+    },
+    {
+     "http": 200,
+     "observation": {
+      "announced_space": {
+       "v4": {
+        "ips": 256,
+        "prefixes": 1
+       },
+       "v6": {
+        "48s": 0,
+        "prefixes": 0
+       }
+      },
+      "observed_neighbours": 1,
+      "query_time": "2026-11-16T00:00:00"
+     },
+     "retrieved_at": "2026-11-16T07:27:58+00:00",
+     "sha256": "65225e0480f6e04d17618c0b36481dc99d92893f2befd753a1b18685ad268d3d",
+     "url": "https://stat.ripe.net/data/routing-status/data.json?resource=AS219238&timestamp=2026-11-16T00%3A00%3A00Z&min_peers_seeing=1"
+    }
+   ]
+  },
+  "219262": {
+   "announced_prefixes": {
+    "http": 200,
+    "observation": {
+     "prefixes": [
+      {
+       "prefix": "177.166.74.0/24",
+       "timelines": [
+        {
+         "endtime": "2026-11-15T08:00:00",
+         "starttime": "2026-11-15T00:00:00"
+        }
+       ]
+      }
+     ],
+     "query_endtime": "2026-11-16T00:00:00",
+     "query_starttime": "2026-11-15T00:00:00"
+    },
+    "retrieved_at": "2026-11-16T07:27:53+00:00",
+    "sha256": "d6e4c0862b8b21fbdad15f3e23b4cb489c0520b9d592c7d0bd851321a5da59ed",
+    "url": "https://stat.ripe.net/data/announced-prefixes/data.json?resource=AS219262&starttime=2026-11-15T00%3A00%3A00Z&endtime=2026-11-16T00%3A00%3A00Z&min_peers_seeing=1"
+   },
+   "routing_status": [
+    {
+     "http": 200,
+     "observation": {
+      "announced_space": {
+       "v4": {
+        "ips": 256,
+        "prefixes": 1
+       },
+       "v6": {
+        "48s": 0,
+        "prefixes": 0
+       }
+      },
+      "observed_neighbours": 1,
+      "query_time": "2026-11-15T00:00:00"
+     },
+     "retrieved_at": "2026-11-16T07:27:47+00:00",
+     "sha256": "abe4082b5978b5a0519d6e9d1eb978cdc8c052b5c8a3af1dbd971ae6f23ed105",
+     "url": "https://stat.ripe.net/data/routing-status/data.json?resource=AS219262&timestamp=2026-11-15T00%3A00%3A00Z&min_peers_seeing=1"
+    },
+    {
+     "http": 200,
+     "observation": {
+      "announced_space": {
+       "v4": {
+        "ips": 256,
+        "prefixes": 1
+       },
+       "v6": {
+        "48s": 0,
+        "prefixes": 0
+       }
+      },
+      "observed_neighbours": 1,
+      "query_time": "2026-11-15T08:00:00"
+     },
+     "retrieved_at": "2026-11-16T07:27:47+00:00",
+     "sha256": "7d5810b762d0f55bfdfcc0188bf757a40dcc6cd2ee0c0ab65bf40f07860bd8e5",
+     "url": "https://stat.ripe.net/data/routing-status/data.json?resource=AS219262&timestamp=2026-11-15T08%3A00%3A00Z&min_peers_seeing=1"
+    },
+    {
+     "http": 200,
+     "observation": {
+      "announced_space": {
+       "v4": {
+        "ips": 0,
+        "prefixes": 0
+       },
+       "v6": {
+        "48s": 0,
+        "prefixes": 0
+       }
+      },
+      "observed_neighbours": 0,
+      "query_time": "2026-11-15T16:00:00"
+     },
+     "retrieved_at": "2026-11-16T07:27:54+00:00",
+     "sha256": "5518e7a030d5e655cb75c7d670f8e8af3d31ed39add3561a8a18e8dd40ee7ac0",
+     "url": "https://stat.ripe.net/data/routing-status/data.json?resource=AS219262&timestamp=2026-11-15T16%3A00%3A00Z&min_peers_seeing=1"
+    },
+    {
+     "http": 200,
+     "observation": {
+      "announced_space": {
+       "v4": {
+        "ips": 0,
+        "prefixes": 0
+       },
+       "v6": {
+        "48s": 0,
+        "prefixes": 0
+       }
+      },
+      "observed_neighbours": 0,
+      "query_time": "2026-11-16T00:00:00"
+     },
+     "retrieved_at": "2026-11-16T07:27:54+00:00",
+     "sha256": "49d1ce63471daed8efaab4c0e22171a82a79cced132fd52774d27d32a0fcc134",
+     "url": "https://stat.ripe.net/data/routing-status/data.json?resource=AS219262&timestamp=2026-11-16T00%3A00%3A00Z&min_peers_seeing=1"
+    }
+   ]
+  },
+  "219305": {
+   "announced_prefixes": {
+    "http": 200,
+    "observation": {
+     "prefixes": [
+      {
+       "prefix": "177.29.252.0/24",
+       "timelines": [
+        {
+         "endtime": "2026-11-16T00:00:00",
+         "starttime": "2026-11-15T00:00:00"
+        }
+       ]
+      },
+      {
+       "prefix": "154.84.0.0/24",
+       "timelines": [
+        {
+         "endtime": "2026-11-16T00:00:00",
+         "starttime": "2026-11-15T00:00:00"
+        }
+       ]
+      },
+      {
+       "prefix": "95.170.127.0/24",
+       "timelines": [
+        {
+         "endtime": "2026-11-16T00:00:00",
+         "starttime": "2026-11-15T00:00:00"
+        }
+       ]
+      }
+     ],
+     "query_endtime": "2026-11-16T00:00:00",
+     "query_starttime": "2026-11-15T00:00:00"
+    },
+    "retrieved_at": "2026-11-16T07:27:31+00:00",
+    "sha256": "c115374a24e1e758997f9ad704d179bc360f88378ba4e9f8054c22dba19f3ff9",
+    "url": "https://stat.ripe.net/data/announced-prefixes/data.json?resource=AS219305&starttime=2026-11-15T00%3A00%3A00Z&endtime=2026-11-16T00%3A00%3A00Z&min_peers_seeing=1"
+   },
+   "routing_status": [
+    {
+     "http": 200,
+     "observation": {
+      "announced_space": {
+       "v4": {
+        "ips": 768,
+        "prefixes": 3
+       },
+       "v6": {
+        "48s": 0,
+        "prefixes": 0
+       }
+      },
+      "observed_neighbours": 2,
+      "query_time": "2026-11-15T00:00:00"
+     },
+     "retrieved_at": "2026-11-16T07:27:40+00:00",
+     "sha256": "31414bec1e991040038b6f0a8004638c7bf9a451ec8972ca7914d268a647ce7f",
+     "url": "https://stat.ripe.net/data/routing-status/data.json?resource=AS219305&timestamp=2026-11-15T00%3A00%3A00Z&min_peers_seeing=1"
+    },
+    {
+     "http": 200,
+     "observation": {
+      "announced_space": {
+       "v4": {
+        "ips": 768,
+        "prefixes": 3
+       },
+       "v6": {
+        "48s": 0,
+        "prefixes": 0
+       }
+      },
+      "observed_neighbours": 2,
+      "query_time": "2026-11-15T08:00:00"
+     },
+     "retrieved_at": "2026-11-16T07:27:32+00:00",
+     "sha256": "48c5a4c57bc223f96c4a431649b8b41768e466d3c31fae392904a4b15f05aab1",
+     "url": "https://stat.ripe.net/data/routing-status/data.json?resource=AS219305&timestamp=2026-11-15T08%3A00%3A00Z&min_peers_seeing=1"
+    },
+    {
+     "http": 200,
+     "observation": {
+      "announced_space": {
+       "v4": {
+        "ips": 768,
+        "prefixes": 3
+       },
+       "v6": {
+        "48s": 0,
+        "prefixes": 0
+       }
+      },
+      "observed_neighbours": 2,
+      "query_time": "2026-11-15T16:00:00"
+     },
+     "retrieved_at": "2026-11-16T07:27:32+00:00",
+     "sha256": "b1cc575971f8991abeff5e32fc1a542b819650fb3fed111a5685b1fa6765494d",
+     "url": "https://stat.ripe.net/data/routing-status/data.json?resource=AS219305&timestamp=2026-11-15T16%3A00%3A00Z&min_peers_seeing=1"
+    },
+    {
+     "http": 200,
+     "observation": {
+      "announced_space": {
+       "v4": {
+        "ips": 768,
+        "prefixes": 3
+       },
+       "v6": {
+        "48s": 0,
+        "prefixes": 0
+       }
+      },
+      "observed_neighbours": 2,
+      "query_time": "2026-11-16T00:00:00"
+     },
+     "retrieved_at": "2026-11-16T07:27:32+00:00",
+     "sha256": "6a8855b78ef45c0da64919cde641db0ccdbcf974f218adfca87b85181d46fcc7",
+     "url": "https://stat.ripe.net/data/routing-status/data.json?resource=AS219305&timestamp=2026-11-16T00%3A00%3A00Z&min_peers_seeing=1"
+    }
+   ]
+  },
+  "219306": {
+   "announced_prefixes": {
+    "http": 200,
+    "observation": {
+     "prefixes": [
+      {
+       "prefix": "177.29.253.0/24",
+       "timelines": [
+        {
+         "endtime": "2026-11-15T08:00:00",
+         "starttime": "2026-11-15T00:00:00"
+        }
+       ]
+      }
+     ],
+     "query_endtime": "2026-11-16T00:00:00",
+     "query_starttime": "2026-11-15T00:00:00"
+    },
+    "retrieved_at": "2026-11-16T07:27:36+00:00",
+    "sha256": "13c13ac21452b86f168c948c4cc7ecb53717c05f5d4ce174411b57addee5d74f",
+    "url": "https://stat.ripe.net/data/announced-prefixes/data.json?resource=AS219306&starttime=2026-11-15T00%3A00%3A00Z&endtime=2026-11-16T00%3A00%3A00Z&min_peers_seeing=1"
+   },
+   "routing_status": [
+    {
+     "http": 200,
+     "observation": {
+      "announced_space": {
+       "v4": {
+        "ips": 256,
+        "prefixes": 1
+       },
+       "v6": {
+        "48s": 0,
+        "prefixes": 0
+       }
+      },
+      "observed_neighbours": 1,
+      "query_time": "2026-11-15T00:00:00"
+     },
+     "retrieved_at": "2026-11-16T07:27:40+00:00",
+     "sha256": "189739bc906f5f185f617d95499348b6d3b65e74fdef0b2b75c1446568fb8399",
+     "url": "https://stat.ripe.net/data/routing-status/data.json?resource=AS219306&timestamp=2026-11-15T00%3A00%3A00Z&min_peers_seeing=1"
+    },
+    {
+     "http": 200,
+     "observation": {
+      "announced_space": {
+       "v4": {
+        "ips": 256,
+        "prefixes": 1
+       },
+       "v6": {
+        "48s": 0,
+        "prefixes": 0
+       }
+      },
+      "observed_neighbours": 1,
+      "query_time": "2026-11-15T08:00:00"
+     },
+     "retrieved_at": "2026-11-16T07:27:37+00:00",
+     "sha256": "3220642c8cd32948c8d6cd95bf06ded95e573f2c3032c5eda89199dbffc3faf6",
+     "url": "https://stat.ripe.net/data/routing-status/data.json?resource=AS219306&timestamp=2026-11-15T08%3A00%3A00Z&min_peers_seeing=1"
+    },
+    {
+     "http": 200,
+     "observation": {
+      "announced_space": {
+       "v4": {
+        "ips": 0,
+        "prefixes": 0
+       },
+       "v6": {
+        "48s": 0,
+        "prefixes": 0
+       }
+      },
+      "observed_neighbours": 0,
+      "query_time": "2026-11-15T16:00:00"
+     },
+     "retrieved_at": "2026-11-16T07:27:37+00:00",
+     "sha256": "870cf850f09b77beaf753c222011bdb552a856b50cff5faedbba8582d88c9607",
+     "url": "https://stat.ripe.net/data/routing-status/data.json?resource=AS219306&timestamp=2026-11-15T16%3A00%3A00Z&min_peers_seeing=1"
+    },
+    {
+     "http": 200,
+     "observation": {
+      "announced_space": {
+       "v4": {
+        "ips": 0,
+        "prefixes": 0
+       },
+       "v6": {
+        "48s": 0,
+        "prefixes": 0
+       }
+      },
+      "observed_neighbours": 0,
+      "query_time": "2026-11-16T00:00:00"
+     },
+     "retrieved_at": "2026-11-16T07:27:37+00:00",
+     "sha256": "754d0eed4de09baf1a5c03dec7425ca75ab6c4c95e3210394fc06587b30cbea0",
+     "url": "https://stat.ripe.net/data/routing-status/data.json?resource=AS219306&timestamp=2026-11-16T00%3A00%3A00Z&min_peers_seeing=1"
+    }
+   ]
+  }
+ },
+ "candidate": {
+  "both_srs_independently_recompiled_byte_identical": true,
+  "candidate_artifact": 14205495825,
+  "candidate_artifact_sha256": "25824866ec981b68bd975d2fcd2bb001d38a75f37cbb2ed0730f7d52180006b9",
+  "direct_ipv4_added": 2048,
+  "direct_ipv4_removed": 1280,
+  "direct_ipv6_added_cidrs": [
+   "2a0b:4e07:f4::/48",
+   "2a0f:6280:10ac::/48"
+  ],
+  "direct_ipv6_removed": 0,
+  "head": "2a761a8e4c9b25f9b9998ba39bd1feee4a806b96",
+  "interim_run": {
+   "all_three_client_files_byte_identical_to_run_43821809880": true,
+   "artifact_id": 14205780587,
+   "artifact_sha256": "71e59cca70c2b90264c19d70743b887985cfa4af2b64eaa82272743cf55e88b5",
+   "head": "239c828272ff2678e058632a4a96bc34028e8dd1",
+   "id": 43822933071,
+   "source_commit": "63872d274134c5f194175f0b955b7a18aca1b778"
+  },
+  "latest_rechecked_run": {
+   "all_three_client_files_and_four_input_archives_byte_identical_to_run_43822933071": true,
+   "artifact_id": 14205562973,
+   "artifact_sha256": "25d65f81308018e443cdf1a8db747e6eecb2bab25b60d6ccea7a04eed67b5849",
+   "head": "aa7a9187fe54c617e77e3d73d5c53d9a00442cf9",
+   "id": 43823944021,
+   "source_commit": "c8296e3d94b6934f0b8b1ffd003971781265dd9f",
+   "verified_manifest_assets": 13
+  },
+  "private_unchanged": true,
+  "pull_request": 52,
+  "release_base": "e20cf733a13d92040134895ebd580b7c9060fa3b",
+  "source_merge_commit": "40a24ceaf3104f1e28af681d886d393f152b2e3a",
+  "source_validation_note": "Downloaded archives and candidate SHA-256 sidecars verified. Compiler pinned to existing workflow digest.",
+  "verified_manifest_assets": 13,
+  "workflow_run": 43821809880
+ },
+ "cdn_dns_reference_samples": [
+  {
+   "answers": [
+    {
+     "TTL": 300,
+     "data": "64.120.40.137",
+     "type": 1
+    }
+   ],
+   "ecs_request": "",
+   "ecs_response": null,
+   "query": "13b2g841.p.crcdn.pro",
+   "rcode": 0,
+   "resolver": "google",
+   "sha256": "ed9c0047fc42697ef94c9a48f0f884b0019dc905e297ca58dc132f4d6993879d",
+   "utc": "2026-11-16T07:21:11+00:00"
+  },
+  {
+   "answers": [
+    {
+     "TTL": 300,
+     "data": "194.154.87.194",
+     "type": 1
+    }
+   ],
+   "ecs_request": "188.168.127.0/24",
+   "ecs_response": "188.168.127.0/24",
+   "query": "13b2g841.p.crcdn.pro",
+   "rcode": 0,
+   "resolver": "google",
+   "sha256": "c6bfb4eadd358e5c2b158e0651112da14207a77145b3b99c962bc58dabb94103",
+   "utc": "2026-11-16T07:21:11+00:00"
+  },
+  {
+   "answers": [
+    {
+     "TTL": 300,
+     "data": "185.199.9.17",
+     "type": 1
+    }
+   ],
+   "ecs_request": "176.124.116.0/24",
+   "ecs_response": "176.124.116.0/24",
+   "query": "13b2g841.p.crcdn.pro",
+   "rcode": 0,
+   "resolver": "google",
+   "sha256": "ece164d1b67c0d2d0bff4f5ca2459ae4d362792b7d8ee2c71264b42fae6bd482",
+   "utc": "2026-11-16T07:21:11+00:00"
+  },
+  {
+   "answers": [
+    {
+     "TTL": 300,
+     "data": "185.41.207.194",
+     "type": 1
+    }
+   ],
+   "ecs_request": "185.41.207.0/24",
+   "ecs_response": "185.41.207.0/24",
+   "query": "13b2g841.p.crcdn.pro",
+   "rcode": 0,
+   "resolver": "google",
+   "sha256": "cc82d381bf14a9ac202d0026dc65dcb43307b18609c44b311baa45be06b9461e",
+   "utc": "2026-11-16T07:21:11+00:00"
+  },
+  {
+   "answers": [
+    {
+     "TTL": 300,
+     "data": "64.120.40.137",
+     "type": 1
+    }
+   ],
+   "ecs_request": "8.8.8.0/24",
+   "ecs_response": "8.8.8.0/24",
+   "query": "13b2g841.p.crcdn.pro",
+   "rcode": 0,
+   "resolver": "google",
+   "sha256": "9ce7fc370b043360f4ff8b273de11b15345ed1b9c28ee934d8b92f43cd3a8579",
+   "utc": "2026-11-16T07:21:11+00:00"
+  },
+  {
+   "answers": [
+    {
+     "TTL": 300,
+     "data": "23.82.138.118",
+     "type": 1
+    }
+   ],
+   "ecs_request": "",
+   "ecs_response": null,
+   "query": "13b2g841.p.crcdn.pro",
+   "rcode": 0,
+   "resolver": "cloudflare",
+   "sha256": "aefbf46f4287ba831f076c23fd405b44849e3895b6b8e5cc9ad6ce5c21f6abd1",
+   "utc": "2026-11-16T07:21:15+00:00"
+  },
+  {
+   "answers": [
+    {
+     "TTL": 300,
+     "data": "17dbsmhw.p.qrcdn.net.",
+     "type": 5
+    },
+    {
+     "TTL": 300,
+     "data": "108.62.48.16",
+     "type": 1
+    }
+   ],
+   "ecs_request": "",
+   "ecs_response": null,
+   "query": "static.adtidy.org",
+   "rcode": 0,
+   "resolver": "google",
+   "sha256": "4e396a5669305daefee458788fc45dded0b76cf052c406131aca155d65a8490c",
+   "utc": "2026-11-16T07:21:15+00:00"
+  },
+  {
+   "answers": [
+    {
+     "TTL": 300,
+     "data": "17dbsmhw.p.qrcdn.net.",
+     "type": 5
+    },
+    {
+     "TTL": 300,
+     "data": "194.154.87.194",
+     "type": 1
+    }
+   ],
+   "ecs_request": "188.168.127.0/24",
+   "ecs_response": "188.168.127.0/24",
+   "query": "static.adtidy.org",
+   "rcode": 0,
+   "resolver": "google",
+   "sha256": "c140be8f5fe3c68d98285e8dfd1c153d9c9e7abebdedb57065550435727e0901",
+   "utc": "2026-11-16T07:21:14+00:00"
+  },
+  {
+   "answers": [
+    {
+     "TTL": 300,
+     "data": "17dbsmhw.p.qrcdn.net.",
+     "type": 5
+    },
+    {
+     "TTL": 300,
+     "data": "185.199.9.17",
+     "type": 1
+    }
+   ],
+   "ecs_request": "176.124.116.0/24",
+   "ecs_response": "176.124.116.0/24",
+   "query": "static.adtidy.org",
+   "rcode": 0,
+   "resolver": "google",
+   "sha256": "5410e43a80ee3c3b91430cc386b209bd36097e9495c61e565d1df23571a66112",
+   "utc": "2026-11-16T07:21:14+00:00"
+  },
+  {
+   "answers": [
+    {
+     "TTL": 300,
+     "data": "17dbsmhw.p.qrcdn.net.",
+     "type": 5
+    },
+    {
+     "TTL": 300,
+     "data": "185.41.207.194",
+     "type": 1
+    }
+   ],
+   "ecs_request": "185.41.207.0/24",
+   "ecs_response": "185.41.207.0/24",
+   "query": "static.adtidy.org",
+   "rcode": 0,
+   "resolver": "google",
+   "sha256": "e74858dbf318e2f7399b17861b066346f6caf26a1c9c99ac705eb4ac87e4b852",
+   "utc": "2026-11-16T07:21:14+00:00"
+  },
+  {
+   "answers": [
+    {
+     "TTL": 300,
+     "data": "17dbsmhw.p.qrcdn.net.",
+     "type": 5
+    },
+    {
+     "TTL": 300,
+     "data": "108.62.48.16",
+     "type": 1
+    }
+   ],
+   "ecs_request": "8.8.8.0/24",
+   "ecs_response": "8.8.8.0/24",
+   "query": "static.adtidy.org",
+   "rcode": 0,
+   "resolver": "google",
+   "sha256": "d3d907df418de868dbfb2b3ab022a8062d198e4354cfa66bc45ad1a745ea0c52",
+   "utc": "2026-11-16T07:21:18+00:00"
+  },
+  {
+   "answers": [
+    {
+     "TTL": 297,
+     "data": "17dbsmhw.p.qrcdn.net.",
+     "type": 5
+    },
+    {
+     "TTL": 297,
+     "data": "23.82.138.118",
+     "type": 1
+    }
+   ],
+   "ecs_request": "",
+   "ecs_response": null,
+   "query": "static.adtidy.org",
+   "rcode": 0,
+   "resolver": "cloudflare",
+   "sha256": "93c0dfb2dfbc10943d3754310dcbe26d86f4b89a7cb3622cb17ea4888f86b5a7",
+   "utc": "2026-11-16T07:21:15+00:00"
+  },
+  {
+   "answers": [
+    {
+     "TTL": 300,
+     "data": "23.82.138.118",
+     "type": 1
+    }
+   ],
+   "ecs_request": "",
+   "ecs_response": null,
+   "query": "17dbsmhw.p.qrcdn.net",
+   "rcode": 0,
+   "resolver": "google",
+   "sha256": "213aedcde9b859d1d898a431db8785bd62756171b596bfc120c377eb9c566307",
+   "utc": "2026-11-16T07:21:18+00:00"
+  },
+  {
+   "answers": [
+    {
+     "TTL": 297,
+     "data": "194.154.87.194",
+     "type": 1
+    }
+   ],
+   "ecs_request": "188.168.127.0/24",
+   "ecs_response": "188.168.127.0/24",
+   "query": "17dbsmhw.p.qrcdn.net",
+   "rcode": 0,
+   "resolver": "google",
+   "sha256": "a7ddb658c0c5bde7f107eee92aa1667681e3fc71605dbcac83dd4a7a845f3ffb",
+   "utc": "2026-11-16T07:21:18+00:00"
+  },
+  {
+   "answers": [
+    {
+     "TTL": 297,
+     "data": "185.199.9.17",
+     "type": 1
+    }
+   ],
+   "ecs_request": "176.124.116.0/24",
+   "ecs_response": "176.124.116.0/24",
+   "query": "17dbsmhw.p.qrcdn.net",
+   "rcode": 0,
+   "resolver": "google",
+   "sha256": "4432d61512074ee64dd74b17b9962d53cad14f2ae86c7bbd9f52e5d2815a985a",
+   "utc": "2026-11-16T07:21:18+00:00"
+  },
+  {
+   "answers": [
+    {
+     "TTL": 300,
+     "data": "185.41.207.194",
+     "type": 1
+    }
+   ],
+   "ecs_request": "185.41.207.0/24",
+   "ecs_response": "185.41.207.0/24",
+   "query": "17dbsmhw.p.qrcdn.net",
+   "rcode": 0,
+   "resolver": "google",
+   "sha256": "01f3ff338110a4e4d41635a2b5066c99a51d41fcfbad992de36c7558487bc6f2",
+   "utc": "2026-11-16T07:21:18+00:00"
+  },
+  {
+   "answers": [
+    {
+     "TTL": 300,
+     "data": "108.62.48.16",
+     "type": 1
+    }
+   ],
+   "ecs_request": "8.8.8.0/24",
+   "ecs_response": "8.8.8.0/24",
+   "query": "17dbsmhw.p.qrcdn.net",
+   "rcode": 0,
+   "resolver": "google",
+   "sha256": "05d60aa5ce40048501fb6947d4e7b5f0b2073a25a392b0521cc28d9cd5cc0034",
+   "utc": "2026-11-16T07:21:24+00:00"
+  },
+  {
+   "answers": [
+    {
+     "TTL": 300,
+     "data": "23.82.138.118",
+     "type": 1
+    }
+   ],
+   "ecs_request": "",
+   "ecs_response": null,
+   "query": "17dbsmhw.p.qrcdn.net",
+   "rcode": 0,
+   "resolver": "cloudflare",
+   "sha256": "e70e45127394111bdba109a3721dcab37e43bae899d74e666e2f7a3b44948f0d",
+   "utc": "2026-11-16T07:21:22+00:00"
+  },
+  {
+   "answers": [
+    {
+     "TTL": 21600,
+     "data": "185.65.148.144",
+     "type": 1
+    }
+   ],
+   "ecs_request": "",
+   "ecs_response": null,
+   "query": "curator.pro",
+   "rcode": 0,
+   "resolver": "google",
+   "sha256": "fcc8d713a3f148cf5bce76fc11c5f4abe213f28874d1392db82708c51f2980ae",
+   "utc": "2026-11-16T07:21:24+00:00"
+  },
+  {
+   "answers": [
+    {
+     "TTL": 21600,
+     "data": "185.65.148.144",
+     "type": 1
+    }
+   ],
+   "ecs_request": "188.168.127.0/24",
+   "ecs_response": "188.168.127.0/0",
+   "query": "curator.pro",
+   "rcode": 0,
+   "resolver": "google",
+   "sha256": "d05ab68f7d67eb597a47c84f2d0b660319eddb5c0e53b591ceedbee4a20153b1",
+   "utc": "2026-11-16T07:21:24+00:00"
+  },
+  {
+   "answers": [
+    {
+     "TTL": 21043,
+     "data": "185.65.148.144",
+     "type": 1
+    }
+   ],
+   "ecs_request": "176.124.116.0/24",
+   "ecs_response": "176.124.116.0/0",
+   "query": "curator.pro",
+   "rcode": 0,
+   "resolver": "google",
+   "sha256": "749ef6d1f6b17f7bc9a93f70df8154a12c1a81fefb9c4f7f6b7bc14893ba3489",
+   "utc": "2026-11-16T07:21:24+00:00"
+  },
+  {
+   "answers": [
+    {
+     "TTL": 21600,
+     "data": "185.65.148.144",
+     "type": 1
+    }
+   ],
+   "ecs_request": "185.41.207.0/24",
+   "ecs_response": "185.41.207.0/0",
+   "query": "curator.pro",
+   "rcode": 0,
+   "resolver": "google",
+   "sha256": "4106edbc5c424f2aa240a227f2961b0f7557a29e1e9bbedd9b0170c9967ca9c4",
+   "utc": "2026-11-16T07:21:24+00:00"
+  },
+  {
+   "answers": [
+    {
+     "TTL": 21040,
+     "data": "185.65.148.144",
+     "type": 1
+    }
+   ],
+   "ecs_request": "8.8.8.0/24",
+   "ecs_response": "8.8.8.0/0",
+   "query": "curator.pro",
+   "rcode": 0,
+   "resolver": "google",
+   "sha256": "0fe9dc3c28106100ddc33f66a82ef772b6907cb33faa968e66b523264f1f515e",
+   "utc": "2026-11-16T07:21:27+00:00"
+  },
+  {
+   "answers": [
+    {
+     "TTL": 86400,
+     "data": "185.65.148.144",
+     "type": 1
+    }
+   ],
+   "ecs_request": "",
+   "ecs_response": null,
+   "query": "curator.pro",
+   "rcode": 0,
+   "resolver": "cloudflare",
+   "sha256": "98c77fa043e7dfb69ccaee180ed08764f645ea0665cc0411456f3fe0bf8e6bad",
+   "utc": "2026-11-16T07:21:27+00:00"
+  },
+  {
+   "answers": [
+    {
+     "TTL": 21600,
+     "data": "178.248.238.99",
+     "type": 1
+    }
+   ],
+   "ecs_request": "",
+   "ecs_response": null,
+   "query": "docs.curator.pro",
+   "rcode": 0,
+   "resolver": "google",
+   "sha256": "1d0dd11d2df0492d9b1d2792d0b1e76a2deccc72c8349e7df02309c7d09a590f",
+   "utc": "2026-11-16T07:21:27+00:00"
+  },
+  {
+   "answers": [
+    {
+     "TTL": 21342,
+     "data": "178.248.238.99",
+     "type": 1
+    }
+   ],
+   "ecs_request": "188.168.127.0/24",
+   "ecs_response": "188.168.127.0/0",
+   "query": "docs.curator.pro",
+   "rcode": 0,
+   "resolver": "google",
+   "sha256": "f06ab5e1b51b97f7ed3b336bf3b9c2fe174a8958f4c817725a73a5e59199ed05",
+   "utc": "2026-11-16T07:21:27+00:00"
+  },
+  {
+   "answers": [
+    {
+     "TTL": 4686,
+     "data": "178.248.238.99",
+     "type": 1
+    }
+   ],
+   "ecs_request": "176.124.116.0/24",
+   "ecs_response": "176.124.116.0/0",
+   "query": "docs.curator.pro",
+   "rcode": 0,
+   "resolver": "google",
+   "sha256": "fd341410c50ad701d97ce4ac6e18d47d62d822cc0b8be64281309a05a4b1b1c8",
+   "utc": "2026-11-16T07:21:27+00:00"
+  },
+  {
+   "answers": [
+    {
+     "TTL": 21600,
+     "data": "178.248.238.99",
+     "type": 1
+    }
+   ],
+   "ecs_request": "185.41.207.0/24",
+   "ecs_response": "185.41.207.0/0",
+   "query": "docs.curator.pro",
+   "rcode": 0,
+   "resolver": "google",
+   "sha256": "bef531c57b9a561203d016da731e19bbfb80e0bd152d9cf0c6d02b4d2c85efc4",
+   "utc": "2026-11-16T07:21:27+00:00"
+  },
+  {
+   "answers": [
+    {
+     "TTL": 21596,
+     "data": "178.248.238.99",
+     "type": 1
+    }
+   ],
+   "ecs_request": "8.8.8.0/24",
+   "ecs_response": "8.8.8.0/0",
+   "query": "docs.curator.pro",
+   "rcode": 0,
+   "resolver": "google",
+   "sha256": "be0656e21ea7bbe46e0e192f2aac22ba59f131700bbdd050c0c55eb0c95f617a",
+   "utc": "2026-11-16T07:21:31+00:00"
+  },
+  {
+   "answers": [
+    {
+     "TTL": 86400,
+     "data": "178.248.238.99",
+     "type": 1
+    }
+   ],
+   "ecs_request": "",
+   "ecs_response": null,
+   "query": "docs.curator.pro",
+   "rcode": 0,
+   "resolver": "cloudflare",
+   "sha256": "4c9c0cd2e2f92db265f1d085e4acd7e458d2b2d2fcb122113602af1defb40974",
+   "utc": "2026-11-16T07:21:30+00:00"
+  }
+ ],
+ "edge_ipv4_prefix_and_direct_membership": {
+  "108.62.48.16": {
+   "candidate_direct": false,
+   "lookup": {
+    "http": 200,
+    "observation": {
+     "asns": [
+      "396362"
+     ],
+     "prefix": "108.62.48.0/21"
+    },
+    "retrieved_at": "2026-11-16T07:22:33+00:00",
+    "sha256": "6c9bd72b0423acfd1746f50d6f5add32b068bbea570bf406a88ff48321906f3e",
+    "url": "https://stat.ripe.net/data/network-info/data.json?resource=108.62.48.16"
+   },
+   "published_direct": false
+  },
+  "185.199.9.17": {
+   "candidate_direct": true,
+   "lookup": {
+    "http": 200,
+    "observation": {
+     "asns": [
+      "206011"
+     ],
+     "prefix": "185.199.9.0/24"
+    },
+    "retrieved_at": "2026-11-16T07:22:33+00:00",
+    "sha256": "800421b5df6bf78603d713df6235ed229882f8a8bd77eebfcd0b4c1dde3186f6",
+    "url": "https://stat.ripe.net/data/network-info/data.json?resource=185.199.9.17"
+   },
+   "published_direct": true
+  },
+  "185.41.207.194": {
+   "candidate_direct": true,
+   "lookup": {
+    "http": 200,
+    "observation": {
+     "asns": [
+      "60740"
+     ],
+     "prefix": "185.41.207.0/24"
+    },
+    "retrieved_at": "2026-11-16T07:22:32+00:00",
+    "sha256": "52bf5424c842db5e4943b43605abbfac00563d1071b863c39632ec66fc72db79",
+    "url": "https://stat.ripe.net/data/network-info/data.json?resource=185.41.207.194"
+   },
+   "published_direct": true
+  },
+  "194.154.87.194": {
+   "candidate_direct": true,
+   "lookup": {
+    "http": 200,
+    "observation": {
+     "asns": [
+      "3216"
+     ],
+     "prefix": "194.154.64.0/19"
+    },
+    "retrieved_at": "2026-11-16T07:22:33+00:00",
+    "sha256": "0e24afcd9c07f2f3bf652238ea9cf5fe8c54a18236f99d79e50f9efad4363cc1",
+    "url": "https://stat.ripe.net/data/network-info/data.json?resource=194.154.87.194"
+   },
+   "published_direct": true
+  },
+  "23.82.138.118": {
+   "candidate_direct": false,
+   "lookup": {
+    "http": 200,
+    "observation": {
+     "asns": [
+      "393886"
+     ],
+     "prefix": "23.82.136.0/21"
+    },
+    "retrieved_at": "2026-11-16T07:22:36+00:00",
+    "sha256": "125e3474e9784cce1aec946d45604f93ac8d00a6aacce23a414e1cfb363afb14",
+    "url": "https://stat.ripe.net/data/network-info/data.json?resource=23.82.138.118"
+   },
+   "published_direct": false
+  },
+  "64.120.40.137": {
+   "candidate_direct": false,
+   "lookup": {
+    "http": 200,
+    "observation": {
+     "asns": [
+      "395954"
+     ],
+     "prefix": "64.120.40.0/22"
+    },
+    "retrieved_at": "2026-11-16T07:22:33+00:00",
+    "sha256": "57ad2b4b78c15297c11653fd2c2b2d32c19c1d5158bc5e5e1d6189e82071fde4",
+    "url": "https://stat.ripe.net/data/network-info/data.json?resource=64.120.40.137"
+   },
+   "published_direct": false
+  }
+ },
+ "local_counterfactual": {
+  "baseline_reproduced_ci_outputs": [
+   "DAT",
+   "categories",
+   "source metrics",
+   "prefix provenance",
+   "blocked provenance",
+   "effective block mask"
+  ],
+  "candidate_dat_sha256": "3161fdd5eda4d9c2f962a3c8d1bd0c187e5cab9260284a13679b289a9a6d0855",
+  "classification": "LOCAL AUDIT ONLY; policy not changed and artifact not published",
+  "counterfactual_dat_sha256": "937126f01f6790e9662d1913263e45550d4d2a117aeea00245200553e170b392",
+  "effective_block_mask_unchanged": true,
+  "ipv4_added": 1280,
+  "ipv4_removed": 0,
+  "ipv6_added": 0,
+  "ipv6_removed": 0,
+  "private_unchanged": true,
+  "variant": "restore only five prefixes to selected regional BGP input of the otherwise identical candidate overlay"
+ },
+ "prefixes": {
+  "177.122.229.0/24": {
+   "adjacent_control": false,
+   "bgp_state": [
+    {
+     "http": 200,
+     "observation": {
+      "actual_state_time_utc": "2026-11-15T07:30:00",
+      "exact_origin_immediate_neighbor_path_counts": [
+       {
+        "origin": 219216,
+        "path_rows": 2,
+        "preceding_asn": 401322
+       }
+      ],
+      "exact_path_rows": 2,
+      "other_prefix_path_rows": {},
+      "reported_total_routes": 2
+     },
+     "retrieved_at": "2026-11-16T07:22:07+00:00",
+     "sha256": "86c54720764ea080cdc0e22b340086652f6bf0f4922722f6e79a042bdc31b880",
+     "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=177.122.229.0%2F24&timestamp=2026-11-15T07%3A30%3A00Z"
+    },
+    {
+     "http": 200,
+     "observation": {
+      "actual_state_time_utc": "2026-11-15T14:00:00",
+      "exact_origin_immediate_neighbor_path_counts": [],
+      "exact_path_rows": 0,
+      "other_prefix_path_rows": {},
+      "reported_total_routes": 0
+     },
+     "retrieved_at": "2026-11-16T07:22:07+00:00",
+     "sha256": "8c3800d5edbc1aab169d588cc7673abcb20daf389445c01d61b62758bbec9e21",
+     "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=177.122.229.0%2F24&timestamp=2026-11-15T14%3A00%3A00Z"
+    },
+    {
+     "http": 200,
+     "observation": {
+      "actual_state_time_utc": "2026-11-15T14:30:00",
+      "exact_origin_immediate_neighbor_path_counts": [
+       {
+        "origin": 137410,
+        "path_rows": 340,
+        "preceding_asn": 62610
+       }
+      ],
+      "exact_path_rows": 340,
+      "other_prefix_path_rows": {},
+      "reported_total_routes": 340
+     },
+     "retrieved_at": "2026-11-16T07:22:08+00:00",
+     "sha256": "0b0c06297087f4781429b35c05374e5a29669f4ee957cd6d3aaf98c4958ce664",
+     "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=177.122.229.0%2F24&timestamp=2026-11-15T14%3A30%3A00Z"
+    },
+    {
+     "http": 200,
+     "observation": {
+      "actual_state_time_utc": "2026-11-16T03:59:48",
+      "exact_origin_immediate_neighbor_path_counts": [
+       {
+        "origin": 137410,
+        "path_rows": 343,
+        "preceding_asn": 62610
+       }
+      ],
+      "exact_path_rows": 343,
+      "other_prefix_path_rows": {},
+      "reported_total_routes": 343
+     },
+     "retrieved_at": "2026-11-16T07:22:07+00:00",
+     "sha256": "d48286ace4dfa1002ce46d241f384bb8c12da74085563fd2720c1484d7dcab0f",
+     "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=177.122.229.0%2F24&timestamp=2026-11-16T06%3A58%3A00Z"
+    },
+    {
+     "http": 200,
+     "observation": {
+      "actual_state_time_utc": "2026-11-14T16:00:00",
+      "exact_origin_immediate_neighbor_path_counts": [
+       {
+        "origin": 219216,
+        "path_rows": 324,
+        "preceding_asn": 401322
+       }
+      ],
+      "exact_path_rows": 324,
+      "other_prefix_path_rows": {},
+      "reported_total_routes": 324
+     },
+     "retrieved_at": "2026-11-16T07:24:06+00:00",
+     "sha256": "3927f9a634c4a37a3bd682f8f3170574856e750e7332c5f5bdb26169715d3b1d",
+     "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=177.122.229.0%2F24&timestamp=2026-11-14T16%3A00%3A00Z"
+    },
+    {
+     "http": 200,
+     "observation": {
+      "actual_state_time_utc": "2026-11-15T06:59:00",
+      "exact_origin_immediate_neighbor_path_counts": [
+       {
+        "origin": 219216,
+        "path_rows": 326,
+        "preceding_asn": 401322
+       }
+      ],
+      "exact_path_rows": 326,
+      "other_prefix_path_rows": {},
+      "reported_total_routes": 326
+     },
+     "retrieved_at": "2026-11-16T07:24:08+00:00",
+     "sha256": "f86f6b327bc8e7ff0f1bbbfdf602856dc1dedb012d93c0da04809109d71dcc88",
+     "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=177.122.229.0%2F24&timestamp=2026-11-15T06%3A59%3A00Z"
+    },
+    {
+     "http": 200,
+     "observation": {
+      "actual_state_time_utc": "2026-11-15T14:10:00",
+      "exact_origin_immediate_neighbor_path_counts": [],
+      "exact_path_rows": 0,
+      "other_prefix_path_rows": {},
+      "reported_total_routes": 0
+     },
+     "retrieved_at": "2026-11-16T07:24:11+00:00",
+     "sha256": "7729001169f15d89ab66b94f85b90ae90395452d93a550f2d1347121891915cd",
+     "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=177.122.229.0%2F24&timestamp=2026-11-15T14%3A10%3A00Z"
+    },
+    {
+     "http": 200,
+     "observation": {
+      "actual_state_time_utc": "2026-11-15T15:00:00",
+      "exact_origin_immediate_neighbor_path_counts": [
+       {
+        "origin": 137410,
+        "path_rows": 340,
+        "preceding_asn": 62610
+       }
+      ],
+      "exact_path_rows": 340,
+      "other_prefix_path_rows": {},
+      "reported_total_routes": 340
+     },
+     "retrieved_at": "2026-11-16T07:24:11+00:00",
+     "sha256": "f82bb0c368dfd77372a12ef0906138664dddcc77ee8ba6db630f941de3186b17",
+     "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=177.122.229.0%2F24&timestamp=2026-11-15T15%3A00%3A00Z"
+    }
+   ],
+   "bgp_update_windows": [
+    {
+     "http": 200,
+     "observation": {
+      "exact_updates": [
+       {
+        "first_timestamp_utc": "2026-11-15T05:36:01",
+        "last_timestamp_utc": "2026-11-15T07:26:45",
+        "origin": 219216,
+        "previous_asns": [
+         401322
+        ],
+        "type": "A",
+        "unique_collector_peer_ids": 275,
+        "updates": 1036
+       },
+       {
+        "first_timestamp_utc": "2026-11-15T07:12:26",
+        "last_timestamp_utc": "2026-11-15T07:26:45",
+        "origin": null,
+        "previous_asns": [],
+        "type": "W",
+        "unique_collector_peer_ids": 326,
+        "updates": 396
+       }
+      ],
+      "nr_updates": 1432,
+      "query_endtime": "2026-11-15T08:00:00",
+      "query_starttime": "2026-11-15T00:00:00"
+     },
+     "retrieved_at": "2026-11-16T07:17:42+00:00",
+     "sha256": "0ce2c60290336fd6c66659feb5dcba5e059562359ad7161834aaad21bc41b033",
+     "url": "https://stat.ripe.net/data/bgp-updates/data.json?resource=177.122.229.0%2F24&starttime=2026-11-15T00%3A00%3A00Z&endtime=2026-11-15T08%3A00%3A00Z"
+    },
+    {
+     "http": 200,
+     "observation": {
+      "exact_updates": [
+       {
+        "first_timestamp_utc": "2026-11-15T14:15:04",
+        "last_timestamp_utc": "2026-11-15T15:42:15",
+        "origin": 137410,
+        "previous_asns": [
+         62610
+        ],
+        "type": "A",
+        "unique_collector_peer_ids": 343,
+        "updates": 842
+       },
+       {
+        "first_timestamp_utc": "2026-11-15T09:59:44",
+        "last_timestamp_utc": "2026-11-15T14:15:45",
+        "origin": null,
+        "previous_asns": [],
+        "type": "W",
+        "unique_collector_peer_ids": 4,
+        "updates": 4
+       }
+      ],
+      "nr_updates": 846,
+      "query_endtime": "2026-11-15T16:00:00",
+      "query_starttime": "2026-11-15T08:00:00"
+     },
+     "retrieved_at": "2026-11-16T07:17:42+00:00",
+     "sha256": "3c60f027a298619cdbaba63312d7863453ee3eda17d89d34a48e500a825b832f",
+     "url": "https://stat.ripe.net/data/bgp-updates/data.json?resource=177.122.229.0%2F24&starttime=2026-11-15T08%3A00%3A00Z&endtime=2026-11-15T16%3A00%3A00Z"
+    }
+   ],
+   "historical_origin": 219216,
+   "history": {
+    "http": 200,
+    "observation": {
+     "exact_timelines": [
+      {
+       "intervals_utc": [
+        {
+         "endtime": "2026-11-14T07:59:59",
+         "starttime": "2026-11-01T00:00:00"
+        }
+       ],
+       "origin": "17561"
+      },
+      {
+       "intervals_utc": [
+        {
+         "endtime": "2026-11-16T00:00:00",
+         "starttime": "2026-11-15T16:00:00"
+        }
+       ],
+       "origin": "137410"
+      },
+      {
+       "intervals_utc": [
+        {
+         "endtime": "2026-11-15T07:59:59",
+         "starttime": "2026-11-14T16:00:00"
+        }
+       ],
+       "origin": "219216"
+      }
+     ],
+     "query_endtime": "2026-11-16T00:00:00",
+     "query_starttime": "2026-11-01T00:00:00"
+    },
+    "retrieved_at": "2026-11-16T07:23:21+00:00",
+    "sha256": "e53d14483c3613d891b9dbdc3a6fb1020d750ab9ddc855778a92fd4e3d3567de",
+    "url": "https://stat.ripe.net/data/routing-history/data.json?resource=177.122.229.0%2F24&starttime=2026-11-01T00%3A00%3A00Z&endtime=2026-11-16T00%3A00%3A00Z&min_peers=10&normalise_visibility=true"
+   },
+   "ptr": {
+    "177.122.229.1": {
+     "http": 200,
+     "key": "ptr-177.122.229.1",
+     "observation": {
+      "Status": 3
+     },
+     "retrieved_at": "2026-11-16T07:16:52+00:00",
+     "sha256": "fb356c33746426bc9ad97a710c2878d3bd4aa1e29f33bf851a20de04a4a105f8",
+     "url": "https://dns.google/resolve?name=1.229.122.177.in-addr.arpa&type=PTR"
+    },
+    "177.122.229.2": {
+     "http": 200,
+     "key": "ptr-177.122.229.2",
+     "observation": {
+      "Status": 3
+     },
+     "retrieved_at": "2026-11-16T07:16:52+00:00",
+     "sha256": "40b47914a27564248d131db0ce76486246f6bcf9cf2bd4ede6cdf961af386b71",
+     "url": "https://dns.google/resolve?name=2.229.122.177.in-addr.arpa&type=PTR"
+    }
+   },
+   "ripe_irr_route_objects": {
+    "http": 200,
+    "observation": [
+     {
+      "created": "2026-11-15T07:31:48Z",
+      "descr": "Novacart-Commerce-llc",
+      "last-modified": "2026-11-15T07:31:48Z",
+      "mnt-by": "hk-larus-1-mnt",
+      "origin": "AS137410",
+      "route": "177.122.229.0/24",
+      "source": "RIPE"
+     }
+    ],
+    "retrieved_at": "2026-11-16T07:22:44+00:00",
+    "sha256": "a628636f810fc7088facaac74c878320fa3336e0b8f680371f5a240389efadf0",
+    "url": "https://rest.db.ripe.net/search.json?query-string=177.122.229.0%2F24&type-filter=route&flags=x&flags=no-referenced&source=ripe"
+   },
+   "ripe_rdap": {
+    "http": 200,
+    "key": "ripe-177.122.229.0",
+    "observation": {
+     "country": "HK",
+     "endAddress": "177.122.229.255",
+     "handle": "177.122.229.0 - 177.122.229.255",
+     "name": "Novacart-Commerce-llc",
+     "port43": "whois.ripe.net",
+     "startAddress": "177.122.229.0"
+    },
+    "retrieved_at": "2026-11-16T07:16:52+00:00",
+    "sha256": "f3370e87f95a0f107ea29cbb0b699407da06e88a23c3f33bb4eff0e64f4b65fc",
+    "url": "https://rdap.db.ripe.net/ip/177.122.229.0/24"
+   },
+   "routeviews": {
+    "http": 200,
+    "observation": [
+     {
+      "collectors": [
+       "amsix.ams",
+       "ix-br2.gru",
+       "route-views.linx",
+       "route-views.napafrica",
+       "route-views.sydney",
+       "route-views3",
+       "route-views4",
+       "route-views5"
+      ],
+      "first_path_timestamp_utc": "2026-11-15T14:15:04Z",
+      "latest_path_timestamp_utc": "2026-11-16T03:55:30Z",
+      "origin": 137410,
+      "path_rows": 160,
+      "preceding_asn_path_counts": {
+       "62610": 160
+      },
+      "rpki_roas": [
+       {
+        "asn": 17561,
+        "expires": "2026-11-17T00:00:53Z",
+        "max_length": 24,
+        "prefix": "177.122.229.0/24",
+        "ta": "ripe"
+       },
+       {
+        "asn": 137410,
+        "expires": "2026-11-17T00:00:53Z",
+        "max_length": 24,
+        "prefix": "177.122.229.0/24",
+        "ta": "ripe"
+       },
+       {
+        "asn": 219216,
+        "expires": "2026-11-17T00:00:53Z",
+        "max_length": 24,
+        "prefix": "177.122.229.0/24",
+        "ta": "ripe"
+       }
+      ],
+      "rpki_state": "valid"
+     },
+     {
+      "collectors": [
+       "route-views.sg"
+      ],
+      "first_path_timestamp_utc": "2026-11-07T00:00:09Z",
+      "latest_path_timestamp_utc": "2026-11-07T00:00:09Z",
+      "origin": 17561,
+      "path_rows": 20,
+      "preceding_asn_path_counts": {
+       "17497": 20
+      },
+      "rpki_roas": [
+       {
+        "asn": 17561,
+        "expires": "2026-11-17T00:00:53Z",
+        "max_length": 24,
+        "prefix": "177.122.229.0/24",
+        "ta": "ripe"
+       },
+       {
+        "asn": 137410,
+        "expires": "2026-11-17T00:00:53Z",
+        "max_length": 24,
+        "prefix": "177.122.229.0/24",
+        "ta": "ripe"
+       },
+       {
+        "asn": 219216,
+        "expires": "2026-11-17T00:00:53Z",
+        "max_length": 24,
+        "prefix": "177.122.229.0/24",
+        "ta": "ripe"
+       }
+      ],
+      "rpki_state": "valid"
+     }
+    ],
+    "retrieved_at": "2026-11-16T07:17:44+00:00",
+    "sha256": "08b89bcba201a8272e3a544457e28305cf76b15e33ac7563fea5f728b4a2518f",
+    "url": "https://api.routeviews.org/prefix/177.122.229.0/24"
+   },
+   "routing_admission": {
+    "candidate_direct_addresses": 0,
+    "published_direct_addresses": 256
+   },
+   "routing_status": [
+    {
+     "http": 200,
+     "key": "ris-177.122.229.0-15T00",
+     "observation": {
+      "less_specifics": [],
+      "more_specifics": [],
+      "origins": [
+       {
+        "origin": 219216,
+        "route_objects": [
+         "RADB"
+        ]
+       }
+      ],
+      "query_time": "2026-11-15T00:00:00",
+      "visibility": {
+       "v4": {
+        "ris_peers_seeing": 319,
+        "total_ris_peers": 320
+       },
+       "v6": {
+        "ris_peers_seeing": 0,
+        "total_ris_peers": 0
+       }
+      }
+     },
+     "retrieved_at": "2026-11-16T07:16:48+00:00",
+     "sha256": "7fa3f38d71efc05a5f59d468da5e2311ee234c49a7d7ec585d2b85f22d911de3",
+     "url": "https://stat.ripe.net/data/routing-status/data.json?resource=177.122.229.0%2F24&timestamp=2026-11-15T00%3A00%3A00Z&min_peers_seeing=1"
+    },
+    {
+     "http": 200,
+     "key": "ris-177.122.229.0-15T08",
+     "observation": {
+      "less_specifics": [],
+      "more_specifics": [],
+      "origins": [
+       {
+        "origin": 219216,
+        "route_objects": [
+         "RADB"
+        ]
+       }
+      ],
+      "query_time": "2026-11-15T08:00:00",
+      "visibility": {
+       "v4": {
+        "ris_peers_seeing": 1,
+        "total_ris_peers": 320
+       },
+       "v6": {
+        "ris_peers_seeing": 0,
+        "total_ris_peers": 0
+       }
+      }
+     },
+     "retrieved_at": "2026-11-16T07:16:48+00:00",
+     "sha256": "b2c22fc4a4de309da74eac2f11558335ed4cec312c3c521f04182da4e0b2e654",
+     "url": "https://stat.ripe.net/data/routing-status/data.json?resource=177.122.229.0%2F24&timestamp=2026-11-15T08%3A00%3A00Z&min_peers_seeing=1"
+    },
+    {
+     "http": 200,
+     "key": "ris-177.122.229.0-15T16",
+     "observation": {
+      "less_specifics": [],
+      "more_specifics": [],
+      "origins": [
+       {
+        "origin": 137410,
+        "route_objects": [
+         "RADB",
+         "RIPE"
+        ]
+       }
+      ],
+      "query_time": "2026-11-15T16:00:00",
+      "visibility": {
+       "v4": {
+        "ris_peers_seeing": 318,
+        "total_ris_peers": 321
+       },
+       "v6": {
+        "ris_peers_seeing": 0,
+        "total_ris_peers": 0
+       }
+      }
+     },
+     "retrieved_at": "2026-11-16T07:16:52+00:00",
+     "sha256": "0732b3a47ee82193f1ca85d8e49b8f5c139cac64fa1fcc2498fc9768b09de681",
+     "url": "https://stat.ripe.net/data/routing-status/data.json?resource=177.122.229.0%2F24&timestamp=2026-11-15T16%3A00%3A00Z&min_peers_seeing=1"
+    },
+    {
+     "http": 200,
+     "key": "ris-177.122.229.0-16T00",
+     "observation": {
+      "less_specifics": [],
+      "more_specifics": [],
+      "origins": [
+       {
+        "origin": 137410,
+        "route_objects": [
+         "RADB",
+         "RIPE"
+        ]
+       }
+      ],
+      "query_time": "2026-11-16T00:00:00",
+      "visibility": {
+       "v4": {
+        "ris_peers_seeing": 317,
+        "total_ris_peers": 319
+       },
+       "v6": {
+        "ris_peers_seeing": 0,
+        "total_ris_peers": 0
+       }
+      }
+     },
+     "retrieved_at": "2026-11-16T07:16:52+00:00",
+     "sha256": "cb1b26e7921bdae2e5020095b05593937de3e6b59b68eff9a0592c740eb08d4d",
+     "url": "https://stat.ripe.net/data/routing-status/data.json?resource=177.122.229.0%2F24&timestamp=2026-11-16T00%3A00%3A00Z&min_peers_seeing=1"
+    }
+   ],
+   "rpki_pairs": {
+    "137410": {
+     "http": 200,
+     "observation": {
+      "status": "valid",
+      "validating_roas": [
+       {
+        "max_length": 24,
+        "origin": "137410",
+        "prefix": "177.122.229.0/24",
+        "validity": "valid"
+       }
+      ],
+      "validator": "routinator"
+     },
+     "retrieved_at": "2026-11-16T07:24:06+00:00",
+     "sha256": "cfde7f7e4089fff1a624166f77781f2c781adf6cfff2c233785a409a0b18cf20",
+     "url": "https://stat.ripe.net/data/rpki-validation/data.json?resource=AS137410&prefix=177.122.229.0%2F24"
+    },
+    "17561": {
+     "http": 200,
+     "observation": {
+      "status": "valid",
+      "validating_roas": [
+       {
+        "max_length": 24,
+        "origin": "17561",
+        "prefix": "177.122.229.0/24",
+        "validity": "valid"
+       }
+      ],
+      "validator": "routinator"
+     },
+     "retrieved_at": "2026-11-16T07:24:06+00:00",
+     "sha256": "e2b41458a2183d0910a9d56d81e2efe78524c68195b50ec769480bff0ba41617",
+     "url": "https://stat.ripe.net/data/rpki-validation/data.json?resource=AS17561&prefix=177.122.229.0%2F24"
+    },
+    "219216": {
+     "http": 200,
+     "observation": {
+      "status": "valid",
+      "validating_roas": [
+       {
+        "max_length": 24,
+        "origin": "219216",
+        "prefix": "177.122.229.0/24",
+        "validity": "valid"
+       }
+      ],
+      "validator": "routinator"
+     },
+     "retrieved_at": "2026-11-16T07:24:06+00:00",
+     "sha256": "88618ceff6f1e41a67bdce1b02cd6529ccf8048ccf18d3c088067e548a3699c0",
+     "url": "https://stat.ripe.net/data/rpki-validation/data.json?resource=AS219216&prefix=177.122.229.0%2F24"
+    }
+   }
+  },
+  "177.122.241.0/24": {
+   "adjacent_control": false,
+   "bgp_state": [
+    {
+     "http": 200,
+     "observation": {
+      "actual_state_time_utc": "2026-11-15T07:30:00",
+      "exact_origin_immediate_neighbor_path_counts": [
+       {
+        "origin": 218568,
+        "path_rows": 2,
+        "preceding_asn": 401322
+       }
+      ],
+      "exact_path_rows": 2,
+      "other_prefix_path_rows": {},
+      "reported_total_routes": 2
+     },
+     "retrieved_at": "2026-11-16T07:22:14+00:00",
+     "sha256": "578978f612a1b8873bfc938dfda76a5dd94bdab0ce664a434254100d4737a00b",
+     "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=177.122.241.0%2F24&timestamp=2026-11-15T07%3A30%3A00Z"
+    },
+    {
+     "http": 200,
+     "observation": {
+      "actual_state_time_utc": "2026-11-15T14:00:00",
+      "exact_origin_immediate_neighbor_path_counts": [],
+      "exact_path_rows": 0,
+      "other_prefix_path_rows": {},
+      "reported_total_routes": 0
+     },
+     "retrieved_at": "2026-11-16T07:22:12+00:00",
+     "sha256": "881f6c6435c4d411601524f6ebf3fb64b315092a0f7203fdbbca29d5a8eec50b",
+     "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=177.122.241.0%2F24&timestamp=2026-11-15T14%3A00%3A00Z"
+    },
+    {
+     "http": 200,
+     "observation": {
+      "actual_state_time_utc": "2026-11-15T14:30:00",
+      "exact_origin_immediate_neighbor_path_counts": [
+       {
+        "origin": 137410,
+        "path_rows": 340,
+        "preceding_asn": 62610
+       }
+      ],
+      "exact_path_rows": 340,
+      "other_prefix_path_rows": {},
+      "reported_total_routes": 340
+     },
+     "retrieved_at": "2026-11-16T07:22:12+00:00",
+     "sha256": "d0e2e532278482af72eedc2fa649c8cc35e5b411048cc44e62a496f38a50899d",
+     "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=177.122.241.0%2F24&timestamp=2026-11-15T14%3A30%3A00Z"
+    },
+    {
+     "http": 200,
+     "observation": {
+      "actual_state_time_utc": "2026-11-16T03:59:48",
+      "exact_origin_immediate_neighbor_path_counts": [
+       {
+        "origin": 137410,
+        "path_rows": 343,
+        "preceding_asn": 62610
+       }
+      ],
+      "exact_path_rows": 343,
+      "other_prefix_path_rows": {},
+      "reported_total_routes": 343
+     },
+     "retrieved_at": "2026-11-16T07:22:12+00:00",
+     "sha256": "36bbc3583237d73f4ede76afc51b21a67f0f112e5a548c822f4c7d7debbfde76",
+     "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=177.122.241.0%2F24&timestamp=2026-11-16T06%3A58%3A00Z"
+    },
+    {
+     "http": 200,
+     "observation": {
+      "actual_state_time_utc": "2026-11-14T16:00:00",
+      "exact_origin_immediate_neighbor_path_counts": [
+       {
+        "origin": 218568,
+        "path_rows": 324,
+        "preceding_asn": 401322
+       }
+      ],
+      "exact_path_rows": 324,
+      "other_prefix_path_rows": {},
+      "reported_total_routes": 324
+     },
+     "retrieved_at": "2026-11-16T07:24:10+00:00",
+     "sha256": "b5d801597d068f89bce1a7436f63edff7942cdc91c2020421d1d307548e455fc",
+     "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=177.122.241.0%2F24&timestamp=2026-11-14T16%3A00%3A00Z"
+    },
+    {
+     "http": 200,
+     "observation": {
+      "actual_state_time_utc": "2026-11-15T06:59:00",
+      "exact_origin_immediate_neighbor_path_counts": [
+       {
+        "origin": 218568,
+        "path_rows": 326,
+        "preceding_asn": 401322
+       }
+      ],
+      "exact_path_rows": 326,
+      "other_prefix_path_rows": {},
+      "reported_total_routes": 326
+     },
+     "retrieved_at": "2026-11-16T07:24:15+00:00",
+     "sha256": "947088da64cf9042674afed19db161eada358b24ff87b416f5292eb5dc7da912",
+     "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=177.122.241.0%2F24&timestamp=2026-11-15T06%3A59%3A00Z"
+    },
+    {
+     "http": 200,
+     "observation": {
+      "actual_state_time_utc": "2026-11-15T14:10:00",
+      "exact_origin_immediate_neighbor_path_counts": [],
+      "exact_path_rows": 0,
+      "other_prefix_path_rows": {},
+      "reported_total_routes": 0
+     },
+     "retrieved_at": "2026-11-16T07:24:15+00:00",
+     "sha256": "e4837e248c7f3a88a23df748507d7daeda92af4239ea42c581eee65a3d7b520d",
+     "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=177.122.241.0%2F24&timestamp=2026-11-15T14%3A10%3A00Z"
+    },
+    {
+     "http": 200,
+     "observation": {
+      "actual_state_time_utc": "2026-11-15T15:00:00",
+      "exact_origin_immediate_neighbor_path_counts": [
+       {
+        "origin": 137410,
+        "path_rows": 340,
+        "preceding_asn": 62610
+       }
+      ],
+      "exact_path_rows": 340,
+      "other_prefix_path_rows": {},
+      "reported_total_routes": 340
+     },
+     "retrieved_at": "2026-11-16T07:24:15+00:00",
+     "sha256": "f85b9232aa7e7e5c4516db8304cbdcb7c0f38d106a415b25c644457280ebcc62",
+     "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=177.122.241.0%2F24&timestamp=2026-11-15T15%3A00%3A00Z"
+    }
+   ],
+   "bgp_update_windows": [
+    {
+     "http": 200,
+     "observation": {
+      "exact_updates": [
+       {
+        "first_timestamp_utc": "2026-11-15T05:36:00",
+        "last_timestamp_utc": "2026-11-15T07:26:45",
+        "origin": 218568,
+        "previous_asns": [
+         401322
+        ],
+        "type": "A",
+        "unique_collector_peer_ids": 278,
+        "updates": 1033
+       },
+       {
+        "first_timestamp_utc": "2026-11-15T07:09:03",
+        "last_timestamp_utc": "2026-11-15T07:26:45",
+        "origin": null,
+        "previous_asns": [],
+        "type": "W",
+        "unique_collector_peer_ids": 326,
+        "updates": 389
+       }
+      ],
+      "nr_updates": 1422,
+      "query_endtime": "2026-11-15T08:00:00",
+      "query_starttime": "2026-11-15T00:00:00"
+     },
+     "retrieved_at": "2026-11-16T07:17:42+00:00",
+     "sha256": "399c036b095a621da02aa9a63e51181727d3e8cf33dff92f1c4ce167c0b734c8",
+     "url": "https://stat.ripe.net/data/bgp-updates/data.json?resource=177.122.241.0%2F24&starttime=2026-11-15T00%3A00%3A00Z&endtime=2026-11-15T08%3A00%3A00Z"
+    },
+    {
+     "http": 200,
+     "observation": {
+      "exact_updates": [
+       {
+        "first_timestamp_utc": "2026-11-15T14:16:10",
+        "last_timestamp_utc": "2026-11-15T15:42:15",
+        "origin": 137410,
+        "previous_asns": [
+         62610
+        ],
+        "type": "A",
+        "unique_collector_peer_ids": 343,
+        "updates": 849
+       },
+       {
+        "first_timestamp_utc": "2026-11-15T09:59:53",
+        "last_timestamp_utc": "2026-11-15T14:16:47",
+        "origin": null,
+        "previous_asns": [],
+        "type": "W",
+        "unique_collector_peer_ids": 5,
+        "updates": 5
+       }
+      ],
+      "nr_updates": 854,
+      "query_endtime": "2026-11-15T16:00:00",
+      "query_starttime": "2026-11-15T08:00:00"
+     },
+     "retrieved_at": "2026-11-16T07:17:45+00:00",
+     "sha256": "bd49981aabe39a6ec11df58f12d16831314364712124bf9398bd7e0422dfd2e4",
+     "url": "https://stat.ripe.net/data/bgp-updates/data.json?resource=177.122.241.0%2F24&starttime=2026-11-15T08%3A00%3A00Z&endtime=2026-11-15T16%3A00%3A00Z"
+    }
+   ],
+   "historical_origin": 218568,
+   "history": {
+    "http": 200,
+    "observation": {
+     "exact_timelines": [
+      {
+       "intervals_utc": [
+        {
+         "endtime": "2026-11-14T07:59:59",
+         "starttime": "2026-11-01T00:00:00"
+        }
+       ],
+       "origin": "17561"
+      },
+      {
+       "intervals_utc": [
+        {
+         "endtime": "2026-11-16T00:00:00",
+         "starttime": "2026-11-15T16:00:00"
+        }
+       ],
+       "origin": "137410"
+      },
+      {
+       "intervals_utc": [
+        {
+         "endtime": "2026-11-15T07:59:59",
+         "starttime": "2026-11-14T16:00:00"
+        }
+       ],
+       "origin": "218568"
+      }
+     ],
+     "query_endtime": "2026-11-16T00:00:00",
+     "query_starttime": "2026-11-01T00:00:00"
+    },
+    "retrieved_at": "2026-11-16T07:23:21+00:00",
+    "sha256": "5ec85ba75a04ee6b1ca6738f9e35f9c9e351b4b471bf0b7cf2020732f8b1c277",
+    "url": "https://stat.ripe.net/data/routing-history/data.json?resource=177.122.241.0%2F24&starttime=2026-11-01T00%3A00%3A00Z&endtime=2026-11-16T00%3A00%3A00Z&min_peers=10&normalise_visibility=true"
+   },
+   "ptr": {
+    "177.122.241.1": {
+     "http": 200,
+     "key": "ptr-177.122.241.1",
+     "observation": {
+      "Status": 3
+     },
+     "retrieved_at": "2026-11-16T07:16:55+00:00",
+     "sha256": "7f0f71cf90574f292b7e3fd34dc03ccc3ff1989b8504d73e1e39204d4e58a719",
+     "url": "https://dns.google/resolve?name=1.241.122.177.in-addr.arpa&type=PTR"
+    },
+    "177.122.241.2": {
+     "http": 200,
+     "key": "ptr-177.122.241.2",
+     "observation": {
+      "Status": 3
+     },
+     "retrieved_at": "2026-11-16T07:16:55+00:00",
+     "sha256": "88902465504893c122efb862802550f013a8eeb35bc8e6a52d4cdc71af35e0ee",
+     "url": "https://dns.google/resolve?name=2.241.122.177.in-addr.arpa&type=PTR"
+    }
+   },
+   "ripe_irr_route_objects": {
+    "http": 200,
+    "observation": [
+     {
+      "created": "2026-11-15T07:31:50Z",
+      "descr": "Novacart-Commerce-llc",
+      "last-modified": "2026-11-15T07:31:50Z",
+      "mnt-by": "hk-larus-1-mnt",
+      "origin": "AS137410",
+      "route": "177.122.241.0/24",
+      "source": "RIPE"
+     }
+    ],
+    "retrieved_at": "2026-11-16T07:22:43+00:00",
+    "sha256": "e31fdf3e0863be9f5b270b47da4f3e584abeb9305d56c77511ad35ae7e3ba6b0",
+    "url": "https://rest.db.ripe.net/search.json?query-string=177.122.241.0%2F24&type-filter=route&flags=x&flags=no-referenced&source=ripe"
+   },
+   "ripe_rdap": {
+    "http": 200,
+    "key": "ripe-177.122.241.0",
+    "observation": {
+     "country": "HK",
+     "endAddress": "177.122.241.255",
+     "handle": "177.122.241.0 - 177.122.241.255",
+     "name": "Novacart-Commerce-llc",
+     "port43": "whois.ripe.net",
+     "startAddress": "177.122.241.0"
+    },
+    "retrieved_at": "2026-11-16T07:16:56+00:00",
+    "sha256": "3ff2421c3964248198db43620e169e401a54c99c459143716e467547aaf99cee",
+    "url": "https://rdap.db.ripe.net/ip/177.122.241.0/24"
+   },
+   "routeviews": {
+    "http": 200,
+    "observation": [
+     {
+      "collectors": [
+       "amsix.ams",
+       "ix-br2.gru",
+       "route-views.linx",
+       "route-views.napafrica",
+       "route-views.sydney",
+       "route-views3",
+       "route-views4",
+       "route-views5"
+      ],
+      "first_path_timestamp_utc": "2026-11-16T07:15:37Z",
+      "latest_path_timestamp_utc": "2026-11-16T07:17:39Z",
+      "origin": 137410,
+      "path_rows": 155,
+      "preceding_asn_path_counts": {
+       "62610": 155
+      },
+      "rpki_roas": [
+       {
+        "asn": 17561,
+        "expires": "2026-11-17T00:00:53Z",
+        "max_length": 24,
+        "prefix": "177.122.241.0/24",
+        "ta": "ripe"
+       },
+       {
+        "asn": 137410,
+        "expires": "2026-11-17T00:00:53Z",
+        "max_length": 24,
+        "prefix": "177.122.241.0/24",
+        "ta": "ripe"
+       },
+       {
+        "asn": 218568,
+        "expires": "2026-11-17T00:00:53Z",
+        "max_length": 24,
+        "prefix": "177.122.241.0/24",
+        "ta": "ripe"
+       }
+      ],
+      "rpki_state": "valid"
+     },
+     {
+      "collectors": [
+       "route-views.sg"
+      ],
+      "first_path_timestamp_utc": "2026-11-07T00:00:09Z",
+      "latest_path_timestamp_utc": "2026-11-07T00:00:09Z",
+      "origin": 17561,
+      "path_rows": 20,
+      "preceding_asn_path_counts": {
+       "17497": 20
+      },
+      "rpki_roas": [
+       {
+        "asn": 17561,
+        "expires": "2026-11-17T00:00:53Z",
+        "max_length": 24,
+        "prefix": "177.122.241.0/24",
+        "ta": "ripe"
+       },
+       {
+        "asn": 137410,
+        "expires": "2026-11-17T00:00:53Z",
+        "max_length": 24,
+        "prefix": "177.122.241.0/24",
+        "ta": "ripe"
+       },
+       {
+        "asn": 218568,
+        "expires": "2026-11-17T00:00:53Z",
+        "max_length": 24,
+        "prefix": "177.122.241.0/24",
+        "ta": "ripe"
+       }
+      ],
+      "rpki_state": "valid"
+     }
+    ],
+    "retrieved_at": "2026-11-16T07:17:49+00:00",
+    "sha256": "f9500ed1ccdc7b0942538026b0e346eb18af6e6301af0d69cc1caa4ad9be5e6e",
+    "url": "https://api.routeviews.org/prefix/177.122.241.0/24"
+   },
+   "routing_admission": {
+    "candidate_direct_addresses": 0,
+    "published_direct_addresses": 256
+   },
+   "routing_status": [
+    {
+     "http": 200,
+     "key": "ris-177.122.241.0-15T00",
+     "observation": {
+      "less_specifics": [],
+      "more_specifics": [],
+      "origins": [
+       {
+        "origin": 218568,
+        "route_objects": [
+         "RADB"
+        ]
+       }
+      ],
+      "query_time": "2026-11-15T00:00:00",
+      "visibility": {
+       "v4": {
+        "ris_peers_seeing": 319,
+        "total_ris_peers": 320
+       },
+       "v6": {
+        "ris_peers_seeing": 0,
+        "total_ris_peers": 0
+       }
+      }
+     },
+     "retrieved_at": "2026-11-16T07:16:52+00:00",
+     "sha256": "b84bc4425476d3ebd2eeab610f27805acecbf10d152c1f490b58289fea465430",
+     "url": "https://stat.ripe.net/data/routing-status/data.json?resource=177.122.241.0%2F24&timestamp=2026-11-15T00%3A00%3A00Z&min_peers_seeing=1"
+    },
+    {
+     "http": 200,
+     "key": "ris-177.122.241.0-15T08",
+     "observation": {
+      "less_specifics": [],
+      "more_specifics": [],
+      "origins": [
+       {
+        "origin": 218568,
+        "route_objects": [
+         "RADB"
+        ]
+       }
+      ],
+      "query_time": "2026-11-15T08:00:00",
+      "visibility": {
+       "v4": {
+        "ris_peers_seeing": 1,
+        "total_ris_peers": 320
+       },
+       "v6": {
+        "ris_peers_seeing": 0,
+        "total_ris_peers": 0
+       }
+      }
+     },
+     "retrieved_at": "2026-11-16T07:16:52+00:00",
+     "sha256": "5bf59ce57d62e10139a2444e5415b7e59163fb42bf5dd8c06fdaf02a417e7d6f",
+     "url": "https://stat.ripe.net/data/routing-status/data.json?resource=177.122.241.0%2F24&timestamp=2026-11-15T08%3A00%3A00Z&min_peers_seeing=1"
+    },
+    {
+     "http": 200,
+     "key": "ris-177.122.241.0-15T16",
+     "observation": {
+      "less_specifics": [],
+      "more_specifics": [],
+      "origins": [
+       {
+        "origin": 137410,
+        "route_objects": [
+         "RADB",
+         "RIPE"
+        ]
+       }
+      ],
+      "query_time": "2026-11-15T16:00:00",
+      "visibility": {
+       "v4": {
+        "ris_peers_seeing": 318,
+        "total_ris_peers": 321
+       },
+       "v6": {
+        "ris_peers_seeing": 0,
+        "total_ris_peers": 0
+       }
+      }
+     },
+     "retrieved_at": "2026-11-16T07:16:57+00:00",
+     "sha256": "5a73ade868324fcda140aab73049af348b1001787f7b8e572e00c3fef6405ad2",
+     "url": "https://stat.ripe.net/data/routing-status/data.json?resource=177.122.241.0%2F24&timestamp=2026-11-15T16%3A00%3A00Z&min_peers_seeing=1"
+    },
+    {
+     "http": 200,
+     "key": "ris-177.122.241.0-16T00",
+     "observation": {
+      "less_specifics": [],
+      "more_specifics": [],
+      "origins": [
+       {
+        "origin": 137410,
+        "route_objects": [
+         "RADB",
+         "RIPE"
+        ]
+       }
+      ],
+      "query_time": "2026-11-16T00:00:00",
+      "visibility": {
+       "v4": {
+        "ris_peers_seeing": 317,
+        "total_ris_peers": 319
+       },
+       "v6": {
+        "ris_peers_seeing": 0,
+        "total_ris_peers": 0
+       }
+      }
+     },
+     "retrieved_at": "2026-11-16T07:16:57+00:00",
+     "sha256": "e0743f809a26853ba016e2d13e028ee23f0b659b30d4198176e0b1e3890b536b",
+     "url": "https://stat.ripe.net/data/routing-status/data.json?resource=177.122.241.0%2F24&timestamp=2026-11-16T00%3A00%3A00Z&min_peers_seeing=1"
+    }
+   ],
+   "rpki_pairs": {
+    "137410": {
+     "http": 200,
+     "observation": {
+      "status": "valid",
+      "validating_roas": [
+       {
+        "max_length": 24,
+        "origin": "137410",
+        "prefix": "177.122.241.0/24",
+        "validity": "valid"
+       }
+      ],
+      "validator": "routinator"
+     },
+     "retrieved_at": "2026-11-16T07:24:10+00:00",
+     "sha256": "ebf1f32e879e38b64f6898a6016cfa1ed2df98659f63e822558ffe332b8708d2",
+     "url": "https://stat.ripe.net/data/rpki-validation/data.json?resource=AS137410&prefix=177.122.241.0%2F24"
+    },
+    "17561": {
+     "http": 200,
+     "observation": {
+      "status": "valid",
+      "validating_roas": [
+       {
+        "max_length": 24,
+        "origin": "17561",
+        "prefix": "177.122.241.0/24",
+        "validity": "valid"
+       }
+      ],
+      "validator": "routinator"
+     },
+     "retrieved_at": "2026-11-16T07:24:10+00:00",
+     "sha256": "8ff8bea3fe2bb47c059e3185af78d2c21547c2b54eec0ddfc9a7a8fd34b62a92",
+     "url": "https://stat.ripe.net/data/rpki-validation/data.json?resource=AS17561&prefix=177.122.241.0%2F24"
+    },
+    "218568": {
+     "http": 200,
+     "observation": {
+      "status": "valid",
+      "validating_roas": [
+       {
+        "max_length": 24,
+        "origin": "218568",
+        "prefix": "177.122.241.0/24",
+        "validity": "valid"
+       }
+      ],
+      "validator": "routinator"
+     },
+     "retrieved_at": "2026-11-16T07:24:10+00:00",
+     "sha256": "722424b34c29e55d5cb9765791ca117a03896662a64805369df04ac0f6f1f2c4",
+     "url": "https://stat.ripe.net/data/rpki-validation/data.json?resource=AS218568&prefix=177.122.241.0%2F24"
+    }
+   }
+  },
+  "177.166.74.0/24": {
+   "adjacent_control": false,
+   "bgp_state": [
+    {
+     "http": 200,
+     "observation": {
+      "actual_state_time_utc": "2026-11-15T07:30:00",
+      "exact_origin_immediate_neighbor_path_counts": [
+       {
+        "origin": 219262,
+        "path_rows": 1,
+        "preceding_asn": 401322
+       }
+      ],
+      "exact_path_rows": 1,
+      "other_prefix_path_rows": {},
+      "reported_total_routes": 1
+     },
+     "retrieved_at": "2026-11-16T07:22:17+00:00",
+     "sha256": "e69147bd7152be88ea9201aefdc80bce547bda2d4e3f30f8d459ee7b52024703",
+     "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=177.166.74.0%2F24&timestamp=2026-11-15T07%3A30%3A00Z"
+    },
+    {
+     "http": 200,
+     "observation": {
+      "actual_state_time_utc": "2026-11-15T14:00:00",
+      "exact_origin_immediate_neighbor_path_counts": [],
+      "exact_path_rows": 0,
+      "other_prefix_path_rows": {},
+      "reported_total_routes": 0
+     },
+     "retrieved_at": "2026-11-16T07:22:16+00:00",
+     "sha256": "e1c05a2971300f064a1f18ef7b9b5617195a57f2106d3872540c7d5de841090f",
+     "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=177.166.74.0%2F24&timestamp=2026-11-15T14%3A00%3A00Z"
+    },
+    {
+     "http": 200,
+     "observation": {
+      "actual_state_time_utc": "2026-11-15T14:30:00",
+      "exact_origin_immediate_neighbor_path_counts": [
+       {
+        "origin": 137410,
+        "path_rows": 340,
+        "preceding_asn": 62610
+       }
+      ],
+      "exact_path_rows": 340,
+      "other_prefix_path_rows": {},
+      "reported_total_routes": 340
+     },
+     "retrieved_at": "2026-11-16T07:22:17+00:00",
+     "sha256": "2dc23e4c5b4c3047af769da1445b2a4c556ec0931d50af5a3cdaecefda6b1427",
+     "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=177.166.74.0%2F24&timestamp=2026-11-15T14%3A30%3A00Z"
+    },
+    {
+     "http": 200,
+     "observation": {
+      "actual_state_time_utc": "2026-11-16T03:59:48",
+      "exact_origin_immediate_neighbor_path_counts": [
+       {
+        "origin": 137410,
+        "path_rows": 325,
+        "preceding_asn": 62610
+       }
+      ],
+      "exact_path_rows": 325,
+      "other_prefix_path_rows": {},
+      "reported_total_routes": 325
+     },
+     "retrieved_at": "2026-11-16T07:22:32+00:00",
+     "sha256": "b65dd3949b32313db6e56f900d573b6872469a7dc8b5b694c5116066ee9822b0",
+     "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=177.166.74.0%2F24&timestamp=2026-11-16T06%3A58%3A00Z"
+    },
+    {
+     "http": 200,
+     "observation": {
+      "actual_state_time_utc": "2026-11-14T16:00:00",
+      "exact_origin_immediate_neighbor_path_counts": [],
+      "exact_path_rows": 0,
+      "other_prefix_path_rows": {},
+      "reported_total_routes": 0
+     },
+     "retrieved_at": "2026-11-16T07:24:19+00:00",
+     "sha256": "f2b16ba566a32a400468b843a6b1f75840cc4f6ee2fb99ef77669f0c92c8644b",
+     "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=177.166.74.0%2F24&timestamp=2026-11-14T16%3A00%3A00Z"
+    },
+    {
+     "http": 200,
+     "observation": {
+      "actual_state_time_utc": "2026-11-15T06:59:00",
+      "exact_origin_immediate_neighbor_path_counts": [
+       {
+        "origin": 219262,
+        "path_rows": 324,
+        "preceding_asn": 401322
+       }
+      ],
+      "exact_path_rows": 324,
+      "other_prefix_path_rows": {},
+      "reported_total_routes": 324
+     },
+     "retrieved_at": "2026-11-16T07:24:19+00:00",
+     "sha256": "557932ebbec4a7ae9a080d9780873f7c1accdf2912f36460ff61c0e66182526c",
+     "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=177.166.74.0%2F24&timestamp=2026-11-15T06%3A59%3A00Z"
+    },
+    {
+     "http": 200,
+     "observation": {
+      "actual_state_time_utc": "2026-11-15T14:10:00",
+      "exact_origin_immediate_neighbor_path_counts": [],
+      "exact_path_rows": 0,
+      "other_prefix_path_rows": {},
+      "reported_total_routes": 0
+     },
+     "retrieved_at": "2026-11-16T07:24:19+00:00",
+     "sha256": "26861507f106f67bd00da29e443dd53b44a3f9880fd8595022691023312d3da9",
+     "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=177.166.74.0%2F24&timestamp=2026-11-15T14%3A10%3A00Z"
+    },
+    {
+     "http": 200,
+     "observation": {
+      "actual_state_time_utc": "2026-11-15T15:00:00",
+      "exact_origin_immediate_neighbor_path_counts": [
+       {
+        "origin": 137410,
+        "path_rows": 340,
+        "preceding_asn": 62610
+       }
+      ],
+      "exact_path_rows": 340,
+      "other_prefix_path_rows": {},
+      "reported_total_routes": 340
+     },
+     "retrieved_at": "2026-11-16T07:24:20+00:00",
+     "sha256": "90e07592c9da9195eb0e1ec7d0d6f49e7e40c139592c15173600dfecc72c5f5a",
+     "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=177.166.74.0%2F24&timestamp=2026-11-15T15%3A00%3A00Z"
+    }
+   ],
+   "bgp_update_windows": [
+    {
+     "http": 200,
+     "observation": {
+      "exact_updates": [
+       {
+        "first_timestamp_utc": "2026-11-15T05:24:59",
+        "last_timestamp_utc": "2026-11-15T07:26:45",
+        "origin": 219262,
+        "previous_asns": [
+         401322
+        ],
+        "type": "A",
+        "unique_collector_peer_ids": 289,
+        "updates": 1090
+       },
+       {
+        "first_timestamp_utc": "2026-11-15T07:05:32",
+        "last_timestamp_utc": "2026-11-15T07:26:45",
+        "origin": null,
+        "previous_asns": [],
+        "type": "W",
+        "unique_collector_peer_ids": 328,
+        "updates": 401
+       }
+      ],
+      "nr_updates": 1491,
+      "query_endtime": "2026-11-15T08:00:00",
+      "query_starttime": "2026-11-15T00:00:00"
+     },
+     "retrieved_at": "2026-11-16T07:17:47+00:00",
+     "sha256": "ee7e4fca320843250c62b6b72e436147bbd248fe21ce0beffd0961ca8eea1d57",
+     "url": "https://stat.ripe.net/data/bgp-updates/data.json?resource=177.166.74.0%2F24&starttime=2026-11-15T00%3A00%3A00Z&endtime=2026-11-15T08%3A00%3A00Z"
+    },
+    {
+     "http": 200,
+     "observation": {
+      "exact_updates": [
+       {
+        "first_timestamp_utc": "2026-11-15T14:16:44",
+        "last_timestamp_utc": "2026-11-15T15:42:15",
+        "origin": 137410,
+        "previous_asns": [
+         62610
+        ],
+        "type": "A",
+        "unique_collector_peer_ids": 343,
+        "updates": 727
+       },
+       {
+        "first_timestamp_utc": "2026-11-15T09:59:55",
+        "last_timestamp_utc": "2026-11-15T14:17:18",
+        "origin": null,
+        "previous_asns": [],
+        "type": "W",
+        "unique_collector_peer_ids": 4,
+        "updates": 4
+       }
+      ],
+      "nr_updates": 731,
+      "query_endtime": "2026-11-15T16:00:00",
+      "query_starttime": "2026-11-15T08:00:00"
+     },
+     "retrieved_at": "2026-11-16T07:17:45+00:00",
+     "sha256": "8881d18c8e49d5161ace75536e59da0d4bce7d1c98c5fc8785ffab36aff8aef8",
+     "url": "https://stat.ripe.net/data/bgp-updates/data.json?resource=177.166.74.0%2F24&starttime=2026-11-15T08%3A00%3A00Z&endtime=2026-11-15T16%3A00%3A00Z"
+    }
+   ],
+   "historical_origin": 219262,
+   "history": {
+    "http": 200,
+    "observation": {
+     "exact_timelines": [
+      {
+       "intervals_utc": [
+        {
+         "endtime": "2026-11-14T15:59:59",
+         "starttime": "2026-11-01T00:00:00"
+        }
+       ],
+       "origin": "17561"
+      },
+      {
+       "intervals_utc": [
+        {
+         "endtime": "2026-11-16T00:00:00",
+         "starttime": "2026-11-15T16:00:00"
+        }
+       ],
+       "origin": "137410"
+      },
+      {
+       "intervals_utc": [
+        {
+         "endtime": "2026-11-15T07:59:59",
+         "starttime": "2026-11-15T00:00:00"
+        }
+       ],
+       "origin": "219262"
+      }
+     ],
+     "query_endtime": "2026-11-16T00:00:00",
+     "query_starttime": "2026-11-01T00:00:00"
+    },
+    "retrieved_at": "2026-11-16T07:23:21+00:00",
+    "sha256": "25b38b0af56e5afc98e988cf366938679b9d8246845c2b6e6a03a5948b32f7f6",
+    "url": "https://stat.ripe.net/data/routing-history/data.json?resource=177.166.74.0%2F24&starttime=2026-11-01T00%3A00%3A00Z&endtime=2026-11-16T00%3A00%3A00Z&min_peers=10&normalise_visibility=true"
+   },
+   "ptr": {
+    "177.166.74.1": {
+     "http": 200,
+     "key": "ptr-177.166.74.1",
+     "observation": {
+      "Status": 3
+     },
+     "retrieved_at": "2026-11-16T07:17:01+00:00",
+     "sha256": "b6b3540c156eabd17e6754db4ed0054d88376a6a8d9670084487aba84276b876",
+     "url": "https://dns.google/resolve?name=1.74.166.177.in-addr.arpa&type=PTR"
+    },
+    "177.166.74.2": {
+     "http": 200,
+     "key": "ptr-177.166.74.2",
+     "observation": {
+      "Status": 3
+     },
+     "retrieved_at": "2026-11-16T07:17:01+00:00",
+     "sha256": "21ea40f085c3b984594a7f0e4135f489b9b3caec88381b74859eb9e72c5a11bf",
+     "url": "https://dns.google/resolve?name=2.74.166.177.in-addr.arpa&type=PTR"
+    }
+   },
+   "ripe_irr_route_objects": {
+    "http": 200,
+    "observation": [
+     {
+      "created": "2026-11-15T07:31:53Z",
+      "descr": "Novacart-Commerce-llc",
+      "last-modified": "2026-11-15T07:31:53Z",
+      "mnt-by": "hk-larus-1-mnt",
+      "origin": "AS137410",
+      "route": "177.166.74.0/24",
+      "source": "RIPE"
+     }
+    ],
+    "retrieved_at": "2026-11-16T07:22:43+00:00",
+    "sha256": "9f031fe968524b2d9ba708b65d21335290568ff96024bfb046c4795b45a296e0",
+    "url": "https://rest.db.ripe.net/search.json?query-string=177.166.74.0%2F24&type-filter=route&flags=x&flags=no-referenced&source=ripe"
+   },
+   "ripe_rdap": {
+    "http": 200,
+    "key": "ripe-177.166.74.0",
+    "observation": {
+     "country": "HK",
+     "endAddress": "177.166.74.255",
+     "handle": "177.166.74.0 - 177.166.74.255",
+     "name": "Novacart-Commerce-llc",
+     "port43": "whois.ripe.net",
+     "startAddress": "177.166.74.0"
+    },
+    "retrieved_at": "2026-11-16T07:17:00+00:00",
+    "sha256": "35815d713470e6dd9761ecf2dfa1ad97987e028168dc98405b0b5c63fc74a7d7",
+    "url": "https://rdap.db.ripe.net/ip/177.166.74.0/24"
+   },
+   "routeviews": {
+    "http": 200,
+    "observation": [
+     {
+      "collectors": [
+       "amsix.ams",
+       "ix-br2.gru",
+       "route-views.linx",
+       "route-views.napafrica",
+       "route-views.sydney",
+       "route-views3",
+       "route-views4",
+       "route-views5"
+      ],
+      "first_path_timestamp_utc": "2026-11-15T18:03:55Z",
+      "latest_path_timestamp_utc": "2026-11-16T05:04:21Z",
+      "origin": 137410,
+      "path_rows": 155,
+      "preceding_asn_path_counts": {
+       "62610": 155
+      },
+      "rpki_roas": [
+       {
+        "asn": 17561,
+        "expires": "2026-11-17T00:00:53Z",
+        "max_length": 24,
+        "prefix": "177.166.74.0/24",
+        "ta": "ripe"
+       },
+       {
+        "asn": 137410,
+        "expires": "2026-11-17T00:00:53Z",
+        "max_length": 24,
+        "prefix": "177.166.74.0/24",
+        "ta": "ripe"
+       },
+       {
+        "asn": 219262,
+        "expires": "2026-11-17T00:00:53Z",
+        "max_length": 24,
+        "prefix": "177.166.74.0/24",
+        "ta": "ripe"
+       }
+      ],
+      "rpki_state": "valid"
+     },
+     {
+      "collectors": [
+       "route-views.sg"
+      ],
+      "first_path_timestamp_utc": "2026-11-07T00:00:09Z",
+      "latest_path_timestamp_utc": "2026-11-07T00:00:09Z",
+      "origin": 17561,
+      "path_rows": 20,
+      "preceding_asn_path_counts": {
+       "17497": 20
+      },
+      "rpki_roas": [
+       {
+        "asn": 17561,
+        "expires": "2026-11-17T00:00:53Z",
+        "max_length": 24,
+        "prefix": "177.166.74.0/24",
+        "ta": "ripe"
+       },
+       {
+        "asn": 137410,
+        "expires": "2026-11-17T00:00:53Z",
+        "max_length": 24,
+        "prefix": "177.166.74.0/24",
+        "ta": "ripe"
+       },
+       {
+        "asn": 219262,
+        "expires": "2026-11-17T00:00:53Z",
+        "max_length": 24,
+        "prefix": "177.166.74.0/24",
+        "ta": "ripe"
+       }
+      ],
+      "rpki_state": "valid"
+     }
+    ],
+    "retrieved_at": "2026-11-16T07:17:49+00:00",
+    "sha256": "7faed99bdc070028db3e584276131cb0a905efa9f3a45dbb638a5eb30a2aabbd",
+    "url": "https://api.routeviews.org/prefix/177.166.74.0/24"
+   },
+   "routing_admission": {
+    "candidate_direct_addresses": 0,
+    "published_direct_addresses": 256
+   },
+   "routing_status": [
+    {
+     "http": 200,
+     "key": "ris-177.166.74.0-15T00",
+     "observation": {
+      "less_specifics": [],
+      "more_specifics": [],
+      "origins": [
+       {
+        "origin": 219262,
+        "route_objects": [
+         "RADB"
+        ]
+       }
+      ],
+      "query_time": "2026-11-15T00:00:00",
+      "visibility": {
+       "v4": {
+        "ris_peers_seeing": 318,
+        "total_ris_peers": 320
+       },
+       "v6": {
+        "ris_peers_seeing": 0,
+        "total_ris_peers": 0
+       }
+      }
+     },
+     "retrieved_at": "2026-11-16T07:16:57+00:00",
+     "sha256": "126d343dd229093440dc4c281fd634e2066c8e60d3f7d44ffc2d553b0ddbbc12",
+     "url": "https://stat.ripe.net/data/routing-status/data.json?resource=177.166.74.0%2F24&timestamp=2026-11-15T00%3A00%3A00Z&min_peers_seeing=1"
+    },
+    {
+     "http": 200,
+     "key": "ris-177.166.74.0-15T08",
+     "observation": {
+      "less_specifics": [],
+      "more_specifics": [],
+      "origins": [
+       {
+        "origin": 219262,
+        "route_objects": [
+         "RADB"
+        ]
+       }
+      ],
+      "query_time": "2026-11-15T08:00:00",
+      "visibility": {
+       "v4": {
+        "ris_peers_seeing": 1,
+        "total_ris_peers": 320
+       },
+       "v6": {
+        "ris_peers_seeing": 0,
+        "total_ris_peers": 0
+       }
+      }
+     },
+     "retrieved_at": "2026-11-16T07:16:57+00:00",
+     "sha256": "aad03f6b49ea0ae6895d86a88885fbb57a8641d1471fd9df701ab4ae9228c16e",
+     "url": "https://stat.ripe.net/data/routing-status/data.json?resource=177.166.74.0%2F24&timestamp=2026-11-15T08%3A00%3A00Z&min_peers_seeing=1"
+    },
+    {
+     "http": 200,
+     "key": "ris-177.166.74.0-15T16",
+     "observation": {
+      "less_specifics": [],
+      "more_specifics": [],
+      "origins": [
+       {
+        "origin": 137410,
+        "route_objects": [
+         "RADB",
+         "RIPE"
+        ]
+       }
+      ],
+      "query_time": "2026-11-15T16:00:00",
+      "visibility": {
+       "v4": {
+        "ris_peers_seeing": 318,
+        "total_ris_peers": 321
+       },
+       "v6": {
+        "ris_peers_seeing": 0,
+        "total_ris_peers": 0
+       }
+      }
+     },
+     "retrieved_at": "2026-11-16T07:16:57+00:00",
+     "sha256": "bb14807ebb9ae0d2286c59ad91b079dd8a8c7d7e6a3bf89a5b21eae21880b6b5",
+     "url": "https://stat.ripe.net/data/routing-status/data.json?resource=177.166.74.0%2F24&timestamp=2026-11-15T16%3A00%3A00Z&min_peers_seeing=1"
+    },
+    {
+     "http": 200,
+     "key": "ris-177.166.74.0-16T00",
+     "observation": {
+      "less_specifics": [],
+      "more_specifics": [],
+      "origins": [
+       {
+        "origin": 137410,
+        "route_objects": [
+         "RADB",
+         "RIPE"
+        ]
+       }
+      ],
+      "query_time": "2026-11-16T00:00:00",
+      "visibility": {
+       "v4": {
+        "ris_peers_seeing": 316,
+        "total_ris_peers": 319
+       },
+       "v6": {
+        "ris_peers_seeing": 0,
+        "total_ris_peers": 0
+       }
+      }
+     },
+     "retrieved_at": "2026-11-16T07:16:57+00:00",
+     "sha256": "c6b0282aa71a182f2345cca9db4b8e616485299a640a355de78a67b0cc4995bf",
+     "url": "https://stat.ripe.net/data/routing-status/data.json?resource=177.166.74.0%2F24&timestamp=2026-11-16T00%3A00%3A00Z&min_peers_seeing=1"
+    }
+   ],
+   "rpki_pairs": {
+    "137410": {
+     "http": 200,
+     "observation": {
+      "status": "valid",
+      "validating_roas": [
+       {
+        "max_length": 24,
+        "origin": "137410",
+        "prefix": "177.166.74.0/24",
+        "validity": "valid"
+       }
+      ],
+      "validator": "routinator"
+     },
+     "retrieved_at": "2026-11-16T07:24:15+00:00",
+     "sha256": "51e16937912faf3e02acaab80a8248f00bb50c7b77c1a7e1f0584c6d09701bce",
+     "url": "https://stat.ripe.net/data/rpki-validation/data.json?resource=AS137410&prefix=177.166.74.0%2F24"
+    },
+    "17561": {
+     "http": 200,
+     "observation": {
+      "status": "valid",
+      "validating_roas": [
+       {
+        "max_length": 24,
+        "origin": "17561",
+        "prefix": "177.166.74.0/24",
+        "validity": "valid"
+       }
+      ],
+      "validator": "routinator"
+     },
+     "retrieved_at": "2026-11-16T07:24:15+00:00",
+     "sha256": "814fd61fd83364619011ef602531fadbbdde01e5796e79bfa4fc77a355e02c44",
+     "url": "https://stat.ripe.net/data/rpki-validation/data.json?resource=AS17561&prefix=177.166.74.0%2F24"
+    },
+    "219262": {
+     "http": 200,
+     "observation": {
+      "status": "valid",
+      "validating_roas": [
+       {
+        "max_length": 24,
+        "origin": "219262",
+        "prefix": "177.166.74.0/24",
+        "validity": "valid"
+       }
+      ],
+      "validator": "routinator"
+     },
+     "retrieved_at": "2026-11-16T07:24:15+00:00",
+     "sha256": "c340c2080c6c16087908f740e532a072a60a1cc14dd0e71868d63e0491074ec9",
+     "url": "https://stat.ripe.net/data/rpki-validation/data.json?resource=AS219262&prefix=177.166.74.0%2F24"
+    }
+   }
+  },
+  "177.166.78.0/24": {
+   "adjacent_control": false,
+   "bgp_state": [
+    {
+     "http": 200,
+     "observation": {
+      "actual_state_time_utc": "2026-11-15T07:30:00",
+      "exact_origin_immediate_neighbor_path_counts": [
+       {
+        "origin": 219238,
+        "path_rows": 1,
+        "preceding_asn": 401322
+       }
+      ],
+      "exact_path_rows": 1,
+      "other_prefix_path_rows": {},
+      "reported_total_routes": 1
+     },
+     "retrieved_at": "2026-11-16T07:22:21+00:00",
+     "sha256": "904369fa83b43cc988ef6eede576a2dfa7b611d19745bbfeb181935c96fdf4aa",
+     "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=177.166.78.0%2F24&timestamp=2026-11-15T07%3A30%3A00Z"
+    },
+    {
+     "http": 200,
+     "observation": {
+      "actual_state_time_utc": "2026-11-15T14:00:00",
+      "exact_origin_immediate_neighbor_path_counts": [],
+      "exact_path_rows": 0,
+      "other_prefix_path_rows": {},
+      "reported_total_routes": 0
+     },
+     "retrieved_at": "2026-11-16T07:22:24+00:00",
+     "sha256": "7360c4a938f956b2dd8ba744c314f814989137cb033ad2943fe812dd2970a6ea",
+     "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=177.166.78.0%2F24&timestamp=2026-11-15T14%3A00%3A00Z"
+    },
+    {
+     "http": 200,
+     "observation": {
+      "actual_state_time_utc": "2026-11-15T14:30:00",
+      "exact_origin_immediate_neighbor_path_counts": [
+       {
+        "origin": 137410,
+        "path_rows": 340,
+        "preceding_asn": 62610
+       }
+      ],
+      "exact_path_rows": 340,
+      "other_prefix_path_rows": {},
+      "reported_total_routes": 340
+     },
+     "retrieved_at": "2026-11-16T07:22:23+00:00",
+     "sha256": "716f866244623771e7c3bbc2e1f49c6adfc02d29ee3c03e9a3f2fa538c74f909",
+     "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=177.166.78.0%2F24&timestamp=2026-11-15T14%3A30%3A00Z"
+    },
+    {
+     "http": 200,
+     "observation": {
+      "actual_state_time_utc": "2026-11-16T03:59:48",
+      "exact_origin_immediate_neighbor_path_counts": [
+       {
+        "origin": 137410,
+        "path_rows": 343,
+        "preceding_asn": 62610
+       }
+      ],
+      "exact_path_rows": 343,
+      "other_prefix_path_rows": {},
+      "reported_total_routes": 343
+     },
+     "retrieved_at": "2026-11-16T07:22:23+00:00",
+     "sha256": "5c3280a5efbeeb5b4e706685640e6c002bbf2a6d9b316bd5162094c490acaaab",
+     "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=177.166.78.0%2F24&timestamp=2026-11-16T06%3A58%3A00Z"
+    },
+    {
+     "http": 200,
+     "observation": {
+      "actual_state_time_utc": "2026-11-14T16:00:00",
+      "exact_origin_immediate_neighbor_path_counts": [],
+      "exact_path_rows": 0,
+      "other_prefix_path_rows": {},
+      "reported_total_routes": 0
+     },
+     "retrieved_at": "2026-11-16T07:24:24+00:00",
+     "sha256": "8eafe0a18a736e441e229cee9270f7e81f4328924aa7332674b5084e925e9f2b",
+     "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=177.166.78.0%2F24&timestamp=2026-11-14T16%3A00%3A00Z"
+    },
+    {
+     "http": 200,
+     "observation": {
+      "actual_state_time_utc": "2026-11-15T06:59:00",
+      "exact_origin_immediate_neighbor_path_counts": [
+       {
+        "origin": 219238,
+        "path_rows": 324,
+        "preceding_asn": 401322
+       }
+      ],
+      "exact_path_rows": 324,
+      "other_prefix_path_rows": {},
+      "reported_total_routes": 324
+     },
+     "retrieved_at": "2026-11-16T07:24:24+00:00",
+     "sha256": "b348615abe2e3762515cd47373ca3d11336f5dc92ebfce17278843f3ce8c8026",
+     "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=177.166.78.0%2F24&timestamp=2026-11-15T06%3A59%3A00Z"
+    },
+    {
+     "http": 200,
+     "observation": {
+      "actual_state_time_utc": "2026-11-15T14:10:00",
+      "exact_origin_immediate_neighbor_path_counts": [],
+      "exact_path_rows": 0,
+      "other_prefix_path_rows": {},
+      "reported_total_routes": 0
+     },
+     "retrieved_at": "2026-11-16T07:24:24+00:00",
+     "sha256": "65ec7e583f071c9a3cfb224cd9bf619a255d4661fa5b312891ffea8108f0390d",
+     "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=177.166.78.0%2F24&timestamp=2026-11-15T14%3A10%3A00Z"
+    },
+    {
+     "http": 200,
+     "observation": {
+      "actual_state_time_utc": "2026-11-15T15:00:00",
+      "exact_origin_immediate_neighbor_path_counts": [
+       {
+        "origin": 137410,
+        "path_rows": 340,
+        "preceding_asn": 62610
+       }
+      ],
+      "exact_path_rows": 340,
+      "other_prefix_path_rows": {},
+      "reported_total_routes": 340
+     },
+     "retrieved_at": "2026-11-16T07:24:24+00:00",
+     "sha256": "8b84bf23756dec07537860e7f4afb54754fae30c401a24bd4ab811eb1062787e",
+     "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=177.166.78.0%2F24&timestamp=2026-11-15T15%3A00%3A00Z"
+    }
+   ],
+   "bgp_update_windows": [
+    {
+     "http": 200,
+     "observation": {
+      "exact_updates": [
+       {
+        "first_timestamp_utc": "2026-11-15T05:35:50",
+        "last_timestamp_utc": "2026-11-15T07:26:45",
+        "origin": 219238,
+        "previous_asns": [
+         401322
+        ],
+        "type": "A",
+        "unique_collector_peer_ids": 277,
+        "updates": 1154
+       },
+       {
+        "first_timestamp_utc": "2026-11-15T07:03:36",
+        "last_timestamp_utc": "2026-11-15T07:26:45",
+        "origin": null,
+        "previous_asns": [],
+        "type": "W",
+        "unique_collector_peer_ids": 324,
+        "updates": 414
+       }
+      ],
+      "nr_updates": 1568,
+      "query_endtime": "2026-11-15T08:00:00",
+      "query_starttime": "2026-11-15T00:00:00"
+     },
+     "retrieved_at": "2026-11-16T07:17:45+00:00",
+     "sha256": "c9e04910b7dcd1a1afefb65b861321452d3bb6255ecfb8a05b578fb0302f5e00",
+     "url": "https://stat.ripe.net/data/bgp-updates/data.json?resource=177.166.78.0%2F24&starttime=2026-11-15T00%3A00%3A00Z&endtime=2026-11-15T08%3A00%3A00Z"
+    },
+    {
+     "http": 200,
+     "observation": {
+      "exact_updates": [
+       {
+        "first_timestamp_utc": "2026-11-15T14:17:22",
+        "last_timestamp_utc": "2026-11-15T15:42:15",
+        "origin": 137410,
+        "previous_asns": [
+         62610
+        ],
+        "type": "A",
+        "unique_collector_peer_ids": 342,
+        "updates": 752
+       },
+       {
+        "first_timestamp_utc": "2026-11-15T09:59:53",
+        "last_timestamp_utc": "2026-11-15T14:17:24",
+        "origin": null,
+        "previous_asns": [],
+        "type": "W",
+        "unique_collector_peer_ids": 3,
+        "updates": 3
+       }
+      ],
+      "nr_updates": 755,
+      "query_endtime": "2026-11-15T16:00:00",
+      "query_starttime": "2026-11-15T08:00:00"
+     },
+     "retrieved_at": "2026-11-16T07:19:06+00:00",
+     "sha256": "3e500028247176b7a2de373601ff6e161e09131991a29e668a37ef97aa08f3e1",
+     "url": "https://stat.ripe.net/data/bgp-updates/data.json?resource=177.166.78.0%2F24&starttime=2026-11-15T08%3A00%3A00Z&endtime=2026-11-15T16%3A00%3A00Z"
+    }
+   ],
+   "historical_origin": 219238,
+   "history": {
+    "http": 200,
+    "observation": {
+     "exact_timelines": [
+      {
+       "intervals_utc": [
+        {
+         "endtime": "2026-11-14T15:59:59",
+         "starttime": "2026-11-01T00:00:00"
+        }
+       ],
+       "origin": "17561"
+      },
+      {
+       "intervals_utc": [
+        {
+         "endtime": "2026-11-16T00:00:00",
+         "starttime": "2026-11-15T16:00:00"
+        }
+       ],
+       "origin": "137410"
+      },
+      {
+       "intervals_utc": [
+        {
+         "endtime": "2026-11-15T07:59:59",
+         "starttime": "2026-11-15T00:00:00"
+        }
+       ],
+       "origin": "219238"
+      }
+     ],
+     "query_endtime": "2026-11-16T00:00:00",
+     "query_starttime": "2026-11-01T00:00:00"
+    },
+    "retrieved_at": "2026-11-16T07:23:21+00:00",
+    "sha256": "e5dfd0def877d930d7c9effc8240b4e641a0cf8fa5c9cbb66a29a0cbacb64224",
+    "url": "https://stat.ripe.net/data/routing-history/data.json?resource=177.166.78.0%2F24&starttime=2026-11-01T00%3A00%3A00Z&endtime=2026-11-16T00%3A00%3A00Z&min_peers=10&normalise_visibility=true"
+   },
+   "ptr": {
+    "177.166.78.1": {
+     "http": 200,
+     "key": "ptr-177.166.78.1",
+     "observation": {
+      "Status": 3
+     },
+     "retrieved_at": "2026-11-16T07:17:05+00:00",
+     "sha256": "37c4e0a18091681f895fbde271dcc0db2cc947fd7e72b2e72a163c56c371747a",
+     "url": "https://dns.google/resolve?name=1.78.166.177.in-addr.arpa&type=PTR"
+    },
+    "177.166.78.2": {
+     "http": 200,
+     "key": "ptr-177.166.78.2",
+     "observation": {
+      "Status": 3
+     },
+     "retrieved_at": "2026-11-16T07:17:05+00:00",
+     "sha256": "3ac73a305e67a1ed5de3c6e8875f38602625266e2ffa655ace648778658b8355",
+     "url": "https://dns.google/resolve?name=2.78.166.177.in-addr.arpa&type=PTR"
+    }
+   },
+   "ripe_irr_route_objects": {
+    "http": 200,
+    "observation": [
+     {
+      "created": "2026-11-15T07:31:53Z",
+      "descr": "Novacart-Commerce-llc",
+      "last-modified": "2026-11-15T07:31:53Z",
+      "mnt-by": "hk-larus-1-mnt",
+      "origin": "AS137410",
+      "route": "177.166.78.0/24",
+      "source": "RIPE"
+     }
+    ],
+    "retrieved_at": "2026-11-16T07:22:43+00:00",
+    "sha256": "39f3106ac119d0d4693811acdb9e5fa01b2a44ad5f0b1a0a94986393f7caa9cd",
+    "url": "https://rest.db.ripe.net/search.json?query-string=177.166.78.0%2F24&type-filter=route&flags=x&flags=no-referenced&source=ripe"
+   },
+   "ripe_rdap": {
+    "http": 200,
+    "key": "ripe-177.166.78.0",
+    "observation": {
+     "country": "HK",
+     "endAddress": "177.166.78.255",
+     "handle": "177.166.78.0 - 177.166.78.255",
+     "name": "Novacart-Commerce-llc",
+     "port43": "whois.ripe.net",
+     "startAddress": "177.166.78.0"
+    },
+    "retrieved_at": "2026-11-16T07:17:05+00:00",
+    "sha256": "3fe109f8dd21bf056acf11375f1ce34bd5bd30a4fc8f94a0ee753fd8fbd125ed",
+    "url": "https://rdap.db.ripe.net/ip/177.166.78.0/24"
+   },
+   "routeviews": {
+    "http": 200,
+    "observation": [
+     {
+      "collectors": [
+       "amsix.ams",
+       "ix-br2.gru",
+       "route-views.linx",
+       "route-views.napafrica",
+       "route-views.sydney",
+       "route-views3",
+       "route-views4",
+       "route-views5"
+      ],
+      "first_path_timestamp_utc": "2026-11-16T07:15:00Z",
+      "latest_path_timestamp_utc": "2026-11-16T07:16:35Z",
+      "origin": 137410,
+      "path_rows": 155,
+      "preceding_asn_path_counts": {
+       "62610": 155
+      },
+      "rpki_roas": [
+       {
+        "asn": 17561,
+        "expires": "2026-11-17T00:00:53Z",
+        "max_length": 24,
+        "prefix": "177.166.78.0/24",
+        "ta": "ripe"
+       },
+       {
+        "asn": 137410,
+        "expires": "2026-11-17T00:00:53Z",
+        "max_length": 24,
+        "prefix": "177.166.78.0/24",
+        "ta": "ripe"
+       },
+       {
+        "asn": 219238,
+        "expires": "2026-11-17T00:00:53Z",
+        "max_length": 24,
+        "prefix": "177.166.78.0/24",
+        "ta": "ripe"
+       }
+      ],
+      "rpki_state": "valid"
+     },
+     {
+      "collectors": [
+       "route-views.sg"
+      ],
+      "first_path_timestamp_utc": "2026-11-07T00:00:09Z",
+      "latest_path_timestamp_utc": "2026-11-07T00:00:09Z",
+      "origin": 17561,
+      "path_rows": 20,
+      "preceding_asn_path_counts": {
+       "17497": 20
+      },
+      "rpki_roas": [
+       {
+        "asn": 17561,
+        "expires": "2026-11-17T00:00:53Z",
+        "max_length": 24,
+        "prefix": "177.166.78.0/24",
+        "ta": "ripe"
+       },
+       {
+        "asn": 137410,
+        "expires": "2026-11-17T00:00:53Z",
+        "max_length": 24,
+        "prefix": "177.166.78.0/24",
+        "ta": "ripe"
+       },
+       {
+        "asn": 219238,
+        "expires": "2026-11-17T00:00:53Z",
+        "max_length": 24,
+        "prefix": "177.166.78.0/24",
+        "ta": "ripe"
+       }
+      ],
+      "rpki_state": "valid"
+     }
+    ],
+    "retrieved_at": "2026-11-16T07:19:09+00:00",
+    "sha256": "5b2fbabbc4ea55221ee2c285f4a6e15ced07ba99e4594e4643d90139c6f643c6",
+    "url": "https://api.routeviews.org/prefix/177.166.78.0/24"
+   },
+   "routing_admission": {
+    "candidate_direct_addresses": 0,
+    "published_direct_addresses": 256
+   },
+   "routing_status": [
+    {
+     "http": 200,
+     "key": "ris-177.166.78.0-15T00",
+     "observation": {
+      "less_specifics": [],
+      "more_specifics": [],
+      "origins": [
+       {
+        "origin": 219238,
+        "route_objects": [
+         "RADB"
+        ]
+       }
+      ],
+      "query_time": "2026-11-15T00:00:00",
+      "visibility": {
+       "v4": {
+        "ris_peers_seeing": 318,
+        "total_ris_peers": 320
+       },
+       "v6": {
+        "ris_peers_seeing": 0,
+        "total_ris_peers": 0
+       }
+      }
+     },
+     "retrieved_at": "2026-11-16T07:17:01+00:00",
+     "sha256": "32e8ce836e9584f6b907bffac4392cb8201058e4eadcec01dcb48942c6e828f1",
+     "url": "https://stat.ripe.net/data/routing-status/data.json?resource=177.166.78.0%2F24&timestamp=2026-11-15T00%3A00%3A00Z&min_peers_seeing=1"
+    },
+    {
+     "http": 200,
+     "key": "ris-177.166.78.0-15T08",
+     "observation": {
+      "less_specifics": [],
+      "more_specifics": [],
+      "origins": [
+       {
+        "origin": 219238,
+        "route_objects": [
+         "RADB"
+        ]
+       }
+      ],
+      "query_time": "2026-11-15T08:00:00",
+      "visibility": {
+       "v4": {
+        "ris_peers_seeing": 1,
+        "total_ris_peers": 320
+       },
+       "v6": {
+        "ris_peers_seeing": 0,
+        "total_ris_peers": 0
+       }
+      }
+     },
+     "retrieved_at": "2026-11-16T07:17:03+00:00",
+     "sha256": "fd0a2f1c8a7b6082cd538feceb5e5750bd7995bb455b2488a3d4464597409c57",
+     "url": "https://stat.ripe.net/data/routing-status/data.json?resource=177.166.78.0%2F24&timestamp=2026-11-15T08%3A00%3A00Z&min_peers_seeing=1"
+    },
+    {
+     "http": 200,
+     "key": "ris-177.166.78.0-15T16",
+     "observation": {
+      "less_specifics": [],
+      "more_specifics": [],
+      "origins": [
+       {
+        "origin": 137410,
+        "route_objects": [
+         "RADB",
+         "RIPE"
+        ]
+       }
+      ],
+      "query_time": "2026-11-15T16:00:00",
+      "visibility": {
+       "v4": {
+        "ris_peers_seeing": 318,
+        "total_ris_peers": 321
+       },
+       "v6": {
+        "ris_peers_seeing": 0,
+        "total_ris_peers": 0
+       }
+      }
+     },
+     "retrieved_at": "2026-11-16T07:17:01+00:00",
+     "sha256": "62310b7060c9dd07311b4da19986b5c50a5de87d00bec91ebe5d2ecffba87db0",
+     "url": "https://stat.ripe.net/data/routing-status/data.json?resource=177.166.78.0%2F24&timestamp=2026-11-15T16%3A00%3A00Z&min_peers_seeing=1"
+    },
+    {
+     "http": 200,
+     "key": "ris-177.166.78.0-16T00",
+     "observation": {
+      "less_specifics": [],
+      "more_specifics": [],
+      "origins": [
+       {
+        "origin": 137410,
+        "route_objects": [
+         "RADB",
+         "RIPE"
+        ]
+       }
+      ],
+      "query_time": "2026-11-16T00:00:00",
+      "visibility": {
+       "v4": {
+        "ris_peers_seeing": 317,
+        "total_ris_peers": 319
+       },
+       "v6": {
+        "ris_peers_seeing": 0,
+        "total_ris_peers": 0
+       }
+      }
+     },
+     "retrieved_at": "2026-11-16T07:17:01+00:00",
+     "sha256": "58aed329b525eda6c82995f0c83d1819d761b645034fe2cc61442f4669155234",
+     "url": "https://stat.ripe.net/data/routing-status/data.json?resource=177.166.78.0%2F24&timestamp=2026-11-16T00%3A00%3A00Z&min_peers_seeing=1"
+    }
+   ],
+   "rpki_pairs": {
+    "137410": {
+     "http": 200,
+     "observation": {
+      "status": "valid",
+      "validating_roas": [
+       {
+        "max_length": 24,
+        "origin": "137410",
+        "prefix": "177.166.78.0/24",
+        "validity": "valid"
+       }
+      ],
+      "validator": "routinator"
+     },
+     "retrieved_at": "2026-11-16T07:24:22+00:00",
+     "sha256": "be7b95f758ee541b4e45637d6d19043c5e06fd3da9f8d203848723313695a679",
+     "url": "https://stat.ripe.net/data/rpki-validation/data.json?resource=AS137410&prefix=177.166.78.0%2F24"
+    },
+    "17561": {
+     "http": 200,
+     "observation": {
+      "status": "valid",
+      "validating_roas": [
+       {
+        "max_length": 24,
+        "origin": "17561",
+        "prefix": "177.166.78.0/24",
+        "validity": "valid"
+       }
+      ],
+      "validator": "routinator"
+     },
+     "retrieved_at": "2026-11-16T07:24:24+00:00",
+     "sha256": "33252107e304c795aebdfc9df702da86126d3fcd1b6fdfc143a94898c8a51989",
+     "url": "https://stat.ripe.net/data/rpki-validation/data.json?resource=AS17561&prefix=177.166.78.0%2F24"
+    },
+    "219238": {
+     "http": 200,
+     "observation": {
+      "status": "valid",
+      "validating_roas": [
+       {
+        "max_length": 24,
+        "origin": "219238",
+        "prefix": "177.166.78.0/24",
+        "validity": "valid"
+       }
+      ],
+      "validator": "routinator"
+     },
+     "retrieved_at": "2026-11-16T07:24:19+00:00",
+     "sha256": "8eb2f253c9d9e5d3ecf40936ffbc11f48cbda66d2433c6e89e2ef6b84e785e25",
+     "url": "https://stat.ripe.net/data/rpki-validation/data.json?resource=AS219238&prefix=177.166.78.0%2F24"
+    }
+   }
+  },
+  "177.29.252.0/24": {
+   "adjacent_control": true,
+   "bgp_state": [
+    {
+     "http": 200,
+     "observation": {
+      "actual_state_time_utc": "2026-11-15T07:30:00",
+      "exact_origin_immediate_neighbor_path_counts": [
+       {
+        "origin": 219305,
+        "path_rows": 325,
+        "preceding_asn": 401322
+       }
+      ],
+      "exact_path_rows": 325,
+      "other_prefix_path_rows": {},
+      "reported_total_routes": 325
+     },
+     "retrieved_at": "2026-11-16T07:22:28+00:00",
+     "sha256": "594fe010af5e9024ea1a78a58f54e2291f75dc0a7e3db16b9640890534794f29",
+     "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=177.29.252.0%2F24&timestamp=2026-11-15T07%3A30%3A00Z"
+    },
+    {
+     "http": 200,
+     "observation": {
+      "actual_state_time_utc": "2026-11-15T14:00:00",
+      "exact_origin_immediate_neighbor_path_counts": [
+       {
+        "origin": 219305,
+        "path_rows": 324,
+        "preceding_asn": 401322
+       }
+      ],
+      "exact_path_rows": 324,
+      "other_prefix_path_rows": {},
+      "reported_total_routes": 324
+     },
+     "retrieved_at": "2026-11-16T07:22:27+00:00",
+     "sha256": "277c64f7a4644be193f37033996c7afbaa3ac9ebbd62b9cc9e7841f38881b0ad",
+     "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=177.29.252.0%2F24&timestamp=2026-11-15T14%3A00%3A00Z"
+    },
+    {
+     "http": 200,
+     "observation": {
+      "actual_state_time_utc": "2026-11-15T14:30:00",
+      "exact_origin_immediate_neighbor_path_counts": [
+       {
+        "origin": 219305,
+        "path_rows": 324,
+        "preceding_asn": 401322
+       }
+      ],
+      "exact_path_rows": 324,
+      "other_prefix_path_rows": {},
+      "reported_total_routes": 324
+     },
+     "retrieved_at": "2026-11-16T07:22:27+00:00",
+     "sha256": "de424d88c0f8244343d312737907d2583c0e9098d05537bd0636f6d54f589274",
+     "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=177.29.252.0%2F24&timestamp=2026-11-15T14%3A30%3A00Z"
+    },
+    {
+     "http": 200,
+     "observation": {
+      "actual_state_time_utc": "2026-11-16T03:59:48",
+      "exact_origin_immediate_neighbor_path_counts": [
+       {
+        "origin": 219305,
+        "path_rows": 324,
+        "preceding_asn": 401322
+       }
+      ],
+      "exact_path_rows": 324,
+      "other_prefix_path_rows": {},
+      "reported_total_routes": 324
+     },
+     "retrieved_at": "2026-11-16T07:22:30+00:00",
+     "sha256": "293e0148c2751b3447382ea091d4a89357eee221be29a78b51fa4c73da4d4a32",
+     "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=177.29.252.0%2F24&timestamp=2026-11-16T06%3A58%3A00Z"
+    },
+    {
+     "http": 200,
+     "observation": {
+      "actual_state_time_utc": "2026-11-14T16:00:00",
+      "exact_origin_immediate_neighbor_path_counts": [],
+      "exact_path_rows": 0,
+      "other_prefix_path_rows": {},
+      "reported_total_routes": 0
+     },
+     "retrieved_at": "2026-11-16T07:24:28+00:00",
+     "sha256": "d66f08e7abcff1311271f4325527531ec0ade7e0284b67b2082bf3f662a8ab47",
+     "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=177.29.252.0%2F24&timestamp=2026-11-14T16%3A00%3A00Z"
+    },
+    {
+     "http": 200,
+     "observation": {
+      "actual_state_time_utc": "2026-11-15T06:59:00",
+      "exact_origin_immediate_neighbor_path_counts": [
+       {
+        "origin": 219305,
+        "path_rows": 325,
+        "preceding_asn": 401322
+       }
+      ],
+      "exact_path_rows": 325,
+      "other_prefix_path_rows": {},
+      "reported_total_routes": 325
+     },
+     "retrieved_at": "2026-11-16T07:24:28+00:00",
+     "sha256": "ede9471e9c6f2fbff9367a6e0ba0b0413b0299d1cc3a53bee56c63dab945312f",
+     "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=177.29.252.0%2F24&timestamp=2026-11-15T06%3A59%3A00Z"
+    },
+    {
+     "http": 200,
+     "observation": {
+      "actual_state_time_utc": "2026-11-15T14:10:00",
+      "exact_origin_immediate_neighbor_path_counts": [
+       {
+        "origin": 219305,
+        "path_rows": 324,
+        "preceding_asn": 401322
+       }
+      ],
+      "exact_path_rows": 324,
+      "other_prefix_path_rows": {},
+      "reported_total_routes": 324
+     },
+     "retrieved_at": "2026-11-16T07:24:28+00:00",
+     "sha256": "3a0603581b7cd5caa06124249b6dcf820495b24c1cea93ec6125501a3e55fc2b",
+     "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=177.29.252.0%2F24&timestamp=2026-11-15T14%3A10%3A00Z"
+    },
+    {
+     "http": 200,
+     "observation": {
+      "actual_state_time_utc": "2026-11-15T15:00:00",
+      "exact_origin_immediate_neighbor_path_counts": [
+       {
+        "origin": 219305,
+        "path_rows": 324,
+        "preceding_asn": 401322
+       }
+      ],
+      "exact_path_rows": 324,
+      "other_prefix_path_rows": {},
+      "reported_total_routes": 324
+     },
+     "retrieved_at": "2026-11-16T07:24:28+00:00",
+     "sha256": "24824b22239bfa6646a22eda8ca37447e2e3de488c759dbfce97b899d8f34b21",
+     "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=177.29.252.0%2F24&timestamp=2026-11-15T15%3A00%3A00Z"
+    }
+   ],
+   "bgp_update_windows": [
+    {
+     "http": 200,
+     "observation": {
+      "exact_updates": [
+       {
+        "first_timestamp_utc": "2026-11-15T05:24:58",
+        "last_timestamp_utc": "2026-11-15T05:50:39",
+        "origin": 219305,
+        "previous_asns": [
+         401322
+        ],
+        "type": "A",
+        "unique_collector_peer_ids": 2,
+        "updates": 5
+       }
+      ],
+      "nr_updates": 5,
+      "query_endtime": "2026-11-15T08:00:00",
+      "query_starttime": "2026-11-15T00:00:00"
+     },
+     "retrieved_at": "2026-11-16T07:19:06+00:00",
+     "sha256": "b04dcbbec1f73ea2fd1576d45fb37fad748433b9d4fb2d53e8a00338935f3dff",
+     "url": "https://stat.ripe.net/data/bgp-updates/data.json?resource=177.29.252.0%2F24&starttime=2026-11-15T00%3A00%3A00Z&endtime=2026-11-15T08%3A00%3A00Z"
+    },
+    {
+     "http": 200,
+     "observation": {
+      "exact_updates": [
+       {
+        "first_timestamp_utc": "2026-11-15T09:38:03",
+        "last_timestamp_utc": "2026-11-15T14:42:52",
+        "origin": 219305,
+        "previous_asns": [
+         401322
+        ],
+        "type": "A",
+        "unique_collector_peer_ids": 4,
+        "updates": 8
+       },
+       {
+        "first_timestamp_utc": "2026-11-15T09:37:07",
+        "last_timestamp_utc": "2026-11-15T13:06:01",
+        "origin": null,
+        "previous_asns": [],
+        "type": "W",
+        "unique_collector_peer_ids": 2,
+        "updates": 2
+       }
+      ],
+      "nr_updates": 10,
+      "query_endtime": "2026-11-15T16:00:00",
+      "query_starttime": "2026-11-15T08:00:00"
+     },
+     "retrieved_at": "2026-11-16T07:19:05+00:00",
+     "sha256": "075954e807737919d3fa0600a4a0e2e4bd25ddd72be091d3a1e1be66c1dccf6d",
+     "url": "https://stat.ripe.net/data/bgp-updates/data.json?resource=177.29.252.0%2F24&starttime=2026-11-15T08%3A00%3A00Z&endtime=2026-11-15T16%3A00%3A00Z"
+    }
+   ],
+   "historical_origin": 219305,
+   "history": {
+    "http": 200,
+    "observation": {
+     "exact_timelines": [
+      {
+       "intervals_utc": [
+        {
+         "endtime": "2026-11-16T00:00:00",
+         "starttime": "2026-11-15T00:00:00"
+        }
+       ],
+       "origin": "219305"
+      }
+     ],
+     "query_endtime": "2026-11-16T00:00:00",
+     "query_starttime": "2026-11-01T00:00:00"
+    },
+    "retrieved_at": "2026-11-16T07:23:26+00:00",
+    "sha256": "eb73bd903c98e9abead6e5343883d8058c0d47872afd4de8a31d7b297aefee94",
+    "url": "https://stat.ripe.net/data/routing-history/data.json?resource=177.29.252.0%2F24&starttime=2026-11-01T00%3A00%3A00Z&endtime=2026-11-16T00%3A00%3A00Z&min_peers=10&normalise_visibility=true"
+   },
+   "ripe_irr_route_objects": {
+    "http": 200,
+    "observation": [
+     {
+      "created": "2026-11-14T13:30:22Z",
+      "descr": "Novacart-Commerce-llc",
+      "last-modified": "2026-11-14T13:30:22Z",
+      "mnt-by": "hk-larus-1-mnt",
+      "origin": "AS219305",
+      "route": "177.29.252.0/24",
+      "source": "RIPE"
+     }
+    ],
+    "retrieved_at": "2026-11-16T07:22:48+00:00",
+    "sha256": "21bbee136d8536de0b21474dda0b322950b98b85bd26c9246cca94c70d69873d",
+    "url": "https://rest.db.ripe.net/search.json?query-string=177.29.252.0%2F24&type-filter=route&flags=x&flags=no-referenced&source=ripe"
+   },
+   "routing_admission": {
+    "candidate_direct_addresses": 256,
+    "published_direct_addresses": 256
+   },
+   "routing_status": [
+    {
+     "http": 200,
+     "key": "ris-177.29.252.0-15T00",
+     "observation": {
+      "less_specifics": [],
+      "more_specifics": [],
+      "origins": [
+       {
+        "origin": 219305,
+        "route_objects": [
+         "RADB",
+         "RIPE"
+        ]
+       }
+      ],
+      "query_time": "2026-11-15T00:00:00",
+      "visibility": {
+       "v4": {
+        "ris_peers_seeing": 318,
+        "total_ris_peers": 320
+       },
+       "v6": {
+        "ris_peers_seeing": 0,
+        "total_ris_peers": 0
+       }
+      }
+     },
+     "retrieved_at": "2026-11-16T07:17:07+00:00",
+     "sha256": "77e684d53e18aaa789acbe069fd07ce7e48a8eb5d932d2f1c583e9af2bb2e762",
+     "url": "https://stat.ripe.net/data/routing-status/data.json?resource=177.29.252.0%2F24&timestamp=2026-11-15T00%3A00%3A00Z&min_peers_seeing=1"
+    },
+    {
+     "http": 200,
+     "key": "ris-177.29.252.0-15T08",
+     "observation": {
+      "less_specifics": [],
+      "more_specifics": [],
+      "origins": [
+       {
+        "origin": 219305,
+        "route_objects": [
+         "RADB",
+         "RIPE"
+        ]
+       }
+      ],
+      "query_time": "2026-11-15T08:00:00",
+      "visibility": {
+       "v4": {
+        "ris_peers_seeing": 319,
+        "total_ris_peers": 320
+       },
+       "v6": {
+        "ris_peers_seeing": 0,
+        "total_ris_peers": 0
+       }
+      }
+     },
+     "retrieved_at": "2026-11-16T07:17:07+00:00",
+     "sha256": "099c9280cea3ccbf58379c3d838e62ef4080b7aa04d779e9ec10ec16b01b962a",
+     "url": "https://stat.ripe.net/data/routing-status/data.json?resource=177.29.252.0%2F24&timestamp=2026-11-15T08%3A00%3A00Z&min_peers_seeing=1"
+    },
+    {
+     "http": 200,
+     "key": "ris-177.29.252.0-15T16",
+     "observation": {
+      "less_specifics": [],
+      "more_specifics": [],
+      "origins": [
+       {
+        "origin": 219305,
+        "route_objects": [
+         "RADB",
+         "RIPE"
+        ]
+       }
+      ],
+      "query_time": "2026-11-15T16:00:00",
+      "visibility": {
+       "v4": {
+        "ris_peers_seeing": 320,
+        "total_ris_peers": 321
+       },
+       "v6": {
+        "ris_peers_seeing": 0,
+        "total_ris_peers": 0
+       }
+      }
+     },
+     "retrieved_at": "2026-11-16T07:17:07+00:00",
+     "sha256": "ffd49e6ae47f2806c50c12e32acd062393f341a60a1e9933165a474f6f957a2d",
+     "url": "https://stat.ripe.net/data/routing-status/data.json?resource=177.29.252.0%2F24&timestamp=2026-11-15T16%3A00%3A00Z&min_peers_seeing=1"
+    },
+    {
+     "http": 200,
+     "key": "ris-177.29.252.0-16T00",
+     "observation": {
+      "less_specifics": [],
+      "more_specifics": [],
+      "origins": [
+       {
+        "origin": 219305,
+        "route_objects": [
+         "RADB",
+         "RIPE"
+        ]
+       }
+      ],
+      "query_time": "2026-11-16T00:00:00",
+      "visibility": {
+       "v4": {
+        "ris_peers_seeing": 318,
+        "total_ris_peers": 319
+       },
+       "v6": {
+        "ris_peers_seeing": 0,
+        "total_ris_peers": 0
+       }
+      }
+     },
+     "retrieved_at": "2026-11-16T07:32:21+00:00",
+     "sha256": "c983aac55994d833edf4375fa63f3830ad3d478b7725de4fbc75871ee238e4b7",
+     "url": "https://stat.ripe.net/data/routing-status/data.json?resource=177.29.252.0%2F24&timestamp=2026-11-16T00%3A00%3A00Z&min_peers_seeing=1"
+    }
+   ],
+   "rpki_pairs": {
+    "137410": {
+     "http": 200,
+     "observation": {
+      "status": "invalid_asn",
+      "validating_roas": [],
+      "validator": "routinator"
+     },
+     "retrieved_at": "2026-11-16T07:24:28+00:00",
+     "sha256": "e10e18042bedf521d0d80ae42a7a3efb44d4bc5b39c4b7cf1b385e86bafdf6d3",
+     "url": "https://stat.ripe.net/data/rpki-validation/data.json?resource=AS137410&prefix=177.29.252.0%2F24"
+    },
+    "17561": {
+     "http": 200,
+     "observation": {
+      "status": "valid",
+      "validating_roas": [
+       {
+        "max_length": 24,
+        "origin": "17561",
+        "prefix": "177.29.252.0/24",
+        "validity": "valid"
+       }
+      ],
+      "validator": "routinator"
+     },
+     "retrieved_at": "2026-11-16T07:24:28+00:00",
+     "sha256": "b7118992624fe424727771bfc157e917d07583fb53cc4a4dc6e60986ffbdde28",
+     "url": "https://stat.ripe.net/data/rpki-validation/data.json?resource=AS17561&prefix=177.29.252.0%2F24"
+    },
+    "219305": {
+     "http": 200,
+     "observation": {
+      "status": "valid",
+      "validating_roas": [
+       {
+        "max_length": 24,
+        "origin": "219305",
+        "prefix": "177.29.252.0/24",
+        "validity": "valid"
+       }
+      ],
+      "validator": "routinator"
+     },
+     "retrieved_at": "2026-11-16T07:24:23+00:00",
+     "sha256": "94bd01b54aa640b0b0e059c4a01286310ba684dca981821b2600480bc7769c9e",
+     "url": "https://stat.ripe.net/data/rpki-validation/data.json?resource=AS219305&prefix=177.29.252.0%2F24"
+    }
+   }
+  },
+  "177.29.253.0/24": {
+   "adjacent_control": false,
+   "bgp_state": [
+    {
+     "http": 200,
+     "observation": {
+      "actual_state_time_utc": "2026-11-15T07:30:00",
+      "exact_origin_immediate_neighbor_path_counts": [
+       {
+        "origin": 219306,
+        "path_rows": 2,
+        "preceding_asn": 401322
+       }
+      ],
+      "exact_path_rows": 2,
+      "other_prefix_path_rows": {},
+      "reported_total_routes": 2
+     },
+     "retrieved_at": "2026-11-16T07:22:03+00:00",
+     "sha256": "9fc92967d8a816e1a859cc1708c0c6dd08cd9bd71308fd82c84e1f0e66e2296f",
+     "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=177.29.253.0%2F24&timestamp=2026-11-15T07%3A30%3A00Z"
+    },
+    {
+     "http": 200,
+     "observation": {
+      "actual_state_time_utc": "2026-11-15T14:00:00",
+      "exact_origin_immediate_neighbor_path_counts": [],
+      "exact_path_rows": 0,
+      "other_prefix_path_rows": {},
+      "reported_total_routes": 0
+     },
+     "retrieved_at": "2026-11-16T07:22:03+00:00",
+     "sha256": "47730d82916fa1d0a43d04cd3d61cb9b0b2b94f04c62dd4b9426d4a098c017d0",
+     "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=177.29.253.0%2F24&timestamp=2026-11-15T14%3A00%3A00Z"
+    },
+    {
+     "http": 200,
+     "observation": {
+      "actual_state_time_utc": "2026-11-15T14:30:00",
+      "exact_origin_immediate_neighbor_path_counts": [
+       {
+        "origin": 137410,
+        "path_rows": 341,
+        "preceding_asn": 62610
+       }
+      ],
+      "exact_path_rows": 341,
+      "other_prefix_path_rows": {},
+      "reported_total_routes": 341
+     },
+     "retrieved_at": "2026-11-16T07:22:03+00:00",
+     "sha256": "1bbcc53075b8f88b2f5cf1bdfef92aa6d91807624b3e20e57372a4a1aea2ed27",
+     "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=177.29.253.0%2F24&timestamp=2026-11-15T14%3A30%3A00Z"
+    },
+    {
+     "http": 200,
+     "observation": {
+      "actual_state_time_utc": "2026-11-16T03:59:48",
+      "exact_origin_immediate_neighbor_path_counts": [
+       {
+        "origin": 137410,
+        "path_rows": 343,
+        "preceding_asn": 62610
+       }
+      ],
+      "exact_path_rows": 343,
+      "other_prefix_path_rows": {},
+      "reported_total_routes": 343
+     },
+     "retrieved_at": "2026-11-16T07:22:03+00:00",
+     "sha256": "f7d29f18a5efd887c32a2862ee4dc5c922301381094acef44d25c4fd43298da1",
+     "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=177.29.253.0%2F24&timestamp=2026-11-16T06%3A58%3A00Z"
+    },
+    {
+     "http": 200,
+     "observation": {
+      "actual_state_time_utc": "2026-11-14T16:00:00",
+      "exact_origin_immediate_neighbor_path_counts": [],
+      "exact_path_rows": 0,
+      "other_prefix_path_rows": {},
+      "reported_total_routes": 0
+     },
+     "retrieved_at": "2026-11-16T07:24:02+00:00",
+     "sha256": "e7fb0ea51fefa697b0c8393e2e28b0209d75328ad9af2df744fee1abed7d4da6",
+     "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=177.29.253.0%2F24&timestamp=2026-11-14T16%3A00%3A00Z"
+    },
+    {
+     "http": 200,
+     "observation": {
+      "actual_state_time_utc": "2026-11-15T06:59:00",
+      "exact_origin_immediate_neighbor_path_counts": [
+       {
+        "origin": 219306,
+        "path_rows": 325,
+        "preceding_asn": 401322
+       }
+      ],
+      "exact_path_rows": 325,
+      "other_prefix_path_rows": {},
+      "reported_total_routes": 325
+     },
+     "retrieved_at": "2026-11-16T07:24:02+00:00",
+     "sha256": "7b58fcc414d643f7423511dd0f6d56f71619b3876e88d97c3f1f13f138a9713b",
+     "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=177.29.253.0%2F24&timestamp=2026-11-15T06%3A59%3A00Z"
+    },
+    {
+     "http": 200,
+     "observation": {
+      "actual_state_time_utc": "2026-11-15T14:10:00",
+      "exact_origin_immediate_neighbor_path_counts": [],
+      "exact_path_rows": 0,
+      "other_prefix_path_rows": {},
+      "reported_total_routes": 0
+     },
+     "retrieved_at": "2026-11-16T07:24:02+00:00",
+     "sha256": "3907a1c1e83929672ec83c5a4de456732ad9a8307ba370c5159a7967ecc518e8",
+     "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=177.29.253.0%2F24&timestamp=2026-11-15T14%3A10%3A00Z"
+    },
+    {
+     "http": 200,
+     "observation": {
+      "actual_state_time_utc": "2026-11-15T15:00:00",
+      "exact_origin_immediate_neighbor_path_counts": [
+       {
+        "origin": 137410,
+        "path_rows": 341,
+        "preceding_asn": 62610
+       }
+      ],
+      "exact_path_rows": 341,
+      "other_prefix_path_rows": {},
+      "reported_total_routes": 341
+     },
+     "retrieved_at": "2026-11-16T07:24:07+00:00",
+     "sha256": "954d92cdcb9871ff87fa165db561d3a564d44ab048e45553b28b8860c54bd6b3",
+     "url": "https://stat.ripe.net/data/bgp-state/data.json?resource=177.29.253.0%2F24&timestamp=2026-11-15T15%3A00%3A00Z"
+    }
+   ],
+   "bgp_update_windows": [
+    {
+     "http": 200,
+     "observation": {
+      "exact_updates": [
+       {
+        "first_timestamp_utc": "2026-11-15T05:24:59",
+        "last_timestamp_utc": "2026-11-15T07:26:45",
+        "origin": 219306,
+        "previous_asns": [
+         401322
+        ],
+        "type": "A",
+        "unique_collector_peer_ids": 272,
+        "updates": 1070
+       },
+       {
+        "first_timestamp_utc": "2026-11-15T07:07:18",
+        "last_timestamp_utc": "2026-11-15T07:26:45",
+        "origin": null,
+        "previous_asns": [],
+        "type": "W",
+        "unique_collector_peer_ids": 326,
+        "updates": 396
+       }
+      ],
+      "nr_updates": 1466,
+      "query_endtime": "2026-11-15T08:00:00",
+      "query_starttime": "2026-11-15T00:00:00"
+     },
+     "retrieved_at": "2026-11-16T07:17:42+00:00",
+     "sha256": "9ada72ea4588dc16682b9bfd168507644a20bc72a0f06ad93102d51a30bfdb35",
+     "url": "https://stat.ripe.net/data/bgp-updates/data.json?resource=177.29.253.0%2F24&starttime=2026-11-15T00%3A00%3A00Z&endtime=2026-11-15T08%3A00%3A00Z"
+    },
+    {
+     "http": 200,
+     "observation": {
+      "exact_updates": [
+       {
+        "first_timestamp_utc": "2026-11-15T14:14:32",
+        "last_timestamp_utc": "2026-11-15T15:45:27",
+        "origin": 137410,
+        "previous_asns": [
+         62610
+        ],
+        "type": "A",
+        "unique_collector_peer_ids": 343,
+        "updates": 818
+       },
+       {
+        "first_timestamp_utc": "2026-11-15T09:59:48",
+        "last_timestamp_utc": "2026-11-15T14:14:33",
+        "origin": null,
+        "previous_asns": [],
+        "type": "W",
+        "unique_collector_peer_ids": 4,
+        "updates": 4
+       }
+      ],
+      "nr_updates": 822,
+      "query_endtime": "2026-11-15T16:00:00",
+      "query_starttime": "2026-11-15T08:00:00"
+     },
+     "retrieved_at": "2026-11-16T07:17:41+00:00",
+     "sha256": "658d3c74b5e2bc3ac5cbd2b3f4d55d40c2aa3e866e348e7ee810a200f7f13ba1",
+     "url": "https://stat.ripe.net/data/bgp-updates/data.json?resource=177.29.253.0%2F24&starttime=2026-11-15T08%3A00%3A00Z&endtime=2026-11-15T16%3A00%3A00Z"
+    }
+   ],
+   "historical_origin": 219306,
+   "history": {
+    "http": 200,
+    "observation": {
+     "exact_timelines": [
+      {
+       "intervals_utc": [
+        {
+         "endtime": "2026-11-16T00:00:00",
+         "starttime": "2026-11-15T16:00:00"
+        }
+       ],
+       "origin": "137410"
+      },
+      {
+       "intervals_utc": [
+        {
+         "endtime": "2026-11-15T07:59:59",
+         "starttime": "2026-11-15T00:00:00"
+        }
+       ],
+       "origin": "219306"
+      }
+     ],
+     "query_endtime": "2026-11-16T00:00:00",
+     "query_starttime": "2026-11-01T00:00:00"
+    },
+    "retrieved_at": "2026-11-16T07:23:21+00:00",
+    "sha256": "bbb9cd1494e027cbd0e8a209f71c9bdfbf1e9c99c4380a285f41acef615cee77",
+    "url": "https://stat.ripe.net/data/routing-history/data.json?resource=177.29.253.0%2F24&starttime=2026-11-01T00%3A00%3A00Z&endtime=2026-11-16T00%3A00%3A00Z&min_peers=10&normalise_visibility=true"
+   },
+   "ptr": {
+    "177.29.253.1": {
+     "http": 200,
+     "key": "ptr-177.29.253.1",
+     "observation": {
+      "Status": 3
+     },
+     "retrieved_at": "2026-11-16T07:16:46+00:00",
+     "sha256": "c250bfdeaccc671c0ef0bd3e642b7bcc80767651d63be95036897f82e92634ff",
+     "url": "https://dns.google/resolve?name=1.253.29.177.in-addr.arpa&type=PTR"
+    },
+    "177.29.253.2": {
+     "http": 200,
+     "key": "ptr-177.29.253.2",
+     "observation": {
+      "Status": 3
+     },
+     "retrieved_at": "2026-11-16T07:16:46+00:00",
+     "sha256": "868b856f4ec31cc8f8f3f1f9b866538e622b83158ac1e457a0878a98b7f43954",
+     "url": "https://dns.google/resolve?name=2.253.29.177.in-addr.arpa&type=PTR"
+    }
+   },
+   "ripe_irr_route_objects": {
+    "http": 200,
+    "observation": [
+     {
+      "created": "2026-11-15T07:31:52Z",
+      "descr": "Novacart-Commerce-llc",
+      "last-modified": "2026-11-15T07:31:52Z",
+      "mnt-by": "hk-larus-1-mnt",
+      "origin": "AS137410",
+      "route": "177.29.253.0/24",
+      "source": "RIPE"
+     }
+    ],
+    "retrieved_at": "2026-11-16T07:22:43+00:00",
+    "sha256": "46cffcb9996dd6aed95e39a7d91be9689739dd599321c94c1bfd23b2da8e3846",
+    "url": "https://rest.db.ripe.net/search.json?query-string=177.29.253.0%2F24&type-filter=route&flags=x&flags=no-referenced&source=ripe"
+   },
+   "ripe_rdap": {
+    "http": 200,
+    "key": "ripe-177.29.253.0",
+    "observation": {
+     "country": "HK",
+     "endAddress": "177.29.253.255",
+     "handle": "177.29.253.0 - 177.29.253.255",
+     "name": "Novacart-Commerce-llc",
+     "port43": "whois.ripe.net",
+     "startAddress": "177.29.253.0"
+    },
+    "retrieved_at": "2026-11-16T07:16:48+00:00",
+    "sha256": "e96b5d282ac68e82a1d48adb33ac882e58bd567f58446fd2d13b7c6e68a97282",
+    "url": "https://rdap.db.ripe.net/ip/177.29.253.0/24"
+   },
+   "routeviews": {
+    "http": 200,
+    "observation": [
+     {
+      "collectors": [
+       "amsix.ams",
+       "ix-br2.gru",
+       "route-views.linx",
+       "route-views.napafrica",
+       "route-views.sydney",
+       "route-views3",
+       "route-views4",
+       "route-views5"
+      ],
+      "first_path_timestamp_utc": "2026-11-15T14:14:45Z",
+      "latest_path_timestamp_utc": "2026-11-16T07:16:08Z",
+      "origin": 137410,
+      "path_rows": 155,
+      "preceding_asn_path_counts": {
+       "62610": 155
+      },
+      "rpki_roas": [
+       {
+        "asn": 17561,
+        "expires": "2026-11-17T00:00:53Z",
+        "max_length": 24,
+        "prefix": "177.29.253.0/24",
+        "ta": "ripe"
+       },
+       {
+        "asn": 137410,
+        "expires": "2026-11-17T00:00:53Z",
+        "max_length": 24,
+        "prefix": "177.29.253.0/24",
+        "ta": "ripe"
+       },
+       {
+        "asn": 219306,
+        "expires": "2026-11-17T00:00:53Z",
+        "max_length": 24,
+        "prefix": "177.29.253.0/24",
+        "ta": "ripe"
+       }
+      ],
+      "rpki_state": "valid"
+     }
+    ],
+    "retrieved_at": "2026-11-16T07:17:44+00:00",
+    "sha256": "be8bc1a47f97a6e9e6274d706f720e2237f1728c7cdd59f128dc49ec0c483a03",
+    "url": "https://api.routeviews.org/prefix/177.29.253.0/24"
+   },
+   "routing_admission": {
+    "candidate_direct_addresses": 0,
+    "published_direct_addresses": 256
+   },
+   "routing_status": [
+    {
+     "http": 200,
+     "key": "ris-177.29.253.0-15T00",
+     "observation": {
+      "less_specifics": [],
+      "more_specifics": [],
+      "origins": [
+       {
+        "origin": 219306,
+        "route_objects": [
+         "RADB"
+        ]
+       }
+      ],
+      "query_time": "2026-11-15T00:00:00",
+      "visibility": {
+       "v4": {
+        "ris_peers_seeing": 318,
+        "total_ris_peers": 320
+       },
+       "v6": {
+        "ris_peers_seeing": 0,
+        "total_ris_peers": 0
+       }
+      }
+     },
+     "retrieved_at": "2026-11-16T07:16:48+00:00",
+     "sha256": "3b1d5065c33700105c91d20e8263b7b05f7f6e3f4f105edbcfc30f152ac6610f",
+     "url": "https://stat.ripe.net/data/routing-status/data.json?resource=177.29.253.0%2F24&timestamp=2026-11-15T00%3A00%3A00Z&min_peers_seeing=1"
+    },
+    {
+     "http": 200,
+     "key": "ris-177.29.253.0-15T08",
+     "observation": {
+      "less_specifics": [],
+      "more_specifics": [],
+      "origins": [
+       {
+        "origin": 219306,
+        "route_objects": [
+         "RADB"
+        ]
+       }
+      ],
+      "query_time": "2026-11-15T08:00:00",
+      "visibility": {
+       "v4": {
+        "ris_peers_seeing": 1,
+        "total_ris_peers": 320
+       },
+       "v6": {
+        "ris_peers_seeing": 0,
+        "total_ris_peers": 0
+       }
+      }
+     },
+     "retrieved_at": "2026-11-16T07:16:48+00:00",
+     "sha256": "5bc8a1c4a4394b27a008f7bb663b9b71ea59e9825823e6586ff7a4c514f81292",
+     "url": "https://stat.ripe.net/data/routing-status/data.json?resource=177.29.253.0%2F24&timestamp=2026-11-15T08%3A00%3A00Z&min_peers_seeing=1"
+    },
+    {
+     "http": 200,
+     "key": "ris-177.29.253.0-15T16",
+     "observation": {
+      "less_specifics": [],
+      "more_specifics": [],
+      "origins": [
+       {
+        "origin": 137410,
+        "route_objects": [
+         "RADB",
+         "RIPE"
+        ]
+       }
+      ],
+      "query_time": "2026-11-15T16:00:00",
+      "visibility": {
+       "v4": {
+        "ris_peers_seeing": 319,
+        "total_ris_peers": 321
+       },
+       "v6": {
+        "ris_peers_seeing": 0,
+        "total_ris_peers": 0
+       }
+      }
+     },
+     "retrieved_at": "2026-11-16T07:16:48+00:00",
+     "sha256": "e62f16358fec8fc688f3b6008946113959509d02589dfa2ba17fce661b6c05d3",
+     "url": "https://stat.ripe.net/data/routing-status/data.json?resource=177.29.253.0%2F24&timestamp=2026-11-15T16%3A00%3A00Z&min_peers_seeing=1"
+    },
+    {
+     "http": 200,
+     "key": "ris-177.29.253.0-16T00",
+     "observation": {
+      "less_specifics": [],
+      "more_specifics": [],
+      "origins": [
+       {
+        "origin": 137410,
+        "route_objects": [
+         "RADB",
+         "RIPE"
+        ]
+       }
+      ],
+      "query_time": "2026-11-16T00:00:00",
+      "visibility": {
+       "v4": {
+        "ris_peers_seeing": 317,
+        "total_ris_peers": 319
+       },
+       "v6": {
+        "ris_peers_seeing": 0,
+        "total_ris_peers": 0
+       }
+      }
+     },
+     "retrieved_at": "2026-11-16T07:16:48+00:00",
+     "sha256": "c558d3622a0e364852e7f18f34436c1f7313cf40071eb85869a8acb8d3425235",
+     "url": "https://stat.ripe.net/data/routing-status/data.json?resource=177.29.253.0%2F24&timestamp=2026-11-16T00%3A00%3A00Z&min_peers_seeing=1"
+    }
+   ],
+   "rpki_pairs": {
+    "137410": {
+     "http": 200,
+     "observation": {
+      "status": "valid",
+      "validating_roas": [
+       {
+        "max_length": 24,
+        "origin": "137410",
+        "prefix": "177.29.253.0/24",
+        "validity": "valid"
+       }
+      ],
+      "validator": "routinator"
+     },
+     "retrieved_at": "2026-11-16T07:24:02+00:00",
+     "sha256": "7c192af6b815a6942ec1aab558cfdda4c299a8abd552895bac4baf393fc49461",
+     "url": "https://stat.ripe.net/data/rpki-validation/data.json?resource=AS137410&prefix=177.29.253.0%2F24"
+    },
+    "17561": {
+     "http": 200,
+     "observation": {
+      "status": "valid",
+      "validating_roas": [
+       {
+        "max_length": 24,
+        "origin": "17561",
+        "prefix": "177.29.253.0/24",
+        "validity": "valid"
+       }
+      ],
+      "validator": "routinator"
+     },
+     "retrieved_at": "2026-11-16T07:24:03+00:00",
+     "sha256": "459696fad7dde5e745916128afcf27bef92a6f5792d552d2fb3df6128ccc0202",
+     "url": "https://stat.ripe.net/data/rpki-validation/data.json?resource=AS17561&prefix=177.29.253.0%2F24"
+    },
+    "219306": {
+     "http": 200,
+     "observation": {
+      "status": "valid",
+      "validating_roas": [
+       {
+        "max_length": 24,
+        "origin": "219306",
+        "prefix": "177.29.253.0/24",
+        "validity": "valid"
+       }
+      ],
+      "validator": "routinator"
+     },
+     "retrieved_at": "2026-11-16T07:24:03+00:00",
+     "sha256": "130c832458e90ccfa93074205091d2c4e412e5fbfffe4d2675dfbbb48c8b8d08",
+     "url": "https://stat.ripe.net/data/rpki-validation/data.json?resource=AS219306&prefix=177.29.253.0%2F24"
+    }
+   }
+  }
+ },
+ "public_atlas_searches": {
+  "108.62.48.16/32": {
+   "http": 200,
+   "observation": {
+    "count": 0
+   },
+   "retrieved_at": "2026-11-16T07:29:29+00:00",
+   "sha256": "0595424161ea863805d9b92c0e52d7aa1e3c46ec58cd8f0d6933759006a5fb74",
+   "url": "https://atlas.ripe.net/api/v2/measurements/?target_ip=108.62.48.16%2F32&is_public=true&page_size=10"
+  },
+  "177.122.229.0/24": {
+   "http": 200,
+   "observation": {
+    "count": 0
+   },
+   "retrieved_at": "2026-11-16T07:29:24+00:00",
+   "sha256": "0595424161ea863805d9b92c0e52d7aa1e3c46ec58cd8f0d6933759006a5fb74",
+   "url": "https://atlas.ripe.net/api/v2/measurements/?target_ip=177.122.229.0%2F24&is_public=true&page_size=10"
+  },
+  "177.122.241.0/24": {
+   "http": 200,
+   "observation": {
+    "count": 0
+   },
+   "retrieved_at": "2026-11-16T07:29:24+00:00",
+   "sha256": "0595424161ea863805d9b92c0e52d7aa1e3c46ec58cd8f0d6933759006a5fb74",
+   "url": "https://atlas.ripe.net/api/v2/measurements/?target_ip=177.122.241.0%2F24&is_public=true&page_size=10"
+  },
+  "177.166.74.0/24": {
+   "http": 200,
+   "observation": {
+    "count": 0
+   },
+   "retrieved_at": "2026-11-16T07:29:28+00:00",
+   "sha256": "0595424161ea863805d9b92c0e52d7aa1e3c46ec58cd8f0d6933759006a5fb74",
+   "url": "https://atlas.ripe.net/api/v2/measurements/?target_ip=177.166.74.0%2F24&is_public=true&page_size=10"
+  },
+  "177.166.78.0/24": {
+   "http": 200,
+   "observation": {
+    "count": 0
+   },
+   "retrieved_at": "2026-11-16T07:29:31+00:00",
+   "sha256": "0595424161ea863805d9b92c0e52d7aa1e3c46ec58cd8f0d6933759006a5fb74",
+   "url": "https://atlas.ripe.net/api/v2/measurements/?target_ip=177.166.78.0%2F24&is_public=true&page_size=10"
+  },
+  "177.29.252.0/24": {
+   "http": 200,
+   "observation": {
+    "count": 0
+   },
+   "retrieved_at": "2026-11-16T07:29:29+00:00",
+   "sha256": "0595424161ea863805d9b92c0e52d7aa1e3c46ec58cd8f0d6933759006a5fb74",
+   "url": "https://atlas.ripe.net/api/v2/measurements/?target_ip=177.29.252.0%2F24&is_public=true&page_size=10"
+  },
+  "177.29.253.0/24": {
+   "http": 200,
+   "observation": {
+    "count": 0
+   },
+   "retrieved_at": "2026-11-16T07:29:24+00:00",
+   "sha256": "0595424161ea863805d9b92c0e52d7aa1e3c46ec58cd8f0d6933759006a5fb74",
+   "url": "https://atlas.ripe.net/api/v2/measurements/?target_ip=177.29.253.0%2F24&is_public=true&page_size=10"
+  },
+  "8.8.8.8/32": {
+   "http": 200,
+   "observation": {
+    "count": 564856
+   },
+   "retrieved_at": "2026-11-16T07:29:29+00:00",
+   "sha256": "4f68d7be4b6fc0587dce40bbcfef8698a3e15aecf8b9b62df3fc9b3b392d7fb8",
+   "url": "https://atlas.ripe.net/api/v2/measurements/?target_ip=8.8.8.8%2F32&is_public=true&page_size=10"
+  }
+ },
+ "published_build": {
+  "artifact_id": 14174864343,
+  "artifact_sha256": "01b661e70d58af4b5b1f93948ed5482aaf4b47c69736b12ee5b68aff84f7ebe9",
+  "cdn_commit": "8a226b83c82323c869054ca5b299612ad3a91e2d",
+  "client_files_match_release_and_cdn_git_bytes": true,
+  "id": 43747743430,
+  "release_commit": "e20cf733a13d92040134895ebd580b7c9060fa3b",
+  "source_commit": "c0d2a01ba1fb5f5c0e48965d614945348083a900",
+  "verified_manifest_assets": 13
+ },
+ "purpose": "Dated passive routing, registry and DNS evidence for five /24s absent from the v41 PR candidate, with one adjacent control. Advisory only. No inferred geography or service control. All source response digests are of original HTTP bytes. An HTTPS resolver with an ECS hint is not a residential test.",
+ "schema": 1,
+ "verified_layer_findings": {
+  "all_five": {
+   "company_bgp_addresses_before_after": [
+    0,
+    0
+   ],
+   "effective_exclusions_addresses_before_after": [
+    0,
+    0
+   ],
+   "regional_selected_bgp_addresses_before_after": [
+    256,
+    0
+   ],
+   "rir_ru_prefix_addresses_before_after": [
+    0,
+    0
+   ],
+   "shared_infrastructure_bgp_addresses_before_after": [
+    0,
+    0
+   ],
+   "v37_base_addresses_before_after": [
+    256,
+    0
+   ]
+  },
+  "control": {
+   "regional_selected_bgp_addresses_before_after": [
+    256,
+    256
+   ],
+   "v37_base_addresses_before_after": [
+    256,
+    256
+   ]
+  },
+  "unchanged_policy_inputs": [
+   "effective_exclusions",
+   "hard_mask",
+   "resolver_only_mask",
+   "telegram_cidrs"
+  ]
+ }
+}
