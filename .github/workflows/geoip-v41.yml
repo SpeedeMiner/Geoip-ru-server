@@ -32,6 +32,7 @@ on:
       - ".github/data/v41-reviewed-unreachable.tsv"
       - ".github/data/v41-service-inventory.tsv"
       - ".github/scripts/validate_v41_service_inventory.py"
+      - ".github/scripts/validate_v41_services_input.py"
       - ".github/scripts/validate_v41_routing_matrix.py"
       - ".github/data/v41-routing-fixtures.tsv"
       - ".github/data/v41-static-overrides.tsv"

@@ -91,6 +91,8 @@ download_optional_file() {
 # Resolve each publisher once per run, verify the fetched bytes and record the exact refs.
 python3 .github/scripts/download_v41_upstream_sources.py \
   --catalog .github/data/v41-upstream-sources.json --provenance "$INPUT_PROVENANCE"
+# Fail early on a structurally invalid required catalog, before fetching RIRs.
+python3 .github/scripts/validate_v41_services_input.py "$KY_SERVICES_INPUT"
 download_file "TELEGRAM OFFICIAL CIDRS" "$TELEGRAM_OFFICIAL_INPUT" \
   "https://core.telegram.org/resources/cidr.txt"
 python3 .github/scripts/validate_v41_telegram.py --official-feed "$TELEGRAM_OFFICIAL_INPUT"
