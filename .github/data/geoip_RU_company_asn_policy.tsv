@@ -104,3 +104,4 @@ AS48092	SHARED_INFRA	Tele2/T2	Network operator, access or hosting infrastructure
 AS28812	SHARED_INFRA	Rostelecom	Network operator, access or hosting infrastructure; preserve all hard exclusions
 AS13118	SHARED_INFRA	Rostelecom	Network operator, access or hosting infrastructure; preserve all hard exclusions
 AS12380	SHARED_INFRA	Rostelecom	Network operator, access or hosting infrastructure; preserve all hard exclusions
+AS219306	SHARED_INFRA	CURATOR-CDN	CDN infrastructure; preserve hard exclusions and protect against resolver-only noise

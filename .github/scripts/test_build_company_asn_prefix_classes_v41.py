@@ -2,10 +2,17 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from build_company_asn_prefix_classes_v41 import build_company_prefix_classes
+from build_company_asn_prefix_classes_v41 import build_company_prefix_classes, read_company_registry, read_policy
 
 
 class CompanyASNPrefixClassTests(unittest.TestCase):
+    def test_curator_cdn_registry_and_policy_are_consistent(self):
+        data = Path(__file__).resolve().parents[1] / "data"
+        registry = read_company_registry(data / "geoip_RU_company_asns.tsv")
+        policy = read_policy(data / "geoip_RU_company_asn_policy.tsv", registry)
+        self.assertEqual(registry[219306]["group"], "CURATOR-CDN")
+        self.assertEqual(policy[219306]["class"], "SHARED_INFRA")
+
     def make_inputs(self, root: Path):
         registry = root / "registry.tsv"
         policy = root / "policy.tsv"

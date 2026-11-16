@@ -76,7 +76,7 @@ class PriorityASNTests(unittest.TestCase):
     def test_checked_in_watchlist_is_report_only_and_includes_priority_groups(self):
         path = Path(__file__).resolve().parents[1] / "data/v41-audit-priority-asns.tsv"
         entries = read_watchlist(path)
-        self.assertTrue({13238, 47541, 44386, 49053, 35673, 6697, 9198, 35237} <= entries.keys())
+        self.assertTrue({13238, 47541, 44386, 49053, 35673, 6697, 9198, 35237, 219306} <= entries.keys())
 
 
     def test_loss_is_split_against_the_final_dat_for_both_families(self):
