@@ -47,20 +47,6 @@ class ReviewedOperatorPrefixesTests(unittest.TestCase):
                 self.parse(row + extra)
 
 
-    def test_user_trusted_five_ranges_keep_resolver_protection_only(self):
-        from build_v41_overlay import USER_TRUSTED_PREFIXES, parse_cidr_file
-        trusted = parse_cidr_file(USER_TRUSTED_PREFIXES, allow_hosts=False)[0]
-        self.assertEqual({str(n) for n in trusted}, {"177.29.253.0/24", "177.122.229.0/24",
-            "177.122.241.0/24", "177.166.74.0/24", "177.166.78.0/24"})
-        soft = {ipaddress.ip_network("177.29.253.1/32")}
-        hard = {ipaddress.ip_network("177.29.253.2/32")}
-        non_exempt = {ipaddress.ip_network("177.29.253.3/32")}
-        blocked, _ = class_aware_effective_block_set(hard, soft, set(), set(),
-            non_exempt=non_exempt, reviewed_operator_prefixes=trusted)
-        self.assertEqual(set(ipaddress.collapse_addresses(blocked)), set(ipaddress.collapse_addresses(hard | non_exempt)))
-        direct = subtract_networks(trusted, set(), blocked)
-        assert_reviewed_operator_coverage(direct, set(), blocked, set(), trusted)
-
     def test_resolver_only_protection_does_not_extend_to_neighbors_or_hard(self):
         def nets(*rows):
             return {ipaddress.ip_network(row) for row in rows}

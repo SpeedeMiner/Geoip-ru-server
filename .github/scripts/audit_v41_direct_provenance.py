@@ -180,7 +180,6 @@ def read_layers(root, base, data):
     layers.update(service)
     layers.update(b.parse_hydra_direct_whitelist(root / 'hydra-geoip.dat'))
     layers['reviewed-operators'] = set(b.parse_reviewed_operator_prefixes(data / 'v41-reviewed-operator-prefixes.tsv'))
-    layers['user-trusted-prefixes'] = b.parse_cidr_file(data / 'v41-user-trusted-prefixes.txt', allow_hosts=False)[0]
     return layers, origins
 
 
@@ -231,7 +230,7 @@ def verified_effective_mask(root, layers, manifest):
         b.parse_cidr_file(root/'geoip_RU_company_asn_core_bgp_prefixes.txt', allow_hosts=False)[0],
         b.parse_cidr_file(root/'geoip_RU_shared_infrastructure_bgp_prefixes.txt', allow_hosts=False)[0],
         regional | b.union_networks(*rir.values()), service_exact, service_resolver,
-        non_exempt=telegram, reviewed_operator_prefixes=layers['reviewed-operators'] | layers['user-trusted-prefixes'])
+        non_exempt=telegram, reviewed_operator_prefixes=layers['reviewed-operators'])
     actual = b.parse_blocked_base(root/'geoip_RU_v41_blocked_ip_exclusions.txt')
     if any(b.intervals(actual,v) != b.intervals(effective,v) for v in (4,6)):
         raise ValueError('effective exclusions differ from the bound policy inputs')
@@ -260,7 +259,6 @@ def verify_inputs(root, base, candidate, data):
         'regional_admission_exclusions':data/'v41-regional-admission-exclusions.tsv',
         'reviewed_ipv6_admission_exclusions':data/'v41-reviewed-ipv6-admission-exclusions.tsv',
         'reviewed_operator_prefixes':data/'v41-reviewed-operator-prefixes.tsv',
-        'user_trusted_prefixes':data/'v41-user-trusted-prefixes.txt',
     }
     for key,path in bindings.items():
         if digest(path.read_bytes()) != manifest['input_sha256'][key]:

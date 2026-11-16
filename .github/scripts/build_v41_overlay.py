@@ -22,8 +22,6 @@ from typing import Iterable
 from validate_v41_telegram import PINNED_FEED, read_telegram_feed
 from v41_reviewed_ipv6_admission import RECORD_KEY, read_reviewed_ipv6_admission
 
-USER_TRUSTED_PREFIXES = Path(__file__).resolve().parent.parent / "data/v41-user-trusted-prefixes.txt"
-
 W1ZARDZ_EXCLUSIONS = Path(__file__).resolve().parent.parent / "data/v41-w1zardz-gaming-exclusions.txt"
 
 SOURCE_REFS = {
@@ -815,19 +813,16 @@ def main():
 
     reviewed = parse_reviewed_operator_prefixes(args.reviewed_operator_prefixes)
     reviewed_prefixes = set(reviewed)
-    user_trusted, user_trusted_stats = parse_cidr_file(USER_TRUSTED_PREFIXES, allow_hosts=False)
-    if user_trusted_stats["invalid_rows"] or len(user_trusted) > 32 or any(n.version != 4 or n.prefixlen < 24 or not n.is_global for n in user_trusted):
-        raise ValueError("invalid user-trusted prefix list")
     # DNS and unverified history cannot cut registered regional resources or exact reviewed operator routes.
     # Explicit subnet/IP evidence and Telegram remain unconditional.
     blocked, resolved_only = class_aware_effective_block_set(
         blocked_exact, blocked_resolved, core_company_prefixes,
         shared_infrastructure_prefixes, regional_only | regional_union, service_exact, service_resolver,
-        non_exempt=telegram, reviewed_operator_prefixes=reviewed_prefixes | user_trusted,
+        non_exempt=telegram, reviewed_operator_prefixes=reviewed_prefixes,
     )
     ipsum_effective = subtract_networks(
         ipsum, core_company_prefixes | shared_infrastructure_prefixes | regional_only | regional_union
-        | service_resolver | reviewed_prefixes | user_trusted
+        | service_resolver | reviewed_prefixes
     )
 
     # Hydra's DIRECT and WHITELIST signal user-requested routes, not geography or
@@ -867,10 +862,6 @@ def main():
     }
     prefix_rows.extend(reviewed_operator_provenance(reviewed, reviewed_source))
     additions.update(reviewed_prefixes)
-    additions.update(user_trusted)
-    source_stats["user-trusted-prefixes"] = {**user_trusted_stats, "input_sha256": sha256(USER_TRUSTED_PREFIXES.read_bytes()), "protection": "resolver_only_no_hard_override"}
-    for net in sorted(user_trusted, key=lambda n: (n.version, int(n.network_address), n.prefixlen)):
-        prefix_rows.append({"source_id": "user-trusted-prefixes", "category": "user-approved", "service": "", "tier": "", "asn_list": "", "domains": "", "prefix": str(net)})
     admission_exclusions = parse_regional_admission_exclusions(args.regional_admission_exclusions)
     for row in admission_exclusions.values():
         prefix_rows.append({
@@ -897,7 +888,7 @@ def main():
     regional_resource_iv = {v: intervals(regional_union, v) for v in (4, 6)}
     service_exact_iv = {v: intervals(service_exact, v) for v in (4, 6)}
     service_resolver_iv = {v: intervals(service_resolver, v) for v in (4, 6)}
-    reviewed_operator_iv = {v: intervals(reviewed_prefixes | user_trusted, v) for v in (4, 6)}
+    reviewed_operator_iv = {v: intervals(reviewed_prefixes, v) for v in (4, 6)}
     blocked_iv = {v: intervals(blocked, v) for v in (4, 6)}
     resolved_only_iv = {v: intervals(resolved_only, v) for v in (4, 6)}
     # CIDR set difference is not address-space subtraction: e.g. removing
@@ -914,7 +905,6 @@ def main():
     if any(subtract(intervals(hydra_expected, v), intervals(final, v)) for v in (4, 6)):
         raise ValueError("Hydra DIRECT/WHITELIST coverage missing after PRIVATE/block policy")
     final_iv = {v: intervals(final, v) for v in (4, 6)}
-    assert_reviewed_operator_coverage(final, private, blocked_exact | telegram, admission_mask, user_trusted)
     final_private = set(collapse(private))
 
     new_vs_base = {}
@@ -966,7 +956,6 @@ def main():
         ("verified-service-resolver-protected", service_resolver),
     ]
     measured_sources.append((reviewed_source, reviewed_prefixes))
-    measured_sources.append(("user-trusted-prefixes", user_trusted))
     for source_id, networks in measured_sources + list(service_sources.items()) + list(hydra_sources.items()):
         row = {"source_id":source_id,"unique_cidrs":len(networks)}
         for v in (4, 6):
@@ -1327,7 +1316,6 @@ def main():
             "regional_admission_exclusions":sha256(args.regional_admission_exclusions.read_bytes()),
             RECORD_KEY:sha256(args.reviewed_ipv6_admission_exclusions.read_bytes()),
             "reviewed_operator_prefixes":source_stats[reviewed_source]["input_sha256"],
-            "user_trusted_prefixes":sha256(USER_TRUSTED_PREFIXES.read_bytes()),
             "kyoresuas_standard_ipv4":sha256(args.kyoresuas_v4.read_bytes()),
             "kyoresuas_standard_ipv6":sha256(args.kyoresuas_v6.read_bytes()),
             "kyoresuas_services_json":sha256(args.kyoresuas_services.read_bytes()),

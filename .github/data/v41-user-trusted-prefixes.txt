@@ -1,6 +1,0 @@
-# User-approved exact ranges observed in v2fly US/DE; no ASN ownership claim.
-177.29.253.0/24
-177.122.229.0/24
-177.122.241.0/24
-177.166.74.0/24
-177.166.78.0/24

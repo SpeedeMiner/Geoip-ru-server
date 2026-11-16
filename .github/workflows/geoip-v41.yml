@@ -52,7 +52,6 @@ on:
       - ".github/scripts/prepare_blocked_sources_v41.py"
       - ".github/data/v41-reviewed-rkn-ip-records.tsv"
       - ".github/data/v41-reviewed-operator-prefixes.tsv"
-      - ".github/data/v41-user-trusted-prefixes.txt"
       - ".github/data/v41-regional-admission-exclusions.tsv"
       - ".github/data/v41-w1zardz-gaming-exclusions.txt"
       - ".github/data/v41-reviewed-ipv6-admission-exclusions.tsv"
