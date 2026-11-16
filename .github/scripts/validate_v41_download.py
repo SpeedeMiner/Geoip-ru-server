@@ -45,8 +45,12 @@ def validate_rir(path, registry, minimum_records=100):
             if len(fields) < 7 or fields[0].lower() != registry or fields[2].lower() not in {"asn", "ipv4", "ipv6"}:
                 raise ValueError(f"{path}:{number}: malformed resource record")
             counts[fields[2].lower()] += 1
-    if header is None or expected < minimum_records or sum(counts.values()) != expected:
-        raise ValueError(f"{path}: declared record count differs from received data or is too small")
+    if header is None:
+        raise ValueError(f"{path}: missing delegated header")
+    if expected < minimum_records or sum(counts.values()) != expected:
+        raise ValueError(f"{path}: declared record count differs from received data or is too small; "
+                         f"declared={expected}, actual={sum(counts.values())}, "
+                         f"declared_by_type={dict(sorted(declared.items()))}, actual_by_type={dict(sorted(counts.items()))}")
     if not set(counts) <= set(declared) or any(declared[k] != counts[k] for k in declared):
         raise ValueError(f"{path}: per-family summary counts do not match records")
     return sum(counts.values())

@@ -17,7 +17,7 @@ class DownloadValidationTests(unittest.TestCase):
             path.write_text(header + summary + records, encoding="utf-8")
             self.assertEqual(validate_rir(path, "apnic", minimum_records=1), 2)
             path.write_text(header + summary + records.splitlines()[0] + "\n", encoding="utf-8")
-            with self.assertRaisesRegex(ValueError, "record count"):
+            with self.assertRaisesRegex(ValueError, "declared=2, actual=1"):
                 validate_rir(path, "apnic", minimum_records=1)
             path.write_text(header + summary.replace("ipv4|*|1", "ipv4|*|2") + records, encoding="utf-8")
             with self.assertRaisesRegex(ValueError, "summary"):
