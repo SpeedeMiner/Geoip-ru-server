@@ -173,6 +173,174 @@
       "sha256": "3b196ba746ee67f9b993337e2725887f130a280e4e76e53cb57448bf94d1eb8a"
     }
   },
+  "github_candidate": {
+    "archive_sha256": "d57588ce98fdf6eaecc4a247ba3b46187f4d26fb90c81748804387b7ee09b8b0",
+    "artifact_id": 14215435155,
+    "assets": {
+      "as-ip-blocks.tar.gz": {
+        "bytes": 16271861,
+        "same_as_pr53": true,
+        "sha256": "84af740b9546cf54448ff0782f5ddc15d458e15b0d2409fcff8de3d5733baa34"
+      },
+      "geoip_PRIVATE.srs": {
+        "bytes": 228,
+        "same_as_pr53": true,
+        "sha256": "b9ea6381ea61e286298aea76c10cb85a252ff0d20c49d6de3527be1353c107c4"
+      },
+      "geoip_PRIVATE.srs.sha256sum": {
+        "bytes": 84,
+        "same_as_pr53": true,
+        "sha256": "17ca2e8246a3609d825cd5f611e76c9c039f75573f4d19238c83759fc96fd915"
+      },
+      "geoip_RU.dat": {
+        "bytes": 512577,
+        "same_as_pr53": true,
+        "sha256": "3161fdd5eda4d9c2f962a3c8d1bd0c187e5cab9260284a13679b289a9a6d0855"
+      },
+      "geoip_RU.dat.sha256sum": {
+        "bytes": 79,
+        "same_as_pr53": true,
+        "sha256": "f2d8209a5b7207a6eb8cd1a025b9ab4a821ecb98a905d44d2e7d89008c2515b0"
+      },
+      "geoip_RU.srs": {
+        "bytes": 128403,
+        "same_as_pr53": true,
+        "sha256": "44aae10d55111f40ec0b1de856716f6ba81992842be245d00ccd9d80aa24089b"
+      },
+      "geoip_RU.srs.sha256sum": {
+        "bytes": 79,
+        "same_as_pr53": true,
+        "sha256": "58cf1fb7c6c45c81d5192536491adf5cde439f1ab635bc9c081ef27fd833aebd"
+      },
+      "geoip_RU_input_provenance.tsv": {
+        "bytes": 8479,
+        "same_as_pr53": false,
+        "sha256": "2b1b00884290c2697089a3c1e059273cb699ed022197ebecfb1b61089b117673"
+      },
+      "geoip_RU_quality_report.txt": {
+        "bytes": 7921,
+        "same_as_pr53": false,
+        "sha256": "c8699a3d749ef04dba503608b0a0da0fe06123d1d39bc935081ef7c6e8702c3e"
+      },
+      "geoip_RU_v41_manifest.json": {
+        "bytes": 14910,
+        "same_as_pr53": false,
+        "sha256": "49acdc6ed24a54a2e0bb52d4b43e7349d295bf7344c2e85f72184e060ddbc17d"
+      },
+      "v41-block-inputs.tar.gz": {
+        "bytes": 1912528,
+        "same_as_pr53": false,
+        "sha256": "805765b495018a543421f6dd36850c01b1be7390a94ebf92c5c78f1cbd78cfb2"
+      },
+      "v41-registry-inputs.tar.gz": {
+        "bytes": 4812165,
+        "same_as_pr53": false,
+        "sha256": "a3436dd15c5880cc4984d55955382c801296dd47afa7f79d06867d276b67b1d4"
+      },
+      "v41-upstream-inputs.tar.gz": {
+        "bytes": 5986742,
+        "same_as_pr53": false,
+        "sha256": "e32ac030224edfd63f588b145cd6ad0784d56b3276e93aee46b81f0a340cc8c5"
+      }
+    },
+    "independent_watch_comparison": {
+      "candidate_sha256": "3161fdd5eda4d9c2f962a3c8d1bd0c187e5cab9260284a13679b289a9a6d0855",
+      "reference_sha256": "b17fe26ccdcb8d272e6233ec9686a514b309e9d75e75653313a75f329b70fae7",
+      "review_table_sha256": "aeb438051a38f079a8e98c12fe51c8c328767d6671cb887ab8f3a0ea15a75fff",
+      "status": "HOLD",
+      "watched_addresses": {
+        "added": 512,
+        "removed": 1280
+      },
+      "watched_changes": [
+        {
+          "addresses": 256,
+          "cidrs": [
+            "48.103.230.0/24"
+          ],
+          "direction": "added",
+          "prefix": "48.103.230.0/24",
+          "reason": "Selected AS219095 conflicts with validated parallel origin AS401152"
+        },
+        {
+          "addresses": 256,
+          "cidrs": [
+            "201.58.141.0/24"
+          ],
+          "direction": "added",
+          "prefix": "201.58.141.0/24",
+          "reason": "Selected AS219095 conflicts with validated parallel origin AS401152"
+        },
+        {
+          "addresses": 256,
+          "cidrs": [
+            "177.29.253.0/24"
+          ],
+          "direction": "removed",
+          "prefix": "177.29.253.0/24",
+          "reason": "CURATOR-CDN service identity and RU reachability unresolved"
+        },
+        {
+          "addresses": 256,
+          "cidrs": [
+            "177.122.229.0/24"
+          ],
+          "direction": "removed",
+          "prefix": "177.122.229.0/24",
+          "reason": "RU reachability unresolved after origin transition"
+        },
+        {
+          "addresses": 256,
+          "cidrs": [
+            "177.122.241.0/24"
+          ],
+          "direction": "removed",
+          "prefix": "177.122.241.0/24",
+          "reason": "RU reachability unresolved after origin transition"
+        },
+        {
+          "addresses": 256,
+          "cidrs": [
+            "177.166.74.0/24"
+          ],
+          "direction": "removed",
+          "prefix": "177.166.74.0/24",
+          "reason": "RU reachability unresolved after origin transition"
+        },
+        {
+          "addresses": 256,
+          "cidrs": [
+            "177.166.78.0/24"
+          ],
+          "direction": "removed",
+          "prefix": "177.166.78.0/24",
+          "reason": "RU reachability unresolved after origin transition"
+        }
+      ]
+    },
+    "jobs": {
+      "lint": {
+        "conclusion": "success",
+        "run_id": 43844682470
+      },
+      "v39": {
+        "conclusion": "success",
+        "run_id": 43844682532
+      },
+      "v41": {
+        "conclusion": "success",
+        "publish": "skipped",
+        "run_id": 43844682467
+      }
+    },
+    "manifest_sha256": "e4c7d02376445536fba581e1b1971117aaa70a28c1f7c8fb8d623db96c1ba0fe",
+    "manifest_source_commit": "3501a040293eda5698c70fabd44f01dbeefe7b98",
+    "run_id": 43844682467,
+    "synthetic_parent_commits": [
+      "c0d2a01ba1fb5f5c0e48965d614945348083a900",
+      "95168a262cae25a163722c919700c6baf31298f8"
+    ]
+  },
   "input_match": 38,
   "negative_cases": {
     "existing": "previous marker untouched",

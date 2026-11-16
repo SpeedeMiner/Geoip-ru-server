@@ -34,3 +34,26 @@ A read-only replay on unchanged production code isolated the loss to the rolling
 ## Publication-readiness review
 
 The [isolated publication handoff](V41_PUBLICATION_READINESS_20261116.md) verifies that Draft #53 holds the disputed candidate before any snapshot tag is created against the clean current baseline. The two genuine public HTTPS controls still have no verified DNS address inside these five prefixes. A missing archive result, a route-origin change and divergent country labels each remain insufficient to settle the presence of a service. All five rows are still OPEN. This observation does not remove any prefix from the current public release.
+
+## Raw collector follow-up, 16 Nov UTC
+
+The periodic 08:00 UTC RIBs from [Moscow RRC13](https://data.ris.ripe.net/rrc13/2026.11/bview.20261116.0800.gz)
+and [Stockholm RRC07](https://data.ris.ripe.net/rrc07/2026.11/bview.20261116.0800.gz)
+both contain all five exact /24s under AS137410. The two collectors see
+the adjacent control `177.29.252.0/24` under AS219305. The 23 contiguous
+five-minute update files from each collector (08:00 inclusive to 09:55
+exclusive UTC) contain no exact-prefix update or observed peer-session
+loss affecting those routes. The prior concern about a lagging summary API
+does not apply to these raw dump observations. It remains possible that
+other peers saw changes in this interval.
+
+Moscow's historical RIBs show the old origins at 00:00, no exact paths for
+the five at 08:00, and AS137410 for all five at 16:00 UTC on 15 November.
+The independently useful comparison is per peer and time, not a claim of
+a global outage. All five **remain OPEN** because BGP does not establish
+whether a customer-facing service in any of them works from a RU home ISP.
+
+[Machine-readable raw collector evidence](V41_RAW_RIS_MRT_FOLLOWUP_20261116.json)
+records source URLs, compressed SHA-256 values, time windows and exact
+paths. It also documents the unrelated MOAS sighting difference between
+the two collectors for the two disputed additions.

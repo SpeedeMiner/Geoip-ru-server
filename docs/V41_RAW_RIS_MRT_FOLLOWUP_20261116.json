@@ -1,0 +1,4381 @@
+{
+  "current_raw_collectors": {
+    "07": {
+      "collector": "RRC07",
+      "exact_update_events": [],
+      "files": [
+        {
+          "bytes": 88381471,
+          "fetched_at": "2026-11-16T10:03:42+00:00",
+          "last_modified": "Mon, 16 Nov 2026 08:04:29 GMT",
+          "path": "rrc07_2026.11_bview.20261116.0800.gz",
+          "sha256": "6feeeb32482111d06ce3c6aa8cb7e4696cb5cef2bdd2f2cc3a9da41131cdc085",
+          "url": "https://data.ris.ripe.net/rrc07/2026.11/bview.20261116.0800.gz"
+        },
+        {
+          "bytes": 983856,
+          "fetched_at": "2026-11-16T10:03:39+00:00",
+          "last_modified": "Mon, 16 Nov 2026 08:05:43 GMT",
+          "path": "rrc07_2026.11_updates.20261116.0800.gz",
+          "sha256": "0724124cf9114b58e7f26383f6de9fc3d17ced81cfa19c35d65d004806cac722",
+          "url": "https://data.ris.ripe.net/rrc07/2026.11/updates.20261116.0800.gz"
+        },
+        {
+          "bytes": 819276,
+          "fetched_at": "2026-11-16T10:03:40+00:00",
+          "last_modified": "Mon, 16 Nov 2026 08:10:06 GMT",
+          "path": "rrc07_2026.11_updates.20261116.0805.gz",
+          "sha256": "712ee86012e14bd5d6843355b08a97857b43b583cbafa6cd6fabaeb8b9e083a7",
+          "url": "https://data.ris.ripe.net/rrc07/2026.11/updates.20261116.0805.gz"
+        },
+        {
+          "bytes": 818443,
+          "fetched_at": "2026-11-16T10:03:40+00:00",
+          "last_modified": "Mon, 16 Nov 2026 08:15:22 GMT",
+          "path": "rrc07_2026.11_updates.20261116.0810.gz",
+          "sha256": "1134c124184520c910f3b0ff4b0f8ea61d2911f9a2be236722788677b17c4e6e",
+          "url": "https://data.ris.ripe.net/rrc07/2026.11/updates.20261116.0810.gz"
+        },
+        {
+          "bytes": 1254087,
+          "fetched_at": "2026-11-16T10:03:40+00:00",
+          "last_modified": "Mon, 16 Nov 2026 08:20:11 GMT",
+          "path": "rrc07_2026.11_updates.20261116.0815.gz",
+          "sha256": "2cf3f42aa010525b73c255c80244674045a03e3daf2b370724215489cf2cf890",
+          "url": "https://data.ris.ripe.net/rrc07/2026.11/updates.20261116.0815.gz"
+        },
+        {
+          "bytes": 1895915,
+          "fetched_at": "2026-11-16T10:03:40+00:00",
+          "last_modified": "Mon, 16 Nov 2026 08:25:22 GMT",
+          "path": "rrc07_2026.11_updates.20261116.0820.gz",
+          "sha256": "ce96738583c0310b1a2f5e26f5d16f8beebaaf48960e7a94f4624bc73289fa29",
+          "url": "https://data.ris.ripe.net/rrc07/2026.11/updates.20261116.0820.gz"
+        },
+        {
+          "bytes": 1013514,
+          "fetched_at": "2026-11-16T10:03:46+00:00",
+          "last_modified": "Mon, 16 Nov 2026 08:31:01 GMT",
+          "path": "rrc07_2026.11_updates.20261116.0825.gz",
+          "sha256": "11a16122657fffba4e63d8b5b845aa05411c9ef173e6ced3f7f4de5dc29a169a",
+          "url": "https://data.ris.ripe.net/rrc07/2026.11/updates.20261116.0825.gz"
+        },
+        {
+          "bytes": 921481,
+          "fetched_at": "2026-11-16T10:03:46+00:00",
+          "last_modified": "Mon, 16 Nov 2026 08:36:11 GMT",
+          "path": "rrc07_2026.11_updates.20261116.0830.gz",
+          "sha256": "c20bd4f1eb990e25579e64cf9e68019614c5f96862d38d15456368f0d51ad9a7",
+          "url": "https://data.ris.ripe.net/rrc07/2026.11/updates.20261116.0830.gz"
+        },
+        {
+          "bytes": 829023,
+          "fetched_at": "2026-11-16T10:03:46+00:00",
+          "last_modified": "Mon, 16 Nov 2026 08:40:22 GMT",
+          "path": "rrc07_2026.11_updates.20261116.0835.gz",
+          "sha256": "941b899b454d31cd30a8ad211889f76813bb7e0f814096e5bc0f8098b2dc8171",
+          "url": "https://data.ris.ripe.net/rrc07/2026.11/updates.20261116.0835.gz"
+        },
+        {
+          "bytes": 915193,
+          "fetched_at": "2026-11-16T10:03:46+00:00",
+          "last_modified": "Mon, 16 Nov 2026 08:45:52 GMT",
+          "path": "rrc07_2026.11_updates.20261116.0840.gz",
+          "sha256": "a140fddb4b4c1779205ffb5cb052296b158b6722a69072ee1222e0ec634da9f6",
+          "url": "https://data.ris.ripe.net/rrc07/2026.11/updates.20261116.0840.gz"
+        },
+        {
+          "bytes": 912872,
+          "fetched_at": "2026-11-16T10:03:46+00:00",
+          "last_modified": "Mon, 16 Nov 2026 08:50:35 GMT",
+          "path": "rrc07_2026.11_updates.20261116.0845.gz",
+          "sha256": "689bad32764f22dff6ee81686ab4eabd9bfd58b46315c83e4c930fdf363f313d",
+          "url": "https://data.ris.ripe.net/rrc07/2026.11/updates.20261116.0845.gz"
+        },
+        {
+          "bytes": 920748,
+          "fetched_at": "2026-11-16T10:03:46+00:00",
+          "last_modified": "Mon, 16 Nov 2026 08:55:21 GMT",
+          "path": "rrc07_2026.11_updates.20261116.0850.gz",
+          "sha256": "ad60af47b99f1a811fbd346063fa7002280936ee24abb5387ca6604998f74615",
+          "url": "https://data.ris.ripe.net/rrc07/2026.11/updates.20261116.0850.gz"
+        },
+        {
+          "bytes": 914915,
+          "fetched_at": "2026-11-16T10:03:52+00:00",
+          "last_modified": "Mon, 16 Nov 2026 09:00:22 GMT",
+          "path": "rrc07_2026.11_updates.20261116.0855.gz",
+          "sha256": "080edd7598a34c0a9a786c4dcf5a06aa4bff31fdb5f3dd850083a49c5d75b544",
+          "url": "https://data.ris.ripe.net/rrc07/2026.11/updates.20261116.0855.gz"
+        },
+        {
+          "bytes": 942185,
+          "fetched_at": "2026-11-16T10:03:52+00:00",
+          "last_modified": "Mon, 16 Nov 2026 09:05:33 GMT",
+          "path": "rrc07_2026.11_updates.20261116.0900.gz",
+          "sha256": "2443ece54c1b439000984d019dab7b9ba05a2cef578e000137eaa37590b905ec",
+          "url": "https://data.ris.ripe.net/rrc07/2026.11/updates.20261116.0900.gz"
+        },
+        {
+          "bytes": 1098997,
+          "fetched_at": "2026-11-16T10:03:52+00:00",
+          "last_modified": "Mon, 16 Nov 2026 09:10:19 GMT",
+          "path": "rrc07_2026.11_updates.20261116.0905.gz",
+          "sha256": "565a945cb1a771f280d7e9ad711f54eb27e343dc14002aa2564e2047e769fa17",
+          "url": "https://data.ris.ripe.net/rrc07/2026.11/updates.20261116.0905.gz"
+        },
+        {
+          "bytes": 863238,
+          "fetched_at": "2026-11-16T10:03:52+00:00",
+          "last_modified": "Mon, 16 Nov 2026 09:15:22 GMT",
+          "path": "rrc07_2026.11_updates.20261116.0910.gz",
+          "sha256": "264961e570cf601d0c160258d98b4a590f00a4ef4345e8686ebdce58eddf0e50",
+          "url": "https://data.ris.ripe.net/rrc07/2026.11/updates.20261116.0910.gz"
+        },
+        {
+          "bytes": 921909,
+          "fetched_at": "2026-11-16T10:03:52+00:00",
+          "last_modified": "Mon, 16 Nov 2026 09:20:22 GMT",
+          "path": "rrc07_2026.11_updates.20261116.0915.gz",
+          "sha256": "e8a4b620b2709dd3a5fd06b5393bb4e216e5a9d3f32bacb2bf9be749e25eaef1",
+          "url": "https://data.ris.ripe.net/rrc07/2026.11/updates.20261116.0915.gz"
+        },
+        {
+          "bytes": 885262,
+          "fetched_at": "2026-11-16T10:03:52+00:00",
+          "last_modified": "Mon, 16 Nov 2026 09:25:22 GMT",
+          "path": "rrc07_2026.11_updates.20261116.0920.gz",
+          "sha256": "9775120a5a735d526b233b3e747a79f90a04539919b8c36618d2c0f82e0ee209",
+          "url": "https://data.ris.ripe.net/rrc07/2026.11/updates.20261116.0920.gz"
+        },
+        {
+          "bytes": 913576,
+          "fetched_at": "2026-11-16T10:03:58+00:00",
+          "last_modified": "Mon, 16 Nov 2026 09:30:22 GMT",
+          "path": "rrc07_2026.11_updates.20261116.0925.gz",
+          "sha256": "924af3c7139dc8474bdf1edef35cf1691cab5f76366c0c9e06f70ca35d9fed66",
+          "url": "https://data.ris.ripe.net/rrc07/2026.11/updates.20261116.0925.gz"
+        },
+        {
+          "bytes": 919853,
+          "fetched_at": "2026-11-16T10:03:58+00:00",
+          "last_modified": "Mon, 16 Nov 2026 09:35:07 GMT",
+          "path": "rrc07_2026.11_updates.20261116.0930.gz",
+          "sha256": "b9a684490037106c68ff31c844b64430fcbacb7f700e471b1624bc3c65643343",
+          "url": "https://data.ris.ripe.net/rrc07/2026.11/updates.20261116.0930.gz"
+        },
+        {
+          "bytes": 851676,
+          "fetched_at": "2026-11-16T10:03:58+00:00",
+          "last_modified": "Mon, 16 Nov 2026 09:40:23 GMT",
+          "path": "rrc07_2026.11_updates.20261116.0935.gz",
+          "sha256": "0255f28bc5c762ccfc2c3e5bf56d7b09e1a33c7afe83703c0c03809cbdfd4ce0",
+          "url": "https://data.ris.ripe.net/rrc07/2026.11/updates.20261116.0935.gz"
+        },
+        {
+          "bytes": 959506,
+          "fetched_at": "2026-11-16T10:03:58+00:00",
+          "last_modified": "Mon, 16 Nov 2026 09:45:20 GMT",
+          "path": "rrc07_2026.11_updates.20261116.0940.gz",
+          "sha256": "202b14e9dfc523f0b841f0cdee9213b0922737123faaffaaa006a9509f400e99",
+          "url": "https://data.ris.ripe.net/rrc07/2026.11/updates.20261116.0940.gz"
+        },
+        {
+          "bytes": 928582,
+          "fetched_at": "2026-11-16T10:03:58+00:00",
+          "last_modified": "Mon, 16 Nov 2026 09:50:22 GMT",
+          "path": "rrc07_2026.11_updates.20261116.0945.gz",
+          "sha256": "4deaa04462c28c2b95b349c762d6374132b3f4fbec198cca79d60ef479cdfcea",
+          "url": "https://data.ris.ripe.net/rrc07/2026.11/updates.20261116.0945.gz"
+        },
+        {
+          "bytes": 871954,
+          "fetched_at": "2026-11-16T10:03:58+00:00",
+          "last_modified": "Mon, 16 Nov 2026 09:55:22 GMT",
+          "path": "rrc07_2026.11_updates.20261116.0950.gz",
+          "sha256": "dced7874efa5941a50f9f311406e2ddbaa7edb04abaed94c72ddfae77851e9d6",
+          "url": "https://data.ris.ripe.net/rrc07/2026.11/updates.20261116.0950.gz"
+        }
+      ],
+      "limits": [
+        "This is exact listed /24 reachability in BGP only, not end-user availability.",
+        "Initial route state comes from the periodic 08:00 nominal RIB, collected over minutes, not an instantaneous global measurement.",
+        "State is only the observed RRC07 feed, not all Stockholm operators.",
+        "Providers' peer announcements do not guarantee an individual residential line has these routes in its FIB."
+      ],
+      "mrtparse_wheel_sha256": "1672a92950eafb8fb5f6b56fe4c4ce0ebae8ec87de7b1489df7780418c311ca7",
+      "parse_error_examples": [],
+      "peer_session_losses_of_watched_paths": [],
+      "prefixes_after_observed_events": {
+        "177.122.229.0/24": {
+          "137410": {
+            "peer_asns": [
+              3399,
+              6667,
+              9002,
+              24482,
+              35280,
+              42473,
+              51519
+            ],
+            "routes": 7
+          }
+        },
+        "177.122.241.0/24": {
+          "137410": {
+            "peer_asns": [
+              3399,
+              6667,
+              9002,
+              24482,
+              35280,
+              42473,
+              51519
+            ],
+            "routes": 7
+          }
+        },
+        "177.166.74.0/24": {
+          "137410": {
+            "peer_asns": [
+              3399,
+              6667,
+              9002,
+              24482,
+              35280,
+              42473,
+              51519
+            ],
+            "routes": 7
+          }
+        },
+        "177.166.78.0/24": {
+          "137410": {
+            "peer_asns": [
+              3399,
+              6667,
+              9002,
+              24482,
+              35280,
+              42473,
+              51519
+            ],
+            "routes": 7
+          }
+        },
+        "177.29.252.0/24": {
+          "219305": {
+            "peer_asns": [
+              3399,
+              6667,
+              9002,
+              24482,
+              35280,
+              42473,
+              51519
+            ],
+            "routes": 7
+          }
+        },
+        "177.29.253.0/24": {
+          "137410": {
+            "peer_asns": [
+              3399,
+              6667,
+              9002,
+              24482,
+              35280,
+              42473,
+              51519
+            ],
+            "routes": 7
+          }
+        },
+        "201.58.141.0/24": {
+          "401152": {
+            "peer_asns": [
+              3399,
+              6667,
+              9002,
+              24482,
+              35280,
+              42473,
+              51519
+            ],
+            "routes": 7
+          }
+        },
+        "213.226.121.0/24": {
+          "44790": {
+            "peer_asns": [
+              3399,
+              6667,
+              9002,
+              52005
+            ],
+            "routes": 4
+          },
+          "62146": {
+            "peer_asns": [
+              24482,
+              35280,
+              42473,
+              51519
+            ],
+            "routes": 4
+          }
+        },
+        "48.103.230.0/24": {
+          "401152": {
+            "peer_asns": [
+              3399,
+              6667,
+              9002,
+              24482,
+              35280,
+              42473,
+              51519
+            ],
+            "routes": 7
+          }
+        }
+      },
+      "rib_paths": {
+        "177.122.229.0/24": [
+          {
+            "entry_originated_utc": "2026-11-15T14:15:05+00:00",
+            "origin": 137410,
+            "path": [
+              {
+                "asns": [
+                  "24482",
+                  "4229",
+                  "29752",
+                  "62610",
+                  "137410"
+                ],
+                "type": "AS_SEQUENCE"
+              }
+            ],
+            "path_id": null,
+            "peer_asn": 24482
+          },
+          {
+            "entry_originated_utc": "2026-11-15T14:15:38+00:00",
+            "origin": 137410,
+            "path": [
+              {
+                "asns": [
+                  "3399",
+                  "174",
+                  "29752",
+                  "29752",
+                  "62610",
+                  "137410"
+                ],
+                "type": "AS_SEQUENCE"
+              }
+            ],
+            "path_id": null,
+            "peer_asn": 3399
+          },
+          {
+            "entry_originated_utc": "2026-11-15T14:15:05+00:00",
+            "origin": 137410,
+            "path": [
+              {
+                "asns": [
+                  "35280",
+                  "4229",
+                  "29752",
+                  "62610",
+                  "137410"
+                ],
+                "type": "AS_SEQUENCE"
+              }
+            ],
+            "path_id": null,
+            "peer_asn": 35280
+          },
+          {
+            "entry_originated_utc": "2026-11-15T14:15:05+00:00",
+            "origin": 137410,
+            "path": [
+              {
+                "asns": [
+                  "42473",
+                  "9002",
+                  "3257",
+                  "29752",
+                  "29752",
+                  "62610",
+                  "137410"
+                ],
+                "type": "AS_SEQUENCE"
+              }
+            ],
+            "path_id": null,
+            "peer_asn": 42473
+          },
+          {
+            "entry_originated_utc": "2026-11-15T14:15:05+00:00",
+            "origin": 137410,
+            "path": [
+              {
+                "asns": [
+                  "51519",
+                  "39351",
+                  "4229",
+                  "29752",
+                  "62610",
+                  "137410"
+                ],
+                "type": "AS_SEQUENCE"
+              }
+            ],
+            "path_id": null,
+            "peer_asn": 51519
+          },
+          {
+            "entry_originated_utc": "2026-11-15T14:15:05+00:00",
+            "origin": 137410,
+            "path": [
+              {
+                "asns": [
+                  "6667",
+                  "3257",
+                  "29752",
+                  "29752",
+                  "62610",
+                  "137410"
+                ],
+                "type": "AS_SEQUENCE"
+              }
+            ],
+            "path_id": null,
+            "peer_asn": 6667
+          },
+          {
+            "entry_originated_utc": "2026-11-15T14:15:05+00:00",
+            "origin": 137410,
+            "path": [
+              {
+                "asns": [
+                  "9002",
+                  "3257",
+                  "29752",
+                  "29752",
+                  "62610",
+                  "137410"
+                ],
+                "type": "AS_SEQUENCE"
+              }
+            ],
+            "path_id": null,
+            "peer_asn": 9002
+          }
+        ],
+        "177.122.241.0/24": [
+          {
+            "entry_originated_utc": "2026-11-16T07:15:38+00:00",
+            "origin": 137410,
+            "path": [
+              {
+                "asns": [
+                  "24482",
+                  "4229",
+                  "29752",
+                  "62610",
+                  "137410"
+                ],
+                "type": "AS_SEQUENCE"
+              }
+            ],
+            "path_id": null,
+            "peer_asn": 24482
+          },
+          {
+            "entry_originated_utc": "2026-11-16T07:16:02+00:00",
+            "origin": 137410,
+            "path": [
+              {
+                "asns": [
+                  "3399",
+                  "174",
+                  "29752",
+                  "29752",
+                  "62610",
+                  "137410"
+                ],
+                "type": "AS_SEQUENCE"
+              }
+            ],
+            "path_id": null,
+            "peer_asn": 3399
+          },
+          {
+            "entry_originated_utc": "2026-11-16T07:15:39+00:00",
+            "origin": 137410,
+            "path": [
+              {
+                "asns": [
+                  "35280",
+                  "21859",
+                  "29752",
+                  "62610",
+                  "137410"
+                ],
+                "type": "AS_SEQUENCE"
+              }
+            ],
+            "path_id": null,
+            "peer_asn": 35280
+          },
+          {
+            "entry_originated_utc": "2026-11-16T07:15:39+00:00",
+            "origin": 137410,
+            "path": [
+              {
+                "asns": [
+                  "42473",
+                  "9002",
+                  "3257",
+                  "29752",
+                  "29752",
+                  "62610",
+                  "137410"
+                ],
+                "type": "AS_SEQUENCE"
+              }
+            ],
+            "path_id": null,
+            "peer_asn": 42473
+          },
+          {
+            "entry_originated_utc": "2026-11-16T07:15:39+00:00",
+            "origin": 137410,
+            "path": [
+              {
+                "asns": [
+                  "51519",
+                  "39351",
+                  "4229",
+                  "29752",
+                  "62610",
+                  "137410"
+                ],
+                "type": "AS_SEQUENCE"
+              }
+            ],
+            "path_id": null,
+            "peer_asn": 51519
+          },
+          {
+            "entry_originated_utc": "2026-11-16T07:15:39+00:00",
+            "origin": 137410,
+            "path": [
+              {
+                "asns": [
+                  "6667",
+                  "3257",
+                  "29752",
+                  "29752",
+                  "62610",
+                  "137410"
+                ],
+                "type": "AS_SEQUENCE"
+              }
+            ],
+            "path_id": null,
+            "peer_asn": 6667
+          },
+          {
+            "entry_originated_utc": "2026-11-16T07:15:39+00:00",
+            "origin": 137410,
+            "path": [
+              {
+                "asns": [
+                  "9002",
+                  "3257",
+                  "29752",
+                  "29752",
+                  "62610",
+                  "137410"
+                ],
+                "type": "AS_SEQUENCE"
+              }
+            ],
+            "path_id": null,
+            "peer_asn": 9002
+          }
+        ],
+        "177.166.74.0/24": [
+          {
+            "entry_originated_utc": "2026-11-16T05:04:00+00:00",
+            "origin": 137410,
+            "path": [
+              {
+                "asns": [
+                  "24482",
+                  "4229",
+                  "29752",
+                  "62610",
+                  "137410"
+                ],
+                "type": "AS_SEQUENCE"
+              }
+            ],
+            "path_id": null,
+            "peer_asn": 24482
+          },
+          {
+            "entry_originated_utc": "2026-11-15T18:04:27+00:00",
+            "origin": 137410,
+            "path": [
+              {
+                "asns": [
+                  "3399",
+                  "174",
+                  "29752",
+                  "29752",
+                  "62610",
+                  "137410"
+                ],
+                "type": "AS_SEQUENCE"
+              }
+            ],
+            "path_id": null,
+            "peer_asn": 3399
+          },
+          {
+            "entry_originated_utc": "2026-11-15T18:03:57+00:00",
+            "origin": 137410,
+            "path": [
+              {
+                "asns": [
+                  "35280",
+                  "21859",
+                  "29752",
+                  "62610",
+                  "137410"
+                ],
+                "type": "AS_SEQUENCE"
+              }
+            ],
+            "path_id": null,
+            "peer_asn": 35280
+          },
+          {
+            "entry_originated_utc": "2026-11-15T18:03:56+00:00",
+            "origin": 137410,
+            "path": [
+              {
+                "asns": [
+                  "42473",
+                  "9002",
+                  "3257",
+                  "29752",
+                  "29752",
+                  "62610",
+                  "137410"
+                ],
+                "type": "AS_SEQUENCE"
+              }
+            ],
+            "path_id": null,
+            "peer_asn": 42473
+          },
+          {
+            "entry_originated_utc": "2026-11-15T18:03:57+00:00",
+            "origin": 137410,
+            "path": [
+              {
+                "asns": [
+                  "51519",
+                  "39351",
+                  "4229",
+                  "29752",
+                  "62610",
+                  "137410"
+                ],
+                "type": "AS_SEQUENCE"
+              }
+            ],
+            "path_id": null,
+            "peer_asn": 51519
+          },
+          {
+            "entry_originated_utc": "2026-11-15T18:03:57+00:00",
+            "origin": 137410,
+            "path": [
+              {
+                "asns": [
+                  "6667",
+                  "3257",
+                  "29752",
+                  "29752",
+                  "62610",
+                  "137410"
+                ],
+                "type": "AS_SEQUENCE"
+              }
+            ],
+            "path_id": null,
+            "peer_asn": 6667
+          },
+          {
+            "entry_originated_utc": "2026-11-15T18:03:56+00:00",
+            "origin": 137410,
+            "path": [
+              {
+                "asns": [
+                  "9002",
+                  "3257",
+                  "29752",
+                  "29752",
+                  "62610",
+                  "137410"
+                ],
+                "type": "AS_SEQUENCE"
+              }
+            ],
+            "path_id": null,
+            "peer_asn": 9002
+          }
+        ],
+        "177.166.78.0/24": [
+          {
+            "entry_originated_utc": "2026-11-16T07:16:01+00:00",
+            "origin": 137410,
+            "path": [
+              {
+                "asns": [
+                  "24482",
+                  "4229",
+                  "29752",
+                  "62610",
+                  "137410"
+                ],
+                "type": "AS_SEQUENCE"
+              }
+            ],
+            "path_id": null,
+            "peer_asn": 24482
+          },
+          {
+            "entry_originated_utc": "2026-11-16T07:15:32+00:00",
+            "origin": 137410,
+            "path": [
+              {
+                "asns": [
+                  "3399",
+                  "174",
+                  "29752",
+                  "29752",
+                  "62610",
+                  "137410"
+                ],
+                "type": "AS_SEQUENCE"
+              }
+            ],
+            "path_id": null,
+            "peer_asn": 3399
+          },
+          {
+            "entry_originated_utc": "2026-11-16T07:15:02+00:00",
+            "origin": 137410,
+            "path": [
+              {
+                "asns": [
+                  "35280",
+                  "21859",
+                  "29752",
+                  "62610",
+                  "137410"
+                ],
+                "type": "AS_SEQUENCE"
+              }
+            ],
+            "path_id": null,
+            "peer_asn": 35280
+          },
+          {
+            "entry_originated_utc": "2026-11-16T07:15:02+00:00",
+            "origin": 137410,
+            "path": [
+              {
+                "asns": [
+                  "42473",
+                  "9002",
+                  "3257",
+                  "29752",
+                  "29752",
+                  "62610",
+                  "137410"
+                ],
+                "type": "AS_SEQUENCE"
+              }
+            ],
+            "path_id": null,
+            "peer_asn": 42473
+          },
+          {
+            "entry_originated_utc": "2026-11-16T07:15:02+00:00",
+            "origin": 137410,
+            "path": [
+              {
+                "asns": [
+                  "51519",
+                  "39351",
+                  "4229",
+                  "29752",
+                  "62610",
+                  "137410"
+                ],
+                "type": "AS_SEQUENCE"
+              }
+            ],
+            "path_id": null,
+            "peer_asn": 51519
+          },
+          {
+            "entry_originated_utc": "2026-11-16T07:15:02+00:00",
+            "origin": 137410,
+            "path": [
+              {
+                "asns": [
+                  "6667",
+                  "3257",
+                  "29752",
+                  "29752",
+                  "62610",
+                  "137410"
+                ],
+                "type": "AS_SEQUENCE"
+              }
+            ],
+            "path_id": null,
+            "peer_asn": 6667
+          },
+          {
+            "entry_originated_utc": "2026-11-16T07:15:02+00:00",
+            "origin": 137410,
+            "path": [
+              {
+                "asns": [
+                  "9002",
+                  "3257",
+                  "29752",
+                  "29752",
+                  "62610",
+                  "137410"
+                ],
+                "type": "AS_SEQUENCE"
+              }
+            ],
+            "path_id": null,
+            "peer_asn": 9002
+          }
+        ],
+        "177.29.252.0/24": [
+          {
+            "entry_originated_utc": "2026-11-14T16:21:55+00:00",
+            "origin": 219305,
+            "path": [
+              {
+                "asns": [
+                  "24482",
+                  "2914",
+                  "2914",
+                  "174",
+                  "401322",
+                  "219305"
+                ],
+                "type": "AS_SEQUENCE"
+              }
+            ],
+            "path_id": null,
+            "peer_asn": 24482
+          },
+          {
+            "entry_originated_utc": "2026-11-14T16:22:19+00:00",
+            "origin": 219305,
+            "path": [
+              {
+                "asns": [
+                  "3399",
+                  "6453",
+                  "174",
+                  "401322",
+                  "219305"
+                ],
+                "type": "AS_SEQUENCE"
+              }
+            ],
+            "path_id": null,
+            "peer_asn": 3399
+          },
+          {
+            "entry_originated_utc": "2026-11-14T16:21:50+00:00",
+            "origin": 219305,
+            "path": [
+              {
+                "asns": [
+                  "35280",
+                  "3356",
+                  "174",
+                  "401322",
+                  "219305"
+                ],
+                "type": "AS_SEQUENCE"
+              }
+            ],
+            "path_id": null,
+            "peer_asn": 35280
+          },
+          {
+            "entry_originated_utc": "2026-11-14T16:21:41+00:00",
+            "origin": 219305,
+            "path": [
+              {
+                "asns": [
+                  "42473",
+                  "1299",
+                  "174",
+                  "401322",
+                  "219305"
+                ],
+                "type": "AS_SEQUENCE"
+              }
+            ],
+            "path_id": null,
+            "peer_asn": 42473
+          },
+          {
+            "entry_originated_utc": "2026-11-14T16:21:42+00:00",
+            "origin": 219305,
+            "path": [
+              {
+                "asns": [
+                  "51519",
+                  "39351",
+                  "174",
+                  "401322",
+                  "219305"
+                ],
+                "type": "AS_SEQUENCE"
+              }
+            ],
+            "path_id": null,
+            "peer_asn": 51519
+          },
+          {
+            "entry_originated_utc": "2026-11-16T07:06:57+00:00",
+            "origin": 219305,
+            "path": [
+              {
+                "asns": [
+                  "6667",
+                  "174",
+                  "401322",
+                  "219305"
+                ],
+                "type": "AS_SEQUENCE"
+              }
+            ],
+            "path_id": null,
+            "peer_asn": 6667
+          },
+          {
+            "entry_originated_utc": "2026-11-14T16:21:55+00:00",
+            "origin": 219305,
+            "path": [
+              {
+                "asns": [
+                  "9002",
+                  "3356",
+                  "174",
+                  "401322",
+                  "219305"
+                ],
+                "type": "AS_SEQUENCE"
+              }
+            ],
+            "path_id": null,
+            "peer_asn": 9002
+          }
+        ],
+        "177.29.253.0/24": [
+          {
+            "entry_originated_utc": "2026-11-16T07:14:12+00:00",
+            "origin": 137410,
+            "path": [
+              {
+                "asns": [
+                  "24482",
+                  "4229",
+                  "29752",
+                  "62610",
+                  "137410"
+                ],
+                "type": "AS_SEQUENCE"
+              }
+            ],
+            "path_id": null,
+            "peer_asn": 24482
+          },
+          {
+            "entry_originated_utc": "2026-11-16T07:14:32+00:00",
+            "origin": 137410,
+            "path": [
+              {
+                "asns": [
+                  "3399",
+                  "174",
+                  "29752",
+                  "29752",
+                  "62610",
+                  "137410"
+                ],
+                "type": "AS_SEQUENCE"
+              }
+            ],
+            "path_id": null,
+            "peer_asn": 3399
+          },
+          {
+            "entry_originated_utc": "2026-11-16T07:14:12+00:00",
+            "origin": 137410,
+            "path": [
+              {
+                "asns": [
+                  "35280",
+                  "21859",
+                  "29752",
+                  "62610",
+                  "137410"
+                ],
+                "type": "AS_SEQUENCE"
+              }
+            ],
+            "path_id": null,
+            "peer_asn": 35280
+          },
+          {
+            "entry_originated_utc": "2026-11-16T07:14:12+00:00",
+            "origin": 137410,
+            "path": [
+              {
+                "asns": [
+                  "42473",
+                  "9002",
+                  "3257",
+                  "29752",
+                  "29752",
+                  "62610",
+                  "137410"
+                ],
+                "type": "AS_SEQUENCE"
+              }
+            ],
+            "path_id": null,
+            "peer_asn": 42473
+          },
+          {
+            "entry_originated_utc": "2026-11-16T07:14:12+00:00",
+            "origin": 137410,
+            "path": [
+              {
+                "asns": [
+                  "51519",
+                  "39351",
+                  "4229",
+                  "29752",
+                  "62610",
+                  "137410"
+                ],
+                "type": "AS_SEQUENCE"
+              }
+            ],
+            "path_id": null,
+            "peer_asn": 51519
+          },
+          {
+            "entry_originated_utc": "2026-11-16T07:14:12+00:00",
+            "origin": 137410,
+            "path": [
+              {
+                "asns": [
+                  "6667",
+                  "3257",
+                  "29752",
+                  "29752",
+                  "62610",
+                  "137410"
+                ],
+                "type": "AS_SEQUENCE"
+              }
+            ],
+            "path_id": null,
+            "peer_asn": 6667
+          },
+          {
+            "entry_originated_utc": "2026-11-16T07:14:12+00:00",
+            "origin": 137410,
+            "path": [
+              {
+                "asns": [
+                  "9002",
+                  "3257",
+                  "29752",
+                  "29752",
+                  "62610",
+                  "137410"
+                ],
+                "type": "AS_SEQUENCE"
+              }
+            ],
+            "path_id": null,
+            "peer_asn": 9002
+          }
+        ],
+        "201.58.141.0/24": [
+          {
+            "entry_originated_utc": "2026-11-13T18:34:30+00:00",
+            "origin": 401152,
+            "path": [
+              {
+                "asns": [
+                  "24482",
+                  "6461",
+                  "11798",
+                  "401152"
+                ],
+                "type": "AS_SEQUENCE"
+              }
+            ],
+            "path_id": null,
+            "peer_asn": 24482
+          },
+          {
+            "entry_originated_utc": "2026-11-13T19:59:48+00:00",
+            "origin": 401152,
+            "path": [
+              {
+                "asns": [
+                  "3399",
+                  "6453",
+                  "174",
+                  "11798",
+                  "401152"
+                ],
+                "type": "AS_SEQUENCE"
+              }
+            ],
+            "path_id": null,
+            "peer_asn": 3399
+          },
+          {
+            "entry_originated_utc": "2026-11-13T18:25:29+00:00",
+            "origin": 401152,
+            "path": [
+              {
+                "asns": [
+                  "35280",
+                  "6461",
+                  "11798",
+                  "401152"
+                ],
+                "type": "AS_SEQUENCE"
+              }
+            ],
+            "path_id": null,
+            "peer_asn": 35280
+          },
+          {
+            "entry_originated_utc": "2026-11-14T05:00:23+00:00",
+            "origin": 401152,
+            "path": [
+              {
+                "asns": [
+                  "42473",
+                  "9002",
+                  "6461",
+                  "11798",
+                  "401152"
+                ],
+                "type": "AS_SEQUENCE"
+              }
+            ],
+            "path_id": null,
+            "peer_asn": 42473
+          },
+          {
+            "entry_originated_utc": "2026-11-13T18:35:01+00:00",
+            "origin": 401152,
+            "path": [
+              {
+                "asns": [
+                  "51519",
+                  "39351",
+                  "6461",
+                  "11798",
+                  "401152"
+                ],
+                "type": "AS_SEQUENCE"
+              }
+            ],
+            "path_id": null,
+            "peer_asn": 51519
+          },
+          {
+            "entry_originated_utc": "2026-11-14T05:00:59+00:00",
+            "origin": 401152,
+            "path": [
+              {
+                "asns": [
+                  "6667",
+                  "6461",
+                  "11798",
+                  "401152"
+                ],
+                "type": "AS_SEQUENCE"
+              }
+            ],
+            "path_id": null,
+            "peer_asn": 6667
+          },
+          {
+            "entry_originated_utc": "2026-11-13T18:45:17+00:00",
+            "origin": 401152,
+            "path": [
+              {
+                "asns": [
+                  "9002",
+                  "6461",
+                  "11798",
+                  "401152"
+                ],
+                "type": "AS_SEQUENCE"
+              }
+            ],
+            "path_id": null,
+            "peer_asn": 9002
+          }
+        ],
+        "213.226.121.0/24": [
+          {
+            "entry_originated_utc": "2026-11-15T17:04:14+00:00",
+            "origin": 62146,
+            "path": [
+              {
+                "asns": [
+                  "24482",
+                  "35320",
+                  "62146"
+                ],
+                "type": "AS_SEQUENCE"
+              }
+            ],
+            "path_id": null,
+            "peer_asn": 24482
+          },
+          {
+            "entry_originated_utc": "2026-11-11T18:40:53+00:00",
+            "origin": 44790,
+            "path": [
+              {
+                "asns": [
+                  "57304",
+                  "50340",
+                  "39134",
+                  "44790",
+                  "44790"
+                ],
+                "type": "AS_SEQUENCE"
+              }
+            ],
+            "path_id": null,
+            "peer_asn": 52005
+          },
+          {
+            "entry_originated_utc": "2026-11-15T01:40:05+00:00",
+            "origin": 44790,
+            "path": [
+              {
+                "asns": [
+                  "3399",
+                  "20485",
+                  "50340",
+                  "39134",
+                  "44790",
+                  "44790"
+                ],
+                "type": "AS_SEQUENCE"
+              }
+            ],
+            "path_id": null,
+            "peer_asn": 3399
+          },
+          {
+            "entry_originated_utc": "2026-11-15T17:04:13+00:00",
+            "origin": 62146,
+            "path": [
+              {
+                "asns": [
+                  "35280",
+                  "35320",
+                  "62146"
+                ],
+                "type": "AS_SEQUENCE"
+              }
+            ],
+            "path_id": null,
+            "peer_asn": 35280
+          },
+          {
+            "entry_originated_utc": "2026-11-15T17:04:13+00:00",
+            "origin": 62146,
+            "path": [
+              {
+                "asns": [
+                  "42473",
+                  "1299",
+                  "35320",
+                  "62146"
+                ],
+                "type": "AS_SEQUENCE"
+              }
+            ],
+            "path_id": null,
+            "peer_asn": 42473
+          },
+          {
+            "entry_originated_utc": "2026-11-15T17:04:13+00:00",
+            "origin": 62146,
+            "path": [
+              {
+                "asns": [
+                  "51519",
+                  "39351",
+                  "35320",
+                  "62146"
+                ],
+                "type": "AS_SEQUENCE"
+              }
+            ],
+            "path_id": null,
+            "peer_asn": 51519
+          },
+          {
+            "entry_originated_utc": "2026-11-15T01:40:02+00:00",
+            "origin": 44790,
+            "path": [
+              {
+                "asns": [
+                  "6667",
+                  "1273",
+                  "3216",
+                  "50340",
+                  "39134",
+                  "44790",
+                  "44790"
+                ],
+                "type": "AS_SEQUENCE"
+              }
+            ],
+            "path_id": null,
+            "peer_asn": 6667
+          },
+          {
+            "entry_originated_utc": "2026-11-15T01:40:03+00:00",
+            "origin": 44790,
+            "path": [
+              {
+                "asns": [
+                  "9002",
+                  "57304",
+                  "50340",
+                  "39134",
+                  "44790",
+                  "44790"
+                ],
+                "type": "AS_SEQUENCE"
+              }
+            ],
+            "path_id": null,
+            "peer_asn": 9002
+          }
+        ],
+        "48.103.230.0/24": [
+          {
+            "entry_originated_utc": "2026-11-06T10:29:26+00:00",
+            "origin": 401152,
+            "path": [
+              {
+                "asns": [
+                  "24482",
+                  "6461",
+                  "11798",
+                  "401152"
+                ],
+                "type": "AS_SEQUENCE"
+              }
+            ],
+            "path_id": null,
+            "peer_asn": 24482
+          },
+          {
+            "entry_originated_utc": "2026-11-03T21:54:39+00:00",
+            "origin": 401152,
+            "path": [
+              {
+                "asns": [
+                  "3399",
+                  "5511",
+                  "174",
+                  "11798",
+                  "401152"
+                ],
+                "type": "AS_SEQUENCE"
+              }
+            ],
+            "path_id": null,
+            "peer_asn": 3399
+          },
+          {
+            "entry_originated_utc": "2026-11-10T01:27:56+00:00",
+            "origin": 401152,
+            "path": [
+              {
+                "asns": [
+                  "35280",
+                  "6461",
+                  "11798",
+                  "401152"
+                ],
+                "type": "AS_SEQUENCE"
+              }
+            ],
+            "path_id": null,
+            "peer_asn": 35280
+          },
+          {
+            "entry_originated_utc": "2026-11-06T10:29:26+00:00",
+            "origin": 401152,
+            "path": [
+              {
+                "asns": [
+                  "42473",
+                  "9002",
+                  "6461",
+                  "11798",
+                  "401152"
+                ],
+                "type": "AS_SEQUENCE"
+              }
+            ],
+            "path_id": null,
+            "peer_asn": 42473
+          },
+          {
+            "entry_originated_utc": "2026-11-06T10:29:26+00:00",
+            "origin": 401152,
+            "path": [
+              {
+                "asns": [
+                  "51519",
+                  "39351",
+                  "6461",
+                  "11798",
+                  "401152"
+                ],
+                "type": "AS_SEQUENCE"
+              }
+            ],
+            "path_id": null,
+            "peer_asn": 51519
+          },
+          {
+            "entry_originated_utc": "2026-11-14T05:00:59+00:00",
+            "origin": 401152,
+            "path": [
+              {
+                "asns": [
+                  "6667",
+                  "6461",
+                  "11798",
+                  "401152"
+                ],
+                "type": "AS_SEQUENCE"
+              }
+            ],
+            "path_id": null,
+            "peer_asn": 6667
+          },
+          {
+            "entry_originated_utc": "2026-11-06T10:29:25+00:00",
+            "origin": 401152,
+            "path": [
+              {
+                "asns": [
+                  "9002",
+                  "6461",
+                  "11798",
+                  "401152"
+                ],
+                "type": "AS_SEQUENCE"
+              }
+            ],
+            "path_id": null,
+            "peer_asn": 9002
+          }
+        ]
+      },
+      "rib_peer_index_header_utc": [
+        "2026-11-16T08:00:00+00:00"
+      ],
+      "rib_peer_sessions": 37,
+      "rib_prefixes": {
+        "177.122.229.0/24": {
+          "137410": {
+            "peer_asns": [
+              3399,
+              6667,
+              9002,
+              24482,
+              35280,
+              42473,
+              51519
+            ],
+            "routes": 7
+          }
+        },
+        "177.122.241.0/24": {
+          "137410": {
+            "peer_asns": [
+              3399,
+              6667,
+              9002,
+              24482,
+              35280,
+              42473,
+              51519
+            ],
+            "routes": 7
+          }
+        },
+        "177.166.74.0/24": {
+          "137410": {
+            "peer_asns": [
+              3399,
+              6667,
+              9002,
+              24482,
+              35280,
+              42473,
+              51519
+            ],
+            "routes": 7
+          }
+        },
+        "177.166.78.0/24": {
+          "137410": {
+            "peer_asns": [
+              3399,
+              6667,
+              9002,
+              24482,
+              35280,
+              42473,
+              51519
+            ],
+            "routes": 7
+          }
+        },
+        "177.29.252.0/24": {
+          "219305": {
+            "peer_asns": [
+              3399,
+              6667,
+              9002,
+              24482,
+              35280,
+              42473,
+              51519
+            ],
+            "routes": 7
+          }
+        },
+        "177.29.253.0/24": {
+          "137410": {
+            "peer_asns": [
+              3399,
+              6667,
+              9002,
+              24482,
+              35280,
+              42473,
+              51519
+            ],
+            "routes": 7
+          }
+        },
+        "201.58.141.0/24": {
+          "401152": {
+            "peer_asns": [
+              3399,
+              6667,
+              9002,
+              24482,
+              35280,
+              42473,
+              51519
+            ],
+            "routes": 7
+          }
+        },
+        "213.226.121.0/24": {
+          "44790": {
+            "peer_asns": [
+              3399,
+              6667,
+              9002,
+              52005
+            ],
+            "routes": 4
+          },
+          "62146": {
+            "peer_asns": [
+              24482,
+              35280,
+              42473,
+              51519
+            ],
+            "routes": 4
+          }
+        },
+        "48.103.230.0/24": {
+          "401152": {
+            "peer_asns": [
+              3399,
+              6667,
+              9002,
+              24482,
+              35280,
+              42473,
+              51519
+            ],
+            "routes": 7
+          }
+        }
+      },
+      "rib_record_counts": {
+        "13/1": 1,
+        "13/2": 1119462,
+        "13/4": 265478
+      },
+      "sample_window_utc": {
+        "end_exclusive": "2026-11-16T09:55:00+00:00",
+        "start_inclusive": "2026-11-16T08:00:00+00:00"
+      },
+      "update_file_counts": {
+        "rrc07_2026.11_updates.20261116.0800.gz": {
+          "subtype_0": 36,
+          "subtype_4": 34829,
+          "subtype_5": 8
+        },
+        "rrc07_2026.11_updates.20261116.0805.gz": {
+          "subtype_0": 35,
+          "subtype_4": 30543,
+          "subtype_5": 9
+        },
+        "rrc07_2026.11_updates.20261116.0810.gz": {
+          "subtype_0": 34,
+          "subtype_4": 29488,
+          "subtype_5": 9
+        },
+        "rrc07_2026.11_updates.20261116.0815.gz": {
+          "subtype_0": 35,
+          "subtype_4": 45231,
+          "subtype_5": 8
+        },
+        "rrc07_2026.11_updates.20261116.0820.gz": {
+          "subtype_0": 35,
+          "subtype_4": 73534,
+          "subtype_5": 10
+        },
+        "rrc07_2026.11_updates.20261116.0825.gz": {
+          "subtype_0": 37,
+          "subtype_4": 38479,
+          "subtype_5": 8
+        },
+        "rrc07_2026.11_updates.20261116.0830.gz": {
+          "subtype_0": 32,
+          "subtype_4": 34403,
+          "subtype_5": 9
+        },
+        "rrc07_2026.11_updates.20261116.0835.gz": {
+          "subtype_0": 36,
+          "subtype_4": 31066,
+          "subtype_5": 9
+        },
+        "rrc07_2026.11_updates.20261116.0840.gz": {
+          "subtype_0": 34,
+          "subtype_4": 32696,
+          "subtype_5": 8
+        },
+        "rrc07_2026.11_updates.20261116.0845.gz": {
+          "subtype_0": 37,
+          "subtype_4": 33097,
+          "subtype_5": 10
+        },
+        "rrc07_2026.11_updates.20261116.0850.gz": {
+          "subtype_0": 33,
+          "subtype_4": 34532,
+          "subtype_5": 8
+        },
+        "rrc07_2026.11_updates.20261116.0855.gz": {
+          "subtype_0": 36,
+          "subtype_4": 34914,
+          "subtype_5": 10
+        },
+        "rrc07_2026.11_updates.20261116.0900.gz": {
+          "subtype_0": 33,
+          "subtype_4": 35149,
+          "subtype_5": 8
+        },
+        "rrc07_2026.11_updates.20261116.0905.gz": {
+          "subtype_0": 37,
+          "subtype_4": 40799,
+          "subtype_5": 8
+        },
+        "rrc07_2026.11_updates.20261116.0910.gz": {
+          "subtype_0": 32,
+          "subtype_4": 32317,
+          "subtype_5": 10
+        },
+        "rrc07_2026.11_updates.20261116.0915.gz": {
+          "subtype_0": 39,
+          "subtype_4": 35629,
+          "subtype_5": 8
+        },
+        "rrc07_2026.11_updates.20261116.0920.gz": {
+          "subtype_0": 31,
+          "subtype_4": 33429,
+          "subtype_5": 10
+        },
+        "rrc07_2026.11_updates.20261116.0925.gz": {
+          "subtype_0": 37,
+          "subtype_4": 34112,
+          "subtype_5": 8
+        },
+        "rrc07_2026.11_updates.20261116.0930.gz": {
+          "subtype_0": 35,
+          "subtype_4": 34043,
+          "subtype_5": 8
+        },
+        "rrc07_2026.11_updates.20261116.0935.gz": {
+          "subtype_0": 34,
+          "subtype_4": 32003,
+          "subtype_5": 10
+        },
+        "rrc07_2026.11_updates.20261116.0940.gz": {
+          "subtype_0": 38,
+          "subtype_4": 34869,
+          "subtype_5": 8
+        },
+        "rrc07_2026.11_updates.20261116.0945.gz": {
+          "subtype_0": 32,
+          "subtype_4": 33980,
+          "subtype_5": 10
+        },
+        "rrc07_2026.11_updates.20261116.0950.gz": {
+          "subtype_0": 36,
+          "subtype_4": 32486,
+          "subtype_5": 8
+        }
+      }
+    },
+    "13": {
+      "collector": "RRC13",
+      "exact_update_events": [],
+      "files": [
+        {
+          "bytes": 66736219,
+          "fetched_at": "2026-11-16T10:01:07+00:00",
+          "last_modified": "Mon, 16 Nov 2026 08:03:03 GMT",
+          "path": "rrc13_2026.11_bview.20261116.0800.gz",
+          "sha256": "acec7f41db534078bae97a4a9ed89ec24e566bed0e22544fd1743eb0dfab20b6",
+          "url": "https://data.ris.ripe.net/rrc13/2026.11/bview.20261116.0800.gz"
+        },
+        {
+          "bytes": 749236,
+          "fetched_at": "2026-11-16T10:01:05+00:00",
+          "last_modified": "Mon, 16 Nov 2026 08:05:41 GMT",
+          "path": "rrc13_2026.11_updates.20261116.0800.gz",
+          "sha256": "3635a3fc7b7b5275cdec52a7b10e57c7dd26fcb0e072af57e3c407aa454f8eaf",
+          "url": "https://data.ris.ripe.net/rrc13/2026.11/updates.20261116.0800.gz"
+        },
+        {
+          "bytes": 864708,
+          "fetched_at": "2026-11-16T10:01:05+00:00",
+          "last_modified": "Mon, 16 Nov 2026 08:10:24 GMT",
+          "path": "rrc13_2026.11_updates.20261116.0805.gz",
+          "sha256": "041c5098fa05c97639c1a413c0a37cf70094a76b815652b157c08d2b6870fe40",
+          "url": "https://data.ris.ripe.net/rrc13/2026.11/updates.20261116.0805.gz"
+        },
+        {
+          "bytes": 803500,
+          "fetched_at": "2026-11-16T10:01:05+00:00",
+          "last_modified": "Mon, 16 Nov 2026 08:15:14 GMT",
+          "path": "rrc13_2026.11_updates.20261116.0810.gz",
+          "sha256": "f792bdff3d191733f70b231ed033eb06fae51f017b0e744aa8e7bda0317bc72e",
+          "url": "https://data.ris.ripe.net/rrc13/2026.11/updates.20261116.0810.gz"
+        },
+        {
+          "bytes": 647114,
+          "fetched_at": "2026-11-16T10:01:05+00:00",
+          "last_modified": "Mon, 16 Nov 2026 08:20:23 GMT",
+          "path": "rrc13_2026.11_updates.20261116.0815.gz",
+          "sha256": "8792147001203fb74b7a230634ea7d2123641afbc88670a000fae7cffdfb812a",
+          "url": "https://data.ris.ripe.net/rrc13/2026.11/updates.20261116.0815.gz"
+        },
+        {
+          "bytes": 1139334,
+          "fetched_at": "2026-11-16T10:01:06+00:00",
+          "last_modified": "Mon, 16 Nov 2026 08:25:19 GMT",
+          "path": "rrc13_2026.11_updates.20261116.0820.gz",
+          "sha256": "96926367f71cdef704dcd0c57c46cbadf954e4980d33acabf48f9c413608615c",
+          "url": "https://data.ris.ripe.net/rrc13/2026.11/updates.20261116.0820.gz"
+        },
+        {
+          "bytes": 983368,
+          "fetched_at": "2026-11-16T10:01:11+00:00",
+          "last_modified": "Mon, 16 Nov 2026 08:30:43 GMT",
+          "path": "rrc13_2026.11_updates.20261116.0825.gz",
+          "sha256": "bb56c383caf7a8419e0a3efe6e4d3c7e91b107aee4156132aa606455ded91ce9",
+          "url": "https://data.ris.ripe.net/rrc13/2026.11/updates.20261116.0825.gz"
+        },
+        {
+          "bytes": 846851,
+          "fetched_at": "2026-11-16T10:01:11+00:00",
+          "last_modified": "Mon, 16 Nov 2026 08:35:53 GMT",
+          "path": "rrc13_2026.11_updates.20261116.0830.gz",
+          "sha256": "a840b54a918a3a60b2ed5884f8b054ea95283f43cac54a7a52a790628a471697",
+          "url": "https://data.ris.ripe.net/rrc13/2026.11/updates.20261116.0830.gz"
+        },
+        {
+          "bytes": 725228,
+          "fetched_at": "2026-11-16T10:01:11+00:00",
+          "last_modified": "Mon, 16 Nov 2026 08:40:14 GMT",
+          "path": "rrc13_2026.11_updates.20261116.0835.gz",
+          "sha256": "c3ec7ffee65dceb81a6badd10ea8e1eeb557713d45772a352dca9fda4afa1544",
+          "url": "https://data.ris.ripe.net/rrc13/2026.11/updates.20261116.0835.gz"
+        },
+        {
+          "bytes": 891068,
+          "fetched_at": "2026-11-16T10:01:11+00:00",
+          "last_modified": "Mon, 16 Nov 2026 08:45:29 GMT",
+          "path": "rrc13_2026.11_updates.20261116.0840.gz",
+          "sha256": "e7777e6daf323c94d6e5eff6f3c4b9c80c7513c104556dd326d5a5b855da5a69",
+          "url": "https://data.ris.ripe.net/rrc13/2026.11/updates.20261116.0840.gz"
+        },
+        {
+          "bytes": 916843,
+          "fetched_at": "2026-11-16T10:01:11+00:00",
+          "last_modified": "Mon, 16 Nov 2026 08:50:14 GMT",
+          "path": "rrc13_2026.11_updates.20261116.0845.gz",
+          "sha256": "adb23d1e7dcc1687e0a6adfb02e954d9fe0adc3642ba64b58bf1b96bca0fee1b",
+          "url": "https://data.ris.ripe.net/rrc13/2026.11/updates.20261116.0845.gz"
+        },
+        {
+          "bytes": 785088,
+          "fetched_at": "2026-11-16T10:01:11+00:00",
+          "last_modified": "Mon, 16 Nov 2026 08:55:16 GMT",
+          "path": "rrc13_2026.11_updates.20261116.0850.gz",
+          "sha256": "588efe02969c60dcab9d48123633c79aead429cbab4e1d2e06de938493d9017e",
+          "url": "https://data.ris.ripe.net/rrc13/2026.11/updates.20261116.0850.gz"
+        },
+        {
+          "bytes": 898537,
+          "fetched_at": "2026-11-16T10:01:17+00:00",
+          "last_modified": "Mon, 16 Nov 2026 09:00:19 GMT",
+          "path": "rrc13_2026.11_updates.20261116.0855.gz",
+          "sha256": "fc5b03220ef5ddb45702420f40f380f72afd0e2bfd6e486e7975644525b481c1",
+          "url": "https://data.ris.ripe.net/rrc13/2026.11/updates.20261116.0855.gz"
+        },
+        {
+          "bytes": 946492,
+          "fetched_at": "2026-11-16T10:01:17+00:00",
+          "last_modified": "Mon, 16 Nov 2026 09:06:36 GMT",
+          "path": "rrc13_2026.11_updates.20261116.0900.gz",
+          "sha256": "82b6aedb27ab5514a0dfcceb998beb37cdbca74263beed9479e5eae9774ea7a3",
+          "url": "https://data.ris.ripe.net/rrc13/2026.11/updates.20261116.0900.gz"
+        },
+        {
+          "bytes": 856598,
+          "fetched_at": "2026-11-16T10:01:17+00:00",
+          "last_modified": "Mon, 16 Nov 2026 09:10:43 GMT",
+          "path": "rrc13_2026.11_updates.20261116.0905.gz",
+          "sha256": "ac3f03c29a6f08280891ee7f564c5deaa944ece636e6d885e3acbda0698b7e79",
+          "url": "https://data.ris.ripe.net/rrc13/2026.11/updates.20261116.0905.gz"
+        },
+        {
+          "bytes": 864382,
+          "fetched_at": "2026-11-16T10:01:17+00:00",
+          "last_modified": "Mon, 16 Nov 2026 09:15:12 GMT",
+          "path": "rrc13_2026.11_updates.20261116.0910.gz",
+          "sha256": "8ae46203782e8ffa55b4c02ede4e77bab887ca1d516c256a1b6c6d50b083ee99",
+          "url": "https://data.ris.ripe.net/rrc13/2026.11/updates.20261116.0910.gz"
+        },
+        {
+          "bytes": 901482,
+          "fetched_at": "2026-11-16T10:01:17+00:00",
+          "last_modified": "Mon, 16 Nov 2026 09:20:26 GMT",
+          "path": "rrc13_2026.11_updates.20261116.0915.gz",
+          "sha256": "50aff785e26ff6d57dda0d1cee74282ea909cf209a34cfbe6a53aaee2c157b17",
+          "url": "https://data.ris.ripe.net/rrc13/2026.11/updates.20261116.0915.gz"
+        },
+        {
+          "bytes": 772217,
+          "fetched_at": "2026-11-16T10:01:17+00:00",
+          "last_modified": "Mon, 16 Nov 2026 09:25:24 GMT",
+          "path": "rrc13_2026.11_updates.20261116.0920.gz",
+          "sha256": "9f8d1ac2ad88f368c439aeb5f9d7d18c6b3a165366e3775f27f8a97cb1ade910",
+          "url": "https://data.ris.ripe.net/rrc13/2026.11/updates.20261116.0920.gz"
+        },
+        {
+          "bytes": 899575,
+          "fetched_at": "2026-11-16T10:01:23+00:00",
+          "last_modified": "Mon, 16 Nov 2026 09:30:14 GMT",
+          "path": "rrc13_2026.11_updates.20261116.0925.gz",
+          "sha256": "8771f9a47dcca3db902ce9e86e792339454f274f102c1d66802d8000c742d32f",
+          "url": "https://data.ris.ripe.net/rrc13/2026.11/updates.20261116.0925.gz"
+        },
+        {
+          "bytes": 880465,
+          "fetched_at": "2026-11-16T10:01:23+00:00",
+          "last_modified": "Mon, 16 Nov 2026 09:35:11 GMT",
+          "path": "rrc13_2026.11_updates.20261116.0930.gz",
+          "sha256": "157ebb70911dc1c7cad74dbafddc73beb8326ff156424ab3ea795111f10f1454",
+          "url": "https://data.ris.ripe.net/rrc13/2026.11/updates.20261116.0930.gz"
+        },
+        {
+          "bytes": 772869,
+          "fetched_at": "2026-11-16T10:01:22+00:00",
+          "last_modified": "Mon, 16 Nov 2026 09:40:17 GMT",
+          "path": "rrc13_2026.11_updates.20261116.0935.gz",
+          "sha256": "b4e6caccad83a0961e12b6de5166ce91325b175bcc24bf2d4c4587be49a3984e",
+          "url": "https://data.ris.ripe.net/rrc13/2026.11/updates.20261116.0935.gz"
+        },
+        {
+          "bytes": 856718,
+          "fetched_at": "2026-11-16T10:01:23+00:00",
+          "last_modified": "Mon, 16 Nov 2026 09:45:23 GMT",
+          "path": "rrc13_2026.11_updates.20261116.0940.gz",
+          "sha256": "1908d03a4c22446dd0c2a1b874b34bf7208de4fabc4266f24de8059421a0d942",
+          "url": "https://data.ris.ripe.net/rrc13/2026.11/updates.20261116.0940.gz"
+        },
+        {
+          "bytes": 988673,
+          "fetched_at": "2026-11-16T10:01:23+00:00",
+          "last_modified": "Mon, 16 Nov 2026 09:50:34 GMT",
+          "path": "rrc13_2026.11_updates.20261116.0945.gz",
+          "sha256": "4672ce79d060c2bb3b950ac7779bd2b15fa38d9dcfa8ad69ec0ef9d219c3baa3",
+          "url": "https://data.ris.ripe.net/rrc13/2026.11/updates.20261116.0945.gz"
+        },
+        {
+          "bytes": 878107,
+          "fetched_at": "2026-11-16T10:01:23+00:00",
+          "last_modified": "Mon, 16 Nov 2026 09:55:16 GMT",
+          "path": "rrc13_2026.11_updates.20261116.0950.gz",
+          "sha256": "9840a4af9f75d52419ee8730e26b7c5b0e7032af775c2d8749a1e83d56d3aaf7",
+          "url": "https://data.ris.ripe.net/rrc13/2026.11/updates.20261116.0950.gz"
+        }
+      ],
+      "limits": [
+        "This is exact listed /24 reachability in BGP only, not end-user availability.",
+        "Initial route state comes from the periodic 08:00 nominal RIB, collected over minutes, not an instantaneous global measurement.",
+        "State is only the observed RRC13 feed, not all Moscow or Russia operators.",
+        "Providers' peer announcements do not guarantee an individual residential line has these routes in its FIB."
+      ],
+      "mrtparse_wheel_sha256": "1672a92950eafb8fb5f6b56fe4c4ce0ebae8ec87de7b1489df7780418c311ca7",
+      "parse_error_examples": [],
+      "peer_session_losses_of_watched_paths": [],
+      "prefixes_after_observed_events": {
+        "177.122.229.0/24": {
+          "137410": {
+            "peer_asns": [
+              20764,
+              24482,
+              28917,
+              35598,
+              41722
+            ],
+            "routes": 5
+          }
+        },
+        "177.122.241.0/24": {
+          "137410": {
+            "peer_asns": [
+              20764,
+              24482,
+              28917,
+              35598,
+              41722
+            ],
+            "routes": 5
+          }
+        },
+        "177.166.74.0/24": {
+          "137410": {
+            "peer_asns": [
+              20764,
+              24482,
+              28917,
+              35598,
+              41722
+            ],
+            "routes": 5
+          }
+        },
+        "177.166.78.0/24": {
+          "137410": {
+            "peer_asns": [
+              20764,
+              24482,
+              28917,
+              35598,
+              41722
+            ],
+            "routes": 5
+          }
+        },
+        "177.29.252.0/24": {
+          "219305": {
+            "peer_asns": [
+              20764,
+              24482,
+              28917,
+              35598,
+              41722
+            ],
+            "routes": 5
+          }
+        },
+        "177.29.253.0/24": {
+          "137410": {
+            "peer_asns": [
+              20764,
+              24482,
+              28917,
+              35598,
+              41722
+            ],
+            "routes": 5
+          }
+        },
+        "201.58.141.0/24": {
+          "219095": {
+            "peer_asns": [
+              28917,
+              35598,
+              41722
+            ],
+            "routes": 3
+          },
+          "401152": {
+            "peer_asns": [
+              20764,
+              24482
+            ],
+            "routes": 2
+          }
+        },
+        "213.226.121.0/24": {
+          "44790": {
+            "peer_asns": [
+              20764,
+              28917,
+              35598
+            ],
+            "routes": 3
+          },
+          "62146": {
+            "peer_asns": [
+              24482,
+              41722
+            ],
+            "routes": 2
+          }
+        },
+        "48.103.230.0/24": {
+          "219095": {
+            "peer_asns": [
+              28917,
+              35598,
+              41722
+            ],
+            "routes": 3
+          },
+          "401152": {
+            "peer_asns": [
+              20764,
+              24482
+            ],
+            "routes": 2
+          }
+        }
+      },
+      "rib_paths": {
+        "177.122.229.0/24": [
+          {
+            "entry_originated_utc": "2026-11-15T15:40:40+00:00",
+            "origin": 137410,
+            "path": [
+              {
+                "asns": [
+                  "20764",
+                  "4229",
+                  "29752",
+                  "62610",
+                  "137410"
+                ],
+                "type": "AS_SEQUENCE"
+              }
+            ],
+            "path_id": null,
+            "peer_asn": 20764
+          },
+          {
+            "entry_originated_utc": "2026-11-15T14:15:05+00:00",
+            "origin": 137410,
+            "path": [
+              {
+                "asns": [
+                  "35598",
+                  "4229",
+                  "29752",
+                  "62610",
+                  "137410"
+                ],
+                "type": "AS_SEQUENCE"
+              }
+            ],
+            "path_id": null,
+            "peer_asn": 35598
+          },
+          {
+            "entry_originated_utc": "2026-11-15T15:40:40+00:00",
+            "origin": 137410,
+            "path": [
+              {
+                "asns": [
+                  "24482",
+                  "4229",
+                  "29752",
+                  "62610",
+                  "137410"
+                ],
+                "type": "AS_SEQUENCE"
+              }
+            ],
+            "path_id": null,
+            "peer_asn": 24482
+          },
+          {
+            "entry_originated_utc": "2026-11-15T14:15:05+00:00",
+            "origin": 137410,
+            "path": [
+              {
+                "asns": [
+                  "28917",
+                  "4229",
+                  "29752",
+                  "62610",
+                  "137410"
+                ],
+                "type": "AS_SEQUENCE"
+              }
+            ],
+            "path_id": null,
+            "peer_asn": 28917
+          },
+          {
+            "entry_originated_utc": "2026-11-15T14:15:05+00:00",
+            "origin": 137410,
+            "path": [
+              {
+                "asns": [
+                  "41722",
+                  "57463",
+                  "4229",
+                  "29752",
+                  "62610",
+                  "137410"
+                ],
+                "type": "AS_SEQUENCE"
+              }
+            ],
+            "path_id": null,
+            "peer_asn": 41722
+          }
+        ],
+        "177.122.241.0/24": [
+          {
+            "entry_originated_utc": "2026-11-16T07:15:49+00:00",
+            "origin": 137410,
+            "path": [
+              {
+                "asns": [
+                  "20764",
+                  "8359",
+                  "4229",
+                  "29752",
+                  "62610",
+                  "137410"
+                ],
+                "type": "AS_SEQUENCE"
+              }
+            ],
+            "path_id": null,
+            "peer_asn": 20764
+          },
+          {
+            "entry_originated_utc": "2026-11-16T07:16:02+00:00",
+            "origin": 137410,
+            "path": [
+              {
+                "asns": [
+                  "35598",
+                  "174",
+                  "29752",
+                  "29752",
+                  "62610",
+                  "137410"
+                ],
+                "type": "AS_SEQUENCE"
+              }
+            ],
+            "path_id": null,
+            "peer_asn": 35598
+          },
+          {
+            "entry_originated_utc": "2026-11-16T07:15:39+00:00",
+            "origin": 137410,
+            "path": [
+              {
+                "asns": [
+                  "24482",
+                  "4229",
+                  "29752",
+                  "62610",
+                  "137410"
+                ],
+                "type": "AS_SEQUENCE"
+              }
+            ],
+            "path_id": null,
+            "peer_asn": 24482
+          },
+          {
+            "entry_originated_utc": "2026-11-16T07:15:39+00:00",
+            "origin": 137410,
+            "path": [
+              {
+                "asns": [
+                  "28917",
+                  "3257",
+                  "29752",
+                  "29752",
+                  "62610",
+                  "137410"
+                ],
+                "type": "AS_SEQUENCE"
+              }
+            ],
+            "path_id": null,
+            "peer_asn": 28917
+          },
+          {
+            "entry_originated_utc": "2026-11-16T07:15:39+00:00",
+            "origin": 137410,
+            "path": [
+              {
+                "asns": [
+                  "41722",
+                  "20764",
+                  "8359",
+                  "4229",
+                  "29752",
+                  "62610",
+                  "137410"
+                ],
+                "type": "AS_SEQUENCE"
+              }
+            ],
+            "path_id": null,
+            "peer_asn": 41722
+          }
+        ],
+        "177.166.74.0/24": [
+          {
+            "entry_originated_utc": "2026-11-15T18:04:04+00:00",
+            "origin": 137410,
+            "path": [
+              {
+                "asns": [
+                  "20764",
+                  "8359",
+                  "4229",
+                  "29752",
+                  "62610",
+                  "137410"
+                ],
+                "type": "AS_SEQUENCE"
+              }
+            ],
+            "path_id": null,
+            "peer_asn": 20764
+          },
+          {
+            "entry_originated_utc": "2026-11-15T18:04:08+00:00",
+            "origin": 137410,
+            "path": [
+              {
+                "asns": [
+                  "35598",
+                  "174",
+                  "29752",
+                  "29752",
+                  "62610",
+                  "137410"
+                ],
+                "type": "AS_SEQUENCE"
+              }
+            ],
+            "path_id": null,
+            "peer_asn": 35598
+          },
+          {
+            "entry_originated_utc": "2026-11-16T05:04:00+00:00",
+            "origin": 137410,
+            "path": [
+              {
+                "asns": [
+                  "24482",
+                  "4229",
+                  "29752",
+                  "62610",
+                  "137410"
+                ],
+                "type": "AS_SEQUENCE"
+              }
+            ],
+            "path_id": null,
+            "peer_asn": 24482
+          },
+          {
+            "entry_originated_utc": "2026-11-15T18:03:57+00:00",
+            "origin": 137410,
+            "path": [
+              {
+                "asns": [
+                  "28917",
+                  "3257",
+                  "29752",
+                  "29752",
+                  "62610",
+                  "137410"
+                ],
+                "type": "AS_SEQUENCE"
+              }
+            ],
+            "path_id": null,
+            "peer_asn": 28917
+          },
+          {
+            "entry_originated_utc": "2026-11-15T18:04:23+00:00",
+            "origin": 137410,
+            "path": [
+              {
+                "asns": [
+                  "41722",
+                  "20764",
+                  "8359",
+                  "4229",
+                  "29752",
+                  "62610",
+                  "137410"
+                ],
+                "type": "AS_SEQUENCE"
+              }
+            ],
+            "path_id": null,
+            "peer_asn": 41722
+          }
+        ],
+        "177.166.78.0/24": [
+          {
+            "entry_originated_utc": "2026-11-16T07:15:19+00:00",
+            "origin": 137410,
+            "path": [
+              {
+                "asns": [
+                  "20764",
+                  "8359",
+                  "4229",
+                  "29752",
+                  "62610",
+                  "137410"
+                ],
+                "type": "AS_SEQUENCE"
+              }
+            ],
+            "path_id": null,
+            "peer_asn": 20764
+          },
+          {
+            "entry_originated_utc": "2026-11-16T07:15:02+00:00",
+            "origin": 137410,
+            "path": [
+              {
+                "asns": [
+                  "35598",
+                  "174",
+                  "29752",
+                  "29752",
+                  "62610",
+                  "137410"
+                ],
+                "type": "AS_SEQUENCE"
+              }
+            ],
+            "path_id": null,
+            "peer_asn": 35598
+          },
+          {
+            "entry_originated_utc": "2026-11-16T07:15:02+00:00",
+            "origin": 137410,
+            "path": [
+              {
+                "asns": [
+                  "24482",
+                  "4229",
+                  "29752",
+                  "62610",
+                  "137410"
+                ],
+                "type": "AS_SEQUENCE"
+              }
+            ],
+            "path_id": null,
+            "peer_asn": 24482
+          },
+          {
+            "entry_originated_utc": "2026-11-16T07:15:02+00:00",
+            "origin": 137410,
+            "path": [
+              {
+                "asns": [
+                  "28917",
+                  "3257",
+                  "29752",
+                  "29752",
+                  "62610",
+                  "137410"
+                ],
+                "type": "AS_SEQUENCE"
+              }
+            ],
+            "path_id": null,
+            "peer_asn": 28917
+          },
+          {
+            "entry_originated_utc": "2026-11-16T07:15:28+00:00",
+            "origin": 137410,
+            "path": [
+              {
+                "asns": [
+                  "41722",
+                  "20764",
+                  "8359",
+                  "4229",
+                  "29752",
+                  "62610",
+                  "137410"
+                ],
+                "type": "AS_SEQUENCE"
+              }
+            ],
+            "path_id": null,
+            "peer_asn": 41722
+          }
+        ],
+        "177.29.252.0/24": [
+          {
+            "entry_originated_utc": "2026-11-14T16:21:55+00:00",
+            "origin": 219305,
+            "path": [
+              {
+                "asns": [
+                  "20764",
+                  "3356",
+                  "174",
+                  "401322",
+                  "219305"
+                ],
+                "type": "AS_SEQUENCE"
+              }
+            ],
+            "path_id": null,
+            "peer_asn": 20764
+          },
+          {
+            "entry_originated_utc": "2026-11-14T16:21:56+00:00",
+            "origin": 219305,
+            "path": [
+              {
+                "asns": [
+                  "35598",
+                  "174",
+                  "401322",
+                  "219305"
+                ],
+                "type": "AS_SEQUENCE"
+              }
+            ],
+            "path_id": null,
+            "peer_asn": 35598
+          },
+          {
+            "entry_originated_utc": "2026-11-14T16:21:55+00:00",
+            "origin": 219305,
+            "path": [
+              {
+                "asns": [
+                  "24482",
+                  "2914",
+                  "2914",
+                  "174",
+                  "401322",
+                  "219305"
+                ],
+                "type": "AS_SEQUENCE"
+              }
+            ],
+            "path_id": null,
+            "peer_asn": 24482
+          },
+          {
+            "entry_originated_utc": "2026-11-14T16:21:41+00:00",
+            "origin": 219305,
+            "path": [
+              {
+                "asns": [
+                  "28917",
+                  "3257",
+                  "174",
+                  "401322",
+                  "219305"
+                ],
+                "type": "AS_SEQUENCE"
+              }
+            ],
+            "path_id": null,
+            "peer_asn": 28917
+          },
+          {
+            "entry_originated_utc": "2026-11-14T16:21:55+00:00",
+            "origin": 219305,
+            "path": [
+              {
+                "asns": [
+                  "41722",
+                  "20764",
+                  "3356",
+                  "174",
+                  "401322",
+                  "219305"
+                ],
+                "type": "AS_SEQUENCE"
+              }
+            ],
+            "path_id": null,
+            "peer_asn": 41722
+          }
+        ],
+        "177.29.253.0/24": [
+          {
+            "entry_originated_utc": "2026-11-16T07:14:19+00:00",
+            "origin": 137410,
+            "path": [
+              {
+                "asns": [
+                  "20764",
+                  "8359",
+                  "4229",
+                  "29752",
+                  "62610",
+                  "137410"
+                ],
+                "type": "AS_SEQUENCE"
+              }
+            ],
+            "path_id": null,
+            "peer_asn": 20764
+          },
+          {
+            "entry_originated_utc": "2026-11-16T07:14:32+00:00",
+            "origin": 137410,
+            "path": [
+              {
+                "asns": [
+                  "35598",
+                  "174",
+                  "29752",
+                  "29752",
+                  "62610",
+                  "137410"
+                ],
+                "type": "AS_SEQUENCE"
+              }
+            ],
+            "path_id": null,
+            "peer_asn": 35598
+          },
+          {
+            "entry_originated_utc": "2026-11-16T07:14:12+00:00",
+            "origin": 137410,
+            "path": [
+              {
+                "asns": [
+                  "24482",
+                  "4229",
+                  "29752",
+                  "62610",
+                  "137410"
+                ],
+                "type": "AS_SEQUENCE"
+              }
+            ],
+            "path_id": null,
+            "peer_asn": 24482
+          },
+          {
+            "entry_originated_utc": "2026-11-16T07:14:12+00:00",
+            "origin": 137410,
+            "path": [
+              {
+                "asns": [
+                  "28917",
+                  "3257",
+                  "29752",
+                  "29752",
+                  "62610",
+                  "137410"
+                ],
+                "type": "AS_SEQUENCE"
+              }
+            ],
+            "path_id": null,
+            "peer_asn": 28917
+          },
+          {
+            "entry_originated_utc": "2026-11-16T07:14:38+00:00",
+            "origin": 137410,
+            "path": [
+              {
+                "asns": [
+                  "41722",
+                  "20764",
+                  "8359",
+                  "4229",
+                  "29752",
+                  "62610",
+                  "137410"
+                ],
+                "type": "AS_SEQUENCE"
+              }
+            ],
+            "path_id": null,
+            "peer_asn": 41722
+          }
+        ],
+        "201.58.141.0/24": [
+          {
+            "entry_originated_utc": "2026-11-13T18:28:10+00:00",
+            "origin": 401152,
+            "path": [
+              {
+                "asns": [
+                  "20764",
+                  "8359",
+                  "6461",
+                  "11798",
+                  "401152"
+                ],
+                "type": "AS_SEQUENCE"
+              }
+            ],
+            "path_id": null,
+            "peer_asn": 20764
+          },
+          {
+            "entry_originated_utc": "2026-11-15T21:10:37+00:00",
+            "origin": 219095,
+            "path": [
+              {
+                "asns": [
+                  "35598",
+                  "49581",
+                  "219095"
+                ],
+                "type": "AS_SEQUENCE"
+              }
+            ],
+            "path_id": null,
+            "peer_asn": 35598
+          },
+          {
+            "entry_originated_utc": "2026-11-13T18:34:30+00:00",
+            "origin": 401152,
+            "path": [
+              {
+                "asns": [
+                  "24482",
+                  "6461",
+                  "11798",
+                  "401152"
+                ],
+                "type": "AS_SEQUENCE"
+              }
+            ],
+            "path_id": null,
+            "peer_asn": 24482
+          },
+          {
+            "entry_originated_utc": "2026-11-15T21:10:36+00:00",
+            "origin": 219095,
+            "path": [
+              {
+                "asns": [
+                  "28917",
+                  "49581",
+                  "219095"
+                ],
+                "type": "AS_SEQUENCE"
+              }
+            ],
+            "path_id": null,
+            "peer_asn": 28917
+          },
+          {
+            "entry_originated_utc": "2026-11-15T21:10:37+00:00",
+            "origin": 219095,
+            "path": [
+              {
+                "asns": [
+                  "41722",
+                  "20485",
+                  "49581",
+                  "219095"
+                ],
+                "type": "AS_SEQUENCE"
+              }
+            ],
+            "path_id": null,
+            "peer_asn": 41722
+          }
+        ],
+        "213.226.121.0/24": [
+          {
+            "entry_originated_utc": "2026-11-09T20:09:33+00:00",
+            "origin": 44790,
+            "path": [
+              {
+                "asns": [
+                  "20764",
+                  "50340",
+                  "39134",
+                  "44790",
+                  "44790"
+                ],
+                "type": "AS_SEQUENCE"
+              }
+            ],
+            "path_id": null,
+            "peer_asn": 20764
+          },
+          {
+            "entry_originated_utc": "2026-11-09T20:09:33+00:00",
+            "origin": 44790,
+            "path": [
+              {
+                "asns": [
+                  "35598",
+                  "50340",
+                  "39134",
+                  "44790",
+                  "44790"
+                ],
+                "type": "AS_SEQUENCE"
+              }
+            ],
+            "path_id": null,
+            "peer_asn": 35598
+          },
+          {
+            "entry_originated_utc": "2026-11-16T06:14:45+00:00",
+            "origin": 62146,
+            "path": [
+              {
+                "asns": [
+                  "24482",
+                  "62146"
+                ],
+                "type": "AS_SEQUENCE"
+              }
+            ],
+            "path_id": null,
+            "peer_asn": 24482
+          },
+          {
+            "entry_originated_utc": "2026-11-15T01:40:02+00:00",
+            "origin": 44790,
+            "path": [
+              {
+                "asns": [
+                  "28917",
+                  "50340",
+                  "39134",
+                  "44790",
+                  "44790"
+                ],
+                "type": "AS_SEQUENCE"
+              }
+            ],
+            "path_id": null,
+            "peer_asn": 28917
+          },
+          {
+            "entry_originated_utc": "2026-11-16T06:14:45+00:00",
+            "origin": 62146,
+            "path": [
+              {
+                "asns": [
+                  "41722",
+                  "62146"
+                ],
+                "type": "AS_SEQUENCE"
+              }
+            ],
+            "path_id": null,
+            "peer_asn": 41722
+          }
+        ],
+        "48.103.230.0/24": [
+          {
+            "entry_originated_utc": "2026-11-06T10:29:48+00:00",
+            "origin": 401152,
+            "path": [
+              {
+                "asns": [
+                  "20764",
+                  "8359",
+                  "6461",
+                  "11798",
+                  "401152"
+                ],
+                "type": "AS_SEQUENCE"
+              }
+            ],
+            "path_id": null,
+            "peer_asn": 20764
+          },
+          {
+            "entry_originated_utc": "2026-11-15T21:10:37+00:00",
+            "origin": 219095,
+            "path": [
+              {
+                "asns": [
+                  "35598",
+                  "49581",
+                  "219095"
+                ],
+                "type": "AS_SEQUENCE"
+              }
+            ],
+            "path_id": null,
+            "peer_asn": 35598
+          },
+          {
+            "entry_originated_utc": "2026-11-06T10:29:26+00:00",
+            "origin": 401152,
+            "path": [
+              {
+                "asns": [
+                  "24482",
+                  "6461",
+                  "11798",
+                  "401152"
+                ],
+                "type": "AS_SEQUENCE"
+              }
+            ],
+            "path_id": null,
+            "peer_asn": 24482
+          },
+          {
+            "entry_originated_utc": "2026-11-15T21:10:36+00:00",
+            "origin": 219095,
+            "path": [
+              {
+                "asns": [
+                  "28917",
+                  "49581",
+                  "219095"
+                ],
+                "type": "AS_SEQUENCE"
+              }
+            ],
+            "path_id": null,
+            "peer_asn": 28917
+          },
+          {
+            "entry_originated_utc": "2026-11-15T21:10:37+00:00",
+            "origin": 219095,
+            "path": [
+              {
+                "asns": [
+                  "41722",
+                  "20485",
+                  "49581",
+                  "219095"
+                ],
+                "type": "AS_SEQUENCE"
+              }
+            ],
+            "path_id": null,
+            "peer_asn": 41722
+          }
+        ]
+      },
+      "rib_peer_index_header_utc": [
+        "2026-11-16T08:00:00+00:00"
+      ],
+      "rib_peer_sessions": 28,
+      "rib_prefixes": {
+        "177.122.229.0/24": {
+          "137410": {
+            "peer_asns": [
+              20764,
+              24482,
+              28917,
+              35598,
+              41722
+            ],
+            "routes": 5
+          }
+        },
+        "177.122.241.0/24": {
+          "137410": {
+            "peer_asns": [
+              20764,
+              24482,
+              28917,
+              35598,
+              41722
+            ],
+            "routes": 5
+          }
+        },
+        "177.166.74.0/24": {
+          "137410": {
+            "peer_asns": [
+              20764,
+              24482,
+              28917,
+              35598,
+              41722
+            ],
+            "routes": 5
+          }
+        },
+        "177.166.78.0/24": {
+          "137410": {
+            "peer_asns": [
+              20764,
+              24482,
+              28917,
+              35598,
+              41722
+            ],
+            "routes": 5
+          }
+        },
+        "177.29.252.0/24": {
+          "219305": {
+            "peer_asns": [
+              20764,
+              24482,
+              28917,
+              35598,
+              41722
+            ],
+            "routes": 5
+          }
+        },
+        "177.29.253.0/24": {
+          "137410": {
+            "peer_asns": [
+              20764,
+              24482,
+              28917,
+              35598,
+              41722
+            ],
+            "routes": 5
+          }
+        },
+        "201.58.141.0/24": {
+          "219095": {
+            "peer_asns": [
+              28917,
+              35598,
+              41722
+            ],
+            "routes": 3
+          },
+          "401152": {
+            "peer_asns": [
+              20764,
+              24482
+            ],
+            "routes": 2
+          }
+        },
+        "213.226.121.0/24": {
+          "44790": {
+            "peer_asns": [
+              20764,
+              28917,
+              35598
+            ],
+            "routes": 3
+          },
+          "62146": {
+            "peer_asns": [
+              24482,
+              41722
+            ],
+            "routes": 2
+          }
+        },
+        "48.103.230.0/24": {
+          "219095": {
+            "peer_asns": [
+              28917,
+              35598,
+              41722
+            ],
+            "routes": 3
+          },
+          "401152": {
+            "peer_asns": [
+              20764,
+              24482
+            ],
+            "routes": 2
+          }
+        }
+      },
+      "rib_record_counts": {
+        "13/1": 1,
+        "13/2": 1097952,
+        "13/4": 264154
+      },
+      "sample_window_utc": {
+        "end_exclusive": "2026-11-16T09:55:00+00:00",
+        "start_inclusive": "2026-11-16T08:00:00+00:00"
+      },
+      "update_file_counts": {
+        "rrc13_2026.11_updates.20261116.0800.gz": {
+          "subtype_0": 106,
+          "subtype_1": 5,
+          "subtype_4": 27620
+        },
+        "rrc13_2026.11_updates.20261116.0805.gz": {
+          "subtype_0": 101,
+          "subtype_1": 4,
+          "subtype_4": 33187
+        },
+        "rrc13_2026.11_updates.20261116.0810.gz": {
+          "subtype_0": 101,
+          "subtype_1": 5,
+          "subtype_4": 29009
+        },
+        "rrc13_2026.11_updates.20261116.0815.gz": {
+          "subtype_0": 103,
+          "subtype_1": 5,
+          "subtype_4": 25060
+        },
+        "rrc13_2026.11_updates.20261116.0820.gz": {
+          "subtype_0": 97,
+          "subtype_1": 5,
+          "subtype_4": 47539
+        },
+        "rrc13_2026.11_updates.20261116.0825.gz": {
+          "subtype_0": 106,
+          "subtype_1": 4,
+          "subtype_4": 37661
+        },
+        "rrc13_2026.11_updates.20261116.0830.gz": {
+          "subtype_0": 98,
+          "subtype_1": 5,
+          "subtype_4": 33224
+        },
+        "rrc13_2026.11_updates.20261116.0835.gz": {
+          "subtype_0": 103,
+          "subtype_1": 5,
+          "subtype_4": 29550
+        },
+        "rrc13_2026.11_updates.20261116.0840.gz": {
+          "subtype_0": 101,
+          "subtype_1": 5,
+          "subtype_4": 32922
+        },
+        "rrc13_2026.11_updates.20261116.0845.gz": {
+          "subtype_0": 101,
+          "subtype_1": 4,
+          "subtype_4": 33461
+        },
+        "rrc13_2026.11_updates.20261116.0850.gz": {
+          "subtype_0": 101,
+          "subtype_1": 5,
+          "subtype_4": 31911
+        },
+        "rrc13_2026.11_updates.20261116.0855.gz": {
+          "subtype_0": 104,
+          "subtype_1": 5,
+          "subtype_4": 34488
+        },
+        "rrc13_2026.11_updates.20261116.0900.gz": {
+          "subtype_0": 101,
+          "subtype_1": 5,
+          "subtype_4": 35838
+        },
+        "rrc13_2026.11_updates.20261116.0905.gz": {
+          "subtype_0": 102,
+          "subtype_1": 4,
+          "subtype_4": 34324
+        },
+        "rrc13_2026.11_updates.20261116.0910.gz": {
+          "subtype_0": 98,
+          "subtype_1": 5,
+          "subtype_4": 32828
+        },
+        "rrc13_2026.11_updates.20261116.0915.gz": {
+          "subtype_0": 104,
+          "subtype_1": 5,
+          "subtype_4": 35022
+        },
+        "rrc13_2026.11_updates.20261116.0920.gz": {
+          "subtype_0": 105,
+          "subtype_1": 5,
+          "subtype_4": 31221
+        },
+        "rrc13_2026.11_updates.20261116.0925.gz": {
+          "subtype_0": 99,
+          "subtype_1": 4,
+          "subtype_4": 33131
+        },
+        "rrc13_2026.11_updates.20261116.0930.gz": {
+          "subtype_0": 101,
+          "subtype_1": 5,
+          "subtype_4": 32476
+        },
+        "rrc13_2026.11_updates.20261116.0935.gz": {
+          "subtype_0": 101,
+          "subtype_1": 5,
+          "subtype_4": 31062
+        },
+        "rrc13_2026.11_updates.20261116.0940.gz": {
+          "subtype_0": 104,
+          "subtype_1": 5,
+          "subtype_4": 31706
+        },
+        "rrc13_2026.11_updates.20261116.0945.gz": {
+          "subtype_0": 100,
+          "subtype_1": 5,
+          "subtype_4": 35875
+        },
+        "rrc13_2026.11_updates.20261116.0950.gz": {
+          "subtype_0": 100,
+          "subtype_1": 4,
+          "subtype_4": 34032
+        }
+      }
+    }
+  },
+  "historical_moscow_ribs": {
+    "observations": [
+      {
+        "exact_origin_observation_ranges": {
+          "177.122.229.0/24": {
+            "219216": {
+              "first_in_dump": "2026-11-14T09:44:03+00:00",
+              "last_in_dump": "2026-11-14T09:44:38+00:00"
+            }
+          },
+          "177.122.241.0/24": {
+            "218568": {
+              "first_in_dump": "2026-11-14T09:44:03+00:00",
+              "last_in_dump": "2026-11-14T09:44:38+00:00"
+            }
+          },
+          "177.166.74.0/24": {},
+          "177.166.78.0/24": {},
+          "177.29.252.0/24": {},
+          "177.29.253.0/24": {},
+          "201.58.141.0/24": {
+            "401152": {
+              "first_in_dump": "2026-11-13T18:17:10+00:00",
+              "last_in_dump": "2026-11-13T19:59:33+00:00"
+            }
+          },
+          "213.226.121.0/24": {
+            "44790": {
+              "first_in_dump": "2026-11-09T20:09:33+00:00",
+              "last_in_dump": "2026-11-09T20:09:33+00:00"
+            },
+            "62146": {
+              "first_in_dump": "2026-11-10T15:01:39+00:00",
+              "last_in_dump": "2026-11-13T04:20:38+00:00"
+            }
+          },
+          "48.103.230.0/24": {
+            "401152": {
+              "first_in_dump": "2026-11-06T10:29:26+00:00",
+              "last_in_dump": "2026-11-11T12:37:05+00:00"
+            }
+          }
+        },
+        "file": "rrc13_2026.11_bview.20261114.1600.gz",
+        "origins": {
+          "177.122.229.0/24": {
+            "219216": {
+              "peer_asns": [
+                20764,
+                24482,
+                28917,
+                35598,
+                41722
+              ],
+              "routes": 5
+            }
+          },
+          "177.122.241.0/24": {
+            "218568": {
+              "peer_asns": [
+                20764,
+                24482,
+                28917,
+                35598,
+                41722
+              ],
+              "routes": 5
+            }
+          },
+          "177.166.74.0/24": {},
+          "177.166.78.0/24": {},
+          "177.29.252.0/24": {},
+          "177.29.253.0/24": {},
+          "201.58.141.0/24": {
+            "401152": {
+              "peer_asns": [
+                20764,
+                24482,
+                28917,
+                35598,
+                41722
+              ],
+              "routes": 5
+            }
+          },
+          "213.226.121.0/24": {
+            "44790": {
+              "peer_asns": [
+                20764,
+                35598
+              ],
+              "routes": 2
+            },
+            "62146": {
+              "peer_asns": [
+                6939,
+                24482,
+                28917,
+                41722
+              ],
+              "routes": 4
+            }
+          },
+          "48.103.230.0/24": {
+            "401152": {
+              "peer_asns": [
+                20764,
+                24482,
+                28917,
+                35598,
+                41722
+              ],
+              "routes": 5
+            }
+          }
+        },
+        "record_counts": {
+          "13/1": 1,
+          "13/2": 1099002,
+          "13/4": 263082
+        },
+        "rib_peer_sessions": 28,
+        "sample_utc": [
+          "2026-11-14T16:00:00+00:00"
+        ]
+      },
+      {
+        "exact_origin_observation_ranges": {
+          "177.122.229.0/24": {
+            "219216": {
+              "first_in_dump": "2026-11-14T09:44:03+00:00",
+              "last_in_dump": "2026-11-14T09:44:38+00:00"
+            }
+          },
+          "177.122.241.0/24": {
+            "218568": {
+              "first_in_dump": "2026-11-14T09:44:03+00:00",
+              "last_in_dump": "2026-11-14T09:44:38+00:00"
+            }
+          },
+          "177.166.74.0/24": {
+            "219262": {
+              "first_in_dump": "2026-11-14T16:31:27+00:00",
+              "last_in_dump": "2026-11-14T16:31:56+00:00"
+            }
+          },
+          "177.166.78.0/24": {
+            "219238": {
+              "first_in_dump": "2026-11-14T16:44:29+00:00",
+              "last_in_dump": "2026-11-14T16:44:56+00:00"
+            }
+          },
+          "177.29.252.0/24": {
+            "219305": {
+              "first_in_dump": "2026-11-14T16:21:41+00:00",
+              "last_in_dump": "2026-11-14T16:21:56+00:00"
+            }
+          },
+          "177.29.253.0/24": {
+            "219306": {
+              "first_in_dump": "2026-11-14T16:25:33+00:00",
+              "last_in_dump": "2026-11-14T16:25:56+00:00"
+            }
+          },
+          "201.58.141.0/24": {
+            "401152": {
+              "first_in_dump": "2026-11-13T18:17:10+00:00",
+              "last_in_dump": "2026-11-13T19:59:33+00:00"
+            }
+          },
+          "213.226.121.0/24": {
+            "44790": {
+              "first_in_dump": "2026-11-09T20:09:33+00:00",
+              "last_in_dump": "2026-11-09T20:09:33+00:00"
+            },
+            "62146": {
+              "first_in_dump": "2026-11-10T15:01:39+00:00",
+              "last_in_dump": "2026-11-13T04:20:38+00:00"
+            }
+          },
+          "48.103.230.0/24": {
+            "401152": {
+              "first_in_dump": "2026-11-06T10:29:26+00:00",
+              "last_in_dump": "2026-11-11T12:37:05+00:00"
+            }
+          }
+        },
+        "file": "rrc13_2026.11_bview.20261115.0000.gz",
+        "origins": {
+          "177.122.229.0/24": {
+            "219216": {
+              "peer_asns": [
+                20764,
+                24482,
+                28917,
+                35598,
+                41722
+              ],
+              "routes": 5
+            }
+          },
+          "177.122.241.0/24": {
+            "218568": {
+              "peer_asns": [
+                20764,
+                24482,
+                28917,
+                35598,
+                41722
+              ],
+              "routes": 5
+            }
+          },
+          "177.166.74.0/24": {
+            "219262": {
+              "peer_asns": [
+                20764,
+                24482,
+                28917,
+                35598,
+                41722
+              ],
+              "routes": 5
+            }
+          },
+          "177.166.78.0/24": {
+            "219238": {
+              "peer_asns": [
+                20764,
+                24482,
+                28917,
+                35598,
+                41722
+              ],
+              "routes": 5
+            }
+          },
+          "177.29.252.0/24": {
+            "219305": {
+              "peer_asns": [
+                20764,
+                24482,
+                28917,
+                35598,
+                41722
+              ],
+              "routes": 5
+            }
+          },
+          "177.29.253.0/24": {
+            "219306": {
+              "peer_asns": [
+                20764,
+                24482,
+                28917,
+                35598,
+                41722
+              ],
+              "routes": 5
+            }
+          },
+          "201.58.141.0/24": {
+            "401152": {
+              "peer_asns": [
+                20764,
+                24482,
+                28917,
+                35598,
+                41722
+              ],
+              "routes": 5
+            }
+          },
+          "213.226.121.0/24": {
+            "44790": {
+              "peer_asns": [
+                20764,
+                35598
+              ],
+              "routes": 2
+            },
+            "62146": {
+              "peer_asns": [
+                6939,
+                24482,
+                28917,
+                41722
+              ],
+              "routes": 4
+            }
+          },
+          "48.103.230.0/24": {
+            "401152": {
+              "peer_asns": [
+                20764,
+                24482,
+                28917,
+                35598,
+                41722
+              ],
+              "routes": 5
+            }
+          }
+        },
+        "record_counts": {
+          "13/1": 1,
+          "13/2": 1098931,
+          "13/4": 263771
+        },
+        "rib_peer_sessions": 28,
+        "sample_utc": [
+          "2026-11-15T00:00:00+00:00"
+        ]
+      },
+      {
+        "exact_origin_observation_ranges": {
+          "177.122.229.0/24": {},
+          "177.122.241.0/24": {},
+          "177.166.74.0/24": {},
+          "177.166.78.0/24": {},
+          "177.29.252.0/24": {
+            "219305": {
+              "first_in_dump": "2026-11-14T16:21:41+00:00",
+              "last_in_dump": "2026-11-14T16:21:56+00:00"
+            }
+          },
+          "177.29.253.0/24": {},
+          "201.58.141.0/24": {
+            "401152": {
+              "first_in_dump": "2026-11-13T18:17:10+00:00",
+              "last_in_dump": "2026-11-13T19:59:33+00:00"
+            }
+          },
+          "213.226.121.0/24": {
+            "44790": {
+              "first_in_dump": "2026-11-09T20:09:33+00:00",
+              "last_in_dump": "2026-11-15T01:40:02+00:00"
+            },
+            "62146": {
+              "first_in_dump": "2026-11-13T04:20:38+00:00",
+              "last_in_dump": "2026-11-13T04:20:38+00:00"
+            }
+          },
+          "48.103.230.0/24": {
+            "401152": {
+              "first_in_dump": "2026-11-06T10:29:26+00:00",
+              "last_in_dump": "2026-11-11T12:37:05+00:00"
+            }
+          }
+        },
+        "file": "rrc13_2026.11_bview.20261115.0800.gz",
+        "origins": {
+          "177.122.229.0/24": {},
+          "177.122.241.0/24": {},
+          "177.166.74.0/24": {},
+          "177.166.78.0/24": {},
+          "177.29.252.0/24": {
+            "219305": {
+              "peer_asns": [
+                20764,
+                24482,
+                28917,
+                35598,
+                41722
+              ],
+              "routes": 5
+            }
+          },
+          "177.29.253.0/24": {},
+          "201.58.141.0/24": {
+            "401152": {
+              "peer_asns": [
+                20764,
+                24482,
+                28917,
+                35598,
+                41722
+              ],
+              "routes": 5
+            }
+          },
+          "213.226.121.0/24": {
+            "44790": {
+              "peer_asns": [
+                20764,
+                28917,
+                35598
+              ],
+              "routes": 3
+            },
+            "62146": {
+              "peer_asns": [
+                24482,
+                41722
+              ],
+              "routes": 2
+            }
+          },
+          "48.103.230.0/24": {
+            "401152": {
+              "peer_asns": [
+                20764,
+                24482,
+                28917,
+                35598,
+                41722
+              ],
+              "routes": 5
+            }
+          }
+        },
+        "record_counts": {
+          "13/1": 1,
+          "13/2": 1099041,
+          "13/4": 263726
+        },
+        "rib_peer_sessions": 28,
+        "sample_utc": [
+          "2026-11-15T08:00:00+00:00"
+        ]
+      },
+      {
+        "exact_origin_observation_ranges": {
+          "177.122.229.0/24": {
+            "137410": {
+              "first_in_dump": "2026-11-15T14:15:05+00:00",
+              "last_in_dump": "2026-11-15T15:40:40+00:00"
+            }
+          },
+          "177.122.241.0/24": {
+            "137410": {
+              "first_in_dump": "2026-11-15T14:16:10+00:00",
+              "last_in_dump": "2026-11-15T15:40:40+00:00"
+            }
+          },
+          "177.166.74.0/24": {
+            "137410": {
+              "first_in_dump": "2026-11-15T14:16:45+00:00",
+              "last_in_dump": "2026-11-15T15:40:40+00:00"
+            }
+          },
+          "177.166.78.0/24": {
+            "137410": {
+              "first_in_dump": "2026-11-15T14:17:23+00:00",
+              "last_in_dump": "2026-11-15T15:40:40+00:00"
+            }
+          },
+          "177.29.252.0/24": {
+            "219305": {
+              "first_in_dump": "2026-11-14T16:21:41+00:00",
+              "last_in_dump": "2026-11-14T16:21:56+00:00"
+            }
+          },
+          "177.29.253.0/24": {
+            "137410": {
+              "first_in_dump": "2026-11-15T14:14:32+00:00",
+              "last_in_dump": "2026-11-15T15:40:40+00:00"
+            }
+          },
+          "201.58.141.0/24": {
+            "401152": {
+              "first_in_dump": "2026-11-13T18:17:10+00:00",
+              "last_in_dump": "2026-11-13T19:59:33+00:00"
+            }
+          },
+          "213.226.121.0/24": {
+            "44790": {
+              "first_in_dump": "2026-11-09T20:09:33+00:00",
+              "last_in_dump": "2026-11-15T11:32:20+00:00"
+            }
+          },
+          "48.103.230.0/24": {
+            "401152": {
+              "first_in_dump": "2026-11-06T10:29:26+00:00",
+              "last_in_dump": "2026-11-11T12:37:05+00:00"
+            }
+          }
+        },
+        "file": "rrc13_2026.11_bview.20261115.1600.gz",
+        "origins": {
+          "177.122.229.0/24": {
+            "137410": {
+              "peer_asns": [
+                20764,
+                24482,
+                28917,
+                35598,
+                41722
+              ],
+              "routes": 5
+            }
+          },
+          "177.122.241.0/24": {
+            "137410": {
+              "peer_asns": [
+                20764,
+                24482,
+                28917,
+                35598,
+                41722
+              ],
+              "routes": 5
+            }
+          },
+          "177.166.74.0/24": {
+            "137410": {
+              "peer_asns": [
+                20764,
+                24482,
+                28917,
+                35598,
+                41722
+              ],
+              "routes": 5
+            }
+          },
+          "177.166.78.0/24": {
+            "137410": {
+              "peer_asns": [
+                20764,
+                24482,
+                28917,
+                35598,
+                41722
+              ],
+              "routes": 5
+            }
+          },
+          "177.29.252.0/24": {
+            "219305": {
+              "peer_asns": [
+                20764,
+                24482,
+                28917,
+                35598,
+                41722
+              ],
+              "routes": 5
+            }
+          },
+          "177.29.253.0/24": {
+            "137410": {
+              "peer_asns": [
+                20764,
+                24482,
+                28917,
+                35598,
+                41722
+              ],
+              "routes": 5
+            }
+          },
+          "201.58.141.0/24": {
+            "401152": {
+              "peer_asns": [
+                20764,
+                24482,
+                28917,
+                35598,
+                41722
+              ],
+              "routes": 5
+            }
+          },
+          "213.226.121.0/24": {
+            "44790": {
+              "peer_asns": [
+                20764,
+                24482,
+                28917,
+                35598,
+                41722
+              ],
+              "routes": 5
+            }
+          },
+          "48.103.230.0/24": {
+            "401152": {
+              "peer_asns": [
+                20764,
+                24482,
+                28917,
+                35598,
+                41722
+              ],
+              "routes": 5
+            }
+          }
+        },
+        "record_counts": {
+          "13/1": 1,
+          "13/2": 1097944,
+          "13/4": 263976
+        },
+        "rib_peer_sessions": 28,
+        "sample_utc": [
+          "2026-11-15T16:00:00+00:00"
+        ]
+      },
+      {
+        "exact_origin_observation_ranges": {
+          "177.122.229.0/24": {
+            "137410": {
+              "first_in_dump": "2026-11-15T14:15:05+00:00",
+              "last_in_dump": "2026-11-15T15:40:40+00:00"
+            }
+          },
+          "177.122.241.0/24": {
+            "137410": {
+              "first_in_dump": "2026-11-15T14:16:10+00:00",
+              "last_in_dump": "2026-11-15T15:40:40+00:00"
+            }
+          },
+          "177.166.74.0/24": {
+            "137410": {
+              "first_in_dump": "2026-11-15T18:03:57+00:00",
+              "last_in_dump": "2026-11-15T18:04:23+00:00"
+            }
+          },
+          "177.166.78.0/24": {
+            "137410": {
+              "first_in_dump": "2026-11-15T14:17:23+00:00",
+              "last_in_dump": "2026-11-15T15:40:40+00:00"
+            }
+          },
+          "177.29.252.0/24": {
+            "219305": {
+              "first_in_dump": "2026-11-14T16:21:41+00:00",
+              "last_in_dump": "2026-11-14T16:21:56+00:00"
+            }
+          },
+          "177.29.253.0/24": {
+            "137410": {
+              "first_in_dump": "2026-11-15T14:14:32+00:00",
+              "last_in_dump": "2026-11-15T15:40:40+00:00"
+            }
+          },
+          "201.58.141.0/24": {
+            "219095": {
+              "first_in_dump": "2026-11-15T21:10:36+00:00",
+              "last_in_dump": "2026-11-15T21:10:37+00:00"
+            },
+            "401152": {
+              "first_in_dump": "2026-11-13T18:28:10+00:00",
+              "last_in_dump": "2026-11-13T18:34:30+00:00"
+            }
+          },
+          "213.226.121.0/24": {
+            "44790": {
+              "first_in_dump": "2026-11-09T20:09:33+00:00",
+              "last_in_dump": "2026-11-15T01:40:02+00:00"
+            },
+            "62146": {
+              "first_in_dump": "2026-11-15T18:47:05+00:00",
+              "last_in_dump": "2026-11-15T18:47:05+00:00"
+            }
+          },
+          "48.103.230.0/24": {
+            "219095": {
+              "first_in_dump": "2026-11-15T21:10:36+00:00",
+              "last_in_dump": "2026-11-15T21:10:37+00:00"
+            },
+            "401152": {
+              "first_in_dump": "2026-11-06T10:29:26+00:00",
+              "last_in_dump": "2026-11-06T10:29:48+00:00"
+            }
+          }
+        },
+        "file": "rrc13_2026.11_bview.20261116.0000.gz",
+        "origins": {
+          "177.122.229.0/24": {
+            "137410": {
+              "peer_asns": [
+                20764,
+                24482,
+                28917,
+                35598,
+                41722
+              ],
+              "routes": 5
+            }
+          },
+          "177.122.241.0/24": {
+            "137410": {
+              "peer_asns": [
+                20764,
+                24482,
+                28917,
+                35598,
+                41722
+              ],
+              "routes": 5
+            }
+          },
+          "177.166.74.0/24": {
+            "137410": {
+              "peer_asns": [
+                20764,
+                24482,
+                28917,
+                35598,
+                41722
+              ],
+              "routes": 5
+            }
+          },
+          "177.166.78.0/24": {
+            "137410": {
+              "peer_asns": [
+                20764,
+                24482,
+                28917,
+                35598,
+                41722
+              ],
+              "routes": 5
+            }
+          },
+          "177.29.252.0/24": {
+            "219305": {
+              "peer_asns": [
+                20764,
+                24482,
+                28917,
+                35598,
+                41722
+              ],
+              "routes": 5
+            }
+          },
+          "177.29.253.0/24": {
+            "137410": {
+              "peer_asns": [
+                20764,
+                24482,
+                28917,
+                35598,
+                41722
+              ],
+              "routes": 5
+            }
+          },
+          "201.58.141.0/24": {
+            "219095": {
+              "peer_asns": [
+                28917,
+                35598,
+                41722
+              ],
+              "routes": 3
+            },
+            "401152": {
+              "peer_asns": [
+                20764,
+                24482
+              ],
+              "routes": 2
+            }
+          },
+          "213.226.121.0/24": {
+            "44790": {
+              "peer_asns": [
+                20764,
+                28917,
+                35598
+              ],
+              "routes": 3
+            },
+            "62146": {
+              "peer_asns": [
+                24482,
+                41722
+              ],
+              "routes": 2
+            }
+          },
+          "48.103.230.0/24": {
+            "219095": {
+              "peer_asns": [
+                28917,
+                35598,
+                41722
+              ],
+              "routes": 3
+            },
+            "401152": {
+              "peer_asns": [
+                20764,
+                24482
+              ],
+              "routes": 2
+            }
+          }
+        },
+        "record_counts": {
+          "13/1": 1,
+          "13/2": 1098061,
+          "13/4": 263844
+        },
+        "rib_peer_sessions": 28,
+        "sample_utc": [
+          "2026-11-16T00:00:00+00:00"
+        ]
+      }
+    ],
+    "sources": [
+      {
+        "bytes": 66757997,
+        "fetched_at": "2026-11-16T10:04:51+00:00",
+        "last_modified": "Sat, 14 Nov 2026 16:03:49 GMT",
+        "path": "rrc13_2026.11_bview.20261114.1600.gz",
+        "sha256": "ef80154ea8bab0780f333d07a4ec4bf2481172d1af2f912bc08ffe949a4883bf",
+        "url": "https://data.ris.ripe.net/rrc13/2026.11/bview.20261114.1600.gz"
+      },
+      {
+        "bytes": 66761927,
+        "fetched_at": "2026-11-16T10:04:51+00:00",
+        "last_modified": "Sun, 15 Nov 2026 00:03:59 GMT",
+        "path": "rrc13_2026.11_bview.20261115.0000.gz",
+        "sha256": "cad9a4207f366a863a8feceb9e4658ec969dbd27c4a8637ae52525ad48835131",
+        "url": "https://data.ris.ripe.net/rrc13/2026.11/bview.20261115.0000.gz"
+      },
+      {
+        "bytes": 66814636,
+        "fetched_at": "2026-11-16T10:04:51+00:00",
+        "last_modified": "Sun, 15 Nov 2026 08:03:33 GMT",
+        "path": "rrc13_2026.11_bview.20261115.0800.gz",
+        "sha256": "ae8919eb7f2e2a8c200b176634d709f7f764f8124a79bf21c44cbb5415ae7abf",
+        "url": "https://data.ris.ripe.net/rrc13/2026.11/bview.20261115.0800.gz"
+      },
+      {
+        "bytes": 66753732,
+        "fetched_at": "2026-11-16T10:04:51+00:00",
+        "last_modified": "Sun, 15 Nov 2026 16:03:54 GMT",
+        "path": "rrc13_2026.11_bview.20261115.1600.gz",
+        "sha256": "f786655c7b400a560b6b002f05d822a3c67af696242e60b49c5e040101d61804",
+        "url": "https://data.ris.ripe.net/rrc13/2026.11/bview.20261115.1600.gz"
+      },
+      {
+        "bytes": 66736496,
+        "fetched_at": "2026-11-16T10:04:59+00:00",
+        "last_modified": "Mon, 16 Nov 2026 00:04:10 GMT",
+        "path": "rrc13_2026.11_bview.20261116.0000.gz",
+        "sha256": "98f31e9f5e55eb8cde8839f8dc6a33b0794f88962b973cc0775ff054ab0f6a11",
+        "url": "https://data.ris.ripe.net/rrc13/2026.11/bview.20261116.0000.gz"
+      }
+    ]
+  },
+  "local_filtered_parser_sha256": "457e5d391108cb767f2ba740bd82d73e983f6e680b850f84c0ba8f2128f1869e",
+  "moas_update_excerpt_by_collector": {
+    "07": {
+      "collector": "RRC07",
+      "exact_update_events": [],
+      "files": [
+        {
+          "bytes": 1145442,
+          "fetched_at": "2026-11-16T10:06:05+00:00",
+          "last_modified": "Sun, 15 Nov 2026 21:10:22 GMT",
+          "path": "rrc07_2026.11_updates.20261115.2105.gz",
+          "sha256": "7d3187cfcc13b1c350e5976c58441ea52afb2a035956ef99ea7e0410bb3218d0",
+          "url": "https://data.ris.ripe.net/rrc07/2026.11/updates.20261115.2105.gz"
+        },
+        {
+          "bytes": 1175771,
+          "fetched_at": "2026-11-16T10:06:05+00:00",
+          "last_modified": "Sun, 15 Nov 2026 21:15:21 GMT",
+          "path": "rrc07_2026.11_updates.20261115.2110.gz",
+          "sha256": "b61dfebd50e6359bbc98059e8edd5c1033492b114487d0b2ba9cafd7e744be06",
+          "url": "https://data.ris.ripe.net/rrc07/2026.11/updates.20261115.2110.gz"
+        },
+        {
+          "bytes": 798153,
+          "fetched_at": "2026-11-16T10:06:05+00:00",
+          "last_modified": "Sun, 15 Nov 2026 21:20:22 GMT",
+          "path": "rrc07_2026.11_updates.20261115.2115.gz",
+          "sha256": "6a2e9c84190c9c9c9180733e56fa3cca01fbaafb3d9038bfdd5ae89ea299aab5",
+          "url": "https://data.ris.ripe.net/rrc07/2026.11/updates.20261115.2115.gz"
+        },
+        {
+          "bytes": 811610,
+          "fetched_at": "2026-11-16T10:06:05+00:00",
+          "last_modified": "Sun, 15 Nov 2026 21:25:21 GMT",
+          "path": "rrc07_2026.11_updates.20261115.2120.gz",
+          "sha256": "f756a326f4747ddec5529a862483bb0d2a11351f37dd49324f3b7527dc1685e4",
+          "url": "https://data.ris.ripe.net/rrc07/2026.11/updates.20261115.2120.gz"
+        }
+      ],
+      "limits": [
+        "Update records only, with no inferred full table from this sample.",
+        "Absence in this sample is not proof the origin never appeared at this collector."
+      ],
+      "mrtparse_wheel_sha256": "1672a92950eafb8fb5f6b56fe4c4ce0ebae8ec87de7b1489df7780418c311ca7",
+      "parse_error_examples": [],
+      "peer_session_losses_of_watched_paths": [],
+      "sample_window_utc": {
+        "end_exclusive": "2026-11-15T21:25:00+00:00",
+        "start_inclusive": "2026-11-15T21:05:00+00:00"
+      },
+      "update_file_counts": {
+        "rrc07_2026.11_updates.20261115.2105.gz": {
+          "subtype_0": 31,
+          "subtype_4": 42016,
+          "subtype_5": 10
+        },
+        "rrc07_2026.11_updates.20261115.2110.gz": {
+          "subtype_0": 39,
+          "subtype_4": 43728,
+          "subtype_5": 8
+        },
+        "rrc07_2026.11_updates.20261115.2115.gz": {
+          "subtype_0": 33,
+          "subtype_4": 31285,
+          "subtype_5": 10
+        },
+        "rrc07_2026.11_updates.20261115.2120.gz": {
+          "subtype_0": 34,
+          "subtype_4": 29963,
+          "subtype_5": 8
+        }
+      }
+    },
+    "13": {
+      "collector": "RRC13",
+      "exact_update_events": [
+        {
+          "microsecond": null,
+          "origin": 219095,
+          "path": [
+            {
+              "asns": [
+                "28917",
+                "49581",
+                "219095"
+              ],
+              "type": "AS_SEQUENCE"
+            }
+          ],
+          "path_id": null,
+          "peer_asn": 28917,
+          "prefix": "48.103.230.0/24",
+          "previous": null,
+          "type": "A",
+          "utc": "2026-11-15T21:10:36+00:00"
+        },
+        {
+          "microsecond": null,
+          "origin": 219095,
+          "path": [
+            {
+              "asns": [
+                "28917",
+                "49581",
+                "219095"
+              ],
+              "type": "AS_SEQUENCE"
+            }
+          ],
+          "path_id": null,
+          "peer_asn": 28917,
+          "prefix": "201.58.141.0/24",
+          "previous": null,
+          "type": "A",
+          "utc": "2026-11-15T21:10:36+00:00"
+        },
+        {
+          "microsecond": null,
+          "origin": 219095,
+          "path": [
+            {
+              "asns": [
+                "41722",
+                "20485",
+                "49581",
+                "219095"
+              ],
+              "type": "AS_SEQUENCE"
+            }
+          ],
+          "path_id": null,
+          "peer_asn": 41722,
+          "prefix": "48.103.230.0/24",
+          "previous": null,
+          "type": "A",
+          "utc": "2026-11-15T21:10:37+00:00"
+        },
+        {
+          "microsecond": null,
+          "origin": 219095,
+          "path": [
+            {
+              "asns": [
+                "41722",
+                "20485",
+                "49581",
+                "219095"
+              ],
+              "type": "AS_SEQUENCE"
+            }
+          ],
+          "path_id": null,
+          "peer_asn": 41722,
+          "prefix": "201.58.141.0/24",
+          "previous": null,
+          "type": "A",
+          "utc": "2026-11-15T21:10:37+00:00"
+        },
+        {
+          "microsecond": null,
+          "origin": 219095,
+          "path": [
+            {
+              "asns": [
+                "35598",
+                "49581",
+                "219095"
+              ],
+              "type": "AS_SEQUENCE"
+            }
+          ],
+          "path_id": null,
+          "peer_asn": 35598,
+          "prefix": "48.103.230.0/24",
+          "previous": null,
+          "type": "A",
+          "utc": "2026-11-15T21:10:37+00:00"
+        },
+        {
+          "microsecond": null,
+          "origin": 219095,
+          "path": [
+            {
+              "asns": [
+                "35598",
+                "49581",
+                "219095"
+              ],
+              "type": "AS_SEQUENCE"
+            }
+          ],
+          "path_id": null,
+          "peer_asn": 35598,
+          "prefix": "201.58.141.0/24",
+          "previous": null,
+          "type": "A",
+          "utc": "2026-11-15T21:10:37+00:00"
+        },
+        {
+          "microsecond": null,
+          "origin": 219095,
+          "path": [
+            {
+              "asns": [
+                "35598",
+                "49581",
+                "219095"
+              ],
+              "type": "AS_SEQUENCE"
+            }
+          ],
+          "path_id": null,
+          "peer_asn": 35598,
+          "prefix": "201.58.141.0/24",
+          "previous": 219095,
+          "type": "A",
+          "utc": "2026-11-15T21:10:37+00:00"
+        },
+        {
+          "microsecond": null,
+          "origin": 219095,
+          "path": [
+            {
+              "asns": [
+                "35598",
+                "49581",
+                "219095"
+              ],
+              "type": "AS_SEQUENCE"
+            }
+          ],
+          "path_id": null,
+          "peer_asn": 35598,
+          "prefix": "48.103.230.0/24",
+          "previous": 219095,
+          "type": "A",
+          "utc": "2026-11-15T21:10:37+00:00"
+        }
+      ],
+      "files": [
+        {
+          "bytes": 967981,
+          "fetched_at": "2026-11-16T10:06:11+00:00",
+          "last_modified": "Sun, 15 Nov 2026 21:10:25 GMT",
+          "path": "rrc13_2026.11_updates.20261115.2105.gz",
+          "sha256": "3a5cf15496909b6992ac0e3d96f9072cbbfb73c99a8a088368ca52e8ca0a62c3",
+          "url": "https://data.ris.ripe.net/rrc13/2026.11/updates.20261115.2105.gz"
+        },
+        {
+          "bytes": 890078,
+          "fetched_at": "2026-11-16T10:06:11+00:00",
+          "last_modified": "Sun, 15 Nov 2026 21:15:26 GMT",
+          "path": "rrc13_2026.11_updates.20261115.2110.gz",
+          "sha256": "2b1d110afa4ec1f865be2b934a8791f905490018bd75f3ff408a685eaa102af8",
+          "url": "https://data.ris.ripe.net/rrc13/2026.11/updates.20261115.2110.gz"
+        },
+        {
+          "bytes": 726290,
+          "fetched_at": "2026-11-16T10:06:11+00:00",
+          "last_modified": "Sun, 15 Nov 2026 21:20:21 GMT",
+          "path": "rrc13_2026.11_updates.20261115.2115.gz",
+          "sha256": "fb9a73cf7e2028922d22b54f7f5e1d60c7ffa24e372e5868a90fd1707ea1d83b",
+          "url": "https://data.ris.ripe.net/rrc13/2026.11/updates.20261115.2115.gz"
+        },
+        {
+          "bytes": 776687,
+          "fetched_at": "2026-11-16T10:06:11+00:00",
+          "last_modified": "Sun, 15 Nov 2026 21:25:22 GMT",
+          "path": "rrc13_2026.11_updates.20261115.2120.gz",
+          "sha256": "524ba3aa18c67a001eec42c6fabba301cf720cbbc07ade7f2b4d3902ede9eee6",
+          "url": "https://data.ris.ripe.net/rrc13/2026.11/updates.20261115.2120.gz"
+        }
+      ],
+      "limits": [
+        "Update records only, with no inferred full table from this sample.",
+        "Absence in this sample is not proof the origin never appeared at this collector."
+      ],
+      "mrtparse_wheel_sha256": "1672a92950eafb8fb5f6b56fe4c4ce0ebae8ec87de7b1489df7780418c311ca7",
+      "parse_error_examples": [],
+      "peer_session_losses_of_watched_paths": [],
+      "sample_window_utc": {
+        "end_exclusive": "2026-11-15T21:25:00+00:00",
+        "start_inclusive": "2026-11-15T21:05:00+00:00"
+      },
+      "update_file_counts": {
+        "rrc13_2026.11_updates.20261115.2105.gz": {
+          "subtype_0": 100,
+          "subtype_1": 5,
+          "subtype_4": 36352
+        },
+        "rrc13_2026.11_updates.20261115.2110.gz": {
+          "subtype_0": 102,
+          "subtype_1": 4,
+          "subtype_4": 35130
+        },
+        "rrc13_2026.11_updates.20261115.2115.gz": {
+          "subtype_0": 99,
+          "subtype_1": 5,
+          "subtype_4": 31245
+        },
+        "rrc13_2026.11_updates.20261115.2120.gz": {
+          "subtype_0": 107,
+          "subtype_1": 5,
+          "subtype_4": 29789
+        }
+      }
+    }
+  },
+  "parser_independent_of_ripe_stat": true,
+  "schema": 1,
+  "scope": "Exact IPv4 /24 BGP observations, not household HTTPS reachability or a conclusion about ownership or legitimacy."
+}
