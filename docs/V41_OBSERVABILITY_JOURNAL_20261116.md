@@ -205,3 +205,11 @@
 5. **Pending — integration and release readiness:** after the unresolved coverage and delivery issues have decisions, rerun all checks on the exact final head, independently verify candidate DAT/SRS, address deltas and hashes against pinned source/release, and review provider overlap plus advisory warnings. Preserve audit files outside the CDN. Only then assess PR #52 for readiness; scheduled release production behavior must be verified as a separate step.
 
 Progress rule: append dated evidence, artifact identities, decisions and remaining unknowns here; do not report a task complete merely because an advisory CI step returned success. Do not modify PR #5 or production refs while these reviews are open.
+
+## 2026-11-16 — initial overlap review for global CDN origins
+
+- Examined the candidate ASN advisory from run 43809352866 and verified the retained local `geoip_RU.dat` and `as-ip-blocks.tar.gz` independently against the report's candidate hashes. Intersections are between each ASN's observed prefix union and final DIRECT, not proof of an admission source, address ownership, regional deployment or Russian accessibility. Different ASN intersections may overlap and must not be summed.
+- AS59796 StormWall: observed IPv4 union 4,608 addresses, of which 1,280 intersect DIRECT; observed IPv6 intersects DIRECT by zero addresses in this snapshot.
+- AS60068 CDN77: observed IPv4 union 131,840 addresses, of which 255 intersect DIRECT; IPv6 intersection is 309485009821345068724781056 addresses (one minimal CIDR). This is address-space arithmetic, not a count of active hosts.
+- AS199524 Gcore: observed IPv4 union 114,944 addresses, of which 3,840 intersect DIRECT; IPv6 intersection is 51983791796684980802813952 addresses (24 minimal CIDRs). This is address-space arithmetic, not a count of active hosts.
+- These global ASN observations had zero prefixes selected by their own ASN in this build; intersections can arise through other sources and need per-prefix provenance and service evidence. No blanket addition or removal is justified by this aggregate alone. Next: generate/review exact intersecting CIDRs and source layers before proposing policy changes.
