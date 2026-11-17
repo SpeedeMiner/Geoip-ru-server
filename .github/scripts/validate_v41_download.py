@@ -2,10 +2,12 @@
 """Check fetched bytes before accepting a mirror, including delegated-file completeness."""
 import argparse
 from collections import Counter
+import csv
 from datetime import datetime
 import ipaddress
 from pathlib import Path
 
+from build_v41_iana_special_prefixes import read_required_registry
 from build_rir_rukzby_prefixes import ALLOWED_STATUS, COUNTRIES, parse_resource, utc_today, validate_snapshot_age
 from prepare_blocked_sources_v41 import subnet_auto_approved
 
@@ -121,6 +123,7 @@ def main():
     source = parser.add_mutually_exclusive_group()
     source.add_argument("--registry", choices=("afrinic", "apnic", "arin", "lacnic", "ripencc"))
     source.add_argument("--antifilter", choices=tuple(ANTIFILTER_MINIMUM))
+    source.add_argument("--iana", type=int, choices=(4, 6))
     args = parser.parse_args()
     try:
         validate_not_error_page(args.file)
@@ -129,7 +132,10 @@ def main():
         if args.antifilter:
             valid, usable = validate_antifilter(args.file, args.antifilter)
             print(f"Antifilter {args.antifilter}: {valid} distinct valid records, {usable} usable under existing scope")
-    except (OSError, UnicodeError, ValueError) as exc:
+        if args.iana:
+            private, reachable = read_required_registry(args.file, args.iana)
+            print(f"IANA IPv{args.iana}: validated {len(private)} non-global and {len(reachable)} reachable prefixes")
+    except (OSError, UnicodeError, ValueError, csv.Error) as exc:
         parser.exit(1, f"invalid upstream: {exc}\n")
 
 

@@ -6,6 +6,10 @@ import ipaddress
 from pathlib import Path
 import re
 
+# Lower bounds by family and status, anchored to the published v41 input
+# (20/5 IPv4 and 13/9 IPv6). A healthy family cannot hide a truncated other CSV.
+MINIMUM_PREFIXES = {4: (15, 4), 6: (10, 6)}
+
 FOOTNOTES = re.compile(r"(?:\s*\[[0-9]+\])+\s*$")
 
 
@@ -24,11 +28,9 @@ def read_registry(path, family):
             status = without_notes(row.get("Globally Reachable")).casefold()
             if None in row or any(v is None for v in row.values()):
                 raise ValueError(f"{path}:{rows.line_num}: malformed CSV record")
-            if status in {"", "n/a"}:  # No classification, not False.
-                continue
-            if status not in {"true", "false"}:
+            # Unknown reachability is not False, but its row must still be valid.
+            if status not in {"", "n/a", "true", "false"}:
                 raise ValueError(f"{path}:{rows.line_num}: unknown reachability {status!r}")
-            dest = globally_reachable if status == "true" else non_global
             for field in row["Address Block"].split(","):
                 token = without_notes(field)
                 try:
@@ -39,11 +41,26 @@ def read_registry(path, family):
                         raise ValueError("wrong family or default route")
                 except ValueError as exc:
                     raise ValueError(f"{path}:{rows.line_num}: invalid IPv{family} CIDR {token!r}") from exc
-                dest.add(net)
+                if status == "true":
+                    globally_reachable.add(net)
+                elif status == "false":
+                    non_global.add(net)
     if not non_global or not globally_reachable:
         raise ValueError(f"{path}: missing IPv{family} reachability rows")
     if non_global & globally_reachable:
         raise ValueError(f"{path}: an exact prefix has conflicting reachability")
+    return non_global, globally_reachable
+
+
+def read_required_registry(path, family):
+    non_global, globally_reachable = read_registry(path, family)
+    minimum_private, minimum_reachable = MINIMUM_PREFIXES[family]
+    if len(non_global) < minimum_private or len(globally_reachable) < minimum_reachable:
+        raise ValueError(
+            f"{path}: unusually small IPv{family} IANA registry: "
+            f"non-global={len(non_global)} (minimum {minimum_private}), "
+            f"globally reachable={len(globally_reachable)} (minimum {minimum_reachable})"
+        )
     return non_global, globally_reachable
 
 
@@ -58,11 +75,9 @@ def main():
         parser.add_argument(name, type=Path)
     args = parser.parse_args()
     try:
-        private4, public4 = read_registry(args.ipv4, 4)
-        private6, public6 = read_registry(args.ipv6, 6)
+        private4, public4 = read_required_registry(args.ipv4, 4)
+        private6, public6 = read_required_registry(args.ipv6, 6)
         non_global = private4 | private6
-        if len(non_global) < 20:
-            raise ValueError(f"IANA non-globally-reachable prefix count unexpectedly small: {len(non_global)}")
         global_exceptions = public4 | public6
         write_prefixes(args.private_output, "# IANA Special-Purpose entries where Globally Reachable=False", non_global)
         write_prefixes(args.reachable_output,

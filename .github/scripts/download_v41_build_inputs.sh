@@ -40,6 +40,8 @@ download_file() {
     "RIPE NCC DELEGATED STATS") check_args=(--registry ripencc) ;;
     "ANTIFILTER EXACT BLOCKED IP LIST") check_args=(--antifilter ip) ;;
     "ANTIFILTER SUBNET LIST") check_args=(--antifilter subnet) ;;
+    "IANA IPV4 SPECIAL REGISTRY") check_args=(--iana 4) ;;
+    "IANA IPV6 SPECIAL REGISTRY") check_args=(--iana 6) ;;
   esac
   rm -f "$tmp"
 
