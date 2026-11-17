@@ -577,6 +577,58 @@ jobs:
             --previous "$RUNNER_TEMP/previous-geoip_RU_input_provenance.tsv" --candidate "$INPUT_PROVENANCE" \
             --manifest "$V41_MANIFEST" --dat "$V41_OUTPUT_FILE" | tee -a "$GITHUB_STEP_SUMMARY"
 
+      - name: Trace removed IPv4 against selected source snapshots
+        if: github.event_name == 'pull_request'
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import hashlib
+          import ipaddress
+          import json
+          import os
+          from pathlib import Path
+
+          temp = Path(os.environ["RUNNER_TEMP"])
+          delta = json.loads((temp / "v41-pr-direct-delta.json").read_text())
+          removed = delta["direct"]["ipv4"]["removed"]["cidrs"]
+          print("Source-overlap diagnostics for candidate", delta["candidate_dat_sha256"])
+          if len(removed) > 50:
+              print("More than 50 removed CIDRs; use the artifacts for an offline review.")
+              raise SystemExit(0)
+          targets = [ipaddress.ip_network(value) for value in removed]
+          sources = [
+              ("release-selected-origins", temp / ("previous-" + os.environ["RU_PREFIX_INPUT"]), 0),
+              ("candidate-selected-origins", Path(os.environ["RU_PREFIX_INPUT"]), 0),
+              ("release-regional-rir", temp / ("previous-" + os.environ["RIR_RUKZBY_PREFIX_INPUT"]), 1),
+              ("candidate-regional-rir", Path(os.environ["RIR_RUKZBY_PREFIX_INPUT"]), 1),
+              ("candidate-effective-block", Path(os.environ["V41_BLOCKED_FILE"]), 0),
+          ]
+          for label, path, column in sources:
+              raw = path.read_bytes()
+              print(f"Source {label}: sha256={hashlib.sha256(raw).hexdigest()}")
+              matches = {str(target): [] for target in targets}
+              for line in raw.decode("utf-8").splitlines():
+                  if not line or line.startswith("#"):
+                      continue
+                  fields = line.split("\\t") if column else line.split()
+                  if len(fields) <= column:
+                      continue
+                  try:
+                      net = ipaddress.ip_network(fields[column], strict=False)
+                  except ValueError:
+                      continue
+                  if net.version == 4:
+                      for target in targets:
+                          if net.overlaps(target):
+                              matches[str(target)].append(line)
+              for target, rows in matches.items():
+                  print(f"  {label} {target}: {len(rows)} overlapping rows")
+                  for row in rows[:20]:
+                      print("    " + row)
+                  if len(rows) > 20:
+                      print("    Additional rows omitted; see retained source snapshot.")
+          PY
+
       - name: Retain exact pull request DIRECT delta
         if: github.event_name == 'pull_request'
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
