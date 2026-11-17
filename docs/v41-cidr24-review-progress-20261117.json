@@ -3,10 +3,10 @@
   "updated_on": "2026-11-17",
   "measurement_scope": "public TCP/443 only; no inference of blocking or GeoIP mutation",
   "range_queue_size": 6,
-  "measured_from_two_ru_asns": 4,
-  "with_verified_postflight_on_both": 3,
+  "measured_from_two_ru_asns": 5,
+  "with_verified_postflight_on_both": 4,
   "confirmed_service_pairs": 0,
-  "next_review_prefix": "177.122.160.0/24",
+  "next_review_prefix": "177.166.21.0/24",
   "rows": [
     {
       "prefix": "156.224.80.0/24",
@@ -349,7 +349,33 @@
     {
       "prefix": "177.122.160.0/24",
       "dat_exact_ru_in_all_three": true,
-      "tcp_per_address_observation": null,
+      "tcp_per_address_observation": {
+        "scope": "comparison of two archive-verified RU observations, one TCP/443 attempt per IPv4 per exit",
+        "prefix": "177.122.160.0/24",
+        "port": 443,
+        "exit_asns_in_order": [
+          12494,
+          43330
+        ],
+        "distinct_ipv4_in_scope": 256,
+        "addresses_attempted_at_both_exits": 256,
+        "tcp_timeout_at_both_exits": 256,
+        "tcp_connected_at_either_exit": 0,
+        "certificate_observed_at_either_exit": 0,
+        "paired_tcp_status_counts": {
+          "TIMEOUT|TIMEOUT": 256
+        },
+        "observed_at_by_exit": [
+          "2026-11-17T13:01:39Z",
+          "2026-11-17T13:16:31Z"
+        ],
+        "postflight_by_exit": [
+          "VERIFIED",
+          "VERIFIED"
+        ],
+        "timeouts_are_not_block_verdicts": true,
+        "geoip_mutation": false
+      },
       "confirmed_service_pair": false,
       "routeviews_origins": [
         {
@@ -375,35 +401,51 @@
       ],
       "rolling_dat_ru_addresses": 0,
       "rolling_dat_private_addresses": 0,
-      "single_verified_ru_exit": {
-        "run": 44088363882,
-        "artifact": 14331330378,
-        "sha256": "da1d6c4a8d87638a25c1a53ed045bebdce8853448719a2e38daede20eddac1f2",
-        "workflow_commit": "d3f63cc5661b8aec5348d56981ffc87fb4ef531a",
-        "exit_asn": 12494,
-        "observed_at": "2026-11-17T13:01:39Z",
-        "postflight_at": "2026-11-17T13:03:01Z",
-        "pre_controls": [
+      "cidr24_artifacts": {
+        "verified": [
           {
-            "id": "cdnvideo-player-host",
-            "http": 200
-          }
-        ],
-        "post_control": {
-          "id": "cdnvideo-player-host",
-          "http": 200
-        },
-        "states": [
+            "run": 44088363882,
+            "artifact": 14331330378,
+            "commit": "d3f63cc5661b8aec5348d56981ffc87fb4ef531a",
+            "sha256": "da1d6c4a8d87638a25c1a53ed045bebdce8853448719a2e38daede20eddac1f2",
+            "exit_asn": 12494,
+            "observed_at": "2026-11-17T13:01:39Z",
+            "postflight_at": "2026-11-17T13:03:01Z",
+            "pre_controls": [
+              {
+                "id": "cdnvideo-player-host",
+                "http": 200
+              }
+            ],
+            "post_control": {
+              "id": "cdnvideo-player-host",
+              "http": 200
+            }
+          },
           {
-            "status": "TCP_INCONCLUSIVE",
-            "tcp": "TIMEOUT",
-            "tls": "NOT_TESTED",
-            "count": 256
+            "run": 44090876666,
+            "artifact": 14331118672,
+            "commit": "3c6e9825e9c7998135ca0a5a76afd41955e8f0b0",
+            "sha256": "07dd41536c85e26694a2581e407cc2f780d1fb267e2ef2270732a25ea87a48eb",
+            "exit_asn": 43330,
+            "observed_at": "2026-11-17T13:16:31Z",
+            "postflight_at": "2026-11-17T13:18:06Z",
+            "pre_controls": [
+              {
+                "id": "cdn77-demo",
+                "http": 200
+              },
+              {
+                "id": "cdnvideo-player-host",
+                "http": 200
+              }
+            ],
+            "post_control": {
+              "id": "cdn77-demo",
+              "http": 200
+            }
           }
-        ],
-        "certificate_count": 0,
-        "postflight": "VERIFIED",
-        "needs_independent_asn": true
+        ]
       }
     },
     {
