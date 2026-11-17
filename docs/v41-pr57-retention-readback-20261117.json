@@ -1,0 +1,34 @@
+{
+  "pr": 57,
+  "head": "a099e1536dd3bdd9492ebd359aad1dc7f4c3ec9c",
+  "source_release": "75fdbb1815cf7501120f9aa9eb4f4551eb64b8b3",
+  "run": 44091868219,
+  "artifact": 14331403694,
+  "build_status": "success",
+  "publish_status": "skipped",
+  "archive_sha256": "9cd4c083aaa15c7c5c3eb2b59f1a2a7f6a71b8843a92f4364ade91f3f1021184",
+  "assets": {
+    "geoip_RU.dat": "656bc839e046c6f473dd8698db5723e3666a7648fc5b6e6ce935efa7396cbc44",
+    "geoip_RU.srs": "b979512d7ad15852de5bf4824dfd45823f63bfedac2fec3007a80f0fed63aa28",
+    "geoip_PRIVATE.srs": "b9ea6381ea61e286298aea76c10cb85a252ff0d20c49d6de3527be1353c107c4"
+  },
+  "baseline_sha256": "d113faaf4f1a61b64c72b00b8810c014381eb549ba82cf71d973e8a02f0aa7a3",
+  "v4_added": 1536,
+  "v4_removed": 0,
+  "v6_added": "0",
+  "v6_removed": "0",
+  "private_changed": false,
+  "private_srs_byte_identical": true,
+  "mask_byte_identical": true,
+  "hydra_31_204_32_0_20_ru": 0,
+  "retention_provenance_rows": 6,
+  "exact_ranges": {
+    "156.224.80.0/24": 256,
+    "156.241.186.0/24": 256,
+    "177.29.246.0/24": 256,
+    "177.122.107.0/24": 256,
+    "177.122.160.0/24": 256,
+    "177.166.21.0/24": 256
+  },
+  "recorded_registry_sha256": "93b8eef7b6bb560ce06294a5d860ee41448232269b1c3163e7d198e85e63ea1a"
+}
