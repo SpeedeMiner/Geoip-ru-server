@@ -1,5 +1,11 @@
 # v41 durable execution journal
 
+## 2026-11-17 — VPNObratno принят для точечных измерений
+
+- [x] По решению пользователя подтверждённый выход VPNObratno в РФ достаточен для v41. Ручной домашний выход больше не требуется. В отдельной ветке выполнены два прогона с российским выходом AS12714.
+- [x] Четыре закреплённые IPv4 двух контрольных CDN-хостов дали TCP, валидный TLS/SNI и HTTP 200. [Отчёт и артефакты](https://github.com/SpeedeMiner/Geoip-ru-server/blob/c56003cc1588d49daf0e3c8738090bf465bd35e8/docs/V41_VPNOBRATNO_CONTROL_MEASUREMENT_20261117.md). IPv6-транспорт не измерялся.
+- [ ] Четыре точки вне шести спорных /24. В [очереди](https://github.com/SpeedeMiner/Geoip-ru-server/blob/c56003cc1588d49daf0e3c8738090bf465bd35e8/docs/V41_EXACT_REACHABILITY_ORIGIN_REVIEW_20261117.md) по-прежнему 0/6 подтверждённых сервисных целей. Сначала подтвердить точные адреса, затем использовать тот же VPNObratno. PR №5, правила DIRECT, релиз и CDN не менялись.
+
 ## 2026-11-17 — DNS клиентов и аварийный аудит — контрольная точка
 
 - [x] После реальных тайм-аутов на синтетических данных GitHub Actions выгрузил и перечитал четыре partial TSV. [Прогон](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/44045430458) и [архив](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/44045430458/artifacts/14310724163). Внешние сбои не имитировались сетевыми запросами и не превращались в вывод об RPKI.
