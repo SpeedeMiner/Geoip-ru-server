@@ -731,6 +731,61 @@ def load_hxehex_diagnostics(path):
     return networks, stats, rows
 
 
+def read_temporary_retention(path: Path):
+    """Read exact historical release retentions, not BGP or reachability evidence."""
+    fields = ["prefix", "previous_release", "review_on"]
+    records = {}
+    with path.open(encoding="utf-8", newline="") as stream:
+        reader = csv.DictReader(stream, delimiter="\t")
+        if reader.fieldnames != fields:
+            raise ValueError("Temporary retention registry header is invalid")
+        for row in reader:
+            if None in row or any(not row.get(key) for key in fields):
+                raise ValueError(f"Temporary retention row {reader.line_num} is incomplete")
+            net = ipaddress.ip_network(row["prefix"], strict=True)
+            if net.version != 4 or net.prefixlen != 24 or not net.is_global or net.is_multicast or str(net) != row["prefix"]:
+                raise ValueError(f"Temporary retention requires a canonical public IPv4 /24: {row['prefix']}")
+            if net in records or not re.fullmatch(r"[a-f0-9]{40}", row["previous_release"]):
+                raise ValueError(f"Duplicate route or invalid previous release: {net}")
+            if date.fromisoformat(row["review_on"]).isoformat() != row["review_on"]:
+                raise ValueError(f"Temporary retention review date must be YYYY-MM-DD: {net}")
+            records[net] = row
+    if not records:
+        raise ValueError("Temporary retention registry is empty")
+    return records
+
+
+def temporary_retention_manifest(path, records):
+    return {
+        "input_sha256": sha256(path.read_bytes()),
+        "scope": "exact release retention, not origin or reachability evidence",
+        "precedence": "after existing admission, effective blocks and PRIVATE",
+        "review_on_is_manual": True,
+        "records": [records[net] for net in sorted(records)],
+    }
+
+
+def verify_temporary_retention_manifest(path, manifest):
+    recorded = manifest.get("temporary_release_retention")
+    if path is None:
+        if recorded is not None:
+            raise ValueError("Temporary retention manifest has no matching registry input")
+        return {}
+    retentions = read_temporary_retention(path)
+    if recorded != temporary_retention_manifest(path, retentions):
+        raise ValueError("Temporary retention registry or manifest provenance mismatch")
+    return retentions
+
+
+def require_temporary_retention(retentions, direct_ipv4):
+    """Hold an incomplete candidate for review without bypassing effective masks."""
+    missing = [str(net) for net in sorted(retentions)
+               if subtract(intervals((net,), 4), direct_ipv4)]
+    if missing:
+        raise ValueError("Temporary retention coverage requires review after route exclusions: "
+                         + ", ".join(missing))
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--base", type=Path, required=True)
@@ -750,6 +805,8 @@ def main():
     parser.add_argument("--shared-infrastructure-prefixes", type=Path, required=True)
     parser.add_argument("--regional-origin-prefixes", type=Path, required=True)
     parser.add_argument("--reviewed-operator-prefixes", type=Path, required=True)
+    parser.add_argument("--temporary-retention", type=Path,
+                        help="Explicit exact /24 retentions (required by the production workflow)")
     parser.add_argument("--regional-admission-exclusions", type=Path, required=True)
     parser.add_argument("--reviewed-ipv6-admission-exclusions", type=Path, required=True)
     parser.add_argument("--ipsum", type=Path, required=True)
@@ -862,6 +919,19 @@ def main():
     }
     prefix_rows.extend(reviewed_operator_provenance(reviewed, reviewed_source))
     additions.update(reviewed_prefixes)
+    temporary_retention = {}
+    retention_manifest = None
+    if args.temporary_retention is not None:
+        temporary_retention = read_temporary_retention(args.temporary_retention)
+        records = [temporary_retention[net] for net in sorted(temporary_retention)]
+        retention_manifest = temporary_retention_manifest(args.temporary_retention, temporary_retention)
+        additions.update(temporary_retention)
+        for row in records:
+            prefix_rows.append({
+                "source_id": "temporary-release-retention",
+                "category": "exact-retention",
+                "service": "", "tier": "", "asn_list": "", "domains": "", "prefix": row["prefix"],
+            })
     admission_exclusions = parse_regional_admission_exclusions(args.regional_admission_exclusions)
     for row in admission_exclusions.values():
         prefix_rows.append({
@@ -905,6 +975,7 @@ def main():
     if any(subtract(intervals(hydra_expected, v), intervals(final, v)) for v in (4, 6)):
         raise ValueError("Hydra DIRECT/WHITELIST coverage missing after PRIVATE/block policy")
     final_iv = {v: intervals(final, v) for v in (4, 6)}
+    require_temporary_retention(temporary_retention, final_iv[4])
     final_private = set(collapse(private))
 
     new_vs_base = {}
@@ -1333,6 +1404,8 @@ def main():
             "antifilter_ipsum":sha256(args.ipsum.read_bytes()),
         },
     }
+    if retention_manifest is not None:
+        manifest["temporary_release_retention"] = retention_manifest
     args.manifest.write_text(json.dumps(manifest,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
     print(f"v41 protobuf bytes: {len(payload)} sha256={sha256(payload)}")
     print(f"v41 final RU CIDRs: {len(final)} IPv4={final_counts['ipv4']} IPv6={final_counts['ipv6']}")
