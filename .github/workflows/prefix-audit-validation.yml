@@ -782,14 +782,26 @@ jobs:
               raise SystemExit("RPKI reconciliation contains a non-REVIEW row")
           triage_by = {row["PREFIX"]: row for row in triage}
           worklist_by = {row["PREFIX"]: row for row in worklist}
+          rpki_rows = read_tsv(base / "rpki_by_origin.tsv")
+          rpki_by = {(r["PREFIX"], r["ORIGIN_ASN"]): r for r in rpki_rows}
+          if len(rpki_by) != len(rpki_rows):
+              raise SystemExit("Duplicate current RPKI pair")
           for row in result:
               prefix = row["PREFIX"]
               archived_invalid = {x.strip() for x in row["ARCHIVED_INVALID_RPKI_ORIGINS"].split("|") if x.strip()}
-              triage_invalid = {
-                  x.strip() for x in triage_by[prefix]["RPKI_INVALID_ORIGINS"].replace(",", "|").split("|") if x.strip()
-              }
-              if archived_invalid != historical_by[prefix] or not archived_invalid <= triage_invalid:
+              if archived_invalid != historical_by[prefix]:
                   raise SystemExit(f"Archived invalid-origin set drift for {prefix}")
+              expected_current = []
+              for asn in sorted(archived_invalid):
+                  current = rpki_by[(prefix, asn)]
+                  query, status = current["QUERY_STATUS"], current["RPKI_STATUS"]
+                  if not query or (query != "OK" and status):
+                      raise SystemExit(f"Malformed current RPKI result for {prefix} {asn}")
+                  if query == "OK" and status not in {"valid", "unknown", "invalid_asn", "invalid_length"}:
+                      raise SystemExit(f"Malformed current RPKI status for {prefix} {asn}")
+                  expected_current.append(f"{asn}:OK:{status}" if query == "OK" else f"{asn}:ERROR:{query}")
+              if row["CURRENT_RPKI_QUERY_STATUS"] != ";".join(expected_current):
+                  raise SystemExit(f"Current RPKI evidence mismatch for {prefix}")
               if row["EXTERNAL_NLRI_SCOPE_RELATION"] != worklist_by[prefix]["EXTERNAL_SPOT_CHECK_SCOPE_RELATION"]:
                   raise SystemExit(f"External NLRI scope mismatch for {prefix}")
               if not row["REQUIRED_NEXT_ACTION"] or not row["ASSESSMENT"] or not row["SOURCE_URLS"]:
@@ -803,7 +815,7 @@ jobs:
           historical_pairs = {(prefix, asn) for prefix, asns in historical_by.items() for asn in asns}
           unseeded = read_tsv(base / "unseeded_rpki_invalid_review.tsv")
           actual_unseeded = {(r["PREFIX"], r["ORIGIN_ASN"]) for r in unseeded}
-          if (not historical_pairs <= current_pairs or len(unseeded) != len(actual_unseeded)
+          if (len(unseeded) != len(actual_unseeded)
                   or actual_unseeded != current_pairs - historical_pairs):
               raise SystemExit("Unseeded RPKI review pairs do not match current minus historical evidence")
           for row in unseeded:
