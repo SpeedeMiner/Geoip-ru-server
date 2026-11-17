@@ -39,3 +39,9 @@ For the six pending /24 networks in the v41 handoff, first establish a real
 service endpoint for each. Blank or invalid input fails before a VPN is opened;
 absence of a known endpoint should remain untested rather than be filled with
 a guessed IP.
+
+The six prefixes awaiting that review are `156.224.80.0/24`,
+`156.241.186.0/24`, `177.29.246.0/24`, `177.122.107.0/24`,
+`177.122.160.0/24`, and `177.166.21.0/24`. They are a review queue, not a list
+of presumed live hosts. Consult the current v41 handoff before testing because
+the queue and its review status may change.
