@@ -14,6 +14,7 @@ on:
       - ".github/scripts/test_build_selected_origin_prefix_review.py"
       - ".github/scripts/build_priority_prefix_evidence.py"
       - ".github/scripts/test_build_priority_prefix_evidence.py"
+      - ".github/scripts/check_v41_audit_timeout_artifact.py"
       - ".github/scripts/build_priority_prefix_triage.py"
       - ".github/scripts/test_build_priority_prefix_triage.py"
       - ".github/scripts/build_priority_prefix_worklist.py"
@@ -37,6 +38,7 @@ concurrency:
 jobs:
   python-audit:
     runs-on: ubuntu-latest
+    timeout-minutes: 22
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
@@ -60,6 +62,28 @@ jobs:
 
       - name: Run audit unit tests
         run: python3 -m unittest discover -s .github/scripts -p 'test_build_*prefix*.py' -v
+
+      - name: Produce diagnostic TSVs from forced synthetic audit timeouts
+        run: python3 .github/scripts/check_v41_audit_timeout_artifact.py produce prefix-audit-timeout-smoke
+
+      - name: Upload synthetic timeout artifact
+        id: audit_timeout_artifact
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+        with:
+          name: v37-prefix-audit-timeout-smoke-${{ github.event.pull_request.number }}
+          path: prefix-audit-timeout-smoke/
+          if-no-files-found: error
+          retention-days: 7
+
+      - name: Download synthetic timeout artifact by ID
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333
+        with:
+          artifact-ids: ${{ steps.audit_timeout_artifact.outputs.artifact-id }}
+          path: prefix-audit-timeout-readback
+          merge-multiple: true
+
+      - name: Verify downloaded diagnostic TSVs
+        run: python3 .github/scripts/check_v41_audit_timeout_artifact.py verify prefix-audit-timeout-readback
 
       - name: Test retained ipverse input handling
         run: python3 -m unittest discover -s .github/scripts -p 'test_verify_v41_ipverse_archive.py' -v
@@ -355,15 +379,23 @@ jobs:
           PY
 
       - name: Collect RDAP resource-holder samples and per-origin RPKI status for priority prefixes
+        id: collect_prefix_evidence
+        timeout-minutes: 15
         shell: bash
         run: |
           set -euo pipefail
-          python3 .github/scripts/build_priority_prefix_evidence.py \
+          status=0
+          timeout --kill-after=15s 14m python3 -u .github/scripts/build_priority_prefix_evidence.py \
             --company-review prefix-audit/company_origin_prefix_review.tsv \
             --output-dir prefix-audit/priority-prefix-evidence \
-            --workers 5
+            --workers 8 || status=$?
+          if [[ "$status" == 124 || "$status" == 137 ]]; then
+            echo '::error title=Priority prefix audit exceeded its time budget::RDAP/RPKI/IRR collection did not finish within 14 minutes. Review the last progress line and incomplete artifact.'
+          fi
+          exit "$status"
 
       - name: Validate priority RDAP and RPKI evidence against company review queue
+        id: validate_prefix_evidence
         shell: bash
         run: |
           set -euo pipefail
@@ -420,6 +452,8 @@ jobs:
               raise SystemExit("RDAP contains a blank query status; failures must remain explicit")
           rdap_success = sum(row["QUERY_STATUS"] == "OK" for row in rdap)
           rdap_errors = Counter(row["QUERY_STATUS"] for row in rdap if row["QUERY_STATUS"] != "OK")
+          if not rdap_success:
+              raise SystemExit(f"RDAP returned no usable samples: {dict(rdap_errors)}")
 
           rpki = read_tsv(Path("prefix-audit/priority-prefix-evidence/rpki_by_origin.tsv"))
           actual_pairs = [(row["PREFIX"], row["ORIGIN_ASN"]) for row in rpki]
@@ -435,6 +469,8 @@ jobs:
                   raise SystemExit(f"Unexpected RIPEstat RPKI status: {row['RPKI_STATUS']}")
               if row["QUERY_STATUS"] != "OK" and row["RPKI_STATUS"]:
                   raise SystemExit("API error was incorrectly converted into an RPKI state")
+          if not any(row["QUERY_STATUS"] == "OK" for row in rpki):
+              raise SystemExit("RPKI returned no usable origin evidence")
           rpki_statuses = Counter(
               row["RPKI_STATUS"] if row["QUERY_STATUS"] == "OK" else row["QUERY_STATUS"]
               for row in rpki
@@ -475,6 +511,9 @@ jobs:
               raise SystemExit("IRR query summary is incomplete for the current priority prefixes")
           if any(not row["QUERY_STATUS"] for row in irr_summary):
               raise SystemExit("IRR query summary contains blank query statuses")
+          observed_irr = {"OK", "NO_EXACT_ROUTE_OBJECT_IN_QUERY_RESULTS", "NO_OBJECTS_IN_QUERIED_SOURCES"}
+          if not any(row["QUERY_STATUS"] in observed_irr for row in irr_summary):
+              raise SystemExit("IRR returned no successful lookups")
           for row in irr_summary:
               if row["STATUS"] != "REVIEW":
                   raise SystemExit(f"IRR summary has non-REVIEW status for {row['PREFIX']}")
@@ -766,14 +805,26 @@ jobs:
               raise SystemExit("RPKI reconciliation contains a non-REVIEW row")
           triage_by = {row["PREFIX"]: row for row in triage}
           worklist_by = {row["PREFIX"]: row for row in worklist}
+          rpki_rows = read_tsv(base / "rpki_by_origin.tsv")
+          rpki_by = {(r["PREFIX"], r["ORIGIN_ASN"]): r for r in rpki_rows}
+          if len(rpki_by) != len(rpki_rows):
+              raise SystemExit("Duplicate current RPKI pair")
           for row in result:
               prefix = row["PREFIX"]
               archived_invalid = {x.strip() for x in row["ARCHIVED_INVALID_RPKI_ORIGINS"].split("|") if x.strip()}
-              triage_invalid = {
-                  x.strip() for x in triage_by[prefix]["RPKI_INVALID_ORIGINS"].replace(",", "|").split("|") if x.strip()
-              }
-              if archived_invalid != historical_by[prefix] or not archived_invalid <= triage_invalid:
+              if archived_invalid != historical_by[prefix]:
                   raise SystemExit(f"Archived invalid-origin set drift for {prefix}")
+              expected_current = []
+              for asn in sorted(archived_invalid):
+                  current = rpki_by[(prefix, asn)]
+                  query, status = current["QUERY_STATUS"], current["RPKI_STATUS"]
+                  if not query or (query != "OK" and status):
+                      raise SystemExit(f"Malformed current RPKI result for {prefix} {asn}")
+                  if query == "OK" and status not in {"valid", "unknown", "invalid_asn", "invalid_length"}:
+                      raise SystemExit(f"Malformed current RPKI status for {prefix} {asn}")
+                  expected_current.append(f"{asn}:OK:{status}" if query == "OK" else f"{asn}:ERROR:{query}")
+              if row["CURRENT_RPKI_QUERY_STATUS"] != ";".join(expected_current):
+                  raise SystemExit(f"Current RPKI evidence mismatch for {prefix}")
               if row["EXTERNAL_NLRI_SCOPE_RELATION"] != worklist_by[prefix]["EXTERNAL_SPOT_CHECK_SCOPE_RELATION"]:
                   raise SystemExit(f"External NLRI scope mismatch for {prefix}")
               if not row["REQUIRED_NEXT_ACTION"] or not row["ASSESSMENT"] or not row["SOURCE_URLS"]:
@@ -787,7 +838,7 @@ jobs:
           historical_pairs = {(prefix, asn) for prefix, asns in historical_by.items() for asn in asns}
           unseeded = read_tsv(base / "unseeded_rpki_invalid_review.tsv")
           actual_unseeded = {(r["PREFIX"], r["ORIGIN_ASN"]) for r in unseeded}
-          if (not historical_pairs <= current_pairs or len(unseeded) != len(actual_unseeded)
+          if (len(unseeded) != len(actual_unseeded)
                   or actual_unseeded != current_pairs - historical_pairs):
               raise SystemExit("Unseeded RPKI review pairs do not match current minus historical evidence")
           for row in unseeded:
@@ -819,6 +870,15 @@ jobs:
               stream.write(stats)
           print(stats)
           PY
+
+      - name: Retain incomplete prefix audit for diagnosis
+        if: ${{ failure() }}
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+        with:
+          name: v37-prefix-audit-incomplete-${{ github.event.pull_request.number }}
+          path: prefix-audit/
+          if-no-files-found: warn
+          retention-days: 7
 
       - name: Upload prefix review queues as a CI artifact
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9

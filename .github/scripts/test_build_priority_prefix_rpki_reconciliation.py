@@ -103,11 +103,47 @@ class ReconciliationTests(unittest.TestCase):
             self.assertTrue(all(r["STATUS"] == "REVIEW" and
                                 r["RECONCILIATION_CLASS"] == "UNSEEDED_CURRENT_RPKI_INVALID_NEEDS_SPOT_CHECK"
                                 for r in queued))
-            # A new invalid origin cannot stand in for a historical origin on the same prefix.
+            # A changed current verdict must not overwrite the historical origin.
             rows[0]["RPKI_STATUS"] = "valid"
             self.write(path, rows)
-            with self.assertRaisesRegex(ValueError, "archived invalid RPKI pair missing or changed.*AS12345"):
+            body = (evidence / "priority_prefix_triage.tsv").read_text().replace("AS12345|AS23456\tRPKI_INVALID_ASN", "AS23456\tRPKI_INVALID_ASN")
+            (evidence / "priority_prefix_triage.tsv").write_text(body)
+            build_reconciliation(evidence, seed, out, root / "stats.txt", expected_count=2)
+            with out.open(encoding="utf-8", newline="") as f:
+                result_rows = list(csv.DictReader((line for line in f if not line.startswith("#")), delimiter="\t"))
+            self.assertEqual(result_rows[0]["ARCHIVED_INVALID_RPKI_ORIGINS"], "AS12345")
+            self.assertEqual(result_rows[0]["CURRENT_RPKI_QUERY_STATUS"], "AS12345:OK:valid")
+
+    def test_timeout_remains_error_and_historical_invalid_is_preserved(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp); evidence, seed = self.setup_inputs(root)
+            triage = evidence / "priority_prefix_triage.tsv"
+            triage.write_text(triage.read_text().replace("AS12345\tRPKI_INVALID_ASN | MOAS", "\tRPKI_QUERY_ERROR | MOAS"))
+            path = evidence / "rpki_by_origin.tsv"
+            with path.open(newline="") as f:
+                rows = list(csv.DictReader(f, delimiter="\t"))
+            rows[0]["QUERY_STATUS"] = "NETWORK_ERROR:TimeoutError"
+            rows[0]["RPKI_STATUS"] = ""
+            self.write(path, rows)
+            out = root / "out.tsv"
+            build_reconciliation(evidence, seed, out, root / "stats.txt", expected_count=2)
+            with out.open(encoding="utf-8", newline="") as f:
+                result_rows = list(csv.DictReader((line for line in f if not line.startswith("#")), delimiter="\t"))
+            self.assertEqual(result_rows[0]["ARCHIVED_INVALID_RPKI_ORIGINS"], "AS12345")
+            self.assertEqual(result_rows[0]["CURRENT_RPKI_QUERY_STATUS"], "AS12345:ERROR:NETWORK_ERROR:TimeoutError")
+            self.assertEqual(result_rows[0]["STATUS"], "REVIEW")
+            rows[0]["RPKI_STATUS"] = "invalid_asn"
+            self.write(path, rows)
+            with self.assertRaisesRegex(ValueError, "invalid current RPKI query result"):
                 build_reconciliation(evidence, seed, out, root / "stats.txt", expected_count=2)
+            rows[0]["QUERY_STATUS"] = "OK"
+            rows[0]["RPKI_STATUS"] = "valid"
+            self.write(path, rows)
+            triage.write_text(triage.read_text().replace("RPKI_QUERY_ERROR | MOAS", "MOAS"))
+            build_reconciliation(evidence, seed, out, root / "stats.txt", expected_count=2)
+            with out.open(encoding="utf-8", newline="") as f:
+                result_rows = list(csv.DictReader((line for line in f if not line.startswith("#")), delimiter="\t"))
+            self.assertEqual(result_rows[0]["CURRENT_RPKI_QUERY_STATUS"], "AS12345:OK:valid")
 
     def test_rejects_missing_archived_invalid_pair(self):
         with tempfile.TemporaryDirectory() as tmp:

@@ -1,14 +1,19 @@
+import concurrent.futures
 import csv
 import hashlib
 import json
 import tempfile
 import unittest
+from urllib.error import HTTPError
 from pathlib import Path
 from unittest.mock import patch
 
 from build_priority_prefix_evidence import (
     build_evidence,
+    completed_queries,
+    request_json_with_bytes,
     fetch_rdap_sample,
+    fetch_irr_prefix,
     fetch_rpki_origin,
     parse_bootstrap,
     parse_rdap_object,
@@ -84,6 +89,72 @@ class PriorityPrefixEvidenceTests(unittest.TestCase):
         self.assertEqual(
             sum(row["PRIORITY_REASON"] == "EXACT_MOAS" for row in selected), 53
         )
+
+    def test_stopped_phase_keeps_only_completed_diagnostic_rows(self):
+        prefix = "192.0.2.0/24"
+        row = make_row(prefix, "AS64500", "AS64500,AS64501", "yes", "COMPANY_ASN_ONLY")
+        obj = {
+            "QUERY_PREFIX": prefix, "OBJECT_TYPE": "route", "ROUTE_PREFIX": prefix,
+            "ORIGIN_ASN": "AS64500", "REGISTRY_SOURCE": "RIPE", "EXACT_PREFIX_MATCH": "yes",
+            "GLOBAL_BGP_ORIGIN_MATCH": "yes", "MNT_BY": "", "ORG": "", "DESCR": "",
+        }
+
+        cases = {
+            "RDAP": ("rdap_samples", "SAMPLE_ADDRESS", None),
+            "RPKI": ("rpki_by_origin", "RPKI_STATUS", ""),
+            "IRR": ("irr_prefix_summary", "IRR_SOURCE_OBJECT_RECORDS", "1"),
+        }
+
+        def rdap(pfx, addr, _entries):
+            return {"PREFIX": pfx, "SAMPLE_ADDRESS": addr, "QUERY_STATUS": "OK"}
+
+        def irr(pfx, _sources, _origins):
+            return "OK", "https://example.invalid/irr", [{**obj, "QUERY_PREFIX": pfx}]
+
+        def stop_after_one(phase, futures):
+            if phase != stopped_phase:
+                yield from completed_queries(phase, futures)
+                return
+            yield next(iter(futures))
+            raise RuntimeError(f"test stops {phase} after one result")
+
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            company_review = root / "company.tsv"
+            with company_review.open("w", encoding="utf-8", newline="") as handle:
+                writer = csv.DictWriter(handle, fieldnames=list(row), delimiter="\t")
+                writer.writeheader()
+                writer.writerow(row)
+                writer.writerow({**row, "PREFIX": "198.51.100.0/24"})
+            for stopped_phase, (stem, field, expected) in cases.items():
+                with self.subTest(phase=stopped_phase):
+                    output = root / stopped_phase
+                    module = "build_priority_prefix_evidence."
+                    with patch(module + "request_json_with_bytes", return_value=(503, None, "offline", None)), \
+                         patch(module + "request_json", return_value=(503, None, "offline")), \
+                         patch(module + "fetch_rdap_sample", side_effect=rdap), \
+                         patch(module + "fetch_rpki_origin", side_effect=TimeoutError("test request timeout")), \
+                         patch(module + "fetch_irr_prefix", side_effect=irr), \
+                         patch(module + "completed_queries", side_effect=stop_after_one):
+                        with self.assertRaisesRegex(RuntimeError, f"test stops {stopped_phase}"):
+                            build_evidence(company_review, output, max_workers=2)
+                    self.assertFalse((output / f"{stem}.tsv").exists())
+                    with (output / f"{stem}_partial.tsv").open(encoding="utf-8", newline="") as stream:
+                        records = list(csv.DictReader(stream, delimiter="\t"))
+                    self.assertEqual(len(records), 1)
+                    self.assertEqual(records[0]["PREFIX"], prefix)
+                    if expected is None:
+                        self.assertTrue(records[0][field])
+                    else:
+                        self.assertEqual(records[0][field], expected)
+                    if stopped_phase == "RPKI":
+                        self.assertTrue(records[0]["QUERY_STATUS"].startswith("CLIENT_ERROR:TimeoutError:"))
+                        self.assertTrue((output / "rdap_samples.tsv").is_file())
+                    if stopped_phase == "IRR":
+                        self.assertTrue((output / "rpki_by_origin.tsv").is_file())
+                        with (output / "irr_route_objects_partial.tsv").open(encoding="utf-8", newline="") as stream:
+                            self.assertEqual([r["ORIGIN_ASN"] for r in csv.DictReader(stream, delimiter="\t")], ["AS64500"])
+                        self.assertFalse((output / "irr_route_objects.tsv").exists())
 
     def test_sample_addresses_are_first_midpoint_last_and_deduplicated(self):
         self.assertEqual(
@@ -168,6 +239,65 @@ class PriorityPrefixEvidenceTests(unittest.TestCase):
         self.assertEqual(rdap_relation("198.51.100.0/24", {
             **parsed, "REGISTERED_CIDRS": "198.51.100.0/25"
         }), "MORE_SPECIFIC_RESOURCE_AT_SAMPLE")
+
+    def test_requests_stop_after_two_attempts_and_keep_timeout_explicit(self):
+        module = "build_priority_prefix_evidence"
+        with patch(f"{module}.urllib.request.urlopen", side_effect=TimeoutError("slow read")) as request, \
+             patch(f"{module}.time.sleep") as sleep:
+            status, payload, error, raw = request_json_with_bytes("https://example.invalid")
+        self.assertEqual((status, payload, raw), (0, None, None))
+        self.assertEqual(error, "NETWORK_ERROR:TimeoutError:slow read")
+        self.assertEqual([c.kwargs["timeout"] for c in request.call_args_list], [10, 10])
+        sleep.assert_called_once_with(1.0)
+
+    def test_retry_after_above_budget_stays_explicit_and_never_retries_early(self):
+        module = "build_priority_prefix_evidence"
+        for retry_after in ("120", "Wed, 18 Nov 2026 00:00:00 GMT"):
+            with self.subTest(retry_after=retry_after):
+                err = HTTPError("https://example.invalid", 429, "rate limit", {"Retry-After": retry_after}, None)
+                with patch(f"{module}.urllib.request.urlopen", side_effect=err) as request, \
+                     patch(f"{module}.time.sleep") as sleep:
+                    self.assertEqual(request_json_with_bytes("https://example.invalid"), (429, None, "HTTP_429", None))
+                request.assert_called_once()
+                sleep.assert_not_called()
+
+    def test_response_cap_rejects_oversize_without_parsing(self):
+        module = "build_priority_prefix_evidence"
+        with patch(f"{module}.MAX_JSON_BYTES", 8), patch(f"{module}.urllib.request.urlopen") as opener:
+            resp = opener.return_value.__enter__.return_value
+            resp.status = 200
+            resp.read.return_value = b"012345678"
+            self.assertEqual(
+                request_json_with_bytes("https://example.invalid"), (200, None, "RESPONSE_TOO_LARGE", None)
+            )
+        resp.read.assert_called_once_with(9)
+
+    def test_query_progress_reports_idle_and_eventual_completion(self):
+        module = "build_priority_prefix_evidence"
+        done = concurrent.futures.Future()
+        done.set_result("ok")
+        with patch(f"{module}.time.monotonic", side_effect=(0, 0, 30, 30, 31)), \
+             patch(f"{module}.concurrent.futures.wait", side_effect=((set(), {done}), ({done}, set()))) as wait, \
+             patch("builtins.print") as log:
+            self.assertEqual(list(completed_queries("RDAP", {done: "task"})), [done])
+        self.assertEqual([c.kwargs["timeout"] for c in wait.call_args_list], [30, 30])
+        self.assertEqual([c.args[0] for c in log.call_args_list], [
+            "RDAP: 0/1 completed", "RDAP: 0/1 completed (30s elapsed)", "RDAP: 1/1 completed (31s elapsed)",
+        ])
+        self.assertTrue(all(c.kwargs.get("flush") for c in log.call_args_list))
+
+    def test_bulk_queries_do_not_requeue_slow_resources(self):
+        module = "build_priority_prefix_evidence"
+        with patch(f"{module}.request_json", return_value=(429, None, "HTTP_429")) as request:
+            rdap = fetch_rdap_sample("198.51.100.0/24", "198.51.100.1",
+                parse_bootstrap(4, {"services": [[["0.0.0.0/0"], ["https://rdap.test/"]]]}))
+            rpki = fetch_rpki_origin("198.51.100.0/24", "AS64500")
+            irr, _, routes = fetch_irr_prefix("198.51.100.0/24", ["RIPE"], {"AS64500"})
+        self.assertEqual([call.kwargs for call in request.call_args_list], [{"retries": 0}] * 3)
+        self.assertEqual((rdap["QUERY_STATUS"], rpki["QUERY_STATUS"], irr),
+                         ("HTTP_429", "HTTP_429", "HTTP_429"))
+        self.assertEqual(rpki["RPKI_STATUS"], "")
+        self.assertFalse(routes)
 
     def test_rpki_errors_are_not_converted_to_unknown(self):
         with patch(
@@ -314,6 +444,7 @@ class PriorityPrefixEvidenceTests(unittest.TestCase):
                 irr_unique_objects = list(csv.DictReader(handle, delimiter="\t"))
             self.assertEqual(len(priority), 56)
             self.assertEqual(len(rdap), 168)
+            self.assertEqual(list(output.glob("*_partial.tsv")), [])
             self.assertEqual(len(rpki), 108)
             self.assertEqual(len(holder_summary), 56)
             self.assertEqual(len(irr_summary), 56)

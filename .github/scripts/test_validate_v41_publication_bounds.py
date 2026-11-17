@@ -32,6 +32,7 @@ class PublicationBoundsTests(unittest.TestCase):
         p = self.make("swap.dat", ["198.19.0.0/19", "2001:db8:1::/48"])
         with self.assertRaisesRegex(ValueError, "delta exceeds"):
             gate.validate(p, self.old)
+        self.assertTrue(gate.validate(p, self.old, enforce_delta=False)["needs_review"])
         gate.validate(p, self.old, hashlib.sha256(p.read_bytes()).hexdigest())
 
     def test_small_address_delta(self):

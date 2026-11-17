@@ -2,6 +2,7 @@
 """Resolve published data upstream once per build, verify and record the exact bytes."""
 import argparse
 import hashlib
+import ipaddress
 import json
 import os
 from pathlib import Path
@@ -17,6 +18,43 @@ PART = re.compile(r"[A-Za-z0-9_.-]+")
 SHA1 = re.compile(r"[0-9a-f]{40}")
 SHA256 = re.compile(r"[0-9a-f]{64}")
 API = "https://api.github.com/repos/"
+
+# Family and conservative distinct-CIDR floors. Published v41 baseline counts:
+# Escapingworm 88, Kyoresuas v4/v6 635/74, W1ZARDZ 953. A correct commit or asset
+# hash proves identity, not that the publisher returned a complete list.
+TEXT_PREFIX_FEEDS = {
+    "escapingworm-operator-cidr.txt": (None, 40),
+    "kyoresuas-ru-standard-ipv4.txt": (4, 300),
+    "kyoresuas-ru-standard-ipv6.txt": (6, 35),
+    "w1zardz-ru-ipv4.txt": (4, 450),
+}
+
+
+def validate_text_prefix_feed(name, data):
+    family, minimum = TEXT_PREFIX_FEEDS[name]
+    try:
+        text = data.decode("utf-8-sig")
+    except UnicodeDecodeError as exc:
+        raise ValueError(f"{name}: expected UTF-8 CIDR feed") from exc
+    networks = set()
+    for line_number, raw in enumerate(text.splitlines(), 1):
+        token = raw.partition("#")[0].strip()
+        if not token:
+            continue
+        try:
+            addr, sep, bits = token.partition("/")
+            if not sep or "%" in addr or not bits.isascii() or not bits.isdigit():
+                raise ValueError
+            net = ipaddress.ip_network(token, strict=True)
+            if net.prefixlen == 0 or (family is not None and net.version != family):
+                raise ValueError
+        except ValueError:
+            expected = f"IPv{family} CIDR" if family else "IPv4/IPv6 CIDR"
+            raise ValueError(f"{name}:{line_number}: expected an aligned non-default {expected}") from None
+        networks.add(net)
+    if len(networks) < minimum:
+        raise ValueError(f"{name}: only {len(networks)} distinct CIDRs; minimum={minimum}")
+    return tuple(sum(net.version == version for net in networks) for version in (4, 6))
 
 
 def safe_path(value):
@@ -162,6 +200,9 @@ def fetch(catalog, provenance, root=Path("."), *, transfer=download):
                 if (len(data) != size or (release_hash and actual != release_hash)
                         or (git_hash and hashlib.sha1(f"blob {size}\0".encode() + data).hexdigest() != git_hash)):
                     raise ValueError(f"upstream identity mismatch: {name} ({url})")
+                if name in TEXT_PREFIX_FEEDS:
+                    count4, count6 = validate_text_prefix_feed(name, data)
+                    print(f"{name}: validated distinct CIDRs IPv4={count4}, IPv6={count6}", flush=True)
                 rows.append(f"ROLLING {name}\t{name}\t{url}\t{actual}\t{size}\tdownloaded\n")
                 print(f"{name}: {size} bytes sha256={actual} {url}", flush=True)
         # This independent upstream sidecar must match the DAT from the same release.

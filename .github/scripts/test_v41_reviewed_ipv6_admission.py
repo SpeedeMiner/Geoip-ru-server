@@ -9,6 +9,7 @@ from pathlib import Path
 
 import build_v41_overlay as builder
 from validate_v41_overlay import verify_ipv6_admission_effect
+from v41_direct_admission import CDN_KEY, CDN_PATH, ROLE
 from v41_reviewed_ipv6_admission import (
     HEADER,
     RECORD_KEY,
@@ -112,13 +113,17 @@ class ReviewedIPv6AdmissionTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "outside the expected exact output"):
             verify_ipv6_admission_effect(set(), domain, set(), hard, {}, {KP, IN})
 
-    def test_prepublication_rejects_leak_even_with_matching_manifest_and_dat_digest(self):
+    def test_prepublication_rejects_exact_foreign_scope_without_independent_direct(self):
         script = Path(__file__).with_name("v41_reviewed_ipv6_admission.py").resolve()
         records = read_reviewed_ipv6_admission(DATA)
         with tempfile.TemporaryDirectory() as td:
             p = Path(td)
             dat, manifest = p / "geoip.dat", p / "manifest.json"
-            for network, return_code in ((RU, 0), (ANYCAST, 0), (KP, 1), (NL, 1), (DE, 1)):
+            hydra = p / "hydra.dat"
+            hydra.write_bytes(builder.encode_geoip({"DIRECT": {NL}, "WHITELIST": {DE}}))
+            geo4 = p / "geo4.tsv"
+            geo4.write_text("prefix\tdelegated_country\tassignment_country\torigin_asn\tchecked_on\n", encoding="utf-8")
+            for network in (RU, ANYCAST, KP, NL, DE):
                 with self.subTest(network=network):
                     blob = builder.encode_geoip({
                         "RU": {network},
@@ -127,14 +132,22 @@ class ReviewedIPv6AdmissionTests(unittest.TestCase):
                     dat.write_bytes(blob)
                     manifest.write_text(json.dumps({
                         "output_sha256": hashlib.sha256(blob).hexdigest(),
-                        "input_sha256": {RECORD_KEY: hashlib.sha256(DATA.read_bytes()).hexdigest()},
-                        RECORD_KEY: {"records": list(records.values())},
+                        "input_sha256": {RECORD_KEY: hashlib.sha256(DATA.read_bytes()).hexdigest(),
+                                         "hydra_geoip": hashlib.sha256(hydra.read_bytes()).hexdigest(),
+                                         "regional_admission_exclusions": hashlib.sha256(geo4.read_bytes()).hexdigest(),
+                                         CDN_KEY: hashlib.sha256(CDN_PATH.read_bytes()).hexdigest()},
+                        RECORD_KEY: {"records": list(records.values()), "role": ROLE},
+                        "regional_admission_exclusions": {"records": [], "role": ROLE},
+                        CDN_KEY: {"records": []},
                     }), encoding="utf-8")
                     result = subprocess.run(
                         [sys.executable, str(script), "--table", str(DATA),
-                         "--manifest", str(manifest), "--geoip", str(dat)],
+                         "--manifest", str(manifest), "--geoip", str(dat),
+                         "--regional-table", str(geo4), "--hydra", str(hydra)],
                         capture_output=True, text=True,
                     )
-                    self.assertEqual(result.returncode, return_code, result.stderr)
-                    if return_code:
-                        self.assertIn("IPv6 DIRECT intersects", result.stderr)
+                    if network == KP:
+                        self.assertNotEqual(result.returncode, 0)
+                        self.assertIn("DIRECT intersects", result.stderr)
+                    else:
+                        self.assertEqual(result.returncode, 0, result.stderr)

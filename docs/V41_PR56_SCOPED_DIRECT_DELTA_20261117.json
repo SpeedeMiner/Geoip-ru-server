@@ -1,0 +1,53 @@
+{
+  "baseline": {
+    "dat_sha256": "3dbbffd624d8bc4a50dac860135664578bd2e7742bdf66baa399beab3c65d3ec",
+    "release_commit": "63b8abf0ba6c2264724a58ec9a2fb7035c5130a6"
+  },
+  "candidate_dat_sha256": "fcbf17ba940eb0ec999bab521754f1a5ca56290345fbbc4032444f96212fe504",
+  "direct": {
+    "ipv4": {
+      "added": {
+        "addresses": "4096",
+        "cidrs": [
+          "31.204.32.0/20"
+        ]
+      },
+      "removed": {
+        "addresses": "767",
+        "cidrs": [
+          "103.111.114.0/24",
+          "185.141.216.0/25",
+          "185.141.216.128/28",
+          "185.141.216.144/30",
+          "185.141.216.148/31",
+          "185.141.216.151/32",
+          "185.141.216.152/29",
+          "185.141.216.160/27",
+          "185.141.216.192/26",
+          "185.177.73.0/24"
+        ]
+      }
+    },
+    "ipv6": {
+      "added": {
+        "addresses": "0",
+        "cidrs": []
+      },
+      "removed": {
+        "addresses": "0",
+        "cidrs": []
+      }
+    }
+  },
+  "ipv6_geography": {
+    "changed_overlaps": [],
+    "role": "exact-foreign-admission-review",
+    "table_sha256": "bbf6c7d682eae88d0501e3f1b836fcb8d775ad3463f327d9eb20cb2623699449"
+  },
+  "mode": "ADVISORY",
+  "private_changed": {
+    "ipv4": false,
+    "ipv6": false
+  },
+  "schema": 1
+}

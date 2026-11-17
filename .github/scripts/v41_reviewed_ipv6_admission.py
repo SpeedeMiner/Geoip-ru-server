@@ -1,4 +1,4 @@
-"""Read and verify manually reviewed IPv6 exclusions from final DIRECT only."""
+"""Read and verify exact IPv6 assignment conflicts."""
 from __future__ import annotations
 
 import csv
@@ -71,16 +71,19 @@ def verify_reviewed_ipv6_admission_manifest(path: Path, manifest: dict) -> dict:
 
 
 def main() -> int:
-    """Recheck the exact exclusions on the downloaded candidate before staging tags."""
+    """Recheck evidence provenance on the downloaded candidate before staging tags."""
     import argparse
     import json
 
     import build_v41_overlay as builder
+    from v41_direct_admission import ROLE, cdn_networks, verify_cdn_manifest
 
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--table", type=Path, required=True)
     parser.add_argument("--manifest", type=Path, required=True)
     parser.add_argument("--geoip", type=Path, required=True)
+    parser.add_argument("--hydra", type=Path, required=True)
+    parser.add_argument("--regional-table", type=Path, required=True)
     args = parser.parse_args()
     try:
         manifest = json.loads(args.manifest.read_text(encoding="utf-8"))
@@ -90,10 +93,24 @@ def main() -> int:
         categories = builder.parse_geoip_dat(args.geoip)
         if set(categories) != {"RU", "PRIVATE"}:
             raise ValueError("Expected GeoIP categories RU and PRIVATE only")
-        builder.assert_regional_admission_disjoint(categories["RU"], rows)
+        if manifest.get(RECORD_KEY, {}).get("role") != ROLE:
+            raise ValueError("Missing exact foreign admission policy")
+        regional = builder.parse_regional_admission_exclusions(args.regional_table)
+        if (manifest.get("regional_admission_exclusions", {}).get("role") != ROLE
+                or manifest.get("regional_admission_exclusions", {}).get("records") != list(regional.values())
+                or manifest.get("input_sha256", {}).get("regional_admission_exclusions")
+                != hashlib.sha256(args.regional_table.read_bytes()).hexdigest()):
+            raise ValueError("Reviewed IPv4 admission provenance mismatch")
+        if manifest.get("input_sha256", {}).get("hydra_geoip") != hashlib.sha256(args.hydra.read_bytes()).hexdigest():
+            raise ValueError("Hydra input SHA-256 mismatch")
+        hydra = builder.parse_hydra_direct_whitelist(args.hydra)
+        cdn = cdn_networks(verify_cdn_manifest(manifest))
+        builder.assert_regional_admission_disjoint(
+            categories["RU"], builder.subtract_networks(
+                set(rows) | set(regional), hydra["hydra-direct"], hydra["hydra-whitelist"], cdn))
     except (OSError, ValueError, KeyError, TypeError, AttributeError) as exc:
         parser.exit(1, f"ERROR: {exc}\n")
-    print(f"Reviewed IPv6 admission: verified {len(rows)} exact /48 records")
+    print(f"Reviewed foreign admission: verified {len(regional)} IPv4 and {len(rows)} IPv6 exact records")
     return 0
 
 

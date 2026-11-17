@@ -13,17 +13,25 @@ import collections
 import concurrent.futures
 import csv
 import hashlib
+import http.client
 import ipaddress
 import json
+import math
 import time
 import urllib.error
 import urllib.parse
 import urllib.request
+from contextlib import contextmanager
 from pathlib import Path
 from typing import Any
 
 USER_AGENT = "Geoip-ru-prefix-audit/1.0 (+https://github.com/SpeedeMiner/Geoip-ru-server)"
 RETRYABLE_HTTP = {408, 425, 429, 500, 502, 503, 504}
+REQUEST_TIMEOUT_SECONDS = 10
+MAX_RETRIES = 1
+MAX_RETRY_DELAY_SECONDS = 10
+MAX_JSON_BYTES = 8 * 1024 * 1024
+PROGRESS_INTERVAL_SECONDS = 30
 RPKI_BASE = "https://stat.ripe.net/data/rpki-validation/data.json"
 BOOTSTRAP_URLS = {
     4: "https://data.iana.org/rdap/ipv4.json",
@@ -39,7 +47,7 @@ def sha256_bytes(value: bytes) -> str:
     return hashlib.sha256(value).hexdigest()
 
 
-def request_json_with_bytes(url: str, timeout: int = 30, retries: int = 3) -> tuple[int, dict[str, Any] | None, str, bytes | None]:
+def request_json_with_bytes(url: str, timeout: int = REQUEST_TIMEOUT_SECONDS, retries: int = MAX_RETRIES) -> tuple[int, dict[str, Any] | None, str, bytes | None]:
     """Fetch JSON with bounded retries; HTTP/API failures remain explicit."""
     for attempt in range(retries + 1):
         request = urllib.request.Request(
@@ -52,7 +60,9 @@ def request_json_with_bytes(url: str, timeout: int = 30, retries: int = 3) -> tu
         try:
             with urllib.request.urlopen(request, timeout=timeout) as response:
                 status = int(getattr(response, "status", 200))
-                payload_bytes = response.read()
+                payload_bytes = response.read(MAX_JSON_BYTES + 1)
+                if len(payload_bytes) > MAX_JSON_BYTES:
+                    return status, None, "RESPONSE_TOO_LARGE", None
                 try:
                     payload = json.loads(payload_bytes.decode("utf-8"))
                 except (UnicodeDecodeError, json.JSONDecodeError) as exc:
@@ -65,22 +75,25 @@ def request_json_with_bytes(url: str, timeout: int = 30, retries: int = 3) -> tu
             if code in RETRYABLE_HTTP and attempt < retries:
                 retry_after = exc.headers.get("Retry-After") if exc.headers else None
                 try:
-                    delay = min(30.0, max(1.0, float(retry_after))) if retry_after else min(20.0, 2.0 ** attempt)
+                    delay = float(retry_after) if retry_after else 2.0 ** attempt
                 except ValueError:
-                    delay = min(20.0, 2.0 ** attempt)
-                time.sleep(delay)
+                    # Do not retry a rate-limited request early if given an HTTP-date.
+                    return code, None, f"HTTP_{code}", None
+                if not math.isfinite(delay) or delay > MAX_RETRY_DELAY_SECONDS:
+                    return code, None, f"HTTP_{code}", None
+                time.sleep(max(1.0, delay))
                 continue
             return code, None, f"HTTP_{code}", None
-        except (urllib.error.URLError, TimeoutError, ConnectionError) as exc:
+        except (OSError, http.client.HTTPException) as exc:
             if attempt < retries:
-                time.sleep(min(20.0, 2.0 ** attempt))
+                time.sleep(min(MAX_RETRY_DELAY_SECONDS, 2.0 ** attempt))
                 continue
             reason = getattr(exc, "reason", exc)
             return 0, None, f"NETWORK_ERROR:{type(reason).__name__}:{reason}", None
     return 0, None, "RETRY_EXHAUSTED", None
 
 
-def request_json(url: str, timeout: int = 30, retries: int = 3) -> tuple[int, dict[str, Any] | None, str]:
+def request_json(url: str, timeout: int = REQUEST_TIMEOUT_SECONDS, retries: int = MAX_RETRIES) -> tuple[int, dict[str, Any] | None, str]:
     status, payload, error, _ = request_json_with_bytes(url, timeout, retries)
     return status, payload, error
 
@@ -316,7 +329,7 @@ def fetch_rdap_sample(prefix: str, address: str,
     base = rdap_base_for_address(address, entries)
     encoded_address = urllib.parse.quote(address, safe=":")
     url = f"{base}ip/{encoded_address}"
-    status, payload, error = request_json(url)
+    status, payload, error = request_json(url, retries=0)
     row = {
         "PREFIX": prefix,
         "SAMPLE_ADDRESS": address,
@@ -343,7 +356,7 @@ def fetch_rpki_origin(prefix: str, asn: str) -> dict[str, str]:
     number = asn[2:] if asn.upper().startswith("AS") else asn
     query = urllib.parse.urlencode({"resource": number, "prefix": prefix})
     url = f"{RPKI_BASE}?{query}"
-    status, payload, error = request_json(url)
+    status, payload, error = request_json(url, retries=0)
     row = {
         "PREFIX": prefix,
         "ORIGIN_ASN": f"AS{number}",
@@ -500,7 +513,7 @@ def fetch_irr_prefix(prefix: str, sources: list[str],
     params.append(("flags", "no-referenced"))
     params.append(("limit", "1000"))
     url = f"{IRR_SEARCH_URL}?{urllib.parse.urlencode(params)}"
-    status, payload, error = request_json(url)
+    status, payload, error = request_json(url, retries=0)
     if status == 404:
         return "NO_OBJECTS_IN_QUERIED_SOURCES", url, []
     if status != 200 or payload is None:
@@ -509,12 +522,47 @@ def fetch_irr_prefix(prefix: str, sources: list[str],
     return query_status, url, rows
 
 
+def completed_queries(phase: str, futures: dict):
+    """Yield completed tasks with periodic progress even when none finish."""
+    total = len(futures)
+    print(f"{phase}: 0/{total} completed", flush=True)
+    pending = set(futures)
+    started = last_report = time.monotonic()
+    while pending:
+        remaining = max(0, PROGRESS_INTERVAL_SECONDS - (time.monotonic() - last_report))
+        done, pending = concurrent.futures.wait(
+            pending, timeout=remaining, return_when=concurrent.futures.FIRST_COMPLETED
+        )
+        now = time.monotonic()
+        if not pending or now - last_report >= PROGRESS_INTERVAL_SECONDS:
+            print(f"{phase}: {total - len(pending)}/{total} completed "
+                  f"({now - started:.0f}s elapsed)", flush=True)
+            last_report = now
+        yield from done
+
+
 def write_tsv(path: Path, rows: list[dict[str, str]], columns: list[str]) -> None:
     with path.open("w", encoding="utf-8", newline="") as stream:
         writer = csv.DictWriter(stream, fieldnames=columns, delimiter="\t", extrasaction="ignore",
                                 lineterminator="\n")
         writer.writeheader()
         writer.writerows(rows)
+
+
+@contextmanager
+def diagnostic_tsv(path: Path, columns: list[str]):
+    """Flush completed responses so a phase timeout leaves diagnostic data."""
+    with path.open("w", encoding="utf-8", newline="") as stream:
+        writer = csv.DictWriter(stream, fieldnames=columns, delimiter="\t", extrasaction="ignore",
+                                lineterminator="\n")
+        writer.writeheader()
+        stream.flush()
+
+        def append(rows):
+            writer.writerows(rows)
+            stream.flush()
+
+        yield append
 
 
 def build_evidence(company_queue: Path, output_dir: Path, max_workers: int = 5) -> dict[str, Any]:
@@ -543,6 +591,7 @@ def build_evidence(company_queue: Path, output_dir: Path, max_workers: int = 5) 
     bootstrap_hashes: dict[int, str] = {}
     bootstrap_errors: dict[int, str] = {}
     for family, url in BOOTSTRAP_URLS.items():
+        print(f"Fetching IANA RDAP bootstrap: IPv{family}", flush=True)
         status, payload, error, raw = request_json_with_bytes(url)
         if status != 200 or payload is None:
             bootstraps[family] = []
@@ -576,33 +625,41 @@ def build_evidence(company_queue: Path, output_dir: Path, max_workers: int = 5) 
         for address in sample_addresses(network):
             rdap_tasks.append((network, address, bootstraps[ipaddress.ip_network(network).version]))
 
-    rdap_rows: list[dict[str, str]] = []
-    with concurrent.futures.ThreadPoolExecutor(max_workers=max_workers) as pool:
-        futures = {
-            pool.submit(fetch_rdap_sample, prefix, address, entries): (prefix, address)
-            for prefix, address, entries in rdap_tasks
-        }
-        for future in concurrent.futures.as_completed(futures):
-            prefix, address = futures[future]
-            try:
-                rdap_rows.append(future.result())
-            except Exception as exc:  # preserve sample context; never turn it into "not registered"
-                rdap_rows.append({
-                    "PREFIX": prefix, "SAMPLE_ADDRESS": address, "RDAP_URL": "",
-                    "HTTP_STATUS": "0", "QUERY_STATUS": f"CLIENT_ERROR:{type(exc).__name__}:{exc}",
-                    "OBJECT_CLASS": "", "HANDLE": "", "NAME": "", "TYPE": "", "COUNTRY": "",
-                    "START_ADDRESS": "", "END_ADDRESS": "", "REGISTERED_CIDRS": "",
-                    "REGISTRANT_ENTITIES": "", "ALL_ENTITIES": "", "ENTITY_HANDLES": "",
-                    "STATUS": "", "RDAP_PREFIX_RELATION": "NOT_AVAILABLE",
-                })
-    rdap_rows.sort(key=lambda row: (row["PREFIX"], row["SAMPLE_ADDRESS"]))
+    # Persist fully returned samples before the whole phase completes. This
+    # file is diagnostic only and is removed once the canonical TSV exists.
     rdap_columns = [
         "PREFIX", "SAMPLE_ADDRESS", "RDAP_URL", "HTTP_STATUS", "QUERY_STATUS",
         "OBJECT_CLASS", "HANDLE", "NAME", "TYPE", "COUNTRY", "START_ADDRESS",
         "END_ADDRESS", "REGISTERED_CIDRS", "RDAP_PREFIX_RELATION",
         "REGISTRANT_ENTITIES", "ALL_ENTITIES", "ENTITY_HANDLES", "STATUS",
     ]
+    rdap_rows: list[dict[str, str]] = []
+    partial_path = output_dir / "rdap_samples_partial.tsv"
+    with diagnostic_tsv(partial_path, rdap_columns) as save_rdap, \
+         concurrent.futures.ThreadPoolExecutor(max_workers=max_workers) as pool:
+        futures = {
+            pool.submit(fetch_rdap_sample, prefix, address, entries): (prefix, address)
+            for prefix, address, entries in rdap_tasks
+        }
+        for future in completed_queries("RDAP", futures):
+            prefix, address = futures[future]
+            try:
+                result = future.result()
+            except Exception as exc:  # preserve sample context; never turn it into "not registered"
+                result = {
+                    "PREFIX": prefix, "SAMPLE_ADDRESS": address, "RDAP_URL": "",
+                    "HTTP_STATUS": "0", "QUERY_STATUS": f"CLIENT_ERROR:{type(exc).__name__}:{exc}",
+                    "OBJECT_CLASS": "", "HANDLE": "", "NAME": "", "TYPE": "", "COUNTRY": "",
+                    "START_ADDRESS": "", "END_ADDRESS": "", "REGISTERED_CIDRS": "",
+                    "REGISTRANT_ENTITIES": "", "ALL_ENTITIES": "", "ENTITY_HANDLES": "",
+                    "STATUS": "", "RDAP_PREFIX_RELATION": "NOT_AVAILABLE",
+                }
+            rdap_rows.append(result)
+            save_rdap([result])
+    rdap_rows.sort(key=lambda row: (row["PREFIX"], row["SAMPLE_ADDRESS"]))
     write_tsv(output_dir / "rdap_samples.tsv", rdap_rows, rdap_columns)
+    partial_path.unlink()
+    print(f"RDAP usable samples: {sum(row['QUERY_STATUS'] == 'OK' for row in rdap_rows)}/{len(rdap_rows)}", flush=True)
 
     rpki_tasks: list[tuple[str, str]] = []
     for row in priority:
@@ -611,30 +668,36 @@ def build_evidence(company_queue: Path, output_dir: Path, max_workers: int = 5) 
             rpki_tasks.append((row["PREFIX"], asn))
 
     rpki_rows: list[dict[str, str]] = []
-    with concurrent.futures.ThreadPoolExecutor(max_workers=max_workers) as pool:
-        futures = {
-            pool.submit(fetch_rpki_origin, prefix, asn): (prefix, asn)
-            for prefix, asn in rpki_tasks
-        }
-        for future in concurrent.futures.as_completed(futures):
-            prefix, asn = futures[future]
-            try:
-                rpki_rows.append(future.result())
-            except Exception as exc:
-                rpki_rows.append({
-                    "PREFIX": prefix, "ORIGIN_ASN": asn, "RPKI_URL": "", "HTTP_STATUS": "0",
-                    "QUERY_STATUS": f"CLIENT_ERROR:{type(exc).__name__}:{exc}",
-                    "RPKI_STATUS": "", "RPKI_DESCRIPTION": "",
-                })
-    rpki_rows.sort(key=lambda row: (row["PREFIX"], row["ORIGIN_ASN"]))
     rpki_columns = [
         "PREFIX", "ORIGIN_ASN", "RPKI_URL", "HTTP_STATUS", "QUERY_STATUS",
         "RPKI_STATUS", "RPKI_DESCRIPTION",
     ]
+    rpki_partial = output_dir / "rpki_by_origin_partial.tsv"
+    with diagnostic_tsv(rpki_partial, rpki_columns) as save_rpki, \
+         concurrent.futures.ThreadPoolExecutor(max_workers=max_workers) as pool:
+        futures = {
+            pool.submit(fetch_rpki_origin, prefix, asn): (prefix, asn)
+            for prefix, asn in rpki_tasks
+        }
+        for future in completed_queries("RPKI", futures):
+            prefix, asn = futures[future]
+            try:
+                result = future.result()
+            except Exception as exc:
+                result = {
+                    "PREFIX": prefix, "ORIGIN_ASN": asn, "RPKI_URL": "", "HTTP_STATUS": "0",
+                    "QUERY_STATUS": f"CLIENT_ERROR:{type(exc).__name__}:{exc}",
+                    "RPKI_STATUS": "", "RPKI_DESCRIPTION": "",
+                }
+            rpki_rows.append(result)
+            save_rpki([result])
+    rpki_rows.sort(key=lambda row: (row["PREFIX"], row["ORIGIN_ASN"]))
     write_tsv(output_dir / "rpki_by_origin.tsv", rpki_rows, rpki_columns)
+    rpki_partial.unlink()
 
     # RIPE Database GRS snapshots expose multiple regional IRR data sources.
     # Their scope is explicit in the output and is not claimed to be the entire IRR ecosystem.
+    print("Fetching RIPE IRR source metadata", flush=True)
     metadata_status, metadata_payload, metadata_error = request_json(IRR_METADATA_URL)
     if metadata_status == 200 and metadata_payload is not None:
         metadata_sources = _source_list_from_metadata(metadata_payload)
@@ -661,7 +724,23 @@ def build_evidence(company_queue: Path, output_dir: Path, max_workers: int = 5) 
     irr_prefix_rows: list[dict[str, str]] = []
     irr_object_rows: list[dict[str, str]] = []
     irr_query_statuses: collections.Counter[str] = collections.Counter()
-    with concurrent.futures.ThreadPoolExecutor(max_workers=max_workers) as pool:
+    irr_prefix_columns = [
+        "PREFIX", "QUERY_STATUS", "QUERY_URL", "QUERY_SCOPE_SOURCES",
+        "IRR_SOURCE_OBJECT_RECORDS", "IRR_UNIQUE_ROUTE_OBJECTS",
+        "IRR_EXACT_OBJECTS", "IRR_EXACT_BGP_ORIGIN_MATCH_OBJECTS",
+        "IRR_EXACT_OBJECT_SOURCES", "IRR_EXACT_ORIGINS", "IRR_MATCHED_BGP_ORIGINS",
+        "IRR_MNT_BY", "IRR_ORG", "IRR_DESCR", "STATUS", "INTERPRETATION",
+    ]
+    irr_object_columns = [
+        "QUERY_PREFIX", "OBJECT_TYPE", "ROUTE_PREFIX", "OBJECT_KEY", "ORIGIN_ASN",
+        "REGISTRY_SOURCE", "EXACT_PREFIX_MATCH", "GLOBAL_BGP_ORIGIN_MATCH",
+        "MNT_BY", "ORG", "DESCR", "REMARKS", "MEMBER_OF", "CREATED", "LAST_MODIFIED",
+    ]
+    irr_prefix_partial = output_dir / "irr_prefix_summary_partial.tsv"
+    irr_objects_partial = output_dir / "irr_route_objects_partial.tsv"
+    with diagnostic_tsv(irr_prefix_partial, irr_prefix_columns) as save_irr_prefix, \
+         diagnostic_tsv(irr_objects_partial, irr_object_columns) as save_irr_objects, \
+         concurrent.futures.ThreadPoolExecutor(max_workers=max_workers) as pool:
         futures = {
             pool.submit(
                 fetch_irr_prefix,
@@ -671,7 +750,7 @@ def build_evidence(company_queue: Path, output_dir: Path, max_workers: int = 5) 
             ): row["PREFIX"]
             for row in priority
         }
-        for future in concurrent.futures.as_completed(futures):
+        for future in completed_queries("IRR", futures):
             prefix = futures[future]
             try:
                 query_status, query_url, objects = future.result()
@@ -695,7 +774,7 @@ def build_evidence(company_queue: Path, output_dir: Path, max_workers: int = 5) 
             unique_objects = list(unique_by_signature.values())
             exact_objects = [obj for obj in unique_objects if obj["EXACT_PREFIX_MATCH"] == "yes"]
             matching_objects = [obj for obj in exact_objects if obj["GLOBAL_BGP_ORIGIN_MATCH"] == "yes"]
-            irr_prefix_rows.append({
+            summary_row = {
                 "PREFIX": prefix,
                 "QUERY_STATUS": query_status,
                 "QUERY_URL": query_url,
@@ -715,24 +794,19 @@ def build_evidence(company_queue: Path, output_dir: Path, max_workers: int = 5) 
                 "IRR_DESCR": " | ".join(sorted({obj["DESCR"] for obj in exact_objects if obj["DESCR"]})),
                 "STATUS": "REVIEW",
                 "INTERPRETATION": "Search limited to RIPE Database plus its reported GRS sources; not a global search of every independent IRR.",
-            })
+            }
+            irr_prefix_rows.append(summary_row)
+            save_irr_objects(objects)
+            save_irr_prefix([summary_row])
 
     irr_prefix_rows.sort(key=lambda row: row["PREFIX"])
     irr_object_rows.sort(key=lambda row: (
         row["QUERY_PREFIX"], row["REGISTRY_SOURCE"], row["ORIGIN_ASN"], row["ROUTE_PREFIX"]
     ))
-    write_tsv(output_dir / "irr_prefix_summary.tsv", irr_prefix_rows, [
-        "PREFIX", "QUERY_STATUS", "QUERY_URL", "QUERY_SCOPE_SOURCES",
-        "IRR_SOURCE_OBJECT_RECORDS", "IRR_UNIQUE_ROUTE_OBJECTS",
-        "IRR_EXACT_OBJECTS", "IRR_EXACT_BGP_ORIGIN_MATCH_OBJECTS",
-        "IRR_EXACT_OBJECT_SOURCES", "IRR_EXACT_ORIGINS", "IRR_MATCHED_BGP_ORIGINS",
-        "IRR_MNT_BY", "IRR_ORG", "IRR_DESCR", "STATUS", "INTERPRETATION",
-    ])
-    write_tsv(output_dir / "irr_route_objects.tsv", irr_object_rows, [
-        "QUERY_PREFIX", "OBJECT_TYPE", "ROUTE_PREFIX", "OBJECT_KEY", "ORIGIN_ASN",
-        "REGISTRY_SOURCE", "EXACT_PREFIX_MATCH", "GLOBAL_BGP_ORIGIN_MATCH",
-        "MNT_BY", "ORG", "DESCR", "REMARKS", "MEMBER_OF", "CREATED", "LAST_MODIFIED",
-    ])
+    write_tsv(output_dir / "irr_prefix_summary.tsv", irr_prefix_rows, irr_prefix_columns)
+    write_tsv(output_dir / "irr_route_objects.tsv", irr_object_rows, irr_object_columns)
+    irr_prefix_partial.unlink()
+    irr_objects_partial.unlink()
 
     # Preserve source-specific rows above, and also emit a deduplicated logical
     # object table. Multiple GRS/RIPE sources may mirror identical RPSL content.
