@@ -3,10 +3,10 @@
   "updated_on": "2026-11-17",
   "measurement_scope": "public TCP/443 only; no inference of blocking or GeoIP mutation",
   "range_queue_size": 6,
-  "measured_from_two_ru_asns": 5,
-  "with_verified_postflight_on_both": 4,
+  "measured_from_two_ru_asns": 6,
+  "with_verified_postflight_on_both": 5,
   "confirmed_service_pairs": 0,
-  "next_review_prefix": "177.166.21.0/24",
+  "next_review_prefix": null,
   "rows": [
     {
       "prefix": "156.224.80.0/24",
@@ -451,7 +451,33 @@
     {
       "prefix": "177.166.21.0/24",
       "dat_exact_ru_in_all_three": true,
-      "tcp_per_address_observation": null,
+      "tcp_per_address_observation": {
+        "scope": "comparison of two archive-verified RU observations, one TCP/443 attempt per IPv4 per exit",
+        "prefix": "177.166.21.0/24",
+        "port": 443,
+        "exit_asns_in_order": [
+          35807,
+          12389
+        ],
+        "distinct_ipv4_in_scope": 256,
+        "addresses_attempted_at_both_exits": 256,
+        "tcp_timeout_at_both_exits": 256,
+        "tcp_connected_at_either_exit": 0,
+        "certificate_observed_at_either_exit": 0,
+        "paired_tcp_status_counts": {
+          "TIMEOUT|TIMEOUT": 256
+        },
+        "observed_at_by_exit": [
+          "2026-11-17T13:20:11Z",
+          "2026-11-17T13:25:52Z"
+        ],
+        "postflight_by_exit": [
+          "VERIFIED",
+          "VERIFIED"
+        ],
+        "timeouts_are_not_block_verdicts": true,
+        "geoip_mutation": false
+      },
       "confirmed_service_pair": false,
       "routeviews_origins": [
         {
@@ -476,7 +502,57 @@
         }
       ],
       "rolling_dat_ru_addresses": 0,
-      "rolling_dat_private_addresses": 0
+      "rolling_dat_private_addresses": 0,
+      "cidr24_artifacts": {
+        "verified": [
+          {
+            "run": 44091552495,
+            "artifact": 14331378905,
+            "commit": "441f8ed86a2b2acff37685d09700e50f3d6b3415",
+            "sha256": "11f57096de5947aca00d1ed93955b9f6a586ed5073e7ed94fab0a3f35da87a0a",
+            "exit_asn": 35807,
+            "observed_at": "2026-11-17T13:20:11Z",
+            "postflight_at": "2026-11-17T13:21:33Z",
+            "pre_controls": [
+              {
+                "id": "cdn77-demo",
+                "http": 200
+              },
+              {
+                "id": "cdnvideo-player-host",
+                "http": 200
+              }
+            ],
+            "post_control": {
+              "id": "cdn77-demo",
+              "http": 200
+            }
+          },
+          {
+            "run": 44092291673,
+            "artifact": 14332377227,
+            "commit": "a03064d8e06045e0b2600c1d60e7d4dd04434de0",
+            "sha256": "b39237cce2f301be2193b5567419854d676ce01bde6f4443759cfb7c9dccba19",
+            "exit_asn": 12389,
+            "observed_at": "2026-11-17T13:25:52Z",
+            "postflight_at": "2026-11-17T13:27:24Z",
+            "pre_controls": [
+              {
+                "id": "cdn77-demo",
+                "http": 200
+              },
+              {
+                "id": "cdnvideo-player-host",
+                "http": 200
+              }
+            ],
+            "post_control": {
+              "id": "cdn77-demo",
+              "http": 200
+            }
+          }
+        ]
+      }
     }
   ],
   "review_after": "2026-12-17",
@@ -494,5 +570,13 @@
     "candidate_ipv6_removed": 0,
     "private_changed": false,
     "additional_candidate_hydra_cidr": "31.204.32.0/20"
+  },
+  "next_evidence_step": "Find and independently validate named service endpoints. Rechecking a service requires an exact matching DNS A record and named verified TLS/HTTPS evidence.",
+  "accepted_summary": {
+    "accepted_ru_exit_runs": 12,
+    "distinct_ipv4_attempted_on_both_exits": 1536,
+    "tcp_attempts_on_accepted_runs": 3072,
+    "tcp_timeout_on_both_for_distinct_ipv4": 1536,
+    "certificates_observed_at_either_exit": 0
   }
 }
