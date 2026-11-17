@@ -5,7 +5,7 @@ from collections import Counter
 from datetime import datetime
 from pathlib import Path
 
-from build_rir_rukzby_prefixes import utc_today, validate_snapshot_age
+from build_rir_rukzby_prefixes import ALLOWED_STATUS, COUNTRIES, parse_resource, utc_today, validate_snapshot_age
 
 
 def validate_not_error_page(path):
@@ -46,6 +46,15 @@ def validate_rir(path, registry, minimum_records=100):
             if len(fields) < 7 or fields[0].lower() != registry or fields[2].lower() not in {"asn", "ipv4", "ipv6"}:
                 raise ValueError(f"{path}:{number}: malformed resource record")
             counts[fields[2].lower()] += 1
+            kind = fields[2].lower()
+            if (fields[1].upper() in COUNTRIES and kind in {"ipv4", "ipv6"}
+                    and fields[6].lower() in ALLOWED_STATUS):
+                try:
+                    prefixes = parse_resource(fields[1], kind, fields[3], fields[4])
+                except (ValueError, TypeError, OverflowError) as exc:
+                    raise ValueError(f"{path}:{number}: invalid regional {kind} resource") from exc
+                if not prefixes:
+                    raise ValueError(f"{path}:{number}: invalid regional {kind} resource")
             if fields[2].lower() == "asn":
                 if not fields[4].isascii() or not fields[4].isdigit() or int(fields[4]) <= 0:
                     raise ValueError(f"{path}:{number}: invalid ASN range size")

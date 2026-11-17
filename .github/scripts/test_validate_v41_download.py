@@ -7,6 +7,31 @@ from validate_v41_download import validate_not_error_page, validate_rir
 
 
 class DownloadValidationTests(unittest.TestCase):
+    def test_invalid_regional_resources_fail_even_when_counts_match(self):
+        date = datetime.now(timezone.utc).strftime("%Y%m%d")
+        header = f"2|ripencc|1|1|{date}|{date}|+0000\n"
+        with TemporaryDirectory() as directory:
+            path = Path(directory) / "stats"
+            for kind, start, size in (("ipv4", "bad", "256"), ("ipv4", "192.0.2.0", "0"),
+                                      ("ipv6", "2001:db8::", "129"), ("ipv6", "192.0.2.0", "24")):
+                with self.subTest(kind=kind, start=start, size=size):
+                    path.write_text(header + f"ripencc|*|{kind}|*|1|summary\n"
+                                    + f"ripencc|RU|{kind}|{start}|{size}|20200101|allocated\n", encoding="utf-8")
+                    with self.assertRaisesRegex(ValueError, "invalid regional"):
+                        validate_rir(path, "ripencc", minimum_records=1)
+
+    def test_valid_regional_resources_are_accepted(self):
+        date = datetime.now(timezone.utc).strftime("%Y%m%d")
+        with TemporaryDirectory() as directory:
+            path = Path(directory) / "stats"
+            for country in ("RU", "BY", "KZ"):
+                for kind, start, size in (("ipv4", "192.0.2.0", "256"), ("ipv6", "2001:db8::", "32")):
+                    with self.subTest(country=country, kind=kind):
+                        path.write_text(f"2|ripencc|1|1|{date}|{date}|+0000\n"
+                                        + f"ripencc|*|{kind}|*|1|summary\n"
+                                        + f"ripencc|{country}|{kind}|{start}|{size}|20200101|allocated\n", encoding="utf-8")
+                        self.assertEqual(validate_rir(path, "ripencc", minimum_records=1), 1)
+
     def test_extended_rir_format_requires_matching_counts_too(self):
         date = datetime.now(timezone.utc).strftime("%Y%m%d")
         header = f"2.3|lacnic|1|2|{date}|{date}|-0300\n"
