@@ -546,6 +546,25 @@ jobs:
             --exact-output "$RUNNER_TEMP/v41-pr-direct-delta.json" \
             --current-metrics "$V41_METRICS" --previous-metrics "$RUNNER_TEMP/previous-geoip_RU_v41_source_metrics.tsv" \
             --revision "$ref" --summary "$GITHUB_STEP_SUMMARY"
+          # Keep a bounded exact delta in the PR log as well as the artifact.
+          python3 - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          data = json.loads((Path(os.environ["RUNNER_TEMP"]) / "v41-pr-direct-delta.json").read_text())
+          print(f"Exact DIRECT delta for candidate {data['candidate_dat_sha256']}")
+          for family in ("ipv4", "ipv6"):
+              for change in ("added", "removed"):
+                  scope = data["direct"][family][change]
+                  prefixes = scope["cidrs"]
+                  print(f"{family} {change}: {scope['addresses']} addresses, {len(prefixes)} CIDRs")
+                  if len(prefixes) <= 200:
+                      for prefix in prefixes:
+                          print(f"  {family} {change}: {prefix}")
+                  else:
+                      print("  CIDR list omitted from log; use the exact-delta artifact")
+          PY
           echo '### Priority ASN and country loss (input inventories)' >> "$GITHUB_STEP_SUMMARY"
           python3 .github/scripts/validate_v41_priority_loss.py --report-only \
             --candidate-dat "$V41_OUTPUT_FILE" --manifest "$V41_MANIFEST" --company-prefixes "$COMPANY_ASN_PREFIXES" \
