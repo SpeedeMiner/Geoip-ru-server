@@ -677,6 +677,73 @@ jobs:
                       print("    Additional entries omitted; see retained source snapshot.")
           PY
 
+      - name: Trace added DIRECT prefixes to candidate inputs
+        if: github.event_name == 'pull_request'
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import hashlib
+          import ipaddress
+          import json
+          import os
+          from pathlib import Path
+          import sys
+          sys.path.insert(0, ".github/scripts")
+          from build_v41_overlay import parse_geoip_dat
+
+          delta = json.loads((Path(os.environ["RUNNER_TEMP"]) / "v41-pr-direct-delta.json").read_text())
+          targets = [ipaddress.ip_network(cidr) for family in ("ipv4", "ipv6")
+                     for cidr in delta["direct"][family]["added"]["cidrs"]]
+          print("Added-prefix overlapping input diagnostics for candidate", delta["candidate_dat_sha256"])
+          if len(targets) > 50:
+              print("More than 50 added CIDRs; inspect retained inputs offline.")
+              raise SystemExit(0)
+          def show(label, digest, matches):
+              print(f"Added source {label}: sha256={digest}")
+              for target in targets:
+                  rows = sorted(matches[str(target)])
+                  print(f"  {label} {target}: {len(rows)} overlaps")
+                  for row in rows[:12]:
+                      print("    " + row)
+                  if len(rows) > 12:
+                      print("    Additional rows omitted; consult retained inputs.")
+          sources = [
+              ("selected-origins", Path(os.environ["RU_PREFIX_INPUT"]), 0),
+              ("regional-rir", Path(os.environ["RIR_RUKZBY_PREFIX_INPUT"]), 1),
+              ("static-overrides", Path(".github/data/v41-static-overrides.tsv"), 0),
+          ]
+          for label, path, column in sources:
+              raw = path.read_bytes()
+              matches = {str(target): [] for target in targets}
+              for line in raw.decode("utf-8").splitlines():
+                  if not line or line.startswith("#"):
+                      continue
+                  fields = line.split("\t") if label != "selected-origins" else line.split()
+                  if len(fields) <= column:
+                      continue
+                  try:
+                      net = ipaddress.ip_network(fields[column], strict=False)
+                  except ValueError:
+                      continue
+                  for target in targets:
+                      if net.version == target.version and net.overlaps(target):
+                          matches[str(target)].append(line)
+              show(label, hashlib.sha256(raw).hexdigest(), matches)
+          path = Path(os.environ["HYDRA_INPUT"])
+          raw = path.read_bytes()
+          matches = {str(target): [] for target in targets}
+          try:
+              categories = parse_geoip_dat(path)
+              for category in ("DIRECT", "WHITELIST"):
+                  for net in categories.get(category, ()):
+                      for target in targets:
+                          if net.version == target.version and net.overlaps(target):
+                              matches[str(target)].append(f"{category} {net}")
+              show("hydra-intent", hashlib.sha256(raw).hexdigest(), matches)
+          except (OSError, ValueError, TypeError) as error:
+              print(f"Added source hydra-intent unavailable: {type(error).__name__}: {error}")
+          PY
+
       - name: Retain exact pull request DIRECT delta
         if: github.event_name == 'pull_request'
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
