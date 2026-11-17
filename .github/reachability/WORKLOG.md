@@ -1294,3 +1294,9 @@ Durable resume point for PR #5. After any conversation/network interruption, rea
 - The initial queued state of Runs #218–#220 preceded the GitHub Actions component incident: their create times are 20:25:45Z, 20:26:49Z and 20:28:58Z; the official status page first reports Actions degraded availability at 20:48Z.
 - GitHub reported the backlog fully processed and the incident resolved at 21:21Z. This may have affected the later wait, but the incident cannot explain why no jobs were provisioned at the time the runs first entered the queue.
 - The exact reason these three runs remained queued with `total_count=0` jobs is UNKNOWN. Run #221 on the latest code head is the successful validation to rely on.
+
+## 2026-11-17 — точечный IPv4 VPN-режим
+
+- Добавлен режим `exact_ipv4`: принимает 1–6 явных глобальных IP с каноническим префиксом и необязательным доменом/SNI; подсети не сканируются и адреса не угадываются. Старый режим доменных проверок остаётся доступен как `domains`.
+- Каждая точка проверяется только после существующей проверки RU VPN-выхода в изолированном namespace. В JSONL раздельно фиксируются DNS A/AAAA, совпадение DNS и точного IP, TCP, TLS с проверкой сертификата и HTTP HEAD. Отказы и тайм-ауты не являются доказательством блокировки. IPv6 транспорт отвергается до запуска: существующий туннель IPv4-only. Python TLS не является Chrome uTLS.
+- Локально прошли 6 unit-тестов с моками и проверка синтаксиса Python. Нужен Linux CI; фактический VPN-прогон и подтверждение домашнего типа сети ещё не выполнены. Конкретных подтверждённых сервисных IP для шести спорных /24 пока нет.

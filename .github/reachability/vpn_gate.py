@@ -39,6 +39,7 @@ import urllib.request
 from typing import Any
 
 import runner
+import vpn_exact_probe
 
 VPN_GATE_API = "https://www.vpngate.net/api/iphone/"
 VPNOBRATNO_LIST_URL = "https://vpnobratno.info/russia_server_list.html"
@@ -2335,8 +2336,12 @@ def persist_vpn_gate_reports(
 
 def run(args: argparse.Namespace) -> int:
     inventory_rows, networks = runner.read_inventory(pathlib.Path(args.inventory))
-    targets = [target for target in runner.load_targets(pathlib.Path(args.targets))
-               if "RU" in target.get("country_scope", [])]
+    exact_file = getattr(args, "exact_targets", None)
+    if exact_file:
+        targets = vpn_exact_probe.load_exact_targets(pathlib.Path(exact_file))
+    else:
+        targets = [target for target in runner.load_targets(pathlib.Path(args.targets))
+                   if "RU" in target.get("country_scope", [])]
     output = pathlib.Path(args.output_dir)
     output.mkdir(parents=True, exist_ok=True)
     run_deadline = time.monotonic() + RUN_WALL_CLOCK_BUDGET_SECONDS
@@ -2653,7 +2658,9 @@ def run(args: argparse.Namespace) -> int:
                                                 minimum=4.0,
                                             )
                                             row = call_with_wall_clock_timeout(
-                                                lambda: test_target(target, exit_info, networks, args.request_timeout),
+                                                lambda: (vpn_exact_probe.measure_exact(target, exit_info, args.request_timeout,
+                                                                                     resolve_domain_families, utc_now())
+                                                         if exact_file else test_target(target, exit_info, networks, args.request_timeout)),
                                                 target_timeout,
                                             )
                                             row.update({
@@ -2766,6 +2773,7 @@ def run(args: argparse.Namespace) -> int:
             "connection_counts": dict(connection_counts),
             "exit_geoip_categories": dict(exit_categories),
             "targets_in_ru_scope": len(targets),
+            "probe_mode": "EXACT_IPV4" if exact_file else "DOMAIN",
             "target_measurements": len(measurement_rows),
             **target_scan_summary,
             "geoip_candidates": len(candidates),
@@ -2790,7 +2798,8 @@ def run(args: argparse.Namespace) -> int:
             "limitations": [
                 "VPN Gate nodes are volunteer-operated; a Russian exit IP does not prove a residential household line.",
                 "ISP/ASN metadata is supporting attribution only; confirm operator and access type independently before using a range decision.",
-                "The run tests declared RU-scope service hostnames, not every address in every GeoIP CIDR.",
+                ("The run tests only explicitly declared IPv4 endpoints; it does not test every address in a CIDR."
+                 if exact_file else "The run tests declared RU-scope service hostnames, not every address in every GeoIP CIDR."),
                 "Only IPv4 VPN tunnel egress is used; IPv6 host egress is blocked during the test and AAAA resolution is recorded without an IPv6 HTTPS tunnel test.",
                 "VPN Gate may retain connection logs; only minimal public DNS/HTTPS requests are sent and no credentials or user data are submitted.",
             ],
@@ -2829,6 +2838,7 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--inventory", required=True, help="GeoIP RU/PRIVATE inventory TSV")
     parser.add_argument("--targets", default=".github/reachability/targets.json")
+    parser.add_argument("--exact-targets", help="JSON array of 1–6 explicit IPv4 endpoints; no CIDR scanning")
     parser.add_argument("--output-dir", default="reachability-output")
     parser.add_argument(
         "--source", choices=("vpnobratno", "vpngate"), default="vpnobratno",

@@ -3,6 +3,18 @@ name: Russian ISP VPN Gate reachability
 on:
   workflow_dispatch:
     inputs:
+      probe_mode:
+        description: Select exact IPv4 endpoints or the legacy domain catalogue
+        required: true
+        default: exact_ipv4
+        type: choice
+        options:
+          - exact_ipv4
+          - domains
+      exact_targets_json:
+        description: JSON array of up to 6 explicit endpoints (id, ip, prefix, optional domain and port)
+        required: false
+        type: string
       source:
         description: Profile discovery source
         required: true
@@ -42,6 +54,33 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           persist-credentials: false
+
+      - name: Validate exact probe targets
+        shell: bash
+        env:
+          PROBE_MODE: ${{ inputs.probe_mode }}
+          EXACT_TARGETS_JSON: ${{ inputs.exact_targets_json }}
+        run: |
+          set -euo pipefail
+          if [[ "$PROBE_MODE" == exact_ipv4 ]]; then
+            python3 - <<'PY'
+          import os
+          from pathlib import Path
+          import sys
+          sys.path.insert(0, ".github/reachability")
+          import vpn_exact_probe
+          payload = os.environ.get("EXACT_TARGETS_JSON", "")
+          if not payload:
+              raise SystemExit("exact_ipv4 requires explicit JSON endpoints; no addresses are guessed or scanned")
+          path = Path(os.environ["RUNNER_TEMP"]) / "vpn-exact-targets.json"
+          path.write_text(payload, encoding="utf-8")
+          targets = vpn_exact_probe.load_exact_targets(path)
+          print(f"Validated {len(targets)} explicit IPv4 targets; IPv6 tunnel transport is not supported.")
+          PY
+          elif [[ "$PROBE_MODE" != domains ]]; then
+            echo 'Unknown probe mode' >&2
+            exit 1
+          fi
 
       - name: Install isolated VPN measurement tools
         timeout-minutes: 6
@@ -126,11 +165,17 @@ jobs:
         continue-on-error: true
         timeout-minutes: 9
         shell: bash
+        env:
+          PROBE_MODE: ${{ inputs.probe_mode }}
         run: |
           set -euo pipefail
-          python3 -m py_compile .github/reachability/runner.py .github/reachability/vpn_gate.py
+          python3 -m py_compile .github/reachability/runner.py .github/reachability/vpn_gate.py .github/reachability/vpn_exact_probe.py
           bash -n .github/reachability/vpn_netns_exec.sh
           echo "[vpn-gate] runner_network_namespace=true host_firewall_untouched=true"
+          extra=()
+          if [[ "$PROBE_MODE" == exact_ipv4 ]]; then
+            extra+=(--exact-targets "$RUNNER_TEMP/vpn-exact-targets.json")
+          fi
           sudo env \
           GITHUB_SHA="${GITHUB_SHA}" \
           GITHUB_RUN_ID="${GITHUB_RUN_ID}" \
@@ -145,7 +190,7 @@ jobs:
                 --max-servers "${{ inputs.max_vpn_gate_servers || '1' }}" \
                 --max-attempts "${{ inputs.max_vpn_gate_attempts || '6' }}" \
                 --connect-timeout 5 \
-                --request-timeout 12
+                --request-timeout 12 "${extra[@]}"
 
       - name: Upload VPN Gate reports
         if: always()
