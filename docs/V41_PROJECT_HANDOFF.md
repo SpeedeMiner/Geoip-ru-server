@@ -1,5 +1,7 @@
 # GeoIP v41: состояние и незавершённые задачи
 
+> [Проверка аварийного артефакта на GitHub Actions](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/44045430458) прошла. После принудительного останова RDAP, RPKI и IRR выгружено и повторно прочитано [четыре partial TSV](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/44045430458/artifacts/14310724163) с ожидаемыми результатами. Синтетический тест не имитирует отказ внешнего сервиса и не меняет рабочий механизм выгрузки.
+>
 > **20-минутный проход, 17 ноября:** [Linux CI v41](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/44043544968) на `c811a2c` прошёл, `publish` пропущен. [Текущий проверенный ZIP](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/44043544968/artifacts/14309659967) содержит прежние DAT/SRS и маску без изменения байтов. [JSON дельты](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/44043544968/artifacts/14310322901) побайтно совпал с закреплённым отчётом. Добавлены ранние проверки четырёх обязательных источников и семь справочных доменов.
 >
 > [Независимая сверка 18 добавлений](V41_ADDITIONS_RIS_RDAP_REVIEW_20261117.md): RIS 12 точных, 2 через покрывающий маршрут, 4 без наблюдения. У всех получен RDAP. Для четырёх RouteViews вернул лишь маршрут по умолчанию. Это не проверка домашней доступности.
