@@ -3,10 +3,10 @@
   "updated_on": "2026-11-17",
   "measurement_scope": "public TCP/443 only; no inference of blocking or GeoIP mutation",
   "range_queue_size": 6,
-  "measured_from_two_ru_asns": 3,
-  "with_verified_postflight_on_both": 2,
+  "measured_from_two_ru_asns": 4,
+  "with_verified_postflight_on_both": 3,
   "confirmed_service_pairs": 0,
-  "next_review_prefix": "177.122.107.0/24",
+  "next_review_prefix": "177.122.160.0/24",
   "rows": [
     {
       "prefix": "156.224.80.0/24",
@@ -237,7 +237,33 @@
     {
       "prefix": "177.122.107.0/24",
       "dat_exact_ru_in_all_three": true,
-      "tcp_per_address_observation": null,
+      "tcp_per_address_observation": {
+        "scope": "comparison of two archive-verified RU observations, one TCP/443 attempt per IPv4 per exit",
+        "prefix": "177.122.107.0/24",
+        "port": 443,
+        "exit_asns_in_order": [
+          12494,
+          43330
+        ],
+        "distinct_ipv4_in_scope": 256,
+        "addresses_attempted_at_both_exits": 256,
+        "tcp_timeout_at_both_exits": 256,
+        "tcp_connected_at_either_exit": 0,
+        "certificate_observed_at_either_exit": 0,
+        "paired_tcp_status_counts": {
+          "TIMEOUT|TIMEOUT": 256
+        },
+        "observed_at_by_exit": [
+          "2026-11-17T12:53:03Z",
+          "2026-11-17T12:56:47Z"
+        ],
+        "postflight_by_exit": [
+          "VERIFIED",
+          "VERIFIED"
+        ],
+        "timeouts_are_not_block_verdicts": true,
+        "geoip_mutation": false
+      },
       "confirmed_service_pair": false,
       "routeviews_origins": [
         {
@@ -262,7 +288,63 @@
         }
       ],
       "rolling_dat_ru_addresses": 0,
-      "rolling_dat_private_addresses": 0
+      "rolling_dat_private_addresses": 0,
+      "cidr24_artifacts": {
+        "verified": [
+          {
+            "run": 44087159259,
+            "artifact": 14330740400,
+            "commit": "42acc1bbb4783ae573169110c5e3ce8d92b30695",
+            "sha256": "02e37f9a59b54191af06ee5566b254bdd7d8a89f00e93f413f5a7e9f3ca66c30",
+            "exit_asn": 12494,
+            "observed_at": "2026-11-17T12:53:03Z",
+            "postflight_at": "2026-11-17T12:54:25Z",
+            "pre_controls": [
+              {
+                "id": "cdnvideo-player-host",
+                "http": 200
+              }
+            ],
+            "post_control": {
+              "id": "cdnvideo-player-host",
+              "http": 200
+            }
+          },
+          {
+            "run": 44087672791,
+            "artifact": 14330835729,
+            "commit": "18a7a0ad58a59ae23599c87fa93751b0a806ae67",
+            "sha256": "7186cb41b5dd3bd99530a01b53bc6c4222ac0e9dc62f3f7101c30bcd25cfe1eb",
+            "exit_asn": 43330,
+            "observed_at": "2026-11-17T12:56:47Z",
+            "postflight_at": "2026-11-17T12:58:23Z",
+            "pre_controls": [
+              {
+                "id": "cdn77-demo",
+                "http": 200
+              },
+              {
+                "id": "cdnvideo-player-host",
+                "http": 200
+              }
+            ],
+            "post_control": {
+              "id": "cdn77-demo",
+              "http": 200
+            }
+          }
+        ],
+        "excluded": [
+          {
+            "run": 44086269135,
+            "artifact": 14329802045,
+            "sha256": "109e9a6bdec24595363a5d67167f0ac006c28decafa20c5793d57adf2ea3350b",
+            "exit_asn": 43330,
+            "observed_at": "2026-11-17T12:48:11Z",
+            "reason": "POSTFLIGHT_INCONCLUSIVE"
+          }
+        ]
+      }
     },
     {
       "prefix": "177.122.160.0/24",
