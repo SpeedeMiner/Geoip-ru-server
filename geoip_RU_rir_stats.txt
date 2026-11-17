@@ -1,4 +1,4 @@
-Generated UTC: 2026-11-17T17:17:47.568589+00:00
+Generated UTC: 2026-11-17T18:29:45.503308+00:00
 Freshness reference UTC date: 2026-11-17
 Unique RU-registered ASNs: 5775
 Unique BY-registered ASNs: 116
