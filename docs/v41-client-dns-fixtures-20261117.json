@@ -1,0 +1,316 @@
+{
+  "scope": "loopback-only synthetic DNS and SOCKS routing",
+  "assets_sha256": {
+    "geoip_RU.dat": "3dbbffd624d8bc4a50dac860135664578bd2e7742bdf66baa399beab3c65d3ec",
+    "geoip_RU.srs": "eee02d9b1c6178bc360778c9ea6f45b0ebe5a63fe7bb1a375cb3f8f791a8ff87",
+    "geoip_PRIVATE.srs": "b9ea6381ea61e286298aea76c10cb85a252ff0d20c49d6de3527be1353c107c4",
+    "xray": "64d46afb80adea1bf97a0d467e83f4a9ac1ebd0995891e84bca3f1a1d1affb1d",
+    "sing-box": "989e848637725005fdac7f1d3fa3d6eeb16992c5e0a68789da96b6b3fde06ea2"
+  },
+  "clients": {
+    "xray": [
+      {
+        "case": "proxy-domain-before-whitelist-and-dns",
+        "target": "overlap.fixture.test",
+        "rule": "proxy",
+        "dns_types": [],
+        "outbound_target": "overlap.fixture.test"
+      },
+      {
+        "case": "whitelist-domain-before-foreign-dns",
+        "target": "white.fixture.test",
+        "rule": "direct",
+        "dns_types": [],
+        "outbound_target": "white.fixture.test"
+      },
+      {
+        "case": "dns-ru-v4",
+        "target": "ru4.fixture.test",
+        "rule": "direct",
+        "dns_types": [
+          1,
+          28
+        ],
+        "outbound_target": "ru4.fixture.test"
+      },
+      {
+        "case": "dns-foreign-v4",
+        "target": "foreign4.fixture.test",
+        "rule": "proxy",
+        "dns_types": [
+          1,
+          28
+        ],
+        "outbound_target": "foreign4.fixture.test"
+      },
+      {
+        "case": "dns-private-v4",
+        "target": "private4.fixture.test",
+        "rule": "direct",
+        "dns_types": [
+          1,
+          28
+        ],
+        "outbound_target": "private4.fixture.test"
+      },
+      {
+        "case": "dns-telegram-v4",
+        "target": "telegram4.fixture.test",
+        "rule": "proxy",
+        "dns_types": [
+          1,
+          28
+        ],
+        "outbound_target": "telegram4.fixture.test"
+      },
+      {
+        "case": "resolved-ru-v6",
+        "target": "ru6.fixture.test",
+        "rule": "direct",
+        "dns_types": [
+          1,
+          28
+        ],
+        "outbound_target": "ru6.fixture.test"
+      },
+      {
+        "case": "resolved-foreign-v6",
+        "target": "foreign6.fixture.test",
+        "rule": "proxy",
+        "dns_types": [
+          1,
+          28
+        ],
+        "outbound_target": "foreign6.fixture.test"
+      },
+      {
+        "case": "resolved-private-v6",
+        "target": "private6.fixture.test",
+        "rule": "direct",
+        "dns_types": [
+          1,
+          28
+        ],
+        "outbound_target": "private6.fixture.test"
+      },
+      {
+        "case": "resolved-telegram-v6",
+        "target": "telegram6.fixture.test",
+        "rule": "proxy",
+        "dns_types": [
+          1,
+          28
+        ],
+        "outbound_target": "telegram6.fixture.test"
+      },
+      {
+        "case": "literal-ru-v4",
+        "target": "77.88.8.8",
+        "rule": "direct",
+        "dns_types": [],
+        "outbound_target": "77.88.8.8"
+      },
+      {
+        "case": "literal-foreign-v4",
+        "target": "8.8.8.8",
+        "rule": "proxy",
+        "dns_types": [],
+        "outbound_target": "8.8.8.8"
+      },
+      {
+        "case": "literal-private-v4",
+        "target": "192.168.50.50",
+        "rule": "direct",
+        "dns_types": [],
+        "outbound_target": "192.168.50.50"
+      },
+      {
+        "case": "literal-telegram-v4",
+        "target": "149.154.167.50",
+        "rule": "proxy",
+        "dns_types": [],
+        "outbound_target": "149.154.167.50"
+      },
+      {
+        "case": "literal-ru-v6",
+        "target": "2a02:6b8::feed:ff",
+        "rule": "direct",
+        "dns_types": [],
+        "outbound_target": "2a02:6b8::feed:ff"
+      },
+      {
+        "case": "literal-foreign-v6",
+        "target": "2001:4860:4860::8888",
+        "rule": "proxy",
+        "dns_types": [],
+        "outbound_target": "2001:4860:4860::8888"
+      },
+      {
+        "case": "literal-private-v6",
+        "target": "fd00::10",
+        "rule": "direct",
+        "dns_types": [],
+        "outbound_target": "fd00::10"
+      },
+      {
+        "case": "literal-telegram-v6",
+        "target": "2001:67c:4e8::10",
+        "rule": "proxy",
+        "dns_types": [],
+        "outbound_target": "2001:67c:4e8::10"
+      }
+    ],
+    "sing-box": [
+      {
+        "case": "proxy-domain-before-whitelist-and-dns",
+        "target": "overlap.fixture.test",
+        "rule": "proxy",
+        "dns_types": [],
+        "outbound_target": "overlap.fixture.test"
+      },
+      {
+        "case": "whitelist-domain-before-foreign-dns",
+        "target": "white.fixture.test",
+        "rule": "direct",
+        "dns_types": [],
+        "outbound_target": "white.fixture.test"
+      },
+      {
+        "case": "dns-ru-v4",
+        "target": "ru4.fixture.test",
+        "rule": "direct",
+        "dns_types": [
+          1,
+          28
+        ],
+        "outbound_target": "77.88.8.8"
+      },
+      {
+        "case": "dns-foreign-v4",
+        "target": "foreign4.fixture.test",
+        "rule": "proxy",
+        "dns_types": [
+          1,
+          28
+        ],
+        "outbound_target": "8.8.8.8"
+      },
+      {
+        "case": "dns-private-v4",
+        "target": "private4.fixture.test",
+        "rule": "direct",
+        "dns_types": [
+          1,
+          28
+        ],
+        "outbound_target": "192.168.50.50"
+      },
+      {
+        "case": "dns-telegram-v4",
+        "target": "telegram4.fixture.test",
+        "rule": "proxy",
+        "dns_types": [
+          1,
+          28
+        ],
+        "outbound_target": "149.154.167.50"
+      },
+      {
+        "case": "resolved-ru-v6",
+        "target": "ru6.fixture.test",
+        "rule": "direct",
+        "dns_types": [
+          1,
+          28
+        ],
+        "outbound_target": "2a02:6b8::feed:ff"
+      },
+      {
+        "case": "resolved-foreign-v6",
+        "target": "foreign6.fixture.test",
+        "rule": "proxy",
+        "dns_types": [
+          1,
+          28
+        ],
+        "outbound_target": "2001:4860:4860::8888"
+      },
+      {
+        "case": "resolved-private-v6",
+        "target": "private6.fixture.test",
+        "rule": "direct",
+        "dns_types": [
+          1,
+          28
+        ],
+        "outbound_target": "fd00::10"
+      },
+      {
+        "case": "resolved-telegram-v6",
+        "target": "telegram6.fixture.test",
+        "rule": "proxy",
+        "dns_types": [
+          1,
+          28
+        ],
+        "outbound_target": "2001:67c:4e8::10"
+      },
+      {
+        "case": "literal-ru-v4",
+        "target": "77.88.8.8",
+        "rule": "direct",
+        "dns_types": [],
+        "outbound_target": "77.88.8.8"
+      },
+      {
+        "case": "literal-foreign-v4",
+        "target": "8.8.8.8",
+        "rule": "proxy",
+        "dns_types": [],
+        "outbound_target": "8.8.8.8"
+      },
+      {
+        "case": "literal-private-v4",
+        "target": "192.168.50.50",
+        "rule": "direct",
+        "dns_types": [],
+        "outbound_target": "192.168.50.50"
+      },
+      {
+        "case": "literal-telegram-v4",
+        "target": "149.154.167.50",
+        "rule": "proxy",
+        "dns_types": [],
+        "outbound_target": "149.154.167.50"
+      },
+      {
+        "case": "literal-ru-v6",
+        "target": "2a02:6b8::feed:ff",
+        "rule": "direct",
+        "dns_types": [],
+        "outbound_target": "2a02:6b8::feed:ff"
+      },
+      {
+        "case": "literal-foreign-v6",
+        "target": "2001:4860:4860::8888",
+        "rule": "proxy",
+        "dns_types": [],
+        "outbound_target": "2001:4860:4860::8888"
+      },
+      {
+        "case": "literal-private-v6",
+        "target": "fd00::10",
+        "rule": "direct",
+        "dns_types": [],
+        "outbound_target": "fd00::10"
+      },
+      {
+        "case": "literal-telegram-v6",
+        "target": "2001:67c:4e8::10",
+        "rule": "proxy",
+        "dns_types": [],
+        "outbound_target": "2001:67c:4e8::10"
+      }
+    ]
+  }
+}
