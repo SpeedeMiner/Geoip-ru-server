@@ -30,5 +30,31 @@
     "177.122.160.0/24": 256,
     "177.166.21.0/24": 256
   },
-  "recorded_registry_sha256": "93b8eef7b6bb560ce06294a5d860ee41448232269b1c3163e7d198e85e63ea1a"
+  "recorded_registry_sha256": "93b8eef7b6bb560ce06294a5d860ee41448232269b1c3163e7d198e85e63ea1a",
+  "pinned_overlay_replay": {
+    "identical_dat_sha256": "656bc839e046c6f473dd8698db5723e3666a7648fc5b6e6ce935efa7396cbc44",
+    "overlay_validator": "passed",
+    "prepublication_policy_gate": "passed"
+  },
+  "negative_fixture": {
+    "synthetic_hard_ipv4": "156.224.80.7/32",
+    "expected_affected_retention": "156.224.80.0/24",
+    "halt_before_dat": true,
+    "live_input_mutation": false
+  },
+  "pinned_comparison_to_pr56": {
+    "only_ipv4_difference": "31.204.32.0/20",
+    "addresses_in_pr56_not_pr57": 4096,
+    "ipv6_and_private_equal": true
+  },
+  "checked_identical_baseline_and_candidate_inputs": [
+    "geoip_RU_v37_base.dat",
+    "v41-block-inputs.tar.gz",
+    "v41-upstream-inputs.tar.gz",
+    "v41-registry-inputs.tar.gz",
+    "as-ip-blocks.tar.gz",
+    "geoip_RU_input_provenance.tsv",
+    "geoip_RU_BY_KZ_asn_bgp_prefixes.txt",
+    "geoip_RU_v41_blocked_provenance.tsv"
+  ]
 }
