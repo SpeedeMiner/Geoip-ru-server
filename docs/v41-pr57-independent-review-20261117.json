@@ -1,0 +1,537 @@
+{
+  "pr": 57,
+  "pr_head": "a099e1536dd3bdd9492ebd359aad1dc7f4c3ec9c",
+  "base_at_ci": "e6a0c87e7e9755522e258b94718a255b753d056d",
+  "source_commit_in_candidate": "c4d3e220ac2cb2c5dd6114e4d5d5ef3537309e4e",
+  "latest_main_reviewed": "bb669b8e53adfd998c68544a5e076e3c2ac9556d",
+  "release_checked": "75fdbb1815cf7501120f9aa9eb4f4551eb64b8b3",
+  "cdn_checked": "2edb37e467470c97e1c217be18a753148f35854a",
+  "published_git_blob_sha": {
+    "geoip_RU.dat": "8fa045a44a875b2af8e66c857ad0deb303d957b3",
+    "geoip_RU.srs": "f650486ee469d869685e93bac260384404d79a29",
+    "geoip_PRIVATE.srs": "3e84cd6fbacccda683d81fc7653c7132b49e4c18"
+  },
+  "run_first": {
+    "id": 44095704752,
+    "artifact": 14332714415,
+    "sha256": "5406406d345c758ba52da2a8efefd4b58ee510a2af964852f5d42f588e648282",
+    "evidence": {
+      "method": "passive public index and public BGP collector; no connection to target addresses",
+      "archive_window_utc_from": "2025-11-17",
+      "archive_control": {
+        "status": "HTTP_OK",
+        "http": 200,
+        "has_control_result": true
+      },
+      "bgp_requested_utc": "2026-11-17T13:30:00Z",
+      "rows": [
+        {
+          "prefix": "156.224.80.0/24",
+          "public_archive": {
+            "status": "HTTP_OK",
+            "http": 200,
+            "archived_result_total": 0,
+            "received": 0,
+            "possibly_truncated": false,
+            "excluded": {},
+            "leads": []
+          },
+          "ripe_bgp_state": {
+            "status": "TIME_MISMATCH",
+            "observed_at": "2026-11-17T09:59:53+00:00"
+          }
+        },
+        {
+          "prefix": "156.241.186.0/24",
+          "public_archive": {
+            "status": "HTTP_OK",
+            "http": 200,
+            "archived_result_total": 0,
+            "received": 0,
+            "possibly_truncated": false,
+            "excluded": {},
+            "leads": []
+          },
+          "ripe_bgp_state": {
+            "status": "TIME_MISMATCH",
+            "observed_at": "2026-11-17T09:59:53+00:00"
+          }
+        },
+        {
+          "prefix": "177.29.246.0/24",
+          "public_archive": {
+            "status": "HTTP_OK",
+            "http": 200,
+            "archived_result_total": 0,
+            "received": 0,
+            "possibly_truncated": false,
+            "excluded": {},
+            "leads": []
+          },
+          "ripe_bgp_state": {
+            "status": "TIME_MISMATCH",
+            "observed_at": "2026-11-17T09:59:53+00:00"
+          }
+        },
+        {
+          "prefix": "177.122.107.0/24",
+          "public_archive": {
+            "status": "HTTP_OK",
+            "http": 200,
+            "archived_result_total": 0,
+            "received": 0,
+            "possibly_truncated": false,
+            "excluded": {},
+            "leads": []
+          },
+          "ripe_bgp_state": {
+            "status": "TIME_MISMATCH",
+            "observed_at": "2026-11-17T09:59:53+00:00"
+          }
+        },
+        {
+          "prefix": "177.122.160.0/24",
+          "public_archive": {
+            "status": "HTTP_OK",
+            "http": 200,
+            "archived_result_total": 0,
+            "received": 0,
+            "possibly_truncated": false,
+            "excluded": {},
+            "leads": []
+          },
+          "ripe_bgp_state": {
+            "status": "TIME_MISMATCH",
+            "observed_at": "2026-11-17T09:59:53+00:00"
+          }
+        },
+        {
+          "prefix": "177.166.21.0/24",
+          "public_archive": {
+            "status": "HTTP_OK",
+            "http": 200,
+            "archived_result_total": 0,
+            "received": 0,
+            "possibly_truncated": false,
+            "excluded": {},
+            "leads": []
+          },
+          "ripe_bgp_state": {
+            "status": "TIME_MISMATCH",
+            "observed_at": "2026-11-17T09:59:53+00:00"
+          }
+        }
+      ]
+    }
+  },
+  "run_positive_cidr_and_cdn": {
+    "id": 44096379110,
+    "artifact": 14333544290,
+    "sha256": "028c8583a8a69878c582e9efb57ba8144d20b78af965ebe6c7fd0d33d746f634",
+    "archive": {
+      "method": "passive archive queries only; no target connections or submissions",
+      "archive_window_utc_from": "2025-11-17",
+      "archive_control": {
+        "initial": {
+          "status": "HTTP_OK",
+          "http": 200
+        },
+        "cidr_control_ok": true,
+        "controls": [
+          {
+            "field": "page.ip",
+            "status": "HTTP_OK",
+            "http": 200,
+            "exact_archived_pair_found": true
+          },
+          {
+            "field": "ip",
+            "status": "HTTP_OK",
+            "http": 200,
+            "exact_archived_pair_found": true
+          }
+        ],
+        "control_prefix": "104.20.23.0/24"
+      },
+      "bgp_requested_utc": "2026-11-17T10:00:00Z",
+      "rows": [
+        {
+          "prefix": "156.224.80.0/24",
+          "primary_page": {
+            "status": "HTTP_OK",
+            "http": 200,
+            "archived_result_total": 0,
+            "received": 0,
+            "possibly_truncated": false,
+            "excluded": {},
+            "leads": []
+          },
+          "any_contact": {
+            "status": "HTTP_OK",
+            "http": 200,
+            "index_total": 0,
+            "received": 0,
+            "possibly_truncated": false,
+            "verified_primary_only": []
+          },
+          "ripe_bgp_state": {
+            "status": "EXACT_OBSERVED",
+            "observed_at": "2026-11-17T09:59:53+00:00",
+            "exact_paths": 340,
+            "paths_with_origin": 340,
+            "origins": {
+              "401650": 340
+            }
+          }
+        },
+        {
+          "prefix": "156.241.186.0/24",
+          "primary_page": {
+            "status": "HTTP_OK",
+            "http": 200,
+            "archived_result_total": 0,
+            "received": 0,
+            "possibly_truncated": false,
+            "excluded": {},
+            "leads": []
+          },
+          "any_contact": {
+            "status": "HTTP_OK",
+            "http": 200,
+            "index_total": 0,
+            "received": 0,
+            "possibly_truncated": false,
+            "verified_primary_only": []
+          },
+          "ripe_bgp_state": {
+            "status": "EXACT_OBSERVED",
+            "observed_at": "2026-11-17T09:59:53+00:00",
+            "exact_paths": 340,
+            "paths_with_origin": 340,
+            "origins": {
+              "401650": 340
+            }
+          }
+        },
+        {
+          "prefix": "177.29.246.0/24",
+          "primary_page": {
+            "status": "HTTP_OK",
+            "http": 200,
+            "archived_result_total": 0,
+            "received": 0,
+            "possibly_truncated": false,
+            "excluded": {},
+            "leads": []
+          },
+          "any_contact": {
+            "status": "HTTP_OK",
+            "http": 200,
+            "index_total": 0,
+            "received": 0,
+            "possibly_truncated": false,
+            "verified_primary_only": []
+          },
+          "ripe_bgp_state": {
+            "status": "EXACT_OBSERVED",
+            "observed_at": "2026-11-17T09:59:53+00:00",
+            "exact_paths": 322,
+            "paths_with_origin": 322,
+            "origins": {
+              "152606": 322
+            }
+          }
+        },
+        {
+          "prefix": "177.122.107.0/24",
+          "primary_page": {
+            "status": "HTTP_OK",
+            "http": 200,
+            "archived_result_total": 0,
+            "received": 0,
+            "possibly_truncated": false,
+            "excluded": {},
+            "leads": []
+          },
+          "any_contact": {
+            "status": "HTTP_OK",
+            "http": 200,
+            "index_total": 0,
+            "received": 0,
+            "possibly_truncated": false,
+            "verified_primary_only": []
+          },
+          "ripe_bgp_state": {
+            "status": "EXACT_OBSERVED",
+            "observed_at": "2026-11-17T09:59:53+00:00",
+            "exact_paths": 322,
+            "paths_with_origin": 322,
+            "origins": {
+              "152606": 322
+            }
+          }
+        },
+        {
+          "prefix": "177.122.160.0/24",
+          "primary_page": {
+            "status": "HTTP_OK",
+            "http": 200,
+            "archived_result_total": 0,
+            "received": 0,
+            "possibly_truncated": false,
+            "excluded": {},
+            "leads": []
+          },
+          "any_contact": {
+            "status": "HTTP_OK",
+            "http": 200,
+            "index_total": 0,
+            "received": 0,
+            "possibly_truncated": false,
+            "verified_primary_only": []
+          },
+          "ripe_bgp_state": {
+            "status": "EXACT_OBSERVED",
+            "observed_at": "2026-11-17T09:59:53+00:00",
+            "exact_paths": 322,
+            "paths_with_origin": 322,
+            "origins": {
+              "152606": 322
+            }
+          }
+        },
+        {
+          "prefix": "177.166.21.0/24",
+          "primary_page": {
+            "status": "HTTP_OK",
+            "http": 200,
+            "archived_result_total": 0,
+            "received": 0,
+            "possibly_truncated": false,
+            "excluded": {},
+            "leads": []
+          },
+          "any_contact": {
+            "status": "HTTP_OK",
+            "http": 200,
+            "index_total": 0,
+            "received": 0,
+            "possibly_truncated": false,
+            "verified_primary_only": []
+          },
+          "ripe_bgp_state": {
+            "status": "EXACT_OBSERVED",
+            "observed_at": "2026-11-17T09:59:53+00:00",
+            "exact_paths": 322,
+            "paths_with_origin": 322,
+            "origins": {
+              "152606": 322
+            }
+          }
+        }
+      ]
+    },
+    "cdn": {
+      "cdn_git_ref": "2edb37e467470c97e1c217be18a753148f35854a",
+      "catalog": {
+        "status": "HTTP_OK",
+        "http": 200,
+        "files": [
+          "geoip_PRIVATE.srs",
+          "geoip_RU.dat",
+          "geoip_RU.srs"
+        ],
+        "directories": 0,
+        "matches": true
+      },
+      "assets": [
+        {
+          "name": "geoip_RU.dat",
+          "expected": {
+            "bytes": 512441,
+            "sha256": "d113faaf4f1a61b64c72b00b8810c014381eb549ba82cf71d973e8a02f0aa7a3"
+          },
+          "observations": {
+            "jsdelivr_rolling": {
+              "status": "HTTP_OK",
+              "http": 200,
+              "sha256": "d113faaf4f1a61b64c72b00b8810c014381eb549ba82cf71d973e8a02f0aa7a3",
+              "bytes": 512441,
+              "matches": true
+            },
+            "jsdelivr_pinned": {
+              "status": "HTTP_OK",
+              "http": 200,
+              "sha256": "d113faaf4f1a61b64c72b00b8810c014381eb549ba82cf71d973e8a02f0aa7a3",
+              "bytes": 512441,
+              "matches": true
+            },
+            "github_raw_pinned": {
+              "status": "HTTP_OK",
+              "http": 200,
+              "sha256": "d113faaf4f1a61b64c72b00b8810c014381eb549ba82cf71d973e8a02f0aa7a3",
+              "bytes": 512441,
+              "matches": true
+            }
+          }
+        },
+        {
+          "name": "geoip_RU.srs",
+          "expected": {
+            "bytes": 128206,
+            "sha256": "9bd44a8e0c59f66124217076f2413579abec2b05277b71a54c64c4db2399d27d"
+          },
+          "observations": {
+            "jsdelivr_rolling": {
+              "status": "HTTP_OK",
+              "http": 200,
+              "sha256": "9bd44a8e0c59f66124217076f2413579abec2b05277b71a54c64c4db2399d27d",
+              "bytes": 128206,
+              "matches": true
+            },
+            "jsdelivr_pinned": {
+              "status": "HTTP_OK",
+              "http": 200,
+              "sha256": "9bd44a8e0c59f66124217076f2413579abec2b05277b71a54c64c4db2399d27d",
+              "bytes": 128206,
+              "matches": true
+            },
+            "github_raw_pinned": {
+              "status": "HTTP_OK",
+              "http": 200,
+              "sha256": "9bd44a8e0c59f66124217076f2413579abec2b05277b71a54c64c4db2399d27d",
+              "bytes": 128206,
+              "matches": true
+            }
+          }
+        },
+        {
+          "name": "geoip_PRIVATE.srs",
+          "expected": {
+            "bytes": 228,
+            "sha256": "b9ea6381ea61e286298aea76c10cb85a252ff0d20c49d6de3527be1353c107c4"
+          },
+          "observations": {
+            "jsdelivr_rolling": {
+              "status": "HTTP_OK",
+              "http": 200,
+              "sha256": "b9ea6381ea61e286298aea76c10cb85a252ff0d20c49d6de3527be1353c107c4",
+              "bytes": 228,
+              "matches": true
+            },
+            "jsdelivr_pinned": {
+              "status": "HTTP_OK",
+              "http": 200,
+              "sha256": "b9ea6381ea61e286298aea76c10cb85a252ff0d20c49d6de3527be1353c107c4",
+              "bytes": 228,
+              "matches": true
+            },
+            "github_raw_pinned": {
+              "status": "HTTP_OK",
+              "http": 200,
+              "sha256": "b9ea6381ea61e286298aea76c10cb85a252ff0d20c49d6de3527be1353c107c4",
+              "bytes": 228,
+              "matches": true
+            }
+          }
+        }
+      ]
+    }
+  },
+  "supplemental_faults": [
+    {
+      "fixture": "resolver-only",
+      "rejected": true,
+      "affected": "156.224.80.0/24",
+      "before_dat_write": true,
+      "expected_message": true
+    },
+    {
+      "fixture": "private",
+      "rejected": true,
+      "affected": "177.166.21.0/24",
+      "before_dat_write": true,
+      "expected_message": true
+    },
+    {
+      "fixture": "admission",
+      "rejected": true,
+      "affected": "156.241.186.0/24",
+      "before_dat_write": true,
+      "expected_message": true
+    }
+  ],
+  "validator_input_controls": [
+    {
+      "validator": "validate_v41_overlay.py",
+      "fixture": "omitted",
+      "rejected": true,
+      "expected_message": true,
+      "original_quality_report_unchanged": true
+    },
+    {
+      "validator": "validate_v41_overlay.py",
+      "fixture": "tampered",
+      "rejected": true,
+      "expected_message": true,
+      "original_quality_report_unchanged": true
+    },
+    {
+      "validator": "validate_v41_release_gate.py",
+      "fixture": "omitted",
+      "rejected": true,
+      "expected_message": true,
+      "original_quality_report_unchanged": true
+    },
+    {
+      "validator": "validate_v41_release_gate.py",
+      "fixture": "tampered",
+      "rejected": true,
+      "expected_message": true,
+      "original_quality_report_unchanged": true
+    }
+  ],
+  "preflight": {
+    "run_type": "read-only local replay using sealed archive transport fixtures",
+    "sha_override": false,
+    "candidate_files_unchanged": true,
+    "limits": {
+      "candidate_sha256": "656bc839e046c6f473dd8698db5723e3666a7648fc5b6e6ce935efa7396cbc44",
+      "delta": {
+        "4": {
+          "added": 1536,
+          "after": 53414038,
+          "before": 53412502,
+          "limit": 267062,
+          "removed": 0
+        },
+        "6": {
+          "added": 0,
+          "after": 1.2065894052221245e+33,
+          "before": 1.2065894052221245e+33,
+          "limit": 1.2065894052221245e+31,
+          "removed": 0
+        }
+      },
+      "needs_review": false,
+      "private_changed": false
+    },
+    "scoped_pr53": {
+      "candidate_sha256": "656bc839e046c6f473dd8698db5723e3666a7648fc5b6e6ce935efa7396cbc44",
+      "reference_sha256": "d113faaf4f1a61b64c72b00b8810c014381eb549ba82cf71d973e8a02f0aa7a3",
+      "review_table_sha256": "aeb438051a38f079a8e98c12fe51c8c328767d6671cb887ab8f3a0ea15a75fff",
+      "status": "PASS",
+      "watched_addresses": {
+        "added": 0,
+        "removed": 0
+      },
+      "watched_changes": []
+    },
+    "baseline_control_also_passes": true,
+    "optional_download_identity_check": {
+      "exact_pr57_bound": 6,
+      "older_release_rejected_for_identity": true,
+      "older_release_rejected_for_no_retention": true
+    }
+  }
+}

@@ -22,18 +22,38 @@ on:
       - ".github/workflows/geoip-v41-cdn-repair.yml"
       - ".github/scripts/build_rir_rukzby_prefixes.py"
       - ".github/scripts/build_v41_overlay.py"
+      - ".github/scripts/v41_direct_admission.py"
+      - ".github/data/v41-reviewed-reachable-cdn.tsv"
       - ".github/scripts/build_v41_srs.py"
       - ".github/scripts/extract_ru_asn_prefixes_v41.py"
+      - ".github/scripts/check_v41_bgp_observations.py"
+      - ".github/scripts/audit_v41_prefix_candidates.py"
+      - ".github/data/v41-coverage-candidates.tsv"
+      - ".github/scripts/v41_static_overrides.py"
+      - ".github/scripts/v41_reviewed_unreachable.py"
+      - ".github/data/v41-reviewed-unreachable.tsv"
+      - ".github/data/v41-service-inventory.tsv"
+      - ".github/scripts/validate_v41_service_inventory.py"
+      - ".github/scripts/validate_v41_services_input.py"
+      - ".github/scripts/validate_v41_routing_matrix.py"
+      - ".github/data/v41-routing-fixtures.tsv"
+      - ".github/data/v41-static-overrides.tsv"
       - ".github/scripts/geoip-v37-builder/**"
       - ".github/scripts/download_v41_build_inputs.sh"
+      - ".github/scripts/validate_v41_download.py"
       - ".github/scripts/download_v41_upstream_sources.py"
       - ".github/scripts/v41_diagnostic_sources.py"
       - ".github/scripts/*v41*.sh"
       - ".github/scripts/build_v41_rir_legacy_inventory.py"
       - ".github/scripts/build_v41_iana_special_prefixes.py"
       - ".github/scripts/validate_v41_base_artifacts.py"
+      - ".github/scripts/v41_source_counts.py"
       - ".github/scripts/validate_v41_block_feed_counts.py"
       - ".github/scripts/validate_v41_publication_bounds.py"
+      - ".github/scripts/validate_v41_priority_loss.py"
+      - ".github/scripts/validate_v41_source_health.py"
+      - ".github/data/v41-priority-asns.txt"
+      - ".github/scripts/report_v41_pr_delta.py"
       - ".github/scripts/verify_v41_ipverse_archive.py"
       - ".github/scripts/bundle_v41_registry_inputs.py"
       - ".github/scripts/v41_release_manifest.py"
@@ -44,6 +64,7 @@ on:
       - ".github/scripts/prepare_blocked_sources_v41.py"
       - ".github/data/v41-reviewed-rkn-ip-records.tsv"
       - ".github/data/v41-reviewed-operator-prefixes.tsv"
+      - ".github/data/v41-temporary-release-retention.tsv"
       - ".github/data/v41-regional-admission-exclusions.tsv"
       - ".github/data/v41-w1zardz-gaming-exclusions.txt"
       - ".github/data/v41-reviewed-ipv6-admission-exclusions.tsv"
@@ -188,6 +209,12 @@ jobs:
           go-version: "1.26.10"
           cache-dependency-path: .github/scripts/geoip-v37-builder/go.sum
 
+      - name: Validate critical-service evidence inventory
+        shell: bash
+        run: |
+          python3 .github/scripts/validate_v41_service_inventory.py \
+            --inventory .github/data/v41-service-inventory.tsv --summary "$GITHUB_STEP_SUMMARY"
+
       - name: Download RU/BY/KZ GeoIP sources, blocked-IP snapshot, RIR, IANA and BGP data
         shell: bash
         env:
@@ -329,6 +356,7 @@ jobs:
             --regional-admission-exclusions .github/data/v41-regional-admission-exclusions.tsv \
             --reviewed-ipv6-admission-exclusions .github/data/v41-reviewed-ipv6-admission-exclusions.tsv \
             --reviewed-operator-prefixes .github/data/v41-reviewed-operator-prefixes.tsv \
+            --temporary-retention .github/data/v41-temporary-release-retention.tsv \
             --ipsum "$BLOCKED_IPSUM_INPUT" \
             --output "$V41_OUTPUT_FILE" \
             --categories "$CATEGORY_FILE" \
@@ -394,6 +422,7 @@ jobs:
             --regional-admission-exclusions .github/data/v41-regional-admission-exclusions.tsv \
             --reviewed-ipv6-admission-exclusions .github/data/v41-reviewed-ipv6-admission-exclusions.tsv \
             --reviewed-operator-prefixes .github/data/v41-reviewed-operator-prefixes.tsv \
+            --temporary-retention .github/data/v41-temporary-release-retention.tsv \
             --effective-blocked "$V41_BLOCKED_FILE" \
             --ipsum "$BLOCKED_IPSUM_INPUT" \
             --manifest "$V41_MANIFEST" \
@@ -437,6 +466,7 @@ jobs:
           sha256sum -c "$V41_BLOCKED_SHA"
           python3 .github/scripts/validate_v41_release_gate.py \
             --geoip "$V41_OUTPUT_FILE" \
+            --hydra "$HYDRA_INPUT" \
             --manifest "$V41_MANIFEST" \
             --quality "$V41_QUALITY_REPORT" \
             --hard "$BLOCKED_IP_EXACT_INPUT" \
@@ -445,9 +475,11 @@ jobs:
             --regional-admission-exclusions .github/data/v41-regional-admission-exclusions.tsv \
             --reviewed-ipv6-admission-exclusions .github/data/v41-reviewed-ipv6-admission-exclusions.tsv \
             --reviewed-operator-prefixes .github/data/v41-reviewed-operator-prefixes.tsv \
+            --temporary-retention .github/data/v41-temporary-release-retention.tsv \
             --effective "$V41_BLOCKED_FILE" \
             --core "$CORE_COMPANY_PREFIXES" \
             --shared "$SHARED_INFRASTRUCTURE_PREFIXES" \
+            --regional-origin-prefixes "$REGIONAL_ORIGIN_PREFIXES" \
             --rir "$RIR_RUKZBY_PREFIX_INPUT" \
             --kyoresuas-v4 "$KY_STANDARD_V4_INPUT" \
             --kyoresuas-v6 "$KY_STANDARD_V6_INPUT" \
@@ -477,6 +509,274 @@ jobs:
         run: |
           python3 .github/scripts/validate_v41_publication_bounds.py \
             --candidate "$V41_OUTPUT_FILE" --reference "$V41_OUTPUT_FILE"
+
+      - name: Audit reviewed prefix coverage (advisory)
+        if: github.event_name == 'pull_request'
+        continue-on-error: true
+        shell: bash
+        run: |
+          python3 .github/scripts/audit_v41_prefix_candidates.py \
+            --dat "$V41_OUTPUT_FILE" --candidates .github/data/v41-coverage-candidates.tsv \
+            --output "$RUNNER_TEMP/v41-prefix-candidates.json" --summary "$GITHUB_STEP_SUMMARY"
+
+      - name: Retain reviewed prefix coverage report
+        if: github.event_name == 'pull_request'
+        continue-on-error: true
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: v41-prefix-candidates-advisory
+          path: ${{ runner.temp }}/v41-prefix-candidates.json
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Compare pull request candidate with published release
+        if: github.event_name == 'pull_request'
+        shell: bash
+        run: |
+          set -euo pipefail
+          ref="$(git ls-remote --exit-code "https://github.com/${GITHUB_REPOSITORY}.git" refs/heads/release | cut -f1)"
+          [[ "$ref" =~ ^[0-9a-f]{40}$ ]]
+          base="https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/${ref}"
+          for name in geoip_RU.dat geoip_RU.dat.sha256sum geoip_RU_v41_source_metrics.tsv geoip_RU_input_provenance.tsv "$RU_PREFIX_INPUT" "$RIR_RUKZBY_PREFIX_INPUT"; do
+            curl --fail --location --silent --show-error --proto '=https' --proto-redir '=https' \
+              --retry 3 --connect-timeout 15 --max-time 90 --max-filesize 67108864 \
+              "$base/$name" -o "$RUNNER_TEMP/previous-$name"
+          done
+          python3 .github/scripts/report_v41_pr_delta.py \
+            --candidate "$V41_OUTPUT_FILE" --reference "$RUNNER_TEMP/previous-geoip_RU.dat" \
+            --reference-checksum "$RUNNER_TEMP/previous-geoip_RU.dat.sha256sum" \
+            --candidate-manifest "$V41_MANIFEST" \
+            --reviewed-ipv6 .github/data/v41-reviewed-ipv6-admission-exclusions.tsv \
+            --exact-output "$RUNNER_TEMP/v41-pr-direct-delta.json" \
+            --current-metrics "$V41_METRICS" --previous-metrics "$RUNNER_TEMP/previous-geoip_RU_v41_source_metrics.tsv" \
+            --revision "$ref" --summary "$GITHUB_STEP_SUMMARY"
+          # Keep a bounded exact delta in the PR log as well as the artifact.
+          python3 - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          data = json.loads((Path(os.environ["RUNNER_TEMP"]) / "v41-pr-direct-delta.json").read_text())
+          print(f"Exact DIRECT delta for candidate {data['candidate_dat_sha256']}")
+          for family in ("ipv4", "ipv6"):
+              for change in ("added", "removed"):
+                  scope = data["direct"][family][change]
+                  prefixes = scope["cidrs"]
+                  print(f"{family} {change}: {scope['addresses']} addresses, {len(prefixes)} CIDRs")
+                  if len(prefixes) <= 200:
+                      for prefix in prefixes:
+                          print(f"  {family} {change}: {prefix}")
+                  else:
+                      print("  CIDR list omitted from log; use the exact-delta artifact")
+          PY
+          echo '### Priority ASN and country loss (input inventories)' >> "$GITHUB_STEP_SUMMARY"
+          python3 .github/scripts/validate_v41_priority_loss.py --report-only \
+            --candidate-dat "$V41_OUTPUT_FILE" --manifest "$V41_MANIFEST" --company-prefixes "$COMPANY_ASN_PREFIXES" \
+            --priority-asns .github/data/v41-priority-asns.txt \
+            --previous-origins "$RUNNER_TEMP/previous-${RU_PREFIX_INPUT}" --candidate-origins "$RU_PREFIX_INPUT" \
+            --previous-rir "$RUNNER_TEMP/previous-${RIR_RUKZBY_PREFIX_INPUT}" --candidate-rir "$RIR_RUKZBY_PREFIX_INPUT" \
+            | tee -a "$GITHUB_STEP_SUMMARY"
+          echo '### Required source size health' >> "$GITHUB_STEP_SUMMARY"
+          python3 .github/scripts/validate_v41_source_health.py --report-only \
+            --previous "$RUNNER_TEMP/previous-geoip_RU_input_provenance.tsv" --candidate "$INPUT_PROVENANCE" \
+            --manifest "$V41_MANIFEST" --dat "$V41_OUTPUT_FILE" | tee -a "$GITHUB_STEP_SUMMARY"
+
+      - name: Trace removed IPv4 against selected source snapshots
+        if: github.event_name == 'pull_request'
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import hashlib
+          import ipaddress
+          import json
+          import os
+          from pathlib import Path
+
+          temp = Path(os.environ["RUNNER_TEMP"])
+          delta = json.loads((temp / "v41-pr-direct-delta.json").read_text())
+          removed = delta["direct"]["ipv4"]["removed"]["cidrs"]
+          print("Source-overlap diagnostics for candidate", delta["candidate_dat_sha256"])
+          if len(removed) > 50:
+              print("More than 50 removed CIDRs; use the artifacts for an offline review.")
+              raise SystemExit(0)
+          targets = [ipaddress.ip_network(value) for value in removed]
+          sources = [
+              ("release-selected-origins", temp / ("previous-" + os.environ["RU_PREFIX_INPUT"]), 0),
+              ("candidate-selected-origins", Path(os.environ["RU_PREFIX_INPUT"]), 0),
+              ("release-regional-rir", temp / ("previous-" + os.environ["RIR_RUKZBY_PREFIX_INPUT"]), 1),
+              ("candidate-regional-rir", Path(os.environ["RIR_RUKZBY_PREFIX_INPUT"]), 1),
+              ("candidate-effective-block", Path(os.environ["V41_BLOCKED_FILE"]), 0),
+          ]
+          for label, path, column in sources:
+              raw = path.read_bytes()
+              print(f"Source {label}: sha256={hashlib.sha256(raw).hexdigest()}")
+              matches = {str(target): [] for target in targets}
+              for line in raw.decode("utf-8").splitlines():
+                  if not line or line.startswith("#"):
+                      continue
+                  fields = line.split("\t") if column else line.split()
+                  if len(fields) <= column:
+                      continue
+                  try:
+                      net = ipaddress.ip_network(fields[column], strict=False)
+                  except ValueError:
+                      continue
+                  if net.version == 4:
+                      for target in targets:
+                          if net.overlaps(target):
+                              matches[str(target)].append(line)
+              for target, rows in matches.items():
+                  print(f"  {label} {target}: {len(rows)} overlapping rows")
+                  for row in rows[:20]:
+                      print("    " + row)
+                  if len(rows) > 20:
+                      print("    Additional rows omitted; see retained source snapshot.")
+          PY
+
+      - name: Check changed prefixes in trusted source categories
+        if: github.event_name == 'pull_request'
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import hashlib
+          import ipaddress
+          import json
+          import os
+          from pathlib import Path
+          import sys
+
+          sys.path.insert(0, ".github/scripts")
+          from build_v41_overlay import parse_geoip_dat
+
+          delta = json.loads((Path(os.environ["RUNNER_TEMP"]) / "v41-pr-direct-delta.json").read_text())
+          changes = [(change, cidr) for family in ("ipv4", "ipv6") for change in ("added", "removed")
+                     for cidr in delta["direct"][family][change]["cidrs"]]
+          print("Trusted-source checks for candidate", delta["candidate_dat_sha256"])
+          if len(changes) > 50:
+              print("More than 50 changed CIDRs; use the source snapshots for offline review.")
+              raise SystemExit(0)
+          targets = [(change, ipaddress.ip_network(value)) for change, value in changes]
+          for label, env in (("hydra", "HYDRA_INPUT"), ("v2fly", "V2FLY_INPUT"),
+                             ("loyalsoldier-ru", "LOYALSOLDIER_RU_INPUT"),
+                             ("loyalsoldier-by", "LOYALSOLDIER_BY_INPUT")):
+              path = Path(os.environ[env])
+              print(f"Trusted source {label}: sha256={hashlib.sha256(path.read_bytes()).hexdigest()}")
+              matches = {(change, str(target)): [] for change, target in targets}
+              try:
+                  categories = parse_geoip_dat(path)
+              except (OSError, ValueError, TypeError) as error:
+                  print(f"  {label}: unavailable for category audit: {type(error).__name__}: {error}")
+                  continue
+              for category, prefixes in categories.items():
+                  for net in prefixes:
+                      for change, target in targets:
+                          if net.version == target.version and net.overlaps(target):
+                              matches[(change, str(target))].append((category, str(net)))
+              for (change, target), rows in matches.items():
+                  rows.sort()
+                  print(f"  {label} {change} {target}: {len(rows)} overlapping entries")
+                  for category, prefix in rows[:20]:
+                      print(f"    {category} {prefix}")
+                  if len(rows) > 20:
+                      print("    Additional entries omitted; see retained source snapshot.")
+          PY
+
+      - name: Trace added DIRECT prefixes to candidate inputs
+        if: github.event_name == 'pull_request'
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import hashlib
+          import ipaddress
+          import json
+          import os
+          from pathlib import Path
+          import sys
+          sys.path.insert(0, ".github/scripts")
+          from build_v41_overlay import parse_geoip_dat
+
+          delta = json.loads((Path(os.environ["RUNNER_TEMP"]) / "v41-pr-direct-delta.json").read_text())
+          targets = [ipaddress.ip_network(cidr) for family in ("ipv4", "ipv6")
+                     for cidr in delta["direct"][family]["added"]["cidrs"]]
+          print("Added-prefix overlapping input diagnostics for candidate", delta["candidate_dat_sha256"])
+          if len(targets) > 50:
+              print("More than 50 added CIDRs; inspect retained inputs offline.")
+              raise SystemExit(0)
+          def show(label, digest, matches):
+              print(f"Added source {label}: sha256={digest}")
+              for target in targets:
+                  rows = sorted(matches[str(target)])
+                  print(f"  {label} {target}: {len(rows)} overlaps")
+                  for row in rows[:12]:
+                      print("    " + row)
+                  if len(rows) > 12:
+                      print("    Additional rows omitted; consult retained inputs.")
+          sources = [
+              ("selected-origins", Path(os.environ["RU_PREFIX_INPUT"]), 0),
+              ("regional-rir", Path(os.environ["RIR_RUKZBY_PREFIX_INPUT"]), 1),
+              ("static-overrides", Path(".github/data/v41-static-overrides.tsv"), 0),
+          ]
+          for label, path, column in sources:
+              raw = path.read_bytes()
+              matches = {str(target): [] for target in targets}
+              for line in raw.decode("utf-8").splitlines():
+                  if not line or line.startswith("#"):
+                      continue
+                  fields = line.split("\t") if label != "selected-origins" else line.split()
+                  if len(fields) <= column:
+                      continue
+                  try:
+                      net = ipaddress.ip_network(fields[column], strict=False)
+                  except ValueError:
+                      continue
+                  for target in targets:
+                      if net.version == target.version and net.overlaps(target):
+                          matches[str(target)].append(line)
+              show(label, hashlib.sha256(raw).hexdigest(), matches)
+          path = Path(os.environ["HYDRA_INPUT"])
+          raw = path.read_bytes()
+          matches = {str(target): [] for target in targets}
+          try:
+              categories = parse_geoip_dat(path)
+              for category in ("DIRECT", "WHITELIST"):
+                  for net in categories.get(category, ()):
+                      for target in targets:
+                          if net.version == target.version and net.overlaps(target):
+                              matches[str(target)].append(f"{category} {net}")
+              show("hydra-intent", hashlib.sha256(raw).hexdigest(), matches)
+          except (OSError, ValueError, TypeError) as error:
+              print(f"Added source hydra-intent unavailable: {type(error).__name__}: {error}")
+          PY
+
+      - name: Retain exact pull request DIRECT delta
+        if: github.event_name == 'pull_request'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: v41-pr-direct-delta
+          path: ${{ runner.temp }}/v41-pr-direct-delta.json
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Cross-check priority BGP origins (advisory)
+        if: github.event_name == 'pull_request'
+        shell: bash
+        run: |
+          if ! python3 .github/scripts/check_v41_bgp_observations.py \
+            --archive "$IPVERSE_BGP_ARCHIVE" --asns 12389 13238 25106 208795 6697 9198 35673 39433 51365 43601 43934 44288 62170 \
+            --output "$RUNNER_TEMP/v41-bgp-crosscheck.json" --summary "$GITHUB_STEP_SUMMARY"; then
+            echo '::warning::BGP cross-check failed; no routing changes were made.'
+            echo 'BGP cross-check unavailable; inspect the job log.' >> "$GITHUB_STEP_SUMMARY"
+            printf '%s\n' '{"status":"unavailable","reason":"cross-check failed; see job log"}' > "$RUNNER_TEMP/v41-bgp-crosscheck.json"
+          fi
+
+      - name: Retain BGP advisory report
+        if: github.event_name == 'pull_request'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: v41-pr-bgp-crosscheck
+          path: ${{ runner.temp }}/v41-bgp-crosscheck.json
+          if-no-files-found: error
+          retention-days: 30
 
       - name: Verify and retain the exact ipverse build input
         shell: bash
@@ -523,8 +823,58 @@ jobs:
             --output "$compiler_dir/$archive" "https://github.com/SagerNet/sing-box/releases/download/v${version}/$archive"
           printf '%s  %s\n' "$digest" "$compiler_dir/$archive" | sha256sum -c -
           tar -xzf "$compiler_dir/$archive" -C "$compiler_dir" "sing-box-${version}-linux-amd64/sing-box"
-          python3 .github/scripts/build_v41_srs.py --sing-box "$compiler_dir/sing-box-${version}-linux-amd64/sing-box"
+          python3 .github/scripts/build_v41_srs.py --sing-box "$compiler_dir/sing-box-${version}-linux-amd64/sing-box" \
+            --metrics "$RUNNER_TEMP/v41-size-metrics.json"
           sha256sum -c geoip_RU.srs.sha256sum geoip_PRIVATE.srs.sha256sum
+          "$compiler_dir/sing-box-${version}-linux-amd64/sing-box" rule-set decompile --output "$compiler_dir/ru.json" geoip_RU.srs
+          "$compiler_dir/sing-box-${version}-linux-amd64/sing-box" rule-set decompile --output "$compiler_dir/private.json" geoip_PRIVATE.srs
+          python3 .github/scripts/validate_v41_routing_matrix.py --dat "$V41_OUTPUT_FILE" \
+            --ru-srs-source "$compiler_dir/ru.json" --private-srs-source "$compiler_dir/private.json" \
+            --fixtures .github/data/v41-routing-fixtures.tsv --telegram-feed "$TELEGRAM_OFFICIAL_INPUT" \
+            --summary "$GITHUB_STEP_SUMMARY"
+
+      - name: Exercise candidate rule sets in isolated clients
+        if: github.event_name == 'pull_request'
+        shell: bash
+        run: |
+          set -euo pipefail
+          assets="$RUNNER_TEMP/v41-candidate-client-assets"
+          mkdir -p "$assets"
+          cp "$V41_OUTPUT_FILE" "$assets/geoip_RU.dat"
+          cp geoip_RU.srs geoip_PRIVATE.srs "$assets/"
+          curl --fail --location --silent --show-error --proto '=https' --proto-redir '=https' \
+            --connect-timeout 10 --max-time 90 --retry 2 --max-filesize 67108864 \
+            --output "$assets/sing-box.tar.gz" https://github.com/SagerNet/sing-box/releases/download/v1.13.12/sing-box-1.13.12-linux-amd64.tar.gz
+          curl --fail --location --silent --show-error --proto '=https' --proto-redir '=https' \
+            --connect-timeout 10 --max-time 90 --retry 2 --max-filesize 67108864 \
+            --output "$assets/xray.zip" https://github.com/XTLS/Xray-core/releases/download/v26.7.28/Xray-linux-64.zip
+          printf '%s  %s\n' 1540533adb3df24f5ad5f14b5c7ca3dbc2401b10a1c1eb278fcadcada47ec6c4 "$assets/sing-box.tar.gz" | sha256sum -c -
+          printf '%s  %s\n' 8195d909f1109b8f3d99eefe401a3c451d7bf4af71f24d3815420f77e5dd2a40 "$assets/xray.zip" | sha256sum -c -
+          tar -xOzf "$assets/sing-box.tar.gz" sing-box-1.13.12-linux-amd64/sing-box > "$assets/sing-box"
+          unzip -p "$assets/xray.zip" xray > "$assets/xray"
+          chmod 0755 "$assets/sing-box" "$assets/xray"
+          sudo unshare --net bash -eu -c '
+            ip link set dev lo up
+            exec runuser -u "$1" -- python3 "$2" --assets "$3" --output "$4"
+          ' _ "$(id -un)" "$GITHUB_WORKSPACE/.github/scripts/check_v41_client_dns_local.py" \
+              "$assets" "$RUNNER_TEMP/v41-candidate-client-results.json"
+
+      - name: Retain candidate client route evidence
+        if: github.event_name == 'pull_request'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: v41-candidate-client-routing
+          path: ${{ runner.temp }}/v41-candidate-client-results.json
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Retain output size and family metrics
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: v41-output-size-metrics
+          path: ${{ runner.temp }}/v41-size-metrics.json
+          if-no-files-found: error
+          retention-days: 30
 
       - name: Bind validated files to this build
         shell: bash
@@ -666,6 +1016,8 @@ jobs:
         run: |
           python3 ../.github/scripts/v41_reviewed_ipv6_admission.py \
             --table ../.github/data/v41-reviewed-ipv6-admission-exclusions.tsv \
+            --regional-table ../.github/data/v41-regional-admission-exclusions.tsv \
+            --hydra "$HYDRA_INPUT" \
             --manifest "$V41_MANIFEST" --geoip "$V41_OUTPUT_FILE"
 
       - name: Stage the versioned snapshot tag

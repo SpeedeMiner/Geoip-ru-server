@@ -1,0 +1,27 @@
+# Initial priority origins for loss monitoring; review and expand by verified coverage.
+AS12389 # Rostelecom
+AS13238 # Yandex
+AS25106 # MTS Belarus
+AS208795 # Yandex Cloud Kazakhstan
+AS35237 # Sberbank
+AS6697 # Beltelecom
+AS9198 # Kazakhtelecom
+AS21299 # Kar-Tel Kazakhstan
+AS3216 # Beeline/VimpelCom
+AS8359 # MTS Russia
+AS12714 # MegaFon
+AS15632 # Alfa-Bank
+AS41551 # VTB
+AS43399 # T-Bank
+AS44386 # Ozon
+AS49505 # Selectel
+AS50339 # NSPK
+AS200350 # Yandex Cloud
+AS208677 # Cloud.ru
+AS35673 # Kaspi Bank
+AS39433 # Halyk Bank
+AS51365 # Belinvestbank
+AS43601 # Bank CenterCredit
+AS43934 # Kazakhstan Interbank Settlement Centre
+AS44288 # Banks Processing Center Belarus
+AS62170 # Sberbank Belarus

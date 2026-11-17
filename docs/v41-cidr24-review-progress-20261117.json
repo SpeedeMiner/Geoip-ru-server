@@ -1,0 +1,593 @@
+{
+  "schema": 1,
+  "updated_on": "2026-11-17",
+  "measurement_scope": "public TCP/443 only; no inference of blocking or GeoIP mutation",
+  "range_queue_size": 6,
+  "measured_from_two_ru_asns": 6,
+  "with_verified_postflight_on_both": 5,
+  "confirmed_service_pairs": 0,
+  "next_review_prefix": null,
+  "rows": [
+    {
+      "prefix": "156.224.80.0/24",
+      "dat_exact_ru_in_all_three": true,
+      "tcp_per_address_observation": {
+        "scope": "comparison of two prior verified RU observations; no new endpoint probes",
+        "prefix": "156.224.80.0/24",
+        "port": 443,
+        "exit_asns_in_order": [
+          12494,
+          8749
+        ],
+        "distinct_ipv4_in_scope": 256,
+        "addresses_attempted_at_both_exits": 256,
+        "tcp_timeout_at_both_exits": 256,
+        "tcp_connected_at_either_exit": 0,
+        "certificate_observed_at_either_exit": 0,
+        "paired_tcp_status_counts": {
+          "TIMEOUT|TIMEOUT": 256
+        },
+        "observed_at_by_exit": [
+          "2026-11-17T11:35:07Z",
+          "2026-11-17T11:38:52Z"
+        ],
+        "postflight_by_exit": [
+          "NOT_RECORDED",
+          "NOT_RECORDED"
+        ],
+        "timeouts_are_not_block_verdicts": true,
+        "geoip_mutation": false
+      },
+      "confirmed_service_pair": false,
+      "routeviews_origins": [
+        {
+          "asn": 219216,
+          "last_record": "2026-11-14T06:00:10+00:00",
+          "paths_returned": 4
+        },
+        {
+          "asn": 401650,
+          "last_record": "2026-11-17T11:34:27+00:00",
+          "paths_returned": 157
+        }
+      ],
+      "ripe_validation": [
+        {
+          "asn": 219216,
+          "status": "valid"
+        },
+        {
+          "asn": 401650,
+          "status": "valid"
+        }
+      ],
+      "rolling_dat_ru_addresses": 0,
+      "rolling_dat_private_addresses": 0
+    },
+    {
+      "prefix": "156.241.186.0/24",
+      "dat_exact_ru_in_all_three": true,
+      "tcp_per_address_observation": {
+        "scope": "comparison of two prior verified RU observations; no new endpoint probes",
+        "prefix": "156.241.186.0/24",
+        "port": 443,
+        "exit_asns_in_order": [
+          8749,
+          8359
+        ],
+        "distinct_ipv4_in_scope": 256,
+        "addresses_attempted_at_both_exits": 256,
+        "tcp_timeout_at_both_exits": 256,
+        "tcp_connected_at_either_exit": 0,
+        "certificate_observed_at_either_exit": 0,
+        "paired_tcp_status_counts": {
+          "TIMEOUT|TIMEOUT": 256
+        },
+        "observed_at_by_exit": [
+          "2026-11-17T11:56:32Z",
+          "2026-11-17T11:59:38Z"
+        ],
+        "postflight_by_exit": [
+          "VERIFIED",
+          "VERIFIED"
+        ],
+        "timeouts_are_not_block_verdicts": true,
+        "geoip_mutation": false
+      },
+      "confirmed_service_pair": false,
+      "routeviews_origins": [
+        {
+          "asn": 401650,
+          "last_record": "2026-11-17T11:34:27+00:00",
+          "paths_returned": 163
+        }
+      ],
+      "ripe_validation": [
+        {
+          "asn": 401650,
+          "status": "valid"
+        }
+      ],
+      "rolling_dat_ru_addresses": 0,
+      "rolling_dat_private_addresses": 0
+    },
+    {
+      "prefix": "177.29.246.0/24",
+      "dat_exact_ru_in_all_three": true,
+      "tcp_per_address_observation": {
+        "scope": "comparison of two archive-verified RU observations, one TCP/443 attempt per IPv4 per exit",
+        "prefix": "177.29.246.0/24",
+        "port": 443,
+        "exit_asns_in_order": [
+          12494,
+          43330
+        ],
+        "distinct_ipv4_in_scope": 256,
+        "addresses_attempted_at_both_exits": 256,
+        "tcp_timeout_at_both_exits": 256,
+        "tcp_connected_at_either_exit": 0,
+        "certificate_observed_at_either_exit": 0,
+        "paired_tcp_status_counts": {
+          "TIMEOUT|TIMEOUT": 256
+        },
+        "observed_at_by_exit": [
+          "2026-11-17T12:24:26Z",
+          "2026-11-17T12:31:49Z"
+        ],
+        "postflight_by_exit": [
+          "VERIFIED",
+          "VERIFIED"
+        ],
+        "timeouts_are_not_block_verdicts": true,
+        "geoip_mutation": false
+      },
+      "confirmed_service_pair": false,
+      "routeviews_origins": [
+        {
+          "asn": 39578,
+          "last_record": "2026-11-14T06:00:28+00:00",
+          "paths_returned": 12
+        },
+        {
+          "asn": 152606,
+          "last_record": "2026-11-17T11:34:27+00:00",
+          "paths_returned": 136
+        }
+      ],
+      "ripe_validation": [
+        {
+          "asn": 39578,
+          "status": "valid"
+        },
+        {
+          "asn": 152606,
+          "status": "valid"
+        }
+      ],
+      "metadata_dns_lead": {
+        "name": "yemail.live",
+        "a": [
+          "162.255.119.130"
+        ],
+        "aaaa_status": "DNS_NO_ANSWER",
+        "transport_tested": false,
+        "run": 44080456199,
+        "inside_queued_ranges": false
+      },
+      "cidr24_artifacts": {
+        "verified": [
+          {
+            "run": 44082612889,
+            "artifact": 14328485596,
+            "commit": "fde3a24a35cc8a0f6616d6ff5513fd8b8837c2ce",
+            "sha256": "fe3516a0873fbb7cebb10efea745b238f8e4d3d32c538e3457847708444f560f",
+            "exit_asn": 12494,
+            "observed_at": "2026-11-17T12:24:26Z",
+            "postflight_at": "2026-11-17T12:25:49Z",
+            "pre_controls": [
+              {
+                "id": "cdnvideo-player-host",
+                "http": 200
+              }
+            ],
+            "post_control": {
+              "id": "cdnvideo-player-host",
+              "http": 200
+            }
+          },
+          {
+            "run": 44083168013,
+            "artifact": 14327119038,
+            "commit": "6d4c97fa147f271dc628aa985c8dccc7907ecdd4",
+            "sha256": "26372e22383277e58188cd68658a01f820dab4b22113c82bc2e6b744260dfd95",
+            "exit_asn": 43330,
+            "observed_at": "2026-11-17T12:31:49Z",
+            "postflight_at": "2026-11-17T12:33:25Z",
+            "pre_controls": [
+              {
+                "id": "cdn77-demo",
+                "http": 200
+              },
+              {
+                "id": "cdnvideo-player-host",
+                "http": 200
+              }
+            ],
+            "post_control": {
+              "id": "cdn77-demo",
+              "http": 200
+            }
+          }
+        ],
+        "excluded": [
+          {
+            "run": 44083168013,
+            "attempt": 1,
+            "artifact": 14328705547,
+            "sha256": "f685d1c9f5e25c86f41665a0b21fabda01483d7f2d2e55fbdd69e03b6b9ec8fc",
+            "exit_asn": 43330,
+            "observed_at": "2026-11-17T12:28:11Z",
+            "reason": "POSTFLIGHT_INCONCLUSIVE"
+          }
+        ]
+      },
+      "rolling_dat_ru_addresses": 0,
+      "rolling_dat_private_addresses": 0
+    },
+    {
+      "prefix": "177.122.107.0/24",
+      "dat_exact_ru_in_all_three": true,
+      "tcp_per_address_observation": {
+        "scope": "comparison of two archive-verified RU observations, one TCP/443 attempt per IPv4 per exit",
+        "prefix": "177.122.107.0/24",
+        "port": 443,
+        "exit_asns_in_order": [
+          12494,
+          43330
+        ],
+        "distinct_ipv4_in_scope": 256,
+        "addresses_attempted_at_both_exits": 256,
+        "tcp_timeout_at_both_exits": 256,
+        "tcp_connected_at_either_exit": 0,
+        "certificate_observed_at_either_exit": 0,
+        "paired_tcp_status_counts": {
+          "TIMEOUT|TIMEOUT": 256
+        },
+        "observed_at_by_exit": [
+          "2026-11-17T12:53:03Z",
+          "2026-11-17T12:56:47Z"
+        ],
+        "postflight_by_exit": [
+          "VERIFIED",
+          "VERIFIED"
+        ],
+        "timeouts_are_not_block_verdicts": true,
+        "geoip_mutation": false
+      },
+      "confirmed_service_pair": false,
+      "routeviews_origins": [
+        {
+          "asn": 17561,
+          "last_record": "2026-11-07T00:00:09+00:00",
+          "paths_returned": 20
+        },
+        {
+          "asn": 152606,
+          "last_record": "2026-11-17T11:34:27+00:00",
+          "paths_returned": 148
+        }
+      ],
+      "ripe_validation": [
+        {
+          "asn": 17561,
+          "status": "invalid_asn"
+        },
+        {
+          "asn": 152606,
+          "status": "valid"
+        }
+      ],
+      "rolling_dat_ru_addresses": 0,
+      "rolling_dat_private_addresses": 0,
+      "cidr24_artifacts": {
+        "verified": [
+          {
+            "run": 44087159259,
+            "artifact": 14330740400,
+            "commit": "42acc1bbb4783ae573169110c5e3ce8d92b30695",
+            "sha256": "02e37f9a59b54191af06ee5566b254bdd7d8a89f00e93f413f5a7e9f3ca66c30",
+            "exit_asn": 12494,
+            "observed_at": "2026-11-17T12:53:03Z",
+            "postflight_at": "2026-11-17T12:54:25Z",
+            "pre_controls": [
+              {
+                "id": "cdnvideo-player-host",
+                "http": 200
+              }
+            ],
+            "post_control": {
+              "id": "cdnvideo-player-host",
+              "http": 200
+            }
+          },
+          {
+            "run": 44087672791,
+            "artifact": 14330835729,
+            "commit": "18a7a0ad58a59ae23599c87fa93751b0a806ae67",
+            "sha256": "7186cb41b5dd3bd99530a01b53bc6c4222ac0e9dc62f3f7101c30bcd25cfe1eb",
+            "exit_asn": 43330,
+            "observed_at": "2026-11-17T12:56:47Z",
+            "postflight_at": "2026-11-17T12:58:23Z",
+            "pre_controls": [
+              {
+                "id": "cdn77-demo",
+                "http": 200
+              },
+              {
+                "id": "cdnvideo-player-host",
+                "http": 200
+              }
+            ],
+            "post_control": {
+              "id": "cdn77-demo",
+              "http": 200
+            }
+          }
+        ],
+        "excluded": [
+          {
+            "run": 44086269135,
+            "artifact": 14329802045,
+            "sha256": "109e9a6bdec24595363a5d67167f0ac006c28decafa20c5793d57adf2ea3350b",
+            "exit_asn": 43330,
+            "observed_at": "2026-11-17T12:48:11Z",
+            "reason": "POSTFLIGHT_INCONCLUSIVE"
+          }
+        ]
+      }
+    },
+    {
+      "prefix": "177.122.160.0/24",
+      "dat_exact_ru_in_all_three": true,
+      "tcp_per_address_observation": {
+        "scope": "comparison of two archive-verified RU observations, one TCP/443 attempt per IPv4 per exit",
+        "prefix": "177.122.160.0/24",
+        "port": 443,
+        "exit_asns_in_order": [
+          12494,
+          43330
+        ],
+        "distinct_ipv4_in_scope": 256,
+        "addresses_attempted_at_both_exits": 256,
+        "tcp_timeout_at_both_exits": 256,
+        "tcp_connected_at_either_exit": 0,
+        "certificate_observed_at_either_exit": 0,
+        "paired_tcp_status_counts": {
+          "TIMEOUT|TIMEOUT": 256
+        },
+        "observed_at_by_exit": [
+          "2026-11-17T13:01:39Z",
+          "2026-11-17T13:16:31Z"
+        ],
+        "postflight_by_exit": [
+          "VERIFIED",
+          "VERIFIED"
+        ],
+        "timeouts_are_not_block_verdicts": true,
+        "geoip_mutation": false
+      },
+      "confirmed_service_pair": false,
+      "routeviews_origins": [
+        {
+          "asn": 17561,
+          "last_record": "2026-11-07T00:00:09+00:00",
+          "paths_returned": 20
+        },
+        {
+          "asn": 152606,
+          "last_record": "2026-11-17T11:34:27+00:00",
+          "paths_returned": 148
+        }
+      ],
+      "ripe_validation": [
+        {
+          "asn": 17561,
+          "status": "invalid_asn"
+        },
+        {
+          "asn": 152606,
+          "status": "valid"
+        }
+      ],
+      "rolling_dat_ru_addresses": 0,
+      "rolling_dat_private_addresses": 0,
+      "cidr24_artifacts": {
+        "verified": [
+          {
+            "run": 44088363882,
+            "artifact": 14331330378,
+            "commit": "d3f63cc5661b8aec5348d56981ffc87fb4ef531a",
+            "sha256": "da1d6c4a8d87638a25c1a53ed045bebdce8853448719a2e38daede20eddac1f2",
+            "exit_asn": 12494,
+            "observed_at": "2026-11-17T13:01:39Z",
+            "postflight_at": "2026-11-17T13:03:01Z",
+            "pre_controls": [
+              {
+                "id": "cdnvideo-player-host",
+                "http": 200
+              }
+            ],
+            "post_control": {
+              "id": "cdnvideo-player-host",
+              "http": 200
+            }
+          },
+          {
+            "run": 44090876666,
+            "artifact": 14331118672,
+            "commit": "3c6e9825e9c7998135ca0a5a76afd41955e8f0b0",
+            "sha256": "07dd41536c85e26694a2581e407cc2f780d1fb267e2ef2270732a25ea87a48eb",
+            "exit_asn": 43330,
+            "observed_at": "2026-11-17T13:16:31Z",
+            "postflight_at": "2026-11-17T13:18:06Z",
+            "pre_controls": [
+              {
+                "id": "cdn77-demo",
+                "http": 200
+              },
+              {
+                "id": "cdnvideo-player-host",
+                "http": 200
+              }
+            ],
+            "post_control": {
+              "id": "cdn77-demo",
+              "http": 200
+            }
+          }
+        ]
+      }
+    },
+    {
+      "prefix": "177.166.21.0/24",
+      "dat_exact_ru_in_all_three": true,
+      "tcp_per_address_observation": {
+        "scope": "comparison of two archive-verified RU observations, one TCP/443 attempt per IPv4 per exit",
+        "prefix": "177.166.21.0/24",
+        "port": 443,
+        "exit_asns_in_order": [
+          35807,
+          12389
+        ],
+        "distinct_ipv4_in_scope": 256,
+        "addresses_attempted_at_both_exits": 256,
+        "tcp_timeout_at_both_exits": 256,
+        "tcp_connected_at_either_exit": 0,
+        "certificate_observed_at_either_exit": 0,
+        "paired_tcp_status_counts": {
+          "TIMEOUT|TIMEOUT": 256
+        },
+        "observed_at_by_exit": [
+          "2026-11-17T13:20:11Z",
+          "2026-11-17T13:25:52Z"
+        ],
+        "postflight_by_exit": [
+          "VERIFIED",
+          "VERIFIED"
+        ],
+        "timeouts_are_not_block_verdicts": true,
+        "geoip_mutation": false
+      },
+      "confirmed_service_pair": false,
+      "routeviews_origins": [
+        {
+          "asn": 17561,
+          "last_record": "2026-11-07T00:00:09+00:00",
+          "paths_returned": 20
+        },
+        {
+          "asn": 152606,
+          "last_record": "2026-11-17T11:34:27+00:00",
+          "paths_returned": 148
+        }
+      ],
+      "ripe_validation": [
+        {
+          "asn": 17561,
+          "status": "invalid_asn"
+        },
+        {
+          "asn": 152606,
+          "status": "valid"
+        }
+      ],
+      "rolling_dat_ru_addresses": 0,
+      "rolling_dat_private_addresses": 0,
+      "cidr24_artifacts": {
+        "verified": [
+          {
+            "run": 44091552495,
+            "artifact": 14331378905,
+            "commit": "441f8ed86a2b2acff37685d09700e50f3d6b3415",
+            "sha256": "11f57096de5947aca00d1ed93955b9f6a586ed5073e7ed94fab0a3f35da87a0a",
+            "exit_asn": 35807,
+            "observed_at": "2026-11-17T13:20:11Z",
+            "postflight_at": "2026-11-17T13:21:33Z",
+            "pre_controls": [
+              {
+                "id": "cdn77-demo",
+                "http": 200
+              },
+              {
+                "id": "cdnvideo-player-host",
+                "http": 200
+              }
+            ],
+            "post_control": {
+              "id": "cdn77-demo",
+              "http": 200
+            }
+          },
+          {
+            "run": 44092291673,
+            "artifact": 14332377227,
+            "commit": "a03064d8e06045e0b2600c1d60e7d4dd04434de0",
+            "sha256": "b39237cce2f301be2193b5567419854d676ce01bde6f4443759cfb7c9dccba19",
+            "exit_asn": 12389,
+            "observed_at": "2026-11-17T13:25:52Z",
+            "postflight_at": "2026-11-17T13:27:24Z",
+            "pre_controls": [
+              {
+                "id": "cdn77-demo",
+                "http": 200
+              },
+              {
+                "id": "cdnvideo-player-host",
+                "http": 200
+              }
+            ],
+            "post_control": {
+              "id": "cdn77-demo",
+              "http": 200
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "review_after": "2026-12-17",
+  "historical_dat_coverage_note": "dat_exact_ru_in_all_three refers to pinned release 63b8abf, candidate v37 base and candidate v41 DAT, not to the later production rolling release.",
+  "rolling_reference": {
+    "release_commit": "75fdbb1815cf7501120f9aa9eb4f4551eb64b8b3",
+    "cdn_commit": "2edb37e467470c97e1c217be18a753148f35854a",
+    "source_commit": "5134c17765e02597ae609faa01c980b03c4dceb7",
+    "workflow_run": 44083585727,
+    "dat_sha256": "d113faaf4f1a61b64c72b00b8810c014381eb549ba82cf71d973e8a02f0aa7a3",
+    "candidate_dat_sha256": "02908f5e90cabb6cb29fdab664f9ae28b5777ad9f78bbda9fa18c824f07e070d",
+    "candidate_ipv4_added": 5632,
+    "candidate_ipv4_removed": 0,
+    "candidate_ipv6_added": 0,
+    "candidate_ipv6_removed": 0,
+    "private_changed": false,
+    "additional_candidate_hydra_cidr": "31.204.32.0/20"
+  },
+  "next_evidence_step": "The public archive yielded no hostname evidence after exact CIDR controls. Continue only from independently documented exact domains or service IPs, then verify the DNS A and named TLS/HTTPS through a confirmed RU exit.",
+  "accepted_summary": {
+    "accepted_ru_exit_runs": 12,
+    "distinct_ipv4_attempted_on_both_exits": 1536,
+    "tcp_attempts_on_accepted_runs": 3072,
+    "tcp_timeout_on_both_for_distinct_ipv4": 1536,
+    "certificates_observed_at_either_exit": 0
+  },
+  "passive_archive_followup": {
+    "run": 44096379110,
+    "artifact": 14333544290,
+    "method": "public archived primary page and any-contact searches, positive exact CIDR controls",
+    "window_start_utc": "2025-11-17",
+    "queries": 12,
+    "public_index_matches": 0,
+    "confirmed_service_pairs": 0,
+    "new_live_dns_targets": 0,
+    "supplemental_bgp_snapshot_utc": "2026-11-17T09:59:53Z"
+  }
+}

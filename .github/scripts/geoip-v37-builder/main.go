@@ -481,6 +481,41 @@ func loadTextPrefixes(trie *ipTrie, path string) (int, error) {
 	return added, nil
 }
 
+// readStaticDirectPrefixes reads the extractor's explicitly marked overrides.
+// It does not infer new routes from an ASN or from unmarked observations.
+func readStaticDirectPrefixes(path string) ([]netip.Prefix, error) {
+	file, err := os.Open(path)
+	if err != nil {
+		return nil, err
+	}
+	defer file.Close()
+	var result []netip.Prefix
+	seen := make(map[netip.Prefix]bool)
+	scanner := bufio.NewScanner(file)
+	scanner.Buffer(make([]byte, 64*1024), 4*1024*1024)
+	for scanner.Scan() {
+		line := strings.TrimSpace(scanner.Text())
+		if line == "" || strings.HasPrefix(line, "#") {
+			continue
+		}
+		value, comment, hasComment := strings.Cut(line, "#")
+		if !hasComment || !strings.Contains(comment, "[STATIC-DIRECT]") {
+			continue
+		}
+		prefix, err := netip.ParsePrefix(strings.TrimSpace(value))
+		if err != nil || prefix.Bits() == 0 || prefix != prefix.Masked() || seen[prefix] {
+			return nil, fmt.Errorf("invalid or duplicate STATIC-DIRECT prefix in %s: %s", path, value)
+		}
+		seen[prefix] = true
+		result = append(result, prefix)
+	}
+	if err := scanner.Err(); err != nil {
+		return nil, err
+	}
+	sortPrefixes(result)
+	return result, nil
+}
+
 // loadApprovedBlockedPrefixes accepts exact host IPs plus bounded explicit
 // subnet.lst prefixes. Only explicitly configured Telegram routes may exceed
 // the /16 IPv4 or /112 IPv6 automatic-carve thresholds (65,536 addresses).
@@ -1286,21 +1321,23 @@ func main() {
 		sortPrefixes(missing)
 		panic(fmt.Errorf("selected RIR/company ASN DIRECT coverage lost after allowed carve-outs: %d prefixes; first=%s", len(missing), missing[0]))
 	}
-	yandexTurkeyFinalCoverage := 0
-	for _, value := range []string{"45.148.65.0/24", "2a14:48c6::/48"} {
-		prefix, err := netip.ParsePrefix(value)
-		if err != nil {
-			panic(err)
-		}
+	staticPrefixes, err := readStaticDirectPrefixes(os.Args[12])
+	if err != nil {
+		panic(err)
+	}
+	staticFinalCoverage := 0
+	staticPrefixNames := make([]string, 0, len(staticPrefixes))
+	for _, prefix := range staticPrefixes {
+		staticPrefixNames = append(staticPrefixNames, prefix.String())
 		expected := newIPTrie()
 		expected.insert(prefix.Masked())
 		expected = applyDirectPrecedence(expected, privateTrie, blockedIPs)
 		missing := cloneTrie(expected)
 		missing.subtract(finalRU)
 		if lost := missing.toPrefixes(); len(lost) > 0 {
-			panic(fmt.Errorf("Yandex Turkey AS212066 final DIRECT coverage lost beyond PRIVATE/blocked carve: %s", value))
+			panic(fmt.Errorf("static DIRECT coverage lost beyond PRIVATE/blocked carve: %s", prefix))
 		}
-		yandexTurkeyFinalCoverage++
+		staticFinalCoverage++
 	}
 	privateTrie.compress()
 
@@ -1457,7 +1494,8 @@ func main() {
 		fmt.Sprintf("Raw KZ GeoIP CIDR input records: %d", regionalRawCounts["KZ"]),
 		fmt.Sprintf("Final unified DIRECT RU+BY+KZ: IPv4=%s IPv6=%s", ipv4Count, ipv6Count),
 		"Selected RIR-RU/BY/KZ and curated company ASN origins are preserved in final DIRECT except PRIVATE and approved blocked destinations.",
-		fmt.Sprintf("Yandex Turkey AS212066 final DIRECT prefix checks (after PRIVATE/blocked carve): %d of 2", yandexTurkeyFinalCoverage),
+		fmt.Sprintf("Static DIRECT final prefix checks (after PRIVATE/blocked carve): %d of %d", staticFinalCoverage, len(staticPrefixes)),
+		fmt.Sprintf("Static DIRECT final prefix list: %s", strings.Join(staticPrefixNames, ", ")),
 		"=== TRUSTED GEOIP LAYERS ===",
 		statsLine("Loyalsoldier geoip:ru", protectedLoyalsoldierRU),
 		statsLine("v2fly geoip.dat ru", protectedV2FlyRU),

@@ -96,6 +96,21 @@ func TestRegionalGeoIPCategoryMapping(t *testing.T) {
 		{"v2fly", "by", "ru-by"},
 		{"v2fly", "kz", "ru-kz"},
 		{"v2fly", "de", ""},
+		{"v2fly", "US", ""},
+		{"v2fly", "au", ""},
+		{"v2fly", "sy", ""},
+		{"v2fly", "nl", ""},
+		{"v2fly", "kp", ""},
+		{"v2fly", "in", ""},
+		{"v2fly", "direct", ""},
+		{"v2fly", "whitelist", ""},
+		{"hydra", "direct", "candidate"},
+		{"hydra", "whitelist", "candidate"},
+		{"hydra", "us", ""},
+		{"davoyan", "de", ""},
+		{"grimbird", "de", ""},
+		{"digne", "de", ""},
+		{"golukon", "de", ""},
 		{"loyalsoldier-by", "ru", ""},
 	}
 	for _, tc := range cases {
@@ -235,6 +250,30 @@ func TestInputCIDRDoesNotMaskHostBits(t *testing.T) {
 	}
 	if _, err := loadTextPrefixes(newIPTrie(), p); err == nil {
 		t.Fatal("accepted non-canonical input")
+	}
+}
+
+func TestStaticDirectReadsOnlyMarkedCanonicalPrefixes(t *testing.T) {
+	path := filepath.Join(t.TempDir(), "selected.txt")
+	content := "# [STATIC-DIRECT] describes metadata\n192.0.2.0/24 # AS123[STATIC-DIRECT]\n2001:db8::/48 # AS123[STATIC-DIRECT]\n198.51.100.0/24 # AS456[observed]\n"
+	if err := os.WriteFile(path, []byte(content), 0600); err != nil {
+		t.Fatal(err)
+	}
+	got, err := readStaticDirectPrefixes(path)
+	if err != nil || len(got) != 2 || got[0] != mustPrefix(t, "192.0.2.0/24") || got[1] != mustPrefix(t, "2001:db8::/48") {
+		t.Fatalf("unexpected static prefixes: %v, %v", got, err)
+	}
+	for _, bad := range []string{
+		"192.0.2.1/24 # AS123[STATIC-DIRECT]\n",
+		"0.0.0.0/0 # AS123[STATIC-DIRECT]\n",
+		"192.0.2.0/24 # AS123[STATIC-DIRECT]\n192.0.2.0/24 # AS123[STATIC-DIRECT]\n",
+	} {
+		if err := os.WriteFile(path, []byte(bad), 0600); err != nil {
+			t.Fatal(err)
+		}
+		if _, err := readStaticDirectPrefixes(path); err == nil {
+			t.Errorf("accepted invalid static entry: %q", bad)
+		}
 	}
 }
 

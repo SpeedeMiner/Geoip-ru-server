@@ -31,6 +31,18 @@ download_file() {
   shift 2
   local tmp="${output}.part"
   local url
+  local -a check_args=()
+  case "$label" in
+    "AFRINIC DELEGATED STATS") check_args=(--registry afrinic) ;;
+    "APNIC DELEGATED STATS") check_args=(--registry apnic) ;;
+    "ARIN DELEGATED STATS") check_args=(--registry arin) ;;
+    "LACNIC DELEGATED STATS") check_args=(--registry lacnic) ;;
+    "RIPE NCC DELEGATED STATS") check_args=(--registry ripencc) ;;
+    "ANTIFILTER EXACT BLOCKED IP LIST") check_args=(--antifilter ip) ;;
+    "ANTIFILTER SUBNET LIST") check_args=(--antifilter subnet) ;;
+    "IANA IPV4 SPECIAL REGISTRY") check_args=(--iana 4) ;;
+    "IANA IPV6 SPECIAL REGISTRY") check_args=(--iana 6) ;;
+  esac
   rm -f "$tmp"
 
   for url in "$@"; do
@@ -41,14 +53,14 @@ download_file() {
       --connect-timeout 20 --max-time 180 \
       --retry 4 --retry-all-errors --retry-delay 3 --retry-max-time 240 \
       --output "$tmp" "$url"; then
-      if [[ -s "$tmp" ]]; then
+      if [[ -s "$tmp" ]] && python3 .github/scripts/validate_v41_download.py "$tmp" "${check_args[@]}"; then
         mv "$tmp" "$output"
         record_source_download "$label" "$output" "$url" "downloaded"
         echo "Downloaded ${label}: $(wc -c < "$output") bytes"
         echo "::endgroup::"
         return 0
       fi
-      echo "Empty response from ${url}"
+      echo "Empty or invalid response from ${url}"
     else
       echo "Download failed from ${url}"
     fi
@@ -80,6 +92,8 @@ download_optional_file() {
 # Resolve each publisher once per run, verify the fetched bytes and record the exact refs.
 python3 .github/scripts/download_v41_upstream_sources.py \
   --catalog .github/data/v41-upstream-sources.json --provenance "$INPUT_PROVENANCE"
+# Fail early on a structurally invalid required catalog, before fetching RIRs.
+python3 .github/scripts/validate_v41_services_input.py "$KY_SERVICES_INPUT"
 download_file "TELEGRAM OFFICIAL CIDRS" "$TELEGRAM_OFFICIAL_INPUT" \
   "https://core.telegram.org/resources/cidr.txt"
 python3 .github/scripts/validate_v41_telegram.py --official-feed "$TELEGRAM_OFFICIAL_INPUT"
@@ -114,7 +128,10 @@ download_file "ARIN DELEGATED STATS" "$ARIN_STATS" \
 download_file "LACNIC DELEGATED STATS" "$LACNIC_STATS" \
   "https://ftp.lacnic.net/pub/stats/lacnic/delegated-lacnic-latest" \
   "https://ftp.ripe.net/pub/stats/lacnic/delegated-lacnic-latest" \
-  "https://ftp.apnic.net/pub/stats/lacnic/delegated-lacnic-latest"
+  "https://ftp.apnic.net/pub/stats/lacnic/delegated-lacnic-latest" \
+  "https://ftp.lacnic.net/pub/stats/lacnic/delegated-lacnic-extended-latest" \
+  "https://ftp.ripe.net/pub/stats/lacnic/delegated-lacnic-extended-latest" \
+  "https://ftp.apnic.net/pub/stats/lacnic/delegated-lacnic-extended-latest"
 
 download_file "RIPE NCC DELEGATED STATS" "$RIPENCC_STATS" \
   "https://ftp.ripe.net/pub/stats/ripencc/delegated-ripencc-latest" \

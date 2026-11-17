@@ -1,0 +1,2 @@
+prefix	origin_asn	service	observed_on	review_after	bgp_evidence	registration_evidence
+82.115.37.0/24	AS35673	Kaspi Bank	2026-11-16	2027-02-16	https://stat.ripe.net/data/announced-prefixes/data.json?resource=AS35673&starttime=2026-11-15T00%3A00%3A00&endtime=2026-11-16T00%3A00%3A00&min_peers_seeing=1	https://rdap.db.ripe.net/ip/82.115.37.0/24

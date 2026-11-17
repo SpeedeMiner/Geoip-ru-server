@@ -32,7 +32,7 @@ if curl --fail --location --silent --show-error --proto '=https' --proto-redir '
   "https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/${ref}/geoip_RU_input_provenance.tsv" -o "$previous_provenance"; then
   feed_provenance=(--provenance "$previous_provenance" "$INPUT_PROVENANCE")
 else
-  echo "::warning::Previous release input provenance unavailable; skipping feed content comparison."
+  echo "::warning::Previous release input provenance unavailable; required-source health check will fail closed."
 fi
 python3 ../.github/scripts/validate_v41_block_feed_counts.py \
   --previous "$previous_block_stats" --candidate "$BLOCKED_STATS_INPUT" \
@@ -50,4 +50,18 @@ printf '%s  %s\n' "$expected" "$RUNNER_TEMP/previous-geoip.dat" | sha256sum -c -
 python3 ../.github/scripts/validate_v41_publication_bounds.py \
   --candidate "$V41_OUTPUT_FILE" --reference "$RUNNER_TEMP/previous-geoip.dat" \
   --reviewed-sha256 "$REVIEWED_SHA" | tee -a "$GITHUB_STEP_SUMMARY"
+for name in "$RU_PREFIX_INPUT" "$RIR_RUKZBY_PREFIX_INPUT"; do
+  curl --fail --location --silent --show-error --proto '=https' --proto-redir '=https' \
+    --connect-timeout 15 --max-time 90 --max-filesize 67108864 \
+    "https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/${ref}/${name}" -o "$RUNNER_TEMP/previous-${name}"
+done
+python3 ../.github/scripts/validate_v41_priority_loss.py \
+  --candidate-dat "$V41_OUTPUT_FILE" --priority-asns ../.github/data/v41-priority-asns.txt \
+  --manifest "$V41_MANIFEST" --company-prefixes "$COMPANY_ASN_PREFIXES" \
+  --previous-origins "$RUNNER_TEMP/previous-${RU_PREFIX_INPUT}" --candidate-origins "$RU_PREFIX_INPUT" \
+  --previous-rir "$RUNNER_TEMP/previous-${RIR_RUKZBY_PREFIX_INPUT}" --candidate-rir "$RIR_RUKZBY_PREFIX_INPUT" \
+  --reviewed-sha256 "$REVIEWED_SHA" | tee -a "$GITHUB_STEP_SUMMARY"
+python3 ../.github/scripts/validate_v41_source_health.py \
+  --previous "$previous_provenance" --candidate "$INPUT_PROVENANCE" --manifest "$V41_MANIFEST" \
+  --dat "$V41_OUTPUT_FILE" | tee -a "$GITHUB_STEP_SUMMARY"
 printf 'PREVIOUS_RELEASE_SHA=%s\n' "$ref" >> "$GITHUB_ENV"

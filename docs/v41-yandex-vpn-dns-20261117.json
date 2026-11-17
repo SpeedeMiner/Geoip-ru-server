@@ -1,0 +1,706 @@
+{
+  "schema": 1,
+  "date": "2026-11-17",
+  "scope": "Explicit public IPv4 controls and DNS-only leads; no review CIDR scanned",
+  "resolver_address": "77.88.8.8",
+  "review_cidrs": [
+    "156.224.80.0/24",
+    "156.241.186.0/24",
+    "177.29.246.0/24",
+    "177.122.107.0/24",
+    "177.122.160.0/24",
+    "177.166.21.0/24"
+  ],
+  "review_matches": [],
+  "runs": [
+    {
+      "run": 44051503416,
+      "artifact": 14314555350,
+      "zip_sha256": "9217529c7afd304dec6186f606d8f9223de98b2deaf267f583ae76e50dd3943a",
+      "commit": "01e0009891d6626f33b93179d9efb899088bfc2f",
+      "result": {
+        "scope": "public controls only; not the six review CIDRs",
+        "selected_source": "vpnobratno",
+        "transport": "IPv4",
+        "observations": [
+          {
+            "OBSERVED_AT": "2026-11-17T09:00:57Z",
+            "TARGET_ID": "cdn77-demo",
+            "TARGET_DOMAIN": "1906714720.rsc.cdn77.org",
+            "TARGET_IP": "121.127.45.82",
+            "EXPECTED_PREFIX": "121.127.45.0/24",
+            "TARGET_PORT": 443,
+            "DNS_RESULT": "DNS_ERROR",
+            "DNS_A_ADDRESSES": [],
+            "DNS_AAAA_RESULT": "DNS_ERROR",
+            "DNS_AAAA_ADDRESSES": [],
+            "DNS_MATCHES_TARGET": null,
+            "TCP_RESULT": "CONNECTED",
+            "TLS_RESULT": "VERIFIED",
+            "HTTPS_RESULT": "HTTP_RESPONSE",
+            "HTTP_STATUS": 200,
+            "EXIT_COUNTRY": "RU",
+            "EXIT_ASN": 12714,
+            "IPV6_TRANSPORT": "NOT_TESTED_TUNNEL_IPV4_ONLY",
+            "DNS_RESOLVER": "yandex-basic-doh",
+            "DNS_RESOLVER_IPV4": "77.88.8.8"
+          },
+          {
+            "OBSERVED_AT": "2026-11-17T09:00:59Z",
+            "TARGET_ID": "cdnvideo-player-host",
+            "TARGET_DOMAIN": "playercdn.cdnvideo.ru",
+            "TARGET_IP": "151.236.94.32",
+            "EXPECTED_PREFIX": "151.236.94.0/24",
+            "TARGET_PORT": 443,
+            "DNS_RESULT": "DNS_ERROR",
+            "DNS_A_ADDRESSES": [],
+            "DNS_AAAA_RESULT": "DNS_ERROR",
+            "DNS_AAAA_ADDRESSES": [],
+            "DNS_MATCHES_TARGET": null,
+            "TCP_RESULT": "CONNECTED",
+            "TLS_RESULT": "VERIFIED",
+            "HTTPS_RESULT": "HTTP_RESPONSE",
+            "HTTP_STATUS": 200,
+            "EXIT_COUNTRY": "RU",
+            "EXIT_ASN": 12714,
+            "IPV6_TRANSPORT": "NOT_TESTED_TUNNEL_IPV4_ONLY",
+            "DNS_RESOLVER": "yandex-basic-doh",
+            "DNS_RESOLVER_IPV4": "77.88.8.8"
+          }
+        ],
+        "connection_attempts": 1,
+        "successful_ru_exits": 1,
+        "target_measurements": 2,
+        "usable_ru_openvpn_servers_discovered": 6,
+        "targets_not_tested_count": 0,
+        "requested_successful_ru_exits": 1,
+        "connection_counts": {
+          "connected_ru_exit": 1,
+          "selected": 1
+        }
+      }
+    },
+    {
+      "run": 44051953362,
+      "artifact": 14313414247,
+      "zip_sha256": "b36fc449ccf3b02ff77ad5b5e2614976436d423583416b1e7c75312ef2e9f703",
+      "commit": "34cceb7b682ebad0862fa2b8f76c1322b1c72b9d",
+      "result": {
+        "scope": "public controls only; not the six review CIDRs",
+        "selected_source": "vpnobratno",
+        "transport": "IPv4",
+        "observations": [
+          {
+            "OBSERVED_AT": "2026-11-17T09:04:14Z",
+            "TARGET_ID": "cdn77-demo",
+            "TARGET_DOMAIN": "1906714720.rsc.cdn77.org",
+            "TARGET_IP": "121.127.45.82",
+            "EXPECTED_PREFIX": "121.127.45.0/24",
+            "TARGET_PORT": 443,
+            "DNS_RESULT": "DNS_ANSWER",
+            "DNS_A_ADDRESSES": [
+              "121.127.45.82"
+            ],
+            "DNS_AAAA_RESULT": "DNS_ANSWER",
+            "DNS_AAAA_ADDRESSES": [
+              "2a02:6ea0:f700::2"
+            ],
+            "DNS_MATCHES_TARGET": true,
+            "TCP_RESULT": "CONNECTED",
+            "TLS_RESULT": "VERIFIED",
+            "HTTPS_RESULT": "HTTP_RESPONSE",
+            "HTTP_STATUS": 200,
+            "EXIT_COUNTRY": "RU",
+            "EXIT_ASN": 12714,
+            "IPV6_TRANSPORT": "NOT_TESTED_TUNNEL_IPV4_ONLY",
+            "DNS_RESOLVER": "yandex-basic-udp",
+            "DNS_RESOLVER_IPV4": "77.88.8.8"
+          },
+          {
+            "OBSERVED_AT": "2026-11-17T09:04:16Z",
+            "TARGET_ID": "cdnvideo-player-host",
+            "TARGET_DOMAIN": "playercdn.cdnvideo.ru",
+            "TARGET_IP": "151.236.94.32",
+            "EXPECTED_PREFIX": "151.236.94.0/24",
+            "TARGET_PORT": 443,
+            "DNS_RESULT": "DNS_ANSWER",
+            "DNS_A_ADDRESSES": [
+              "151.236.112.224"
+            ],
+            "DNS_AAAA_RESULT": "DNS_NO_ANSWER",
+            "DNS_AAAA_ADDRESSES": [],
+            "DNS_MATCHES_TARGET": false,
+            "TCP_RESULT": "CONNECTED",
+            "TLS_RESULT": "VERIFIED",
+            "HTTPS_RESULT": "HTTP_RESPONSE",
+            "HTTP_STATUS": 200,
+            "EXIT_COUNTRY": "RU",
+            "EXIT_ASN": 12714,
+            "IPV6_TRANSPORT": "NOT_TESTED_TUNNEL_IPV4_ONLY",
+            "DNS_RESOLVER": "yandex-basic-udp",
+            "DNS_RESOLVER_IPV4": "77.88.8.8"
+          }
+        ],
+        "connection_attempts": 1,
+        "successful_ru_exits": 1,
+        "target_measurements": 2,
+        "usable_ru_openvpn_servers_discovered": 6,
+        "targets_not_tested_count": 0,
+        "requested_successful_ru_exits": 1,
+        "connection_counts": {
+          "connected_ru_exit": 1,
+          "selected": 1
+        },
+        "dns_only": [
+          {
+            "A": [
+              "38.58.178.141"
+            ],
+            "AAAA": [],
+            "AAAA_STATUS": "DNS_NO_ANSWER",
+            "A_STATUS": "DNS_ANSWER",
+            "DNS_RESOLVER": "yandex-basic-udp",
+            "EXIT_ASN": 12714,
+            "EXIT_COUNTRY": "RU",
+            "HOST": "link4bd.com",
+            "TRANSPORT_TESTED": false
+          },
+          {
+            "A": [],
+            "AAAA": [],
+            "AAAA_STATUS": "DNS_NXDOMAIN",
+            "A_STATUS": "DNS_NXDOMAIN",
+            "DNS_RESOLVER": "yandex-basic-udp",
+            "EXIT_ASN": 12714,
+            "EXIT_COUNTRY": "RU",
+            "HOST": "888venturesllc.com",
+            "TRANSPORT_TESTED": false
+          },
+          {
+            "A": [
+              "103.129.252.43"
+            ],
+            "AAAA": [],
+            "AAAA_STATUS": "DNS_NO_ANSWER",
+            "A_STATUS": "DNS_ANSWER",
+            "DNS_RESOLVER": "yandex-basic-udp",
+            "EXIT_ASN": 12714,
+            "EXIT_COUNTRY": "RU",
+            "HOST": "163mx00.mxmail.netease.com",
+            "TRANSPORT_TESTED": false
+          },
+          {
+            "A": [
+              "47.251.3.127",
+              "47.254.24.42"
+            ],
+            "AAAA": [],
+            "AAAA_STATUS": "DNS_NO_ANSWER",
+            "A_STATUS": "DNS_ANSWER",
+            "DNS_RESOLVER": "yandex-basic-udp",
+            "EXIT_ASN": 12714,
+            "EXIT_COUNTRY": "RU",
+            "HOST": "163mx01.mxmail.netease.com",
+            "TRANSPORT_TESTED": false
+          },
+          {
+            "A": [
+              "47.251.3.127",
+              "47.254.24.42"
+            ],
+            "AAAA": [],
+            "AAAA_STATUS": "DNS_NO_ANSWER",
+            "A_STATUS": "DNS_ANSWER",
+            "DNS_RESOLVER": "yandex-basic-udp",
+            "EXIT_ASN": 12714,
+            "EXIT_COUNTRY": "RU",
+            "HOST": "163mx02.mxmail.netease.com",
+            "TRANSPORT_TESTED": false
+          },
+          {
+            "A": [
+              "47.251.3.127",
+              "47.254.24.42"
+            ],
+            "AAAA": [],
+            "AAAA_STATUS": "DNS_NO_ANSWER",
+            "A_STATUS": "DNS_ANSWER",
+            "DNS_RESOLVER": "yandex-basic-udp",
+            "EXIT_ASN": 12714,
+            "EXIT_COUNTRY": "RU",
+            "HOST": "163mx03.mxmail.netease.com",
+            "TRANSPORT_TESTED": false
+          },
+          {
+            "A": [
+              "103.129.252.65"
+            ],
+            "AAAA": [
+              "240e:938:a07:6:0:14:20:13",
+              "240e:938:a07:6:0:14:203:54"
+            ],
+            "AAAA_STATUS": "DNS_ANSWER",
+            "A_STATUS": "DNS_ANSWER",
+            "DNS_RESOLVER": "yandex-basic-udp",
+            "EXIT_ASN": 12714,
+            "EXIT_COUNTRY": "RU",
+            "HOST": "yeahmx00.mxmail.netease.com",
+            "TRANSPORT_TESTED": false
+          },
+          {
+            "A": [
+              "103.129.252.65",
+              "154.18.236.100"
+            ],
+            "AAAA": [
+              "240e:938:a07:6:0:14:20:13",
+              "240e:938:a07:6:0:14:203:54"
+            ],
+            "AAAA_STATUS": "DNS_ANSWER",
+            "A_STATUS": "DNS_ANSWER",
+            "DNS_RESOLVER": "yandex-basic-udp",
+            "EXIT_ASN": 12714,
+            "EXIT_COUNTRY": "RU",
+            "HOST": "yeahmx01.mxmail.netease.com",
+            "TRANSPORT_TESTED": false
+          }
+        ]
+      }
+    },
+    {
+      "run": 44052454961,
+      "artifact": 14315360429,
+      "zip_sha256": "17bd2edc612071514fb04faa6ee8369a5241633c71c315b6760c637fcaa3cc4a",
+      "commit": "aa11801c24fb30d97e781215767d6b3645566cc2",
+      "result": {
+        "scope": "public controls only; not the six review CIDRs",
+        "selected_source": "vpnobratno",
+        "transport": "IPv4",
+        "observations": [
+          {
+            "OBSERVED_AT": "2026-11-17T09:06:57Z",
+            "TARGET_ID": "cdn77-demo",
+            "TARGET_DOMAIN": "1906714720.rsc.cdn77.org",
+            "TARGET_IP": "121.127.45.82",
+            "EXPECTED_PREFIX": "121.127.45.0/24",
+            "TARGET_PORT": 443,
+            "DNS_RESULT": "DNS_ANSWER",
+            "DNS_A_ADDRESSES": [
+              "121.127.45.82"
+            ],
+            "DNS_AAAA_RESULT": "DNS_ANSWER",
+            "DNS_AAAA_ADDRESSES": [
+              "2a02:6ea0:f700::2"
+            ],
+            "DNS_MATCHES_TARGET": true,
+            "TCP_RESULT": "CONNECTED",
+            "TLS_RESULT": "VERIFIED",
+            "HTTPS_RESULT": "HTTP_RESPONSE",
+            "HTTP_STATUS": 200,
+            "EXIT_COUNTRY": "RU",
+            "EXIT_ASN": 6863,
+            "IPV6_TRANSPORT": "NOT_TESTED_TUNNEL_IPV4_ONLY",
+            "DNS_RESOLVER": "yandex-basic-udp",
+            "DNS_RESOLVER_IPV4": "77.88.8.8"
+          },
+          {
+            "OBSERVED_AT": "2026-11-17T09:06:58Z",
+            "TARGET_ID": "cdnvideo-player-host",
+            "TARGET_DOMAIN": "playercdn.cdnvideo.ru",
+            "TARGET_IP": "151.236.112.224",
+            "EXPECTED_PREFIX": "151.236.112.0/24",
+            "TARGET_PORT": 443,
+            "DNS_RESULT": "DNS_ANSWER",
+            "DNS_A_ADDRESSES": [
+              "151.236.65.96"
+            ],
+            "DNS_AAAA_RESULT": "DNS_NO_ANSWER",
+            "DNS_AAAA_ADDRESSES": [],
+            "DNS_MATCHES_TARGET": false,
+            "TCP_RESULT": "CONNECTED",
+            "TLS_RESULT": "VERIFIED",
+            "HTTPS_RESULT": "HTTP_RESPONSE",
+            "HTTP_STATUS": 200,
+            "EXIT_COUNTRY": "RU",
+            "EXIT_ASN": 6863,
+            "IPV6_TRANSPORT": "NOT_TESTED_TUNNEL_IPV4_ONLY",
+            "DNS_RESOLVER": "yandex-basic-udp",
+            "DNS_RESOLVER_IPV4": "77.88.8.8"
+          }
+        ],
+        "connection_attempts": 2,
+        "successful_ru_exits": 1,
+        "target_measurements": 2,
+        "usable_ru_openvpn_servers_discovered": 6,
+        "targets_not_tested_count": 0,
+        "requested_successful_ru_exits": 1,
+        "connection_counts": {
+          "connect_or_verify_failed": 1,
+          "connected_ru_exit": 1,
+          "selected": 2
+        },
+        "dns_only": [
+          {
+            "A": [
+              "38.58.178.141"
+            ],
+            "AAAA": [],
+            "AAAA_STATUS": "DNS_NO_ANSWER",
+            "A_STATUS": "DNS_ANSWER",
+            "DNS_RESOLVER": "yandex-basic-udp",
+            "EXIT_ASN": 6863,
+            "EXIT_COUNTRY": "RU",
+            "HOST": "link4bd.com",
+            "TRANSPORT_TESTED": false
+          },
+          {
+            "A": [],
+            "AAAA": [],
+            "AAAA_STATUS": "DNS_NXDOMAIN",
+            "A_STATUS": "DNS_NXDOMAIN",
+            "DNS_RESOLVER": "yandex-basic-udp",
+            "EXIT_ASN": 6863,
+            "EXIT_COUNTRY": "RU",
+            "HOST": "888venturesllc.com",
+            "TRANSPORT_TESTED": false
+          },
+          {
+            "A": [
+              "103.129.252.43"
+            ],
+            "AAAA": [],
+            "AAAA_STATUS": "DNS_NO_ANSWER",
+            "A_STATUS": "DNS_ANSWER",
+            "DNS_RESOLVER": "yandex-basic-udp",
+            "EXIT_ASN": 6863,
+            "EXIT_COUNTRY": "RU",
+            "HOST": "163mx00.mxmail.netease.com",
+            "TRANSPORT_TESTED": false
+          },
+          {
+            "A": [
+              "47.251.3.127",
+              "47.254.24.42"
+            ],
+            "AAAA": [],
+            "AAAA_STATUS": "DNS_NO_ANSWER",
+            "A_STATUS": "DNS_ANSWER",
+            "DNS_RESOLVER": "yandex-basic-udp",
+            "EXIT_ASN": 6863,
+            "EXIT_COUNTRY": "RU",
+            "HOST": "163mx01.mxmail.netease.com",
+            "TRANSPORT_TESTED": false
+          },
+          {
+            "A": [
+              "47.251.3.127",
+              "47.254.24.42"
+            ],
+            "AAAA": [],
+            "AAAA_STATUS": "DNS_NO_ANSWER",
+            "A_STATUS": "DNS_ANSWER",
+            "DNS_RESOLVER": "yandex-basic-udp",
+            "EXIT_ASN": 6863,
+            "EXIT_COUNTRY": "RU",
+            "HOST": "163mx02.mxmail.netease.com",
+            "TRANSPORT_TESTED": false
+          },
+          {
+            "A": [
+              "47.251.3.127",
+              "47.254.24.42"
+            ],
+            "AAAA": [],
+            "AAAA_STATUS": "DNS_NO_ANSWER",
+            "A_STATUS": "DNS_ANSWER",
+            "DNS_RESOLVER": "yandex-basic-udp",
+            "EXIT_ASN": 6863,
+            "EXIT_COUNTRY": "RU",
+            "HOST": "163mx03.mxmail.netease.com",
+            "TRANSPORT_TESTED": false
+          },
+          {
+            "A": [
+              "103.129.252.65"
+            ],
+            "AAAA": [
+              "240e:938:a07:6:0:14:20:13",
+              "240e:938:a07:6:0:14:203:54"
+            ],
+            "AAAA_STATUS": "DNS_ANSWER",
+            "A_STATUS": "DNS_ANSWER",
+            "DNS_RESOLVER": "yandex-basic-udp",
+            "EXIT_ASN": 6863,
+            "EXIT_COUNTRY": "RU",
+            "HOST": "yeahmx00.mxmail.netease.com",
+            "TRANSPORT_TESTED": false
+          },
+          {
+            "A": [
+              "103.129.252.65",
+              "154.18.236.100"
+            ],
+            "AAAA": [
+              "240e:938:a07:6:0:14:20:13",
+              "240e:938:a07:6:0:14:203:54"
+            ],
+            "AAAA_STATUS": "DNS_ANSWER",
+            "A_STATUS": "DNS_ANSWER",
+            "DNS_RESOLVER": "yandex-basic-udp",
+            "EXIT_ASN": 6863,
+            "EXIT_COUNTRY": "RU",
+            "HOST": "yeahmx01.mxmail.netease.com",
+            "TRANSPORT_TESTED": false
+          }
+        ]
+      }
+    },
+    {
+      "run": 44052671994,
+      "artifact": 14314596251,
+      "zip_sha256": "c8520451b92e9b9bdba293198a191be20fcde629212e7a018e00f27fc87f211c",
+      "commit": "bcaf8490fe15da29ba6cd169cd859e238364f791",
+      "result": {
+        "scope": "public controls only; not the six review CIDRs",
+        "selected_source": "vpnobratno",
+        "transport": "IPv4",
+        "observations": [
+          {
+            "OBSERVED_AT": "2026-11-17T09:08:48Z",
+            "TARGET_ID": "cdn77-demo",
+            "TARGET_DOMAIN": "1906714720.rsc.cdn77.org",
+            "TARGET_IP": "121.127.45.82",
+            "EXPECTED_PREFIX": "121.127.45.0/24",
+            "TARGET_PORT": 443,
+            "DNS_RESULT": "DNS_ANSWER",
+            "DNS_A_ADDRESSES": [
+              "121.127.45.81"
+            ],
+            "DNS_AAAA_RESULT": "DNS_ANSWER",
+            "DNS_AAAA_ADDRESSES": [
+              "2a02:6ea0:f700::2"
+            ],
+            "DNS_MATCHES_TARGET": false,
+            "TCP_RESULT": "CONNECTED",
+            "TLS_RESULT": "VERIFIED",
+            "HTTPS_RESULT": "HTTP_RESPONSE",
+            "HTTP_STATUS": 200,
+            "EXIT_COUNTRY": "RU",
+            "EXIT_ASN": 50512,
+            "IPV6_TRANSPORT": "NOT_TESTED_TUNNEL_IPV4_ONLY",
+            "DNS_RESOLVER": "yandex-basic-dot",
+            "DNS_RESOLVER_IPV4": "77.88.8.8",
+            "DNS_DOT_DIAGNOSTICS": []
+          },
+          {
+            "OBSERVED_AT": "2026-11-17T09:08:52Z",
+            "TARGET_ID": "cdnvideo-player-host",
+            "TARGET_DOMAIN": "playercdn.cdnvideo.ru",
+            "TARGET_IP": "151.236.112.224",
+            "EXPECTED_PREFIX": "151.236.112.0/24",
+            "TARGET_PORT": 443,
+            "DNS_RESULT": "DNS_ANSWER",
+            "DNS_A_ADDRESSES": [
+              "185.141.224.160"
+            ],
+            "DNS_AAAA_RESULT": "DNS_NO_ANSWER",
+            "DNS_AAAA_ADDRESSES": [],
+            "DNS_MATCHES_TARGET": false,
+            "TCP_RESULT": "CONNECTED",
+            "TLS_RESULT": "VERIFIED",
+            "HTTPS_RESULT": "HTTP_RESPONSE",
+            "HTTP_STATUS": 200,
+            "EXIT_COUNTRY": "RU",
+            "EXIT_ASN": 50512,
+            "IPV6_TRANSPORT": "NOT_TESTED_TUNNEL_IPV4_ONLY",
+            "DNS_RESOLVER": "yandex-basic-dot",
+            "DNS_RESOLVER_IPV4": "77.88.8.8",
+            "DNS_DOT_DIAGNOSTICS": []
+          }
+        ],
+        "connection_attempts": 1,
+        "successful_ru_exits": 1,
+        "target_measurements": 2,
+        "usable_ru_openvpn_servers_discovered": 6,
+        "targets_not_tested_count": 0,
+        "requested_successful_ru_exits": 1,
+        "connection_counts": {
+          "connected_ru_exit": 1,
+          "selected": 1
+        },
+        "dns_only": []
+      }
+    },
+    {
+      "run": 44052878215,
+      "artifact": 14315080629,
+      "zip_sha256": "fe743e355bb54ddc9390cb471371bb0ae34f8a444b80783912610157d0c002f9",
+      "commit": "54f9da8a434be634d39ebe7c15c1f4b31ac1dc8d",
+      "result": {
+        "scope": "public controls only; not the six review CIDRs",
+        "selected_source": "vpnobratno",
+        "transport": "IPv4",
+        "observations": [
+          {
+            "OBSERVED_AT": "2026-11-17T09:09:45Z",
+            "TARGET_ID": "cdn77-demo",
+            "TARGET_DOMAIN": "1906714720.rsc.cdn77.org",
+            "TARGET_IP": "121.127.45.82",
+            "EXPECTED_PREFIX": "121.127.45.0/24",
+            "TARGET_PORT": 443,
+            "DNS_RESULT": "DNS_ANSWER",
+            "DNS_A_ADDRESSES": [
+              "121.127.45.81"
+            ],
+            "DNS_AAAA_RESULT": "DNS_ANSWER",
+            "DNS_AAAA_ADDRESSES": [
+              "2a02:6ea0:f700::2"
+            ],
+            "DNS_MATCHES_TARGET": false,
+            "TCP_RESULT": "CONNECTED",
+            "TLS_RESULT": "VERIFIED",
+            "HTTPS_RESULT": "HTTP_RESPONSE",
+            "HTTP_STATUS": 200,
+            "EXIT_COUNTRY": "RU",
+            "EXIT_ASN": 50512,
+            "IPV6_TRANSPORT": "NOT_TESTED_TUNNEL_IPV4_ONLY",
+            "DNS_RESOLVER": "yandex-basic-udp",
+            "DNS_RESOLVER_IPV4": "77.88.8.8"
+          },
+          {
+            "OBSERVED_AT": "2026-11-17T09:09:47Z",
+            "TARGET_ID": "cdnvideo-player-host",
+            "TARGET_DOMAIN": "playercdn.cdnvideo.ru",
+            "TARGET_IP": "151.236.65.96",
+            "EXPECTED_PREFIX": "151.236.65.0/24",
+            "TARGET_PORT": 443,
+            "DNS_RESULT": "DNS_ANSWER",
+            "DNS_A_ADDRESSES": [
+              "185.141.224.160"
+            ],
+            "DNS_AAAA_RESULT": "DNS_NO_ANSWER",
+            "DNS_AAAA_ADDRESSES": [],
+            "DNS_MATCHES_TARGET": false,
+            "TCP_RESULT": "CONNECTED",
+            "TLS_RESULT": "VERIFIED",
+            "HTTPS_RESULT": "HTTP_RESPONSE",
+            "HTTP_STATUS": 200,
+            "EXIT_COUNTRY": "RU",
+            "EXIT_ASN": 50512,
+            "IPV6_TRANSPORT": "NOT_TESTED_TUNNEL_IPV4_ONLY",
+            "DNS_RESOLVER": "yandex-basic-udp",
+            "DNS_RESOLVER_IPV4": "77.88.8.8"
+          }
+        ],
+        "connection_attempts": 1,
+        "successful_ru_exits": 1,
+        "target_measurements": 2,
+        "usable_ru_openvpn_servers_discovered": 6,
+        "targets_not_tested_count": 0,
+        "requested_successful_ru_exits": 1,
+        "connection_counts": {
+          "connected_ru_exit": 1,
+          "selected": 1
+        },
+        "dns_only": [
+          {
+            "A": [],
+            "AAAA": [],
+            "AAAA_STATUS": "DNS_NXDOMAIN",
+            "A_STATUS": "DNS_NXDOMAIN",
+            "DNS_RESOLVER": "yandex-basic-udp",
+            "EXIT_ASN": 50512,
+            "EXIT_COUNTRY": "RU",
+            "HOST": "lomai.cfd",
+            "TRANSPORT_TESTED": false
+          },
+          {
+            "A": [
+              "104.21.85.82",
+              "172.67.203.219"
+            ],
+            "AAAA": [
+              "2606:4700:3036::6815:5552",
+              "2606:4700:3037::ac43:cbdb"
+            ],
+            "AAAA_STATUS": "DNS_ANSWER",
+            "A_STATUS": "DNS_ANSWER",
+            "DNS_RESOLVER": "yandex-basic-udp",
+            "EXIT_ASN": 50512,
+            "EXIT_COUNTRY": "RU",
+            "HOST": "rndesk.com",
+            "TRANSPORT_TESTED": false
+          },
+          {
+            "A": [],
+            "AAAA": [],
+            "AAAA_STATUS": "DNS_NXDOMAIN",
+            "A_STATUS": "DNS_NXDOMAIN",
+            "DNS_RESOLVER": "yandex-basic-udp",
+            "EXIT_ASN": 50512,
+            "EXIT_COUNTRY": "RU",
+            "HOST": "ecufoam.com",
+            "TRANSPORT_TESTED": false
+          },
+          {
+            "A": [],
+            "AAAA": [],
+            "AAAA_STATUS": "DNS_NXDOMAIN",
+            "A_STATUS": "DNS_NXDOMAIN",
+            "DNS_RESOLVER": "yandex-basic-udp",
+            "EXIT_ASN": 50512,
+            "EXIT_COUNTRY": "RU",
+            "HOST": "felor.cfd",
+            "TRANSPORT_TESTED": false
+          },
+          {
+            "A": [],
+            "AAAA": [],
+            "AAAA_STATUS": "DNS_NXDOMAIN",
+            "A_STATUS": "DNS_NXDOMAIN",
+            "DNS_RESOLVER": "yandex-basic-udp",
+            "EXIT_ASN": 50512,
+            "EXIT_COUNTRY": "RU",
+            "HOST": "ka-jo.cfd",
+            "TRANSPORT_TESTED": false
+          },
+          {
+            "A": [],
+            "AAAA": [],
+            "AAAA_STATUS": "DNS_NXDOMAIN",
+            "A_STATUS": "DNS_NXDOMAIN",
+            "DNS_RESOLVER": "yandex-basic-udp",
+            "EXIT_ASN": 50512,
+            "EXIT_COUNTRY": "RU",
+            "HOST": "po-ri.cfd",
+            "TRANSPORT_TESTED": false
+          },
+          {
+            "A": [
+              "38.58.178.141"
+            ],
+            "AAAA": [],
+            "AAAA_STATUS": "DNS_NO_ANSWER",
+            "A_STATUS": "DNS_ANSWER",
+            "DNS_RESOLVER": "yandex-basic-udp",
+            "EXIT_ASN": 50512,
+            "EXIT_COUNTRY": "RU",
+            "HOST": "www.link4bd.com",
+            "TRANSPORT_TESTED": false
+          },
+          {
+            "A": [],
+            "AAAA": [],
+            "AAAA_STATUS": "DNS_NXDOMAIN",
+            "A_STATUS": "DNS_NXDOMAIN",
+            "DNS_RESOLVER": "yandex-basic-udp",
+            "EXIT_ASN": 50512,
+            "EXIT_COUNTRY": "RU",
+            "HOST": "www.888venturesllc.com",
+            "TRANSPORT_TESTED": false
+          }
+        ]
+      }
+    }
+  ]
+}

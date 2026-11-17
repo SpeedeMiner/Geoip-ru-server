@@ -10,7 +10,7 @@ from pathlib import Path
 
 OUTPUT_FIELDS = (
     "PREFIX", "ARCHIVED_BGP_ORIGIN_ASNS", "ARCHIVED_INVALID_RPKI_ORIGINS",
-    "ARCHIVED_RPKI_QUERY_STATUS", "EXTERNAL_NLRI_SCOPE_RELATION",
+    "CURRENT_RPKI_QUERY_STATUS", "EXTERNAL_NLRI_SCOPE_RELATION",
     "EXTERNAL_OBSERVED_NLRI", "EXTERNAL_EXACT_ORIGIN_ASNS",
     "EXTERNAL_EXACT_RPKI_STATUS", "EXTERNAL_CHILD_ROUTE_NOTES",
     "RECONCILIATION_CLASS", "ASSESSMENT", "REQUIRED_NEXT_ACTION",
@@ -72,11 +72,8 @@ def build_reconciliation(evidence_dir: Path, seed_path: Path, output_path: Path,
     }
     if expected_count is not None and len(seed) != expected_count:
         raise ValueError(f"archived invalid seed scope changed: expected {expected_count}, got {len(seed)}")
-    if not set(seed) <= invalid_prefixes:
-        raise ValueError(
-            f"curated reconciliation inventory differs from archive; "
-            f"historical prefixes missing from invalid triage={sorted(set(seed)-invalid_prefixes)}"
-        )
+    if not set(seed) <= set(triage) or not set(seed) <= set(worklist):
+        raise ValueError("historical reconciliation prefix missing from triage or worklist")
 
     current_by_prefix = defaultdict(set)
     for (prefix, asn), row in rpki.items():
@@ -90,11 +87,14 @@ def build_reconciliation(evidence_dir: Path, seed_path: Path, output_path: Path,
         historical = split_set(row.get("ARCHIVED_INVALID_RPKI_ORIGINS", ""))
         if not historical or any(not ASN_RE.fullmatch(asn) for asn in historical):
             raise ValueError(f"missing or invalid archived seed origin for {prefix}")
-        if not historical <= current_by_prefix[prefix]:
-            raise ValueError(
-                f"archived invalid RPKI pair missing or changed for {prefix}: "
-                f"{sorted(historical-current_by_prefix[prefix])}"
-            )
+        for asn in historical:
+            row = rpki.get((prefix, asn))
+            if row is None:
+                raise ValueError(f"archived invalid RPKI pair missing for {prefix}: {asn}")
+            query = row.get("QUERY_STATUS", "").strip()
+            status = row.get("RPKI_STATUS", "").strip()
+            if not query or (query == "OK" and status not in {"valid", "unknown", "invalid_asn", "invalid_length"}) or (query != "OK" and status):
+                raise ValueError(f"invalid current RPKI query result for {prefix}: {asn}")
         historical_by_prefix[prefix] = historical
 
     def prefix_key(prefix):
@@ -133,6 +133,8 @@ def build_reconciliation(evidence_dir: Path, seed_path: Path, output_path: Path,
         wl = worklist[prefix]
         invalid_asns = historical_by_prefix[prefix]
         origins = split_set(triage[prefix].get("GLOBAL_BGP_ORIGIN_ASNS", ""))
+        if triage[prefix].get("STATUS") != "REVIEW" or wl.get("STATUS") != "REVIEW" or not invalid_asns <= origins:
+            raise ValueError(f"non-REVIEW or historical origin absent from BGP for {prefix}")
 
         spot = spots.get(prefix)
         if spot is None or wl.get("EXTERNAL_SPOT_CHECK_STATUS") != "CHECKED_2026-11-10":
@@ -161,17 +163,18 @@ def build_reconciliation(evidence_dir: Path, seed_path: Path, output_path: Path,
         if not assessment or not action:
             raise ValueError(f"missing analyst assessment/action for {prefix}")
 
-        # Preserve the original invalid pair statuses; do not infer current status from a
-        # related more-specific route or from another origin's ROA.
-        archived_query = ";".join(
-            f"{asn}:{rpki[(prefix, asn)]['RPKI_STATUS']}"
+        # Each historical invalid origin has its own current result. A network
+        # error is retained explicitly and never interpreted as a ROA verdict.
+        current_query = ";".join(
+            f"{asn}:" + (f"OK:{rpki[(prefix, asn)]['RPKI_STATUS']}" if rpki[(prefix, asn)]['QUERY_STATUS'] == "OK"
+                         else f"ERROR:{rpki[(prefix, asn)]['QUERY_STATUS']}")
             for asn in sorted(invalid_asns)
         )
         output.append({
             "PREFIX": prefix,
             "ARCHIVED_BGP_ORIGIN_ASNS": "|".join(sorted(origins)),
             "ARCHIVED_INVALID_RPKI_ORIGINS": "|".join(sorted(invalid_asns)),
-            "ARCHIVED_RPKI_QUERY_STATUS": archived_query,
+            "CURRENT_RPKI_QUERY_STATUS": current_query,
             "EXTERNAL_NLRI_SCOPE_RELATION": relation,
             "EXTERNAL_OBSERVED_NLRI": spot.get("OBSERVED_PREFIXES", ""),
             "EXTERNAL_EXACT_ORIGIN_ASNS": "|".join(sorted(exact_origins)),
@@ -210,6 +213,7 @@ def build_reconciliation(evidence_dir: Path, seed_path: Path, output_path: Path,
         f"Rows with more-specific-only observations: {sum(r['EXTERNAL_NLRI_SCOPE_RELATION'] == 'MORE_SPECIFIC_ONLY' for r in output)}",
         "All rows: STATUS=REVIEW",
         "External observations are asynchronous and do not replace a synchronized full-RIB plus VRP refresh.",
+        "Historical invalid origins and current query outcomes are distinct; errors are not ROA verdicts.",
         "A covering or more-specific route's origin/RPKI state is never projected onto the exact priority NLRI.",
         "No DIRECT prefix, company allowlist or production output is changed by this reconciliation.",
     ]
