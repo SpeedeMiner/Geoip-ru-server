@@ -18,8 +18,8 @@ record_source_download() {
   local label="$1" output="$2" url="$3" status="$4"
   local digest="-" bytes="0"
   if [[ "$status" == "downloaded" ]]; then
-    digest="$(sha256sum "$output" | awk '{print $1}')"
-    bytes="$(wc -c < "$output" | tr -d ' ')"
+    digest="$(sha256sum "$output" | awk '{print $1}')" || return 1
+    bytes="$(wc -c < "$output" | tr -d ' ')" || return 1
   fi
   printf '%s\t%s\t%s\t%s\t%s\t%s\n' \
     "$label" "$(basename "$output")" "$url" "$digest" "$bytes" "$status" >> "$INPUT_PROVENANCE"
@@ -42,6 +42,12 @@ download_file() {
     "ANTIFILTER SUBNET LIST") check_args=(--antifilter subnet) ;;
     "IANA IPV4 SPECIAL REGISTRY") check_args=(--iana 4) ;;
     "IANA IPV6 SPECIAL REGISTRY") check_args=(--iana 6) ;;
+    "TELEGRAM OFFICIAL CIDRS") check_args=(--telegram) ;;
+    "IPVERSE ASN/BGP ARCHIVE") check_args=(--ipverse) ;;
+    "PINNED V38 APPROVED BLOCKED BASELINE") check_args=(--sha256 df909b12b985b23080075821cedc5e2f73b7b1f89abcd9950293b400ce1e4a5d) ;;
+    "PINNED V38 EXACT IP SOURCE") check_args=(--sha256 c9c0656d0188f4afa740d71332b618d42b5606ab27e7561790f47b588781d1cb) ;;
+    "PINNED V38 RESOLVER SOURCE") check_args=(--sha256 8d8d11605a299da96006df6303a90b08b4ae25d35c1d1a199708cb83f84cdf44) ;;
+    "PINNED V38 SUBNET SOURCE") check_args=(--sha256 2554552742bc0da516a321db66b36fa6cece28c4b3c64b66ff6d12320b33bdb6) ;;
   esac
   rm -f "$tmp"
 
@@ -53,9 +59,12 @@ download_file() {
       --connect-timeout 20 --max-time 180 \
       --retry 4 --retry-all-errors --retry-delay 3 --retry-max-time 240 \
       --output "$tmp" "$url"; then
-      if [[ -s "$tmp" ]] && python3 .github/scripts/validate_v41_download.py "$tmp" "${check_args[@]}"; then
-        mv "$tmp" "$output"
-        record_source_download "$label" "$output" "$url" "downloaded"
+      if [[ -s "$tmp" ]] && python3 .github/scripts/validate_v41_download.py "$tmp" "${check_args[@]}" --as-of "$rir_reference_utc"; then
+        if ! mv -T -- "$tmp" "$output" || ! record_source_download "$label" "$output" "$url" "downloaded"; then
+          rm -f -- "$tmp"
+          echo "::endgroup::"
+          return 1
+        fi
         echo "Downloaded ${label}: $(wc -c < "$output") bytes"
         echo "::endgroup::"
         return 0
@@ -88,6 +97,9 @@ download_optional_file() {
     echo "::warning::Optional source unavailable: ${label}; input provenance status=${status}."
   fi
 }
+
+# Pin one UTC date for mirrors and both registry inventories.
+rir_reference_utc="$(date -u +%F)"
 
 # Resolve each publisher once per run, verify the fetched bytes and record the exact refs.
 python3 .github/scripts/download_v41_upstream_sources.py \
@@ -151,8 +163,6 @@ download_file "IANA IPV6 SPECIAL REGISTRY" "$IANA_V6_CSV" \
 # Extract RU-registered ASNs AND RU-registered IPv4/IPv6 resources from
 # the five authoritative RIR delegated-stat snapshots. IP registration
 # country is a corroborating registry signal, not proof of server location.
-# Evaluate both inventories against the same UTC date, even at midnight.
-rir_reference_utc="$(date -u +%F)"
 python3 .github/scripts/build_v41_rir_legacy_inventory.py "$AFRINIC_STATS" "$APNIC_STATS" "$ARIN_STATS" \
   "$LACNIC_STATS" "$RIPENCC_STATS" "$RU_ASN_REGISTRY" \
   "$RIR_PREFIX_INPUT" "$RIR_STATS" "$BY_KZ_ASN_REGISTRY" --as-of "$rir_reference_utc"
@@ -185,19 +195,15 @@ download_optional_file "ANTIFILTER IPRESOLVE LIST" "$BLOCKED_IPRESOLVE_INPUT" \
 # The baseline is pinned to the exact v38 release commit and SHA-256.
 download_file "PINNED V38 APPROVED BLOCKED BASELINE" "$BLOCKED_BASELINE_INPUT" \
   "https://raw.githubusercontent.com/SpeedeMiner/Geoip-ru-server/3033248ea54cb298bafded25ddcd2805d5f0e7ac/geoip_RU_v38_blocked_ip_exclusions.txt"
-echo "df909b12b985b23080075821cedc5e2f73b7b1f89abcd9950293b400ce1e4a5d  $BLOCKED_BASELINE_INPUT" | sha256sum -c -
 # Historical v38 raw feed snapshots are immutable release assets.
 # Restore *only* proven resolver-derived baseline entries. An unknown
 # old baseline entry retains its hard/exact status.
 download_file "PINNED V38 EXACT IP SOURCE" "$V38_PINNED_IP_INPUT" \
   "https://github.com/SpeedeMiner/Geoip-ru-server/releases/download/latest-geoip-client-v38/antifilter-ip.lst"
-echo "c9c0656d0188f4afa740d71332b618d42b5606ab27e7561790f47b588781d1cb  $V38_PINNED_IP_INPUT" | sha256sum -c -
 download_file "PINNED V38 RESOLVER SOURCE" "$V38_PINNED_IPRESOLVE_INPUT" \
   "https://github.com/SpeedeMiner/Geoip-ru-server/releases/download/latest-geoip-client-v38/antifilter-ipresolve.lst"
-echo "8d8d11605a299da96006df6303a90b08b4ae25d35c1d1a199708cb83f84cdf44  $V38_PINNED_IPRESOLVE_INPUT" | sha256sum -c -
 download_file "PINNED V38 SUBNET SOURCE" "$V38_PINNED_SUBNET_INPUT" \
   "https://github.com/SpeedeMiner/Geoip-ru-server/releases/download/latest-geoip-client-v38/antifilter-subnet.lst"
-echo "2554552742bc0da516a321db66b36fa6cece28c4b3c64b66ff6d12320b33bdb6  $V38_PINNED_SUBNET_INPUT" | sha256sum -c -
 download_file "ANTIFILTER SUBNET LIST" "$BLOCKED_SUBNET_INPUT" \
   "https://antifilter.download/list/subnet.lst"
 # Officially described by the aggregator as /24 summarization of individual

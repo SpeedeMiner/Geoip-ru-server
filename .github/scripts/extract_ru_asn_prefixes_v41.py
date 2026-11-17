@@ -5,6 +5,8 @@ import json
 import pathlib
 import sys
 import tarfile
+from v41_asn_observations import parse_announced_prefixes
+from verify_v41_ipverse_archive import MIN_AGGREGATED_RECORDS
 from v41_static_overrides import read_overrides, unobserved
 
 
@@ -66,25 +68,6 @@ def is_selected_asn(asn, rir_ru_asns, rir_by_kz_asns, company_asns):
     # Country metadata is not an inclusion filter for selected RU/BY/KZ regional ASNs or affiliates.
     return (asn in rir_ru_asns or asn in rir_by_kz_asns
             or (asn in company_asns and asn not in REGIONAL_ONLY_CLASSIFIED_ASNS))
-
-
-def parse_announced_prefixes(prefixes):
-    parsed = []
-    invalid = normalized = 0
-    for family, version in (("ipv4", 4), ("ipv6", 6)):
-        for raw_prefix in prefixes.get(family, []) or []:
-            try:
-                token = str(raw_prefix)
-                network = ipaddress.ip_network(token, strict=False)
-                if network.version != version or network.prefixlen == 0:
-                    invalid += 1
-                    continue
-            except ValueError:
-                invalid += 1
-                continue
-            normalized += ipaddress.ip_address(token.split("/", 1)[0]) != network.network_address
-            parsed.append((family, network))
-    return parsed, invalid, normalized
 
 
 def add_static_prefix_overrides(prefix_origins, overrides):
@@ -305,7 +288,7 @@ missing_static = [prefix for prefix, row in static_overrides.items()
                   if row["asn_number"] not in selected_prefix_origins.get(prefix, set())]
 if missing_static:
     raise SystemExit("Static DIRECT overrides not inserted: " + ", ".join(sorted(missing_static)))
-if archive_json_files < 10000:
+if archive_json_files < MIN_AGGREGATED_RECORDS:
     raise SystemExit(f"ipverse sanity check failed: only {archive_json_files} aggregated.json files")
 if malformed_json:
     raise SystemExit(f"ipverse archive contains {malformed_json} malformed JSON files; refusing partial data")
