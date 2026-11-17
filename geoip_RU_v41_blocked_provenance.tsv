@@ -22849,7 +22849,7 @@ v41-resolver-only-candidates	45.149.14.232/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	45.149.115.114/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	45.149.147.60/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	45.150.10.119/32	IPv4	1	1	0	0	0	0
-v41-resolver-only-candidates	45.150.34.138/32	IPv4	1	1	1	0	0	0
+v41-resolver-only-candidates	45.150.34.138/32	IPv4	1	1	0	0	0	0
 v41-resolver-only-candidates	45.150.36.27/32	IPv4	1	1	0	0	0	0
 v41-resolver-only-candidates	45.150.36.63/32	IPv4	1	1	0	0	0	0
 v41-resolver-only-candidates	45.150.36.66/32	IPv4	1	1	0	0	0	0
@@ -117863,10 +117863,10 @@ v41-resolver-only-candidates	194.156.26.231/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	194.156.65.3/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	194.156.65.86/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	194.156.66.40/32	IPv4	1	0	0	0	0	0
-v41-resolver-only-candidates	194.156.116.63/32	IPv4	1	1	0	0	0	0
-v41-resolver-only-candidates	194.156.117.147/32	IPv4	1	1	0	0	0	0
-v41-resolver-only-candidates	194.156.118.127/32	IPv4	1	1	0	0	0	0
-v41-resolver-only-candidates	194.156.119.4/32	IPv4	1	1	0	0	0	0
+v41-resolver-only-candidates	194.156.116.63/32	IPv4	1	1	0	0	1	0
+v41-resolver-only-candidates	194.156.117.147/32	IPv4	1	1	0	0	1	0
+v41-resolver-only-candidates	194.156.118.127/32	IPv4	1	1	0	0	1	0
+v41-resolver-only-candidates	194.156.119.4/32	IPv4	1	1	0	0	1	0
 v41-resolver-only-candidates	194.156.125.103/32	IPv4	1	1	0	0	0	0
 v41-resolver-only-candidates	194.163.34.43/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	194.163.35.134/32	IPv4	1	0	0	0	0	0
@@ -132005,7 +132005,7 @@ antifilter-ipsum-24-review-only	45.149.14.0/24	IPv4	256	0	0	0	0	0
 antifilter-ipsum-24-review-only	45.149.115.0/24	IPv4	256	0	0	0	0	0
 antifilter-ipsum-24-review-only	45.149.147.0/24	IPv4	256	0	0	0	0	0
 antifilter-ipsum-24-review-only	45.150.10.0/24	IPv4	256	256	0	0	0	0
-antifilter-ipsum-24-review-only	45.150.34.0/24	IPv4	256	240	1	0	0	239
+antifilter-ipsum-24-review-only	45.150.34.0/24	IPv4	256	256	0	0	0	0
 antifilter-ipsum-24-review-only	45.150.36.0/24	IPv4	256	256	0	0	0	0
 antifilter-ipsum-24-review-only	45.150.37.0/24	IPv4	256	256	0	0	0	0
 antifilter-ipsum-24-review-only	45.150.38.0/24	IPv4	256	256	0	0	0	0
@@ -145556,10 +145556,10 @@ antifilter-ipsum-24-review-only	194.154.31.0/24	IPv4	256	0	0	0	0	0
 antifilter-ipsum-24-review-only	194.156.26.0/24	IPv4	256	0	0	0	0	0
 antifilter-ipsum-24-review-only	194.156.65.0/24	IPv4	256	0	0	0	0	0
 antifilter-ipsum-24-review-only	194.156.66.0/24	IPv4	256	0	0	0	0	0
-antifilter-ipsum-24-review-only	194.156.116.0/24	IPv4	256	256	0	0	0	0
-antifilter-ipsum-24-review-only	194.156.117.0/24	IPv4	256	256	0	0	0	0
-antifilter-ipsum-24-review-only	194.156.118.0/24	IPv4	256	256	0	0	0	0
-antifilter-ipsum-24-review-only	194.156.119.0/24	IPv4	256	256	0	0	0	0
+antifilter-ipsum-24-review-only	194.156.116.0/24	IPv4	256	256	0	0	256	0
+antifilter-ipsum-24-review-only	194.156.117.0/24	IPv4	256	256	0	0	256	0
+antifilter-ipsum-24-review-only	194.156.118.0/24	IPv4	256	256	0	0	256	0
+antifilter-ipsum-24-review-only	194.156.119.0/24	IPv4	256	256	0	0	256	0
 antifilter-ipsum-24-review-only	194.156.125.0/24	IPv4	256	256	0	0	0	0
 antifilter-ipsum-24-review-only	194.163.34.0/24	IPv4	256	0	0	0	0	0
 antifilter-ipsum-24-review-only	194.163.41.0/24	IPv4	256	0	0	0	0	0

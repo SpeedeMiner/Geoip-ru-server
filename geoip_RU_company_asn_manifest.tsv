@@ -7,7 +7,7 @@ AS8901	Moscow City	GKU Mosgortelecom (municipal infrastructure)	https://rdap.db.
 AS9049	ER-Telecom	JSC ER-Telecom Holding	https://iptrust.co/tools/asn/country/RU	yes	RU	11	3	yes	no
 AS9123	Timeweb	JSC TIMEWEB	https://iptrust.co/tools/asn/country/RU	yes	RU	356	11	yes	no
 AS12380	Rostelecom	PJSC Rostelecom (LENSVYAZ)	https://rdap.db.ripe.net/autnum/12380	yes	RU	3	0	yes	no
-AS12389	Rostelecom	PJSC Rostelecom	https://bgp.he.net/country/RU	yes	RU	879	32	yes	no
+AS12389	Rostelecom	PJSC Rostelecom	https://bgp.he.net/country/RU	yes	RU	879	33	yes	no
 AS12686	T-Bank	TBANK JSC (Rosbank legacy ASN)	https://bgp.tools/as/12686	yes	RU	4	0	yes	no
 AS12714	MegaFon	PJSC MegaFon	https://asnbase.com/countries/ru	yes	RU	98	2	yes	no
 AS12768	ER-Telecom	JSC ER-Telecom Holding	https://rdap.db.ripe.net/autnum/12768	yes	RU	12	2	yes	no
@@ -25,7 +25,7 @@ AS25513	MGTS	PJSC Moscow City Telephone Network	https://ipcheckerpro.com/asn?cc=
 AS28709	VK/Mail.ru	LLC VK	https://wbdt.ru/AS28709	yes	RU	15	3	yes	no
 AS28812	Rostelecom	PJSC Bashinformsvyaz (Rostelecom subsidiary)	https://rdap.db.ripe.net/autnum/28812	yes	RU	12	1	yes	no
 AS31133	MegaFon	PJSC MegaFon (MF-MGSM)	https://asnbase.com/countries/ru	yes	RU	54	26	yes	no
-AS31163	MegaFon	PJSC MegaFon (MF-KAVKAZ-AS)	https://rdap.db.ripe.net/autnum/31163	yes	RU	67	9	yes	no
+AS31163	MegaFon	PJSC MegaFon (MF-KAVKAZ-AS)	https://rdap.db.ripe.net/autnum/31163	yes	RU	68	9	yes	no
 AS31174	Raiffeisenbank RU	AO Raiffeisenbank	https://rdap.db.ripe.net/autnum/31174	yes	RU	2	0	yes	no
 AS31200	ER-Telecom	Novotelecom Ltd (Electronic City, subsidiary)	https://rdap.db.ripe.net/autnum/31200	yes	RU	9	1	yes	no
 AS31483	ER-Telecom	JSC ER-Telecom Holding (ERTELECOM-DC-AS)	https://rdap.db.ripe.net/autnum/31483	yes	RU	8	5	yes	no
@@ -80,7 +80,7 @@ AS197068	Qrator	HLL LLC (High Load Lab / Qrator DDoS mitigation)	https://bgp.too
 AS197258	Sovcombank	PJSC Sovkombank	https://rdap.db.ripe.net/autnum/197258	yes	RU	3	0	yes	no
 AS197482	2GIS	DoubleGIS LLC	https://bgp.tools/as/197482	yes	RU	2	0	yes	no
 AS197695	REG.RU	Domain names registrar REG.RU Ltd	https://rdap.db.ripe.net/autnum/197695	yes	RU	142	14	yes	no
-AS198610	Beget	Beget LLC	https://rdap.db.ripe.net/autnum/198610	yes	RU	76	1	yes	no
+AS198610	Beget	Beget LLC	https://rdap.db.ripe.net/autnum/198610	yes	RU	77	1	yes	no
 AS200107	Kaspersky	Kaspersky Lab Switzerland GmbH (global KSN/update origin ASN)	https://bgp.tools/as/200107	yes	CH	15	16	no	no
 AS200350	Yandex	Yandex.Cloud LLC	https://wbdt.ru/AS200350	yes	RU	34	2	yes	no
 AS201012	Avito	KEH eCommerce LLC (Avito)	https://bgp.tools/as/201012	yes	RU	4	0	yes	no
@@ -101,6 +101,6 @@ AS211517	Wildberries	LLC Wildberries (Georgia/affiliate ASN)	https://iamroot.tec
 AS212066	Yandex	Buyuk Reklam Cozumleri LLC (Yandex Turkey; origin ASN, not upstream)	https://www.iplocate.io/AS212066	yes	TR	2	2	no	no
 AS213533	Beget	Beget LLC (regional origin)	https://rdap.db.ripe.net/autnum/213533	yes	RU	2	0	yes	no
 AS213952	Yandex	Yandex.Telecom LLC	https://ipgeolocation.io/browse/asn/AS213952	no	-	0	0	yes	no
-AS214822	RuVDS	MT Finance LLC	https://rdap.db.ripe.net/autnum/214822	yes	RU	59	0	yes	no
+AS214822	RuVDS	MT Finance LLC	https://rdap.db.ripe.net/autnum/214822	yes	RU	62	0	yes	no
 AS215013	Yandex	Yandex.Cloud LLC (YCCDN)	https://ipctl.io/as/215013	yes	RU	6	2	yes	no
 AS215109	Yandex	YANDEX LLC (not visible in global BGP since 2025-11-13)	https://bgp.he.net/AS215109	no	-	0	0	yes	no

@@ -1,8 +1,8 @@
 {
   "assets": {
     "as-ip-blocks.tar.gz": {
-      "bytes": 16271861,
-      "sha256": "84af740b9546cf54448ff0782f5ddc15d458e15b0d2409fcff8de3d5733baa34"
+      "bytes": 16273767,
+      "sha256": "fcbad4c5d41535fb2e428976b8f2f218e21ed925c3de1c9ef713f316fbcd70e6"
     },
     "geoip_PRIVATE.srs": {
       "bytes": 228,
@@ -13,48 +13,48 @@
       "sha256": "17ca2e8246a3609d825cd5f611e76c9c039f75573f4d19238c83759fc96fd915"
     },
     "geoip_RU.dat": {
-      "bytes": 512467,
-      "sha256": "3dbbffd624d8bc4a50dac860135664578bd2e7742bdf66baa399beab3c65d3ec"
+      "bytes": 512441,
+      "sha256": "d113faaf4f1a61b64c72b00b8810c014381eb549ba82cf71d973e8a02f0aa7a3"
     },
     "geoip_RU.dat.sha256sum": {
       "bytes": 79,
-      "sha256": "f76bb29d82efc49efe6e0066b1394b1773dbfc2f9cb6655794082211b1c2d7cc"
+      "sha256": "0f104ffbcbbe22aa8f512216ec7db553a6de8fbd736bb8ebf368e5c92d868761"
     },
     "geoip_RU.srs": {
-      "bytes": 128198,
-      "sha256": "eee02d9b1c6178bc360778c9ea6f45b0ebe5a63fe7bb1a375cb3f8f791a8ff87"
+      "bytes": 128206,
+      "sha256": "9bd44a8e0c59f66124217076f2413579abec2b05277b71a54c64c4db2399d27d"
     },
     "geoip_RU.srs.sha256sum": {
       "bytes": 79,
-      "sha256": "5055e0b7e7d30716af4b8df81119898bbd85787792956ccf522df0425061d25d"
+      "sha256": "29a6b0132b4bd785a0e54dd495c284e8153ad5fa4099e9137eec2f81fbbd4fd4"
     },
     "geoip_RU_input_provenance.tsv": {
       "bytes": 8479,
-      "sha256": "15c5959ae196a94091f65ba9941bf3958251ab60a2996ba8a875e328ffd5d4a0"
+      "sha256": "6a7016523ccfb3bcc1b66b6ac6296ce635519d1701b521c78a9bd1a19b1fc122"
     },
     "geoip_RU_quality_report.txt": {
       "bytes": 7921,
-      "sha256": "e1f8500599f3fe543a83bf8b975ee122d8603d1e22647f7c620719081d61fc12"
+      "sha256": "51a6f08ef8820d3fa122d44bc2efcf26cd565d1613b2c6ee3489140896bea96f"
     },
     "geoip_RU_v41_manifest.json": {
       "bytes": 14909,
-      "sha256": "11005377235ac6c1c43b54cecc17ee2a9bfeb91efa1f752ec6cd35bd641e2d02"
+      "sha256": "996a6bde82b64a5b6077f4018ad227da49c7a525024a3ea616553ef7a7776c2c"
     },
     "v41-block-inputs.tar.gz": {
-      "bytes": 1912522,
-      "sha256": "5a34702894b30a0bd840027f463c151c43706638b172206eb19e9379a089f57d"
+      "bytes": 1912545,
+      "sha256": "46b15706a515ab4357f37f98dbb6feb092be5345363902c1e150e317b2832d0e"
     },
     "v41-registry-inputs.tar.gz": {
-      "bytes": 4812168,
-      "sha256": "b5dcf0f3437ac41eeaa4681965556a8fde274b67ca4acceccd60981360eee375"
+      "bytes": 4812861,
+      "sha256": "6b1e45df287bb344b541740b6f1a2e0ddb0a2d200a27c64b1f1da72208432b87"
     },
     "v41-upstream-inputs.tar.gz": {
-      "bytes": 5986884,
-      "sha256": "2c30f226ab10269a4d30608d39bb7e8efcf80aebdc8b9e45d1055dc8d83b6a07"
+      "bytes": 5987554,
+      "sha256": "eaf305458705db62d755812b736a846216a24a6cbd3abeb6b862830d719b966c"
     }
   },
   "run_attempt": 1,
   "schema": 1,
-  "source_commit": "c0d2a01ba1fb5f5c0e48965d614945348083a900",
-  "workflow_run": "https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/43863101010"
+  "source_commit": "5134c17765e02597ae609faa01c980b03c4dceb7",
+  "workflow_run": "https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/44083585727"
 }
