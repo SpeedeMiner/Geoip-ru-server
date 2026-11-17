@@ -829,6 +829,41 @@ jobs:
             --fixtures .github/data/v41-routing-fixtures.tsv --telegram-feed "$TELEGRAM_OFFICIAL_INPUT" \
             --summary "$GITHUB_STEP_SUMMARY"
 
+      - name: Exercise candidate rule sets in isolated clients
+        if: github.event_name == 'pull_request'
+        shell: bash
+        run: |
+          set -euo pipefail
+          assets="$RUNNER_TEMP/v41-candidate-client-assets"
+          mkdir -p "$assets"
+          cp "$V41_OUTPUT_FILE" "$assets/geoip_RU.dat"
+          cp geoip_RU.srs geoip_PRIVATE.srs "$assets/"
+          curl --fail --location --silent --show-error --proto '=https' --proto-redir '=https' \
+            --connect-timeout 10 --max-time 90 --retry 2 --max-filesize 67108864 \
+            --output "$assets/sing-box.tar.gz" https://github.com/SagerNet/sing-box/releases/download/v1.13.12/sing-box-1.13.12-linux-amd64.tar.gz
+          curl --fail --location --silent --show-error --proto '=https' --proto-redir '=https' \
+            --connect-timeout 10 --max-time 90 --retry 2 --max-filesize 67108864 \
+            --output "$assets/xray.zip" https://github.com/XTLS/Xray-core/releases/download/v26.7.28/Xray-linux-64.zip
+          printf '%s  %s\n' 1540533adb3df24f5ad5f14b5c7ca3dbc2401b10a1c1eb278fcadcada47ec6c4 "$assets/sing-box.tar.gz" | sha256sum -c -
+          printf '%s  %s\n' 8195d909f1109b8f3d99eefe401a3c451d7bf4af71f24d3815420f77e5dd2a40 "$assets/xray.zip" | sha256sum -c -
+          tar -xOzf "$assets/sing-box.tar.gz" sing-box-1.13.12-linux-amd64/sing-box > "$assets/sing-box"
+          unzip -p "$assets/xray.zip" xray > "$assets/xray"
+          chmod 0755 "$assets/sing-box" "$assets/xray"
+          sudo unshare --net bash -eu -c '
+            ip link set dev lo up
+            exec runuser -u "$1" -- python3 "$2" --assets "$3" --output "$4"
+          ' _ "$(id -un)" "$GITHUB_WORKSPACE/.github/scripts/check_v41_client_dns_local.py" \
+              "$assets" "$RUNNER_TEMP/v41-candidate-client-results.json"
+
+      - name: Retain candidate client route evidence
+        if: github.event_name == 'pull_request'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: v41-candidate-client-routing
+          path: ${{ runner.temp }}/v41-candidate-client-results.json
+          if-no-files-found: error
+          retention-days: 30
+
       - name: Retain output size and family metrics
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
