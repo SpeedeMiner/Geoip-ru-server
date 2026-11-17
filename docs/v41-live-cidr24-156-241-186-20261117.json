@@ -3943,6 +3943,120 @@
           }
         ]
       }
+    },
+    {
+      "n": 9,
+      "run": 44080456199,
+      "head": "e26d8bbe5ed3a0b38126ebef6b03785b5a12d74d",
+      "artifact": 14326309037,
+      "digest": "sha256:c2e23cb2af5fd3e6b366eff164787d41a0c6a9c1111851104a35fd7ae6a83ffe",
+      "result": {
+        "scope": "one public registry lead checked by Yandex DNS; no subnet probes",
+        "selected_source": "vpnobratno",
+        "transport": "IPv4",
+        "observations": [
+          {
+            "OBSERVED_AT": "2026-11-17T12:09:54Z",
+            "TARGET_ID": "cdn77-demo",
+            "TARGET_DOMAIN": "1906714720.rsc.cdn77.org",
+            "TARGET_IP": "121.127.45.82",
+            "EXPECTED_PREFIX": "121.127.45.0/24",
+            "TARGET_PORT": 443,
+            "DNS_RESULT": "DNS_ANSWER",
+            "DNS_A_ADDRESSES": [
+              "121.127.45.81"
+            ],
+            "DNS_AAAA_RESULT": "DNS_ANSWER",
+            "DNS_AAAA_ADDRESSES": [
+              "2a02:6ea0:f700::2"
+            ],
+            "DNS_MATCHES_TARGET": false,
+            "TCP_RESULT": "CONNECTED",
+            "TLS_RESULT": "INCONCLUSIVE",
+            "HTTPS_RESULT": "NOT_TESTED",
+            "HTTP_STATUS": null,
+            "EXIT_COUNTRY": "RU",
+            "EXIT_ASN": 12494,
+            "IPV6_TRANSPORT": "NOT_TESTED_TUNNEL_IPV4_ONLY",
+            "DNS_RESOLVER": "yandex-basic-udp",
+            "DNS_RESOLVER_IPV4": "77.88.8.8"
+          },
+          {
+            "OBSERVED_AT": "2026-11-17T12:10:06Z",
+            "TARGET_ID": "cdnvideo-player-host",
+            "TARGET_DOMAIN": "playercdn.cdnvideo.ru",
+            "TARGET_IP": "151.236.65.96",
+            "EXPECTED_PREFIX": "151.236.65.0/24",
+            "TARGET_PORT": 443,
+            "DNS_RESULT": "DNS_ANSWER",
+            "DNS_A_ADDRESSES": [
+              "81.9.16.32"
+            ],
+            "DNS_AAAA_RESULT": "DNS_NO_ANSWER",
+            "DNS_AAAA_ADDRESSES": [],
+            "DNS_MATCHES_TARGET": false,
+            "TCP_RESULT": "CONNECTED",
+            "TLS_RESULT": "VERIFIED",
+            "HTTPS_RESULT": "HTTP_RESPONSE",
+            "HTTP_STATUS": 200,
+            "EXIT_COUNTRY": "RU",
+            "EXIT_ASN": 12494,
+            "IPV6_TRANSPORT": "NOT_TESTED_TUNNEL_IPV4_ONLY",
+            "DNS_RESOLVER": "yandex-basic-udp",
+            "DNS_RESOLVER_IPV4": "77.88.8.8"
+          }
+        ],
+        "connection_attempts": 1,
+        "successful_ru_exits": 1,
+        "target_measurements": 2,
+        "targets_not_tested_count": 0,
+        "requested_successful_ru_exits": 1,
+        "connection_counts": {
+          "connected_ru_exit": 1,
+          "selected": 1
+        },
+        "dns_only": [
+          {
+            "A": [
+              "162.255.119.130"
+            ],
+            "AAAA": [],
+            "AAAA_STATUS": "DNS_NO_ANSWER",
+            "A_STATUS": "DNS_ANSWER",
+            "DNS_RESOLVER": "yandex-basic-udp",
+            "EXIT_ASN": 12494,
+            "EXIT_COUNTRY": "RU",
+            "HOST": "yemail.live",
+            "TRANSPORT_TESTED": false
+          }
+        ],
+        "registry": {
+          "prefix": {
+            "status": "OK",
+            "handle": "177.29.246.0 - 177.29.246.255",
+            "name": "Novacart-Commerce-llc",
+            "country": "HK",
+            "start": "177.29.246.0",
+            "end": "177.29.246.255",
+            "has_novacart_org_handle": false
+          },
+          "asn": {
+            "status": "OK",
+            "aut-num": "AS218224",
+            "as-name": "NOVACART-AS",
+            "org": "ORG-NCL50-RIPE",
+            "candidate_domain_in_public_object": false
+          },
+          "organisation": {
+            "status": "OK",
+            "organisation": "ORG-NCL50-RIPE",
+            "org-name": "Novacart Commerce llc",
+            "org-type": "OTHER",
+            "country": "US",
+            "candidate_domain_in_public_object": false
+          }
+        }
+      }
     }
   ]
 }

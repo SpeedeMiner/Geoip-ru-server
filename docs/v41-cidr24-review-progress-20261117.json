@@ -133,7 +133,17 @@
           "asn": 152606,
           "status": "valid"
         }
-      ]
+      ],
+      "metadata_dns_lead": {
+        "name": "yemail.live",
+        "a": [
+          "162.255.119.130"
+        ],
+        "aaaa_status": "DNS_NO_ANSWER",
+        "transport_tested": false,
+        "run": 44080456199,
+        "inside_queued_ranges": false
+      }
     },
     {
       "prefix": "177.122.107.0/24",
