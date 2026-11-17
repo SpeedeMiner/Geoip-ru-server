@@ -1,0 +1,111 @@
+name: v41 RU exact VPN probe (review only)
+
+on:
+  workflow_dispatch:
+    inputs:
+      targets_json:
+        description: 1–6 explicit public IPv4 endpoints as JSON (see EXACT_PROBE.md)
+        type: string
+        required: true
+      release_commit:
+        description: Full SHA of the current promoted v41 release commit
+        type: string
+        required: true
+      manifest_sha256:
+        description: SHA-256 of the v41 release manifest at that commit
+        type: string
+        required: true
+      source:
+        description: Public OpenVPN profile source
+        type: choice
+        options: [vpnobratno, vpngate]
+        default: vpnobratno
+      max_attempts:
+        description: Maximum OpenVPN profiles to try
+        type: choice
+        options: ["1", "2", "3", "4", "5", "6"]
+        default: "6"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: v41-ru-exact-vpn-review
+  cancel-in-progress: false
+
+jobs:
+  measure:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - name: Checkout only the selected workflow ref
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+
+      - name: Validate targets, confirm immutable release and prepare private profiles
+        timeout-minutes: 3
+        env:
+          V41_TARGETS_JSON: ${{ inputs.targets_json }}
+          V41_RELEASE_COMMIT: ${{ inputs.release_commit }}
+          V41_MANIFEST_SHA256: ${{ inputs.manifest_sha256 }}
+          V41_PROFILE_SOURCE: ${{ inputs.source }}
+          V41_MAX_ATTEMPTS: ${{ inputs.max_attempts }}
+        run: |
+          set -euo pipefail
+          umask 077
+          mkdir -m 700 "$RUNNER_TEMP/v41-vpn-work" "$RUNNER_TEMP/v41-vpn-evidence"
+          timeout --signal=TERM --kill-after=5s 140s python3 -B .github/scripts/v41_vpn_gate.py prepare \
+            --work "$RUNNER_TEMP/v41-vpn-work" --report "$RUNNER_TEMP/v41-vpn-evidence/result.json"
+
+      - name: Install tools and check timeout behavior
+        timeout-minutes: 4
+        run: |
+          set -euo pipefail
+          sudo apt-get -o Acquire::Retries=1 -o Acquire::http::Timeout=12 -o Acquire::https::Timeout=12 update
+          sudo apt-get -o Acquire::Retries=1 -o Acquire::http::Timeout=12 -o Acquire::https::Timeout=12 \
+            install --yes --no-install-recommends openvpn iproute2 iptables slirp4netns
+          python3 -B .github/scripts/v41_vpn_watchdog_preflight.py
+
+      - name: Measure exact endpoints inside a disposable RU tunnel
+        timeout-minutes: 8
+        run: |
+          set -euo pipefail
+          report="$RUNNER_TEMP/v41-vpn-evidence/result.json"
+          if sudo -n bash .github/scripts/v41_vpn_netns_exec.sh -- \
+              timeout --signal=TERM --kill-after=6s 6m python3 -B .github/scripts/v41_vpn_gate.py measure \
+                --work "$RUNNER_TEMP/v41-vpn-work" --report "$report"; then
+            exit 0
+          else
+            status=$?
+          fi
+          python3 - "$report" <<'PY'
+          import json
+          import sys
+          from pathlib import Path
+          path = Path(sys.argv[1])
+          data = json.loads(path.read_text())
+          if data["status"] == "VERIFIED":
+              data["status"] = "POSTFLIGHT_INCONCLUSIVE"
+              data["postflight_error"] = "NAMESPACE_OR_WATCHDOG_FAILED"
+          elif data["status"] == "NOT_TESTED":
+              data["status"] = "PROBE_ERROR"
+          tmp = path.with_name("failure.tmp")
+          tmp.write_text(json.dumps(data, indent=2) + "\n")
+          tmp.replace(path)
+          PY
+          exit "$status"
+
+      - name: Remove private staging files
+        if: always()
+        run: sudo -n rm -rf -- "$RUNNER_TEMP/v41-vpn-work"
+
+      - name: Upload sanitized result only
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+        with:
+          name: v41-ru-vpn-exact-${{ github.run_id }}
+          path: ${{ runner.temp }}/v41-vpn-evidence/result.json
+          if-no-files-found: warn
+          retention-days: 14
