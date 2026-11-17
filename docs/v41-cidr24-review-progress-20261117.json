@@ -374,7 +374,37 @@
         }
       ],
       "rolling_dat_ru_addresses": 0,
-      "rolling_dat_private_addresses": 0
+      "rolling_dat_private_addresses": 0,
+      "single_verified_ru_exit": {
+        "run": 44088363882,
+        "artifact": 14331330378,
+        "sha256": "da1d6c4a8d87638a25c1a53ed045bebdce8853448719a2e38daede20eddac1f2",
+        "workflow_commit": "d3f63cc5661b8aec5348d56981ffc87fb4ef531a",
+        "exit_asn": 12494,
+        "observed_at": "2026-11-17T13:01:39Z",
+        "postflight_at": "2026-11-17T13:03:01Z",
+        "pre_controls": [
+          {
+            "id": "cdnvideo-player-host",
+            "http": 200
+          }
+        ],
+        "post_control": {
+          "id": "cdnvideo-player-host",
+          "http": 200
+        },
+        "states": [
+          {
+            "status": "TCP_INCONCLUSIVE",
+            "tcp": "TIMEOUT",
+            "tls": "NOT_TESTED",
+            "count": 256
+          }
+        ],
+        "certificate_count": 0,
+        "postflight": "VERIFIED",
+        "needs_independent_asn": true
+      }
     },
     {
       "prefix": "177.166.21.0/24",
