@@ -1956,6 +1956,172 @@
           }
         }
       }
+    },
+    {
+      "run": 44061943708,
+      "artifact": 14319310178,
+      "artifact_zip_digest": "sha256:fc8c16f9c4e7f881f30859464ba35c377618892200b821013f10fab831d245e1",
+      "commit": "709eef4072961835959c56a23c00b9bd91332b50",
+      "result": {
+        "scope": "exact BGP State only, not transport evidence",
+        "rows": [
+          {
+            "prefix": "156.224.80.0/24",
+            "requested_utc": "2026-11-17T08:00:00Z",
+            "status": "UNVERIFIED",
+            "reason": "KeyError"
+          },
+          {
+            "prefix": "156.241.186.0/24",
+            "requested_utc": "2026-11-17T08:00:00Z",
+            "status": "UNVERIFIED",
+            "reason": "KeyError"
+          },
+          {
+            "prefix": "177.29.246.0/24",
+            "requested_utc": "2026-11-17T08:00:00Z",
+            "status": "UNVERIFIED",
+            "reason": "KeyError"
+          },
+          {
+            "prefix": "177.122.107.0/24",
+            "requested_utc": "2026-11-17T08:00:00Z",
+            "status": "UNVERIFIED",
+            "reason": "KeyError"
+          },
+          {
+            "prefix": "177.122.160.0/24",
+            "requested_utc": "2026-11-17T08:00:00Z",
+            "status": "UNVERIFIED",
+            "reason": "KeyError"
+          },
+          {
+            "prefix": "177.166.21.0/24",
+            "requested_utc": "2026-11-17T08:00:00Z",
+            "status": "UNVERIFIED",
+            "reason": "KeyError"
+          }
+        ]
+      }
+    },
+    {
+      "run": 44062164524,
+      "artifact": 14318072942,
+      "artifact_zip_digest": "sha256:bec7a73e03de4b764b72208ea489fb75dbd0d757570c2e8d6887ab58e0a6baf1",
+      "commit": "0aaea2a09a2e942bd66207b644c6e8dcdaa3d95a",
+      "result": {
+        "scope": "exact BGP State only, not transport evidence",
+        "rows": [
+          {
+            "prefix": "156.224.80.0/24",
+            "requested_utc": "2026-11-17T08:00:00Z",
+            "api_status": "ok",
+            "response_keys": [
+              "bgp_state",
+              "nr_routes",
+              "resource",
+              "timestamp"
+            ],
+            "returned_utc": "2026-11-17T07:59:59",
+            "status": "TIME_MISMATCH",
+            "exact_paths_seen": 340,
+            "exact_paths_by_origin": {
+              "401650": 340
+            },
+            "ambiguous_exact_paths": 0
+          },
+          {
+            "prefix": "156.241.186.0/24",
+            "requested_utc": "2026-11-17T08:00:00Z",
+            "api_status": "ok",
+            "response_keys": [
+              "bgp_state",
+              "nr_routes",
+              "resource",
+              "timestamp"
+            ],
+            "returned_utc": "2026-11-17T07:59:59",
+            "status": "TIME_MISMATCH",
+            "exact_paths_seen": 340,
+            "exact_paths_by_origin": {
+              "401650": 340
+            },
+            "ambiguous_exact_paths": 0
+          },
+          {
+            "prefix": "177.29.246.0/24",
+            "requested_utc": "2026-11-17T08:00:00Z",
+            "api_status": "ok",
+            "response_keys": [
+              "bgp_state",
+              "nr_routes",
+              "resource",
+              "timestamp"
+            ],
+            "returned_utc": "2026-11-17T07:59:59",
+            "status": "TIME_MISMATCH",
+            "exact_paths_seen": 321,
+            "exact_paths_by_origin": {
+              "152606": 321
+            },
+            "ambiguous_exact_paths": 0
+          },
+          {
+            "prefix": "177.122.107.0/24",
+            "requested_utc": "2026-11-17T08:00:00Z",
+            "api_status": "ok",
+            "response_keys": [
+              "bgp_state",
+              "nr_routes",
+              "resource",
+              "timestamp"
+            ],
+            "returned_utc": "2026-11-17T07:59:59",
+            "status": "TIME_MISMATCH",
+            "exact_paths_seen": 321,
+            "exact_paths_by_origin": {
+              "152606": 321
+            },
+            "ambiguous_exact_paths": 0
+          },
+          {
+            "prefix": "177.122.160.0/24",
+            "requested_utc": "2026-11-17T08:00:00Z",
+            "api_status": "ok",
+            "response_keys": [
+              "bgp_state",
+              "nr_routes",
+              "resource",
+              "timestamp"
+            ],
+            "returned_utc": "2026-11-17T07:59:59",
+            "status": "TIME_MISMATCH",
+            "exact_paths_seen": 321,
+            "exact_paths_by_origin": {
+              "152606": 321
+            },
+            "ambiguous_exact_paths": 0
+          },
+          {
+            "prefix": "177.166.21.0/24",
+            "requested_utc": "2026-11-17T08:00:00Z",
+            "api_status": "ok",
+            "response_keys": [
+              "bgp_state",
+              "nr_routes",
+              "resource",
+              "timestamp"
+            ],
+            "returned_utc": "2026-11-17T07:59:59",
+            "status": "TIME_MISMATCH",
+            "exact_paths_seen": 321,
+            "exact_paths_by_origin": {
+              "152606": 321
+            },
+            "ambiguous_exact_paths": 0
+          }
+        ]
+      }
     }
   ]
 }
