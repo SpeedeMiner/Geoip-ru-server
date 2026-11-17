@@ -1,5 +1,12 @@
 # v41 durable execution journal
 
+## 2026-11-17 — DNS клиентов и аварийный аудит — контрольная точка
+
+- [x] После реальных тайм-аутов на синтетических данных GitHub Actions выгрузил и перечитал четыре partial TSV. [Прогон](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/44045430458) и [архив](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/44045430458/artifacts/14310724163). Внешние сбои не имитировались сетевыми запросами и не превращались в вывод об RPKI.
+- [x] [Xray и sing-box](https://github.com/SpeedeMiner/Geoip-ru-server/blob/912ef3201cea298e9c837466176605ebb0eba2e3/docs/V41_CLIENT_DNS_VALIDATION_20261117.md) прошли по 18 сценариев на опубликованном снимке в изолированной loopback-сети. В восьми DNS-сценариях при одинаковом выборе маршрута Xray передал SOCKS имя, sing-box после `resolve` — IP. Это тест клиентов, не домашний замер доступности.
+- [x] Четыре текстовые ленты теперь проходят проверку формата, семейства и уникального числа CIDR до принятия. Прошли 337 локальных тестов и [Linux CI v41](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/44046622931). DAT, SRS, маска и JSON дельты совпали с закреплённым кандидатом. `publish` пропущен.
+- [x] [Сверка provenance](https://github.com/SpeedeMiner/Geoip-ru-server/blob/912ef3201cea298e9c837466176605ebb0eba2e3/docs/V41_PROVENANCE_READBACK_20261117.md) различает пересечение источников и вклад. Осталось заполнить точные BGP-origin для корпоративного и регионального слоёв. [Рабочий журнал](https://github.com/SpeedeMiner/Geoip-ru-server/blob/912ef3201cea298e9c837466176605ebb0eba2e3/docs/V41_EXECUTION_JOURNAL.md) и [handoff](https://github.com/SpeedeMiner/Geoip-ru-server/blob/912ef3201cea298e9c837466176605ebb0eba2e3/docs/V41_PROJECT_HANDOFF.md) обновлены. PR №5, домашние замеры, правила DIRECT, релиз и CDN не трогали.
+
 ## 2026-11-17 — 20-минутный проход — контрольная точка
 
 - [x] В [журнале PR №56](https://github.com/SpeedeMiner/Geoip-ru-server/blob/21e152c9dd834560c3e7eb8e9c65a8a5d8fff389/docs/V41_EXECUTION_JOURNAL.md) и [handoff](https://github.com/SpeedeMiner/Geoip-ru-server/blob/21e152c9dd834560c3e7eb8e9c65a8a5d8fff389/docs/V41_PROJECT_HANDOFF.md) зафиксированы ранние проверки четырёх обязательных входов (две ленты Antifilter и два CSV IANA). Прошли 334 локальных теста и [Linux CI v41](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/44043544968) на `c811a2c`. `publish` пропущен.
