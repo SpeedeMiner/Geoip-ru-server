@@ -629,6 +629,54 @@ jobs:
                       print("    Additional rows omitted; see retained source snapshot.")
           PY
 
+      - name: Check removed IPv4 in trusted source categories
+        if: github.event_name == 'pull_request'
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import hashlib
+          import ipaddress
+          import json
+          import os
+          from pathlib import Path
+          import sys
+
+          sys.path.insert(0, ".github/scripts")
+          from build_v41_overlay import parse_geoip_dat
+
+          delta = json.loads((Path(os.environ["RUNNER_TEMP"]) / "v41-pr-direct-delta.json").read_text())
+          removed = delta["direct"]["ipv4"]["removed"]["cidrs"]
+          print("Trusted-source checks for candidate", delta["candidate_dat_sha256"])
+          if len(removed) > 50:
+              print("More than 50 removed CIDRs; use the source snapshots for offline review.")
+              raise SystemExit(0)
+          targets = [ipaddress.ip_network(value) for value in removed]
+          for label, env in (("hydra", "HYDRA_INPUT"), ("v2fly", "V2FLY_INPUT"),
+                             ("loyalsoldier-ru", "LOYALSOLDIER_RU_INPUT"),
+                             ("loyalsoldier-by", "LOYALSOLDIER_BY_INPUT")):
+              path = Path(os.environ[env])
+              print(f"Trusted source {label}: sha256={hashlib.sha256(path.read_bytes()).hexdigest()}")
+              matches = {str(target): [] for target in targets}
+              try:
+                  categories = parse_geoip_dat(path)
+              except (OSError, ValueError, TypeError) as error:
+                  print(f"  {label}: unavailable for category audit: {type(error).__name__}: {error}")
+                  continue
+              for category, prefixes in categories.items():
+                  for net in prefixes:
+                      if net.version == 4:
+                          for target in targets:
+                              if net.overlaps(target):
+                                  matches[str(target)].append((category, str(net)))
+              for target, rows in matches.items():
+                  rows.sort()
+                  print(f"  {label} {target}: {len(rows)} overlapping entries")
+                  for category, prefix in rows[:20]:
+                      print(f"    {category} {prefix}")
+                  if len(rows) > 20:
+                      print("    Additional entries omitted; see retained source snapshot.")
+          PY
+
       - name: Retain exact pull request DIRECT delta
         if: github.event_name == 'pull_request'
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
