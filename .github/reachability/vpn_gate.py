@@ -2755,6 +2755,10 @@ def run(args: argparse.Namespace) -> int:
             row["EXIT_IP"] = exit_ip or ""
         candidates = candidates[:]
         target_scan_summary = summarize_target_scans(target_scans)
+        if exact_file and not target_scans:
+            untested_ids = [str(target["id"]) for target in targets]
+            target_scan_summary["targets_not_tested"] = [{"server_hostname": "", "target_ids": untested_ids}]
+            target_scan_summary["targets_not_tested_count"] = len(untested_ids)
         summary = {
             "generated_at": utc_now(),
             "workflow_run_id": os.environ.get("GITHUB_RUN_ID", ""),

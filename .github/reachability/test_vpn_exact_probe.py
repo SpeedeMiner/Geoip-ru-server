@@ -2,9 +2,11 @@ import json
 import tempfile
 import unittest
 from pathlib import Path
+from types import SimpleNamespace
 from unittest.mock import Mock, patch
 
 import vpn_exact_probe as probe
+import vpn_gate
 
 
 class ExactProbeTests(unittest.TestCase):
@@ -79,6 +81,25 @@ class ExactProbeTests(unittest.TestCase):
         self.assertTrue(row["DNS_MATCHES_TARGET"])
         self.assertIn(b"Host: example.com\r\n", tls.sendall.call_args.args[0])
         tls.close.assert_called_once()
+
+    def test_no_verified_exit_means_no_exact_target_is_probed(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            targets = root / "targets.json"
+            targets.write_text(json.dumps([{"id": "one", "ip": "1.1.1.1", "prefix": "1.1.1.0/24"}]), encoding="utf-8")
+            args = SimpleNamespace(inventory="unused", targets="unused", exact_targets=str(targets),
+                                   output_dir=str(root / "out"), source="vpnobratno", max_attempts=1,
+                                   max_servers=1, connect_timeout=5, request_timeout=3)
+            with patch.object(vpn_gate.runner, "read_inventory", return_value=([], {})), \
+                 patch.object(vpn_gate, "discover_vpnobratno_servers", return_value=([], {})), \
+                 patch.object(probe, "measure_exact") as measure:
+                self.assertEqual(vpn_gate.run(args), 2)
+                measure.assert_not_called()
+            summary = json.loads((root / "out" / "vpn_gate_summary.json").read_text(encoding="utf-8"))
+            self.assertEqual(summary["probe_mode"], "EXACT_IPV4")
+            self.assertEqual(summary["target_scan_status"], "NOT_STARTED_NO_VERIFIED_RU_EXIT")
+            self.assertEqual(summary["targets_not_tested_count"], 1)
+            self.assertEqual(summary["targets_not_tested"][0]["target_ids"], ["one"])
 
 
 if __name__ == "__main__":

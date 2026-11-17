@@ -81,6 +81,7 @@ jobs:
         run: |
           set -euo pipefail
           python3 --version
+          ruby -e 'require "yaml"; YAML.load_file(ARGV.fetch(0)); puts "VPN workflow YAML parsed"' .github/workflows/reachability-vpn-gate.yml
           bash -n .github/reachability/vpn_netns_exec.sh
           python3 -m py_compile .github/reachability/runner.py .github/reachability/test_runner.py .github/reachability/vpn_gate.py .github/reachability/vpn_exact_probe.py .github/reachability/test_vpn_exact_probe.py .github/reachability/test_vpn_gate.py .github/reachability/runner_watchdog_preflight.py .github/reachability/home_probe.py .github/reachability/test_home_probe.py .github/reachability/home_probe_ingest.py .github/reachability/test_home_probe_ingest.py
           python3 -m json.tool .github/reachability/targets.json >/dev/null
