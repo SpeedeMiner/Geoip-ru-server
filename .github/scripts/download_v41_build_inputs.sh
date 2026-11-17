@@ -31,14 +31,15 @@ download_file() {
   shift 2
   local tmp="${output}.part"
   local url
-  local registry=""
   local -a check_args=()
   case "$label" in
-    "AFRINIC DELEGATED STATS") registry=afrinic ;;
-    "APNIC DELEGATED STATS") registry=apnic ;;
-    "ARIN DELEGATED STATS") registry=arin ;;
-    "LACNIC DELEGATED STATS") registry=lacnic ;;
-    "RIPE NCC DELEGATED STATS") registry=ripencc ;;
+    "AFRINIC DELEGATED STATS") check_args=(--registry afrinic) ;;
+    "APNIC DELEGATED STATS") check_args=(--registry apnic) ;;
+    "ARIN DELEGATED STATS") check_args=(--registry arin) ;;
+    "LACNIC DELEGATED STATS") check_args=(--registry lacnic) ;;
+    "RIPE NCC DELEGATED STATS") check_args=(--registry ripencc) ;;
+    "ANTIFILTER EXACT BLOCKED IP LIST") check_args=(--antifilter ip) ;;
+    "ANTIFILTER SUBNET LIST") check_args=(--antifilter subnet) ;;
   esac
   rm -f "$tmp"
 
@@ -50,8 +51,6 @@ download_file() {
       --connect-timeout 20 --max-time 180 \
       --retry 4 --retry-all-errors --retry-delay 3 --retry-max-time 240 \
       --output "$tmp" "$url"; then
-      check_args=()
-      if [[ -n "$registry" ]]; then check_args=(--registry "$registry"); fi
       if [[ -s "$tmp" ]] && python3 .github/scripts/validate_v41_download.py "$tmp" "${check_args[@]}"; then
         mv "$tmp" "$output"
         record_source_download "$label" "$output" "$url" "downloaded"
