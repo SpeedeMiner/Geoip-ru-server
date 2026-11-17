@@ -26,3 +26,5 @@
 ## Статус VPN
 
 [Linux CI reachability](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/44038929934) — проверка на push, не VPN-замер. На момент сверки [PR №5](https://github.com/SpeedeMiner/Geoip-ru-server/pull/5) оставался черновиком, файла `reachability-vpn-gate.yml` в `main` нет. Нынешний ручной workflow описан в [EXACT_PROBE.md](https://github.com/SpeedeMiner/Geoip-ru-server/blob/feature/reachability-full-ru-kz-by/.github/reachability/EXACT_PROBE.md), но готового набора подтверждённых целей для шести /24 нет. Выход волонтёрского VPN, даже если он проверен как российский, не подтверждает домашнюю сеть.
+
+Повтор публичного DNS: A сайта `link4bd.com` (и `www`) находится вне четырёх /24, куда RIS относит AS152606. Справочное имя `888venturesllc.com` и его `www` вернули NXDOMAIN в выбранном публичном резолвере. Точных сервисных пар для всех шести /24 всё ещё 0/6. Не делать вывод о других хостах или маршрутах из одного резолвера.
