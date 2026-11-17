@@ -9,7 +9,7 @@ import validate_v41_service_inventory as inventory
 class ServiceInventoryTests(unittest.TestCase):
     def test_domain_evidence_does_not_assert_ip_or_whitelist_membership(self):
         path = Path(__file__).resolve().parent.parent / "data" / "v41-service-inventory.tsv"
-        rows = inventory.read_inventory(path, as_of=date(2026, 11, 16))
+        rows = inventory.read_inventory(path)
         self.assertGreaterEqual(len(rows), 3)
         self.assertTrue(all(row["asn_or_cidr"] == "-" for row in rows))
         self.assertIn("no claim of Ministry whitelist membership", inventory.format_report(rows))
