@@ -46,6 +46,96 @@ class PublicCdnAuditTests(unittest.TestCase):
             data = self.blobs[name]
         return b"stale" if url in self.stale else data
 
+    def planes(self, fetch=None, **opts):
+        def checked(url, limit):
+            if url == f"https://api.github.com/repos/{REPO}/git/trees/{SHA}":
+                if not any("sha" in x for x in self.git_tree["tree"]):
+                    for row in self.git_tree["tree"]:
+                        content = self.blobs[row["path"]]
+                        row["sha"] = hashlib.sha1(f"blob {len(content)}\0".encode() + content).hexdigest()
+            return (fetch or self.fetch)(url, limit)
+        return audit.diagnose_planes(REPO, SHA, audit.EDGES,
+                                     release_commit="c" * 40, fetch=checked, **opts)
+
+    def test_diagnostic_all_planes_and_snapshot_pass(self):
+        result = self.planes(versioned_tag="v41.2")
+        self.assertEqual(result["status"], "PASS")
+        self.assertEqual(result["snapshot_tag"], "v41.2")
+        self.assertEqual(set(result["catalog"]), {"pinned_tree", "pinned_flat", "rolling_tree", "rolling_flat"})
+        self.assertEqual(set(result["delivery"]), set(audit.EDGES))
+        self.assertEqual(result["github_release"]["status"], "PASS")
+        self.assertEqual(len(self.calls), 35)
+
+    def test_diagnostic_separates_rolling_catalog_drift_from_data_delivery(self):
+        bad_file = "geoip_RU.srs"
+        def fetch(url, limit):
+            raw = self.fetch(url, limit)
+            if "data.jsdelivr.com" in url and "@cdn" in url:
+                body = json.loads(raw)
+                for row in body["files"]:
+                    if row["name"].lstrip("/") == bad_file:
+                        # Same size and different digest must still fail.
+                        row["hash"] = base64.b64encode(b"q" * 32).decode()
+                return json.dumps(body).encode()
+            return raw
+        result = self.planes(fetch)
+        self.assertEqual(result["status"], "FAIL")
+        for name in ("rolling_tree", "rolling_flat"):
+            self.assertEqual(result["catalog"][name]["status"], "MISMATCH")
+            self.assertFalse(result["catalog"][name]["files"][bad_file]["matches_pinned"])
+        self.assertEqual(result["catalog"]["pinned_tree"]["status"], "PASS")
+        self.assertTrue(all(x["status"] == "PASS" for x in result["delivery"].values()))
+        self.assertEqual(result["github_release"]["status"], "PASS")
+
+    def test_diagnostic_catalog_errors_do_not_hide_stale_or_unavailable_edges(self):
+        bad = f"https://gcore.jsdelivr.net/gh/{REPO}@cdn/geoip_PRIVATE.srs"
+        self.stale.add(bad)
+        def fetch(url, limit):
+            if url.endswith("@cdn/flat"):
+                return b'{"unexpected":true}'
+            if "fastly.jsdelivr.net" in url and url.endswith("/geoip_RU.dat"):
+                raise OSError("network timeout")
+            return self.fetch(url, limit)
+        result = self.planes(fetch)
+        self.assertEqual(result["status"], "FAIL")
+        self.assertEqual(result["catalog"]["rolling_flat"]["status"], "ERROR")
+        self.assertEqual(result["delivery"]["gcore.jsdelivr.net"]["status"], "MISMATCH")
+        self.assertEqual(result["delivery"]["fastly.jsdelivr.net"]["status"], "ERROR")
+        self.assertEqual(result["delivery"]["cdn.jsdelivr.net"]["status"], "PASS")
+
+    def test_diagnostic_fails_closed_without_matching_pinned_git_blob(self):
+        self.stale.add(f"https://raw.githubusercontent.com/{REPO}/{SHA}/geoip_RU.dat")
+        result = self.planes()
+        self.assertEqual(result["status"], "FAIL")
+        self.assertIn("do not match Git blob", result["pinned_reference"]["error"])
+        self.assertEqual(result["delivery"]["cdn.jsdelivr.net"]["status"], "UNVERIFIED")
+        self.assertEqual(result["catalog"]["pinned_tree"]["status"], "UNVERIFIED")
+        self.assertTrue(all("data.jsdelivr.com" not in url for url in self.calls))
+
+    def test_diagnostic_reports_malformed_tree_without_calling_any_other_plane(self):
+        def fetch(url, limit):
+            self.assertTrue(url.startswith("https://api.github.com/"))
+            return b"[]"
+        result = self.planes(fetch)
+        self.assertEqual(result["status"], "FAIL")
+        self.assertIn("invalid pinned GitHub CDN tree response", result["pinned_reference"]["error"])
+        self.assertEqual(result["github_release"]["status"], "UNVERIFIED")
+        self.assertTrue(all(x["status"] == "UNVERIFIED" for x in result["catalog"].values()))
+
+    def test_diagnostic_cli_emits_json_but_returns_nonzero_for_mismatch(self):
+        release = "c" * 40
+        cli = ["audit", "--repo", REPO, "--diagnose-planes", "--edges"]
+        result = {"status": "FAIL", "catalog": {"rolling_tree": {"status": "MISMATCH"}}}
+        stdout = io.StringIO()
+        with patch.object(audit.sys, "argv", cli), \
+                patch.object(audit, "get_commit", side_effect=(SHA, release, release, SHA)), \
+                patch.object(audit, "diagnose_planes", return_value=result) as run, \
+                contextlib.redirect_stdout(stdout):
+            self.assertEqual(audit.main(), 1)
+        self.assertEqual(json.loads(stdout.getvalue()), result)
+        run.assert_called_once_with(repo=REPO, commit=SHA, hosts=audit.EDGES,
+                                    release_commit=release, versioned_tag=None)
+
     def check(self, **opts):
         return audit.audit(REPO, SHA, audit.EDGES, self.fetch, **opts)
 
