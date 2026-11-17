@@ -75,11 +75,12 @@ def normalize(rows):
     return result
 
 
-def read(path):
+def read(path, *, include_counts=False):
     if not 0 < path.stat().st_size <= MAX_BYTES:
         raise ValueError(f"{path}: DAT byte limit exceeded or empty")
     raw = path.read_bytes()
     result = {}
+    counts = {}
     for tag, wire, message in fields(raw):
         if (tag, wire) != (1, 2):
             raise ValueError("unexpected GeoIPList field")
@@ -100,8 +101,10 @@ def read(path):
         if name not in MAX_ROWS or name in result or not 0 < len(networks) <= MAX_ROWS[name]:
             raise ValueError("unexpected category, duplicate category or CIDR count limit")
         sets = {}
+        counts[name] = {}
         for family in (4, 6):
             these = [n for n in networks if n.version == family]
+            counts[name][family] = len(these)
             if name == "RU" and any(n.prefixlen < MIN_RU_PREFIX[family] for n in these):
                 raise ValueError(f"RU prefix wider than /{MIN_RU_PREFIX[family]} for IPv{family}")
             sets[family] = normalize((int(n.network_address), int(n.broadcast_address)) for n in these)
@@ -114,7 +117,8 @@ def read(path):
         r = result["RU"][f]
         if total(r) != difference_size(r, result["PRIVATE"][f]):
             raise ValueError("RU overlaps PRIVATE")
-    return result, hashlib.sha256(raw).hexdigest()
+    digest = hashlib.sha256(raw).hexdigest()
+    return (result, digest, counts) if include_counts else (result, digest)
 
 
 def total(xs):
@@ -136,7 +140,7 @@ def difference_size(a, b):
     return remain
 
 
-def validate(candidate, reference, reviewed_sha=""):
+def validate(candidate, reference, reviewed_sha="", *, enforce_delta=True):
     old, _ = read(reference)
     new, sha = read(candidate)
     relative = {}
@@ -151,8 +155,10 @@ def validate(candidate, reference, reviewed_sha=""):
     exceeded = private_changed or any(max(x["added"], x["removed"]) > x["limit"] for x in relative.values())
     print(json.dumps({"candidate_sha256": sha, "private_changed": private_changed,
                       "delta": relative, "needs_review": exceeded}, sort_keys=True), flush=True)
-    if exceeded and reviewed_sha != sha:
+    if exceeded and reviewed_sha != sha and enforce_delta:
         raise ValueError("publication delta exceeds bounds; review and explicitly dispatch with the exact candidate SHA-256")
+    return {"candidate_sha256": sha, "private_changed": private_changed,
+            "delta": relative, "needs_review": exceeded}
 
 
 if __name__ == "__main__":

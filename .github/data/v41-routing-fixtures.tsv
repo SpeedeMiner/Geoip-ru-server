@@ -1,0 +1,9 @@
+service	address	expected	evidence_type	evidence_url	verified_date	review_after
+Yandex DNS Basic IPv4	77.88.8.8	DIRECT	OFFICIAL_SERVICE_IP	https://dns.yandex.com/	2026-11-16	2027-02-16
+Yandex DNS Basic IPv6	2a02:6b8::feed:ff	DIRECT	OFFICIAL_SERVICE_IP	https://dns.yandex.com/	2026-11-16	2027-02-16
+.by authoritative DNS IPv4 (dns1)	93.125.25.72	DIRECT	IANA_TLD_GLUE	https://www.iana.org/domains/root/db/by.html	2026-11-16	2027-02-16
+.by authoritative DNS IPv6 (dns1)	2a00:c827:a:2::2	DIRECT	IANA_TLD_GLUE	https://www.iana.org/domains/root/db/by.html	2026-11-16	2027-02-16
+.kz authoritative DNS IPv4 (ns1.nic.kz)	185.79.212.7	DIRECT	IANA_TLD_GLUE	https://www.iana.org/domains/root/db/kz.html	2026-11-16	2027-02-16
+.kz authoritative DNS IPv6 (ns1.nic.kz)	2a01:7640:9000::7	DIRECT	IANA_TLD_GLUE	https://www.iana.org/domains/root/db/kz.html	2026-11-16	2027-02-16
+Telegram policy representative IPv4	91.108.4.1	PROXY	TELEGRAM_POLICY_EXCLUSION	https://core.telegram.org/resources/cidr.txt	2026-11-16	2027-02-16
+Telegram policy representative IPv6	2001:67c:4e8::1	PROXY	TELEGRAM_POLICY_EXCLUSION	https://core.telegram.org/resources/cidr.txt	2026-11-16	2027-02-16

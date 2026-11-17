@@ -1,0 +1,92 @@
+{
+  "baseline": {
+    "published_63b8abf": {
+      "ipv4": {
+        "added": "4096",
+        "added_cidrs": [
+          "31.204.32.0/20"
+        ],
+        "positive_source_overlaps": {
+          "escapingworm": "0",
+          "hydra_direct": "4096",
+          "hydra_whitelist": "0"
+        },
+        "removed": "0",
+        "removed_cidrs": []
+      },
+      "ipv6": {
+        "added": "0",
+        "added_cidrs": [],
+        "positive_source_overlaps": {
+          "escapingworm": "0",
+          "hydra_direct": "0",
+          "hydra_whitelist": "0"
+        },
+        "removed": "0",
+        "removed_cidrs": []
+      },
+      "private_unchanged": true,
+      "sha256": "3dbbffd624d8bc4a50dac860135664578bd2e7742bdf66baa399beab3c65d3ec"
+    },
+    "scoped_no_whitelist": {
+      "ipv4": {
+        "added": "767",
+        "added_cidrs": [
+          "103.111.114.0/24",
+          "185.141.216.0/25",
+          "185.141.216.128/28",
+          "185.141.216.144/30",
+          "185.141.216.148/31",
+          "185.141.216.151/32",
+          "185.141.216.152/29",
+          "185.141.216.160/27",
+          "185.141.216.192/26",
+          "185.177.73.0/24"
+        ],
+        "positive_source_overlaps": {
+          "escapingworm": "0",
+          "hydra_direct": "0",
+          "hydra_whitelist": "767"
+        },
+        "removed": "0",
+        "removed_cidrs": []
+      },
+      "ipv6": {
+        "added": "0",
+        "added_cidrs": [],
+        "positive_source_overlaps": {
+          "escapingworm": "0",
+          "hydra_direct": "0",
+          "hydra_whitelist": "0"
+        },
+        "removed": "0",
+        "removed_cidrs": []
+      },
+      "private_unchanged": true,
+      "sha256": "fcbf17ba940eb0ec999bab521754f1a5ca56290345fbbc4032444f96212fe504"
+    }
+  },
+  "candidate_sha256": "7f21cda9662f3f7345a7aaef674febd577804b591d0dbb86f01ad864705023bf",
+  "effective_mask_identical": true,
+  "loaded_sources": {
+    "hydra-direct": {
+      "ipv4": 49160031,
+      "ipv6": 2847563117644718645949551869952
+    },
+    "hydra-whitelist": {
+      "ipv4": 219006,
+      "ipv6": 0
+    }
+  },
+  "scoped_seven": {
+    "candidate_sha256": "7f21cda9662f3f7345a7aaef674febd577804b591d0dbb86f01ad864705023bf",
+    "reference_sha256": "3dbbffd624d8bc4a50dac860135664578bd2e7742bdf66baa399beab3c65d3ec",
+    "review_table_sha256": "aeb438051a38f079a8e98c12fe51c8c328767d6671cb887ab8f3a0ea15a75fff",
+    "status": "PASS",
+    "watched_addresses": {
+      "added": 0,
+      "removed": 0
+    },
+    "watched_changes": []
+  }
+}

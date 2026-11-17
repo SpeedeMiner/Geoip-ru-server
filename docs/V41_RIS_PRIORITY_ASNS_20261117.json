@@ -1,0 +1,273 @@
+{
+  "candidate_dat_sha256": "7f21cda9662f3f7345a7aaef674febd577804b591d0dbb86f01ad864705023bf",
+  "ipverse_archive_sha256": "84af740b9546cf54448ff0782f5ddc15d458e15b0d2409fcff8de3d5733baa34",
+  "ipverse_commit": "e23603237f0e178c026963fea2b36165d1badd75",
+  "ripe_ris_min_peers_seeing": 1,
+  "window_utc": {
+    "start": "2026-11-15T08:00:00Z",
+    "end": "2026-11-16T08:00:00Z"
+  },
+  "note": "Diagnostic only; ipverse archive and RIS use different observation windows. Differences are not confirmed routing failures.",
+  "asns": {
+    "AS12389": {
+      "status": "ok",
+      "start": "2026-11-15T08:00:00",
+      "end": "2026-11-16T08:00:00",
+      "latest": "2026-11-16T08:00:00",
+      "out_of_scope": {
+        "default-route": 2,
+        "ipv4-mapped-ipv6": 0
+      },
+      "address_delta": {
+        "ipv4": {
+          "ris_only_addresses": "0",
+          "ipverse_only_addresses": "0"
+        },
+        "ipv6": {
+          "ris_only_addresses": "5192376086697341892868089873170432",
+          "ipverse_only_addresses": "0"
+        }
+      }
+    },
+    "AS13238": {
+      "status": "ok",
+      "start": "2026-11-15T08:00:00",
+      "end": "2026-11-16T08:00:00",
+      "latest": "2026-11-16T08:00:00",
+      "out_of_scope": {
+        "default-route": 0,
+        "ipv4-mapped-ipv6": 0
+      },
+      "address_delta": {
+        "ipv4": {
+          "ris_only_addresses": "0",
+          "ipverse_only_addresses": "0"
+        },
+        "ipv6": {
+          "ris_only_addresses": "0",
+          "ipverse_only_addresses": "0"
+        }
+      }
+    },
+    "AS25106": {
+      "status": "ok",
+      "start": "2026-11-15T08:00:00",
+      "end": "2026-11-16T08:00:00",
+      "latest": "2026-11-16T08:00:00",
+      "out_of_scope": {
+        "default-route": 0,
+        "ipv4-mapped-ipv6": 0
+      },
+      "address_delta": {
+        "ipv4": {
+          "ris_only_addresses": "0",
+          "ipverse_only_addresses": "0"
+        },
+        "ipv6": {
+          "ris_only_addresses": "0",
+          "ipverse_only_addresses": "0"
+        }
+      }
+    },
+    "AS208795": {
+      "status": "ok",
+      "start": "2026-11-15T08:00:00",
+      "end": "2026-11-16T08:00:00",
+      "latest": "2026-11-16T08:00:00",
+      "out_of_scope": {
+        "default-route": 0,
+        "ipv4-mapped-ipv6": 0
+      },
+      "address_delta": {
+        "ipv4": {
+          "ris_only_addresses": "0",
+          "ipverse_only_addresses": "0"
+        },
+        "ipv6": {
+          "ris_only_addresses": "0",
+          "ipverse_only_addresses": "0"
+        }
+      }
+    },
+    "AS6697": {
+      "status": "ok",
+      "start": "2026-11-15T08:00:00",
+      "end": "2026-11-16T08:00:00",
+      "latest": "2026-11-16T08:00:00",
+      "out_of_scope": {
+        "default-route": 0,
+        "ipv4-mapped-ipv6": 0
+      },
+      "address_delta": {
+        "ipv4": {
+          "ris_only_addresses": "0",
+          "ipverse_only_addresses": "0"
+        },
+        "ipv6": {
+          "ris_only_addresses": "0",
+          "ipverse_only_addresses": "0"
+        }
+      }
+    },
+    "AS9198": {
+      "status": "ok",
+      "start": "2026-11-15T08:00:00",
+      "end": "2026-11-16T08:00:00",
+      "latest": "2026-11-16T08:00:00",
+      "out_of_scope": {
+        "default-route": 0,
+        "ipv4-mapped-ipv6": 28
+      },
+      "address_delta": {
+        "ipv4": {
+          "ris_only_addresses": "33280",
+          "ipverse_only_addresses": "0"
+        },
+        "ipv6": {
+          "ris_only_addresses": "184467440737095516212",
+          "ipverse_only_addresses": "0"
+        }
+      }
+    },
+    "AS35673": {
+      "status": "ok",
+      "start": "2026-11-15T08:00:00",
+      "end": "2026-11-16T08:00:00",
+      "latest": "2026-11-16T08:00:00",
+      "out_of_scope": {
+        "default-route": 0,
+        "ipv4-mapped-ipv6": 0
+      },
+      "address_delta": {
+        "ipv4": {
+          "ris_only_addresses": "256",
+          "ipverse_only_addresses": "0"
+        },
+        "ipv6": {
+          "ris_only_addresses": "0",
+          "ipverse_only_addresses": "0"
+        }
+      }
+    },
+    "AS39433": {
+      "status": "ok",
+      "start": "2026-11-15T08:00:00",
+      "end": "2026-11-16T08:00:00",
+      "latest": "2026-11-16T08:00:00",
+      "out_of_scope": {
+        "default-route": 0,
+        "ipv4-mapped-ipv6": 0
+      },
+      "address_delta": {
+        "ipv4": {
+          "ris_only_addresses": "0",
+          "ipverse_only_addresses": "0"
+        },
+        "ipv6": {
+          "ris_only_addresses": "0",
+          "ipverse_only_addresses": "0"
+        }
+      }
+    },
+    "AS51365": {
+      "status": "ok",
+      "start": "2026-11-15T08:00:00",
+      "end": "2026-11-16T08:00:00",
+      "latest": "2026-11-16T08:00:00",
+      "out_of_scope": {
+        "default-route": 0,
+        "ipv4-mapped-ipv6": 0
+      },
+      "address_delta": {
+        "ipv4": {
+          "ris_only_addresses": "0",
+          "ipverse_only_addresses": "0"
+        },
+        "ipv6": {
+          "ris_only_addresses": "0",
+          "ipverse_only_addresses": "0"
+        }
+      }
+    },
+    "AS43601": {
+      "status": "ok",
+      "start": "2026-11-15T08:00:00",
+      "end": "2026-11-16T08:00:00",
+      "latest": "2026-11-16T08:00:00",
+      "out_of_scope": {
+        "default-route": 0,
+        "ipv4-mapped-ipv6": 0
+      },
+      "address_delta": {
+        "ipv4": {
+          "ris_only_addresses": "0",
+          "ipverse_only_addresses": "0"
+        },
+        "ipv6": {
+          "ris_only_addresses": "0",
+          "ipverse_only_addresses": "0"
+        }
+      }
+    },
+    "AS43934": {
+      "status": "ok",
+      "start": "2026-11-15T08:00:00",
+      "end": "2026-11-16T08:00:00",
+      "latest": "2026-11-16T08:00:00",
+      "out_of_scope": {
+        "default-route": 0,
+        "ipv4-mapped-ipv6": 0
+      },
+      "address_delta": {
+        "ipv4": {
+          "ris_only_addresses": "0",
+          "ipverse_only_addresses": "0"
+        },
+        "ipv6": {
+          "ris_only_addresses": "0",
+          "ipverse_only_addresses": "0"
+        }
+      }
+    },
+    "AS44288": {
+      "status": "ok",
+      "start": "2026-11-15T08:00:00",
+      "end": "2026-11-16T08:00:00",
+      "latest": "2026-11-16T08:00:00",
+      "out_of_scope": {
+        "default-route": 0,
+        "ipv4-mapped-ipv6": 0
+      },
+      "address_delta": {
+        "ipv4": {
+          "ris_only_addresses": "0",
+          "ipverse_only_addresses": "0"
+        },
+        "ipv6": {
+          "ris_only_addresses": "0",
+          "ipverse_only_addresses": "0"
+        }
+      }
+    },
+    "AS62170": {
+      "status": "ok",
+      "start": "2026-11-15T08:00:00",
+      "end": "2026-11-16T08:00:00",
+      "latest": "2026-11-16T08:00:00",
+      "out_of_scope": {
+        "default-route": 0,
+        "ipv4-mapped-ipv6": 0
+      },
+      "address_delta": {
+        "ipv4": {
+          "ris_only_addresses": "0",
+          "ipverse_only_addresses": "0"
+        },
+        "ipv6": {
+          "ris_only_addresses": "0",
+          "ipverse_only_addresses": "0"
+        }
+      }
+    }
+  }
+}

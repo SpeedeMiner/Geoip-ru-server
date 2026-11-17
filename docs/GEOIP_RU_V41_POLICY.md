@@ -1,6 +1,43 @@
 # v41 integration policy — RU+BY+KZ unified DIRECT
 
-The policy below describes the v41 publisher and the regional/block-provenance revision in PR #26. The rolling release and run-specific snapshots identify the deployed build.
+## Current candidate: RU + BY + KZ + explicit DIRECT and WHITELIST (2026-11-17)
+
+Import only RU, BY and KZ as country categories. Do not import foreign country
+categories, arbitrary upstream allowlists, or whole global CDN/provider ASN
+ranges. Existing reviewed regional/operator and company origins remain
+eligible subject to exact admission conflicts. Explicit service DIRECT retains
+its separate source policy. Hydra DIRECT and WHITELIST are both routing-intent
+inputs. Their exact overlap with a reviewed foreign assignment can survive as
+explicit routing intent, not as regional geography. Escapingworm's explicitly
+configured operator WHITELIST is a service DIRECT source. It remains subject
+to exact admission conflicts and never overrides PRIVATE, hard IP/subnet or
+Telegram exclusions. Hydra lists do not grant a resolver-block exemption.
+Neither list constitutes evidence of reachability from Russia.
+
+The existing exact foreign assignments are admission conflicts, not a global
+country-based exclusion or an assertion of network unreachability. Their mask
+does not extend beyond the reviewed prefixes. An exact independently measured
+CDN address can be admitted from `.github/data/v41-reviewed-reachable-cdn.tsv`.
+Require a provider source for the IP, a published positive measurement from a
+verified Russian access-network exit for that same IP and family, the exit ASN,
+and dates for verification and review. This is a manual evidence registry. BGP,
+DNS, an ASN name or provider inventory alone is insufficient. A single result
+never admits a surrounding prefix or ASN. Prefer domain rules on shared CDN
+IPs when the policy is specific to one service. No measured entries yet.
+
+The separate `v41-reviewed-unreachable.tsv` contains only manually reviewed
+IP-layer blocks or inbound IP-level geoblocks with evidence and review dates.
+Its effective mask excludes protected regional resources, selected regional
+origins, company ASN origins and reviewed operator prefixes. A header-only table
+is an explicit empty mask. Expired evidence stops the build for review. The
+existing hard IP/subnet and Telegram blocks still take precedence over every
+DIRECT protection class; DNS-only and SNI-only evidence must not be entered in
+the new table. PRIVATE keeps precedence. The complete change against the
+published candidate must be reviewed before publication.
+
+The policy sections below preserve the history of the v41 publisher and earlier
+revisions. Where they differ, the current candidate policy above takes precedence.
+The rolling release and run-specific snapshots identify the deployed build.
 
 ## Preservation of v39 and v40
 
@@ -43,7 +80,7 @@ resolver-derived blocks. The companion `cidrwhitelist.txt` stays diagnostic
 in the v37 base. Coverage independently admitted by other sources is not
 removed simply because an address also appears in HXEHEX.
 
-## Hydra DIRECT / WHITELIST expansion
+## Historical Hydra DIRECT / WHITELIST expansion
 
 - The upstream `hydraponique/roscomvpn-geoip` file already enters the v37 builder, but its `direct` and `whitelist` categories were previously counted only as diagnostic candidates.
 - Both categories are now explicitly admitted in the v41 overlay as **routing intent**, not as RU geolocation, first-party corporate origin, or unconditional block exemption.

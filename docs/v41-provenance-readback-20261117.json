@@ -1,0 +1,84 @@
+{
+  "candidate_dat": "02908f5e90cabb6cb29fdab664f9ae28b5777ad9f78bbda9fa18c824f07e070d",
+  "provenance_sha256": "d44f3cc356bb1a76fda0989e8f0b060ba7836ebf191e995d2a77fa3925959521",
+  "provenance_size_bytes": 13437977,
+  "provenance_rows": 227484,
+  "all_sources": 19,
+  "core_distinct": 329,
+  "shared_distinct": 3675,
+  "all_company_distinct": 4004,
+  "core_asn_field_rows": 0,
+  "shared_asn_field_rows": 0,
+  "regional_asn_field_rows": 0,
+  "static_exact": 8,
+  "hydra_overlap": {
+    "IPv4": 217850,
+    "IPv6": 0
+  },
+  "company_address_overlap": {
+    "IPv4": 1536,
+    "IPv6": 1208925819614629174706176
+  },
+  "coverage": {
+    "RIR resources": {
+      "distinct_keys": 14626,
+      "rows": 14626,
+      "IPv4": {
+        "matched_final": 50402238,
+        "single_listed_layer": 547482
+      },
+      "IPv6": {
+        "matched_final": 912233476641869891255242793680896,
+        "single_listed_layer": 718609332688988546557126123716608
+      }
+    },
+    "Regional BGP origins": {
+      "distinct_keys": 14743,
+      "rows": 14743,
+      "IPv4": {
+        "matched_final": 27467004,
+        "single_listed_layer": 284564
+      },
+      "IPv6": {
+        "matched_final": 191027937069632700877301566406656,
+        "single_listed_layer": 11981264852680116922885257297920
+      }
+    },
+    "Company BGP origins": {
+      "distinct_keys": 4004,
+      "rows": 4004,
+      "IPv4": {
+        "matched_final": 21718012,
+        "single_listed_layer": 7690
+      },
+      "IPv6": {
+        "matched_final": 24877177593038450372140538527744,
+        "single_listed_layer": 10299703439258050399181828259840
+      }
+    },
+    "Hydra DIRECT and WHITELIST": {
+      "distinct_keys": 43866,
+      "rows": 43907,
+      "IPv4": {
+        "matched_final": 49161036,
+        "single_listed_layer": 1383113
+      },
+      "IPv6": {
+        "matched_final": 2847563117644718645949551869952,
+        "single_listed_layer": 237906929893602104548777787392
+      }
+    },
+    "Static overrides": {
+      "distinct_keys": 8,
+      "rows": 8,
+      "IPv4": {
+        "matched_final": 1792,
+        "single_listed_layer": 0
+      },
+      "IPv6": {
+        "matched_final": 1208925819614629174706176,
+        "single_listed_layer": 0
+      }
+    }
+  }
+}

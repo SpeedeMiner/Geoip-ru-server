@@ -1,0 +1,140 @@
+[
+  {
+    "run_id": 44049971909,
+    "artifact_id": 14313915404,
+    "zip_sha256": "5a2db437b6fa8573d8797d0ae001fabd39957b758288ed2e375193265c274868",
+    "report": {
+      "scope": "public controls only; not the six review CIDRs",
+      "selected_source": "vpnobratno",
+      "transport": "IPv4",
+      "observations": [
+        {
+          "OBSERVED_AT": "2026-11-17T08:50:13Z",
+          "TARGET_ID": "cdn77-demo",
+          "TARGET_DOMAIN": "1906714720.rsc.cdn77.org",
+          "TARGET_IP": "84.17.50.24",
+          "EXPECTED_PREFIX": "84.17.50.0/23",
+          "TARGET_PORT": 443,
+          "DNS_RESULT": "DNS_ANSWER",
+          "DNS_A_ADDRESSES": [
+            "121.127.45.82"
+          ],
+          "DNS_AAAA_RESULT": "DNS_ANSWER",
+          "DNS_AAAA_ADDRESSES": [
+            "2a02:6ea0:f700::2"
+          ],
+          "DNS_MATCHES_TARGET": false,
+          "TCP_RESULT": "CONNECTED",
+          "TLS_RESULT": "VERIFIED",
+          "HTTPS_RESULT": "HTTP_RESPONSE",
+          "HTTP_STATUS": 200,
+          "EXIT_COUNTRY": "RU",
+          "EXIT_ASN": 12714,
+          "IPV6_TRANSPORT": "NOT_TESTED_TUNNEL_IPV4_ONLY"
+        },
+        {
+          "OBSERVED_AT": "2026-11-17T08:50:14Z",
+          "TARGET_ID": "cdnvideo-player-host",
+          "TARGET_DOMAIN": "playercdn.cdnvideo.ru",
+          "TARGET_IP": "88.210.36.192",
+          "EXPECTED_PREFIX": "88.210.36.0/23",
+          "TARGET_PORT": 443,
+          "DNS_RESULT": "DNS_ANSWER",
+          "DNS_A_ADDRESSES": [
+            "151.236.94.32"
+          ],
+          "DNS_AAAA_RESULT": "DNS_NO_ANSWER",
+          "DNS_AAAA_ADDRESSES": [],
+          "DNS_MATCHES_TARGET": false,
+          "TCP_RESULT": "CONNECTED",
+          "TLS_RESULT": "VERIFIED",
+          "HTTPS_RESULT": "HTTP_RESPONSE",
+          "HTTP_STATUS": 200,
+          "EXIT_COUNTRY": "RU",
+          "EXIT_ASN": 12714,
+          "IPV6_TRANSPORT": "NOT_TESTED_TUNNEL_IPV4_ONLY"
+        }
+      ],
+      "connection_attempts": 1,
+      "successful_ru_exits": 1,
+      "target_measurements": 2,
+      "usable_ru_openvpn_servers_discovered": 6,
+      "targets_not_tested_count": 0,
+      "requested_successful_ru_exits": 1,
+      "connection_counts": {
+        "connected_ru_exit": 1,
+        "selected": 1
+      }
+    }
+  },
+  {
+    "run_id": 44050376976,
+    "artifact_id": 14312888024,
+    "zip_sha256": "9cc7171deb95fe252cd045197a082a00f4fa93132c38ffe8632ba574b9c1ab74",
+    "report": {
+      "scope": "public controls only; not the six review CIDRs",
+      "selected_source": "vpnobratno",
+      "transport": "IPv4",
+      "observations": [
+        {
+          "OBSERVED_AT": "2026-11-17T08:52:51Z",
+          "TARGET_ID": "cdn77-demo",
+          "TARGET_DOMAIN": "1906714720.rsc.cdn77.org",
+          "TARGET_IP": "121.127.45.82",
+          "EXPECTED_PREFIX": "121.127.45.0/24",
+          "TARGET_PORT": 443,
+          "DNS_RESULT": "DNS_ANSWER",
+          "DNS_A_ADDRESSES": [
+            "207.211.213.90",
+            "37.19.218.108"
+          ],
+          "DNS_AAAA_RESULT": "DNS_ANSWER",
+          "DNS_AAAA_ADDRESSES": [
+            "2a02:6ea0:e100::7",
+            "2a02:6ea0:e100::9"
+          ],
+          "DNS_MATCHES_TARGET": false,
+          "TCP_RESULT": "CONNECTED",
+          "TLS_RESULT": "VERIFIED",
+          "HTTPS_RESULT": "HTTP_RESPONSE",
+          "HTTP_STATUS": 200,
+          "EXIT_COUNTRY": "RU",
+          "EXIT_ASN": 12714,
+          "IPV6_TRANSPORT": "NOT_TESTED_TUNNEL_IPV4_ONLY"
+        },
+        {
+          "OBSERVED_AT": "2026-11-17T08:52:52Z",
+          "TARGET_ID": "cdnvideo-player-host",
+          "TARGET_DOMAIN": "playercdn.cdnvideo.ru",
+          "TARGET_IP": "151.236.94.32",
+          "EXPECTED_PREFIX": "151.236.94.0/24",
+          "TARGET_PORT": 443,
+          "DNS_RESULT": "DNS_ANSWER",
+          "DNS_A_ADDRESSES": [
+            "151.236.90.64"
+          ],
+          "DNS_AAAA_RESULT": "DNS_NO_ANSWER",
+          "DNS_AAAA_ADDRESSES": [],
+          "DNS_MATCHES_TARGET": false,
+          "TCP_RESULT": "CONNECTED",
+          "TLS_RESULT": "VERIFIED",
+          "HTTPS_RESULT": "HTTP_RESPONSE",
+          "HTTP_STATUS": 200,
+          "EXIT_COUNTRY": "RU",
+          "EXIT_ASN": 12714,
+          "IPV6_TRANSPORT": "NOT_TESTED_TUNNEL_IPV4_ONLY"
+        }
+      ],
+      "connection_attempts": 1,
+      "successful_ru_exits": 1,
+      "target_measurements": 2,
+      "usable_ru_openvpn_servers_discovered": 6,
+      "targets_not_tested_count": 0,
+      "requested_successful_ru_exits": 1,
+      "connection_counts": {
+        "connected_ru_exit": 1,
+        "selected": 1
+      }
+    }
+  }
+]

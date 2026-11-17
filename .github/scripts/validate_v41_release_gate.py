@@ -14,6 +14,8 @@ from pathlib import Path
 
 import build_v41_overlay as builder
 from v41_reviewed_ipv6_admission import verify_reviewed_ipv6_admission_manifest
+from validate_v41_overlay import verify_unreachable_manifest
+from v41_direct_admission import ROLE, cdn_networks, verify_cdn_manifest
 from prepare_blocked_sources_v41 import (
     CONFIRMED_IP, HARD_SOURCE_LABELS, TELEGRAM_PREFIXES,
     read_confirmed_ip_records, read_feed, subnet_auto_approved,
@@ -25,7 +27,9 @@ SOURCE_KEYS = {
     "core": "corporate_core_prefixes",
     "shared": "shared_infrastructure_prefixes",
     "rir": "regional_rir_inventory",
+    "regional_origin_prefixes": "regional_origin_prefixes",
     "regional_admission_exclusions": "regional_admission_exclusions",
+    "hydra": "hydra_geoip",
     "reviewed_operator_prefixes": "reviewed_operator_prefixes",
     "kyoresuas_v4": "kyoresuas_standard_ipv4",
     "kyoresuas_v6": "kyoresuas_standard_ipv6",
@@ -196,15 +200,16 @@ def format_quality_section(result: dict) -> str:
 
 def main() -> int:
     p = argparse.ArgumentParser(description=__doc__)
-    for field in ("geoip", "manifest", "quality", "hard", "effective", "core",
+    for field in ("geoip", "manifest", "quality", "hard", "effective", "core", "hydra",
                   "shared", "rir", "kyoresuas_v4", "kyoresuas_v6",
-                  "kyoresuas_services", "w1zardz", "hxehex_ip", "escapingworm"):
+                  "kyoresuas_services", "w1zardz", "hxehex_ip", "escapingworm", "regional_origin_prefixes"):
         p.add_argument("--" + field.replace("_", "-"), type=Path, required=True)
     p.add_argument("--current-subnet-feed", type=Path, required=True)
     p.add_argument("--confirmed-ip-records", type=Path, required=True)
     p.add_argument("--regional-admission-exclusions", type=Path, required=True)
     p.add_argument("--reviewed-ipv6-admission-exclusions", type=Path, required=True)
     p.add_argument("--reviewed-operator-prefixes", type=Path, required=True)
+    p.add_argument("--temporary-retention", type=Path)
     a = p.parse_args()
     try:
         manifest = json.loads(a.manifest.read_text(encoding="utf-8"))
@@ -212,9 +217,18 @@ def main() -> int:
         categories = builder.parse_geoip_dat(a.geoip)
         if set(categories) != {"RU", "PRIVATE"}:
             raise ValueError("Expected GeoIP categories RU and PRIVATE only")
-        admission = set(builder.parse_regional_admission_exclusions(a.regional_admission_exclusions))
-        admission.update(verify_reviewed_ipv6_admission_manifest(a.reviewed_ipv6_admission_exclusions, manifest))
-        builder.assert_regional_admission_disjoint(categories["RU"], admission)
+        temporary = builder.verify_temporary_retention_manifest(a.temporary_retention, manifest)
+        builder.require_temporary_retention(temporary, builder.intervals(categories["RU"], 4))
+        regional_review = builder.parse_regional_admission_exclusions(a.regional_admission_exclusions)
+        ipv6_review = verify_reviewed_ipv6_admission_manifest(a.reviewed_ipv6_admission_exclusions, manifest)
+        if (manifest.get("regional_admission_exclusions", {}).get("records") != list(regional_review.values())
+                or manifest.get("regional_admission_exclusions", {}).get("role") != ROLE
+                or manifest.get("reviewed_ipv6_admission_exclusions", {}).get("role") != ROLE):
+            raise ValueError("Missing exact foreign admission policy")
+        hydra = builder.parse_hydra_direct_whitelist(a.hydra)
+        cdn = cdn_networks(verify_cdn_manifest(manifest))
+        admission = builder.subtract_networks(
+            set(regional_review) | set(ipv6_review), hydra["hydra-direct"], hydra["hydra-whitelist"], cdn)
         effective = builder.parse_cidr_file(a.effective)[0]
         core = builder.parse_cidr_file(a.core, allow_hosts=False)[0]
         shared = builder.parse_cidr_file(a.shared, allow_hosts=False)[0]
@@ -234,6 +248,11 @@ def main() -> int:
         hard_rows = read_hard_sources(a.hard)
         verify_hard_evidence(hard_rows, a.current_subnet_feed, a.confirmed_ip_records)
         reviewed = builder.parse_reviewed_operator_prefixes(a.reviewed_operator_prefixes)
+        regional_origins = builder.parse_cidr_file(a.regional_origin_prefixes, allow_hosts=False)[0]
+        unreachable = verify_unreachable_manifest(manifest, builder.union_networks(*regions.values()),
+                                                   regional_origins, core | shared, set(reviewed))
+        admission.update(unreachable)
+        builder.assert_regional_admission_disjoint(categories["RU"], admission)
         builder.assert_reviewed_operator_coverage(
             categories["RU"], categories["PRIVATE"], {prefix for prefix, _ in hard_rows}, admission, reviewed
         )

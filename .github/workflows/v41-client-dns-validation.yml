@@ -1,0 +1,71 @@
+name: v41 client DNS routing fixtures
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - ".github/workflows/v41-client-dns-validation.yml"
+      - ".github/scripts/check_v41_client_dns_local.py"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: v41-client-dns-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  isolated-clients:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    steps:
+      - name: Checkout test harness
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+
+      - name: Download checksum-pinned client binaries and published v41 fixture
+        shell: bash
+        run: |
+          set -euo pipefail
+          assets="$RUNNER_TEMP/v41-client-assets"
+          mkdir "$assets"
+          cd "$assets"
+          get() {
+            curl --fail --location --silent --show-error --proto '=https' --proto-redir '=https' \
+              --connect-timeout 10 --max-time 90 --retry 2 --max-filesize 67108864 --output "$1" "$2"
+          }
+          get sing-box.tar.gz https://github.com/SagerNet/sing-box/releases/download/v1.13.12/sing-box-1.13.12-linux-amd64.tar.gz
+          get xray.zip https://github.com/XTLS/Xray-core/releases/download/v26.7.28/Xray-linux-64.zip
+          release=https://raw.githubusercontent.com/SpeedeMiner/Geoip-ru-server/63b8abf0ba6c2264724a58ec9a2fb7035c5130a6
+          for file in geoip_RU.dat geoip_RU.srs geoip_PRIVATE.srs; do
+            get "$file" "$release/$file"
+          done
+          sha256sum -c <<'SUMS'
+          1540533adb3df24f5ad5f14b5c7ca3dbc2401b10a1c1eb278fcadcada47ec6c4  sing-box.tar.gz
+          8195d909f1109b8f3d99eefe401a3c451d7bf4af71f24d3815420f77e5dd2a40  xray.zip
+          3dbbffd624d8bc4a50dac860135664578bd2e7742bdf66baa399beab3c65d3ec  geoip_RU.dat
+          eee02d9b1c6178bc360778c9ea6f45b0ebe5a63fe7bb1a375cb3f8f791a8ff87  geoip_RU.srs
+          b9ea6381ea61e286298aea76c10cb85a252ff0d20c49d6de3527be1353c107c4  geoip_PRIVATE.srs
+          SUMS
+          tar -xOzf sing-box.tar.gz sing-box-1.13.12-linux-amd64/sing-box > sing-box
+          unzip -p xray.zip xray > xray
+          chmod 0755 sing-box xray
+
+      - name: Run both unprivileged clients inside a loopback-only network namespace
+        shell: bash
+        run: |
+          set -euo pipefail
+          sudo unshare --net bash -eu -c '
+            ip link set dev lo up
+            exec runuser -u "$1" -- python3 "$2" --assets "$3" --output "$4"
+          ' _ "$(id -un)" "$GITHUB_WORKSPACE/.github/scripts/check_v41_client_dns_local.py" \
+              "$RUNNER_TEMP/v41-client-assets" "$RUNNER_TEMP/v41-client-dns-results.json"
+
+      - name: Upload verified route evidence
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+        with:
+          name: v41-client-dns-local-fixtures
+          path: ${{ runner.temp }}/v41-client-dns-results.json
+          if-no-files-found: error
+          retention-days: 14

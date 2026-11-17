@@ -1,0 +1,2127 @@
+{
+  "schema": 1,
+  "queue_size": 6,
+  "verified_service_pairs": 0,
+  "dns_hits": [],
+  "concrete_ct_names": [
+    "autoconfig.link4bd.com",
+    "billing.link4bd.com",
+    "reseller.link4bd.com",
+    "www.reseller.link4bd.com",
+    "cpanel.link4bd.com",
+    "cpcalendars.link4bd.com",
+    "cpcontacts.link4bd.com",
+    "customer.link4bd.com",
+    "link4bd.com",
+    "mail.link4bd.com",
+    "maxim.link4bd.com",
+    "webdisk.link4bd.com",
+    "webmail.link4bd.com",
+    "www.link4bd.com"
+  ],
+  "new_ct_names": [
+    "autoconfig.link4bd.com",
+    "billing.link4bd.com",
+    "reseller.link4bd.com",
+    "www.reseller.link4bd.com",
+    "customer.link4bd.com",
+    "mail.link4bd.com",
+    "webmail.link4bd.com",
+    "cpanel.link4bd.com",
+    "cpcalendars.link4bd.com",
+    "cpcontacts.link4bd.com",
+    "webdisk.link4bd.com"
+  ],
+  "observations": [
+    {
+      "run": 44060158435,
+      "artifact": 14318480508,
+      "artifact_zip_digest": "sha256:28aab527a7dd1a7c40d3067880b1abfe87b11d977fab37ac70bc0dd6ad4385da",
+      "commit": "8be0cd3edce7de21f55bbab2850d2f98841e0bb4",
+      "result": {
+        "scope": "public reverse-DNS and exact routing metadata; no review CIDR probed",
+        "selected_source": "vpnobratno",
+        "transport": "IPv4",
+        "observations": [
+          {
+            "OBSERVED_AT": "2026-11-17T09:57:29Z",
+            "TARGET_ID": "cdn77-demo",
+            "TARGET_DOMAIN": "1906714720.rsc.cdn77.org",
+            "TARGET_IP": "121.127.45.82",
+            "EXPECTED_PREFIX": "121.127.45.0/24",
+            "TARGET_PORT": 443,
+            "DNS_RESULT": "DNS_ANSWER",
+            "DNS_A_ADDRESSES": [
+              "121.127.45.81"
+            ],
+            "DNS_AAAA_RESULT": "DNS_ANSWER",
+            "DNS_AAAA_ADDRESSES": [
+              "2a02:6ea0:f700::2"
+            ],
+            "DNS_MATCHES_TARGET": false,
+            "TCP_RESULT": "CONNECTED",
+            "TLS_RESULT": "VERIFIED",
+            "HTTPS_RESULT": "HTTP_RESPONSE",
+            "HTTP_STATUS": 200,
+            "EXIT_COUNTRY": "RU",
+            "EXIT_ASN": 196949,
+            "IPV6_TRANSPORT": "NOT_TESTED_TUNNEL_IPV4_ONLY",
+            "DNS_RESOLVER": "yandex-basic-udp",
+            "DNS_RESOLVER_IPV4": "77.88.8.8"
+          },
+          {
+            "OBSERVED_AT": "2026-11-17T09:57:32Z",
+            "TARGET_ID": "cdnvideo-player-host",
+            "TARGET_DOMAIN": "playercdn.cdnvideo.ru",
+            "TARGET_IP": "151.236.65.96",
+            "EXPECTED_PREFIX": "151.236.65.0/24",
+            "TARGET_PORT": 443,
+            "DNS_RESULT": "DNS_ANSWER",
+            "DNS_A_ADDRESSES": [
+              "81.9.20.192"
+            ],
+            "DNS_AAAA_RESULT": "DNS_NO_ANSWER",
+            "DNS_AAAA_ADDRESSES": [],
+            "DNS_MATCHES_TARGET": false,
+            "TCP_RESULT": "CONNECTED",
+            "TLS_RESULT": "VERIFIED",
+            "HTTPS_RESULT": "HTTP_RESPONSE",
+            "HTTP_STATUS": 200,
+            "EXIT_COUNTRY": "RU",
+            "EXIT_ASN": 196949,
+            "IPV6_TRANSPORT": "NOT_TESTED_TUNNEL_IPV4_ONLY",
+            "DNS_RESOLVER": "yandex-basic-udp",
+            "DNS_RESOLVER_IPV4": "77.88.8.8"
+          }
+        ],
+        "connection_attempts": 1,
+        "successful_ru_exits": 1,
+        "target_measurements": 2,
+        "usable_ru_openvpn_servers_discovered": 6,
+        "targets_not_tested_count": 0,
+        "requested_successful_ru_exits": 1,
+        "connection_counts": {
+          "connected_ru_exit": 1,
+          "selected": 1
+        },
+        "dns_only": [
+          {
+            "A": [
+              "103.16.74.202"
+            ],
+            "AAAA": [],
+            "AAAA_STATUS": "DNS_NO_ANSWER",
+            "A_STATUS": "DNS_ANSWER",
+            "DNS_RESOLVER": "yandex-basic-udp",
+            "EXIT_ASN": 196949,
+            "EXIT_COUNTRY": "RU",
+            "HOST": "maxim.link4bd.com",
+            "TRANSPORT_TESTED": false
+          },
+          {
+            "A": [
+              "103.129.252.45"
+            ],
+            "AAAA": [
+              "240e:938:a07:6:0:14:203:45",
+              "240e:938:a07:6:0:14:203:55"
+            ],
+            "AAAA_STATUS": "DNS_ANSWER",
+            "A_STATUS": "DNS_ANSWER",
+            "DNS_RESOLVER": "yandex-basic-udp",
+            "EXIT_ASN": 196949,
+            "EXIT_COUNTRY": "RU",
+            "HOST": "smtp.163.com",
+            "TRANSPORT_TESTED": false
+          },
+          {
+            "A": [
+              "111.124.203.45",
+              "111.124.203.50"
+            ],
+            "AAAA": [
+              "240e:938:a07:6:0:14:203:45",
+              "240e:938:a07:6:0:14:203:50"
+            ],
+            "AAAA_STATUS": "DNS_ANSWER",
+            "A_STATUS": "DNS_ANSWER",
+            "DNS_RESOLVER": "yandex-basic-udp",
+            "EXIT_ASN": 196949,
+            "EXIT_COUNTRY": "RU",
+            "HOST": "imap.163.com",
+            "TRANSPORT_TESTED": false
+          },
+          {
+            "A": [
+              "111.124.203.45",
+              "111.124.203.50"
+            ],
+            "AAAA": [
+              "240e:938:a07:6:0:14:203:45",
+              "240e:938:a07:6:0:14:203:50"
+            ],
+            "AAAA_STATUS": "DNS_ANSWER",
+            "A_STATUS": "DNS_ANSWER",
+            "DNS_RESOLVER": "yandex-basic-udp",
+            "EXIT_ASN": 196949,
+            "EXIT_COUNTRY": "RU",
+            "HOST": "pop.163.com",
+            "TRANSPORT_TESTED": false
+          },
+          {
+            "A": [
+              "103.129.252.46"
+            ],
+            "AAAA": [
+              "240e:938:a07:6:0:14:203:46",
+              "240e:938:a07:6:0:14:203:56"
+            ],
+            "AAAA_STATUS": "DNS_ANSWER",
+            "A_STATUS": "DNS_ANSWER",
+            "DNS_RESOLVER": "yandex-basic-udp",
+            "EXIT_ASN": 196949,
+            "EXIT_COUNTRY": "RU",
+            "HOST": "smtp.126.com",
+            "TRANSPORT_TESTED": false
+          },
+          {
+            "A": [
+              "103.129.252.61"
+            ],
+            "AAAA": [
+              "240e:938:a07:6:0:14:20:9",
+              "240e:938:a07:6:0:14:203:60"
+            ],
+            "AAAA_STATUS": "DNS_ANSWER",
+            "A_STATUS": "DNS_ANSWER",
+            "DNS_RESOLVER": "yandex-basic-udp",
+            "EXIT_ASN": 196949,
+            "EXIT_COUNTRY": "RU",
+            "HOST": "smtp.yeah.net",
+            "TRANSPORT_TESTED": false
+          },
+          {
+            "A": [
+              "220.197.30.130"
+            ],
+            "AAAA": [],
+            "AAAA_STATUS": "DNS_NO_ANSWER",
+            "A_STATUS": "DNS_ANSWER",
+            "DNS_RESOLVER": "yandex-basic-udp",
+            "EXIT_ASN": 196949,
+            "EXIT_COUNTRY": "RU",
+            "HOST": "smtp.ym.163.com",
+            "TRANSPORT_TESTED": false
+          },
+          {
+            "A": [
+              "220.197.30.130"
+            ],
+            "AAAA": [],
+            "AAAA_STATUS": "DNS_NO_ANSWER",
+            "A_STATUS": "DNS_ANSWER",
+            "DNS_RESOLVER": "yandex-basic-udp",
+            "EXIT_ASN": 196949,
+            "EXIT_COUNTRY": "RU",
+            "HOST": "imap.ym.163.com",
+            "TRANSPORT_TESTED": false
+          }
+        ],
+        "reverse_review": {
+          "exit_asn": 196949,
+          "exit_country": "RU",
+          "expected_queries": 13,
+          "historical_forward": [],
+          "observed_at": "2026-11-17T09:57:34Z",
+          "queries": [
+            {
+              "answer": [],
+              "authority_soa": [
+                {
+                  "primary": "z.arin.net",
+                  "zone": "156.in-addr.arpa"
+                }
+              ],
+              "name": "166.80.224.156.in-addr.arpa",
+              "rcode": 3,
+              "status": "DNS_NXDOMAIN",
+              "type": "PTR"
+            },
+            {
+              "answer": [],
+              "authority_soa": [
+                {
+                  "primary": "z.arin.net",
+                  "zone": "156.in-addr.arpa"
+                }
+              ],
+              "name": "80.224.156.in-addr.arpa",
+              "rcode": 3,
+              "status": "DNS_NXDOMAIN",
+              "type": "NS"
+            },
+            {
+              "answer": [],
+              "authority_soa": [
+                {
+                  "primary": "z.arin.net",
+                  "zone": "156.in-addr.arpa"
+                }
+              ],
+              "name": "80.224.156.in-addr.arpa",
+              "rcode": 3,
+              "status": "DNS_NXDOMAIN",
+              "type": "SOA"
+            },
+            {
+              "answer": [],
+              "authority_soa": [
+                {
+                  "primary": "z.arin.net",
+                  "zone": "156.in-addr.arpa"
+                }
+              ],
+              "name": "186.241.156.in-addr.arpa",
+              "rcode": 3,
+              "status": "DNS_NXDOMAIN",
+              "type": "NS"
+            },
+            {
+              "answer": [],
+              "authority_soa": [
+                {
+                  "primary": "z.arin.net",
+                  "zone": "156.in-addr.arpa"
+                }
+              ],
+              "name": "186.241.156.in-addr.arpa",
+              "rcode": 3,
+              "status": "DNS_NXDOMAIN",
+              "type": "SOA"
+            },
+            {
+              "answer": [],
+              "authority_soa": [
+                {
+                  "primary": "ns.lacnic.net",
+                  "zone": "177.in-addr.arpa"
+                }
+              ],
+              "name": "246.29.177.in-addr.arpa",
+              "rcode": 3,
+              "status": "DNS_NXDOMAIN",
+              "type": "NS"
+            },
+            {
+              "answer": [],
+              "authority_soa": [
+                {
+                  "primary": "ns.lacnic.net",
+                  "zone": "177.in-addr.arpa"
+                }
+              ],
+              "name": "246.29.177.in-addr.arpa",
+              "rcode": 3,
+              "status": "DNS_NXDOMAIN",
+              "type": "SOA"
+            },
+            {
+              "answer": [],
+              "authority_soa": [
+                {
+                  "primary": "ns.lacnic.net",
+                  "zone": "177.in-addr.arpa"
+                }
+              ],
+              "name": "107.122.177.in-addr.arpa",
+              "rcode": 3,
+              "status": "DNS_NXDOMAIN",
+              "type": "NS"
+            },
+            {
+              "answer": [],
+              "authority_soa": [
+                {
+                  "primary": "ns.lacnic.net",
+                  "zone": "177.in-addr.arpa"
+                }
+              ],
+              "name": "107.122.177.in-addr.arpa",
+              "rcode": 3,
+              "status": "DNS_NXDOMAIN",
+              "type": "SOA"
+            },
+            {
+              "answer": [],
+              "authority_soa": [
+                {
+                  "primary": "ns.lacnic.net",
+                  "zone": "177.in-addr.arpa"
+                }
+              ],
+              "name": "160.122.177.in-addr.arpa",
+              "rcode": 3,
+              "status": "DNS_NXDOMAIN",
+              "type": "NS"
+            },
+            {
+              "answer": [],
+              "authority_soa": [
+                {
+                  "primary": "ns.lacnic.net",
+                  "zone": "177.in-addr.arpa"
+                }
+              ],
+              "name": "160.122.177.in-addr.arpa",
+              "rcode": 3,
+              "status": "DNS_NXDOMAIN",
+              "type": "SOA"
+            },
+            {
+              "answer": [],
+              "authority_soa": [
+                {
+                  "primary": "ns.lacnic.net",
+                  "zone": "177.in-addr.arpa"
+                }
+              ],
+              "name": "21.166.177.in-addr.arpa",
+              "rcode": 3,
+              "status": "DNS_NXDOMAIN",
+              "type": "NS"
+            },
+            {
+              "answer": [],
+              "authority_soa": [
+                {
+                  "primary": "ns.lacnic.net",
+                  "zone": "177.in-addr.arpa"
+                }
+              ],
+              "name": "21.166.177.in-addr.arpa",
+              "rcode": 3,
+              "status": "DNS_NXDOMAIN",
+              "type": "SOA"
+            }
+          ],
+          "resolver": "yandex-basic-udp",
+          "resolver_ipv4": "77.88.8.8"
+        },
+        "ris_readback": [
+          {
+            "prefix": "156.224.80.0/24",
+            "requested_snapshot_utc": "2026-11-17T08:00:00",
+            "status": "REQUEST_RESPONSE_MISMATCH",
+            "returned_snapshot": "2026-11-17T00:00:00"
+          },
+          {
+            "prefix": "156.241.186.0/24",
+            "requested_snapshot_utc": "2026-11-17T08:00:00",
+            "status": "REQUEST_RESPONSE_MISMATCH",
+            "returned_snapshot": "2026-11-17T00:00:00"
+          },
+          {
+            "prefix": "177.29.246.0/24",
+            "requested_snapshot_utc": "2026-11-17T08:00:00",
+            "status": "REQUEST_RESPONSE_MISMATCH",
+            "returned_snapshot": "2026-11-17T00:00:00"
+          },
+          {
+            "prefix": "177.122.107.0/24",
+            "requested_snapshot_utc": "2026-11-17T08:00:00",
+            "status": "REQUEST_RESPONSE_MISMATCH",
+            "returned_snapshot": "2026-11-17T00:00:00"
+          },
+          {
+            "prefix": "177.122.160.0/24",
+            "requested_snapshot_utc": "2026-11-17T08:00:00",
+            "status": "REQUEST_RESPONSE_MISMATCH",
+            "returned_snapshot": "2026-11-17T00:00:00"
+          },
+          {
+            "prefix": "177.166.21.0/24",
+            "requested_snapshot_utc": "2026-11-17T08:00:00",
+            "status": "REQUEST_RESPONSE_MISMATCH",
+            "returned_snapshot": "2026-11-17T00:00:00"
+          }
+        ]
+      }
+    },
+    {
+      "run": 44060423331,
+      "artifact": 14317642465,
+      "artifact_zip_digest": "sha256:5fe53c3381795d56aa0ff3ba11397c96d82cd5a4d11deb28df386c53e5cda45b",
+      "commit": "d7c3ad63346eaa6a3cc5edfa38a12dc1b1bffb77",
+      "result": {
+        "scope": "published metadata only; no connections to subject IPs",
+        "collected_utc": "2026-11-17T09:58:26+00:00",
+        "results": [
+          {
+            "query": "link4bd.com",
+            "source": "certspotter",
+            "status": "OK",
+            "records_returned": 7,
+            "concrete_names": [
+              "autoconfig.link4bd.com",
+              "billing.link4bd.com",
+              "reseller.link4bd.com",
+              "www.reseller.link4bd.com"
+            ]
+          },
+          {
+            "query": "link4bd.com",
+            "source": "crt.sh",
+            "status": "OK",
+            "records_returned": 151,
+            "concrete_names": [
+              "autoconfig.link4bd.com",
+              "billing.link4bd.com",
+              "cpanel.link4bd.com",
+              "cpcalendars.link4bd.com",
+              "cpcontacts.link4bd.com",
+              "customer.link4bd.com",
+              "link4bd.com",
+              "mail.link4bd.com",
+              "maxim.link4bd.com",
+              "webdisk.link4bd.com",
+              "webmail.link4bd.com",
+              "www.link4bd.com"
+            ]
+          },
+          {
+            "query": "888venturesllc.com",
+            "source": "certspotter",
+            "status": "OK",
+            "records_returned": 0,
+            "concrete_names": []
+          },
+          {
+            "query": "888venturesllc.com",
+            "source": "crt.sh",
+            "status": "TimeoutError",
+            "records_returned": null,
+            "concrete_names": []
+          },
+          {
+            "query": "246.29.177.in-addr.arpa",
+            "source": "ripe-db-exact-domain",
+            "status": "HTTP_404",
+            "exact_object_in_response": false,
+            "nameservers": []
+          },
+          {
+            "query": "107.122.177.in-addr.arpa",
+            "source": "ripe-db-exact-domain",
+            "status": "HTTP_404",
+            "exact_object_in_response": false,
+            "nameservers": []
+          },
+          {
+            "query": "160.122.177.in-addr.arpa",
+            "source": "ripe-db-exact-domain",
+            "status": "HTTP_404",
+            "exact_object_in_response": false,
+            "nameservers": []
+          },
+          {
+            "query": "21.166.177.in-addr.arpa",
+            "source": "ripe-db-exact-domain",
+            "status": "HTTP_404",
+            "exact_object_in_response": false,
+            "nameservers": []
+          },
+          {
+            "query": "156.224.80.166",
+            "source": "internetdb-hostnames-only",
+            "status": "HTTP_404",
+            "hostnames": []
+          }
+        ]
+      }
+    },
+    {
+      "run": 44060641983,
+      "artifact": 14317114256,
+      "artifact_zip_digest": "sha256:c5c11b03187e89204d59faeeda9be826808b9a34f3b0564ed77d4746bcc6d335",
+      "commit": "8beee396bebe73d79d8465e0383609c162bba4ba",
+      "result": {
+        "scope": "public reverse-DNS and exact routing metadata; no review CIDR probed",
+        "selected_source": "vpnobratno",
+        "transport": "IPv4",
+        "observations": [
+          {
+            "OBSERVED_AT": "2026-11-17T10:01:17Z",
+            "TARGET_ID": "cdn77-demo",
+            "TARGET_DOMAIN": "1906714720.rsc.cdn77.org",
+            "TARGET_IP": "121.127.45.82",
+            "EXPECTED_PREFIX": "121.127.45.0/24",
+            "TARGET_PORT": 443,
+            "DNS_RESULT": "DNS_ANSWER",
+            "DNS_A_ADDRESSES": [
+              "121.127.45.81"
+            ],
+            "DNS_AAAA_RESULT": "DNS_ANSWER",
+            "DNS_AAAA_ADDRESSES": [
+              "2a02:6ea0:f700::2"
+            ],
+            "DNS_MATCHES_TARGET": false,
+            "TCP_RESULT": "CONNECTED",
+            "TLS_RESULT": "VERIFIED",
+            "HTTPS_RESULT": "HTTP_RESPONSE",
+            "HTTP_STATUS": 200,
+            "EXIT_COUNTRY": "RU",
+            "EXIT_ASN": 6863,
+            "IPV6_TRANSPORT": "NOT_TESTED_TUNNEL_IPV4_ONLY",
+            "DNS_RESOLVER": "yandex-basic-udp",
+            "DNS_RESOLVER_IPV4": "77.88.8.8"
+          },
+          {
+            "OBSERVED_AT": "2026-11-17T10:01:18Z",
+            "TARGET_ID": "cdnvideo-player-host",
+            "TARGET_DOMAIN": "playercdn.cdnvideo.ru",
+            "TARGET_IP": "151.236.65.96",
+            "EXPECTED_PREFIX": "151.236.65.0/24",
+            "TARGET_PORT": 443,
+            "DNS_RESULT": "DNS_ANSWER",
+            "DNS_A_ADDRESSES": [
+              "151.236.65.96"
+            ],
+            "DNS_AAAA_RESULT": "DNS_NO_ANSWER",
+            "DNS_AAAA_ADDRESSES": [],
+            "DNS_MATCHES_TARGET": true,
+            "TCP_RESULT": "CONNECTED",
+            "TLS_RESULT": "VERIFIED",
+            "HTTPS_RESULT": "HTTP_RESPONSE",
+            "HTTP_STATUS": 200,
+            "EXIT_COUNTRY": "RU",
+            "EXIT_ASN": 6863,
+            "IPV6_TRANSPORT": "NOT_TESTED_TUNNEL_IPV4_ONLY",
+            "DNS_RESOLVER": "yandex-basic-udp",
+            "DNS_RESOLVER_IPV4": "77.88.8.8"
+          }
+        ],
+        "connection_attempts": 2,
+        "successful_ru_exits": 1,
+        "target_measurements": 2,
+        "usable_ru_openvpn_servers_discovered": 6,
+        "targets_not_tested_count": 0,
+        "requested_successful_ru_exits": 1,
+        "connection_counts": {
+          "connect_or_verify_failed": 1,
+          "connected_ru_exit": 1,
+          "rejected_repeated_or_unverified_asn": 1,
+          "selected": 2
+        },
+        "dns_only": [
+          {
+            "A": [
+              "38.58.178.141"
+            ],
+            "AAAA": [],
+            "AAAA_STATUS": "DNS_NO_ANSWER",
+            "A_STATUS": "DNS_ANSWER",
+            "DNS_RESOLVER": "yandex-basic-udp",
+            "EXIT_ASN": 6863,
+            "EXIT_COUNTRY": "RU",
+            "HOST": "autoconfig.link4bd.com",
+            "TRANSPORT_TESTED": false
+          },
+          {
+            "A": [
+              "187.7.70.2"
+            ],
+            "AAAA": [],
+            "AAAA_STATUS": "DNS_ERROR",
+            "A_STATUS": "DNS_ANSWER",
+            "DNS_RESOLVER": "yandex-basic-udp",
+            "EXIT_ASN": 6863,
+            "EXIT_COUNTRY": "RU",
+            "HOST": "billing.link4bd.com",
+            "TRANSPORT_TESTED": false
+          },
+          {
+            "A": [
+              "38.58.178.141"
+            ],
+            "AAAA": [],
+            "AAAA_STATUS": "DNS_NO_ANSWER",
+            "A_STATUS": "DNS_ANSWER",
+            "DNS_RESOLVER": "yandex-basic-udp",
+            "EXIT_ASN": 6863,
+            "EXIT_COUNTRY": "RU",
+            "HOST": "reseller.link4bd.com",
+            "TRANSPORT_TESTED": false
+          },
+          {
+            "A": [
+              "38.58.178.141"
+            ],
+            "AAAA": [],
+            "AAAA_STATUS": "DNS_NO_ANSWER",
+            "A_STATUS": "DNS_ANSWER",
+            "DNS_RESOLVER": "yandex-basic-udp",
+            "EXIT_ASN": 6863,
+            "EXIT_COUNTRY": "RU",
+            "HOST": "www.reseller.link4bd.com",
+            "TRANSPORT_TESTED": false
+          },
+          {
+            "A": [
+              "103.16.74.203"
+            ],
+            "AAAA": [],
+            "AAAA_STATUS": "DNS_NO_ANSWER",
+            "A_STATUS": "DNS_ANSWER",
+            "DNS_RESOLVER": "yandex-basic-udp",
+            "EXIT_ASN": 6863,
+            "EXIT_COUNTRY": "RU",
+            "HOST": "customer.link4bd.com",
+            "TRANSPORT_TESTED": false
+          },
+          {
+            "A": [
+              "38.58.178.141"
+            ],
+            "AAAA": [],
+            "AAAA_STATUS": "DNS_NO_ANSWER",
+            "A_STATUS": "DNS_ANSWER",
+            "DNS_RESOLVER": "yandex-basic-udp",
+            "EXIT_ASN": 6863,
+            "EXIT_COUNTRY": "RU",
+            "HOST": "mail.link4bd.com",
+            "TRANSPORT_TESTED": false
+          },
+          {
+            "A": [
+              "38.58.178.141"
+            ],
+            "AAAA": [],
+            "AAAA_STATUS": "DNS_NO_ANSWER",
+            "A_STATUS": "DNS_ANSWER",
+            "DNS_RESOLVER": "yandex-basic-udp",
+            "EXIT_ASN": 6863,
+            "EXIT_COUNTRY": "RU",
+            "HOST": "webmail.link4bd.com",
+            "TRANSPORT_TESTED": false
+          },
+          {
+            "A": [
+              "38.58.178.141"
+            ],
+            "AAAA": [],
+            "AAAA_STATUS": "DNS_NO_ANSWER",
+            "A_STATUS": "DNS_ANSWER",
+            "DNS_RESOLVER": "yandex-basic-udp",
+            "EXIT_ASN": 6863,
+            "EXIT_COUNTRY": "RU",
+            "HOST": "cpanel.link4bd.com",
+            "TRANSPORT_TESTED": false
+          }
+        ],
+        "reverse_review": {
+          "exit_asn": 6863,
+          "exit_country": "RU",
+          "expected_queries": 13,
+          "historical_forward": [],
+          "observed_at": "2026-11-17T10:01:20Z",
+          "queries": [
+            {
+              "answer": [],
+              "authority_soa": [
+                {
+                  "primary": "z.arin.net",
+                  "zone": "156.in-addr.arpa"
+                }
+              ],
+              "name": "166.80.224.156.in-addr.arpa",
+              "rcode": 3,
+              "status": "DNS_NXDOMAIN",
+              "type": "PTR"
+            },
+            {
+              "answer": [],
+              "authority_soa": [
+                {
+                  "primary": "z.arin.net",
+                  "zone": "156.in-addr.arpa"
+                }
+              ],
+              "name": "80.224.156.in-addr.arpa",
+              "rcode": 3,
+              "status": "DNS_NXDOMAIN",
+              "type": "NS"
+            },
+            {
+              "answer": [],
+              "authority_soa": [
+                {
+                  "primary": "z.arin.net",
+                  "zone": "156.in-addr.arpa"
+                }
+              ],
+              "name": "80.224.156.in-addr.arpa",
+              "rcode": 3,
+              "status": "DNS_NXDOMAIN",
+              "type": "SOA"
+            },
+            {
+              "answer": [],
+              "authority_soa": [
+                {
+                  "primary": "z.arin.net",
+                  "zone": "156.in-addr.arpa"
+                }
+              ],
+              "name": "186.241.156.in-addr.arpa",
+              "rcode": 3,
+              "status": "DNS_NXDOMAIN",
+              "type": "NS"
+            },
+            {
+              "answer": [],
+              "authority_soa": [
+                {
+                  "primary": "z.arin.net",
+                  "zone": "156.in-addr.arpa"
+                }
+              ],
+              "name": "186.241.156.in-addr.arpa",
+              "rcode": 3,
+              "status": "DNS_NXDOMAIN",
+              "type": "SOA"
+            },
+            {
+              "answer": [],
+              "authority_soa": [
+                {
+                  "primary": "ns.lacnic.net",
+                  "zone": "177.in-addr.arpa"
+                }
+              ],
+              "name": "246.29.177.in-addr.arpa",
+              "rcode": 3,
+              "status": "DNS_NXDOMAIN",
+              "type": "NS"
+            },
+            {
+              "answer": [],
+              "authority_soa": [
+                {
+                  "primary": "ns.lacnic.net",
+                  "zone": "177.in-addr.arpa"
+                }
+              ],
+              "name": "246.29.177.in-addr.arpa",
+              "rcode": 3,
+              "status": "DNS_NXDOMAIN",
+              "type": "SOA"
+            },
+            {
+              "answer": [],
+              "authority_soa": [
+                {
+                  "primary": "ns.lacnic.net",
+                  "zone": "177.in-addr.arpa"
+                }
+              ],
+              "name": "107.122.177.in-addr.arpa",
+              "rcode": 3,
+              "status": "DNS_NXDOMAIN",
+              "type": "NS"
+            },
+            {
+              "answer": [],
+              "authority_soa": [
+                {
+                  "primary": "ns.lacnic.net",
+                  "zone": "177.in-addr.arpa"
+                }
+              ],
+              "name": "107.122.177.in-addr.arpa",
+              "rcode": 3,
+              "status": "DNS_NXDOMAIN",
+              "type": "SOA"
+            },
+            {
+              "answer": [],
+              "authority_soa": [
+                {
+                  "primary": "ns.lacnic.net",
+                  "zone": "177.in-addr.arpa"
+                }
+              ],
+              "name": "160.122.177.in-addr.arpa",
+              "rcode": 3,
+              "status": "DNS_NXDOMAIN",
+              "type": "NS"
+            },
+            {
+              "answer": [],
+              "authority_soa": [
+                {
+                  "primary": "ns.lacnic.net",
+                  "zone": "177.in-addr.arpa"
+                }
+              ],
+              "name": "160.122.177.in-addr.arpa",
+              "rcode": 3,
+              "status": "DNS_NXDOMAIN",
+              "type": "SOA"
+            },
+            {
+              "answer": [],
+              "authority_soa": [
+                {
+                  "primary": "ns.lacnic.net",
+                  "zone": "177.in-addr.arpa"
+                }
+              ],
+              "name": "21.166.177.in-addr.arpa",
+              "rcode": 3,
+              "status": "DNS_NXDOMAIN",
+              "type": "NS"
+            },
+            {
+              "answer": [],
+              "authority_soa": [
+                {
+                  "primary": "ns.lacnic.net",
+                  "zone": "177.in-addr.arpa"
+                }
+              ],
+              "name": "21.166.177.in-addr.arpa",
+              "rcode": 3,
+              "status": "DNS_NXDOMAIN",
+              "type": "SOA"
+            }
+          ],
+          "resolver": "yandex-basic-udp",
+          "resolver_ipv4": "77.88.8.8"
+        },
+        "ris_readback": [
+          {
+            "prefix": "156.224.80.0/24",
+            "requested_snapshot_utc": "2026-11-17T08:00:00",
+            "status": "REQUEST_RESPONSE_MISMATCH",
+            "returned_snapshot": "2026-11-17T00:00:00",
+            "exact_origins_at_returned_snapshot": [
+              401650
+            ],
+            "peers_seeing": 320,
+            "full_table_peers": 321,
+            "more_specific_count": 0,
+            "prefix_overview": {
+              "returned_snapshot": "2026-11-17T00:00:00",
+              "asns": [
+                401650
+              ],
+              "is_less_specific": false
+            },
+            "rpki_current": {
+              "401650": "valid"
+            }
+          },
+          {
+            "prefix": "156.241.186.0/24",
+            "requested_snapshot_utc": "2026-11-17T08:00:00",
+            "status": "REQUEST_RESPONSE_MISMATCH",
+            "returned_snapshot": "2026-11-17T00:00:00",
+            "exact_origins_at_returned_snapshot": [
+              401650
+            ],
+            "peers_seeing": 320,
+            "full_table_peers": 321,
+            "more_specific_count": 0,
+            "prefix_overview": {
+              "returned_snapshot": "2026-11-17T00:00:00",
+              "asns": [
+                401650
+              ],
+              "is_less_specific": false
+            },
+            "rpki_current": {
+              "401650": "valid"
+            }
+          },
+          {
+            "prefix": "177.29.246.0/24",
+            "requested_snapshot_utc": "2026-11-17T08:00:00",
+            "status": "REQUEST_RESPONSE_MISMATCH",
+            "returned_snapshot": "2026-11-17T00:00:00",
+            "exact_origins_at_returned_snapshot": [
+              152606
+            ],
+            "peers_seeing": 318,
+            "full_table_peers": 321,
+            "more_specific_count": 0,
+            "prefix_overview": {
+              "returned_snapshot": "2026-11-17T00:00:00",
+              "asns": [
+                152606
+              ],
+              "is_less_specific": false
+            },
+            "rpki_current": {
+              "152606": "valid"
+            }
+          },
+          {
+            "prefix": "177.122.107.0/24",
+            "requested_snapshot_utc": "2026-11-17T08:00:00",
+            "status": "REQUEST_RESPONSE_MISMATCH",
+            "returned_snapshot": "2026-11-17T00:00:00",
+            "exact_origins_at_returned_snapshot": [
+              152606
+            ],
+            "peers_seeing": 318,
+            "full_table_peers": 321,
+            "more_specific_count": 0,
+            "prefix_overview": {
+              "returned_snapshot": "2026-11-17T00:00:00",
+              "asns": [
+                152606
+              ],
+              "is_less_specific": false
+            },
+            "rpki_current": {
+              "152606": "valid"
+            }
+          },
+          {
+            "prefix": "177.122.160.0/24",
+            "requested_snapshot_utc": "2026-11-17T08:00:00",
+            "status": "REQUEST_RESPONSE_MISMATCH",
+            "returned_snapshot": "2026-11-17T00:00:00",
+            "exact_origins_at_returned_snapshot": [
+              152606
+            ],
+            "peers_seeing": 318,
+            "full_table_peers": 321,
+            "more_specific_count": 0,
+            "prefix_overview": {
+              "returned_snapshot": "2026-11-17T00:00:00",
+              "asns": [
+                152606
+              ],
+              "is_less_specific": false
+            },
+            "rpki_current": {
+              "152606": "valid"
+            }
+          },
+          {
+            "prefix": "177.166.21.0/24",
+            "requested_snapshot_utc": "2026-11-17T08:00:00",
+            "status": "REQUEST_RESPONSE_MISMATCH",
+            "returned_snapshot": "2026-11-17T00:00:00",
+            "exact_origins_at_returned_snapshot": [
+              152606
+            ],
+            "peers_seeing": 318,
+            "full_table_peers": 321,
+            "more_specific_count": 0,
+            "prefix_overview": {
+              "returned_snapshot": "2026-11-17T00:00:00",
+              "asns": [
+                152606
+              ],
+              "is_less_specific": false
+            },
+            "rpki_current": {
+              "152606": "valid"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "run": 44060933231,
+      "artifact": 14317817441,
+      "artifact_zip_digest": "sha256:c1a3215e16fa6e82da94762da179ced00cfe7d73e0ae126bb3f8dcec7ff554a0",
+      "commit": "f569ffe7abf67799a470d195f33a291c2d185c85",
+      "result": {
+        "scope": "pinned candidate provenance only; no source removal or reachability claim",
+        "zip_sha256": "98e5a42f0f665de29fc8004921f1c9437239e55acebc2ab171c549edd9f3c4de",
+        "dat_sha256": "02908f5e90cabb6cb29fdab664f9ae28b5777ad9f78bbda9fa18c824f07e070d",
+        "tsv_sha256": "d44f3cc356bb1a76fda0989e8f0b060ba7836ebf191e995d2a77fa3925959521",
+        "rows": 227484,
+        "source_ids": [
+          "all-company-asn-origins",
+          "core-company-asn-origins",
+          "hxehex-mobile-hosts",
+          "hydra-direct",
+          "hydra-whitelist",
+          "kyoresuas-standard",
+          "operator-whitelist",
+          "regional-admission-exclusion",
+          "reviewed-ipv6-admission-exclusion",
+          "reviewed-operator-prefixes",
+          "rir-resource-BY",
+          "rir-resource-KZ",
+          "rir-resource-RU",
+          "rir-rukzby-selected-origin-protected",
+          "shared-infrastructure-asn-origins",
+          "static-override",
+          "verified-service-exact-hosts",
+          "verified-service-resolver-protected",
+          "w1zardz-service-direct"
+        ],
+        "results": [
+          {
+            "prefix": "156.224.80.0/24",
+            "groups": [
+              {
+                "source": "rir-rukzby-selected-origin-protected",
+                "category": "RIR RU+BY+KZ selected-origin resolver exception",
+                "overlap_ipv4": 256,
+                "exact_key": true,
+                "key_count": 1,
+                "sample_keys": [
+                  "156.224.80.0/24"
+                ],
+                "static_historical_asns": []
+              },
+              {
+                "source": "static-override",
+                "category": "reviewed static DIRECT override",
+                "overlap_ipv4": 256,
+                "exact_key": true,
+                "key_count": 1,
+                "sample_keys": [
+                  "156.224.80.0/24"
+                ],
+                "static_historical_asns": [
+                  "AS219216"
+                ]
+              }
+            ]
+          },
+          {
+            "prefix": "156.241.186.0/24",
+            "groups": [
+              {
+                "source": "rir-rukzby-selected-origin-protected",
+                "category": "RIR RU+BY+KZ selected-origin resolver exception",
+                "overlap_ipv4": 256,
+                "exact_key": true,
+                "key_count": 1,
+                "sample_keys": [
+                  "156.241.186.0/24"
+                ],
+                "static_historical_asns": []
+              },
+              {
+                "source": "static-override",
+                "category": "reviewed static DIRECT override",
+                "overlap_ipv4": 256,
+                "exact_key": true,
+                "key_count": 1,
+                "sample_keys": [
+                  "156.241.186.0/24"
+                ],
+                "static_historical_asns": [
+                  "AS218568"
+                ]
+              }
+            ]
+          },
+          {
+            "prefix": "177.29.246.0/24",
+            "groups": [
+              {
+                "source": "rir-rukzby-selected-origin-protected",
+                "category": "RIR RU+BY+KZ selected-origin resolver exception",
+                "overlap_ipv4": 256,
+                "exact_key": true,
+                "key_count": 1,
+                "sample_keys": [
+                  "177.29.246.0/24"
+                ],
+                "static_historical_asns": []
+              },
+              {
+                "source": "static-override",
+                "category": "reviewed static DIRECT override",
+                "overlap_ipv4": 256,
+                "exact_key": true,
+                "key_count": 1,
+                "sample_keys": [
+                  "177.29.246.0/24"
+                ],
+                "static_historical_asns": [
+                  "AS39578"
+                ]
+              }
+            ]
+          },
+          {
+            "prefix": "177.122.107.0/24",
+            "groups": [
+              {
+                "source": "rir-rukzby-selected-origin-protected",
+                "category": "RIR RU+BY+KZ selected-origin resolver exception",
+                "overlap_ipv4": 256,
+                "exact_key": true,
+                "key_count": 1,
+                "sample_keys": [
+                  "177.122.107.0/24"
+                ],
+                "static_historical_asns": []
+              },
+              {
+                "source": "static-override",
+                "category": "reviewed static DIRECT override",
+                "overlap_ipv4": 256,
+                "exact_key": true,
+                "key_count": 1,
+                "sample_keys": [
+                  "177.122.107.0/24"
+                ],
+                "static_historical_asns": [
+                  "AS57227"
+                ]
+              }
+            ]
+          },
+          {
+            "prefix": "177.122.160.0/24",
+            "groups": [
+              {
+                "source": "rir-rukzby-selected-origin-protected",
+                "category": "RIR RU+BY+KZ selected-origin resolver exception",
+                "overlap_ipv4": 256,
+                "exact_key": true,
+                "key_count": 1,
+                "sample_keys": [
+                  "177.122.160.0/24"
+                ],
+                "static_historical_asns": []
+              },
+              {
+                "source": "static-override",
+                "category": "reviewed static DIRECT override",
+                "overlap_ipv4": 256,
+                "exact_key": true,
+                "key_count": 1,
+                "sample_keys": [
+                  "177.122.160.0/24"
+                ],
+                "static_historical_asns": [
+                  "AS219225"
+                ]
+              }
+            ]
+          },
+          {
+            "prefix": "177.166.21.0/24",
+            "groups": [
+              {
+                "source": "rir-rukzby-selected-origin-protected",
+                "category": "RIR RU+BY+KZ selected-origin resolver exception",
+                "overlap_ipv4": 256,
+                "exact_key": true,
+                "key_count": 1,
+                "sample_keys": [
+                  "177.166.21.0/24"
+                ],
+                "static_historical_asns": []
+              },
+              {
+                "source": "static-override",
+                "category": "reviewed static DIRECT override",
+                "overlap_ipv4": 256,
+                "exact_key": true,
+                "key_count": 1,
+                "sample_keys": [
+                  "177.166.21.0/24"
+                ],
+                "static_historical_asns": [
+                  "AS219284"
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "run": 44061159095,
+      "artifact": 14317603400,
+      "artifact_zip_digest": "sha256:ed3a59465d2db20530cb02fba95aa4e5d161c776ce5c3a0427587e1f97278690",
+      "commit": "df9a934879abba36f464c183e40754424e4f8e70",
+      "result": {
+        "scope": "public reverse-DNS and exact routing metadata; no review CIDR probed",
+        "selected_source": "vpnobratno",
+        "transport": "IPv4",
+        "observations": [
+          {
+            "OBSERVED_AT": "2026-11-17T10:04:37Z",
+            "TARGET_ID": "cdn77-demo",
+            "TARGET_DOMAIN": "1906714720.rsc.cdn77.org",
+            "TARGET_IP": "121.127.45.82",
+            "EXPECTED_PREFIX": "121.127.45.0/24",
+            "TARGET_PORT": 443,
+            "DNS_RESULT": "DNS_ANSWER",
+            "DNS_A_ADDRESSES": [
+              "121.127.45.82"
+            ],
+            "DNS_AAAA_RESULT": "DNS_ANSWER",
+            "DNS_AAAA_ADDRESSES": [
+              "2a02:6ea0:f700::2"
+            ],
+            "DNS_MATCHES_TARGET": true,
+            "TCP_RESULT": "CONNECTED",
+            "TLS_RESULT": "VERIFIED",
+            "HTTPS_RESULT": "HTTP_RESPONSE",
+            "HTTP_STATUS": 200,
+            "EXIT_COUNTRY": "RU",
+            "EXIT_ASN": 8359,
+            "IPV6_TRANSPORT": "NOT_TESTED_TUNNEL_IPV4_ONLY",
+            "DNS_RESOLVER": "yandex-basic-udp",
+            "DNS_RESOLVER_IPV4": "77.88.8.8"
+          },
+          {
+            "OBSERVED_AT": "2026-11-17T10:04:38Z",
+            "TARGET_ID": "cdnvideo-player-host",
+            "TARGET_DOMAIN": "playercdn.cdnvideo.ru",
+            "TARGET_IP": "151.236.65.96",
+            "EXPECTED_PREFIX": "151.236.65.0/24",
+            "TARGET_PORT": 443,
+            "DNS_RESULT": "DNS_ANSWER",
+            "DNS_A_ADDRESSES": [
+              "81.9.16.32"
+            ],
+            "DNS_AAAA_RESULT": "DNS_NO_ANSWER",
+            "DNS_AAAA_ADDRESSES": [],
+            "DNS_MATCHES_TARGET": false,
+            "TCP_RESULT": "CONNECTED",
+            "TLS_RESULT": "VERIFIED",
+            "HTTPS_RESULT": "HTTP_RESPONSE",
+            "HTTP_STATUS": 200,
+            "EXIT_COUNTRY": "RU",
+            "EXIT_ASN": 8359,
+            "IPV6_TRANSPORT": "NOT_TESTED_TUNNEL_IPV4_ONLY",
+            "DNS_RESOLVER": "yandex-basic-udp",
+            "DNS_RESOLVER_IPV4": "77.88.8.8"
+          }
+        ],
+        "connection_attempts": 2,
+        "successful_ru_exits": 1,
+        "target_measurements": 2,
+        "usable_ru_openvpn_servers_discovered": 6,
+        "targets_not_tested_count": 0,
+        "requested_successful_ru_exits": 1,
+        "connection_counts": {
+          "connect_or_verify_failed": 1,
+          "connected_ru_exit": 1,
+          "selected": 2
+        },
+        "dns_only": [
+          {
+            "A": [
+              "38.58.178.141"
+            ],
+            "AAAA": [],
+            "AAAA_STATUS": "DNS_NO_ANSWER",
+            "A_STATUS": "DNS_ANSWER",
+            "DNS_RESOLVER": "yandex-basic-udp",
+            "EXIT_ASN": 8359,
+            "EXIT_COUNTRY": "RU",
+            "HOST": "cpcalendars.link4bd.com",
+            "TRANSPORT_TESTED": false
+          },
+          {
+            "A": [
+              "38.58.178.141"
+            ],
+            "AAAA": [],
+            "AAAA_STATUS": "DNS_NO_ANSWER",
+            "A_STATUS": "DNS_ANSWER",
+            "DNS_RESOLVER": "yandex-basic-udp",
+            "EXIT_ASN": 8359,
+            "EXIT_COUNTRY": "RU",
+            "HOST": "cpcontacts.link4bd.com",
+            "TRANSPORT_TESTED": false
+          },
+          {
+            "A": [
+              "38.58.178.141"
+            ],
+            "AAAA": [],
+            "AAAA_STATUS": "DNS_NO_ANSWER",
+            "A_STATUS": "DNS_ANSWER",
+            "DNS_RESOLVER": "yandex-basic-udp",
+            "EXIT_ASN": 8359,
+            "EXIT_COUNTRY": "RU",
+            "HOST": "webdisk.link4bd.com",
+            "TRANSPORT_TESTED": false
+          },
+          {
+            "A": [
+              "8.209.70.223",
+              "8.209.88.255"
+            ],
+            "AAAA": [],
+            "AAAA_STATUS": "DNS_NO_ANSWER",
+            "A_STATUS": "DNS_ANSWER",
+            "DNS_RESOLVER": "yandex-basic-udp",
+            "EXIT_ASN": 8359,
+            "EXIT_COUNTRY": "RU",
+            "HOST": "qiye163mx01.mxmail.netease.com",
+            "TRANSPORT_TESTED": false
+          },
+          {
+            "A": [
+              "8.209.70.223",
+              "8.209.88.255"
+            ],
+            "AAAA": [],
+            "AAAA_STATUS": "DNS_NO_ANSWER",
+            "A_STATUS": "DNS_ANSWER",
+            "DNS_RESOLVER": "yandex-basic-udp",
+            "EXIT_ASN": 8359,
+            "EXIT_COUNTRY": "RU",
+            "HOST": "qiye163mx02.mxmail.netease.com",
+            "TRANSPORT_TESTED": false
+          },
+          {
+            "A": [
+              "139.95.4.241"
+            ],
+            "AAAA": [
+              "240b:4005:115:d900:ec25:a462:7935:114d",
+              "240b:4005:115:d901:3aca:1a2d:d9ec:89d0"
+            ],
+            "AAAA_STATUS": "DNS_ANSWER",
+            "A_STATUS": "DNS_ANSWER",
+            "DNS_RESOLVER": "yandex-basic-udp",
+            "EXIT_ASN": 8359,
+            "EXIT_COUNTRY": "RU",
+            "HOST": "smtp.qiye.163.com",
+            "TRANSPORT_TESTED": false
+          },
+          {
+            "A": [
+              "139.95.4.241"
+            ],
+            "AAAA": [],
+            "AAAA_STATUS": "DNS_ERROR",
+            "A_STATUS": "DNS_ANSWER",
+            "DNS_RESOLVER": "yandex-basic-udp",
+            "EXIT_ASN": 8359,
+            "EXIT_COUNTRY": "RU",
+            "HOST": "imap.qiye.163.com",
+            "TRANSPORT_TESTED": false
+          },
+          {
+            "A": [
+              "111.124.200.35"
+            ],
+            "AAAA": [],
+            "AAAA_STATUS": "DNS_NO_ANSWER",
+            "A_STATUS": "DNS_ANSWER",
+            "DNS_RESOLVER": "yandex-basic-udp",
+            "EXIT_ASN": 8359,
+            "EXIT_COUNTRY": "RU",
+            "HOST": "mx.ym.163.com",
+            "TRANSPORT_TESTED": false
+          }
+        ],
+        "reverse_review": {
+          "exit_asn": 8359,
+          "exit_country": "RU",
+          "expected_queries": 13,
+          "historical_forward": [],
+          "observed_at": "2026-11-17T10:04:39Z",
+          "queries": [
+            {
+              "answer": [],
+              "authority_soa": [
+                {
+                  "primary": "z.arin.net",
+                  "zone": "156.in-addr.arpa"
+                }
+              ],
+              "name": "166.80.224.156.in-addr.arpa",
+              "rcode": 3,
+              "status": "DNS_NXDOMAIN",
+              "type": "PTR"
+            },
+            {
+              "answer": [],
+              "authority_soa": [
+                {
+                  "primary": "z.arin.net",
+                  "zone": "156.in-addr.arpa"
+                }
+              ],
+              "name": "80.224.156.in-addr.arpa",
+              "rcode": 3,
+              "status": "DNS_NXDOMAIN",
+              "type": "NS"
+            },
+            {
+              "answer": [],
+              "authority_soa": [
+                {
+                  "primary": "z.arin.net",
+                  "zone": "156.in-addr.arpa"
+                }
+              ],
+              "name": "80.224.156.in-addr.arpa",
+              "rcode": 3,
+              "status": "DNS_NXDOMAIN",
+              "type": "SOA"
+            },
+            {
+              "answer": [],
+              "authority_soa": [
+                {
+                  "primary": "z.arin.net",
+                  "zone": "156.in-addr.arpa"
+                }
+              ],
+              "name": "186.241.156.in-addr.arpa",
+              "rcode": 3,
+              "status": "DNS_NXDOMAIN",
+              "type": "NS"
+            },
+            {
+              "answer": [],
+              "authority_soa": [
+                {
+                  "primary": "z.arin.net",
+                  "zone": "156.in-addr.arpa"
+                }
+              ],
+              "name": "186.241.156.in-addr.arpa",
+              "rcode": 3,
+              "status": "DNS_NXDOMAIN",
+              "type": "SOA"
+            },
+            {
+              "answer": [],
+              "authority_soa": [
+                {
+                  "primary": "ns.lacnic.net",
+                  "zone": "177.in-addr.arpa"
+                }
+              ],
+              "name": "246.29.177.in-addr.arpa",
+              "rcode": 3,
+              "status": "DNS_NXDOMAIN",
+              "type": "NS"
+            },
+            {
+              "answer": [],
+              "authority_soa": [
+                {
+                  "primary": "ns.lacnic.net",
+                  "zone": "177.in-addr.arpa"
+                }
+              ],
+              "name": "246.29.177.in-addr.arpa",
+              "rcode": 3,
+              "status": "DNS_NXDOMAIN",
+              "type": "SOA"
+            },
+            {
+              "answer": [],
+              "authority_soa": [
+                {
+                  "primary": "ns.lacnic.net",
+                  "zone": "177.in-addr.arpa"
+                }
+              ],
+              "name": "107.122.177.in-addr.arpa",
+              "rcode": 3,
+              "status": "DNS_NXDOMAIN",
+              "type": "NS"
+            },
+            {
+              "answer": [],
+              "authority_soa": [
+                {
+                  "primary": "ns.lacnic.net",
+                  "zone": "177.in-addr.arpa"
+                }
+              ],
+              "name": "107.122.177.in-addr.arpa",
+              "rcode": 3,
+              "status": "DNS_NXDOMAIN",
+              "type": "SOA"
+            },
+            {
+              "answer": [],
+              "authority_soa": [
+                {
+                  "primary": "ns.lacnic.net",
+                  "zone": "177.in-addr.arpa"
+                }
+              ],
+              "name": "160.122.177.in-addr.arpa",
+              "rcode": 3,
+              "status": "DNS_NXDOMAIN",
+              "type": "NS"
+            },
+            {
+              "answer": [],
+              "authority_soa": [
+                {
+                  "primary": "ns.lacnic.net",
+                  "zone": "177.in-addr.arpa"
+                }
+              ],
+              "name": "160.122.177.in-addr.arpa",
+              "rcode": 3,
+              "status": "DNS_NXDOMAIN",
+              "type": "SOA"
+            },
+            {
+              "answer": [],
+              "authority_soa": [
+                {
+                  "primary": "ns.lacnic.net",
+                  "zone": "177.in-addr.arpa"
+                }
+              ],
+              "name": "21.166.177.in-addr.arpa",
+              "rcode": 3,
+              "status": "DNS_NXDOMAIN",
+              "type": "NS"
+            },
+            {
+              "answer": [],
+              "authority_soa": [
+                {
+                  "primary": "ns.lacnic.net",
+                  "zone": "177.in-addr.arpa"
+                }
+              ],
+              "name": "21.166.177.in-addr.arpa",
+              "rcode": 3,
+              "status": "DNS_NXDOMAIN",
+              "type": "SOA"
+            }
+          ],
+          "resolver": "yandex-basic-udp",
+          "resolver_ipv4": "77.88.8.8"
+        },
+        "ris_readback": [
+          {
+            "prefix": "156.224.80.0/24",
+            "requested_snapshot_utc": "2026-11-17T08:00:00",
+            "status": "REQUEST_RESPONSE_MISMATCH",
+            "returned_snapshot": "2026-11-17T00:00:00",
+            "exact_origins_at_returned_snapshot": [
+              401650
+            ],
+            "peers_seeing": 320,
+            "full_table_peers": 321,
+            "more_specific_count": 0,
+            "prefix_overview": {
+              "returned_snapshot": "2026-11-17T00:00:00",
+              "asns": [
+                401650
+              ],
+              "is_less_specific": false
+            },
+            "rpki_current": {
+              "401650": "valid"
+            }
+          },
+          {
+            "prefix": "156.241.186.0/24",
+            "requested_snapshot_utc": "2026-11-17T08:00:00",
+            "status": "REQUEST_RESPONSE_MISMATCH",
+            "returned_snapshot": "2026-11-17T00:00:00",
+            "exact_origins_at_returned_snapshot": [
+              401650
+            ],
+            "peers_seeing": 320,
+            "full_table_peers": 321,
+            "more_specific_count": 0,
+            "prefix_overview": {
+              "returned_snapshot": "2026-11-17T00:00:00",
+              "asns": [
+                401650
+              ],
+              "is_less_specific": false
+            },
+            "rpki_current": {
+              "401650": "valid"
+            }
+          },
+          {
+            "prefix": "177.29.246.0/24",
+            "requested_snapshot_utc": "2026-11-17T08:00:00",
+            "status": "REQUEST_RESPONSE_MISMATCH",
+            "returned_snapshot": "2026-11-17T00:00:00",
+            "exact_origins_at_returned_snapshot": [
+              152606
+            ],
+            "peers_seeing": 318,
+            "full_table_peers": 321,
+            "more_specific_count": 0,
+            "prefix_overview": {
+              "returned_snapshot": "2026-11-17T00:00:00",
+              "asns": [
+                152606
+              ],
+              "is_less_specific": false
+            },
+            "rpki_current": {
+              "152606": "valid"
+            }
+          },
+          {
+            "prefix": "177.122.107.0/24",
+            "requested_snapshot_utc": "2026-11-17T08:00:00",
+            "status": "REQUEST_RESPONSE_MISMATCH",
+            "returned_snapshot": "2026-11-17T00:00:00",
+            "exact_origins_at_returned_snapshot": [
+              152606
+            ],
+            "peers_seeing": 318,
+            "full_table_peers": 321,
+            "more_specific_count": 0,
+            "prefix_overview": {
+              "returned_snapshot": "2026-11-17T00:00:00",
+              "asns": [
+                152606
+              ],
+              "is_less_specific": false
+            },
+            "rpki_current": {
+              "152606": "valid"
+            }
+          },
+          {
+            "prefix": "177.122.160.0/24",
+            "requested_snapshot_utc": "2026-11-17T08:00:00",
+            "status": "REQUEST_RESPONSE_MISMATCH",
+            "returned_snapshot": "2026-11-17T00:00:00",
+            "exact_origins_at_returned_snapshot": [
+              152606
+            ],
+            "peers_seeing": 318,
+            "full_table_peers": 321,
+            "more_specific_count": 0,
+            "prefix_overview": {
+              "returned_snapshot": "2026-11-17T00:00:00",
+              "asns": [
+                152606
+              ],
+              "is_less_specific": false
+            },
+            "rpki_current": {
+              "152606": "valid"
+            }
+          },
+          {
+            "prefix": "177.166.21.0/24",
+            "requested_snapshot_utc": "2026-11-17T08:00:00",
+            "status": "REQUEST_RESPONSE_MISMATCH",
+            "returned_snapshot": "2026-11-17T00:00:00",
+            "exact_origins_at_returned_snapshot": [
+              152606
+            ],
+            "peers_seeing": 318,
+            "full_table_peers": 321,
+            "more_specific_count": 0,
+            "prefix_overview": {
+              "returned_snapshot": "2026-11-17T00:00:00",
+              "asns": [
+                152606
+              ],
+              "is_less_specific": false
+            },
+            "rpki_current": {
+              "152606": "valid"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "run": 44061405824,
+      "artifact": 14317998570,
+      "artifact_zip_digest": "sha256:313ca5656cac226658c7e819ff5b6688c41112a06edc0168360870249f000ab0",
+      "commit": "db8ace11a0354e3628fce5824572ba7a25e5e140",
+      "result": {
+        "scope": "source trace of pinned v41 candidate; comparison of snapshots is not a reachability test",
+        "zip_sha256": "98e5a42f0f665de29fc8004921f1c9437239e55acebc2ab171c549edd9f3c4de",
+        "ipverse_sha256": "fcbad4c5d41535fb2e428976b8f2f218e21ed925c3de1c9ef713f316fbcd70e6",
+        "ipverse_asn_files": 97509,
+        "six_prefixes": [
+          {
+            "prefix": "156.224.80.0/24",
+            "historical_asn": 219216,
+            "selected_sidecar_markers": "AS219216[RIR-RU][STATIC-DIRECT]",
+            "ipverse_exact_origins": [
+              401650
+            ],
+            "known_origins_covering_in_ipverse": [
+              [
+                401650,
+                "156.224.80.0/24"
+              ]
+            ]
+          },
+          {
+            "prefix": "156.241.186.0/24",
+            "historical_asn": 218568,
+            "selected_sidecar_markers": "AS218568[RIR-RU][STATIC-DIRECT]",
+            "ipverse_exact_origins": [
+              401650
+            ],
+            "known_origins_covering_in_ipverse": [
+              [
+                401650,
+                "156.241.186.0/24"
+              ]
+            ]
+          },
+          {
+            "prefix": "177.29.246.0/24",
+            "historical_asn": 39578,
+            "selected_sidecar_markers": "AS39578[RIR-RU][STATIC-DIRECT]",
+            "ipverse_exact_origins": [
+              152606
+            ],
+            "known_origins_covering_in_ipverse": [
+              [
+                152606,
+                "177.29.246.0/24"
+              ]
+            ]
+          },
+          {
+            "prefix": "177.122.107.0/24",
+            "historical_asn": 57227,
+            "selected_sidecar_markers": "AS57227[RIR-RU][STATIC-DIRECT]",
+            "ipverse_exact_origins": [
+              152606
+            ],
+            "known_origins_covering_in_ipverse": [
+              [
+                152606,
+                "177.122.107.0/24"
+              ]
+            ]
+          },
+          {
+            "prefix": "177.122.160.0/24",
+            "historical_asn": 219225,
+            "selected_sidecar_markers": "AS219225[RIR-RU][STATIC-DIRECT]",
+            "ipverse_exact_origins": [
+              152606
+            ],
+            "known_origins_covering_in_ipverse": [
+              [
+                152606,
+                "177.122.160.0/24"
+              ]
+            ]
+          },
+          {
+            "prefix": "177.166.21.0/24",
+            "historical_asn": 219284,
+            "selected_sidecar_markers": "AS219284[RIR-RU][STATIC-DIRECT]",
+            "ipverse_exact_origins": [
+              152606
+            ],
+            "known_origins_covering_in_ipverse": [
+              [
+                152606,
+                "177.166.21.0/24"
+              ]
+            ]
+          }
+        ],
+        "trusted_sources": {
+          "hydra-geoip.dat": {
+            "sha256": "d7bce4eadbc63df4a3f4a649725a9649151f059bfa4d8502e95d2f4b6ff30add",
+            "category_count": 3,
+            "matches": {
+              "156.224.80.0/24": [],
+              "156.241.186.0/24": [],
+              "177.29.246.0/24": [],
+              "177.122.107.0/24": [],
+              "177.122.160.0/24": [],
+              "177.166.21.0/24": []
+            }
+          },
+          "loyalsoldier-by.dat": {
+            "sha256": "baac721e10f384222261b4fe9d8bed5572fb03300a5840ff015ce84b3705bd7e",
+            "category_count": 1,
+            "matches": {
+              "156.224.80.0/24": [],
+              "156.241.186.0/24": [],
+              "177.29.246.0/24": [],
+              "177.122.107.0/24": [],
+              "177.122.160.0/24": [],
+              "177.166.21.0/24": []
+            }
+          },
+          "loyalsoldier-private.dat": {
+            "sha256": "4acc277c0425871bf1171a06302a60fec1d7ced5db204bb5b4090a5b6e0efe99",
+            "category_count": 1,
+            "matches": {
+              "156.224.80.0/24": [],
+              "156.241.186.0/24": [],
+              "177.29.246.0/24": [],
+              "177.122.107.0/24": [],
+              "177.122.160.0/24": [],
+              "177.166.21.0/24": []
+            }
+          },
+          "loyalsoldier-ru.dat": {
+            "sha256": "72745d626cfec819b36221825bb05c3a27e086a7f48871265411827cc86ff9cb",
+            "category_count": 1,
+            "matches": {
+              "156.224.80.0/24": [],
+              "156.241.186.0/24": [],
+              "177.29.246.0/24": [],
+              "177.122.107.0/24": [],
+              "177.122.160.0/24": [],
+              "177.166.21.0/24": []
+            }
+          },
+          "v2fly-geoip.dat": {
+            "sha256": "eedb24b3b9fcba27e06b92c0428dab90d9496083091ae4cf39e11387fd99d0e2",
+            "category_count": 253,
+            "matches": {
+              "156.224.80.0/24": [
+                {
+                  "category": "US",
+                  "exact_key": true,
+                  "overlap_ipv4": 256,
+                  "sample_keys": [
+                    "156.224.80.0/24"
+                  ]
+                }
+              ],
+              "156.241.186.0/24": [
+                {
+                  "category": "US",
+                  "exact_key": false,
+                  "overlap_ipv4": 256,
+                  "sample_keys": [
+                    "156.241.128.0/18"
+                  ]
+                }
+              ],
+              "177.29.246.0/24": [
+                {
+                  "category": "US",
+                  "exact_key": true,
+                  "overlap_ipv4": 256,
+                  "sample_keys": [
+                    "177.29.246.0/24"
+                  ]
+                }
+              ],
+              "177.122.107.0/24": [
+                {
+                  "category": "US",
+                  "exact_key": false,
+                  "overlap_ipv4": 256,
+                  "sample_keys": [
+                    "177.122.0.0/16"
+                  ]
+                }
+              ],
+              "177.122.160.0/24": [
+                {
+                  "category": "US",
+                  "exact_key": false,
+                  "overlap_ipv4": 256,
+                  "sample_keys": [
+                    "177.122.0.0/16"
+                  ]
+                }
+              ],
+              "177.166.21.0/24": [
+                {
+                  "category": "DE",
+                  "exact_key": true,
+                  "overlap_ipv4": 256,
+                  "sample_keys": [
+                    "177.166.21.0/24"
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      }
+    },
+    {
+      "run": 44061943708,
+      "artifact": 14319310178,
+      "artifact_zip_digest": "sha256:fc8c16f9c4e7f881f30859464ba35c377618892200b821013f10fab831d245e1",
+      "commit": "709eef4072961835959c56a23c00b9bd91332b50",
+      "result": {
+        "scope": "exact BGP State only, not transport evidence",
+        "rows": [
+          {
+            "prefix": "156.224.80.0/24",
+            "requested_utc": "2026-11-17T08:00:00Z",
+            "status": "UNVERIFIED",
+            "reason": "KeyError"
+          },
+          {
+            "prefix": "156.241.186.0/24",
+            "requested_utc": "2026-11-17T08:00:00Z",
+            "status": "UNVERIFIED",
+            "reason": "KeyError"
+          },
+          {
+            "prefix": "177.29.246.0/24",
+            "requested_utc": "2026-11-17T08:00:00Z",
+            "status": "UNVERIFIED",
+            "reason": "KeyError"
+          },
+          {
+            "prefix": "177.122.107.0/24",
+            "requested_utc": "2026-11-17T08:00:00Z",
+            "status": "UNVERIFIED",
+            "reason": "KeyError"
+          },
+          {
+            "prefix": "177.122.160.0/24",
+            "requested_utc": "2026-11-17T08:00:00Z",
+            "status": "UNVERIFIED",
+            "reason": "KeyError"
+          },
+          {
+            "prefix": "177.166.21.0/24",
+            "requested_utc": "2026-11-17T08:00:00Z",
+            "status": "UNVERIFIED",
+            "reason": "KeyError"
+          }
+        ]
+      }
+    },
+    {
+      "run": 44062164524,
+      "artifact": 14318072942,
+      "artifact_zip_digest": "sha256:bec7a73e03de4b764b72208ea489fb75dbd0d757570c2e8d6887ab58e0a6baf1",
+      "commit": "0aaea2a09a2e942bd66207b644c6e8dcdaa3d95a",
+      "result": {
+        "scope": "exact BGP State only, not transport evidence",
+        "rows": [
+          {
+            "prefix": "156.224.80.0/24",
+            "requested_utc": "2026-11-17T08:00:00Z",
+            "api_status": "ok",
+            "response_keys": [
+              "bgp_state",
+              "nr_routes",
+              "resource",
+              "timestamp"
+            ],
+            "returned_utc": "2026-11-17T07:59:59",
+            "status": "TIME_MISMATCH",
+            "exact_paths_seen": 340,
+            "exact_paths_by_origin": {
+              "401650": 340
+            },
+            "ambiguous_exact_paths": 0
+          },
+          {
+            "prefix": "156.241.186.0/24",
+            "requested_utc": "2026-11-17T08:00:00Z",
+            "api_status": "ok",
+            "response_keys": [
+              "bgp_state",
+              "nr_routes",
+              "resource",
+              "timestamp"
+            ],
+            "returned_utc": "2026-11-17T07:59:59",
+            "status": "TIME_MISMATCH",
+            "exact_paths_seen": 340,
+            "exact_paths_by_origin": {
+              "401650": 340
+            },
+            "ambiguous_exact_paths": 0
+          },
+          {
+            "prefix": "177.29.246.0/24",
+            "requested_utc": "2026-11-17T08:00:00Z",
+            "api_status": "ok",
+            "response_keys": [
+              "bgp_state",
+              "nr_routes",
+              "resource",
+              "timestamp"
+            ],
+            "returned_utc": "2026-11-17T07:59:59",
+            "status": "TIME_MISMATCH",
+            "exact_paths_seen": 321,
+            "exact_paths_by_origin": {
+              "152606": 321
+            },
+            "ambiguous_exact_paths": 0
+          },
+          {
+            "prefix": "177.122.107.0/24",
+            "requested_utc": "2026-11-17T08:00:00Z",
+            "api_status": "ok",
+            "response_keys": [
+              "bgp_state",
+              "nr_routes",
+              "resource",
+              "timestamp"
+            ],
+            "returned_utc": "2026-11-17T07:59:59",
+            "status": "TIME_MISMATCH",
+            "exact_paths_seen": 321,
+            "exact_paths_by_origin": {
+              "152606": 321
+            },
+            "ambiguous_exact_paths": 0
+          },
+          {
+            "prefix": "177.122.160.0/24",
+            "requested_utc": "2026-11-17T08:00:00Z",
+            "api_status": "ok",
+            "response_keys": [
+              "bgp_state",
+              "nr_routes",
+              "resource",
+              "timestamp"
+            ],
+            "returned_utc": "2026-11-17T07:59:59",
+            "status": "TIME_MISMATCH",
+            "exact_paths_seen": 321,
+            "exact_paths_by_origin": {
+              "152606": 321
+            },
+            "ambiguous_exact_paths": 0
+          },
+          {
+            "prefix": "177.166.21.0/24",
+            "requested_utc": "2026-11-17T08:00:00Z",
+            "api_status": "ok",
+            "response_keys": [
+              "bgp_state",
+              "nr_routes",
+              "resource",
+              "timestamp"
+            ],
+            "returned_utc": "2026-11-17T07:59:59",
+            "status": "TIME_MISMATCH",
+            "exact_paths_seen": 321,
+            "exact_paths_by_origin": {
+              "152606": 321
+            },
+            "ambiguous_exact_paths": 0
+          }
+        ]
+      }
+    }
+  ]
+}

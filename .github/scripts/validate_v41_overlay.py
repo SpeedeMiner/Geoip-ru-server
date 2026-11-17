@@ -12,6 +12,8 @@ from pathlib import Path
 import build_v41_overlay as builder
 from validate_v41_telegram import PINNED_FEED, read_telegram_feed
 from v41_reviewed_ipv6_admission import verify_reviewed_ipv6_admission_manifest
+from v41_reviewed_unreachable import DEFAULT_PATH as UNREACHABLE_PATH, read_reviewed
+from v41_direct_admission import ROLE, cdn_networks, verify_cdn_manifest
 
 
 def sha256(path: Path) -> str:
@@ -29,6 +31,25 @@ def assert_hxehex_diagnostic_only(ru, independently_admitted, hxehex):
                                        builder.intervals(hxehex, version))
         if builder.subtract(candidates, builder.intervals(independently_admitted, version)):
             raise ValueError(f"HXEHEX-only admission in IPv{version} DIRECT")
+
+
+def verify_unreachable_manifest(manifest, regional, origins, companies, reviewed):
+    records = read_reviewed()
+    if (manifest.get("input_sha256", {}).get("reviewed_unreachable") != sha256(UNREACHABLE_PATH)
+            or manifest.get("reviewed_unreachable", {}).get("records") != list(records.values())):
+        raise ValueError("Reviewed unreachable evidence provenance mismatch")
+    protected = regional | origins | companies | reviewed
+    candidates = {ipaddress.ip_network(prefix, strict=True) for prefix in records}
+    mask = set()
+    for version in (4, 6):
+        remaining = builder.subtract(builder.intervals(candidates, version), builder.intervals(protected, version))
+        mask.update(builder.networks_from_intervals(remaining, version))
+    if manifest["reviewed_unreachable"].get("effective_cidrs") != len(mask):
+        raise ValueError("Reviewed unreachable effective mask mismatch")
+    for version in (4, 6):
+        if builder.intersect(builder.intervals(mask, version), builder.intervals(protected, version)):
+            raise ValueError("Reviewed unreachable mask intersects protected core")
+    return mask
 
 
 def verify_ipv6_admission_effect(ru, admitted, private, effective, regional, reviewed):
@@ -68,17 +89,22 @@ def validate(args: argparse.Namespace) -> dict:
     telegram = read_telegram_feed(args.telegram_feed)
     service_sources, source_stats, _ = builder.load_service_inputs(feeds)
     rir_resources, _ = builder.parse_rir_tsv(args.rir)
+    regional_resources = builder.union_networks(*rir_resources.values())
+    base = builder.parse_geoip_dat(args.base)
+    if set(base) != {"RU", "PRIVATE"}:
+        raise ValueError("Expected v37 base categories RU and PRIVATE")
+    hydra_sources = builder.parse_hydra_direct_whitelist(args.hydra)
+    hydra_routes = hydra_sources["hydra-direct"] | hydra_sources["hydra-whitelist"]
+    reviewed = set(builder.parse_reviewed_operator_prefixes(args.reviewed_operator_prefixes))
     service_exact, service_resolver = builder.build_service_protection_masks(
         rir_resources, service_sources,
         w1zardz_literal_hosts=builder.original_w1zardz_hosts(args.w1zardz, service_sources["w1zardz-service-direct"]),
     )
-    regional_resources = builder.union_networks(*rir_resources.values())
     if company_core & shared or company_core | shared != company_all:
         raise ValueError("Company core/shared masks are not a disjoint exact partition")
     if any(builder.intervals(blocked_union, version) != builder.intervals(blocked_exact | blocked_resolved, version) for version in (4, 6)):
         raise ValueError("Approved blocked address-space union differs from exact + resolver sidecars")
 
-    reviewed = set(builder.parse_reviewed_operator_prefixes(args.reviewed_operator_prefixes))
     effective, resolved_only = builder.class_aware_effective_block_set(
         blocked_exact, blocked_resolved, company_core, shared, regional_only | regional_resources, service_exact, service_resolver,
         non_exempt=telegram, reviewed_operator_prefixes=reviewed,
@@ -90,7 +116,12 @@ def validate(args: argparse.Namespace) -> dict:
     manifest = json.loads(args.manifest.read_text(encoding="utf-8"))
     regional_admission = builder.parse_regional_admission_exclusions(args.regional_admission_exclusions)
     ipv6_admission = verify_reviewed_ipv6_admission_manifest(args.reviewed_ipv6_admission_exclusions, manifest)
-    admission = set(regional_admission) | set(ipv6_admission)
+    cdn = cdn_networks(verify_cdn_manifest(manifest))
+    unreachable = verify_unreachable_manifest(manifest, regional_resources, regional_all, company_all, reviewed)
+    geography = set(regional_admission) | set(ipv6_admission)
+    exemptions = hydra_routes | cdn
+    foreign = builder.subtract_networks(geography, exemptions)
+    admission = foreign | unreachable
     builder.assert_regional_admission_disjoint(decoded["RU"], admission)
     builder.assert_reviewed_operator_coverage(decoded["RU"], decoded["PRIVATE"], blocked_exact | telegram, admission, reviewed)
     for version in (4, 6):
@@ -134,22 +165,19 @@ def validate(args: argparse.Namespace) -> dict:
         if builder.subtract(blocked_shared, allowed_shared_hard):
             raise ValueError(f"Effective block intersects SHARED_INFRA outside exact/legacy hard blocks in IPv{version}")
 
-    # Independent full set inclusion check: all Hydra DIRECT/WHITELIST entries
-    # must survive except PRIVATE and the effective v41 blocked set.
-    hydra_sources = builder.parse_hydra_direct_whitelist(args.hydra)
-    expected_hydra = builder.hydra_expected_after_policy(hydra_sources, decoded["PRIVATE"], output_blocked | set(admission))
+    # Recompute expected coverage from both explicit Hydra categories.
+    expected_hydra = builder.subtract_networks(hydra_routes, decoded["PRIVATE"], output_blocked | admission)
     for version in (4, 6):
         if builder.subtract(builder.intervals(expected_hydra, version), builder.intervals(decoded["RU"], version)):
             raise ValueError(f"Hydra DIRECT/WHITELIST IPv{version} eligible coverage missing")
 
-    base = builder.parse_geoip_dat(args.base)
-    if set(base) != {"RU", "PRIVATE"}:
-        raise ValueError("Expected v37 base categories RU and PRIVATE")
+    temporary = builder.verify_temporary_retention_manifest(getattr(args, "temporary_retention", None), manifest)
+    builder.require_temporary_retention(temporary, builder.intervals(decoded["RU"], 4))
     hxehex, hxehex_stats, _ = builder.load_hxehex_diagnostics(args.hxehex_ip)
     excluded = builder.read_w1zardz_exclusions(builder.W1ZARDZ_EXCLUSIONS)
     independently_admitted = builder.union_networks(
-        base["RU"], regional_resources, regional_all, company_all, reviewed,
-        *service_sources.values(), *hydra_sources.values(),
+        base["RU"], regional_resources, regional_all, company_all, reviewed, set(temporary),
+        *service_sources.values(), hydra_routes, cdn,
     )
     assert_hxehex_diagnostic_only(decoded["RU"], independently_admitted, hxehex)
     if builder.intersect(builder.intervals(excluded, 4),
@@ -162,11 +190,30 @@ def validate(args: argparse.Namespace) -> dict:
             or manifest.get("input_sha256", {}).get("w1zardz_gaming_exclusions") != sha256(builder.W1ZARDZ_EXCLUSIONS)
             or manifest.get("service_sources", {}).get("w1zardz-service-direct") != source_stats["w1zardz-service-direct"]):
         raise ValueError("W1ZARDZ source/exclusion provenance mismatch")
-    removed_ipv6 = verify_ipv6_admission_effect(
-        decoded["RU"], independently_admitted, decoded["PRIVATE"], output_blocked, regional_admission, ipv6_admission
-    )
-    if manifest.get("reviewed_ipv6_admission_exclusions", {}).get("removed_after_block_policy") != {"ipv6": removed_ipv6}:
-        raise ValueError("Reviewed IPv6 admission removal count mismatch")
+    for version in (4, 6):
+        expected = builder.subtract(builder.intervals(independently_admitted, version), builder.intervals(decoded["PRIVATE"], version))
+        expected = builder.subtract(expected, builder.intervals(output_blocked | admission, version))
+        if expected != builder.intervals(decoded["RU"], version):
+            raise ValueError(f"DIRECT IPv{version} differs from exact reachability policy")
+    if (manifest.get("regional_admission_exclusions", {}).get("role") != ROLE
+            or manifest.get("reviewed_ipv6_admission_exclusions", {}).get("role") != ROLE):
+        raise ValueError("Missing exact foreign admission policy")
+    geography_counts = {}
+    for version in (4, 6):
+        available = builder.subtract(builder.intervals(independently_admitted, version), builder.intervals(decoded["PRIVATE"], version))
+        available = builder.subtract(available, builder.intervals(output_blocked, version))
+        clean = builder.subtract(available, builder.intervals(unreachable, version))
+        geography_counts[f"ipv{version}"] = builder.interval_size(
+            builder.intersect(clean, builder.intervals(foreign, version)))
+        without_geography = builder.subtract(available, builder.intervals(foreign, version))
+        removed = builder.interval_size(builder.intersect(without_geography, builder.intervals(unreachable, version)))
+        if manifest["reviewed_unreachable"]["removed_after_other_policy"][f"ipv{version}"] != removed:
+            raise ValueError(f"Reviewed unreachable IPv{version} removal count mismatch")
+    if (manifest["regional_admission_exclusions"].get("removed_after_block_policy")
+            != {"ipv4": geography_counts["ipv4"], "ipv6": 0}
+            or manifest["reviewed_ipv6_admission_exclusions"].get("removed_after_block_policy")
+            != {"ipv6": geography_counts["ipv6"]}):
+        raise ValueError("Foreign admission removal counts do not match the actual policy")
 
     hxehex_info = manifest.get("diagnostic_sources", {}).get("hxehex-mobile-hosts", {})
     if (manifest.get("base_v37_sha256") != sha256(args.base)
@@ -191,8 +238,13 @@ def validate(args: argparse.Namespace) -> dict:
         raise ValueError("Hydra input SHA-256 mismatch")
     if manifest.get("hydra_routing_intent", {}).get("input_sha256") != sha256(args.hydra):
         raise ValueError("Hydra provenance SHA-256 mismatch")
-    if manifest.get("safety", {}).get("hydra_direct_whitelist_added_without_block_exemption") is not True:
-        raise ValueError("Hydra precedence safety flag missing")
+    if (manifest.get("safety", {}).get("hydra_direct_whitelist_added_without_block_exemption") is not True
+            or manifest["hydra_routing_intent"].get("whitelist_role") != "routing-intent"
+            or manifest.get("service_sources", {}).get("operator-whitelist", {}).get("role")
+            != "operator-routing-intent"
+            or manifest["hydra_routing_intent"].get("combined_eligible_address_space")
+            != builder.addr_counts(expected_hydra)):
+        raise ValueError("DIRECT/WHITELIST policy provenance mismatch")
     if manifest.get("output_sha256") != sha256(args.geoip):
         raise ValueError("Manifest output SHA-256 does not match GeoIP protobuf")
     if manifest.get("input_sha256", {}).get("corporate_company_asn_origin_prefixes") != sha256(args.company_all):
@@ -289,6 +341,7 @@ def main() -> int:
     ):
         parser.add_argument("--" + name.replace("_", "-"), type=Path, required=True)
     parser.add_argument("--telegram-feed", type=Path, default=PINNED_FEED)
+    parser.add_argument("--temporary-retention", type=Path)
     args = parser.parse_args()
     try:
         validate(args)

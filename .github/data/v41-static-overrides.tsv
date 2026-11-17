@@ -1,0 +1,9 @@
+cidr	asn	reason	added_date	review_after
+45.148.65.0/24	AS212066	Existing approved Yandex Turkey DIRECT override; migration date	2026-11-16	2027-02-16
+2a14:48c6::/48	AS212066	Existing approved Yandex Turkey DIRECT override; migration date	2026-11-16	2027-02-16
+156.224.80.0/24	AS219216	Retain published exact prefix pending RU reachability review; ASN is historical	2026-11-17	2026-12-17
+156.241.186.0/24	AS218568	Retain published exact prefix pending RU reachability review; ASN is historical	2026-11-17	2026-12-17
+177.29.246.0/24	AS39578	Retain published exact prefix pending RU reachability review; ASN is historical	2026-11-17	2026-12-17
+177.122.107.0/24	AS57227	Retain published exact prefix pending RU reachability review; ASN is historical	2026-11-17	2026-12-17
+177.122.160.0/24	AS219225	Retain published exact prefix pending RU reachability review; ASN is historical	2026-11-17	2026-12-17
+177.166.21.0/24	AS219284	Retain published exact prefix pending RU reachability review; ASN is historical	2026-11-17	2026-12-17
