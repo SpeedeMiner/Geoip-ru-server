@@ -1,5 +1,11 @@
 # v41 durable execution journal
 
+## 2026-11-17 — три /24 измерены через VPNObratno
+
+- [x] `177.29.246.0/24` полностью проверен через AS12494 и AS43330. По 256 TCP/443 TIMEOUT до TLS, сертификатов нет. В обоих засчитанных замерах после серии подтверждены тот же выход и контрольный HTTP 200. Яндекс Basic UDP использовался для контрольных имён. [Отчёт и ZIP](https://github.com/SpeedeMiner/Geoip-ru-server/blob/addbbee18c5f0e280f5dbe3e1f828d84a0b3ff49/docs/V41_LIVE_CIDR24_177_29_246_20261117.md).
+- [x] Промежуточная попытка AS43330 без подтверждения VPN после серии исключена из сравнения. SHA-256 и CRC трёх ZIP проверены. Два ASN на диапазон — 3/6 (50%), оба постконтроля — 2/6, сервисные пары — 0/6. [Машиночитаемый статус](https://github.com/SpeedeMiner/Geoip-ru-server/blob/addbbee18c5f0e280f5dbe3e1f828d84a0b3ff49/docs/v41-cidr24-review-progress-20261117.json).
+- [ ] Следующий диапазон — `177.122.107.0/24`. Тайм-аут не доказывает блокировку. Правила DIRECT, дата ручного пересмотра, release и CDN не менялись. [Handoff](https://github.com/SpeedeMiner/Geoip-ru-server/blob/addbbee18c5f0e280f5dbe3e1f828d84a0b3ff49/docs/V41_PROJECT_HANDOFF.md).
+
 ## 2026-11-17 — второй /24 измерен с контролем до и после
 
 - [x] `156.241.186.0/24` дважды проверен по TCP/443 через VPNObratno из РФ, AS8749 и AS8359. Все 256 адресов на каждом выходе дали тайм-аут до TLS, пропусков и сертификатов нет. Тот же VPN-выход и HTTPS 200 подтверждены и после каждого прогона. [Отчёт и исходные архивы](https://github.com/SpeedeMiner/Geoip-ru-server/blob/bec7e9ba2d5108fca01b362d2dbcd231f19ac713/docs/V41_LIVE_CIDR24_156_241_186_20261117.md).
