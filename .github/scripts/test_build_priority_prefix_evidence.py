@@ -90,6 +90,72 @@ class PriorityPrefixEvidenceTests(unittest.TestCase):
             sum(row["PRIORITY_REASON"] == "EXACT_MOAS" for row in selected), 53
         )
 
+    def test_stopped_phase_keeps_only_completed_diagnostic_rows(self):
+        prefix = "192.0.2.0/24"
+        row = make_row(prefix, "AS64500", "AS64500,AS64501", "yes", "COMPANY_ASN_ONLY")
+        obj = {
+            "QUERY_PREFIX": prefix, "OBJECT_TYPE": "route", "ROUTE_PREFIX": prefix,
+            "ORIGIN_ASN": "AS64500", "REGISTRY_SOURCE": "RIPE", "EXACT_PREFIX_MATCH": "yes",
+            "GLOBAL_BGP_ORIGIN_MATCH": "yes", "MNT_BY": "", "ORG": "", "DESCR": "",
+        }
+
+        cases = {
+            "RDAP": ("rdap_samples", "SAMPLE_ADDRESS", None),
+            "RPKI": ("rpki_by_origin", "RPKI_STATUS", ""),
+            "IRR": ("irr_prefix_summary", "IRR_SOURCE_OBJECT_RECORDS", "1"),
+        }
+
+        def rdap(pfx, addr, _entries):
+            return {"PREFIX": pfx, "SAMPLE_ADDRESS": addr, "QUERY_STATUS": "OK"}
+
+        def irr(pfx, _sources, _origins):
+            return "OK", "https://example.invalid/irr", [{**obj, "QUERY_PREFIX": pfx}]
+
+        def stop_after_one(phase, futures):
+            if phase != stopped_phase:
+                yield from completed_queries(phase, futures)
+                return
+            yield next(iter(futures))
+            raise RuntimeError(f"test stops {phase} after one result")
+
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            company_review = root / "company.tsv"
+            with company_review.open("w", encoding="utf-8", newline="") as handle:
+                writer = csv.DictWriter(handle, fieldnames=list(row), delimiter="\t")
+                writer.writeheader()
+                writer.writerow(row)
+                writer.writerow({**row, "PREFIX": "198.51.100.0/24"})
+            for stopped_phase, (stem, field, expected) in cases.items():
+                with self.subTest(phase=stopped_phase):
+                    output = root / stopped_phase
+                    module = "build_priority_prefix_evidence."
+                    with patch(module + "request_json_with_bytes", return_value=(503, None, "offline", None)), \
+                         patch(module + "request_json", return_value=(503, None, "offline")), \
+                         patch(module + "fetch_rdap_sample", side_effect=rdap), \
+                         patch(module + "fetch_rpki_origin", side_effect=TimeoutError("test request timeout")), \
+                         patch(module + "fetch_irr_prefix", side_effect=irr), \
+                         patch(module + "completed_queries", side_effect=stop_after_one):
+                        with self.assertRaisesRegex(RuntimeError, f"test stops {stopped_phase}"):
+                            build_evidence(company_review, output, max_workers=2)
+                    self.assertFalse((output / f"{stem}.tsv").exists())
+                    with (output / f"{stem}_partial.tsv").open(encoding="utf-8", newline="") as stream:
+                        records = list(csv.DictReader(stream, delimiter="\t"))
+                    self.assertEqual(len(records), 1)
+                    self.assertEqual(records[0]["PREFIX"], prefix)
+                    if expected is None:
+                        self.assertTrue(records[0][field])
+                    else:
+                        self.assertEqual(records[0][field], expected)
+                    if stopped_phase == "RPKI":
+                        self.assertTrue(records[0]["QUERY_STATUS"].startswith("CLIENT_ERROR:TimeoutError:"))
+                        self.assertTrue((output / "rdap_samples.tsv").is_file())
+                    if stopped_phase == "IRR":
+                        self.assertTrue((output / "rpki_by_origin.tsv").is_file())
+                        with (output / "irr_route_objects_partial.tsv").open(encoding="utf-8", newline="") as stream:
+                            self.assertEqual([r["ORIGIN_ASN"] for r in csv.DictReader(stream, delimiter="\t")], ["AS64500"])
+                        self.assertFalse((output / "irr_route_objects.tsv").exists())
+
     def test_sample_addresses_are_first_midpoint_last_and_deduplicated(self):
         self.assertEqual(
             sample_addresses("192.0.2.0/30"),
@@ -378,7 +444,7 @@ class PriorityPrefixEvidenceTests(unittest.TestCase):
                 irr_unique_objects = list(csv.DictReader(handle, delimiter="\t"))
             self.assertEqual(len(priority), 56)
             self.assertEqual(len(rdap), 168)
-            self.assertFalse((output / "rdap_samples_partial.tsv").exists())
+            self.assertEqual(list(output.glob("*_partial.tsv")), [])
             self.assertEqual(len(rpki), 108)
             self.assertEqual(len(holder_summary), 56)
             self.assertEqual(len(irr_summary), 56)

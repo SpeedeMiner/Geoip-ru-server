@@ -21,6 +21,7 @@ import time
 import urllib.error
 import urllib.parse
 import urllib.request
+from contextlib import contextmanager
 from pathlib import Path
 from typing import Any
 
@@ -548,6 +549,22 @@ def write_tsv(path: Path, rows: list[dict[str, str]], columns: list[str]) -> Non
         writer.writerows(rows)
 
 
+@contextmanager
+def diagnostic_tsv(path: Path, columns: list[str]):
+    """Flush completed responses so a phase timeout leaves diagnostic data."""
+    with path.open("w", encoding="utf-8", newline="") as stream:
+        writer = csv.DictWriter(stream, fieldnames=columns, delimiter="\t", extrasaction="ignore",
+                                lineterminator="\n")
+        writer.writeheader()
+        stream.flush()
+
+        def append(rows):
+            writer.writerows(rows)
+            stream.flush()
+
+        yield append
+
+
 def build_evidence(company_queue: Path, output_dir: Path, max_workers: int = 5) -> dict[str, Any]:
     source_rows, source_sha = read_company_queue(company_queue)
     priority = select_priority_rows(source_rows)
@@ -618,12 +635,8 @@ def build_evidence(company_queue: Path, output_dir: Path, max_workers: int = 5) 
     ]
     rdap_rows: list[dict[str, str]] = []
     partial_path = output_dir / "rdap_samples_partial.tsv"
-    with partial_path.open("w", encoding="utf-8", newline="") as partial, \
+    with diagnostic_tsv(partial_path, rdap_columns) as save_rdap, \
          concurrent.futures.ThreadPoolExecutor(max_workers=max_workers) as pool:
-        writer = csv.DictWriter(partial, fieldnames=rdap_columns, delimiter="\t",
-                                extrasaction="ignore", lineterminator="\n")
-        writer.writeheader()
-        partial.flush()
         futures = {
             pool.submit(fetch_rdap_sample, prefix, address, entries): (prefix, address)
             for prefix, address, entries in rdap_tasks
@@ -642,8 +655,7 @@ def build_evidence(company_queue: Path, output_dir: Path, max_workers: int = 5) 
                     "STATUS": "", "RDAP_PREFIX_RELATION": "NOT_AVAILABLE",
                 }
             rdap_rows.append(result)
-            writer.writerow(result)
-            partial.flush()
+            save_rdap([result])
     rdap_rows.sort(key=lambda row: (row["PREFIX"], row["SAMPLE_ADDRESS"]))
     write_tsv(output_dir / "rdap_samples.tsv", rdap_rows, rdap_columns)
     partial_path.unlink()
@@ -656,7 +668,13 @@ def build_evidence(company_queue: Path, output_dir: Path, max_workers: int = 5) 
             rpki_tasks.append((row["PREFIX"], asn))
 
     rpki_rows: list[dict[str, str]] = []
-    with concurrent.futures.ThreadPoolExecutor(max_workers=max_workers) as pool:
+    rpki_columns = [
+        "PREFIX", "ORIGIN_ASN", "RPKI_URL", "HTTP_STATUS", "QUERY_STATUS",
+        "RPKI_STATUS", "RPKI_DESCRIPTION",
+    ]
+    rpki_partial = output_dir / "rpki_by_origin_partial.tsv"
+    with diagnostic_tsv(rpki_partial, rpki_columns) as save_rpki, \
+         concurrent.futures.ThreadPoolExecutor(max_workers=max_workers) as pool:
         futures = {
             pool.submit(fetch_rpki_origin, prefix, asn): (prefix, asn)
             for prefix, asn in rpki_tasks
@@ -664,19 +682,18 @@ def build_evidence(company_queue: Path, output_dir: Path, max_workers: int = 5) 
         for future in completed_queries("RPKI", futures):
             prefix, asn = futures[future]
             try:
-                rpki_rows.append(future.result())
+                result = future.result()
             except Exception as exc:
-                rpki_rows.append({
+                result = {
                     "PREFIX": prefix, "ORIGIN_ASN": asn, "RPKI_URL": "", "HTTP_STATUS": "0",
                     "QUERY_STATUS": f"CLIENT_ERROR:{type(exc).__name__}:{exc}",
                     "RPKI_STATUS": "", "RPKI_DESCRIPTION": "",
-                })
+                }
+            rpki_rows.append(result)
+            save_rpki([result])
     rpki_rows.sort(key=lambda row: (row["PREFIX"], row["ORIGIN_ASN"]))
-    rpki_columns = [
-        "PREFIX", "ORIGIN_ASN", "RPKI_URL", "HTTP_STATUS", "QUERY_STATUS",
-        "RPKI_STATUS", "RPKI_DESCRIPTION",
-    ]
     write_tsv(output_dir / "rpki_by_origin.tsv", rpki_rows, rpki_columns)
+    rpki_partial.unlink()
 
     # RIPE Database GRS snapshots expose multiple regional IRR data sources.
     # Their scope is explicit in the output and is not claimed to be the entire IRR ecosystem.
@@ -707,7 +724,23 @@ def build_evidence(company_queue: Path, output_dir: Path, max_workers: int = 5) 
     irr_prefix_rows: list[dict[str, str]] = []
     irr_object_rows: list[dict[str, str]] = []
     irr_query_statuses: collections.Counter[str] = collections.Counter()
-    with concurrent.futures.ThreadPoolExecutor(max_workers=max_workers) as pool:
+    irr_prefix_columns = [
+        "PREFIX", "QUERY_STATUS", "QUERY_URL", "QUERY_SCOPE_SOURCES",
+        "IRR_SOURCE_OBJECT_RECORDS", "IRR_UNIQUE_ROUTE_OBJECTS",
+        "IRR_EXACT_OBJECTS", "IRR_EXACT_BGP_ORIGIN_MATCH_OBJECTS",
+        "IRR_EXACT_OBJECT_SOURCES", "IRR_EXACT_ORIGINS", "IRR_MATCHED_BGP_ORIGINS",
+        "IRR_MNT_BY", "IRR_ORG", "IRR_DESCR", "STATUS", "INTERPRETATION",
+    ]
+    irr_object_columns = [
+        "QUERY_PREFIX", "OBJECT_TYPE", "ROUTE_PREFIX", "OBJECT_KEY", "ORIGIN_ASN",
+        "REGISTRY_SOURCE", "EXACT_PREFIX_MATCH", "GLOBAL_BGP_ORIGIN_MATCH",
+        "MNT_BY", "ORG", "DESCR", "REMARKS", "MEMBER_OF", "CREATED", "LAST_MODIFIED",
+    ]
+    irr_prefix_partial = output_dir / "irr_prefix_summary_partial.tsv"
+    irr_objects_partial = output_dir / "irr_route_objects_partial.tsv"
+    with diagnostic_tsv(irr_prefix_partial, irr_prefix_columns) as save_irr_prefix, \
+         diagnostic_tsv(irr_objects_partial, irr_object_columns) as save_irr_objects, \
+         concurrent.futures.ThreadPoolExecutor(max_workers=max_workers) as pool:
         futures = {
             pool.submit(
                 fetch_irr_prefix,
@@ -741,7 +774,7 @@ def build_evidence(company_queue: Path, output_dir: Path, max_workers: int = 5) 
             unique_objects = list(unique_by_signature.values())
             exact_objects = [obj for obj in unique_objects if obj["EXACT_PREFIX_MATCH"] == "yes"]
             matching_objects = [obj for obj in exact_objects if obj["GLOBAL_BGP_ORIGIN_MATCH"] == "yes"]
-            irr_prefix_rows.append({
+            summary_row = {
                 "PREFIX": prefix,
                 "QUERY_STATUS": query_status,
                 "QUERY_URL": query_url,
@@ -761,24 +794,19 @@ def build_evidence(company_queue: Path, output_dir: Path, max_workers: int = 5) 
                 "IRR_DESCR": " | ".join(sorted({obj["DESCR"] for obj in exact_objects if obj["DESCR"]})),
                 "STATUS": "REVIEW",
                 "INTERPRETATION": "Search limited to RIPE Database plus its reported GRS sources; not a global search of every independent IRR.",
-            })
+            }
+            irr_prefix_rows.append(summary_row)
+            save_irr_objects(objects)
+            save_irr_prefix([summary_row])
 
     irr_prefix_rows.sort(key=lambda row: row["PREFIX"])
     irr_object_rows.sort(key=lambda row: (
         row["QUERY_PREFIX"], row["REGISTRY_SOURCE"], row["ORIGIN_ASN"], row["ROUTE_PREFIX"]
     ))
-    write_tsv(output_dir / "irr_prefix_summary.tsv", irr_prefix_rows, [
-        "PREFIX", "QUERY_STATUS", "QUERY_URL", "QUERY_SCOPE_SOURCES",
-        "IRR_SOURCE_OBJECT_RECORDS", "IRR_UNIQUE_ROUTE_OBJECTS",
-        "IRR_EXACT_OBJECTS", "IRR_EXACT_BGP_ORIGIN_MATCH_OBJECTS",
-        "IRR_EXACT_OBJECT_SOURCES", "IRR_EXACT_ORIGINS", "IRR_MATCHED_BGP_ORIGINS",
-        "IRR_MNT_BY", "IRR_ORG", "IRR_DESCR", "STATUS", "INTERPRETATION",
-    ])
-    write_tsv(output_dir / "irr_route_objects.tsv", irr_object_rows, [
-        "QUERY_PREFIX", "OBJECT_TYPE", "ROUTE_PREFIX", "OBJECT_KEY", "ORIGIN_ASN",
-        "REGISTRY_SOURCE", "EXACT_PREFIX_MATCH", "GLOBAL_BGP_ORIGIN_MATCH",
-        "MNT_BY", "ORG", "DESCR", "REMARKS", "MEMBER_OF", "CREATED", "LAST_MODIFIED",
-    ])
+    write_tsv(output_dir / "irr_prefix_summary.tsv", irr_prefix_rows, irr_prefix_columns)
+    write_tsv(output_dir / "irr_route_objects.tsv", irr_object_rows, irr_object_columns)
+    irr_prefix_partial.unlink()
+    irr_objects_partial.unlink()
 
     # Preserve source-specific rows above, and also emit a deduplicated logical
     # object table. Multiple GRS/RIPE sources may mirror identical RPSL content.
