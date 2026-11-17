@@ -5,11 +5,17 @@ from collections import Counter
 import csv
 from datetime import datetime
 import ipaddress
+import hashlib
+import re
+import tarfile
+import zlib
 from pathlib import Path
 
 from build_v41_iana_special_prefixes import read_required_registry
-from build_rir_rukzby_prefixes import ALLOWED_STATUS, COUNTRIES, parse_resource, utc_today, validate_snapshot_age
+from build_rir_rukzby_prefixes import ALLOWED_STATUS, COUNTRIES, parse_as_of, parse_resource, utc_today, validate_snapshot_age
 from prepare_blocked_sources_v41 import subnet_auto_approved
+from validate_v41_telegram import read_telegram_feed
+from verify_v41_ipverse_archive import validate_ipverse
 
 # Conservative absolute floors from the pinned release and verified publisher
 # snapshots, independent of the relative byte-size gate. Count distinct usable
@@ -24,7 +30,7 @@ def validate_not_error_page(path):
         raise ValueError(f"empty or HTML/XML response: {path}")
 
 
-def validate_rir(path, registry, minimum_records=100):
+def validate_rir(path, registry, minimum_records=100, *, as_of=None):
     header = None
     declared = {}
     counts = Counter()
@@ -44,7 +50,7 @@ def validate_rir(path, registry, minimum_records=100):
                     snapshot = datetime.strptime(header[5], "%Y%m%d").date()
                 except ValueError as exc:
                     raise ValueError(f"{path}: invalid header count/date") from exc
-                validate_snapshot_age(registry, snapshot, utc_today())
+                validate_snapshot_age(registry, snapshot, as_of or utc_today())
                 continue
             if len(fields) >= 6 and fields[1] == "*" and fields[5].lower() == "summary":
                 kind = fields[2].lower()
@@ -124,18 +130,32 @@ def main():
     source.add_argument("--registry", choices=("afrinic", "apnic", "arin", "lacnic", "ripencc"))
     source.add_argument("--antifilter", choices=tuple(ANTIFILTER_MINIMUM))
     source.add_argument("--iana", type=int, choices=(4, 6))
+    source.add_argument("--ipverse", action="store_true")
+    source.add_argument("--telegram", action="store_true")
+    source.add_argument("--sha256")
+    parser.add_argument("--as-of", type=parse_as_of)
     args = parser.parse_args()
     try:
         validate_not_error_page(args.file)
         if args.registry:
-            print(f"{args.registry}: validated {validate_rir(args.file, args.registry)} delegated records")
+            print(f"{args.registry}: validated {validate_rir(args.file, args.registry, as_of=args.as_of)} delegated records")
         if args.antifilter:
             valid, usable = validate_antifilter(args.file, args.antifilter)
             print(f"Antifilter {args.antifilter}: {valid} distinct valid records, {usable} usable under existing scope")
         if args.iana:
             private, reachable = read_required_registry(args.file, args.iana)
             print(f"IANA IPv{args.iana}: validated {len(private)} non-global and {len(reachable)} reachable prefixes")
-    except (OSError, UnicodeError, ValueError, csv.Error) as exc:
+        if args.ipverse:
+            validate_ipverse(args.file)
+        if args.telegram:
+            read_telegram_feed(args.file)
+        if args.sha256:
+            if not re.fullmatch(r"[a-f0-9]{64}", args.sha256):
+                raise ValueError("invalid pinned SHA-256")
+            with args.file.open("rb") as stream:
+                if hashlib.file_digest(stream, "sha256").hexdigest() != args.sha256:
+                    raise ValueError("pinned input SHA-256 mismatch")
+    except (OSError, ValueError, EOFError, csv.Error, tarfile.TarError, zlib.error) as exc:
         parser.exit(1, f"invalid upstream: {exc}\n")
 
 

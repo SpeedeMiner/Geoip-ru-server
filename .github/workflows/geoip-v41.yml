@@ -26,6 +26,11 @@ on:
       - ".github/data/v41-reviewed-reachable-cdn.tsv"
       - ".github/scripts/build_v41_srs.py"
       - ".github/scripts/extract_ru_asn_prefixes_v41.py"
+      - ".github/scripts/v41_asn_observations.py"
+      - ".github/scripts/audit_v41_asn_regressions.py"
+      - ".github/scripts/audit_v41_direct_provenance.py"
+      - ".github/data/v41-audit-priority-asns.tsv"
+      - ".github/data/v41-audit-global-networks.json"
       - ".github/scripts/check_v41_bgp_observations.py"
       - ".github/scripts/audit_v41_prefix_candidates.py"
       - ".github/data/v41-coverage-candidates.tsv"
@@ -530,6 +535,7 @@ jobs:
           retention-days: 30
 
       - name: Compare pull request candidate with published release
+        id: pr_reference
         if: github.event_name == 'pull_request'
         shell: bash
         run: |
@@ -580,6 +586,7 @@ jobs:
           python3 .github/scripts/validate_v41_source_health.py --report-only \
             --previous "$RUNNER_TEMP/previous-geoip_RU_input_provenance.tsv" --candidate "$INPUT_PROVENANCE" \
             --manifest "$V41_MANIFEST" --dat "$V41_OUTPUT_FILE" | tee -a "$GITHUB_STEP_SUMMARY"
+          printf 'release_sha=%s\n' "$ref" >> "$GITHUB_OUTPUT"
 
       - name: Trace removed IPv4 against selected source snapshots
         if: github.event_name == 'pull_request'
@@ -965,13 +972,15 @@ jobs:
           retention-days: 30
 
       - name: Report exact Antifilter delta and last verified live resolver input
-        if: github.event_name == 'pull_request'
+        if: github.event_name == 'pull_request' && steps.pr_reference.outputs.release_sha != ''
         continue-on-error: true
         timeout-minutes: 7
+        env:
+          ADVISORY_RELEASE_SHA: ${{ steps.pr_reference.outputs.release_sha }}
         shell: bash
         run: |
           python3 .github/scripts/audit_v41_block_feed_delta.py \
-            --repository "$GITHUB_REPOSITORY" --candidate . \
+            --repository "$GITHUB_REPOSITORY" --candidate . --previous-release "$ADVISORY_RELEASE_SHA" \
             --output "$RUNNER_TEMP/v41-block-feed-delta.json" --summary "$GITHUB_STEP_SUMMARY"
 
       - name: Upload advisory Antifilter report
@@ -982,6 +991,81 @@ jobs:
           name: v41-block-feed-delta-advisory
           path: ${{ runner.temp }}/v41-block-feed-delta.json
           if-no-files-found: error
+          retention-days: 30
+
+      - name: Report watched ASN observations and DIRECT coverage (advisory)
+        if: github.event_name == 'pull_request' && steps.pr_reference.outputs.release_sha != ''
+        continue-on-error: true
+        timeout-minutes: 5
+        env:
+          ADVISORY_RELEASE_SHA: ${{ steps.pr_reference.outputs.release_sha }}
+        shell: bash
+        run: |
+          set -eEuo pipefail
+          trap 'echo "::warning::ASN comparison unavailable; coverage is unknown."' ERR
+          baseline="$(mktemp -d "$RUNNER_TEMP/v41-asn-baseline.XXXXXXXX")"
+          options=()
+          fetch() {
+            curl --fail --location --silent --show-error --proto '=https' --proto-redir '=https' \
+              --retry 1 --connect-timeout 10 --max-time 45 --max-filesize 67108864 "$1" -o "$2"
+          }
+          get_baseline() {
+            local name tag raw
+            raw="https://raw.githubusercontent.com/$GITHUB_REPOSITORY/$ADVISORY_RELEASE_SHA"
+            for name in geoip_RU.dat geoip_RU_input_provenance.tsv "$RU_PREFIX_INPUT"; do
+              cp -- "$RUNNER_TEMP/previous-$name" "$baseline/$name" || return 1
+            done
+            for name in "$V41_MANIFEST" "$RELEASE_MANIFEST" "$REGIONAL_ORIGIN_PREFIXES" geoip_RU_ipverse_snapshot_tag.txt; do
+              fetch "$raw/$name" "$baseline/$name" || return 1
+            done
+            tag="$(python3 .github/scripts/verify_v41_ipverse_archive.py \
+              --provenance "$baseline/geoip_RU_input_provenance.tsv" \
+              --snapshot-tag-file "$baseline/geoip_RU_ipverse_snapshot_tag.txt")" || return 1
+            fetch "https://github.com/$GITHUB_REPOSITORY/releases/download/$tag/as-ip-blocks.tar.gz" "$baseline/as-ip-blocks.tar.gz"
+          }
+          if get_baseline; then
+            options=(--previous "$baseline" --previous-release "$ADVISORY_RELEASE_SHA")
+          else
+            echo "::warning::Pinned ASN baseline unavailable; no historical ASN coverage claim."
+          fi
+          python3 .github/scripts/audit_v41_asn_regressions.py \
+            --watchlist .github/data/v41-audit-priority-asns.tsv --candidate . \
+            "${options[@]}" --output "$RUNNER_TEMP/v41-priority-asn.json" --summary "$GITHUB_STEP_SUMMARY"
+
+      - name: Report scoped provider overlaps and Hydra contributions (advisory)
+        if: github.event_name == 'pull_request' && steps.pr_reference.outputs.release_sha != ''
+        continue-on-error: true
+        timeout-minutes: 7
+        env:
+          ADVISORY_RELEASE_SHA: ${{ steps.pr_reference.outputs.release_sha }}
+        shell: bash
+        run: |
+          set -eEuo pipefail
+          trap 'echo "::warning::Provider/Hydra report unavailable; overlaps are unknown."' ERR
+          python3 .github/scripts/audit_v41_direct_provenance.py \
+            --catalog .github/data/v41-audit-global-networks.json \
+            --collect-snapshot "$RUNNER_TEMP/v41-provider-snapshot.json.gz"
+          python3 .github/scripts/audit_v41_direct_provenance.py \
+            --snapshot "$RUNNER_TEMP/v41-provider-snapshot.json.gz" \
+            --previous "$RUNNER_TEMP/previous-geoip_RU.dat" \
+            --previous-checksum "$RUNNER_TEMP/previous-geoip_RU.dat.sha256sum" \
+            --previous-release "$ADVISORY_RELEASE_SHA" --candidate "$V41_OUTPUT_FILE" \
+            --inputs . --base "$OUTPUT_FILE" --output "$RUNNER_TEMP/v41-direct-provenance.json" \
+            --summary "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload ASN and scoped provider advisories
+        if: github.event_name == 'pull_request'
+        continue-on-error: true
+        timeout-minutes: 3
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: geoip-v41-asn-provider-advisories
+          path: |
+            ${{ runner.temp }}/v41-priority-asn.json
+            ${{ runner.temp }}/v41-provider-snapshot.json.gz
+            ${{ runner.temp }}/v41-direct-provenance.json
+            ${{ runner.temp }}/v41-direct-provenance.tsv
+          if-no-files-found: warn
           retention-days: 30
 
   publish:
