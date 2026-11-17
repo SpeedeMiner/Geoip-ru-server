@@ -571,12 +571,23 @@
     "private_changed": false,
     "additional_candidate_hydra_cidr": "31.204.32.0/20"
   },
-  "next_evidence_step": "Find and independently validate named service endpoints. Rechecking a service requires an exact matching DNS A record and named verified TLS/HTTPS evidence.",
+  "next_evidence_step": "The public archive yielded no hostname evidence after exact CIDR controls. Continue only from independently documented exact domains or service IPs, then verify the DNS A and named TLS/HTTPS through a confirmed RU exit.",
   "accepted_summary": {
     "accepted_ru_exit_runs": 12,
     "distinct_ipv4_attempted_on_both_exits": 1536,
     "tcp_attempts_on_accepted_runs": 3072,
     "tcp_timeout_on_both_for_distinct_ipv4": 1536,
     "certificates_observed_at_either_exit": 0
+  },
+  "passive_archive_followup": {
+    "run": 44096379110,
+    "artifact": 14333544290,
+    "method": "public archived primary page and any-contact searches, positive exact CIDR controls",
+    "window_start_utc": "2025-11-17",
+    "queries": 12,
+    "public_index_matches": 0,
+    "confirmed_service_pairs": 0,
+    "new_live_dns_targets": 0,
+    "supplemental_bgp_snapshot_utc": "2026-11-17T09:59:53Z"
   }
 }
