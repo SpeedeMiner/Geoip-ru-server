@@ -1,5 +1,13 @@
 # v41 durable execution journal
 
+## 2026-11-17 — изолированное восстановление и четыре измеренных /24
+
+- [x] На закреплённом rolling проверен возврат только шести /24: +1 536 IPv4 без удалений, IPv6, PRIVATE и эффективная маска не изменились. Hydra `31.204.32.0/20` не добавлена. Результат совпал по адресам с replay штатным сборщиком, Linux подтвердил DAT/SRS. [Отчёт о восстановлении](https://github.com/SpeedeMiner/Geoip-ru-server/blob/6c7ddadf27efc3c0df681a91db2a331e5ad42efd/docs/V41_SIX_PREFIX_RECOVERY_PROOF_20261117.md)
+- [x] Отдельный контроль покрытия обнаружил все 6 пропусков в rolling и ни одного в пробе, 13 тестов прошли. Старая потеря 1 536 IPv4 была ниже общего порога 267 035. Проверка работает только в диагностической ветке.
+- [x] `177.122.107.0/24` засчитан на AS12494 и AS43330. 512 TCP/443 TIMEOUT до TLS; оба постконтроля прошли. Охват двумя ASN — 4/6 (66,7%), сервисные пары — 0/6. [Отчёт о четвёртом замере](https://github.com/SpeedeMiner/Geoip-ru-server/blob/6c7ddadf27efc3c0df681a91db2a331e5ad42efd/docs/V41_LIVE_CIDR24_177_122_107_20261117.md)
+- [ ] `177.122.160.0/24` пройден на первом AS12494: 256 TIMEOUT до TLS, после замера тот же выход и HTTP 200. Нужен второй ASN. [Машиночитаемая сводка](https://github.com/SpeedeMiner/Geoip-ru-server/blob/6c7ddadf27efc3c0df681a91db2a331e5ad42efd/docs/v41-cidr24-review-progress-20261117.json)
+- [ ] Отдельно решить перенос точечного восстановления и проверки покрытия в production. PR №56 остаётся черновиком. Публичные `release 75fdbb1` и `cdn 2edb37e` не сдвинулись. [Handoff](https://github.com/SpeedeMiner/Geoip-ru-server/blob/6c7ddadf27efc3c0df681a91db2a331e5ad42efd/docs/V41_PROJECT_HANDOFF.md)
+
 ## 2026-11-17 — три /24 измерены через VPNObratno
 
 - [x] `177.29.246.0/24` полностью проверен через AS12494 и AS43330. По 256 TCP/443 TIMEOUT до TLS, сертификатов нет. В обоих засчитанных замерах после серии подтверждены тот же выход и контрольный HTTP 200. Яндекс Basic UDP использовался для контрольных имён. [Отчёт и ZIP](https://github.com/SpeedeMiner/Geoip-ru-server/blob/addbbee18c5f0e280f5dbe3e1f828d84a0b3ff49/docs/V41_LIVE_CIDR24_177_29_246_20261117.md).
