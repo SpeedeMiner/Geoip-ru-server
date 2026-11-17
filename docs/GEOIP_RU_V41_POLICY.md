@@ -1,43 +1,33 @@
-# v41 integration policy — RU+BY+KZ unified DIRECT
+# Политика маршрутизации GeoIP v41 — DIRECT для RU, BY и KZ
 
-## Current candidate: RU + BY + KZ + explicit DIRECT and WHITELIST (2026-11-17)
+## Актуальные правила Direct by Reachability
 
-Import only RU, BY and KZ as country categories. Do not import foreign country
-categories, arbitrary upstream allowlists, or whole global CDN/provider ASN
-ranges. Existing reviewed regional/operator and company origins remain
-eligible subject to exact admission conflicts. Explicit service DIRECT retains
-its separate source policy. Hydra DIRECT and WHITELIST are both routing-intent
-inputs. Their exact overlap with a reviewed foreign assignment can survive as
-explicit routing intent, not as regional geography. Escapingworm's explicitly
-configured operator WHITELIST is a service DIRECT source. It remains subject
-to exact admission conflicts and never overrides PRIVATE, hard IP/subnet or
-Telegram exclusions. Hydra lists do not grant a resolver-block exemption.
-Neither list constitutes evidence of reachability from Russia.
+1. **Допуск в `RU`.** Категория задаёт маршрутизацию, а не географию. Используются страновые категории RU/BY/KZ, ресурсы RIR, выбранные региональные и кураторские origin ASN, отдельные подтверждённые операторские префиксы и явно настроенные сервисные источники. Посторонние страновые категории, произвольные upstream-списки и целые глобальные CDN ASN автоматически не импортируются. RIR, BGP, DNS и имя ASN сами по себе не доказывают доступность из РФ.
+2. **Явные маршруты Hydra.** `DIRECT` и `WHITELIST` — отдельный вклад намерения маршрутизации. Они не создают защиту от resolver-only или жёстких блокировок. Escapingworm — отдельный операторский источник, подчиняющийся правилам допуска и исключений.
+3. **Жёсткие приоритеты.** `PRIVATE`, официальный Telegram, отдельно проверенные IP/CIDR РКН и допустимые по ширине записи Antifilter `subnet.lst` вычитаются из `RU` даже для защищённых маршрутов. Для автоматического вычитания запись `subnet.lst` должна быть не шире `/16` для IPv4 или `/112` для IPv6. Конечные категории `RU` и `PRIVATE` не пересекаются.
+4. **Защита от вычитания по DNS.** `ip.lst`, `ipresolve.lst` и неподтверждённые исторические записи v38 входят в слой resolver-only. Из этого слоя исключается покрытие делегированных ресурсов RU/BY/KZ, их выбранных origin, обоих корпоративных классов, проверенных операторских и предусмотренных сервисных масок. `ipsum.lst`, community и Re-filter — только для ревью. Отдельной общей маски публичных DNS-резолверов нет.
+5. **Точный конфликт допуска не равен IP-блокировке.** Проверенное иностранное назначение исключается только в границах записи реестра. Независимый вклад Hydra или отдельно измеренного CDN-хоста может сохранить точное перекрытие. [Реестр CDN](../.github/data/v41-reviewed-reachable-cdn.tsv) допускает одиночный `/32` или `/128` по источнику провайдера и опубликованному положительному замеру из проверенной российской сети для того же IP и семейства. Нужны ASN выхода, дата замера и дата пересмотра. Соседние IP и целый ASN не допускаются по одному измерению.
+6. **IP-недоступность проверяется отдельно.** [Реестр недоступности](../.github/data/v41-reviewed-unreachable.tsv) принимает только подтверждённый IP-блок или геоблок на уровне IP с доказательством и сроком пересмотра. Из этой маски исключается защищённое региональное и корпоративное ядро, включая проверенные операторские префиксы. DNS-ошибка, отказ на уровне отдельного SNI или тайм-аут до TLS не доказывают IP-блокировку.
+7. **Доменные правила клиента выше IP-категорий.** Сначала домены через PROXY, затем явно разрешённые домены через DIRECT, затем `PRIVATE` и `RU` через DIRECT, остальное через PROXY. IP-правило не различает сервисы на общем CDN-адресе. [Примеры для Xray и sing-box](../README.md#4-порядок-правил-в-xray-и-sing-box)
 
-The existing exact foreign assignments are admission conflicts, not a global
-country-based exclusion or an assertion of network unreachability. Their mask
-does not extend beyond the reviewed prefixes. An exact independently measured
-CDN address can be admitted from `.github/data/v41-reviewed-reachable-cdn.tsv`.
-Require a provider source for the IP, a published positive measurement from a
-verified Russian access-network exit for that same IP and family, the exit ASN,
-and dates for verification and review. This is a manual evidence registry. BGP,
-DNS, an ASN name or provider inventory alone is insufficient. A single result
-never admits a surrounding prefix or ASN. Prefer domain rules on shared CDN
-IPs when the policy is specific to one service. No measured entries yet.
+## Ручной пересмотр шести /24
 
-The separate `v41-reviewed-unreachable.tsv` contains only manually reviewed
-IP-layer blocks or inbound IP-level geoblocks with evidence and review dates.
-Its effective mask excludes protected regional resources, selected regional
-origins, company ASN origins and reviewed operator prefixes. A header-only table
-is an explicit empty mask. Expired evidence stops the build for review. The
-existing hard IP/subnet and Telegram blocks still take precedence over every
-DIRECT protection class; DNS-only and SNI-only evidence must not be entered in
-the new table. PRIVATE keeps precedence. The complete change against the
-published candidate must be reviewed before publication.
+**Дата ручного пересмотра — 2026-12-17.** В [реестре временного сохранения](../.github/data/v41-temporary-release-retention.tsv) закреплены шесть точных IPv4 `/24` из предыдущего релиза:
 
-The policy sections below preserve the history of the v41 publisher and earlier
-revisions. Where they differ, the current candidate policy above takes precedence.
-The rolling release and run-specific snapshots identify the deployed build.
+- `156.224.80.0/24`
+- `156.241.186.0/24`
+- `177.122.107.0/24`
+- `177.122.160.0/24`
+- `177.166.21.0/24`
+- `177.29.246.0/24`
+
+Сохранение не является свежим BGP-наблюдением или подтверждением доступности. Оно не расширяется на соседние префиксы и не отменяет `PRIVATE`, эффективные блокировки или правила допуска. После применения всех масок сборщик и валидаторы проверяют **полное** покрытие каждого `/24` в `RU`. При потере даже части адресов кандидат отклоняется, маски автоматически не ослабляются. `review_on` — дата ручного решения по каждой строке, а не TTL. Префиксы не удаляются автоматически по дате и не переводятся в исключения на основании одних тайм-аутов.
+
+## Контроль сборки и публикации
+
+PR-сборки не публикуют файлы. Контрольные проверки связывают манифест и входы по SHA-256, сверяют DAT и SRS и сравнивают кандидата с закреплённым release. Отчёты ASN, провайдеров и Hydra помогают ревью, но не меняют маршруты. В `@cdn` находятся только три клиентских бинарника. Для восстановления предназначены версионированные снимки GitHub, а не rolling-ссылки.
+
+Ниже сохранены исторические сведения и подробности реализации. При расхождении с прежними формулировками применяются актуальные правила выше. [Краткий changelog v41](V41_EXECUTION_JOURNAL.md)
 
 ## Preservation of v39 and v40
 
@@ -57,7 +47,7 @@ v41 branches from PR #12's corrected v39 head, preserving:
 v41 imports from v40:
 - Version-controlled two-class ASN policy `CORE_CORPORATE` and `SHARED_INFRA`.
 - Source-separated exact/hard and resolver-only blocked-address datasets.
-- Pinned v38 approved blocked baseline, treated as **unclassified hard** rather than assuming every row came from ipresolve.
+- Pinned v38 approved blocked baseline. The earlier v40 policy treated unclassified rows as hard. In current v41, unverified historical records belong to resolver-only.
 - Deterministic exact-origin class extractor, class-specific origin sidecars, independent protobuf/policy validator.
 - Seven additional corrected company ASN registry rows available in the v40 review work; verified candidates remain reviewable as source records.
 
@@ -85,7 +75,7 @@ removed simply because an address also appears in HXEHEX.
 - The upstream `hydraponique/roscomvpn-geoip` file already enters the v37 builder, but its `direct` and `whitelist` categories were previously counted only as diagnostic candidates.
 - Both categories are now explicitly admitted in the v41 overlay as **routing intent**, not as RU geolocation, first-party corporate origin, or unconditional block exemption.
 - The source is the same fetched `hydra-geoip.dat` used by the base builder. Its SHA-256, category counts, source-level metrics and exact prefix provenance are recorded.
-- Eligibility is `(Hydra DIRECT ∪ Hydra WHITELIST) − PRIVATE − effective v41 blocked set − reviewed regional admission exclusions`. Hydra does **not** override hard/exact/legacy/RIR block precedence or create a new class of corporate protected ASN.
+- The original rollout subtracted reviewed regional assignments from the Hydra contribution. Under the current precedence above, Hydra is an independent admission source for the exact overlap, but it does not override PRIVATE, effective blocking or reviewed IP-layer unreachability.
 - The independent validator checks full eligible Hydra address-space inclusion in the final `geoip:RU`, including IPv4 and IPv6, and verifies the source hash. Missing categories or a default route fail closed.
 - Because Hydra may contain non-RU/CDN routing intent, this policy broadens the meaning of the RU routing bucket deliberately; review the exact resulting address delta before production rollout.
 
