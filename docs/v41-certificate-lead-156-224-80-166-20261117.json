@@ -1,0 +1,190 @@
+{
+  "schema": 1,
+  "runs": [
+    {
+      "run_id": 44056821145,
+      "artifact_id": 14315553644,
+      "artifact_zip_digest": "sha256:8cdccfe86a0d6bf0c9726cd8db7bafd8ae48ffd70d6bba5b006feaa38bcd6928",
+      "commit": "69570278e9ddb796eb8de95a659d04f59013291e",
+      "observation": {
+        "scope": "one explicit certificate lead and two established public controls; no CIDR scan",
+        "selected_source": "vpnobratno",
+        "transport": "IPv4",
+        "observations": [
+          {
+            "OBSERVED_AT": "2026-11-17T09:35:53Z",
+            "TARGET_ID": "cdn77-demo",
+            "TARGET_DOMAIN": "1906714720.rsc.cdn77.org",
+            "TARGET_IP": "121.127.45.82",
+            "EXPECTED_PREFIX": "121.127.45.0/24",
+            "TARGET_PORT": 443,
+            "DNS_RESULT": "DNS_ANSWER",
+            "DNS_A_ADDRESSES": [
+              "121.127.45.81"
+            ],
+            "DNS_AAAA_RESULT": "DNS_ANSWER",
+            "DNS_AAAA_ADDRESSES": [
+              "2a02:6ea0:f700::2"
+            ],
+            "DNS_MATCHES_TARGET": false,
+            "TCP_RESULT": "CONNECTED",
+            "TLS_RESULT": "VERIFIED",
+            "HTTPS_RESULT": "HTTP_RESPONSE",
+            "HTTP_STATUS": 200,
+            "EXIT_COUNTRY": "RU",
+            "EXIT_ASN": 8359,
+            "IPV6_TRANSPORT": "NOT_TESTED_TUNNEL_IPV4_ONLY",
+            "DNS_RESOLVER": "yandex-basic-udp",
+            "DNS_RESOLVER_IPV4": "77.88.8.8"
+          },
+          {
+            "OBSERVED_AT": "2026-11-17T09:35:54Z",
+            "TARGET_ID": "cdnvideo-player-host",
+            "TARGET_DOMAIN": "playercdn.cdnvideo.ru",
+            "TARGET_IP": "151.236.65.96",
+            "EXPECTED_PREFIX": "151.236.65.0/24",
+            "TARGET_PORT": 443,
+            "DNS_RESULT": "DNS_ANSWER",
+            "DNS_A_ADDRESSES": [
+              "46.42.185.160"
+            ],
+            "DNS_AAAA_RESULT": "DNS_NO_ANSWER",
+            "DNS_AAAA_ADDRESSES": [],
+            "DNS_MATCHES_TARGET": false,
+            "TCP_RESULT": "CONNECTED",
+            "TLS_RESULT": "VERIFIED",
+            "HTTPS_RESULT": "HTTP_RESPONSE",
+            "HTTP_STATUS": 200,
+            "EXIT_COUNTRY": "RU",
+            "EXIT_ASN": 8359,
+            "IPV6_TRANSPORT": "NOT_TESTED_TUNNEL_IPV4_ONLY",
+            "DNS_RESOLVER": "yandex-basic-udp",
+            "DNS_RESOLVER_IPV4": "77.88.8.8"
+          }
+        ],
+        "connection_attempts": 1,
+        "successful_ru_exits": 1,
+        "target_measurements": 2,
+        "usable_ru_openvpn_servers_discovered": 6,
+        "targets_not_tested_count": 0,
+        "requested_successful_ru_exits": 1,
+        "connection_counts": {
+          "connected_ru_exit": 1,
+          "selected": 1
+        },
+        "certificate_lead": {
+          "dns": [],
+          "dns_resolver": "yandex-basic-udp",
+          "dns_resolver_ipv4": "77.88.8.8",
+          "exit_asn": 8359,
+          "exit_country": "RU",
+          "observed_at": "2026-11-17T09:35:55Z",
+          "prefix": "156.224.80.0/24",
+          "san_dns": [],
+          "sni": null,
+          "status": "TCP_INCONCLUSIVE",
+          "target_ip": "156.224.80.166",
+          "target_port": 443,
+          "tcp": "TIMEOUT",
+          "tls": "NOT_TESTED",
+          "tls_profile": "uTLS_HelloChrome_Auto",
+          "validated_https": [],
+          "verification": "NOT_PERFORMED"
+        }
+      }
+    },
+    {
+      "run_id": 44057195977,
+      "artifact_id": 14316617006,
+      "artifact_zip_digest": "sha256:421cda365e201568a2c7c12b8a8ab0a1742013e694c56ffbbf09713ec3262927",
+      "commit": "8509bfc8e292e0a339b7e18fb473453703b44949",
+      "observation": {
+        "scope": "one explicit certificate lead and two established public controls; no CIDR scan",
+        "selected_source": "vpnobratno",
+        "transport": "IPv4",
+        "observations": [
+          {
+            "OBSERVED_AT": "2026-11-17T09:38:17Z",
+            "TARGET_ID": "cdn77-demo",
+            "TARGET_DOMAIN": "1906714720.rsc.cdn77.org",
+            "TARGET_IP": "121.127.45.82",
+            "EXPECTED_PREFIX": "121.127.45.0/24",
+            "TARGET_PORT": 443,
+            "DNS_RESULT": "DNS_ANSWER",
+            "DNS_A_ADDRESSES": [
+              "121.127.45.82"
+            ],
+            "DNS_AAAA_RESULT": "DNS_ANSWER",
+            "DNS_AAAA_ADDRESSES": [
+              "2a02:6ea0:f700::2"
+            ],
+            "DNS_MATCHES_TARGET": true,
+            "TCP_RESULT": "CONNECTED",
+            "TLS_RESULT": "VERIFIED",
+            "HTTPS_RESULT": "HTTP_RESPONSE",
+            "HTTP_STATUS": 200,
+            "EXIT_COUNTRY": "RU",
+            "EXIT_ASN": 6863,
+            "IPV6_TRANSPORT": "NOT_TESTED_TUNNEL_IPV4_ONLY",
+            "DNS_RESOLVER": "yandex-basic-udp",
+            "DNS_RESOLVER_IPV4": "77.88.8.8"
+          },
+          {
+            "OBSERVED_AT": "2026-11-17T09:38:19Z",
+            "TARGET_ID": "cdnvideo-player-host",
+            "TARGET_DOMAIN": "playercdn.cdnvideo.ru",
+            "TARGET_IP": "151.236.65.96",
+            "EXPECTED_PREFIX": "151.236.65.0/24",
+            "TARGET_PORT": 443,
+            "DNS_RESULT": "DNS_ANSWER",
+            "DNS_A_ADDRESSES": [
+              "151.236.96.160"
+            ],
+            "DNS_AAAA_RESULT": "DNS_NO_ANSWER",
+            "DNS_AAAA_ADDRESSES": [],
+            "DNS_MATCHES_TARGET": false,
+            "TCP_RESULT": "CONNECTED",
+            "TLS_RESULT": "VERIFIED",
+            "HTTPS_RESULT": "HTTP_RESPONSE",
+            "HTTP_STATUS": 200,
+            "EXIT_COUNTRY": "RU",
+            "EXIT_ASN": 6863,
+            "IPV6_TRANSPORT": "NOT_TESTED_TUNNEL_IPV4_ONLY",
+            "DNS_RESOLVER": "yandex-basic-udp",
+            "DNS_RESOLVER_IPV4": "77.88.8.8"
+          }
+        ],
+        "connection_attempts": 3,
+        "successful_ru_exits": 1,
+        "target_measurements": 2,
+        "usable_ru_openvpn_servers_discovered": 6,
+        "targets_not_tested_count": 0,
+        "requested_successful_ru_exits": 1,
+        "connection_counts": {
+          "connect_or_verify_failed": 2,
+          "connected_ru_exit": 1,
+          "selected": 3
+        },
+        "certificate_lead": {
+          "dns": [],
+          "dns_resolver": "yandex-basic-udp",
+          "dns_resolver_ipv4": "77.88.8.8",
+          "exit_asn": 6863,
+          "exit_country": "RU",
+          "observed_at": "2026-11-17T09:38:20Z",
+          "prefix": "156.224.80.0/24",
+          "san_dns": [],
+          "sni": null,
+          "status": "TCP_INCONCLUSIVE",
+          "target_ip": "156.224.80.166",
+          "target_port": 443,
+          "tcp": "TIMEOUT",
+          "tls": "NOT_TESTED",
+          "tls_profile": "uTLS_HelloChrome_Auto",
+          "validated_https": [],
+          "verification": "NOT_PERFORMED"
+        }
+      }
+    }
+  ]
+}
