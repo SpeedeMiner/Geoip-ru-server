@@ -817,7 +817,7 @@ AS35644	-	-	RIR_RU	IQMEN-AS	IQMen - Information Business Systems JSC	RU	1	0
 AS35645	-	-	RIR_RU	INFOCENTER	Limited Liability Company VLADINFO	RU	19	0
 AS35658	-	-	RIR_RU	BULAT-AS	OOO SCIENTIFIC RESEARCH CENTER Bulat	RU	1	0
 AS35668	-	-	RIR_BY_KZ	CCMCEM	Municipal Unitary Enterprise Information Technologies Center Minsk City Executive Committee	BY	1	0
-AS35673	-	-	RIR_BY_KZ	KASPI-BANK-AS	JSC Kaspi Bank	KZ	1	1
+AS35673	Kaspi Bank	JSC Kaspi Bank (KZ bank-operated origin)	RIR_BY_KZ+COMPANY_ALLOWLIST	KASPI-BANK-AS	JSC Kaspi Bank	KZ	1	1
 AS35683	-	-	RIR_RU	DVBANK	Far-Eastern Bank JSC	RU	1	0
 AS35723	-	-	RIR_RU	ASN-TTCL	Transport Telecommunication Company LLC	RU	4	0
 AS35728	-	-	RIR_RU	MTS-PENZA-AS	MTS PJSC	RU	6	0
@@ -908,7 +908,7 @@ AS39395	-	-	RIR_RU	VI-TELECOM	SE Koreshkov Aleksey Vladimirovich	RU	1	0
 AS39406	-	-	RIR_RU	CONVEX-ZARECNY	LLC Cifrovie Seti Urala	RU	2	0
 AS39407	-	-	RIR_RU	CHITATELECOM-AS	PJSC Rostelecom	RU	2	0
 AS39415	-	-	RIR_RU	MGTSUASIT-AS	PJSC Moscow city telephone network	RU	1	0
-AS39433	-	-	RIR_BY_KZ	KAZCOMBANK-AS	Kazakhstan Halyk Bank JSC	KZ	2	0
+AS39433	Halyk Bank	Kazakhstan Halyk Bank JSC (KZ bank-operated origin; KAZCOMBANK legacy handle)	RIR_BY_KZ+COMPANY_ALLOWLIST	KAZCOMBANK-AS	Kazakhstan Halyk Bank JSC	KZ	2	0
 AS39434	-	-	RIR_RU	OPTIKA-TELECOM	Subnet LLC	RU	1	0
 AS39435	-	-	RIR_RU	EVOLGOGRAD-AS	JSC ER-Telecom Holding	RU	12	1
 AS39442	-	-	RIR_RU	UNICO-AS	JSC RDE Unico	RU	11	0
@@ -1338,7 +1338,7 @@ AS43592	-	-	RIR_RU	ICB-AS	JSC Databank	RU	2	0
 AS43594	-	-	RIR_RU	SVYAZ-AS	Svyaz LLC	RU	2	1
 AS43595	-	-	RIR_RU	UGRESHA-NET-AS	Ugresha Network Ltd.	RU	2	1
 AS43598	-	-	RIR_RU	EXPORT-AS	Export Telecom LLC	RU	1	0
-AS43601	-	-	RIR_BY_KZ	BCC-AS	JSC BankCenterCredit	KZ	2	0
+AS43601	Bank CenterCredit	JSC BankCenterCredit (KZ bank-operated origin)	RIR_BY_KZ+COMPANY_ALLOWLIST	BCC-AS	JSC BankCenterCredit	KZ	2	0
 AS43605	-	-	RIR_RU	SET-LLC	Severo-Eniseysk-Telecom LLC	RU	1	0
 AS43606	-	-	RIR_BY_KZ	FREEDOMCLOUD-AS	Freedom Data Centers LLP	KZ	5	0
 AS43628	-	-	RIR_RU	UNITEDMOTORS-AS	ATD LLC	RU	1	0
@@ -1386,7 +1386,7 @@ AS43900	-	-	RIR_RU	ANTCM-AS	CIFRA BROKER LLC	RU	1	0
 AS43908	-	-	RIR_RU	PSV-AS	JSC Pursvyaz	RU	6	0
 AS43909	-	-	RIR_RU	CRYSTALL-AS	Crystall Ltd.	RU	1	0
 AS43917	-	-	RIR_RU	UPEONET	UPEO LLC	RU	1	0
-AS43934	-	-	RIR_BY_KZ	KISC-AS	Republic Governmental Enterprise Kazakhstan Interbank Settlement Centre of National Bank of Kazakhstan Republic	KZ	1	0
+AS43934	KISC	KISC-AS (historical RIPE registrant; successor identity not verified for this ASN)	RIR_BY_KZ+COMPANY_ALLOWLIST	KISC-AS	Republic Governmental Enterprise Kazakhstan Interbank Settlement Centre of National Bank of Kazakhstan Republic	KZ	1	0
 AS43936	-	-	RIR_RU	EVPANET-AS	PE Zinstein Hariton Vladimirovich	RU	4	0
 AS43946	-	-	RIR_RU	ABC-AS	AirBridgeCargo LLC	RU	1	0
 AS43951	-	-	RIR_RU	GT-LT	LLC Lanit-Tercom	RU	1	0
@@ -1440,7 +1440,7 @@ AS44267	-	-	RIR_RU	ENPLUS-TELECOM	EN+ TELECOM LLC	RU	5	1
 AS44270	-	-	RIR_RU	TKTOR	TC TOR LLC	RU	3	0
 AS44272	-	-	RIR_BY_KZ	ASPINSKINT	Pinskiy internet Provider Limited	BY	2	1
 AS44276	-	-	RIR_RU	DCL-AS	Limited Company Digital channel	RU	1	0
-AS44288	-	-	RIR_BY_KZ	BPC-AS	JSC Banks Processing Center	BY	1	0
+AS44288	Banks Processing Center	JSC Banks Processing Center (BY registered origin)	RIR_BY_KZ+COMPANY_ALLOWLIST	BPC-AS	JSC Banks Processing Center	BY	1	0
 AS44300	-	-	RIR_RU	IPLS-AS	LLC IPLS	RU	5	1
 AS44310	-	-	RIR_RU	SMH-AS	INTERNET TECHNOLOGIES LLC	RU	4	0
 AS44315	-	-	RIR_RU	GRANDCONSULT-AS	Grandconsult Ltd	RU	3	0
@@ -2355,7 +2355,7 @@ AS51343	-	-	RIR_RU	FORCELINE-AS	Telecom Service LLC	RU	1	0
 AS51348	-	-	RIR_RU	AORS-AS	Administration of Orenburg City	RU	1	0
 AS51352	-	-	RIR_RU	VLSU-AS	State Educational Institution of higher professional Education 'Vladimir State University'	RU	3	1
 AS51360	-	-	RIR_RU	CEB-AS	CREDIT EUROPE BANK JSC	RU	2	0
-AS51365	-	-	RIR_BY_KZ	BELINVESTBANK-BY	OJSC Belinvestbank	BY	1	0
+AS51365	Belinvestbank	OJSC Belinvestbank (BY bank-operated origin)	RIR_BY_KZ+COMPANY_ALLOWLIST	BELINVESTBANK-BY	OJSC Belinvestbank	BY	1	0
 AS51369	-	-	RIR_RU	FIORD-RU-AS	LLC TRC FIORD	RU	22	3
 AS51372	-	-	RIR_RU	ORANGE-AS	Orange Ltd.	RU	1	0
 AS51376	-	-	RIR_RU	MOBIDENGI	AO Mobi.Dengi	RU	4	0
@@ -3318,7 +3318,7 @@ AS62142	-	-	RIR_RU	KONNEKTIKA-NET	KONNEKTIKA LLC.	RU	1	1
 AS62143	-	-	RIR_RU	DVRC-AS	FSUE RTRN	RU	1	0
 AS62150	-	-	RIR_RU	BARS-GROUP-AS	BARS Group JSC	RU	1	0
 AS62169	-	-	RIR_RU	SMARTENGIN-AS	JSC Smart Engineering	RU	3	0
-AS62170	-	-	RIR_BY_KZ	ASBPSSBERBANK	JSC Sberbank	BY	1	0
+AS62170	Sberbank BY	JSC Sberbank (BY bank-operated origin)	RIR_BY_KZ+COMPANY_ALLOWLIST	ASBPSSBERBANK	JSC Sberbank	BY	1	0
 AS62197	-	-	RIR_BY_KZ	VTB-BY	CJSC VTB Bank (Belarus)	BY	1	0
 AS62200	-	-	RIR_RU	ISPMANAGER-AS	JSC Ispmanager	RU	1	0
 AS62205	-	-	RIR_RU	UNITEL	Unitel LLC	RU	16	1
