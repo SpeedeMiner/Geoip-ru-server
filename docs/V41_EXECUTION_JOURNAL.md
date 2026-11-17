@@ -1,5 +1,12 @@
 # v41 durable execution journal
 
+## 2026-11-17 — актуальная точка продолжения v41
+
+- [x] Рабочий журнал и открытые задачи находятся в [журнале ветки PR №56](https://github.com/SpeedeMiner/Geoip-ru-server/blob/0bf75a9abda9b3b8bb68d6306eb3222fed400fb1/docs/V41_EXECUTION_JOURNAL.md) и [handoff](https://github.com/SpeedeMiner/Geoip-ru-server/blob/0bf75a9abda9b3b8bb68d6306eb3222fed400fb1/docs/V41_PROJECT_HANDOFF.md). Проверенный кандидат `f0b0880` ([CI 44035378467](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/44035378467)) не публиковался. DAT `02908f5e90cabb6cb29fdab664f9ae28b5777ad9f78bbda9fa18c824f07e070d`; baseline release `63b8abf`.
+- [x] В [сверке точных префиксов](https://github.com/SpeedeMiner/Geoip-ru-server/blob/0bf75a9abda9b3b8bb68d6306eb3222fed400fb1/docs/V41_EXACT_REACHABILITY_ORIGIN_REVIEW_20261117.md) все шесть временных /24 видны в RIPE RIS с origin, отличными от исторических overrides (2 × AS401650 и 4 × AS152606, все шесть пар RPKI-valid). Вся новая сеть `31.204.32.0/20` покрыта двумя более специфичными /21 от AS213541. Эти данные не доказывают доступность из РФ. Дата пересмотра шести /24 остаётся 2026-12-17.
+- [ ] Сервисные пары для шести /24 не подтверждены (0/6), домашний RU-замер не проводился. [VPN CI](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/44038929934) проверял workflow и тесты, не доступность. PR №5 и №56 остаются черновиками.
+- [x] В ветке PR №56 добавлено сохранение частичных строк RPKI и IRR в дополнение к RDAP. Все 329 локальных Python-тестов прошли, принудительный тайм-аут трёх фаз оставил читаемые TSV. Реальная выгрузка неполного архива в GitHub Actions ещё требует проверки. Этот коммит журнала меняет только документацию; релиз, CDN и правила DIRECT не изменены.
+
 ## 2026-11-12 16:00 +0500 — recovery and branch setup
 
 - Resumed from PR #12 recovery note `docs/V39_PR12_RECOVERY_20261112.md`.
@@ -451,11 +458,3 @@ See [v41 release hardening](V41_RELEASE_HARDENING.md). Routing-policy changes ar
 - [x] Справочный CI-отчёт показал, что `82.115.37.0/24` целиком входит в DIRECT кандидата (256 из 256 адресов), PRIVATE не пересекается. Доступность сервиса из РФ не измерялась; маршруты по одному этому результату не добавлялись.
 - [ ] В том же запуске BGP-сверка отметила все 13 ASN как `unavailable`; это не исчезновение маршрутов и не успешная независимая сверка. Разобрать причины в диагностическом артефакте и обеспечить повторяемые наблюдения; в этот запуск этап был справочным и не остановил CI.
 - [x] Для следующего запуска добавлен вывод типа ошибки BGP в сводку без вывода исходного текста исключения; раздельно отмечается отсутствие ASN в ipverse и ошибка запроса. Прошли 105 выбранных Python-тестов; настоящий повторный BGP-запуск ещё необходим.
-
-
-### 2026-11-17 — актуальная точка продолжения v41
-
-- [x] Рабочий журнал и открытые задачи находятся в [журнале ветки PR №56](https://github.com/SpeedeMiner/Geoip-ru-server/blob/0bf75a9abda9b3b8bb68d6306eb3222fed400fb1/docs/V41_EXECUTION_JOURNAL.md) и [handoff](https://github.com/SpeedeMiner/Geoip-ru-server/blob/0bf75a9abda9b3b8bb68d6306eb3222fed400fb1/docs/V41_PROJECT_HANDOFF.md). Проверенный кандидат `f0b0880` ([CI 44035378467](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/44035378467)) не публиковался. DAT `02908f5e90cabb6cb29fdab664f9ae28b5777ad9f78bbda9fa18c824f07e070d`; baseline release `63b8abf`.
-- [x] В [сверке точных префиксов](https://github.com/SpeedeMiner/Geoip-ru-server/blob/0bf75a9abda9b3b8bb68d6306eb3222fed400fb1/docs/V41_EXACT_REACHABILITY_ORIGIN_REVIEW_20261117.md) все шесть временных /24 видны в RIPE RIS с origin, отличными от исторических overrides (2 × AS401650 и 4 × AS152606, все шесть пар RPKI-valid). Вся новая сеть `31.204.32.0/20` покрыта двумя более специфичными /21 от AS213541. Эти данные не доказывают доступность из РФ. Дата пересмотра шести /24 остаётся 2026-12-17.
-- [ ] Сервисные пары для шести /24 не подтверждены (0/6), домашний RU-замер не проводился. [VPN CI](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/44038929934) проверял workflow и тесты, не доступность. PR №5 и №56 остаются черновиками.
-- [x] В ветке PR №56 добавлено сохранение частичных строк RPKI и IRR в дополнение к RDAP. Все 329 локальных Python-тестов прошли, принудительный тайм-аут трёх фаз оставил читаемые TSV. Реальная выгрузка неполного архива в GitHub Actions ещё требует проверки. Этот коммит журнала меняет только документацию; релиз, CDN и правила DIRECT не изменены.
