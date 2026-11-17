@@ -1,5 +1,11 @@
 # v41 durable execution journal
 
+## 2026-11-17 — 20-минутный проход — контрольная точка
+
+- [x] В [журнале PR №56](https://github.com/SpeedeMiner/Geoip-ru-server/blob/21e152c9dd834560c3e7eb8e9c65a8a5d8fff389/docs/V41_EXECUTION_JOURNAL.md) и [handoff](https://github.com/SpeedeMiner/Geoip-ru-server/blob/21e152c9dd834560c3e7eb8e9c65a8a5d8fff389/docs/V41_PROJECT_HANDOFF.md) зафиксированы ранние проверки четырёх обязательных входов (две ленты Antifilter и два CSV IANA). Прошли 334 локальных теста и [Linux CI v41](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/44043544968) на `c811a2c`. `publish` пропущен.
+- [x] [Все 18 добавленных CIDR](https://github.com/SpeedeMiner/Geoip-ru-server/blob/21e152c9dd834560c3e7eb8e9c65a8a5d8fff389/docs/V41_ADDITIONS_RIS_RDAP_REVIEW_20261117.md) сверены по RIS/RDAP/RPKI. В RIS найдено 12 точных маршрутов и 2 добавления с покрывающим /24. У четырёх не было анонса в проверенном срезе. Статус REVIEW сохраняется. Шесть временных /24 остаются отдельной очередью и по-прежнему не имеют подтверждённых сервисных IP для измерения.
+- [x] DAT, оба SRS, маска исключений и JSON дельты текущего кандидата побайтно совпали с прежним кандидатом. Три публичных файла jsDelivr соответствуют опубликованному release `63b8abf`. Релиз, CDN, PR №5 и маршрутизация не изменены. Справочный перечень критичных сервисов расширен с 16 до 23 доменов без добавления сетевых правил.
+
 ## 2026-11-17 — актуальная точка продолжения v41
 
 - [x] Рабочий журнал и открытые задачи находятся в [журнале ветки PR №56](https://github.com/SpeedeMiner/Geoip-ru-server/blob/ddc3512ead912c5e4c4b0e7b7104760cb3d9b65f/docs/V41_EXECUTION_JOURNAL.md) и [handoff](https://github.com/SpeedeMiner/Geoip-ru-server/blob/ddc3512ead912c5e4c4b0e7b7104760cb3d9b65f/docs/V41_PROJECT_HANDOFF.md). Проверенный кандидат `f0b0880` ([CI 44035378467](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/44035378467)) не публиковался. DAT `02908f5e90cabb6cb29fdab664f9ae28b5777ad9f78bbda9fa18c824f07e070d`; baseline release `63b8abf`.
