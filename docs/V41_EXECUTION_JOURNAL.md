@@ -824,3 +824,9 @@ See [v41 release hardening](V41_RELEASE_HARDENING.md). Routing-policy changes ar
 
 - [x] [Запуск диагностики](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/44075088356) на `f111db9d` ограничен явно заданным `156.224.80.0/24`, TCP/443 и одним подтверждённым российским VPNObratno. Публичные контрольные HTTPS закреплены заранее, до /24 обязательны Яндекс DNS и валидный TLS на контроле. Публикации нет.
 - [ ] Реальных результатов к моменту записи ещё нет. Тайм-ауты, непроверенные адреса и сертификаты будут записаны раздельно. DIRECT не меняется.
+
+### 2026-11-17 16:43 +0500 — повтор по тому же /24 и перечитывание архива
+
+- [x] [Первый](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/44075088356) и [второй](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/44075685810) фактические прогоны покрыли по 256 адресов `156.224.80.0/24`. На AS12494 и AS8749 все TCP/443 истекли по тайм-ауту, TLS не начался. [Сверка SHA-256 архивов и пар по IP](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/44076214711) прошла: 256 × TIMEOUT|TIMEOUT, 0 сертификатов.
+- [x] [RouteViews](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/44076116727) вернул AS401650, в том числе запись с отметкой 11:34:27 UTC перед первым прогоном, и четыре пути AS219216 с отметками 14 ноября. [RIPEstat](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/44075816869) на запросы времени фактического прогона вернул только 07:59:59 UTC. Маршрутные данные не объясняют TCP-тайм-аут.
+- [ ] Правила и состояние 0/6 не менялись. Добавлен постконтроль для следующей версии режима, результаты его CI и дальнейшая сверка пока не получены.
