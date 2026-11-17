@@ -610,7 +610,7 @@ jobs:
               for line in raw.decode("utf-8").splitlines():
                   if not line or line.startswith("#"):
                       continue
-                  fields = line.split("\\t") if column else line.split()
+                  fields = line.split("\t") if column else line.split()
                   if len(fields) <= column:
                       continue
                   try:
