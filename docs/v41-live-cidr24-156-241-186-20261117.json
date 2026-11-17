@@ -1,0 +1,3948 @@
+{
+  "schema": 1,
+  "focus": "156.241.186.0/24",
+  "queue_size": 6,
+  "confirmed_service_pairs": 0,
+  "observations": [
+    {
+      "n": 1,
+      "run": 44078381472,
+      "head": "2d93fab08ecfa1f45b562970c2c2634801200fe1",
+      "artifact": 14325284142,
+      "digest": "sha256:e1e80de20ed27c9e2824e00032b656ecd5c6171b5d9b13db828328a8548650d9",
+      "result": {
+        "scope": "one declared IPv4 CIDR, fixed TCP/443, certificate observation only",
+        "selected_source": "vpnobratno",
+        "transport": "IPv4",
+        "observations": [
+          {
+            "OBSERVED_AT": "2026-11-17T11:56:26Z",
+            "TARGET_ID": "cdn77-demo",
+            "TARGET_DOMAIN": "1906714720.rsc.cdn77.org",
+            "TARGET_IP": "121.127.45.82",
+            "EXPECTED_PREFIX": "121.127.45.0/24",
+            "TARGET_PORT": 443,
+            "DNS_RESULT": "DNS_ANSWER",
+            "DNS_A_ADDRESSES": [
+              "121.127.45.82"
+            ],
+            "DNS_AAAA_RESULT": "DNS_ANSWER",
+            "DNS_AAAA_ADDRESSES": [
+              "2a02:6ea0:f700::2"
+            ],
+            "DNS_MATCHES_TARGET": true,
+            "TCP_RESULT": "CONNECTED",
+            "TLS_RESULT": "VERIFIED",
+            "HTTPS_RESULT": "HTTP_RESPONSE",
+            "HTTP_STATUS": 200,
+            "EXIT_COUNTRY": "RU",
+            "EXIT_ASN": 8749,
+            "IPV6_TRANSPORT": "NOT_TESTED_TUNNEL_IPV4_ONLY",
+            "DNS_RESOLVER": "yandex-basic-udp",
+            "DNS_RESOLVER_IPV4": "77.88.8.8"
+          },
+          {
+            "OBSERVED_AT": "2026-11-17T11:56:29Z",
+            "TARGET_ID": "cdnvideo-player-host",
+            "TARGET_DOMAIN": "playercdn.cdnvideo.ru",
+            "TARGET_IP": "151.236.65.96",
+            "EXPECTED_PREFIX": "151.236.65.0/24",
+            "TARGET_PORT": 443,
+            "DNS_RESULT": "DNS_ANSWER",
+            "DNS_A_ADDRESSES": [
+              "151.236.91.32"
+            ],
+            "DNS_AAAA_RESULT": "DNS_NO_ANSWER",
+            "DNS_AAAA_ADDRESSES": [],
+            "DNS_MATCHES_TARGET": false,
+            "TCP_RESULT": "CONNECTED",
+            "TLS_RESULT": "VERIFIED",
+            "HTTPS_RESULT": "HTTP_RESPONSE",
+            "HTTP_STATUS": 200,
+            "EXIT_COUNTRY": "RU",
+            "EXIT_ASN": 8749,
+            "IPV6_TRANSPORT": "NOT_TESTED_TUNNEL_IPV4_ONLY",
+            "DNS_RESOLVER": "yandex-basic-udp",
+            "DNS_RESOLVER_IPV4": "77.88.8.8"
+          }
+        ],
+        "connection_attempts": 1,
+        "successful_ru_exits": 1,
+        "target_measurements": 2,
+        "targets_not_tested_count": 0,
+        "requested_successful_ru_exits": 1,
+        "connection_counts": {
+          "connected_ru_exit": 1,
+          "selected": 1
+        },
+        "cidr24": {
+          "address_count": 256,
+          "certificates": 0,
+          "counts_by_status": {
+            "TCP_INCONCLUSIVE": 256
+          },
+          "dns_or_http_on_subnet": false,
+          "exit_asn": 8749,
+          "exit_country": "RU",
+          "geoip_mutation": false,
+          "not_tested": 0,
+          "observed_at": "2026-11-17T11:56:32Z",
+          "peer_identity_verified": false,
+          "port": 443,
+          "postflight": {
+            "control": {
+              "DNS_RESULT": "DNS_ANSWER",
+              "HTTPS_RESULT": "HTTP_RESPONSE",
+              "HTTP_STATUS": 200,
+              "OBSERVED_AT": "2026-11-17T11:57:55Z",
+              "TARGET_ID": "cdn77-demo",
+              "TCP_RESULT": "CONNECTED",
+              "TLS_RESULT": "VERIFIED"
+            },
+            "same_exit_verified": true,
+            "status": "PASSED"
+          },
+          "prefix": "156.241.186.0/24",
+          "rows": [
+            {
+              "ip": "156.241.186.0",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.1",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.2",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.3",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.4",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.5",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.6",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.7",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.8",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.9",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.10",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.11",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.12",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.13",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.14",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.15",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.16",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.17",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.18",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.19",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.20",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.21",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.22",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.23",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.24",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.25",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.26",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.27",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.28",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.29",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.30",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.31",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.32",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.33",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.34",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.35",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.36",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.37",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.38",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.39",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.40",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.41",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.42",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.43",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.44",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.45",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.46",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.47",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.48",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.49",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.50",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.51",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.52",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.53",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.54",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.55",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.56",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.57",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.58",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.59",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.60",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.61",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.62",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.63",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.64",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.65",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.66",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.67",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.68",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.69",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.70",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.71",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.72",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.73",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.74",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.75",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.76",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.77",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.78",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.79",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.80",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.81",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.82",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.83",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.84",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.85",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.86",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.87",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.88",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.89",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.90",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.91",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.92",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.93",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.94",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.95",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.96",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.97",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.98",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.99",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.100",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.101",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.102",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.103",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.104",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.105",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.106",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.107",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.108",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.109",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.110",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.111",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.112",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.113",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.114",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.115",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.116",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.117",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.118",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.119",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.120",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.121",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.122",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.123",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.124",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.125",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.126",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.127",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.128",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.129",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.130",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.131",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.132",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.133",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.134",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.135",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.136",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.137",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.138",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.139",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.140",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.141",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.142",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.143",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.144",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.145",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.146",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.147",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.148",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.149",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.150",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.151",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.152",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.153",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.154",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.155",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.156",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.157",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.158",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.159",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.160",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.161",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.162",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.163",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.164",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.165",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.166",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.167",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.168",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.169",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.170",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.171",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.172",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.173",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.174",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.175",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.176",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.177",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.178",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.179",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.180",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.181",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.182",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.183",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.184",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.185",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.186",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.187",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.188",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.189",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.190",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.191",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.192",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.193",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.194",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.195",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.196",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.197",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.198",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.199",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.200",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.201",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.202",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.203",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.204",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.205",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.206",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.207",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.208",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.209",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.210",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.211",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.212",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.213",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.214",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.215",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.216",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.217",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.218",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.219",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.220",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.221",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.222",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.223",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.224",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.225",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.226",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.227",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.228",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.229",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.230",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.231",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.232",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.233",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.234",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.235",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.236",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.237",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.238",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.239",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.240",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.241",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.242",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.243",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.244",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.245",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.246",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.247",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.248",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.249",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.250",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.251",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.252",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.253",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.254",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.255",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            }
+          ],
+          "schema": 1,
+          "sni": null,
+          "source": "vpnobratno",
+          "status": "COMPLETE",
+          "tested": 256,
+          "timeouts_are_not_block_verdicts": true,
+          "tls_profile": "uTLS_HelloChrome_Auto"
+        }
+      }
+    },
+    {
+      "n": 4,
+      "run": 44078852469,
+      "head": "6ccaa36a9b122ac3173229077a1de563cce6e198",
+      "artifact": 14326890194,
+      "digest": "sha256:b13e0b6e28985ec691ca24e85bf6ca0f5b20b4ef7c6847ce64bb2606eb559fe3",
+      "result": {
+        "scope": "one declared IPv4 CIDR, fixed TCP/443, certificate observation only",
+        "selected_source": "vpnobratno",
+        "transport": "IPv4",
+        "observations": [
+          {
+            "OBSERVED_AT": "2026-11-17T11:59:35Z",
+            "TARGET_ID": "cdn77-demo",
+            "TARGET_DOMAIN": "1906714720.rsc.cdn77.org",
+            "TARGET_IP": "121.127.45.82",
+            "EXPECTED_PREFIX": "121.127.45.0/24",
+            "TARGET_PORT": 443,
+            "DNS_RESULT": "DNS_ANSWER",
+            "DNS_A_ADDRESSES": [
+              "121.127.45.82"
+            ],
+            "DNS_AAAA_RESULT": "DNS_ANSWER",
+            "DNS_AAAA_ADDRESSES": [
+              "2a02:6ea0:f700::2"
+            ],
+            "DNS_MATCHES_TARGET": true,
+            "TCP_RESULT": "CONNECTED",
+            "TLS_RESULT": "VERIFIED",
+            "HTTPS_RESULT": "HTTP_RESPONSE",
+            "HTTP_STATUS": 200,
+            "EXIT_COUNTRY": "RU",
+            "EXIT_ASN": 8359,
+            "IPV6_TRANSPORT": "NOT_TESTED_TUNNEL_IPV4_ONLY",
+            "DNS_RESOLVER": "yandex-basic-udp",
+            "DNS_RESOLVER_IPV4": "77.88.8.8"
+          },
+          {
+            "OBSERVED_AT": "2026-11-17T11:59:37Z",
+            "TARGET_ID": "cdnvideo-player-host",
+            "TARGET_DOMAIN": "playercdn.cdnvideo.ru",
+            "TARGET_IP": "151.236.65.96",
+            "EXPECTED_PREFIX": "151.236.65.0/24",
+            "TARGET_PORT": 443,
+            "DNS_RESULT": "DNS_ANSWER",
+            "DNS_A_ADDRESSES": [
+              "151.236.96.160"
+            ],
+            "DNS_AAAA_RESULT": "DNS_NO_ANSWER",
+            "DNS_AAAA_ADDRESSES": [],
+            "DNS_MATCHES_TARGET": false,
+            "TCP_RESULT": "CONNECTED",
+            "TLS_RESULT": "VERIFIED",
+            "HTTPS_RESULT": "HTTP_RESPONSE",
+            "HTTP_STATUS": 200,
+            "EXIT_COUNTRY": "RU",
+            "EXIT_ASN": 8359,
+            "IPV6_TRANSPORT": "NOT_TESTED_TUNNEL_IPV4_ONLY",
+            "DNS_RESOLVER": "yandex-basic-udp",
+            "DNS_RESOLVER_IPV4": "77.88.8.8"
+          }
+        ],
+        "connection_attempts": 2,
+        "successful_ru_exits": 1,
+        "target_measurements": 2,
+        "targets_not_tested_count": 0,
+        "requested_successful_ru_exits": 1,
+        "connection_counts": {
+          "connect_or_verify_failed": 1,
+          "connected_ru_exit": 1,
+          "rejected_repeated_or_unverified_asn": 1,
+          "selected": 2
+        },
+        "cidr24": {
+          "address_count": 256,
+          "certificates": 0,
+          "counts_by_status": {
+            "TCP_INCONCLUSIVE": 256
+          },
+          "dns_or_http_on_subnet": false,
+          "exit_asn": 8359,
+          "exit_country": "RU",
+          "geoip_mutation": false,
+          "not_tested": 0,
+          "observed_at": "2026-11-17T11:59:38Z",
+          "peer_identity_verified": false,
+          "port": 443,
+          "postflight": {
+            "control": {
+              "DNS_RESULT": "DNS_ANSWER",
+              "HTTPS_RESULT": "HTTP_RESPONSE",
+              "HTTP_STATUS": 200,
+              "OBSERVED_AT": "2026-11-17T12:01:01Z",
+              "TARGET_ID": "cdn77-demo",
+              "TCP_RESULT": "CONNECTED",
+              "TLS_RESULT": "VERIFIED"
+            },
+            "same_exit_verified": true,
+            "status": "PASSED"
+          },
+          "prefix": "156.241.186.0/24",
+          "rows": [
+            {
+              "ip": "156.241.186.0",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.1",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.2",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.3",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.4",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.5",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.6",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.7",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.8",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.9",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.10",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.11",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.12",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.13",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.14",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.15",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.16",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.17",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.18",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.19",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.20",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.21",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.22",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.23",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.24",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.25",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.26",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.27",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.28",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.29",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.30",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.31",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.32",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.33",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.34",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.35",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.36",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.37",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.38",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.39",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.40",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.41",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.42",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.43",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.44",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.45",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.46",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.47",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.48",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.49",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.50",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.51",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.52",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.53",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.54",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.55",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.56",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.57",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.58",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.59",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.60",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.61",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.62",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.63",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.64",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.65",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.66",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.67",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.68",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.69",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.70",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.71",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.72",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.73",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.74",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.75",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.76",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.77",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.78",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.79",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.80",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.81",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.82",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.83",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.84",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.85",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.86",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.87",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.88",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.89",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.90",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.91",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.92",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.93",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.94",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.95",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.96",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.97",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.98",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.99",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.100",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.101",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.102",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.103",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.104",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.105",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.106",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.107",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.108",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.109",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.110",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.111",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.112",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.113",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.114",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.115",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.116",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.117",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.118",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.119",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.120",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.121",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.122",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.123",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.124",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.125",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.126",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.127",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.128",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.129",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.130",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.131",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.132",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.133",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.134",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.135",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.136",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.137",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.138",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.139",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.140",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.141",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.142",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.143",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.144",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.145",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.146",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.147",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.148",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.149",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.150",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.151",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.152",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.153",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.154",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.155",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.156",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.157",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.158",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.159",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.160",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.161",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.162",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.163",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.164",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.165",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.166",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.167",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.168",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.169",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.170",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.171",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.172",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.173",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.174",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.175",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.176",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.177",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.178",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.179",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.180",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.181",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.182",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.183",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.184",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.185",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.186",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.187",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.188",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.189",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.190",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.191",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.192",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.193",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.194",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.195",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.196",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.197",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.198",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.199",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.200",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.201",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.202",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.203",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.204",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.205",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.206",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.207",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.208",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.209",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.210",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.211",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.212",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.213",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.214",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.215",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.216",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.217",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.218",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.219",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.220",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.221",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.222",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.223",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.224",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.225",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.226",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.227",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.228",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.229",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.230",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.231",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.232",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.233",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.234",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.235",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.236",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.237",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.238",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.239",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.240",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.241",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.242",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.243",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.244",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.245",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.246",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.247",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.248",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.249",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.250",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.251",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.252",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.253",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.254",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            },
+            {
+              "ip": "156.241.186.255",
+              "status": "TCP_INCONCLUSIVE",
+              "tcp": "TIMEOUT",
+              "tls": "NOT_TESTED"
+            }
+          ],
+          "schema": 1,
+          "sni": null,
+          "source": "vpnobratno",
+          "status": "COMPLETE",
+          "tested": 256,
+          "timeouts_are_not_block_verdicts": true,
+          "tls_profile": "uTLS_HelloChrome_Auto"
+        }
+      }
+    },
+    {
+      "n": 5,
+      "run": 44078852419,
+      "head": "6ccaa36a9b122ac3173229077a1de563cce6e198",
+      "artifact": 14326845217,
+      "digest": "sha256:3010f84928549bf5b1ab014ada760fc00dc4c73dfe5779d1911423d9c4881697",
+      "result": {
+        "scope": "strict RouteViews public RIB metadata for six queued CIDRs; no subnet probes",
+        "checked_at": "2026-11-17T11:58:55.973450+00:00",
+        "rows": [
+          {
+            "prefix": "156.224.80.0/24",
+            "status": "OBSERVED",
+            "origins": [
+              {
+                "asn": 219216,
+                "rpki_state": "valid",
+                "paths_returned": 4,
+                "collectors": 2,
+                "oldest_record": "2026-11-14T06:00:08+00:00",
+                "newest_record": "2026-11-14T06:00:10+00:00",
+                "paths_at_or_after_1100_utc": 0,
+                "missing_or_bad_timestamps": 0
+              },
+              {
+                "asn": 401650,
+                "rpki_state": "valid",
+                "paths_returned": 157,
+                "collectors": 8,
+                "oldest_record": "2026-11-14T06:00:04+00:00",
+                "newest_record": "2026-11-17T11:34:27+00:00",
+                "paths_at_or_after_1100_utc": 11,
+                "missing_or_bad_timestamps": 0
+              }
+            ]
+          },
+          {
+            "prefix": "156.241.186.0/24",
+            "status": "OBSERVED",
+            "origins": [
+              {
+                "asn": 401650,
+                "rpki_state": "valid",
+                "paths_returned": 163,
+                "collectors": 8,
+                "oldest_record": "2026-11-14T06:00:04+00:00",
+                "newest_record": "2026-11-17T11:34:27+00:00",
+                "paths_at_or_after_1100_utc": 13,
+                "missing_or_bad_timestamps": 0
+              }
+            ]
+          },
+          {
+            "prefix": "177.29.246.0/24",
+            "status": "OBSERVED",
+            "origins": [
+              {
+                "asn": 39578,
+                "rpki_state": "valid",
+                "paths_returned": 12,
+                "collectors": 3,
+                "oldest_record": "2026-11-14T06:00:09+00:00",
+                "newest_record": "2026-11-14T06:00:28+00:00",
+                "paths_at_or_after_1100_utc": 0,
+                "missing_or_bad_timestamps": 0
+              },
+              {
+                "asn": 152606,
+                "rpki_state": "valid",
+                "paths_returned": 136,
+                "collectors": 8,
+                "oldest_record": "2026-11-16T14:55:45+00:00",
+                "newest_record": "2026-11-17T11:34:27+00:00",
+                "paths_at_or_after_1100_utc": 1,
+                "missing_or_bad_timestamps": 0
+              }
+            ]
+          },
+          {
+            "prefix": "177.122.107.0/24",
+            "status": "OBSERVED",
+            "origins": [
+              {
+                "asn": 17561,
+                "rpki_state": "invalid",
+                "paths_returned": 20,
+                "collectors": 1,
+                "oldest_record": "2026-11-07T00:00:09+00:00",
+                "newest_record": "2026-11-07T00:00:09+00:00",
+                "paths_at_or_after_1100_utc": 0,
+                "missing_or_bad_timestamps": 0
+              },
+              {
+                "asn": 152606,
+                "rpki_state": "valid",
+                "paths_returned": 148,
+                "collectors": 8,
+                "oldest_record": "2026-11-16T14:56:10+00:00",
+                "newest_record": "2026-11-17T11:34:27+00:00",
+                "paths_at_or_after_1100_utc": 1,
+                "missing_or_bad_timestamps": 0
+              }
+            ]
+          },
+          {
+            "prefix": "177.122.160.0/24",
+            "status": "OBSERVED",
+            "origins": [
+              {
+                "asn": 17561,
+                "rpki_state": "invalid",
+                "paths_returned": 20,
+                "collectors": 1,
+                "oldest_record": "2026-11-07T00:00:09+00:00",
+                "newest_record": "2026-11-07T00:00:09+00:00",
+                "paths_at_or_after_1100_utc": 0,
+                "missing_or_bad_timestamps": 0
+              },
+              {
+                "asn": 152606,
+                "rpki_state": "valid",
+                "paths_returned": 148,
+                "collectors": 8,
+                "oldest_record": "2026-11-16T14:58:08+00:00",
+                "newest_record": "2026-11-17T11:34:27+00:00",
+                "paths_at_or_after_1100_utc": 1,
+                "missing_or_bad_timestamps": 0
+              }
+            ]
+          },
+          {
+            "prefix": "177.166.21.0/24",
+            "status": "OBSERVED",
+            "origins": [
+              {
+                "asn": 17561,
+                "rpki_state": "invalid",
+                "paths_returned": 20,
+                "collectors": 1,
+                "oldest_record": "2026-11-07T00:00:09+00:00",
+                "newest_record": "2026-11-07T00:00:09+00:00",
+                "paths_at_or_after_1100_utc": 0,
+                "missing_or_bad_timestamps": 0
+              },
+              {
+                "asn": 152606,
+                "rpki_state": "valid",
+                "paths_returned": 148,
+                "collectors": 8,
+                "oldest_record": "2026-11-16T14:58:32+00:00",
+                "newest_record": "2026-11-17T11:34:27+00:00",
+                "paths_at_or_after_1100_utc": 1,
+                "missing_or_bad_timestamps": 0
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "n": 6,
+      "run": 44079099099,
+      "head": "32f7b384408e11ea9f504e77cc3fdb359cab883e",
+      "artifact": 14324419523,
+      "digest": "sha256:8d43d82ff1827f7fbb447cb56a118dad1f9fb33af475db042474f38fd54f826d",
+      "result": {
+        "scope": "authoritative RPKI validation of public prefix-origin pairs only",
+        "checked_at": "2026-11-17T12:00:32.097633+00:00",
+        "rows": [
+          {
+            "prefix": "156.224.80.0/24",
+            "asn": 219216,
+            "routeviews_state": "valid",
+            "ripe_state": "valid",
+            "qualifying_roas": 4
+          },
+          {
+            "prefix": "156.224.80.0/24",
+            "asn": 401650,
+            "routeviews_state": "valid",
+            "ripe_state": "valid",
+            "qualifying_roas": 4
+          },
+          {
+            "prefix": "156.241.186.0/24",
+            "asn": 401650,
+            "routeviews_state": "valid",
+            "ripe_state": "valid",
+            "qualifying_roas": 3
+          },
+          {
+            "prefix": "177.29.246.0/24",
+            "asn": 39578,
+            "routeviews_state": "valid",
+            "ripe_state": "valid",
+            "qualifying_roas": 2
+          },
+          {
+            "prefix": "177.29.246.0/24",
+            "asn": 152606,
+            "routeviews_state": "valid",
+            "ripe_state": "valid",
+            "qualifying_roas": 2
+          },
+          {
+            "prefix": "177.122.107.0/24",
+            "asn": 17561,
+            "routeviews_state": "invalid",
+            "ripe_state": "invalid_asn",
+            "qualifying_roas": 2
+          },
+          {
+            "prefix": "177.122.107.0/24",
+            "asn": 152606,
+            "routeviews_state": "valid",
+            "ripe_state": "valid",
+            "qualifying_roas": 2
+          },
+          {
+            "prefix": "177.122.160.0/24",
+            "asn": 17561,
+            "routeviews_state": "invalid",
+            "ripe_state": "invalid_asn",
+            "qualifying_roas": 2
+          },
+          {
+            "prefix": "177.122.160.0/24",
+            "asn": 152606,
+            "routeviews_state": "valid",
+            "ripe_state": "valid",
+            "qualifying_roas": 2
+          },
+          {
+            "prefix": "177.166.21.0/24",
+            "asn": 17561,
+            "routeviews_state": "invalid",
+            "ripe_state": "invalid_asn",
+            "qualifying_roas": 2
+          },
+          {
+            "prefix": "177.166.21.0/24",
+            "asn": 152606,
+            "routeviews_state": "valid",
+            "ripe_state": "valid",
+            "qualifying_roas": 2
+          }
+        ]
+      }
+    },
+    {
+      "n": 7,
+      "run": 44079428138,
+      "head": "5328c7d3b405f41644931bfac76beae1db153e47",
+      "artifact": 14326920626,
+      "digest": "sha256:e369bed0ee96f331628478789cb4025918c7f97b9ddba5ebd30a6f15769bd511",
+      "result": {
+        "scope": "four previously archived VPN observations; no new endpoint traffic",
+        "reviewed_queue_size": 6,
+        "rows": [
+          {
+            "scope": "comparison of two prior verified RU observations; no new endpoint probes",
+            "prefix": "156.224.80.0/24",
+            "port": 443,
+            "exit_asns_in_order": [
+              12494,
+              8749
+            ],
+            "distinct_ipv4_in_scope": 256,
+            "addresses_attempted_at_both_exits": 256,
+            "tcp_timeout_at_both_exits": 256,
+            "tcp_connected_at_either_exit": 0,
+            "certificate_observed_at_either_exit": 0,
+            "paired_tcp_status_counts": {
+              "TIMEOUT|TIMEOUT": 256
+            },
+            "observed_at_by_exit": [
+              "2026-11-17T11:35:07Z",
+              "2026-11-17T11:38:52Z"
+            ],
+            "postflight_by_exit": [
+              "NOT_RECORDED",
+              "NOT_RECORDED"
+            ],
+            "timeouts_are_not_block_verdicts": true,
+            "geoip_mutation": false
+          },
+          {
+            "scope": "comparison of two prior verified RU observations; no new endpoint probes",
+            "prefix": "156.241.186.0/24",
+            "port": 443,
+            "exit_asns_in_order": [
+              8749,
+              8359
+            ],
+            "distinct_ipv4_in_scope": 256,
+            "addresses_attempted_at_both_exits": 256,
+            "tcp_timeout_at_both_exits": 256,
+            "tcp_connected_at_either_exit": 0,
+            "certificate_observed_at_either_exit": 0,
+            "paired_tcp_status_counts": {
+              "TIMEOUT|TIMEOUT": 256
+            },
+            "observed_at_by_exit": [
+              "2026-11-17T11:56:32Z",
+              "2026-11-17T11:59:38Z"
+            ],
+            "postflight_by_exit": [
+              "VERIFIED",
+              "VERIFIED"
+            ],
+            "timeouts_are_not_block_verdicts": true,
+            "geoip_mutation": false
+          }
+        ],
+        "prefixes_attempted_at_two_distinct_ru_asns": 2,
+        "prefixes_with_postflight_on_both_exits": 1,
+        "distinct_ipv4_in_scope": 512,
+        "verified_timeout_pairs": 512,
+        "geoip_mutation": false
+      }
+    },
+    {
+      "n": 8,
+      "run": 44079742923,
+      "head": "696a91e480cc0fe05ab2bb32cda5acc4184d74af",
+      "artifact": 14326880966,
+      "digest": "sha256:96d5072145f3553f0025b610f1fefe20fd93c3d1cb094a6d3018fff0fb17f083",
+      "result": {
+        "scope": "six-prefix DAT coverage only; no policy ablation and no packet probes",
+        "published_release_sha": "63b8abf0ba6c2264724a58ec9a2fb7035c5130a6",
+        "published_dat_sha256": "3dbbffd624d8bc4a50dac860135664578bd2e7742bdf66baa399beab3c65d3ec",
+        "candidate_zip_sha256": "98e5a42f0f665de29fc8004921f1c9437239e55acebc2ab171c549edd9f3c4de",
+        "candidate_dat_sha256": "02908f5e90cabb6cb29fdab664f9ae28b5777ad9f78bbda9fa18c824f07e070d",
+        "v37_base_dat_sha256": "cec43b49af9c70479f49af3d3e430eb59d04a6fc3dee9f676fb328d8cb741a17",
+        "rows": [
+          {
+            "prefix": "156.224.80.0/24",
+            "published": {
+              "RU": {
+                "category_present": true,
+                "addresses": 256,
+                "exact_key": true,
+                "keys": [
+                  "156.224.80.0/24"
+                ]
+              },
+              "PRIVATE": {
+                "category_present": true,
+                "addresses": 0,
+                "exact_key": false,
+                "keys": []
+              }
+            },
+            "v37_base_of_candidate": {
+              "RU": {
+                "category_present": true,
+                "addresses": 256,
+                "exact_key": true,
+                "keys": [
+                  "156.224.80.0/24"
+                ]
+              },
+              "PRIVATE": {
+                "category_present": true,
+                "addresses": 0,
+                "exact_key": false,
+                "keys": []
+              }
+            },
+            "candidate": {
+              "RU": {
+                "category_present": true,
+                "addresses": 256,
+                "exact_key": true,
+                "keys": [
+                  "156.224.80.0/24"
+                ]
+              },
+              "PRIVATE": {
+                "category_present": true,
+                "addresses": 0,
+                "exact_key": false,
+                "keys": []
+              }
+            }
+          },
+          {
+            "prefix": "156.241.186.0/24",
+            "published": {
+              "RU": {
+                "category_present": true,
+                "addresses": 256,
+                "exact_key": true,
+                "keys": [
+                  "156.241.186.0/24"
+                ]
+              },
+              "PRIVATE": {
+                "category_present": true,
+                "addresses": 0,
+                "exact_key": false,
+                "keys": []
+              }
+            },
+            "v37_base_of_candidate": {
+              "RU": {
+                "category_present": true,
+                "addresses": 256,
+                "exact_key": true,
+                "keys": [
+                  "156.241.186.0/24"
+                ]
+              },
+              "PRIVATE": {
+                "category_present": true,
+                "addresses": 0,
+                "exact_key": false,
+                "keys": []
+              }
+            },
+            "candidate": {
+              "RU": {
+                "category_present": true,
+                "addresses": 256,
+                "exact_key": true,
+                "keys": [
+                  "156.241.186.0/24"
+                ]
+              },
+              "PRIVATE": {
+                "category_present": true,
+                "addresses": 0,
+                "exact_key": false,
+                "keys": []
+              }
+            }
+          },
+          {
+            "prefix": "177.29.246.0/24",
+            "published": {
+              "RU": {
+                "category_present": true,
+                "addresses": 256,
+                "exact_key": true,
+                "keys": [
+                  "177.29.246.0/24"
+                ]
+              },
+              "PRIVATE": {
+                "category_present": true,
+                "addresses": 0,
+                "exact_key": false,
+                "keys": []
+              }
+            },
+            "v37_base_of_candidate": {
+              "RU": {
+                "category_present": true,
+                "addresses": 256,
+                "exact_key": true,
+                "keys": [
+                  "177.29.246.0/24"
+                ]
+              },
+              "PRIVATE": {
+                "category_present": true,
+                "addresses": 0,
+                "exact_key": false,
+                "keys": []
+              }
+            },
+            "candidate": {
+              "RU": {
+                "category_present": true,
+                "addresses": 256,
+                "exact_key": true,
+                "keys": [
+                  "177.29.246.0/24"
+                ]
+              },
+              "PRIVATE": {
+                "category_present": true,
+                "addresses": 0,
+                "exact_key": false,
+                "keys": []
+              }
+            }
+          },
+          {
+            "prefix": "177.122.107.0/24",
+            "published": {
+              "RU": {
+                "category_present": true,
+                "addresses": 256,
+                "exact_key": true,
+                "keys": [
+                  "177.122.107.0/24"
+                ]
+              },
+              "PRIVATE": {
+                "category_present": true,
+                "addresses": 0,
+                "exact_key": false,
+                "keys": []
+              }
+            },
+            "v37_base_of_candidate": {
+              "RU": {
+                "category_present": true,
+                "addresses": 256,
+                "exact_key": true,
+                "keys": [
+                  "177.122.107.0/24"
+                ]
+              },
+              "PRIVATE": {
+                "category_present": true,
+                "addresses": 0,
+                "exact_key": false,
+                "keys": []
+              }
+            },
+            "candidate": {
+              "RU": {
+                "category_present": true,
+                "addresses": 256,
+                "exact_key": true,
+                "keys": [
+                  "177.122.107.0/24"
+                ]
+              },
+              "PRIVATE": {
+                "category_present": true,
+                "addresses": 0,
+                "exact_key": false,
+                "keys": []
+              }
+            }
+          },
+          {
+            "prefix": "177.122.160.0/24",
+            "published": {
+              "RU": {
+                "category_present": true,
+                "addresses": 256,
+                "exact_key": true,
+                "keys": [
+                  "177.122.160.0/24"
+                ]
+              },
+              "PRIVATE": {
+                "category_present": true,
+                "addresses": 0,
+                "exact_key": false,
+                "keys": []
+              }
+            },
+            "v37_base_of_candidate": {
+              "RU": {
+                "category_present": true,
+                "addresses": 256,
+                "exact_key": true,
+                "keys": [
+                  "177.122.160.0/24"
+                ]
+              },
+              "PRIVATE": {
+                "category_present": true,
+                "addresses": 0,
+                "exact_key": false,
+                "keys": []
+              }
+            },
+            "candidate": {
+              "RU": {
+                "category_present": true,
+                "addresses": 256,
+                "exact_key": true,
+                "keys": [
+                  "177.122.160.0/24"
+                ]
+              },
+              "PRIVATE": {
+                "category_present": true,
+                "addresses": 0,
+                "exact_key": false,
+                "keys": []
+              }
+            }
+          },
+          {
+            "prefix": "177.166.21.0/24",
+            "published": {
+              "RU": {
+                "category_present": true,
+                "addresses": 256,
+                "exact_key": true,
+                "keys": [
+                  "177.166.21.0/24"
+                ]
+              },
+              "PRIVATE": {
+                "category_present": true,
+                "addresses": 0,
+                "exact_key": false,
+                "keys": []
+              }
+            },
+            "v37_base_of_candidate": {
+              "RU": {
+                "category_present": true,
+                "addresses": 256,
+                "exact_key": true,
+                "keys": [
+                  "177.166.21.0/24"
+                ]
+              },
+              "PRIVATE": {
+                "category_present": true,
+                "addresses": 0,
+                "exact_key": false,
+                "keys": []
+              }
+            },
+            "candidate": {
+              "RU": {
+                "category_present": true,
+                "addresses": 256,
+                "exact_key": true,
+                "keys": [
+                  "177.166.21.0/24"
+                ]
+              },
+              "PRIVATE": {
+                "category_present": true,
+                "addresses": 0,
+                "exact_key": false,
+                "keys": []
+              }
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

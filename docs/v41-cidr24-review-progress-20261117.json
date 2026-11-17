@@ -1,0 +1,224 @@
+{
+  "schema": 1,
+  "updated_on": "2026-11-17",
+  "measurement_scope": "public TCP/443 only; no inference of blocking or GeoIP mutation",
+  "range_queue_size": 6,
+  "measured_from_two_ru_asns": 2,
+  "with_verified_postflight_on_both": 1,
+  "confirmed_service_pairs": 0,
+  "next_review_prefix": "177.29.246.0/24",
+  "rows": [
+    {
+      "prefix": "156.224.80.0/24",
+      "dat_exact_ru_in_all_three": true,
+      "tcp_per_address_observation": {
+        "scope": "comparison of two prior verified RU observations; no new endpoint probes",
+        "prefix": "156.224.80.0/24",
+        "port": 443,
+        "exit_asns_in_order": [
+          12494,
+          8749
+        ],
+        "distinct_ipv4_in_scope": 256,
+        "addresses_attempted_at_both_exits": 256,
+        "tcp_timeout_at_both_exits": 256,
+        "tcp_connected_at_either_exit": 0,
+        "certificate_observed_at_either_exit": 0,
+        "paired_tcp_status_counts": {
+          "TIMEOUT|TIMEOUT": 256
+        },
+        "observed_at_by_exit": [
+          "2026-11-17T11:35:07Z",
+          "2026-11-17T11:38:52Z"
+        ],
+        "postflight_by_exit": [
+          "NOT_RECORDED",
+          "NOT_RECORDED"
+        ],
+        "timeouts_are_not_block_verdicts": true,
+        "geoip_mutation": false
+      },
+      "confirmed_service_pair": false,
+      "routeviews_origins": [
+        {
+          "asn": 219216,
+          "last_record": "2026-11-14T06:00:10+00:00",
+          "paths_returned": 4
+        },
+        {
+          "asn": 401650,
+          "last_record": "2026-11-17T11:34:27+00:00",
+          "paths_returned": 157
+        }
+      ],
+      "ripe_validation": [
+        {
+          "asn": 219216,
+          "status": "valid"
+        },
+        {
+          "asn": 401650,
+          "status": "valid"
+        }
+      ]
+    },
+    {
+      "prefix": "156.241.186.0/24",
+      "dat_exact_ru_in_all_three": true,
+      "tcp_per_address_observation": {
+        "scope": "comparison of two prior verified RU observations; no new endpoint probes",
+        "prefix": "156.241.186.0/24",
+        "port": 443,
+        "exit_asns_in_order": [
+          8749,
+          8359
+        ],
+        "distinct_ipv4_in_scope": 256,
+        "addresses_attempted_at_both_exits": 256,
+        "tcp_timeout_at_both_exits": 256,
+        "tcp_connected_at_either_exit": 0,
+        "certificate_observed_at_either_exit": 0,
+        "paired_tcp_status_counts": {
+          "TIMEOUT|TIMEOUT": 256
+        },
+        "observed_at_by_exit": [
+          "2026-11-17T11:56:32Z",
+          "2026-11-17T11:59:38Z"
+        ],
+        "postflight_by_exit": [
+          "VERIFIED",
+          "VERIFIED"
+        ],
+        "timeouts_are_not_block_verdicts": true,
+        "geoip_mutation": false
+      },
+      "confirmed_service_pair": false,
+      "routeviews_origins": [
+        {
+          "asn": 401650,
+          "last_record": "2026-11-17T11:34:27+00:00",
+          "paths_returned": 163
+        }
+      ],
+      "ripe_validation": [
+        {
+          "asn": 401650,
+          "status": "valid"
+        }
+      ]
+    },
+    {
+      "prefix": "177.29.246.0/24",
+      "dat_exact_ru_in_all_three": true,
+      "tcp_per_address_observation": null,
+      "confirmed_service_pair": false,
+      "routeviews_origins": [
+        {
+          "asn": 39578,
+          "last_record": "2026-11-14T06:00:28+00:00",
+          "paths_returned": 12
+        },
+        {
+          "asn": 152606,
+          "last_record": "2026-11-17T11:34:27+00:00",
+          "paths_returned": 136
+        }
+      ],
+      "ripe_validation": [
+        {
+          "asn": 39578,
+          "status": "valid"
+        },
+        {
+          "asn": 152606,
+          "status": "valid"
+        }
+      ]
+    },
+    {
+      "prefix": "177.122.107.0/24",
+      "dat_exact_ru_in_all_three": true,
+      "tcp_per_address_observation": null,
+      "confirmed_service_pair": false,
+      "routeviews_origins": [
+        {
+          "asn": 17561,
+          "last_record": "2026-11-07T00:00:09+00:00",
+          "paths_returned": 20
+        },
+        {
+          "asn": 152606,
+          "last_record": "2026-11-17T11:34:27+00:00",
+          "paths_returned": 148
+        }
+      ],
+      "ripe_validation": [
+        {
+          "asn": 17561,
+          "status": "invalid_asn"
+        },
+        {
+          "asn": 152606,
+          "status": "valid"
+        }
+      ]
+    },
+    {
+      "prefix": "177.122.160.0/24",
+      "dat_exact_ru_in_all_three": true,
+      "tcp_per_address_observation": null,
+      "confirmed_service_pair": false,
+      "routeviews_origins": [
+        {
+          "asn": 17561,
+          "last_record": "2026-11-07T00:00:09+00:00",
+          "paths_returned": 20
+        },
+        {
+          "asn": 152606,
+          "last_record": "2026-11-17T11:34:27+00:00",
+          "paths_returned": 148
+        }
+      ],
+      "ripe_validation": [
+        {
+          "asn": 17561,
+          "status": "invalid_asn"
+        },
+        {
+          "asn": 152606,
+          "status": "valid"
+        }
+      ]
+    },
+    {
+      "prefix": "177.166.21.0/24",
+      "dat_exact_ru_in_all_three": true,
+      "tcp_per_address_observation": null,
+      "confirmed_service_pair": false,
+      "routeviews_origins": [
+        {
+          "asn": 17561,
+          "last_record": "2026-11-07T00:00:09+00:00",
+          "paths_returned": 20
+        },
+        {
+          "asn": 152606,
+          "last_record": "2026-11-17T11:34:27+00:00",
+          "paths_returned": 148
+        }
+      ],
+      "ripe_validation": [
+        {
+          "asn": 17561,
+          "status": "invalid_asn"
+        },
+        {
+          "asn": 152606,
+          "status": "valid"
+        }
+      ]
+    }
+  ],
+  "review_after": "2026-12-17"
+}
