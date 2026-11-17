@@ -209,6 +209,7 @@ def main() -> int:
     p.add_argument("--regional-admission-exclusions", type=Path, required=True)
     p.add_argument("--reviewed-ipv6-admission-exclusions", type=Path, required=True)
     p.add_argument("--reviewed-operator-prefixes", type=Path, required=True)
+    p.add_argument("--temporary-retention", type=Path)
     a = p.parse_args()
     try:
         manifest = json.loads(a.manifest.read_text(encoding="utf-8"))
@@ -216,6 +217,8 @@ def main() -> int:
         categories = builder.parse_geoip_dat(a.geoip)
         if set(categories) != {"RU", "PRIVATE"}:
             raise ValueError("Expected GeoIP categories RU and PRIVATE only")
+        temporary = builder.verify_temporary_retention_manifest(a.temporary_retention, manifest)
+        builder.require_temporary_retention(temporary, builder.intervals(categories["RU"], 4))
         regional_review = builder.parse_regional_admission_exclusions(a.regional_admission_exclusions)
         ipv6_review = verify_reviewed_ipv6_admission_manifest(a.reviewed_ipv6_admission_exclusions, manifest)
         if (manifest.get("regional_admission_exclusions", {}).get("records") != list(regional_review.values())

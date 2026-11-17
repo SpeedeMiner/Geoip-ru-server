@@ -171,10 +171,12 @@ def validate(args: argparse.Namespace) -> dict:
         if builder.subtract(builder.intervals(expected_hydra, version), builder.intervals(decoded["RU"], version)):
             raise ValueError(f"Hydra DIRECT/WHITELIST IPv{version} eligible coverage missing")
 
+    temporary = builder.verify_temporary_retention_manifest(getattr(args, "temporary_retention", None), manifest)
+    builder.require_temporary_retention(temporary, builder.intervals(decoded["RU"], 4))
     hxehex, hxehex_stats, _ = builder.load_hxehex_diagnostics(args.hxehex_ip)
     excluded = builder.read_w1zardz_exclusions(builder.W1ZARDZ_EXCLUSIONS)
     independently_admitted = builder.union_networks(
-        base["RU"], regional_resources, regional_all, company_all, reviewed,
+        base["RU"], regional_resources, regional_all, company_all, reviewed, set(temporary),
         *service_sources.values(), hydra_routes, cdn,
     )
     assert_hxehex_diagnostic_only(decoded["RU"], independently_admitted, hxehex)
@@ -339,6 +341,7 @@ def main() -> int:
     ):
         parser.add_argument("--" + name.replace("_", "-"), type=Path, required=True)
     parser.add_argument("--telegram-feed", type=Path, default=PINNED_FEED)
+    parser.add_argument("--temporary-retention", type=Path)
     args = parser.parse_args()
     try:
         validate(args)
