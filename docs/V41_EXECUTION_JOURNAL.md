@@ -1,5 +1,10 @@
 # v41 durable execution journal
 
+## 2026-11-17 — opt-in режим одного IPv4 /24 для сертификатов
+
+- [x] [В отдельной ветке](https://github.com/SpeedeMiner/Geoip-ru-server/blob/1880c15b270539c175d70fed6ae1f271f975c2df/.github/reachability/CERTIFICATE_CIDR24.md) добавлен один явно заданный IPv4 /24 с TCP/443 через подтверждённый российский VPNObratno после контроля Яндекс DNS и HTTPS. SAN сохраняются как зацепки. Сбор ограничен и не меняет DIRECT.
+- [x] [CI](https://github.com/SpeedeMiner/Geoip-ru-server/actions/runs/44073458885) прошёл: четыре Go-теста и 167 Python-тестов. Проверены покрытие 256 числовых адресов на подставном транспорте, частичный результат и TLS на loopback. Реального замера подсети не было, очередь остаётся 0/6. PR №5, DIRECT, релиз и CDN не менялись.
+
 ## 2026-11-17 — повторный поиск целей и проверка исходных входов шести /24
 
 - [x] Через Яндекс DNS и три подтверждённых российских выхода VPNObratno проверены 24 новых публичных имени, включая 11 из CT Link4. Ни одного A внутри шести /24. Единственный исторический PTR и NS/SOA шести обратных зон дали NXDOMAIN во всех трёх прогонах. Контроли HTTPS — 6/6 HTTP 200 с валидным TLS. [Отчёт и восемь артефактов](https://github.com/SpeedeMiner/Geoip-ru-server/blob/809615cdaf900050e39008522120e1b3076dcd96/docs/V41_SERVICE_LEADS_SOURCE_TRACE_20261117.md).
