@@ -1,6 +1,6 @@
 {
   "schema": 2,
-  "generated_at": "2026-11-17T15:09:34.559544+00:00",
+  "generated_at": "2026-11-17T17:19:28.657782+00:00",
   "base_v37_sha256": "54cab7b42264949edea178b8bcaf37821bcf51d2efe8112df2f3c993b09991d7",
   "output_sha256": "02908f5e90cabb6cb29fdab664f9ae28b5777ad9f78bbda9fa18c824f07e070d",
   "output_bytes": 512511,
@@ -37,7 +37,7 @@
       "license": "MIT"
     }
   },
-  "input_provenance_sha256": "6879143f8b310af404f63dc608e4949ee60d4988738c65500c1e2321dad02113",
+  "input_provenance_sha256": "1885a70501af9798283e1d85faabaef1d0e5c78263faf430703fc55b82e8eb49",
   "telegram_official": {
     "cidrs": 14,
     "input_sha256": "3ecd072cedf72eceee6961b18a51e37f905d5ce4a656a5d24cf5fea63e6ec651"

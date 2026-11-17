@@ -19,7 +19,7 @@ ROLLING v2fly-geoip.dat.sha256sum	v2fly-geoip.dat.sha256sum	https://github.com/v
 ROLLING w1zardz-ru-ipv4.txt	w1zardz-ru-ipv4.txt	https://raw.githubusercontent.com/w1zardz/amnezia-vpn-russia-split-tunneling/07fecad69597af1127472488ddec5c49cbb6e711/dist/ru-direct-ipv4.txt	77c5b3968bdd4436e9ddda4ec5325cb994b3ef102c90748ad0e6745b203ae9cb	16238	downloaded
 TELEGRAM OFFICIAL CIDRS	telegram-official-cidrs.txt	https://core.telegram.org/resources/cidr.txt	3ecd072cedf72eceee6961b18a51e37f905d5ce4a656a5d24cf5fea63e6ec651	227	downloaded
 AFRINIC DELEGATED STATS	delegated-afrinic-latest	https://ftp.afrinic.net/pub/stats/afrinic/delegated-afrinic-latest	7c072e041977daae76ecb5928fca5a0b2b90c586f7dc75331d4c76a5b8fb8b91	494666	downloaded
-APNIC DELEGATED STATS	delegated-apnic-latest	https://ftp.apnic.net/pub/stats/apnic/delegated-apnic-latest	00738e76fe6926926783f5c5147e357fb8924043ce663f1e9c52bfd75fb92d1b	4358272	downloaded
+APNIC DELEGATED STATS	delegated-apnic-latest	https://ftp.apnic.net/pub/stats/apnic/delegated-apnic-latest	004c339f4a7e9094f9f2107bf1d9e4077314168f696ca71527c5bf46ab7ae1fc	4359354	downloaded
 ARIN DELEGATED STATS	delegated-arin-extended-latest	https://ftp.arin.net/pub/stats/arin/delegated-arin-extended-latest	7b026a96f2a9d423a28187abdbeb41a0b2458953b6b92b933502754e14d0ab69	12919449	downloaded
 LACNIC DELEGATED STATS	delegated-lacnic-latest	https://ftp.lacnic.net/pub/stats/lacnic/delegated-lacnic-extended-latest	7f402c6f19d0d9f327b0661bbb96d6c0ba3e3444227e18e79e3ad95a984b9cbb	4585507	downloaded
 RIPE NCC DELEGATED STATS	delegated-ripencc-latest	https://ftp.ripe.net/pub/stats/ripencc/delegated-ripencc-latest	2143ab12cac81831b9a254cb52f478306870c1abd41c87454ffc3bdbe571086f	8317606	downloaded
