@@ -16,7 +16,7 @@ NOTES = BASE / "docs/V41_ROLLING_RELEASE_NOTES.md"
 
 
 class ReleaseNotesTests(unittest.TestCase):
-    def test_release_links_are_exactly_the_three_client_files(self):
+    def test_release_links_are_exactly_the_current_cdn_files(self):
         audit.validate_release_links(NOTES.read_text(), REPO)
 
     def test_another_repos_upstream_url_is_not_a_client_link(self):
@@ -30,6 +30,7 @@ class ReleaseNotesTests(unittest.TestCase):
         for extra in (
             f"{PREFIX}@release/geoip_RU.dat",
             f"{PREFIX}@cdn/hydra-geoip.dat",
+            f"{PREFIX}@cdn/geoip_PRIVATE.mrs",
             f"{PREFIX}@cdn/geoip_RU.dat.sha256sum",
             f"{PREFIX}@main/docs/V41_CDN_PUBLICATION_JOURNAL_20261115.md",
             f"{PREFIX}@cdn/geoip_RU.srs",  # Do not print duplicate client links.

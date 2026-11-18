@@ -11,7 +11,7 @@ import unittest
 from unittest.mock import MagicMock
 
 import build_v41_overlay as overlay
-from v41_release_manifest import CORE, SNAPSHOT
+from v41_release_manifest import CORE, SCHEMA, SNAPSHOT
 from v41_vpn_exact_probe import bind_snapshot, load_exact_targets, measure_exact, public_ipv4
 
 TARGET = {"id": "sample", "ip": "8.8.4.4", "prefix": "8.8.4.0/24", "domain": "test.example", "port": 443}
@@ -59,7 +59,7 @@ class Inputs(unittest.TestCase):
                 assets[name + ".sha256sum"] = {"bytes": len(checksum), "sha256": hashlib.sha256(checksum).hexdigest()}
                 if name == "geoip_RU.dat":
                     (root / (name + ".sha256sum")).write_bytes(checksum)
-            manifest = json.dumps({"schema": 1, "source_commit": "a" * 40, "assets": assets}).encode()
+            manifest = json.dumps({"schema": SCHEMA, "source_commit": "a" * 40, "assets": assets}).encode()
             (root / "geoip_RU_v41_release_manifest.json").write_bytes(manifest)
             pin = hashlib.sha256(manifest).hexdigest()
             result, rows = bind_snapshot(root, "b" * 40, pin, [TARGET])

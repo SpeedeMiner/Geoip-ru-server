@@ -3,21 +3,34 @@
 import argparse
 import hashlib
 import json
+import os
 from pathlib import Path
 import re
 
-CORE = (
+RU_MRS = "geoip_RU.mrs"
+PRIVATE_MRS = ("geoip_PRIVATE.mrs", "geoip_PRIVATE.mrs.sha256sum")
+SCHEMA = 2
+LEGACY_CORE = (
     "geoip_RU.dat", "geoip_RU.dat.sha256sum",
     "geoip_RU.srs", "geoip_RU.srs.sha256sum",
     "geoip_PRIVATE.srs", "geoip_PRIVATE.srs.sha256sum",
 )
-SNAPSHOT = CORE + (
+CORE = LEGACY_CORE + (RU_MRS, f"{RU_MRS}.sha256sum")
+INPUT_AND_AUDIT_ASSETS = (
     "geoip_RU_v41_manifest.json", "geoip_RU_quality_report.txt", "geoip_RU_input_provenance.tsv",
     "as-ip-blocks.tar.gz", "v41-registry-inputs.tar.gz", "v41-upstream-inputs.tar.gz",
     "v41-block-inputs.tar.gz",
 )
+LEGACY_SNAPSHOT = LEGACY_CORE + INPUT_AND_AUDIT_ASSETS
+SNAPSHOT = CORE + INPUT_AND_AUDIT_ASSETS
 MANIFEST = "geoip_RU_v41_release_manifest.json"
 MAX_BYTES = 128 * 1024 * 1024
+
+
+def reject_private_mrs(root):
+    for name in PRIVATE_MRS:
+        if os.path.lexists(root / name):
+            raise ValueError(f"Forbidden v41 artifact: {name}")
 
 
 def describe(path, cap=MAX_BYTES):
@@ -35,6 +48,7 @@ def describe(path, cap=MAX_BYTES):
 
 
 def make(root, source_sha, repository, run_id, run_attempt):
+    reject_private_mrs(root)
     if (not re.fullmatch(r"[0-9a-f]{40}", source_sha)
             or not re.fullmatch(r"[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+", repository)
             or not re.fullmatch(r"[1-9][0-9]{0,19}", run_id)
@@ -50,7 +64,7 @@ def make(root, source_sha, repository, run_id, run_attempt):
             or policy.get("input_provenance_sha256") != files["geoip_RU_input_provenance.tsv"]["sha256"]):
         raise ValueError("policy manifest does not bind the DAT and input provenance")
     return {
-        "schema": 1,
+        "schema": SCHEMA,
         "source_commit": source_sha,
         "workflow_run": f"https://github.com/{repository}/actions/runs/{run_id}",
         "run_attempt": int(run_attempt),
@@ -58,13 +72,18 @@ def make(root, source_sha, repository, run_id, run_attempt):
     }
 
 
-def verify(root, manifest, names):
+def verify(root, manifest, names, *, allow_legacy=False):
+    reject_private_mrs(root)
     with manifest.open("rb") as f:
         raw = f.read(16385)
     if len(raw) > 16384:
         raise ValueError("oversized release manifest")
     data = json.loads(raw)
-    if data.get("schema") != 1 or set(data.get("assets", {})) != set(SNAPSHOT):
+    schema = data.get("schema")
+    inventories = {SCHEMA: SNAPSHOT}
+    if allow_legacy:
+        inventories[1] = LEGACY_SNAPSHOT
+    if type(schema) is not int or schema not in inventories or set(data.get("assets", {})) != set(inventories[schema]):
         raise ValueError("invalid release manifest")
     for name in names:
         expected = data["assets"][name]

@@ -44,7 +44,7 @@ download() {
     --connect-timeout 10 --max-time 25 --retry 1 --retry-all-errors --retry-max-time 35 \
     --max-filesize "$3" --output "$2" "$1"
 }
-for file in "${V41_CDN_FILES[@]}"; do
+for file in "${V41_CLIENT_BINARIES[@]}"; do
   git -C "$tmp/repo" show "$snapshot:$file" > "$tmp/$file"
   [[ -s "$tmp/$file" ]]
   git -C "$tmp/repo" show "$snapshot:$file.sha256sum" > "$tmp/$file.sha256sum"

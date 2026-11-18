@@ -9,7 +9,8 @@ import tempfile
 import unittest
 
 SCRIPTS = Path(__file__).resolve().parent
-FILES = ("geoip_RU.dat", "geoip_RU.srs", "geoip_PRIVATE.srs")
+BINARIES = ("geoip_RU.dat", "geoip_RU.srs", "geoip_PRIVATE.srs", "geoip_RU.mrs")
+FILES = (*BINARIES, "geoip_RU.mrs.sha256sum")
 ORIGIN = "https://github.com/example/geoip.git"
 REF = "refs/heads/cdn"
 TAG = "geoip-v41-snapshot-42.1"
@@ -28,7 +29,7 @@ class DeliveryIntegrationTests(unittest.TestCase):
         self.git(self.root, "init", "-q", "-b", "release", str(self.work))
         self.git(self.work, "config", "user.name", "Fixture")
         self.git(self.work, "config", "user.email", "fixture@example.test")
-        for name in FILES:
+        for name in BINARIES:
             data = name.encode() + b"\0\xff"
             (self.work / name).write_bytes(data)
             (self.work / (name + ".sha256sum")).write_text(
@@ -50,7 +51,8 @@ import subprocess
 import sys
 from urllib.parse import urlsplit
 
-files = {"geoip_RU.dat", "geoip_RU.srs", "geoip_PRIVATE.srs"}
+binaries = {"geoip_RU.dat", "geoip_RU.srs", "geoip_PRIVATE.srs", "geoip_RU.mrs"}
+files = binaries | {"geoip_RU.mrs.sha256sum"}
 url = urlsplit(sys.argv[-1])
 assert url.scheme == "https" and not url.query and not url.fragment
 name = url.path.rsplit("/", 1)[1]
@@ -63,14 +65,14 @@ if host == "github.com":
     tag = url.path.split("/")[-2]
     assert tag in ("latest-geoip-client-v41", "geoip-v41-snapshot-42.1")
     assert url.path == "/example/geoip/releases/download/" + tag + "/" + name
-    assert name.removesuffix(".sha256sum") in files
+    assert name.removesuffix(".sha256sum") in binaries
     data = (Path(os.environ["RELEASE_FILES"]) / name).read_bytes()
-    if mode == "move-tag-during-readback" and tag == "geoip-v41-snapshot-42.1" and name == "geoip_PRIVATE.srs.sha256sum":
+    if mode == "move-tag-during-readback" and tag == "geoip-v41-snapshot-42.1" and name == "geoip_RU.mrs.sha256sum":
         subprocess.check_call(["git", "-C", os.environ["REMOTE"], "update-ref",
                                "refs/tags/geoip-v41-snapshot-42.1", os.environ["OTHER_TAG_TARGET"]])
-    if mode == "bad-snapshot" and tag == "geoip-v41-snapshot-42.1" and name == "geoip_RU.srs":
-        data = b"stale snapshot SRS"
-    if mode == "bad-rolling" and tag == "latest-geoip-client-v41" and name == "geoip_RU.srs.sha256sum":
+    if mode == "bad-snapshot" and tag == "geoip-v41-snapshot-42.1" and name == "geoip_RU.mrs":
+        data = b"stale snapshot MRS"
+    if mode == "bad-rolling" and tag == "latest-geoip-client-v41" and name == "geoip_RU.mrs.sha256sum":
         data = b"stale sidecar"
 elif host == "purge.jsdelivr.net":
     assert url.path == "/gh/example/geoip@cdn/" + name and name in files
@@ -145,8 +147,8 @@ Path(sys.argv[sys.argv.index("--output") + 1]).write_bytes(data)
         run, calls, output, summary = self.invoke("raw-lag")
         self.assertEqual(run.returncode, 0, run.stderr)
         self.assertEqual([line.split()[0] for line in calls],
-                         ["github.com"] * 12 + ["raw.githubusercontent.com"] * 4
-                         + ["purge.jsdelivr.net"] * 3 + ["cdn.jsdelivr.net"] * 3)
+                         ["github.com"] * (4 * len(BINARIES)) + ["raw.githubusercontent.com"] * (len(FILES) + 1)
+                         + ["purge.jsdelivr.net"] * len(FILES) + ["cdn.jsdelivr.net"] * len(FILES))
         self.assertEqual(output, f"cdn_sha={self.cdn()}\ncdn_status=verified\n")
         self.assertIn(f"/releases/tag/{TAG}", summary)
         self.assertEqual(self.git(self.remote, "ls-tree", "-r", "--name-only", REF)
@@ -196,7 +198,7 @@ Path(sys.argv[sys.argv.index("--output") + 1]).write_bytes(data)
         denied, calls, output, _ = self.invoke("move-tag-during-readback", OTHER_TAG_TARGET=other)
         self.assertNotEqual(denied.returncode, 0)
         self.assertIn("versioned snapshot tag moved during", denied.stdout)
-        self.assertEqual(len(calls), 12)
+        self.assertEqual(len(calls), 4 * len(BINARIES))
         self.assertTrue(all(line.startswith("github.com ") for line in calls))
         self.assertEqual(output, "")
         self.assertFalse(self.git(self.remote, "branch", "--list", "cdn"))

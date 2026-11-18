@@ -38,12 +38,13 @@
 - The versioned release retains the exact routing and official Telegram inputs in `v41-upstream-inputs.tar.gz`. The input provenance records resolved URLs, byte counts and SHA-256. Existing RIR/IANA and ipverse retention remains separate.
 - Reviewed policy tables and the historical v38 evidence baseline are not rolling feeds.
 
-## Xray and sing-box files
+## Xray, sing-box and mihomo files
 
 - `geoip_RU.dat` is the sole GeoIP profile, with `RU` and `PRIVATE`.
-- `geoip_RU.srs` and `geoip_PRIVATE.srs` are sing-box v1 exports from this same DAT. CI compiles and decompiles both and checks exact IPv4/IPv6 equality. All three files have SHA-256 sidecars.
-- Client downloads on jsDelivr are [Xray DAT](https://cdn.jsdelivr.net/gh/SpeedeMiner/Geoip-ru-server@cdn/geoip_RU.dat), [sing-box RU](https://cdn.jsdelivr.net/gh/SpeedeMiner/Geoip-ru-server@cdn/geoip_RU.srs) and [sing-box PRIVATE](https://cdn.jsdelivr.net/gh/SpeedeMiner/Geoip-ru-server@cdn/geoip_PRIVATE.srs).
-- Existing client URLs for this repository should change only from `@release` to `@cdn`. Checksums and audit files stay on GitHub Release. Match the checksum to the exact GitHub snapshot when using it as a fallback. See the [migration and verification guide](https://github.com/SpeedeMiner/Geoip-ru-server/blob/main/docs/V41_CDN_CACHE_REFRESH.md).
+- `geoip_RU.srs` and `geoip_PRIVATE.srs` are sing-box v1 exports from this same DAT. CI compiles and decompiles both and checks exact IPv4/IPv6 equality.
+- `geoip_RU.mrs` is a mihomo `ipcidr` export of RU only. CI verifies its exact IPv4/IPv6 coverage against both the DAT and RU SRS. `geoip_PRIVATE.mrs` is not generated or published.
+- Client downloads on jsDelivr are [Xray DAT](https://cdn.jsdelivr.net/gh/SpeedeMiner/Geoip-ru-server@cdn/geoip_RU.dat), [sing-box RU](https://cdn.jsdelivr.net/gh/SpeedeMiner/Geoip-ru-server@cdn/geoip_RU.srs), [sing-box PRIVATE](https://cdn.jsdelivr.net/gh/SpeedeMiner/Geoip-ru-server@cdn/geoip_PRIVATE.srs) and [mihomo RU](https://cdn.jsdelivr.net/gh/SpeedeMiner/Geoip-ru-server@cdn/geoip_RU.mrs) with [MRS SHA-256](https://cdn.jsdelivr.net/gh/SpeedeMiner/Geoip-ru-server@cdn/geoip_RU.mrs.sha256sum).
+- Existing client URLs for this repository should change only from `@release` to `@cdn`. GitHub Releases carry all checksums and audit files. The CDN also mirrors the RU MRS checksum. Match the checksum to the exact GitHub snapshot when using it as a fallback. See the [migration and verification guide](https://github.com/SpeedeMiner/Geoip-ru-server/blob/main/docs/V41_CDN_CACHE_REFRESH.md).
 
 ## Attribution and limitations
 - Preserve v2fly/geoip CC-BY-SA-4.0 and DB-IP CC-BY-4.0 notices, plus upstream licenses/attributions for service feeds.
@@ -56,13 +57,13 @@
   `v41-block-inputs.tar.gz`. This includes the exact fallback file when an
   optional feed is unavailable, with its unavailable status preserved.
 - `geoip_RU_v41_release_manifest.json` identifies the source commit and
-  workflow run and records the size and SHA-256 of the DAT, both SRS files,
+  workflow run and records the size and SHA-256 of the DAT, both SRS files, RU MRS,
   checksum sidecars, provenance and input archives. The snapshot includes
   the provenance TSV needed to verify and restore all input bundles.
 - The workflow reads the versioned assets from their public URLs and verifies
   them against the manifest committed in the snapshot Git tree before moving
   `release`. After updating the rolling release it also checks its core
-  DAT/SRS files and checksums against the promoted release commit. Publication
+  DAT/SRS/MRS files and checksums against the promoted release commit. Publication
   across separate endpoints is not atomic. A persistent mismatch fails the
   workflow rather than being reported as a successful update.
 - Use the versioned download links for reproducibility. The rolling GitHub

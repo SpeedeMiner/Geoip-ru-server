@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
+source "$(dirname "${BASH_SOURCE[0]}")/v41_cdn_files.sh"
 
 snapshot="${SNAPSHOT_VERSION:-}"
 if [[ -n "$snapshot" ]]; then
@@ -31,8 +32,8 @@ for file in \
   "$BLOCKED_IP_INPUT" "$BLOCKED_IP_SHA_FILE" "$BLOCKED_BASELINE_INPUT" "$BLOCKED_REVIEW_INPUT" "$BLOCKED_STATS_INPUT" "$BLOCKED_CHECKSUMS_INPUT" "$INPUT_PROVENANCE" "$INPUT_PROVENANCE_SHA" "$KY_STANDARD_V4_INPUT" "$KY_STANDARD_V6_INPUT" "$KY_SERVICES_INPUT" "$W1ZARDZ_INPUT" "$HXEHEX_IP_INPUT" "$ESCAPINGWORM_OPERATOR_INPUT" "$BLOCKED_IPSUM_INPUT" "$REGISTRY_INPUTS_SHA" "$UPSTREAM_INPUTS_SHA" "$BLOCK_INPUTS_SHA" "$RELEASE_MANIFEST"; do
   cp "$source_dir/$file" "$dest/$(basename "$file")"
 done
-# Copy sing-box outputs only as a complete set.
-for file in geoip_RU.srs geoip_RU.srs.sha256sum geoip_PRIVATE.srs geoip_PRIVATE.srs.sha256sum; do
+# Copy the remaining client assets (the DAT pair was copied above).
+for file in "${V41_CLIENT_ASSETS[@]:2}"; do
   cp "$source_dir/$file" "$dest/$file"
 done
 # The small marker links this exact release tree to its create-only snapshot

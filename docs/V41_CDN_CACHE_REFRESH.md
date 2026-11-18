@@ -1,15 +1,17 @@
 # v41 client-only jsDelivr delivery
 
-The supported CDN alias is the `cdn` branch. It contains exactly three files.
+The supported CDN alias is the `cdn` branch. It contains four client binaries and the RU MRS sidecar.
 
 | Client | Rolling URL |
 | --- | --- |
 | Xray | [geoip_RU.dat](https://cdn.jsdelivr.net/gh/SpeedeMiner/Geoip-ru-server@cdn/geoip_RU.dat) |
 | sing-box RU | [geoip_RU.srs](https://cdn.jsdelivr.net/gh/SpeedeMiner/Geoip-ru-server@cdn/geoip_RU.srs) |
 | sing-box PRIVATE | [geoip_PRIVATE.srs](https://cdn.jsdelivr.net/gh/SpeedeMiner/Geoip-ru-server@cdn/geoip_PRIVATE.srs) |
+| mihomo RU | [geoip_RU.mrs](https://cdn.jsdelivr.net/gh/SpeedeMiner/Geoip-ru-server@cdn/geoip_RU.mrs) |
+| mihomo RU checksum | [geoip_RU.mrs.sha256sum](https://cdn.jsdelivr.net/gh/SpeedeMiner/Geoip-ru-server@cdn/geoip_RU.mrs.sha256sum) |
 
-Checksums, source DATs, manifests, archives and audit reports stay on GitHub.
-The workflow never adds them to `cdn` or asks jsDelivr to refresh them.
+Only the RU MRS sidecar is mirrored. Other checksums, source DATs, manifests,
+archives and audit reports stay on GitHub. PRIVATE MRS is not part of any release.
 Old `@release` CDN links are not refreshed or supported. This design
 does not revoke previously cached URLs or stop someone from requesting a
 different public GitHub ref through a third-party cache.
@@ -20,23 +22,23 @@ Both compare the public rolling GitHub assets with the promoted release
 commit before writing to CDN. A production run also checks the fallback tag,
 the snapshot marker and the versioned downloads before updating `cdn`.
 The separate repair workflow reuses the verified rolling release. Both
-derive a fresh tree from the three checked
+derive a fresh tree from the allowlisted, checked
 GitHub blobs, never from an unrestricted copy of `release`. The branch
 starts from a root commit and subsequent updates are fast-forward and
 compare-and-swap protected. Unchanged bytes do not create another commit.
-GitHub checksum sidecars are checked before the branch moves. They are not
-part of the CDN payload.
+GitHub checksum sidecars are checked before the branch moves. The first
+RU MRS publication can upgrade the exact legacy three-file CDN tree in place.
 
-After the Git update, both paths wait for GitHub Raw to serve all three files
+After the Git update, both paths wait for GitHub Raw to serve all five files
 from the exact CDN commit. If that check fails, they skip the cache purge.
-The best-effort purge then attempts the three rolling URLs and checks the
+The best-effort purge then attempts the five rolling URLs and checks the
 response paths and provider confirmations. Even if purge fails, a bounded
 public read-back independently compares what jsDelivr serves with the new bytes.
 The Actions summary reports whether the origin or public CDN was unconfirmed
 and points to the GitHub Release fallback. Production links to the exact
 versioned snapshot published by that run. The standalone repair links to
 the current rolling GitHub Release it just verified. The production job only prints
-jsDelivr download URLs as verified when all three public downloads match.
+jsDelivr download URLs as verified when all five public downloads match.
 A GitHub release may still be edited unless the repository enforces immutable
 releases.
 
@@ -44,8 +46,8 @@ releases.
 
 - For this repository's Xray DAT or sing-box rule-set URL, replace only
   `@release` with `@cdn`. Keep the filename and client rule configuration.
-- Leave checksum and audit URLs on GitHub Release or GitHub Raw. Do not
-  append a checksum suffix to a jsDelivr client URL.
+- Only the RU MRS checksum uses a jsDelivr URL. Leave other checksum and
+  audit URLs on GitHub Release or GitHub Raw.
 - For a reproducible deployment, choose a versioned GitHub snapshot and
   verify the downloaded file using the checksum from that same snapshot.
   Do not mix a rolling binary with a checksum from another release.
@@ -61,7 +63,7 @@ It does not build GeoIP, retag anything, update `release`, or upload
 GitHub assets. It waits in the same bounded queue as production v41,
 so neither workflow replaces another queued production run.
 
-Before touching `cdn`, repair checks the exact three client files and
+Before touching `cdn`, repair checks the four client binaries and
 their GitHub checksum sidecars against the promoted `release` commit.
 If the GitHub rolling release is missing or out of sync, repair stops
 without moving `cdn`. If the public CDN fails read-back after the branch
@@ -83,9 +85,9 @@ python3 .github/scripts/audit_v41_cdn_public.py --edges --verify-git-tree --veri
 
 This read-only command uses git to resolve the current `cdn` commit and
 requires the jsDelivr tree and flat inventories to contain exactly the
-three client files. It compares their hashes and sizes with pinned GitHub
+five CDN files. It compares their hashes and sizes with pinned GitHub
 Raw and the actual CDN downloads. With `--edges` it also checks Fastly and
-Gcore. With `--compare-release` it also reads all three files and sidecars
+Gcore. With `--compare-release` it also reads all four binaries and sidecars
 from both the current pinned release commit and the rolling GitHub Release
 asset URLs. It fails if either branch moves during the check. Without this flag it checks internal CDN consistency only.
 When verifying a specific publication, pass both `--cdn-sha` and
@@ -109,7 +111,7 @@ plane-by-plane diagnostic:
 python3 .github/scripts/audit_v41_cdn_public.py --diagnose-planes --edges --verify-snapshot
 ```
 
-The reference is the exact three-file Git tree and its pinned Raw blobs,
+The reference is the exact five-file Git tree and its pinned Raw blobs,
 verified against their Git object IDs and then hashed with SHA-256. The
 report compares rolling and SHA-pinned tree/flat catalogs, checks every
 expected download from the selected endpoints, and verifies the promoted

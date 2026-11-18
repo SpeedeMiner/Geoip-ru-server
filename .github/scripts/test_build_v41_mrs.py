@@ -1,12 +1,16 @@
 import ipaddress
+import json
 import os
 from pathlib import Path
 import subprocess
+import sys
 from tempfile import TemporaryDirectory
 import unittest
 from unittest.mock import patch
 
 import build_v41_mrs as mrs
+from build_v41_overlay import encode_geoip
+from v41_release_manifest import PRIVATE_MRS, RU_MRS
 
 
 def nets(*cidrs):
@@ -47,34 +51,87 @@ class MrsTests(unittest.TestCase):
             wrong = root / "mihomo"
             wrong.write_bytes(b"not the official binary")
             with self.assertRaisesRegex(ValueError, "SHA-256"):
-                mrs.compile_and_verify(wrong, root, {})
+                mrs.compile_and_verify(wrong, root, [], [])
             convert.assert_not_called()
+
+    def test_forbidden_private_artifact_is_rejected_before_conversion(self):
+        for name in PRIVATE_MRS:
+            with self.subTest(name=name), TemporaryDirectory() as directory, patch.object(mrs, "convert") as convert:
+                root = Path(directory)
+                (root / name).symlink_to("missing")
+                with self.assertRaisesRegex(ValueError, "Forbidden v41 artifact"):
+                    mrs.compile_and_verify(root / "mihomo", root, [], [])
+                convert.assert_not_called()
 
 
 @unittest.skipUnless(os.environ.get("V41_TEST_MIHOMO"), "set V41_TEST_MIHOMO to the pinned binary")
 class OfficialMrsTests(unittest.TestCase):
     def setUp(self):
         self.mihomo = Path(os.environ["V41_TEST_MIHOMO"])
+        self.assertEqual(mrs.digest(self.mihomo), mrs.MIHOMO_SHA256)
         temp = TemporaryDirectory()
         self.addCleanup(temp.cleanup)
         self.output = Path(temp.name)
-        self.categories = {"RU": nets("198.51.100.0/25", "198.51.100.128/25", "2001:db8::/32"),
-                           "PRIVATE": nets("10.0.0.0/8", "fc00::/7")}
+        self.ru = nets("198.51.100.0/25", "198.51.100.128/25", "2001:db8::/32")
 
-    def test_builds_both_official_ipcidr_rule_sets_and_sidecars(self):
-        mrs.compile_and_verify(self.mihomo, self.output, self.categories)
-        self.assertEqual(len(list(self.output.iterdir())), 4)
-        for name in mrs.MRS_NAMES.values():
-            binary = self.output / name
-            self.assertTrue(binary.read_bytes().startswith(mrs.ZSTD_MAGIC))
-            self.assertEqual((self.output / f"{name}.sha256sum").read_text(),
-                             f"{mrs.digest(binary)}  {name}\n")
+    def test_builds_and_reverifies_only_ru(self):
+        mrs.compile_and_verify(self.mihomo, self.output, self.ru, self.ru)
+        self.assertEqual({p.name for p in self.output.iterdir()}, {RU_MRS, f"{RU_MRS}.sha256sum"})
+        binary = self.output / RU_MRS
+        sidecar = self.output / f"{RU_MRS}.sha256sum"
+        self.assertTrue(binary.read_bytes().startswith(mrs.ZSTD_MAGIC))
+        self.assertEqual(sidecar.read_text(), f"{mrs.digest(binary)}  {RU_MRS}\n")
+        mrs.compile_and_verify(self.mihomo, self.output, self.ru, self.ru, verify_only=True)
+        sidecar.write_text("wrong\n")
+        with self.assertRaisesRegex(ValueError, "checksum sidecar does not match"):
+            mrs.compile_and_verify(self.mihomo, self.output, self.ru, self.ru, verify_only=True)
 
-    def test_private_ipv4_mapped_regression_leaves_no_partial_outputs(self):
-        self.categories["PRIVATE"] += nets("::ffff:0:0/96")
-        with self.assertRaisesRegex(ValueError, r"geoip_PRIVATE\.mrs .*IPv4.*IPv6"):
-            mrs.compile_and_verify(self.mihomo, self.output, self.categories)
+    def test_private_ipv4_mapped_regression_is_still_detected_in_fixture(self):
+        expected = nets("::ffff:0:0/96")
+        source = self.output / "mapped.txt"
+        source.write_text("::ffff:0:0/96\n")
+        binary = self.output / "mapped-regression-fixture.mrs"
+        mrs.convert(self.mihomo, "text", source, binary)
+        decompiled = self.output / "mapped.roundtrip.txt"
+        with self.assertRaisesRegex(ValueError, r"IPv4 \+4294967296 / -0.*IPv6 \+0 / -4294967296"):
+            mrs.verify_mrs(self.mihomo, binary, decompiled, expected)
+        self.assertEqual(decompiled.read_text(), "0.0.0.0/0\n")
+        self.assertTrue(all(not (self.output / name).exists() for name in PRIVATE_MRS))
+
+    def test_ru_disagreement_with_srs_fails_without_outputs(self):
+        wrong = nets("198.51.101.0/24", "2001:db8::/32")
+        with self.assertRaisesRegex(ValueError, r"geoip_RU\.srs.*IPv4 \+256 / -256"):
+            mrs.compile_and_verify(self.mihomo, self.output, self.ru, wrong)
         self.assertEqual(list(self.output.iterdir()), [])
+
+    def test_ru_disagreement_with_dat_fails_despite_valid_sidecar(self):
+        mrs.compile_and_verify(self.mihomo, self.output, self.ru, self.ru)
+        with self.assertRaisesRegex(ValueError, r"Full DAT.*IPv6"):
+            mrs.compile_and_verify(self.mihomo, self.output, self.ru[:-1], self.ru, verify_only=True)
+
+    @unittest.skipUnless(os.environ.get("V41_TEST_SING_BOX"), "set V41_TEST_SING_BOX to the pinned binary")
+    def test_cli_preserves_dat_and_both_srs_even_with_mapped_private(self):
+        sing_box = os.environ["V41_TEST_SING_BOX"]
+        dat = self.output / "geoip_RU.dat"
+        dat.write_bytes(encode_geoip({"RU": self.ru, "PRIVATE": nets("::ffff:0:0/96", "10.0.0.0/8")}))
+        manifest = self.output / "manifest.json"
+        manifest.write_text(json.dumps({"output_sha256": mrs.digest(dat)}))
+        scripts = Path(mrs.__file__).parent
+        metrics = self.output / "metrics.json"
+        subprocess.run([sys.executable, scripts / "build_v41_srs.py", "--full", dat, "--manifest", manifest,
+                        "--sing-box", sing_box, "--metrics", metrics], check=True, capture_output=True)
+        ru_srs = self.output / "geoip_RU.srs"
+        inputs = (dat, ru_srs, self.output / "geoip_PRIVATE.srs")
+        before = {path: path.read_bytes() for path in inputs}
+        command = [sys.executable, scripts / "build_v41_mrs.py", "--full", dat, "--manifest", manifest,
+                   "--sing-box", sing_box, "--ru-srs", ru_srs, "--mihomo", self.mihomo, "--output", self.output]
+        subprocess.run([*command, "--metrics", metrics], check=True, capture_output=True)
+        subprocess.run([*command, "--verify-only"], check=True, capture_output=True)
+        self.assertEqual({path: path.read_bytes() for path in inputs}, before)
+        categories = json.loads(metrics.read_bytes())["categories"]
+        self.assertEqual(categories["RU"]["mrs_bytes"], (self.output / RU_MRS).stat().st_size)
+        self.assertNotIn("mrs_bytes", categories["PRIVATE"])
+        self.assertTrue(all(not (self.output / name).exists() for name in PRIVATE_MRS))
 
     def test_official_decoder_rejects_wrong_behavior(self):
         source = self.output / "domain.txt"

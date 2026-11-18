@@ -16,7 +16,9 @@ SHA = "b" * 40
 
 class PublicCdnAuditTests(unittest.TestCase):
     def setUp(self):
-        self.blobs = {name: name.encode() + b"\0" for name in audit.FILES}
+        self.blobs = {name: name.encode() + b"\0" for name in audit.BINARIES}
+        self.blobs[audit.MRS_SIDECAR] = (
+            f"{hashlib.sha256(self.blobs[audit.RU_MRS]).hexdigest()}  {audit.RU_MRS}\n".encode())
         self.calls = []
         self.rows = [
             {"name": name, "type": "file", "size": len(data),
@@ -64,7 +66,7 @@ class PublicCdnAuditTests(unittest.TestCase):
         self.assertEqual(set(result["catalog"]), {"pinned_tree", "pinned_flat", "rolling_tree", "rolling_flat"})
         self.assertEqual(set(result["delivery"]), set(audit.EDGES))
         self.assertEqual(result["github_release"]["status"], "PASS")
-        self.assertEqual(len(self.calls), 35)
+        self.assertEqual(len(self.calls), 1 + 4 + 4 * len(audit.FILES) + 6 * len(audit.BINARIES))
 
     def test_diagnostic_separates_rolling_catalog_drift_from_data_delivery(self):
         bad_file = "geoip_RU.srs"
@@ -141,7 +143,7 @@ class PublicCdnAuditTests(unittest.TestCase):
 
     def test_inventory_checks_pinned_raw_and_all_requested_cdn_downloads(self):
         result = self.check()
-        self.assertEqual(len(self.calls), 14)
+        self.assertEqual(len(self.calls), 2 + 4 * len(audit.FILES))
         self.assertEqual(result["verified_hosts"], ["raw.githubusercontent.com", *audit.EDGES])
         self.assertEqual(set(result["files"]), set(audit.FILES))
         self.assertEqual(result["cdn_commit"], SHA)
@@ -153,6 +155,24 @@ class PublicCdnAuditTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "unexpected or duplicate"):
             self.check()
         self.assertEqual(len(self.calls), 1)
+
+    def test_consistent_but_unbound_mrs_sidecar_is_rejected(self):
+        for row in (*self.rows, *self.flat):
+            if row["name"].lstrip("/") == audit.MRS_SIDECAR:
+                row["hash"] = base64.b64encode(b"x" * 32).decode()
+        with self.assertRaisesRegex(ValueError, "MRS sidecar does not match"):
+            self.check()
+
+    def test_historical_fallback_uses_schema_one_client_inventory(self):
+        release, tag = "c" * 40, "v41.2"
+        def fetch(url, limit):
+            if url.endswith("/" + audit.MANIFEST):
+                return json.dumps({"schema": 1, "assets": dict.fromkeys(audit.LEGACY_SNAPSHOT)}).encode()
+            return self.fetch(url, limit)
+
+        result = audit.audit_fallback(REPO, release, tag, fetch, historical=True)
+        self.assertEqual(set(result["files"]), set(audit.LEGACY_CORE[::2]))
+        self.assertFalse(any(".mrs" in url for url in self.calls))
 
     def test_no_missing_duplicates_or_directory_entries(self):
         original = self.rows[:]
@@ -181,8 +201,8 @@ class PublicCdnAuditTests(unittest.TestCase):
         release = "c" * 40
         result = self.check(release_commit=release)
         self.assertEqual(result["release_commit"], release)
-        self.assertEqual(len(self.calls), 26)
-        for name in audit.FILES:
+        self.assertEqual(len(self.calls), 2 + 4 * len(audit.FILES) + 4 * len(audit.BINARIES))
+        for name in audit.BINARIES:
             base = f"https://raw.githubusercontent.com/{REPO}/{release}/{name}"
             self.assertIn(base, self.calls)
             self.assertIn(base + ".sha256sum", self.calls)
@@ -281,12 +301,12 @@ class PublicCdnAuditTests(unittest.TestCase):
         release, tag = "c" * 40, "v41.2"
         base = f"https://github.com/{REPO}/releases/download/{tag}/"
         result = self.check(release_commit=release, versioned_tag=tag)
-        self.assertEqual(len(self.calls), 32)
+        self.assertEqual(len(self.calls), 2 + 4 * len(audit.FILES) + 6 * len(audit.BINARIES))
         self.assertEqual(result["versioned_snapshot_verified"], tag)
-        for name in audit.FILES:
+        for name in audit.BINARIES:
             self.assertIn(base + name, self.calls)
             self.assertIn(base + name + ".sha256sum", self.calls)
-        for filename, kind in (("geoip_RU.srs", "bytes"), ("geoip_PRIVATE.srs.sha256sum", "checksum")):
+        for filename, kind in (("geoip_RU.mrs", "bytes"), ("geoip_RU.mrs.sha256sum", "checksum")):
             with self.subTest(filename=filename):
                 self.stale = {base + filename}
                 with self.assertRaisesRegex(ValueError, f"versioned GitHub snapshot {kind} differ"):
@@ -309,7 +329,7 @@ class PublicCdnAuditTests(unittest.TestCase):
         self.stale.add(f"https://github.com/{REPO}/releases/download/latest-geoip-client-v41/geoip_RU.dat")
         result = audit.audit_fallback(REPO, release, tag, self.fetch)
         self.assertEqual(result["scope"], "versioned GitHub fallback only")
-        self.assertEqual(len(self.calls), 12)
+        self.assertEqual(len(self.calls), 4 * len(audit.BINARIES))
         self.assertTrue(all(url.startswith((
             f"https://raw.githubusercontent.com/{REPO}/{release}/",
             f"https://github.com/{REPO}/releases/download/{tag}/",
@@ -365,7 +385,7 @@ class PublicCdnAuditTests(unittest.TestCase):
     def test_pinned_git_tree_agrees_with_both_public_inventories(self):
         result = self.check(verify_git_tree=True)
         self.assertTrue(result["pinned_git_tree_verified"])
-        self.assertEqual(len(self.calls), 15)
+        self.assertEqual(len(self.calls), 3 + 4 * len(audit.FILES))
         self.assertIn(f"https://api.github.com/repos/{REPO}/git/trees/{SHA}", self.calls)
 
     def test_cached_inventories_cannot_hide_an_extra_git_tree_entry(self):

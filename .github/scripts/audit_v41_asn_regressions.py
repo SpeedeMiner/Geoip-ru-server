@@ -114,7 +114,7 @@ def read_selected(path, watch):
 def verified_snapshot(root, watch):
     hashes = {name: describe(root / name)["sha256"] for name in FILES if name != ARCHIVE}
     if (root / MANIFEST).is_file():
-        verify(root, root / MANIFEST, (ARCHIVE, PROVENANCE, POLICY, DAT))
+        verify(root, root / MANIFEST, (ARCHIVE, PROVENANCE, POLICY, DAT), allow_legacy=True)
         hashes[MANIFEST] = describe(root / MANIFEST)["sha256"]
     policy = json.loads((root / POLICY).read_bytes())
     for field, name in (("output_sha256", DAT), ("input_provenance_sha256", PROVENANCE)):

@@ -70,7 +70,7 @@ def difference(old, new):
 
 
 def verify_raw(root):
-    verify(root, root / MANIFEST, (PROVENANCE, ARCHIVE))
+    verify(root, root / MANIFEST, (PROVENANCE, ARCHIVE), allow_legacy=True)
     _, members = checked_members(root / PROVENANCE, root / ARCHIVE, members=BLOCK_MEMBERS)
     return {n: bytes(members[n]) for n in (*REQUIRED, PINNED_RESOLVER, PINNED_APPROVED)}
 
@@ -109,7 +109,7 @@ def resolver_identity(root, feeds, *, as_of):
 
 
 def verified_layers(root):
-    verify(root, root / MANIFEST, (POLICY, DAT))
+    verify(root, root / MANIFEST, (POLICY, DAT), allow_legacy=True)
     policy = json.loads((root / POLICY).read_bytes())
     direct, dat_sha = read_dat(root / DAT)
     if policy["output_sha256"] != dat_sha or policy["input_provenance_sha256"] != sha((root / PROVENANCE).read_bytes()):

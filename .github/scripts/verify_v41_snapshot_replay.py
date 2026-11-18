@@ -20,7 +20,8 @@ import zlib
 from bundle_v41_registry_inputs import (
     BLOCK_MEMBERS, MANIFEST as BUNDLE_MANIFEST, MAX_PROVENANCE, MEMBERS, restore,
 )
-from v41_release_manifest import CORE, MAX_BYTES, SNAPSHOT
+from v41_release_manifest import (CORE, LEGACY_CORE, LEGACY_SNAPSHOT, MAX_BYTES,
+                                  PRIVATE_MRS, SCHEMA, SNAPSHOT, reject_private_mrs)
 from verify_v41_ipverse_archive import verify_archive
 
 PROVENANCE = "geoip_RU_input_provenance.tsv"
@@ -31,6 +32,7 @@ CATALOG = ".github/data/v41-upstream-sources.json"
 TELEGRAM = "telegram-official-cidrs.txt"
 SHA256 = re.compile(r"[0-9a-f]{64}")
 SHA1 = re.compile(r"[0-9a-f]{40}")
+SCHEMAS = {1: (LEGACY_CORE, LEGACY_SNAPSHOT), SCHEMA: (CORE, SNAPSHOT)}
 
 
 @contextmanager
@@ -73,19 +75,20 @@ def load_manifest(path, expected_sha256):
     if not 0 < len(raw) <= 16384 or hashlib.sha256(raw).hexdigest() != expected_sha256:
         raise ValueError("release manifest size or SHA-256 mismatch")
     data = json.loads(raw, object_pairs_hook=unique_object)
-    if (not isinstance(data, dict) or type(data.get("schema")) is not int or data["schema"] != 1
+    if (not isinstance(data, dict) or type(data.get("schema")) is not int or data["schema"] not in SCHEMAS
             or not SHA1.fullmatch(data.get("source_commit", ""))):
         raise ValueError("unsupported release manifest schema or source commit")
     assets = data.get("assets")
-    if not isinstance(assets, dict) or assets.keys() != set(SNAPSHOT):
-        raise ValueError("release manifest asset inventory does not match v41 schema 1")
+    core, snapshot = SCHEMAS[data["schema"]]
+    if not isinstance(assets, dict) or assets.keys() != set(snapshot):
+        raise ValueError(f"release manifest asset inventory does not match v41 schema {data['schema']}")
     for name, spec in assets.items():
         cap = MAX_PROVENANCE if name == PROVENANCE else MAX_BYTES
         if (not isinstance(spec, dict) or spec.keys() != {"bytes", "sha256"}
                 or type(spec.get("bytes")) is not int or not 0 < spec["bytes"] <= cap
                 or not SHA256.fullmatch(spec.get("sha256", ""))):
             raise ValueError(f"invalid release manifest identity: {name}")
-    for name in CORE[::2]:
+    for name in core[::2]:
         expected = f"{assets[name]['sha256']}  {name}\n".encode("ascii")
         sidecar = {"bytes": len(expected), "sha256": hashlib.sha256(expected).hexdigest()}
         if assets[name + ".sha256sum"] != sidecar:
@@ -103,7 +106,7 @@ def catalog_members(raw):
     ):
         raise ValueError("malformed historical upstream source catalog")
     names = tuple(sorted(name for group in groups for name in group["files"])) + (TELEGRAM,)
-    reserved = {".", "..", BUNDLE_MANIFEST, *SNAPSHOT}
+    reserved = {".", "..", BUNDLE_MANIFEST, *SNAPSHOT, *PRIVATE_MRS}
     if len(names) != len(set(names)) or any(
         name in reserved or not re.fullmatch(r"[A-Za-z0-9_.-]{1,120}", name) for name in names
     ):
@@ -177,8 +180,9 @@ def restore_inputs(manifest, inputs, source_repo, output):
 def compare_client_files(manifest, directory):
     if not directory.is_dir():
         raise ValueError(f"replay directory does not exist: {directory}")
+    reject_private_mrs(directory)
     result = {}
-    for name in CORE:
+    for name in SCHEMAS[manifest["schema"]][0]:
         expected = manifest["assets"][name]
         row = {"expected": expected}
         try:
@@ -199,7 +203,7 @@ def main():
     extract.add_argument("--inputs", type=Path, required=True)
     extract.add_argument("--source-repo", type=Path, required=True, help="Local Git repository with the exact historical source commit")
     extract.add_argument("--output", type=Path, required=True)
-    compare = sub.add_parser("compare-client", help="Compare the three client binaries and their sidecars")
+    compare = sub.add_parser("compare-client", help="Compare the client binaries and sidecars required by this snapshot")
     compare.add_argument("--replay", type=Path, required=True)
     args = parser.parse_args()
     try:

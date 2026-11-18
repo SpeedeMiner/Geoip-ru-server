@@ -2,7 +2,7 @@
 
 ## 1. Назначение и Direct by Reachability
 
-Проект автоматически собирает IPv4/IPv6-базу для раздельного туннелирования. `geoip_RU.dat` содержит две категории для Xray/V2Ray — `RU` и `PRIVATE`. Из того же DAT собираются два бинарных rule-set для sing-box.
+Проект автоматически собирает IPv4/IPv6-базу для раздельного туннелирования. `geoip_RU.dat` содержит две категории для Xray/V2Ray — `RU` и `PRIVATE`. Из того же DAT собираются два SRS для sing-box и один MRS (`RU`) для mihomo.
 
 **`RU` — категория маршрутизации, а не геолокация.** В неё входят сети RU/BY/KZ, выбранные анонсы региональных, корпоративных и облачных ASN, а также явно разрешённые сервисные маршруты. Для отдельного CDN-узла политика допускает только проверенный IP с подтверждением провайдера и положительным замером прямой доступности из российской сети. Чужие страновые категории целиком не импортируются. RIR, BGP, GeoIP и upstream-списки отражают разные виды свидетельств, поэтому попадание в `RU` не означает, что каждый адрес измерен из РФ или что на общем IP доступны все домены.
 
@@ -11,14 +11,15 @@
 | `geoip_RU.dat` · Xray/V2Ray | [DAT](https://github.com/SpeedeMiner/Geoip-ru-server/releases/download/latest-geoip-client-v41/geoip_RU.dat) | [DAT](https://cdn.jsdelivr.net/gh/SpeedeMiner/Geoip-ru-server@cdn/geoip_RU.dat) | [Контрольная сумма](https://github.com/SpeedeMiner/Geoip-ru-server/releases/download/latest-geoip-client-v41/geoip_RU.dat.sha256sum) |
 | `geoip_RU.srs` · sing-box RU | [SRS](https://github.com/SpeedeMiner/Geoip-ru-server/releases/download/latest-geoip-client-v41/geoip_RU.srs) | [SRS](https://cdn.jsdelivr.net/gh/SpeedeMiner/Geoip-ru-server@cdn/geoip_RU.srs) | [Контрольная сумма](https://github.com/SpeedeMiner/Geoip-ru-server/releases/download/latest-geoip-client-v41/geoip_RU.srs.sha256sum) |
 | `geoip_PRIVATE.srs` · sing-box PRIVATE | [SRS](https://github.com/SpeedeMiner/Geoip-ru-server/releases/download/latest-geoip-client-v41/geoip_PRIVATE.srs) | [SRS](https://cdn.jsdelivr.net/gh/SpeedeMiner/Geoip-ru-server@cdn/geoip_PRIVATE.srs) | [Контрольная сумма](https://github.com/SpeedeMiner/Geoip-ru-server/releases/download/latest-geoip-client-v41/geoip_PRIVATE.srs.sha256sum) |
+| `geoip_RU.mrs` · mihomo RU | [MRS](https://github.com/SpeedeMiner/Geoip-ru-server/releases/download/latest-geoip-client-v41/geoip_RU.mrs) | [MRS](https://cdn.jsdelivr.net/gh/SpeedeMiner/Geoip-ru-server@cdn/geoip_RU.mrs) | [SHA-256 GitHub](https://github.com/SpeedeMiner/Geoip-ru-server/releases/download/latest-geoip-client-v41/geoip_RU.mrs.sha256sum) · [SHA-256 CDN](https://cdn.jsdelivr.net/gh/SpeedeMiner/Geoip-ru-server@cdn/geoip_RU.mrs.sha256sum) |
 
-В `@cdn` размещаются только три бинарника. Для воспроизводимой проверки берите файлы и `.sha256sum` из одного версионированного [снимка GitHub Releases](https://github.com/SpeedeMiner/Geoip-ru-server/releases), затем выполните в каталоге загрузки:
+В `@cdn` размещаются четыре бинарника и контрольная сумма RU MRS. MRS будет доступен с первого успешного выпуска после включения этой сборки. Для воспроизводимой проверки берите файлы и `.sha256sum` из одного версионированного [снимка GitHub Releases](https://github.com/SpeedeMiner/Geoip-ru-server/releases), затем выполните в каталоге загрузки:
 
 ```bash
-sha256sum -c geoip_RU.dat.sha256sum geoip_RU.srs.sha256sum geoip_PRIVATE.srs.sha256sum
+sha256sum -c geoip_RU.dat.sha256sum geoip_RU.srs.sha256sum geoip_PRIVATE.srs.sha256sum geoip_RU.mrs.sha256sum
 ```
 
-**mihomo `.mrs` пока не публикуется.** Проверенная версия mihomo теряет IPv6-префикс `::ffff:0:0/96` из `PRIVATE` при обратной конвертации и добавляет на его месте `0.0.0.0/0`. [Проверка совместимости и воспроизведение](docs/V41_MIHOMO_MRS_COMPATIBILITY.md)
+**`geoip_PRIVATE.mrs` не создаётся и не публикуется.** Проверенная версия mihomo заменяет IPv6-префикс `::ffff:0:0/96` из `PRIVATE` на `0.0.0.0/0`. Для `PRIVATE` в mihomo используйте категорию из штатной GeoIP-базы MetaCubeX. [Проверка совместимости и воспроизведение](docs/V41_MIHOMO_MRS_COMPATIBILITY.md)
 
 ## 2. Источники данных и кураторский вклад
 
@@ -54,7 +55,7 @@ sha256sum -c geoip_RU.dat.sha256sum geoip_RU.srs.sha256sum geoip_PRIVATE.srs.sha
 
 **Шесть исторических IPv4 `/24` подлежат ручному пересмотру 2026-12-17.** Они временно остаются в `RU` по [точному реестру сохранения](.github/data/v41-temporary-release-retention.tsv). Это не доказательство текущего анонса, доступности из РФ или основание расширить допуск. Сохранение не отменяет приоритет `PRIVATE`, эффективной маски блокировок и правил допуска. Если после их применения хотя бы часть любого из шести диапазонов отсутствует в `RU`, кандидат не проходит проверку. Дата не удаляет префиксы автоматически. [Политика v41 и список шести диапазонов](docs/GEOIP_RU_V41_POLICY.md#ручной-пересмотр-шести-24)
 
-## 4. Порядок правил в Xray и sing-box
+## 4. Порядок правил в Xray, sing-box и mihomo
 
 Сверху вниз: **домены, которым нужен PROXY → проверенные домены DIRECT → `PRIVATE` и `RU` через DIRECT → остальное через PROXY**. На одном CDN-адресе могут находиться и заблокированный домен, и разрешённый сервис. Поэтому при наличии имени доменное правило (`geosite:` или `domain`) должно сработать до `geoip:ru` или IP rule-set. Если приложение отдаёт только IP, остаётся IP-правило. Этот репозиторий не поставляет списки GeoSite.
 
@@ -97,11 +98,35 @@ sha256sum -c geoip_RU.dat.sha256sum geoip_RU.srs.sha256sum geoip_PRIVATE.srs.sha
 }
 ```
 
+**mihomo.** Подключите RU MRS как `rule-provider`, а `PRIVATE` возьмите из штатного `geoip.dat` MetaCubeX в режиме `geodata-mode`. Не заменяйте этот DAT файлом v41 `geoip_RU.dat`: он не содержит `CN`, который mihomo проверяет при загрузке базы. Покрытие штатного `PRIVATE` может отличаться от v41. Существующие доменные правила ставьте выше этих правил, а `PROXY` замените именем своей группы. При `no-resolve` правило `PRIVATE` проверяет только уже известный IP, не вызывая DNS.
+
+```yaml
+geodata-mode: true
+geox-url:
+  geoip: https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/geoip.dat
+
+rule-providers:
+  geoip-ru:
+    type: http
+    behavior: ipcidr
+    format: mrs
+    url: https://cdn.jsdelivr.net/gh/SpeedeMiner/Geoip-ru-server@cdn/geoip_RU.mrs
+    path: ./rule-providers/geoip_RU.mrs
+    interval: 86400
+
+rules:
+  - GEOIP,PRIVATE,DIRECT,no-resolve
+  - RULE-SET,geoip-ru,DIRECT
+  - MATCH,PROXY
+```
+
 ## 5. Сборка, контроль качества и CLI
 
 [Workflow v41](.github/workflows/geoip-v41.yml) проверяет зеркала до записи provenance, извлекает origin ASN и собирает базу v37 на Go. [Overlay v41](.github/scripts/build_v41_overlay.py) объединяет и вычитает адресные интервалы отдельно для IPv4 и IPv6, затем сворачивает результат обратно в CIDR. Независимые проверки читают выходной protobuf, проверяют `PRIVATE`, жёсткие исключения, Telegram и потери покрытия приоритетных ASN.
 
 [Компилятор SRS](.github/scripts/build_v41_srs.py) декомпилирует rule-set и сверяет IPv4/IPv6-покрытие с DAT. На PR [сквозной тест](.github/scripts/check_v41_client_dns_local.py) запускает Xray и sing-box в изолированной сети. Он проверяет литеральные IP, DNS, приоритет доменных правил и выбор outbound. Отчёты ASN и provider/Hydra для PR используют тот же закреплённый предыдущий release, что и точная дельта, и не меняют допуск маршрутов. Публикация — отдельная стадия после валидации кандидата.
+
+[Сборщик MRS](.github/scripts/build_v41_mrs.py) использует официальный mihomo с закреплённым SHA-256. В сборке и перед публикацией он сверяет восстановленные IPv4- и IPv6-интервалы RU с DAT и декомпилированным RU SRS. Отчёт размеров включает MRS и его контрольную сумму.
 
 | Утилита | Запуск и результат |
 | --- | --- |
@@ -124,4 +149,4 @@ python3 .github/scripts/verify_v41_snapshot_replay.py \
   compare-client --replay "$WORK"
 ```
 
-Утилита проверяет архивы и provenance, восстанавливает исходные файлы и сверяет три клиентских бинарника и три sidecar. Она не скачивает данные, не запускает сборку и не публикует результат. [Подробная инструкция](docs/V41_OFFLINE_SNAPSHOT_REPLAY.md)
+Утилита проверяет архивы и provenance, восстанавливает исходные файлы и сверяет клиентские бинарники и суммы по схеме снимка. Схема 2 требует RU MRS и его контрольную сумму, схема 1 поддерживает прежние снимки без MRS. Утилита не скачивает данные, не запускает сборку и не публикует результат. [Подробная инструкция](docs/V41_OFFLINE_SNAPSHOT_REPLAY.md)

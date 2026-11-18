@@ -129,11 +129,11 @@ class BlockFeedDeltaTests(unittest.TestCase):
     def test_archive_digest_is_verified_before_parsing(self):
         with TemporaryDirectory() as temp:
             root = Path(temp)
-            from v41_release_manifest import SNAPSHOT
+            from v41_release_manifest import LEGACY_SNAPSHOT
             import json
             (root / ARCHIVE).write_bytes(b"changed bytes")
             (root / PROVENANCE).write_bytes(b"unchanged")
-            assets = dict.fromkeys(SNAPSHOT, {"bytes": 9, "sha256": sha(b"unchanged")})
+            assets = dict.fromkeys(LEGACY_SNAPSHOT, {"bytes": 9, "sha256": sha(b"unchanged")})
             (root / MANIFEST).write_text(json.dumps({"schema": 1, "assets": assets}))
             with self.assertRaisesRegex(ValueError, "oversize asset|release asset mismatch"):
                 verify_raw(root)
