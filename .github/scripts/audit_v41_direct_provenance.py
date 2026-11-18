@@ -15,6 +15,7 @@ from tempfile import TemporaryDirectory
 from types import SimpleNamespace
 
 import build_v41_overlay as b
+import v41_cdn_ip_advisory as cdn
 from validate_v41_publication_bounds import read as read_dat
 from v41_direct_admission import CDN_KEY, cdn_networks, read_cdn
 from v41_reviewed_unreachable import read_reviewed as read_unreachable
@@ -61,6 +62,44 @@ def provider_networks(spec, payloads):
     return nets
 
 
+def check_cdn_spec(spec):
+    if (spec['id'], spec['format'], spec.get('role'), spec['urls']) != (
+            cdn.SOURCE, cdn.FORMAT, cdn.ROLE, [cdn.URL]):
+        raise ValueError('invalid cdn-ip-database catalog entry')
+
+
+def collect_cdn_database(spec, snapshot, path):
+    check_cdn_spec(spec)
+    url = spec['urls'][0]
+    result = snapshot['cdn_ip_database_collection'] = {'reason': 'DOWNLOAD_ERROR'}
+    snapshot['status'][cdn.SOURCE] = 'UNAVAILABLE'
+    try:
+        response = subprocess.run(['curl', '--fail', '--location', '--silent', '--show-error',
+            '--proto', '=https', '--proto-redir', '=https', '--connect-timeout', '10',
+            '--max-time', '25', '--max-filesize', str(cdn.MAX_BYTES), '--output', str(path), url],
+            capture_output=True, timeout=30)
+        if response.returncode:
+            return
+        with path.open('rb') as stream:
+            data = stream.read(cdn.MAX_BYTES + 1)
+    except (OSError, subprocess.SubprocessError):
+        return
+    if not 0 < len(data) <= cdn.MAX_BYTES:
+        result['reason'] = 'INVALID_SIZE'
+        return
+    identity = {'sha256': digest(data), 'bytes': len(data)}
+    result.update(identity)
+    try:
+        payload = data.decode('utf-8')
+        cdn.parse_database(payload)
+    except (ValueError, RecursionError):
+        result['reason'] = 'INVALID_PAYLOAD'
+        return
+    snapshot['files'][url] = {**identity, 'payload': payload}
+    snapshot['status'][cdn.SOURCE] = 'AVAILABLE'
+    result['reason'] = None
+
+
 def collect(catalog, output):
     raw = catalog.read_bytes()
     doc = json.loads(raw)
@@ -72,6 +111,9 @@ def collect(catalog, output):
                 'files': {}, 'status': {}}
     with TemporaryDirectory() as tmp:
         for spec in doc['sources']:
+            if spec['id'] == cdn.SOURCE:
+                collect_cdn_database(spec, snapshot, Path(tmp) / 'cdn-ip-database-response')
+                continue
             if not spec['urls']:
                 snapshot['status'][spec['id']] = 'UNAVAILABLE'
                 continue
@@ -126,9 +168,54 @@ def load_snapshot(path):
         status = doc['status'][spec['id']]
         if status not in {'AVAILABLE', 'UNAVAILABLE'}:
             raise ValueError('invalid provider status')
+        if spec['id'] == cdn.SOURCE:
+            check_cdn_spec(spec)
+            if status == 'UNAVAILABLE':
+                providers[cdn.SOURCE] = (spec, None)
+                continue
+            raw_feed = doc['files'][cdn.URL]
+            if not 0 < raw_feed['bytes'] <= cdn.MAX_BYTES:
+                raise ValueError('invalid CDN snapshot payload size')
+            for name, (nets, normalized) in cdn.parse_database(raw_feed['payload']).items():
+                provider_spec = {**spec, 'owner': name, 'advisory_source': cdn.SOURCE,
+                                 'ip_families': sorted({net.version for net in nets}),
+                                 'normalized_host_bits': normalized}
+                providers[f'{cdn.SOURCE}/{name}'] = (provider_spec, nets or None)
+            continue
         providers[spec['id']] = (spec, None if status == 'UNAVAILABLE' else
             provider_networks(spec, [doc['files'][u]['payload'] for u in spec['urls']]))
     return doc, providers
+
+
+def cdn_snapshot_info(snapshot, providers, missing_reason='SOURCE_NOT_CAPTURED'):
+    status = snapshot.get('status', {}).get(cdn.SOURCE, 'ADVISORY_MISSING')
+    collection = snapshot.get('cdn_ip_database_collection', {})
+    identity = (snapshot['files'][cdn.URL] if status == 'AVAILABLE' else collection)
+    by_provider = sorted((spec['owner'], spec, nets) for spec, nets in providers.values()
+                         if spec.get('advisory_source') == cdn.SOURCE)
+    info = {'source': cdn.SOURCE, 'role': cdn.ROLE, 'status': status, 'url': cdn.URL,
+            'bytes': identity.get('bytes'), 'sha256': identity.get('sha256'),
+            'fetched_at': snapshot.get('fetched_at') if status != 'ADVISORY_MISSING' else None,
+            'reason': missing_reason if status == 'ADVISORY_MISSING' else collection.get('reason'),
+            'providers': {name: {'status': 'AVAILABLE' if nets else 'UNAVAILABLE',
+                                 'ip_families': spec['ip_families'],
+                                 'normalized_host_bits': spec['normalized_host_bits']}
+                          for name, spec, nets in by_provider}}
+    return info
+
+
+def read_cdn_advisory(path):
+    """A missing or damaged advisory snapshot never invalidates the core report."""
+    if path is None:
+        return cdn_snapshot_info({}, {}), {}
+    try:
+        snapshot, providers = load_snapshot(path)
+        info = cdn_snapshot_info(snapshot, providers)
+        index = cdn.provider_scope_index({spec['owner']: nets for spec, nets in providers.values()
+                                          if spec.get('advisory_source') == cdn.SOURCE})
+        return info, index
+    except (OSError, EOFError, ValueError, KeyError, TypeError, AttributeError, RecursionError):
+        return cdn_snapshot_info({}, {}, 'SNAPSHOT_UNAVAILABLE_OR_INVALID'), {}
 
 
 def measure(values):
@@ -346,12 +433,19 @@ def build_report(previous, candidate, providers, layers, masks, origins=None, pr
     for provider, (spec, networks) in providers.items():
         info = {'scope': spec['scope'], 'owner': spec['owner'],
                 'status': 'UNAVAILABLE' if networks is None else 'AVAILABLE', 'families': {}}
+        if 'role' in spec:
+            info['role'] = spec['role']
+        advisory = spec.get('advisory_source')
+        if advisory:
+            info['advisory_source'] = advisory
         summary[provider] = info
         if networks is None:
             info['overlap'] = None
             continue
         for version in (4, 6):
             net_iv = b.intervals(networks, version)
+            if advisory and not net_iv:
+                continue
             old = b.intersect(before['RU'][version], net_iv)
             new = b.intersect(b.intervals(final, version), net_iv)
             states = {'existing': b.intersect(old, new), 'new': b.subtract(new, old),
@@ -386,6 +480,7 @@ def build_report(previous, candidate, providers, layers, masks, origins=None, pr
                     for net in sorted(b.networks_from_intervals([(lo, hi)], version),
                                       key=lambda n: (int(n.network_address), n.prefixlen)):
                         rows.append({'provider':provider, 'family':version, 'cidr':str(net),
+                            'provider_name':spec['owner'], 'advisory_source':advisory or '',
                             'addresses':str(net.num_addresses), 'status':state,
                             'candidate_evidence':list(labels),
                             'evidence_time':'candidate_inputs_only' if state == 'removed' or state.startswith('provider-snapshot-') else 'candidate',
@@ -407,16 +502,23 @@ def write_summary(report, stream):
     previous = report.get('previous_provider_snapshot_fetched_at')
     print(f"- Comparison provider snapshot: `{previous}`" if previous else
           '- Comparison provider snapshot: unavailable; feed changes are unknown.', file=stream)
+    if 'cdn_ip_database' in report:
+        print('- ' + cdn.status_line(report['cdn_ip_database']), file=stream)
     for name, info in report['providers'].items():
-        if name.startswith('routing:'):
+        if name.startswith('routing:') or name == cdn.SOURCE:
             continue
         if info['status'] != 'AVAILABLE':
-            print(f'- {name}: unavailable; overlap is unknown.', file=stream)
+            if not info.get('advisory_source'):
+                print(f'- {name}: unavailable; overlap is unknown.', file=stream)
             continue
         counts = info['families']
-        print(f'- {name}:', file=stream)
+        label = f"{info['owner']} ({info['advisory_source']}, advisory)" if info.get('advisory_source') else name
+        print(f'- {label}:', file=stream)
         for family in ('4', '6'):
-            data = counts[family]
+            data = counts.get(family)
+            if data is None:
+                print(f'  - IPv{family}: unavailable; overlap is unknown.', file=stream)
+                continue
             print(f"  - IPv{family}: overlap={data['candidate']} addresses; "
                   f"DIRECT delta +{data['added']}/−{data['removed']}.", file=stream)
             feed_delta = data.get('provider_snapshot_effect_on_previous_dat')
@@ -507,10 +609,12 @@ def main():
     report['previous_release_commit'] = args.previous_release
     report['previous_provider_snapshot_fetched_at'] = previous_doc.get('fetched_at') if previous_doc else None
     report['provider_catalog_sha256'] = snapshot['catalog_sha256']
+    report['cdn_ip_database'] = cdn_snapshot_info(snapshot, providers)
     report['observed_exact_moas_prefixes_with_selected_evidence'] = moas
     args.output.write_text(json.dumps(report,indent=2)+'\n')
     with args.output.with_suffix('.tsv').open('w') as stream:
-        writer = csv.DictWriter(stream, fieldnames=['provider','family','cidr','addresses','status','candidate_evidence','evidence_time','proposal'],delimiter='\t')
+        writer = csv.DictWriter(stream, fieldnames=['provider','family','cidr','addresses','status',
+            'candidate_evidence','evidence_time','proposal','provider_name','advisory_source'],delimiter='\t')
         writer.writeheader()
         for row in report['rows']:
             writer.writerow({**row,'candidate_evidence':','.join(row['candidate_evidence'])})

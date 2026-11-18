@@ -6,8 +6,10 @@ import json
 from pathlib import Path
 import re
 
+from audit_v41_direct_provenance import read_cdn_advisory
 from build_v41_overlay import intersect, networks_from_intervals, subtract
 import validate_v41_publication_bounds as gate
+from v41_cdn_ip_advisory import delta_overlaps, status_line
 from v41_reviewed_ipv6_admission import RECORD_KEY, verify_reviewed_ipv6_admission_manifest
 from v41_direct_admission import ROLE
 
@@ -22,7 +24,7 @@ def address_scope(ranges, family):
             "cidrs": [str(network) for network in sorted(networks_from_intervals(ranges, family))]}
 
 
-def exact_delta(candidate, reference, checksum, manifest, reviewed_ipv6, revision):
+def exact_delta(candidate, reference, checksum, manifest, reviewed_ipv6, revision, *, provider_snapshot=None):
     if not re.fullmatch(r"[0-9a-f]{40}", revision):
         raise ValueError("expected a full release commit SHA")
     before, old_sha = gate.read(reference)
@@ -37,15 +39,14 @@ def exact_delta(candidate, reference, checksum, manifest, reviewed_ipv6, revisio
     role = policy[RECORD_KEY].get("role")
     if role not in {"geography-review-only", ROLE}:
         raise ValueError("unrecognized reviewed IPv6 geography role")
-    direct = {}
+    direct_ranges, direct = {}, {}
     for family in (4, 6):
         old, new = before["RU"][family], after["RU"][family]
+        direct_ranges[family] = {"added": subtract(new, old), "removed": subtract(old, new)}
         direct[f"ipv{family}"] = {
-            "added": address_scope(subtract(new, old), family),
-            "removed": address_scope(subtract(old, new), family),
+            change: address_scope(parts, family) for change, parts in direct_ranges[family].items()
         }
-    added6 = subtract(after["RU"][6], before["RU"][6])
-    removed6 = subtract(before["RU"][6], after["RU"][6])
+    added6, removed6 = direct_ranges[6]["added"], direct_ranges[6]["removed"]
     geography = []
     for network, record in sorted(reviewed.items()):
         scope = [(int(network.network_address), int(network.broadcast_address))]
@@ -58,6 +59,7 @@ def exact_delta(candidate, reference, checksum, manifest, reviewed_ipv6, revisio
                 "added": address_scope(added, 6),
                 "removed": address_scope(removed, 6),
             })
+    advisory, index = read_cdn_advisory(provider_snapshot)
     return {
         "schema": 1,
         "mode": "ADVISORY",
@@ -65,6 +67,8 @@ def exact_delta(candidate, reference, checksum, manifest, reviewed_ipv6, revisio
         "candidate_dat_sha256": new_sha,
         "private_changed": {f"ipv{f}": before["PRIVATE"][f] != after["PRIVATE"][f] for f in (4, 6)},
         "direct": direct,
+        "cdn_ip_database": {**advisory, "delta_overlaps": (delta_overlaps(direct_ranges, index)
+                            if advisory['status'] == 'AVAILABLE' else None)},
         "ipv6_geography": {"role": role,
                            "table_sha256": policy["input_sha256"][RECORD_KEY],
                            "changed_overlaps": geography},
@@ -116,22 +120,41 @@ def report(candidate, reference, current_metrics, previous_metrics, revision):
     return "\n".join(lines)
 
 
+def cdn_summary(advisory):
+    lines = ["### CDN overlaps in the exact DIRECT delta (advisory)", "", status_line(advisory), ""]
+    overlaps = advisory["delta_overlaps"]
+    if overlaps:
+        lines += ["| Provider | IPv4 + / − | IPv6 + / − |", "|---|---:|---:|"]
+        for row in overlaps:
+            def counts(family):
+                parts = row.get(family)
+                return (f"+{parts['added']['addresses']} / −{parts['removed']['addresses']}"
+                        if parts else "Unknown")
+            lines.append(f"| {row['provider']} | {counts('ipv4')} | {counts('ipv6')} |")
+    elif overlaps == []:
+        lines.append("No delta overlap with the reported provider scopes.")
+    lines += ["", "Provider scopes overlap and are not additive. They do not change DIRECT or exclusions.", ""]
+    return "\n".join(lines)
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     for flag in ("candidate", "reference", "current-metrics", "previous-metrics", "summary",
                  "reference-checksum", "candidate-manifest", "reviewed-ipv6", "exact-output"):
         parser.add_argument("--" + flag, type=Path, required=True)
     parser.add_argument("--revision", required=True)
+    parser.add_argument("--provider-snapshot", type=Path)
     args = parser.parse_args()
     try:
         delta = exact_delta(args.candidate, args.reference, args.reference_checksum, args.candidate_manifest,
-                            args.reviewed_ipv6, args.revision)
+                            args.reviewed_ipv6, args.revision, provider_snapshot=args.provider_snapshot)
         output = report(args.candidate, args.reference, args.current_metrics, args.previous_metrics, args.revision)
         args.exact_output.write_text(json.dumps(delta, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     except (OSError, ValueError, TypeError, KeyError, AttributeError) as exc:
         parser.exit(1, f"Could not generate DIRECT delta: {exc}\n")
     with args.summary.open("a", encoding="utf-8") as stream:
         stream.write(output + "\n")
+        stream.write(cdn_summary(delta["cdn_ip_database"]) + "\n")
         stream.write("\nExact CIDRs are in the v41-pr-direct-delta artifact. "
                      "Geographic IPv6 overlaps do not imply reachability.\n")
     print(output, flush=True)
