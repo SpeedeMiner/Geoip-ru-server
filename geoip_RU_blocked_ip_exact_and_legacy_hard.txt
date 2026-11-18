@@ -11,10 +11,8 @@
 45.87.154.4/32 # sources=reviewed-rkn-ip-record
 45.144.220.204/32 # sources=reviewed-rkn-ip-record
 49.231.126.0/24 # sources=antifilter-subnet.lst
-57.141.0.0/20 # sources=antifilter-subnet.lst
-57.141.16.0/21 # sources=antifilter-subnet.lst
-57.141.24.0/22 # sources=antifilter-subnet.lst
-57.141.28.0/23 # sources=antifilter-subnet.lst
+57.141.0.0/19 # sources=antifilter-subnet.lst
+57.141.32.0/23 # sources=antifilter-subnet.lst
 61.221.181.64/26 # sources=antifilter-subnet.lst
 62.76.75.106/32 # sources=reviewed-rkn-ip-record
 62.76.75.110/32 # sources=reviewed-rkn-ip-record

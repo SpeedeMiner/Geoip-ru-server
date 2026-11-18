@@ -11,10 +11,10 @@ loyalsoldier-private	0	0	28	0	28
 kirill	0	32839	0	0	32839
 hxehex-whitelist	0	30228	0	0	30228
 w1zardz-ru	0	950	0	0	950
-ru-asn-bgp	0	0	0	23625	23625
-rir-ru	0	0	0	13689	13689
-global-bgp	0	0	0	520299	520299
+ru-asn-bgp	0	0	0	23651	23651
+rir-ru	0	0	0	13687	13687
+global-bgp	0	0	0	521224	521224
 iana-non-global	0	0	33	0	33
 iana-global-exceptions	0	0	0	14	14
-blocked-direct-exclusions	0	0	0	200391	200391
-TOTAL	155810	133277	61	758018	1047166
+blocked-direct-exclusions	0	0	0	200967	200967
+TOTAL	155810	133277	61	759543	1048691
