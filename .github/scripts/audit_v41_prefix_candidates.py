@@ -9,7 +9,9 @@ from pathlib import Path
 import re
 from urllib.parse import urlsplit
 
+from audit_v41_direct_provenance import read_cdn_advisory
 from validate_v41_publication_bounds import difference_size, read, total
+from v41_cdn_ip_advisory import prefix_overlaps, status_line
 
 HEADER = ["prefix", "origin_asn", "service", "observed_on", "review_after", "bgp_evidence", "registration_evidence"]
 
@@ -46,7 +48,7 @@ def read_candidates(path, *, as_of=None):
     return result
 
 
-def coverage(categories, rows):
+def coverage(categories, rows, advisory_index=None):
     output = []
     for row in rows:
         net = ipaddress.ip_network(row["prefix"])
@@ -56,17 +58,25 @@ def coverage(categories, rows):
         private = size - difference_size(target, categories["PRIVATE"][net.version])
         output.append({**row, "total_addresses": str(size), "direct_addresses": str(direct),
                        "private_addresses": str(private), "non_direct_addresses": str(size - direct),
-                       "coverage": "FULL" if direct == size else "NONE" if direct == 0 else "PARTIAL"})
+                       "coverage": "FULL" if direct == size else "NONE" if direct == 0 else "PARTIAL",
+                       "cdn_ip_database_overlaps": (prefix_overlaps(target, net.version, advisory_index)
+                                                    if advisory_index is not None else None)})
     return output
 
 
-def format_report(rows, digest):
+def format_report(rows, digest, advisory=None):
     lines = ["## Reviewed prefix coverage (advisory)", "", f"Candidate DAT SHA-256: `{digest}`.", "",
              "This reports address-set membership, not reachability or permission to add routes.", "",
-             "| Prefix | Origin | DIRECT / total | PRIVATE | Coverage | Review due |",
-             "|---|---|---:|---:|---|---|"]
+             "| Prefix | Origin | DIRECT / total | PRIVATE | Coverage | Review due | CDN scopes (advisory, addresses) |",
+             "|---|---|---:|---:|---|---|---|"]
     for row in rows:
-        lines.append(f"| `{row['prefix']}` | {row['origin_asn']} | {row['direct_addresses']} / {row['total_addresses']} | {row['private_addresses']} | {row['coverage']} | {'yes' if row['review_due'] else 'no'} |")
+        hits = row['cdn_ip_database_overlaps']
+        labels = (', '.join(f"{hit['provider']}: {hit['addresses']}" for hit in hits)
+                  if hits else 'No overlap in reported scopes' if hits == [] else 'Unknown')
+        lines.append(f"| `{row['prefix']}` | {row['origin_asn']} | {row['direct_addresses']} / {row['total_addresses']} | {row['private_addresses']} | {row['coverage']} | {'yes' if row['review_due'] else 'no'} | {labels} |")
+    if advisory is not None:
+        lines += ['', status_line(advisory), '',
+                  'CDN overlap is measured over the entire reviewed prefix, not just its DIRECT part.']
     return "\n".join(lines) + "\n"
 
 
@@ -76,13 +86,16 @@ def main():
     parser.add_argument("--candidates", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--summary", type=Path)
+    parser.add_argument("--provider-snapshot", type=Path)
     args = parser.parse_args()
     try:
         categories, digest = read(args.dat)
-        rows = coverage(categories, read_candidates(args.candidates))
-        report = {"candidate_sha256": digest, "role": "advisory-no-routing-change", "candidates": rows}
+        advisory, index = read_cdn_advisory(args.provider_snapshot)
+        rows = coverage(categories, read_candidates(args.candidates), index if advisory['status'] == 'AVAILABLE' else None)
+        report = {"candidate_sha256": digest, "role": "advisory-no-routing-change",
+                  "cdn_ip_database": advisory, "candidates": rows}
         args.output.write_text(json.dumps(report, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
-        summary = format_report(rows, digest)
+        summary = format_report(rows, digest, advisory)
         if args.summary:
             with args.summary.open("a", encoding="utf-8") as stream:
                 stream.write(summary)

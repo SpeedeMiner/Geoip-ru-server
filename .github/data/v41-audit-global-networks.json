@@ -7,6 +7,7 @@
     {"id":"google-goog","owner":"Google","format":"google-json","scope":"Google-owned published ranges; not a per-application YouTube list","families":[4,6],"urls":["https://www.gstatic.com/ipranges/goog.json"],"documentation":"https://docs.cloud.google.com/vpc/docs/access-apis-external-ip"},
     {"id":"google-cloud","owner":"Google","format":"google-json","scope":"Published external Google Cloud customer ranges; overlaps google-goog","families":[4,6],"urls":["https://www.gstatic.com/ipranges/cloud.json"],"documentation":"https://docs.cloud.google.com/vpc/docs/access-apis-external-ip"},
     {"id":"akamai","owner":"Akamai","format":null,"scope":"UNAVAILABLE: Site Shield maps are account/origin-facing subsets, not a complete client-facing network list","families":[4,6],"urls":[],"documentation":"https://techdocs.akamai.com/site-shield/docs/site-shield-api"},
+    {"id":"cdn-ip-database","owner":"cdn-ip-database","format":"cdn-ip-database-json","role":"advisory-no-routing-change","scope":"Third-party collected CDN ranges by provider; incomplete, no ASN expansion, never an admission or exclusion input","families":[4,6],"urls":["https://raw.githubusercontent.com/mansourjabin/cdn-ip-database/main/data/resolved_ips.json"],"documentation":"https://github.com/mansourjabin/cdn-ip-database"},
     {"id":"discord","owner":"Discord","format":null,"scope":"UNAVAILABLE: no complete authoritative client-facing CIDR feed verified; third-party CDN space is not Discord ownership","families":[4,6],"urls":[],"documentation":null}
   ]
 }

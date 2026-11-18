@@ -29,6 +29,7 @@ on:
       - ".github/scripts/v41_asn_observations.py"
       - ".github/scripts/audit_v41_asn_regressions.py"
       - ".github/scripts/audit_v41_direct_provenance.py"
+      - ".github/scripts/v41_cdn_ip_advisory.py"
       - ".github/data/v41-audit-priority-asns.tsv"
       - ".github/data/v41-audit-global-networks.json"
       - ".github/scripts/check_v41_bgp_observations.py"
@@ -515,6 +516,16 @@ jobs:
           python3 .github/scripts/validate_v41_publication_bounds.py \
             --candidate "$V41_OUTPUT_FILE" --reference "$V41_OUTPUT_FILE"
 
+      - name: Capture scoped provider feeds (advisory)
+        if: github.event_name == 'pull_request'
+        continue-on-error: true
+        timeout-minutes: 7
+        shell: bash
+        run: |
+          python3 .github/scripts/audit_v41_direct_provenance.py \
+            --catalog .github/data/v41-audit-global-networks.json \
+            --collect-snapshot "$RUNNER_TEMP/v41-provider-snapshot.json.gz"
+
       - name: Audit reviewed prefix coverage (advisory)
         if: github.event_name == 'pull_request'
         continue-on-error: true
@@ -522,6 +533,7 @@ jobs:
         run: |
           python3 .github/scripts/audit_v41_prefix_candidates.py \
             --dat "$V41_OUTPUT_FILE" --candidates .github/data/v41-coverage-candidates.tsv \
+            --provider-snapshot "$RUNNER_TEMP/v41-provider-snapshot.json.gz" \
             --output "$RUNNER_TEMP/v41-prefix-candidates.json" --summary "$GITHUB_STEP_SUMMARY"
 
       - name: Retain reviewed prefix coverage report
@@ -554,6 +566,7 @@ jobs:
             --candidate-manifest "$V41_MANIFEST" \
             --reviewed-ipv6 .github/data/v41-reviewed-ipv6-admission-exclusions.tsv \
             --exact-output "$RUNNER_TEMP/v41-pr-direct-delta.json" \
+            --provider-snapshot "$RUNNER_TEMP/v41-provider-snapshot.json.gz" \
             --current-metrics "$V41_METRICS" --previous-metrics "$RUNNER_TEMP/previous-geoip_RU_v41_source_metrics.tsv" \
             --revision "$ref" --summary "$GITHUB_STEP_SUMMARY"
           # Keep a bounded exact delta in the PR log as well as the artifact.
@@ -1042,9 +1055,6 @@ jobs:
         run: |
           set -eEuo pipefail
           trap 'echo "::warning::Provider/Hydra report unavailable; overlaps are unknown."' ERR
-          python3 .github/scripts/audit_v41_direct_provenance.py \
-            --catalog .github/data/v41-audit-global-networks.json \
-            --collect-snapshot "$RUNNER_TEMP/v41-provider-snapshot.json.gz"
           python3 .github/scripts/audit_v41_direct_provenance.py \
             --snapshot "$RUNNER_TEMP/v41-provider-snapshot.json.gz" \
             --previous "$RUNNER_TEMP/previous-geoip_RU.dat" \

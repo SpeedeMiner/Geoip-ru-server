@@ -28,3 +28,35 @@ Both reports bind their inputs and output exact ranges for review. No historical
 ZIPs or provider snapshots are required in the source tree. Go and Python tests
 also exercise the interval helpers and Python DAT encoding against upstream
 v2fly protobuf types.
+
+## Third-party CDN database
+
+[`cdn-ip-database`](https://github.com/mansourjabin/cdn-ip-database) is listed in
+`v41-audit-global-networks.json`, not in the required `v41-upstream-sources.json`.
+The PR workflow captures `data/resolved_ips.json` once and shares the provider
+snapshot across the three reports. The snapshot binds the source URL, fetch
+time, byte size and SHA-256. Successful captures also preserve the exact
+UTF-8 payload. The collector bounds the download size and time.
+
+- `v41-pr-direct-delta.json` reports exact additions and removals intersecting
+  each provider's reported IPv4/IPv6 scopes. Both DATs are compared against the
+  same capture, so these counts are DIRECT changes, not provider-feed changes.
+- `v41-prefix-candidates.json` reports provider intersections with the entire
+  reviewed CIDR, independently of how much of it is in DIRECT.
+- `v41-direct-provenance.json` and its TSV distinguish third-party
+  `cdn-ip-database/<provider>` scopes from official Cloudflare, AWS and Google
+  scopes. The third-party Akamai scope does not replace the existing official
+  Akamai entry.
+
+Empty `ips` lists and unreported families mean unknown coverage. A download or
+payload error is `UNAVAILABLE`. A missing, legacy or unreadable local snapshot
+is `ADVISORY_MISSING` for the CDN appendix. Valid captures can have no matching
+scopes, which is different from missing evidence. Individual CIDRs with host
+bits are normalized for reporting, with the input-to-network mapping retained.
+Literal IPs are reported as exact `/32` or `/128` hosts. The feed's ASN values
+are not used to expand any scope.
+
+Provider ranges may overlap and are not additive. A reported intersection
+does not establish reachability, ownership, or a reason to change a route.
+No CDN database file or overlap result reaches DAT/SRS assembly, masks,
+release publication or the CDN branch.
