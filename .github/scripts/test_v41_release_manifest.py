@@ -4,7 +4,7 @@ from tempfile import TemporaryDirectory
 import unittest
 
 from bundle_v41_registry_inputs import BLOCK_MEMBERS, create, restore
-from v41_release_manifest import CORE, SNAPSHOT, describe, make, verify
+from v41_release_manifest import CORE, PRIVATE_MRS, SCHEMA, SNAPSHOT, describe, make, verify
 
 
 class ReleaseManifestTests(unittest.TestCase):
@@ -22,11 +22,22 @@ class ReleaseManifestTests(unittest.TestCase):
                 "input_provenance_sha256": describe(p / "geoip_RU_input_provenance.tsv")["sha256"],
             }))
             data = make(p, "a"*40, "example/geoip", "123", "1")
+            self.assertEqual(data["schema"], SCHEMA)
+            self.assertIn("geoip_RU.mrs", data["assets"])
+            self.assertIn("geoip_RU.mrs.sha256sum", data["assets"])
             self.assertEqual(data["source_commit"], "a"*40)
             self.assertEqual(data["workflow_run"], "https://github.com/example/geoip/actions/runs/123")
             manifest = p / "manifest.json"
             manifest.write_text(json.dumps(data))
             verify(p, manifest, SNAPSHOT)
+            for name in PRIVATE_MRS:
+                with self.subTest(name=name):
+                    (p / name).touch()
+                    with self.assertRaisesRegex(ValueError, "Forbidden v41 artifact"):
+                        make(p, "a"*40, "example/geoip", "123", "1")
+                    with self.assertRaisesRegex(ValueError, "Forbidden v41 artifact"):
+                        verify(p, manifest, CORE)
+                    (p / name).unlink()
             check = p / "geoip_PRIVATE.srs.sha256sum"
             check.write_text(check.read_text().replace("  ", " *"))
             with self.assertRaisesRegex(ValueError, "release asset mismatch: geoip_PRIVATE.srs.sha256sum"):

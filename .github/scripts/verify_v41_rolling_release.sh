@@ -4,14 +4,14 @@ set -euo pipefail
 [[ "$SNAPSHOT_SHA" =~ ^[0-9a-f]{40}$ ]]
 file=geoip_RU_v41_release_manifest.json
 scripts="$(dirname "${BASH_SOURCE[0]}")"
+source "$scripts/v41_cdn_files.sh"
 dest="$(mktemp -d)"
 trap 'rm -rf -- "$dest"' EXIT
 
 readback() {
   local url="$1" dir="$2" name
   mkdir -p "$dir" || return
-  for name in "$file" geoip_RU.dat geoip_RU.dat.sha256sum geoip_RU.srs geoip_RU.srs.sha256sum \
-              geoip_PRIVATE.srs geoip_PRIVATE.srs.sha256sum; do
+  for name in "$file" "${V41_CLIENT_ASSETS[@]}"; do
     curl --fail --silent --show-error --location --proto '=https' --proto-redir '=https' \
       --retry 2 --retry-all-errors --connect-timeout 15 --max-time 45 --max-filesize 8388608 \
       --output "$dir/$name" "$url/$name" || return
@@ -35,7 +35,7 @@ fi
 for delay in 0 5 15; do
   if (( delay )); then sleep "$delay"; fi
   if readback "$rolling_uri" "$dest/rolling"; then
-    echo "Public rolling DAT/SRS files and checksums match release commit $SNAPSHOT_SHA"
+    echo "Public rolling client files and checksums match release commit $SNAPSHOT_SHA"
     exit 0
   fi
 done

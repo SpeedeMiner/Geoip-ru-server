@@ -27,6 +27,7 @@ if [[ "$(git -C "$tmp" rev-parse refs/published/release)" != "$SNAPSHOT_SHA" ]];
   exit 1
 fi
 expected="$(printf '100644 blob %s\n' "${V41_CDN_FILES[@]}" | LC_ALL=C sort)"
+legacy="$(printf '100644 blob %s\n' "${V41_LEGACY_CDN_FILES[@]}" | LC_ALL=C sort)"
 tree_inventory() {
   # Inspect the root exactly, including directory entries that -r would hide.
   git -C "$tmp" ls-tree --format='%(objectmode) %(objecttype) %(path)' "$@" | LC_ALL=C sort
@@ -38,7 +39,9 @@ if remote_git ls-remote --exit-code --refs origin "$cdn_ref" > "$tmp/cdn-remote"
   [[ "$previous" =~ ^[0-9a-f]{40}$ && "$ref" == "$cdn_ref" ]]
   remote_git fetch --no-tags --depth=1 origin "$cdn_ref:refs/published/cdn"
   [[ "$(git -C "$tmp" rev-parse refs/published/cdn)" == "$previous" ]]
-  if [[ "$(tree_inventory "$previous")" != "$expected" ]]; then
+  previous_inventory="$(tree_inventory "$previous")"
+  # Accept only the exact old tree for the transition or the exact new tree.
+  if [[ "$previous_inventory" != "$expected" && "$previous_inventory" != "$legacy" ]]; then
     echo "::error::Existing cdn branch has unexpected files or modes"
     exit 1
   fi
@@ -48,10 +51,10 @@ else
 fi
 
 # Create a new tree from an empty index, not a checkout or a copy of release.
-# GitHub's checksum sidecars are inputs to validation, never CDN outputs.
+# Validate every checksum and mirror only the RU MRS sidecar.
 git -C "$tmp" read-tree --empty
 mkdir "$tmp/verify"
-for file in "${V41_CDN_FILES[@]}"; do
+for file in "${V41_CLIENT_BINARIES[@]}"; do
   # Require a plain blob and its plain checksum in the checked release tree.
   inventory="$(tree_inventory "$SNAPSHOT_SHA" -- "$file" "$file.sha256sum")"
   [[ "$inventory" == "$(printf '100644 blob %s\n' "$file" "$file.sha256sum")" ]]
@@ -62,6 +65,10 @@ for file in "${V41_CDN_FILES[@]}"; do
   printf '%s  %s\n' "$digest" "$file" | cmp - "$tmp/verify/$file.sha256sum"
   blob="$(git -C "$tmp" rev-parse "$SNAPSHOT_SHA:$file")"
   git -C "$tmp" update-index --add --cacheinfo "100644,$blob,$file"
+  if [[ "$file" == geoip_RU.mrs ]]; then
+    blob="$(git -C "$tmp" rev-parse "$SNAPSHOT_SHA:$file.sha256sum")"
+    git -C "$tmp" update-index --add --cacheinfo "100644,$blob,$file.sha256sum"
+  fi
 done
 tree="$(git -C "$tmp" write-tree)"
 [[ "$(tree_inventory "$tree")" == "$expected" ]]
@@ -76,7 +83,7 @@ else
     commit-tree "$tree" "${parents[@]}" -m "Publish v41 client binaries from release $SNAPSHOT_SHA")"
   [[ "$(current_release)" == "$SNAPSHOT_SHA" ]]
   remote_git push --force-with-lease="$cdn_ref:$previous" origin "$commit:$cdn_ref"
-  echo "Published three client binaries to cdn at $commit"
+  echo "Published the checked client files to cdn at $commit"
 fi
 [[ "$(remote_git ls-remote --exit-code --refs origin "$cdn_ref" | cut -f1)" == "$commit" ]]
 printf 'cdn_sha=%s\n' "$commit" >> "$GITHUB_OUTPUT"

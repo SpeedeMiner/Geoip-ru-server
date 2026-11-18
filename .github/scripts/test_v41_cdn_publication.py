@@ -7,7 +7,9 @@ import tempfile
 import unittest
 
 SCRIPTS = Path(__file__).resolve().parent
-FILES = ("geoip_RU.dat", "geoip_RU.srs", "geoip_PRIVATE.srs")
+LEGACY = ("geoip_RU.dat", "geoip_RU.srs", "geoip_PRIVATE.srs")
+BINARIES = (*LEGACY, "geoip_RU.mrs")
+FILES = (*BINARIES, "geoip_RU.mrs.sha256sum")
 
 
 class CdnPublicationTests(unittest.TestCase):
@@ -42,7 +44,7 @@ class CdnPublicationTests(unittest.TestCase):
                                        stderr=subprocess.PIPE)
 
     def make_release(self, suffix, *, bad_checksum=False, missing=None):
-        for name in FILES:
+        for name in BINARIES:
             p = self.release / name
             if name == missing:
                 p.unlink(missing_ok=True)
@@ -107,6 +109,27 @@ class CdnPublicationTests(unittest.TestCase):
         incomplete = self.make_release(b"missing", missing=FILES[2])
         self.assertNotEqual(self.invoke(incomplete).returncode, 0)
         self.assertEqual(self.cdn(), head)
+
+    def test_upgrades_exact_legacy_cdn_tree_without_rewriting_its_history(self):
+        self.assertEqual(self.invoke().returncode, 0)
+        new = self.cdn()
+        entries = self.git(self.remote, "ls-tree", new, "--", *LEGACY)
+        tree = subprocess.check_output(["git", "-C", str(self.remote), "mktree"], input=entries).strip().decode()
+        legacy = self.git(self.remote, "-c", "user.name=Test", "-c", "user.email=test@example.test",
+                          "commit-tree", tree, "-m", "legacy CDN").strip().decode()
+        self.git(self.remote, "update-ref", "refs/heads/cdn", legacy, new)
+        result = self.invoke()
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual(self.git(self.remote, "rev-parse", self.cdn() + "^").strip().decode(), legacy)
+        self.check_tree(self.initial_release)
+
+    def test_mrs_missing_checksum_stops_cdn_promotion(self):
+        (self.release / "geoip_RU.mrs.sha256sum").unlink()
+        self.git(self.release, "commit", "-qam", "missing MRS checksum")
+        self.git(self.release, "push", str(self.remote), "refs/heads/release")
+        target = self.git(self.release, "rev-parse", "HEAD").strip().decode()
+        self.assertNotEqual(self.invoke(target).returncode, 0)
+        self.assertFalse(self.git(self.remote, "branch", "--list", "cdn"))
 
     def test_rejects_non_main_and_contaminated_existing_cdn(self):
         for ref, event in (("refs/heads/other", "push"), ("refs/heads/main", "pull_request")):
@@ -191,7 +214,8 @@ from pathlib import Path
 from urllib.parse import urlsplit
 url=urlsplit(sys.argv[-1])
 filename=url.path.rsplit("/",1)[1]
-assert filename in ("geoip_RU.dat", "geoip_RU.srs", "geoip_PRIVATE.srs")
+assert filename in ("geoip_RU.dat", "geoip_RU.srs", "geoip_PRIVATE.srs",
+                    "geoip_RU.mrs", "geoip_RU.mrs.sha256sum")
 with Path("calls").open("a") as f:
     print(url.netloc, filename, file=f)
 assert url.netloc in ("raw.githubusercontent.com", "cdn.jsdelivr.net")
@@ -225,24 +249,25 @@ out.write_text("stale" if stale else filename)
     def test_correct_bytes_for_every_client_file(self):
         r, calls = self.invoke()
         self.assertEqual(r.returncode, 0, r.stderr)
-        self.assertEqual(len(calls), 6)
-        self.assertTrue(all("sha256" not in line for line in calls))
+        self.assertEqual(len(calls), 2 * len(FILES))
+        self.assertEqual([line.split()[1] for line in calls if ".sha256sum" in line],
+                         ["geoip_RU.mrs.sha256sum"] * 2)
 
     def test_cdn_retries_stale_bytes_and_reports_persistent_mismatch(self):
         r, calls = self.invoke(mismatch=FILES[0], transient=True)
         self.assertEqual(r.returncode, 0, r.stderr)
-        self.assertEqual(len(calls), 7)
+        self.assertEqual(len(calls), 2 * len(FILES) + 1)
         r, calls = self.invoke(mismatch=FILES[0])
         self.assertEqual(r.returncode, 1)
         self.assertIn("Use GitHub Release", r.stdout)
-        self.assertEqual(len(calls), 8)
+        self.assertEqual(len(calls), 2 * len(FILES) + 2)
         self.assertTrue(calls[-1].endswith(FILES[-1]))
 
 
     def test_pinned_raw_retries_transient_transport_error_but_fails_closed(self):
         r, calls = self.invoke(raw_timeout="once")
         self.assertEqual(r.returncode, 0, r.stderr)
-        self.assertEqual(len(calls), 7)
+        self.assertEqual(len(calls), 2 * len(FILES) + 1)
         self.assertEqual(calls[:2], ["raw.githubusercontent.com geoip_RU.dat"] * 2)
         r, calls = self.invoke(raw_timeout="always")
         self.assertEqual(r.returncode, 1)

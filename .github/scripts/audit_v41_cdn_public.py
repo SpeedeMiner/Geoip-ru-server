@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Read-only inventory and byte audit of the three GeoIP v41 CDN files."""
+"""Read-only inventory and byte audit of the GeoIP v41 CDN files."""
 
 import argparse
 import base64
@@ -13,7 +13,11 @@ import sys
 from urllib.error import HTTPError
 from urllib.request import Request, urlopen
 
-FILES = ("geoip_RU.dat", "geoip_RU.srs", "geoip_PRIVATE.srs")
+from v41_release_manifest import CORE, LEGACY_CORE, LEGACY_SNAPSHOT, MANIFEST, RU_MRS, SCHEMA, SNAPSHOT
+
+BINARIES = CORE[::2]
+MRS_SIDECAR = f"{RU_MRS}.sha256sum"
+FILES = (*BINARIES, MRS_SIDECAR)
 CANONICAL = ("cdn.jsdelivr.net",)
 EDGES = (*CANONICAL, "fastly.jsdelivr.net", "gcore.jsdelivr.net")
 REPO_RE = re.compile(r"[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+")
@@ -119,7 +123,7 @@ def validate_release_links(content: str, repo: str) -> None:
     links = re.findall(rf'{prefix}(?=[@/])[^"<>\s)]+', content, flags=re.IGNORECASE)
     expected = {f"https://cdn.jsdelivr.net/gh/{repo}@cdn/{name}" for name in FILES}
     if len(links) != len(expected) or set(links) != expected:
-        raise ValueError("public client links must contain exactly the three canonical @cdn URLs")
+        raise ValueError("public client links must contain exactly the canonical @cdn URLs")
 
 
 def fetch_https(url: str, limit: int) -> bytes:
@@ -140,6 +144,7 @@ def verify_release_assets(
     repo: str, release: str, sources: tuple[tuple[str, str], ...], *,
     expect: dict[str, tuple[int, bytes]] | None = None,
     fetch: Fetch = fetch_https,
+    binaries: tuple[str, ...] = BINARIES,
 ) -> dict[str, dict]:
     """Verify pinned Raw and the requested GitHub download locations."""
     release_base = f"https://raw.githubusercontent.com/{repo}/{release}"
@@ -152,6 +157,8 @@ def verify_release_assets(
         if expect is not None and (len(data), digest.digest()) != expect[name]:
             raise ValueError(f"promoted release bytes differ from CDN: {name}")
         expected = f"{digest.hexdigest()}  {name}\n".encode()
+        if expect is not None and name == RU_MRS and (len(expected), hashlib.sha256(expected).digest()) != expect[MRS_SIDECAR]:
+            raise ValueError(f"promoted release checksum differs from CDN: {name}")
         if fetch(f"{release_base}/{name}.sha256sum", 512) != expected:
             raise ValueError(f"promoted release checksum differs: {name}")
         for base, description in sources:
@@ -162,7 +169,7 @@ def verify_release_assets(
         return name, {"bytes": len(data), "sha256": digest.hexdigest()}
 
     with ThreadPoolExecutor(max_workers=3) as pool:
-        return dict(pool.map(verify, FILES))
+        return dict(pool.map(verify, binaries))
 
 
 def versioned_download(repo: str, tag: str) -> tuple[str, str]:
@@ -170,12 +177,28 @@ def versioned_download(repo: str, tag: str) -> tuple[str, str]:
             "versioned GitHub snapshot")
 
 
-def audit_fallback(repo: str, release: str, tag: str, fetch: Fetch = fetch_https) -> dict:
+def audit_fallback(repo: str, release: str, tag: str, fetch: Fetch = fetch_https, *, historical=False) -> dict:
     if not REPO_RE.fullmatch(repo) or not SHA_RE.fullmatch(release):
         raise ValueError("expected owner/repository and a full release commit SHA")
-    files = verify_release_assets(repo, release, (versioned_download(repo, tag),), fetch=fetch)
+    binaries = BINARIES
+    if historical:
+        raw = fetch(f"https://raw.githubusercontent.com/{repo}/{release}/{MANIFEST}", 16384)
+        manifest = json.loads(raw)
+        schema, assets = manifest["schema"], manifest["assets"]
+        if type(schema) is int and schema == 1 and set(assets) == set(LEGACY_SNAPSHOT):
+            binaries = LEGACY_CORE[::2]
+        elif type(schema) is not int or schema != SCHEMA or set(assets) != set(SNAPSHOT):
+            raise ValueError("invalid historical release manifest inventory")
+    files = verify_release_assets(repo, release, (versioned_download(repo, tag),),
+                                  fetch=fetch, binaries=binaries)
     return {"repo": repo, "release_commit": release, "versioned_snapshot_verified": tag,
             "files": files, "scope": "versioned GitHub fallback only"}
+
+
+def verify_mrs_sidecar(inventory):
+    expected = f"{inventory[RU_MRS][1].hex()}  {RU_MRS}\n".encode("ascii")
+    if inventory[MRS_SIDECAR] != (len(expected), hashlib.sha256(expected).digest()):
+        raise ValueError("CDN MRS sidecar does not match the MRS asset")
 
 def audit(repo: str, commit: str, hosts: tuple[str, ...], fetch: Fetch = fetch_https,
           *, release_commit: str | None = None, versioned_tag: str | None = None,
@@ -195,6 +218,7 @@ def audit(repo: str, commit: str, hosts: tuple[str, ...], fetch: Fetch = fetch_h
     flat = parse_inventory(fetch(index + "/flat", INDEX_SIZE), flat=True)
     if tree != flat:
         raise ValueError("tree and flat jsDelivr inventories disagree")
+    verify_mrs_sidecar(tree)
 
     if verify_git_tree:
         verify_cdn_git_tree(repo, commit, tree, fetch)
@@ -286,6 +310,7 @@ def diagnose_planes(repo: str, commit: str, hosts: tuple[str, ...], *,
             if size != entries[name]["size"] or git_oid != entries[name]["sha"]:
                 raise ValueError(f"pinned GitHub Raw bytes do not match Git blob: {name}")
             reference[name] = (size, hashlib.sha256(data).digest())
+        verify_mrs_sidecar(reference)
         return reference
 
     def compare(observed, expected):
@@ -398,7 +423,8 @@ def main() -> int:
             raise ValueError("current release does not match expected release SHA")
         tag = checked_snapshot_tag(args.repo, release, args.snapshot_tag) if verify_snapshot else None
         if args.fallback_only:
-            result = audit_fallback(args.repo, release, tag)
+            options = {"historical": True} if args.historical_snapshot else {}
+            result = audit_fallback(args.repo, release, tag, **options)
             if args.historical_snapshot:
                 result["scope"] = "specified historical GitHub snapshot only"
         elif args.diagnose_planes:

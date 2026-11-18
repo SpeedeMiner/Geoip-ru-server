@@ -40,7 +40,7 @@ if readback pinned; then
 fi
 
 case "$status" in
-  verified) description="all three client files verified on jsDelivr" ;;
+  verified) description="all client files verified on jsDelivr" ;;
   origin_unconfirmed) description="GitHub Raw not confirmed" ;;
   public_unconfirmed) description="public bytes not confirmed" ;;
 esac

@@ -11,7 +11,7 @@ import unittest
 from unittest.mock import patch
 
 from bundle_v41_registry_inputs import BLOCK_MEMBERS, HEADER, MEMBERS, create
-from v41_release_manifest import CORE, MANIFEST, MAX_BYTES, SNAPSHOT
+from v41_release_manifest import CORE, LEGACY_CORE, LEGACY_SNAPSHOT, MANIFEST, MAX_BYTES, SCHEMA, SNAPSHOT
 from verify_v41_snapshot_replay import (
     BUNDLES, CATALOG, INPUTS, IPVERSE, PROVENANCE, TELEGRAM, catalog_members,
     compare_client_files, load_manifest, read_historical_catalog, restore_inputs,
@@ -49,7 +49,7 @@ class SnapshotReplayTests(unittest.TestCase):
         self.assets[name] = describe(raw)
 
     def write_manifest(self, **changes):
-        doc = {"schema": 1, "source_commit": self.commit, "assets": self.assets, **changes}
+        doc = {"schema": SCHEMA, "source_commit": self.commit, "assets": self.assets, **changes}
         raw = json.dumps(doc).encode()
         self.manifest.write_bytes(raw)
         return describe(raw)["sha256"]
@@ -86,18 +86,40 @@ class SnapshotReplayTests(unittest.TestCase):
 
     def test_manifest_rejects_duplicates_even_if_digest_matches(self):
         self.write_manifest()
-        raw = self.manifest.read_bytes().replace(b'"schema": 1', b'"schema": 2, "schema": 1')
+        raw = self.manifest.read_bytes().replace(b'"schema": 2', b'"schema": 1, "schema": 2')
         self.manifest.write_bytes(raw)
         with self.assertRaisesRegex(ValueError, "duplicate JSON key"):
             load_manifest(self.manifest, describe(raw)["sha256"])
 
     def test_manifest_rejects_invalid_schema_and_sizes(self):
-        for schema in (True, 2, None):
+        for schema in (True, 3, None):
             with self.subTest(schema=schema), self.assertRaisesRegex(ValueError, "schema"):
                 load_manifest(self.manifest, self.write_manifest(schema=schema))
         self.assets[IPVERSE]["bytes"] = True
         with self.assertRaisesRegex(ValueError, "manifest identity"):
             load_manifest(self.manifest, self.write_manifest())
+
+    def test_legacy_snapshots_still_compare_only_the_legacy_inventory(self):
+        legacy = {name: self.assets[name] for name in LEGACY_SNAPSHOT}
+        manifest = load_manifest(self.manifest, self.write_manifest(schema=1, assets=legacy))
+        report = compare_client_files(manifest, self.candidate)
+        self.assertEqual(set(report), set(LEGACY_CORE))
+        self.assertTrue(all(row["match"] for row in report.values()))
+        with self.assertRaisesRegex(ValueError, "inventory"):
+            load_manifest(self.manifest, self.write_manifest(schema=1))
+
+    def test_schema_two_requires_both_ru_mrs_files_and_refuses_private(self):
+        for name in ("geoip_RU.mrs", "geoip_RU.mrs.sha256sum"):
+            with self.subTest(name=name):
+                assets = {k: v for k, v in self.assets.items() if k != name}
+                with self.assertRaisesRegex(ValueError, "inventory"):
+                    load_manifest(self.manifest, self.write_manifest(assets=assets))
+        manifest = load_manifest(self.manifest, self.write_manifest())
+        (self.candidate / "geoip_RU.mrs").write_bytes(b"stale")
+        self.assertFalse(compare_client_files(manifest, self.candidate)["geoip_RU.mrs"]["match"])
+        (self.candidate / "geoip_PRIVATE.mrs").touch()
+        with self.assertRaisesRegex(ValueError, "Forbidden v41 artifact"):
+            compare_client_files(manifest, self.candidate)
 
     def test_manifest_rejects_extra_asset_and_unbound_sidecar(self):
         self.assets["../oops"] = describe(b"data")

@@ -8,6 +8,14 @@ sha256sum -c "$BLOCK_INPUTS_SHA"
 python3 ../.github/scripts/bundle_v41_registry_inputs.py --block-inputs verify \
   "$INPUT_PROVENANCE" "$BLOCK_INPUTS_ARCHIVE"
 python3 ../.github/scripts/v41_release_manifest.py verify . --manifest "$RELEASE_MANIFEST"
+compiler_dir="$(mktemp -d)"
+trap 'rm -rf -- "$compiler_dir"' EXIT
+source ../.github/scripts/install_v41_rule_compilers.sh
+install_v41_sing_box "$compiler_dir"
+install_v41_mihomo "$compiler_dir"
+python3 ../.github/scripts/build_v41_mrs.py --verify-only \
+  --full "$V41_OUTPUT_FILE" --manifest "$V41_MANIFEST" --output . \
+  --sing-box "$compiler_dir/sing-box" --mihomo "$compiler_dir/mihomo"
 sha256sum -c "$REGISTRY_INPUTS_SHA"
 python3 ../.github/scripts/bundle_v41_registry_inputs.py verify \
   "$INPUT_PROVENANCE" "$REGISTRY_INPUTS_ARCHIVE"

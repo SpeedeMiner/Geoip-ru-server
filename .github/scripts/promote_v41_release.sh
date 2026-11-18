@@ -5,6 +5,7 @@ set -euo pipefail
 [[ "$SNAPSHOT_TAG" =~ ^(v41\.(0|[1-9][0-9]{0,5})|geoip-v41-snapshot-[0-9]{1,20}\.[0-9]{1,10})$ ]]
 [[ "$SNAPSHOT_SHA" =~ ^[0-9a-f]{40}$ && "$PREVIOUS_RELEASE_SHA" =~ ^[0-9a-f]{40}$ ]]
 scripts="$(dirname "${BASH_SOURCE[0]}")"
+source "$scripts/v41_cdn_files.sh"
 verify="$scripts/verify_v41_ipverse_archive.py"
 dest="$(mktemp -d)"
 trap 'rm -rf -- "$dest"' EXIT
@@ -73,8 +74,7 @@ python3 "$scripts/bundle_v41_registry_inputs.py" --block-inputs verify \
 
 # Compare the actual public release files against the manifest in the staged Git tree.
 git -C "$dest" show "$SNAPSHOT_SHA:geoip_RU_v41_release_manifest.json" > "$dest/staged-manifest.json"
-for name in geoip_RU.dat geoip_RU.dat.sha256sum geoip_RU.srs geoip_RU.srs.sha256sum \
-            geoip_PRIVATE.srs geoip_PRIVATE.srs.sha256sum geoip_RU_v41_manifest.json \
+for name in "${V41_CLIENT_ASSETS[@]}" geoip_RU_v41_manifest.json \
             geoip_RU_quality_report.txt geoip_RU_input_provenance.tsv geoip_RU_v41_release_manifest.json; do
   curl --fail --silent --show-error --location --proto '=https' --proto-redir '=https' \
     --retry 3 --retry-all-errors --connect-timeout 15 --max-time 60 --max-filesize 8388608 \

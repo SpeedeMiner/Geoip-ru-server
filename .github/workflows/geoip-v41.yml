@@ -25,6 +25,9 @@ on:
       - ".github/scripts/v41_direct_admission.py"
       - ".github/data/v41-reviewed-reachable-cdn.tsv"
       - ".github/scripts/build_v41_srs.py"
+      - ".github/scripts/build_v41_mrs.py"
+      - ".github/scripts/verify_v41_snapshot_replay.py"
+      - ".github/scripts/audit_v41_cdn_public.py"
       - ".github/scripts/extract_ru_asn_prefixes_v41.py"
       - ".github/scripts/v41_asn_observations.py"
       - ".github/scripts/audit_v41_asn_regressions.py"
@@ -829,29 +832,28 @@ jobs:
             "$INPUT_PROVENANCE" . "$BLOCK_INPUTS_ARCHIVE"
           sha256sum "$BLOCK_INPUTS_ARCHIVE" > "$BLOCK_INPUTS_SHA"
 
-      - name: Compile and verify sing-box rule-sets from the Full DAT
+      - name: Compile and verify sing-box and RU-only mihomo rule-sets from the Full DAT
         shell: bash
         run: |
           set -euo pipefail
           compiler_dir="$(mktemp -d)"
           trap 'rm -rf "$compiler_dir"' EXIT
-          version="1.13.12"
-          archive="sing-box-${version}-linux-amd64.tar.gz"
-          digest="1540533adb3df24f5ad5f14b5c7ca3dbc2401b10a1c1eb278fcadcada47ec6c4"
-          curl --fail --location --silent --show-error --proto '=https' --proto-redir '=https' \
-            --retry 3 --connect-timeout 15 --max-time 120 --max-filesize 30000000 \
-            --output "$compiler_dir/$archive" "https://github.com/SagerNet/sing-box/releases/download/v${version}/$archive"
-          printf '%s  %s\n' "$digest" "$compiler_dir/$archive" | sha256sum -c -
-          tar -xzf "$compiler_dir/$archive" -C "$compiler_dir" "sing-box-${version}-linux-amd64/sing-box"
-          python3 .github/scripts/build_v41_srs.py --sing-box "$compiler_dir/sing-box-${version}-linux-amd64/sing-box" \
+          source .github/scripts/install_v41_rule_compilers.sh
+          install_v41_sing_box "$compiler_dir"
+          install_v41_mihomo "$compiler_dir"
+          python3 .github/scripts/build_v41_srs.py --sing-box "$compiler_dir/sing-box" \
             --metrics "$RUNNER_TEMP/v41-size-metrics.json"
           sha256sum -c geoip_RU.srs.sha256sum geoip_PRIVATE.srs.sha256sum
-          "$compiler_dir/sing-box-${version}-linux-amd64/sing-box" rule-set decompile --output "$compiler_dir/ru.json" geoip_RU.srs
-          "$compiler_dir/sing-box-${version}-linux-amd64/sing-box" rule-set decompile --output "$compiler_dir/private.json" geoip_PRIVATE.srs
+          "$compiler_dir/sing-box" rule-set decompile --output "$compiler_dir/ru.json" geoip_RU.srs
+          "$compiler_dir/sing-box" rule-set decompile --output "$compiler_dir/private.json" geoip_PRIVATE.srs
           python3 .github/scripts/validate_v41_routing_matrix.py --dat "$V41_OUTPUT_FILE" \
             --ru-srs-source "$compiler_dir/ru.json" --private-srs-source "$compiler_dir/private.json" \
             --fixtures .github/data/v41-routing-fixtures.tsv --telegram-feed "$TELEGRAM_OFFICIAL_INPUT" \
             --summary "$GITHUB_STEP_SUMMARY"
+          V41_TEST_MIHOMO="$compiler_dir/mihomo" V41_TEST_SING_BOX="$compiler_dir/sing-box" \
+            python3 -m unittest discover -s .github/scripts -p 'test_build_v41_mrs.py' -v
+          python3 .github/scripts/build_v41_mrs.py --mihomo "$compiler_dir/mihomo" \
+            --sing-box "$compiler_dir/sing-box" --output . --metrics "$RUNNER_TEMP/v41-size-metrics.json"
 
       - name: Exercise candidate rule sets in isolated clients
         if: github.event_name == 'pull_request'
@@ -930,6 +932,8 @@ jobs:
             geoip_RU.srs.sha256sum
             geoip_PRIVATE.srs
             geoip_PRIVATE.srs.sha256sum
+            geoip_RU.mrs
+            geoip_RU.mrs.sha256sum
             geoip_RU_BY_KZ_asn_bgp_prefixes.txt
             geoip_RU_BY_KZ_asn_manifest.txt
             geoip_RU_BY_KZ_asn_stats.txt
@@ -1152,6 +1156,8 @@ jobs:
             candidate/geoip_RU.srs.sha256sum
             candidate/geoip_PRIVATE.srs
             candidate/geoip_PRIVATE.srs.sha256sum
+            candidate/geoip_RU.mrs
+            candidate/geoip_RU.mrs.sha256sum
             candidate/geoip_RU_categories.txt
             candidate/geoip_RU_sources.txt
             candidate/geoip_RU_source_counts.txt
@@ -1249,6 +1255,8 @@ jobs:
             echo "jsDelivr DAT: https://cdn.jsdelivr.net/gh/${{ github.repository }}@cdn/geoip_RU.dat"
             echo "jsDelivr RU SRS: https://cdn.jsdelivr.net/gh/${{ github.repository }}@cdn/geoip_RU.srs"
             echo "jsDelivr PRIVATE SRS: https://cdn.jsdelivr.net/gh/${{ github.repository }}@cdn/geoip_PRIVATE.srs"
+            echo "jsDelivr RU MRS: https://cdn.jsdelivr.net/gh/${{ github.repository }}@cdn/geoip_RU.mrs"
+            echo "jsDelivr RU MRS SHA-256: https://cdn.jsdelivr.net/gh/${{ github.repository }}@cdn/geoip_RU.mrs.sha256sum"
           else
             echo "Use the versioned GitHub snapshot above until jsDelivr delivery is verified."
           fi

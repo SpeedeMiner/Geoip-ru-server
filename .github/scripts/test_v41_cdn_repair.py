@@ -7,7 +7,7 @@ import tempfile
 import unittest
 
 SCRIPTS = Path(__file__).resolve().parent
-FILES = ("geoip_RU.dat", "geoip_RU.srs", "geoip_PRIVATE.srs")
+FILES = ("geoip_RU.dat", "geoip_RU.srs", "geoip_PRIVATE.srs", "geoip_RU.mrs")
 
 
 class CdnRepairTests(unittest.TestCase):

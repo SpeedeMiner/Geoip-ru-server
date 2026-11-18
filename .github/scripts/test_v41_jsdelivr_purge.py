@@ -57,24 +57,25 @@ class JsdelivrPurgeTests(unittest.TestCase):
             result = subprocess.run(["bash", str(SCRIPT)], env=env, text=True, capture_output=True, check=False)
             seen = calls.read_text().splitlines()
             self.assertEqual(len(set(seen)), len(seen))
-            self.assertEqual(seen, ["geoip_RU.dat", "geoip_RU.srs", "geoip_PRIVATE.srs"])
+            self.assertEqual(seen, ["geoip_RU.dat", "geoip_RU.srs", "geoip_PRIVATE.srs",
+                                    "geoip_RU.mrs", "geoip_RU.mrs.sha256sum"])
             return result, summary.read_text()
 
     def test_accepts_only_confirmed_success_for_each_requested_path(self):
         result, summary = self.run_script({})
         self.assertEqual(result.returncode, 0, result.stderr)
-        self.assertIn("Confirmed: 3/3. Failed: 0.", summary)
+        self.assertIn("Confirmed: 5/5. Failed: 0.", summary)
         self.assertNotIn("Unconfirmed:", summary)
 
     def test_attempts_every_path_even_after_transport_and_api_errors(self):
         for failure in ("transport", "invalid", "wrong-path", "provider-failure",
                         "throttled", "pending", "empty-providers"):
             with self.subTest(failure=failure):
-                result, summary = self.run_script({"geoip_RU.dat": failure})
+                result, summary = self.run_script({"geoip_RU.mrs.sha256sum": failure})
                 self.assertEqual(result.returncode, 1)
-                self.assertIn("Confirmed: 2/3. Failed: 1.", summary)
+                self.assertIn("Confirmed: 4/5. Failed: 1.", summary)
                 self.assertIn("run-specific GitHub Release", summary)
-                self.assertIn("Unconfirmed: geoip_RU.dat", summary)
+                self.assertIn("Unconfirmed: geoip_RU.mrs.sha256sum", summary)
 
 
 if __name__ == "__main__":

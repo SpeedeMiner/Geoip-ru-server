@@ -40,8 +40,8 @@ class PublicationWorkflowTests(unittest.TestCase):
     def git(*args, cwd):
         return subprocess.check_output(["git", *args], cwd=cwd, text=True, stderr=subprocess.PIPE).strip()
 
-    def prepare_srs_assets(self):
-        for name in ("geoip_RU.srs", "geoip_PRIVATE.srs"):
+    def prepare_rule_set_assets(self):
+        for name in CORE[2::2]:
             (self.candidate / name).write_text(name, encoding="ascii")
             (self.candidate / (name + ".sha256sum")).write_text("fixture", encoding="ascii")
 
@@ -63,7 +63,7 @@ class PublicationWorkflowTests(unittest.TestCase):
             self.env[name] = filename
             (self.candidate / filename).write_text(filename, encoding="utf-8")
         (self.candidate / "geoip_RU_company_asn_registry.sha256sum").write_text("test", encoding="utf-8")
-        self.prepare_srs_assets()
+        self.prepare_rule_set_assets()
 
     def invoke(self, script, **env):
         return subprocess.run(["bash", str(SCRIPTS / script)], cwd=self.candidate,
@@ -385,6 +385,10 @@ class PublicationWorkflowTests(unittest.TestCase):
         self.assertIn("geoip_RU.dat", command)
         self.assertIn("geoip_RU.srs", command)
         self.assertIn("geoip_PRIVATE.srs", command)
+        self.assertIn("geoip_RU.mrs", command)
+        self.assertIn("geoip_RU.mrs.sha256sum", command)
+        self.assertNotIn("geoip_PRIVATE.mrs", command)
+        self.assertNotIn("geoip_PRIVATE.mrs.sha256sum", command)
         self.assertIn("--verify-tag", command)
         self.assertIn("--latest=false", command)
 

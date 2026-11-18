@@ -60,8 +60,11 @@ python3 .github/scripts/verify_v41_snapshot_replay.py \
 ```
 
 The comparison prints one JSON row per file with expected and observed
-size and SHA-256, or a read error. Exit 0 means all three binaries and all
-three checksum sidecars match. Exit 1 means at least one client file did
+size and SHA-256, or a read error. Schema 1 covers the historical DAT and two
+SRS files with their checksums. Schema 2 also requires the RU MRS and its
+checksum and rejects PRIVATE MRS. To regenerate MRS when replaying a schema 2
+snapshot, use the pinned compilers and CLI in the [MRS compatibility guide](V41_MIHOMO_MRS_COMPATIBILITY.md).
+Exit 0 means all required files match. Exit 1 means at least one client file did
 not match or could not be read. Exit 2 means invalid manifest, malformed
 invocation, or unsuccessful restore. Failure does not replace existing
 files. A fresh quality report and policy manifest can have different
