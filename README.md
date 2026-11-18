@@ -18,6 +18,8 @@
 sha256sum -c geoip_RU.dat.sha256sum geoip_RU.srs.sha256sum geoip_PRIVATE.srs.sha256sum
 ```
 
+**mihomo `.mrs` пока не публикуется.** Проверенная версия mihomo теряет IPv6-префикс `::ffff:0:0/96` из `PRIVATE` при обратной конвертации и добавляет на его месте `0.0.0.0/0`. [Проверка совместимости и воспроизведение](docs/V41_MIHOMO_MRS_COMPATIBILITY.md)
+
 ## 2. Источники данных и кураторский вклад
 
 [Каталог GitHub-источников](.github/data/v41-upstream-sources.json) определяет репозитории и файлы. Для каждого источника сборка разрешает один commit или релиз, проверяет размер и идентичность Git blob или digest release asset. SHA-256 принятых байтов и точный URL фиксируются в provenance. У v2fly дополнительно сверяется опубликованный sidecar.
