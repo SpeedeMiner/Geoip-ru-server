@@ -1,9 +1,9 @@
 {
   "schema": 2,
-  "generated_at": "2026-11-18T06:20:24.542488+00:00",
-  "base_v37_sha256": "9d16e27aa256e7ee2330bb3553e840732bf0f3cac5932b82c945cb25f97c707e",
-  "output_sha256": "7e1d3221f1938260d83f0676cf13739a6fda9ef7647e6d1d1b867a3fcbd407db",
-  "output_bytes": 513071,
+  "generated_at": "2026-11-18T12:17:47.208620+00:00",
+  "base_v37_sha256": "178465c815ae6f7c488d0adae6faebb92c0ab3ae3790fbf0b7ff2369bf46fd86",
+  "output_sha256": "a7d7152a80dc12e5b4fc57e2cacc4b06066e70500c38193d121e8dbe217de537",
+  "output_bytes": 513051,
   "sources": {
     "kyoresuas-standard": {
       "repository": "kyoresuas/ru-direct",
@@ -37,7 +37,7 @@
       "license": "MIT"
     }
   },
-  "input_provenance_sha256": "5b0b954f4a6c4a36058e696d7f412942d8411e951be107a8547a8d6e9b16da85",
+  "input_provenance_sha256": "549f0bdfc5c9de2e291278a5bbf555a9aa76eec6064eef31d563ec1e7a3345ee",
   "telegram_official": {
     "cidrs": 14,
     "input_sha256": "3ecd072cedf72eceee6961b18a51e37f905d5ce4a656a5d24cf5fea63e6ec651"
@@ -218,10 +218,10 @@
       "raw_files": [
         "w1zardz-ru-ipv4.txt"
       ],
-      "raw_rows": 950,
-      "valid_rows": 950,
+      "raw_rows": 949,
+      "valid_rows": 949,
       "invalid_rows": 0,
-      "admitted_input_cidrs": 943,
+      "admitted_input_cidrs": 942,
       "excluded_ipv4_addresses": 262,
       "admission_exclusions_sha256": "55814154a37db3c194bf23cd7347840079bd7838cd77fd9c8b47a2d0ff702e50"
     },
@@ -415,16 +415,16 @@
     "potential_additional_proxy_ipv6_addresses": 0
   },
   "base_v37_address_space": {
-    "ipv4": 52675859,
-    "ipv6": 1193234213180675585928809431433216
+    "ipv4": 52677395,
+    "ipv6": 1194184970473659871813998754136064
   },
   "final_v41_address_space": {
-    "ipv4": 53419410,
+    "ipv4": 53418898,
     "ipv6": 1206589405222124470839229552787456
   },
   "new_after_policy": {
-    "ipv4": 743551,
-    "ipv6": 13355196877152163368936820178944
+    "ipv4": 741503,
+    "ipv6": 12404439584167877483747497476096
   },
   "safety": {
     "this_builder_modifies_production_main": false,
@@ -445,7 +445,7 @@
     "candidate_status": "REVIEW"
   },
   "input_sha256": {
-    "base_v37_geoip": "9d16e27aa256e7ee2330bb3553e840732bf0f3cac5932b82c945cb25f97c707e",
+    "base_v37_geoip": "178465c815ae6f7c488d0adae6faebb92c0ab3ae3790fbf0b7ff2369bf46fd86",
     "hydra_geoip": "d7bce4eadbc63df4a3f4a649725a9649151f059bfa4d8502e95d2f4b6ff30add",
     "regional_rir_inventory": "99f62c66413ba8007bd7783bd207e53123a5fe1735076737b0aa71794ad9e548",
     "regional_admission_exclusions": "9617c916f1ed7a4c4a45a1be76d60a24385fcf814c509546d555cb69b5244f1a",
@@ -456,7 +456,7 @@
     "kyoresuas_standard_ipv4": "7cd5b10c5b871beef7eb79b530f672fa6fc01aa24b6528cd2499218dd3127441",
     "kyoresuas_standard_ipv6": "ad7bf0de43a7f1cf3b4c5e9ab996b4094a9fc8c96ec836af52125a42d0011079",
     "kyoresuas_services_json": "58db13672a5619cb299d6c3223b93155d219ec5e6d98f25fa0ef6cb41f266c87",
-    "w1zardz_direct": "77c5b3968bdd4436e9ddda4ec5325cb994b3ef102c90748ad0e6745b203ae9cb",
+    "w1zardz_direct": "83baf3d23b9750fb6040203a48083657b40db7238b00144053b1d67d420392a0",
     "w1zardz_gaming_exclusions": "55814154a37db3c194bf23cd7347840079bd7838cd77fd9c8b47a2d0ff702e50",
     "hxehex_ipwhitelist": "8a3814375701decd9787718fc3ae769187aa4714e2a1b8fa5d96f94ad2bd4da0",
     "escapingworm_operator_whitelist": "cb36cdc22acd9d177a1402b074f5180f1a3286cd856fb6aba7afbf6333a795e4",

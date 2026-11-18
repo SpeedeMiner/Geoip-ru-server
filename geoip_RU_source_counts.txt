@@ -2,7 +2,7 @@ SOURCE	RU_CATEGORY_CIDR_INPUTS	CANDIDATE_CIDR_INPUTS	PRIVATE_CIDR_INPUTS	OTHER_E
 hydra	0	43907	0	0	43907
 grimbird	25325	0	0	0	25325
 digne	25265	25265	0	0	50530
-davoyan	40466	88	0	0	40554
+davoyan	40473	88	0	0	40561
 golukon	13171	0	0	0	13171
 loyalsoldier	25265	0	0	0	25265
 loyalsoldier-by	759	0	0	0	759
@@ -10,11 +10,11 @@ v2fly	25559	0	0	0	25559
 loyalsoldier-private	0	0	28	0	28
 kirill	0	32839	0	0	32839
 hxehex-whitelist	0	30228	0	0	30228
-w1zardz-ru	0	950	0	0	950
+w1zardz-ru	0	949	0	0	949
 ru-asn-bgp	0	0	0	23651	23651
 rir-ru	0	0	0	13687	13687
 global-bgp	0	0	0	521224	521224
 iana-non-global	0	0	33	0	33
 iana-global-exceptions	0	0	0	14	14
 blocked-direct-exclusions	0	0	0	200967	200967
-TOTAL	155810	133277	61	759543	1048691
+TOTAL	155817	133276	61	759543	1048697

@@ -1,7 +1,7 @@
 GeoIP DIRECT RU+BY+KZ CLIENT v41 — provenance-aware IP exclusions
-Generated UTC: 2026-11-18T06:20:24.474046+00:00
-Base v37 GeoIP SHA-256: 9d16e27aa256e7ee2330bb3553e840732bf0f3cac5932b82c945cb25f97c707e
-v41 GeoIP SHA-256: 7e1d3221f1938260d83f0676cf13739a6fda9ef7647e6d1d1b867a3fcbd407db
+Generated UTC: 2026-11-18T12:17:47.130832+00:00
+Base v37 GeoIP SHA-256: 178465c815ae6f7c488d0adae6faebb92c0ab3ae3790fbf0b7ff2369bf46fd86
+v41 GeoIP SHA-256: a7d7152a80dc12e5b4fc57e2cacc4b06066e70500c38193d121e8dbe217de537
 
 POLICY
 - Only reviewed exact foreign conflicts constrain geographic admission; explicit Hydra DIRECT/WHITELIST or a measured CDN IP can survive.
@@ -21,16 +21,16 @@ POLICY
 - IP GeoIP cannot distinguish unrelated tenants on shared IPs; broad RKN summaries can overblock co-resident services.
 
 BASELINE V37
-RU CIDRs: 78394
-RU IPv4 addresses: 52675859
-RU IPv6 addresses: 1193234213180675585928809431433216
+RU CIDRs: 78395
+RU IPv4 addresses: 52677395
+RU IPv6 addresses: 1194184970473659871813998754136064
 
 V41 FINAL
-RU CIDRs: 32860
-RU IPv4 addresses: 53419410
+RU CIDRs: 32858
+RU IPv4 addresses: 53418898
 RU IPv6 addresses: 1206589405222124470839229552787456
-New IPv4 addresses vs v37 after PRIVATE/RKN/company-ASN exception: 743551
-New IPv6 addresses vs v37 after PRIVATE/RKN/company-ASN exception: 13355196877152163368936820178944
+New IPv4 addresses vs v37 after PRIVATE/RKN/company-ASN exception: 741503
+New IPv6 addresses vs v37 after PRIVATE/RKN/company-ASN exception: 12404439584167877483747497476096
 PRIVATE IPv4 addresses: 592708862
 PRIVATE IPv6 addresses: 4325545831231176725068219651071148031
 
@@ -49,7 +49,7 @@ Hydra is routing-intent, not a geolocation or corporate attribution; it does not
 
 SERVICE DIRECT INPUTS
 Kyoresuas Standard services represented in service catalog: 90
-W1ZARDZ unique service/direct prefixes: 943
+W1ZARDZ unique service/direct prefixes: 942
 IPv4 addresses removed from the W1ZARDZ input by the gaming policy: 262
 Escapingworm operator whitelist prefixes: 88
 Literal service hosts (resolver protection only): 1115
@@ -90,7 +90,7 @@ FILES
 - geoip_RU_v41_blocked_ip_exclusions.txt: effective non-corporate blocked set applied to v41.
 - geoip_RU_company_asn_bgp_prefixes.txt: exact prefixes originated by the curated corporate company-ASN allowlist.
 
-SHA-256 output: 7e1d3221f1938260d83f0676cf13739a6fda9ef7647e6d1d1b867a3fcbd407db
+SHA-256 output: a7d7152a80dc12e5b4fc57e2cacc4b06066e70500c38193d121e8dbe217de537
 
 PRE_PUBLICATION_V41_HARD_POLICY_GATE
 Status: PASS

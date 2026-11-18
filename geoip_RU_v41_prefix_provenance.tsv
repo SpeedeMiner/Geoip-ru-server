@@ -1190,7 +1190,6 @@ w1zardz-service-direct						37.220.161.51/32
 w1zardz-service-direct						37.220.161.64/32
 w1zardz-service-direct						37.220.161.117/32
 w1zardz-service-direct						37.220.161.124/32
-w1zardz-service-direct						37.220.161.127/32
 w1zardz-service-direct						37.220.161.129/32
 w1zardz-service-direct						37.220.161.200/32
 w1zardz-service-direct						37.220.161.212/32
@@ -1246,6 +1245,12 @@ w1zardz-service-direct						46.235.186.77/32
 w1zardz-service-direct						46.235.186.164/32
 w1zardz-service-direct						46.235.186.238/32
 w1zardz-service-direct						46.235.186.254/32
+w1zardz-service-direct						46.235.188.171/32
+w1zardz-service-direct						46.235.188.172/32
+w1zardz-service-direct						46.235.188.251/32
+w1zardz-service-direct						46.235.189.44/32
+w1zardz-service-direct						46.235.189.79/32
+w1zardz-service-direct						46.235.189.201/32
 w1zardz-service-direct						46.243.177.102/31
 w1zardz-service-direct						51.250.120.146/32
 w1zardz-service-direct						51.250.123.126/32
@@ -1280,6 +1285,7 @@ w1zardz-service-direct						78.41.111.199/32
 w1zardz-service-direct						78.41.111.224/32
 w1zardz-service-direct						78.108.80.125/32
 w1zardz-service-direct						78.155.198.17/32
+w1zardz-service-direct						78.155.198.113/32
 w1zardz-service-direct						78.155.198.133/32
 w1zardz-service-direct						78.159.248.0/23
 w1zardz-service-direct						78.159.251.0/24
@@ -1490,16 +1496,14 @@ w1zardz-service-direct						92.53.96.195/32
 w1zardz-service-direct						93.88.179.201/32
 w1zardz-service-direct						93.91.8.37/32
 w1zardz-service-direct						93.92.113.12/32
-w1zardz-service-direct						93.93.88.21/32
-w1zardz-service-direct						93.93.89.38/32
 w1zardz-service-direct						93.93.89.134/32
-w1zardz-service-direct						93.93.89.138/32
 w1zardz-service-direct						93.93.89.154/32
 w1zardz-service-direct						93.93.89.173/32
-w1zardz-service-direct						93.93.89.201/32
 w1zardz-service-direct						93.93.91.63/32
-w1zardz-service-direct						93.93.91.88/32
+w1zardz-service-direct						93.93.91.103/32
 w1zardz-service-direct						93.93.91.107/32
+w1zardz-service-direct						93.93.91.187/32
+w1zardz-service-direct						93.93.91.201/32
 w1zardz-service-direct						93.93.91.220/32
 w1zardz-service-direct						93.95.101.202/32
 w1zardz-service-direct						93.158.128.0/18
@@ -1564,7 +1568,7 @@ w1zardz-service-direct						95.181.177.110/31
 w1zardz-service-direct						95.181.181.29/32
 w1zardz-service-direct						95.181.181.107/32
 w1zardz-service-direct						95.181.181.126/32
-w1zardz-service-direct						95.181.182.185/32
+w1zardz-service-direct						95.181.182.182/32
 w1zardz-service-direct						95.213.0.0/17
 w1zardz-service-direct						95.213.136.198/32
 w1zardz-service-direct						95.213.217.168/32
@@ -1608,8 +1612,6 @@ w1zardz-service-direct						130.193.32.0/19
 w1zardz-service-direct						132.243.178.72/32
 w1zardz-service-direct						135.106.158.74/32
 w1zardz-service-direct						135.106.182.253/32
-w1zardz-service-direct						136.234.9.153/32
-w1zardz-service-direct						136.234.9.154/32
 w1zardz-service-direct						138.16.192.0/20
 w1zardz-service-direct						138.16.240.0/20
 w1zardz-service-direct						141.8.128.0/18
@@ -1631,6 +1633,7 @@ w1zardz-service-direct						168.113.128.0/20
 w1zardz-service-direct						168.113.255.155/32
 w1zardz-service-direct						172.67.147.212/32
 w1zardz-service-direct						176.53.226.158/32
+w1zardz-service-direct						176.57.65.48/32
 w1zardz-service-direct						176.99.14.23/32
 w1zardz-service-direct						176.101.88.0/24
 w1zardz-service-direct						176.101.90.0/24
@@ -1837,7 +1840,6 @@ w1zardz-service-direct						185.200.242.8/32
 w1zardz-service-direct						185.206.167.35/32
 w1zardz-service-direct						185.206.167.50/32
 w1zardz-service-direct						185.215.4.13/32
-w1zardz-service-direct						185.215.4.66/32
 w1zardz-service-direct						185.216.207.222/32
 w1zardz-service-direct						185.226.52.0/22
 w1zardz-service-direct						185.241.192.0/22
@@ -1962,7 +1964,6 @@ w1zardz-service-direct						195.242.83.14/32
 w1zardz-service-direct						195.245.206.101/32
 w1zardz-service-direct						195.246.218.77/32
 w1zardz-service-direct						195.246.246.0/24
-w1zardz-service-direct						212.11.151.57/32
 w1zardz-service-direct						212.11.155.134/32
 w1zardz-service-direct						212.11.155.165/32
 w1zardz-service-direct						212.11.155.166/31
@@ -2006,6 +2007,8 @@ w1zardz-service-direct						212.193.146.235/32
 w1zardz-service-direct						212.193.147.29/32
 w1zardz-service-direct						212.193.147.121/32
 w1zardz-service-direct						212.193.147.144/31
+w1zardz-service-direct						212.193.147.201/32
+w1zardz-service-direct						212.193.147.203/32
 w1zardz-service-direct						212.193.147.211/32
 w1zardz-service-direct						212.193.147.238/32
 w1zardz-service-direct						212.193.152.39/32
@@ -2017,12 +2020,9 @@ w1zardz-service-direct						212.193.152.97/32
 w1zardz-service-direct						212.193.152.137/32
 w1zardz-service-direct						212.193.152.147/32
 w1zardz-service-direct						212.193.152.165/32
-w1zardz-service-direct						212.193.152.230/32
 w1zardz-service-direct						212.193.152.252/32
-w1zardz-service-direct						212.193.153.0/32
 w1zardz-service-direct						212.193.153.14/32
 w1zardz-service-direct						212.193.153.24/32
-w1zardz-service-direct						212.193.153.34/32
 w1zardz-service-direct						212.193.153.45/32
 w1zardz-service-direct						212.193.153.124/32
 w1zardz-service-direct						212.193.153.131/32
@@ -2033,9 +2033,9 @@ w1zardz-service-direct						212.193.153.154/32
 w1zardz-service-direct						212.193.155.0/24
 w1zardz-service-direct						212.193.156.205/32
 w1zardz-service-direct						212.193.156.238/32
-w1zardz-service-direct						212.193.156.251/32
 w1zardz-service-direct						212.193.157.64/32
 w1zardz-service-direct						212.193.157.88/32
+w1zardz-service-direct						212.193.157.127/32
 w1zardz-service-direct						212.193.157.189/32
 w1zardz-service-direct						212.193.157.209/32
 w1zardz-service-direct						212.193.157.252/32
@@ -2059,7 +2059,6 @@ w1zardz-service-direct						213.59.235.104/32
 w1zardz-service-direct						213.59.253.6/31
 w1zardz-service-direct						213.59.253.8/32
 w1zardz-service-direct						213.59.254.6/31
-w1zardz-service-direct						213.59.254.8/32
 w1zardz-service-direct						213.87.50.0/23
 w1zardz-service-direct						213.165.196.135/32
 w1zardz-service-direct						213.165.196.237/32
@@ -210566,7 +210565,6 @@ verified-service-exact-hosts	Literal service host (resolver protection only)				
 verified-service-exact-hosts	Literal service host (resolver protection only)					37.220.161.64/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					37.220.161.117/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					37.220.161.124/32
-verified-service-exact-hosts	Literal service host (resolver protection only)					37.220.161.127/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					37.220.161.129/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					37.220.161.200/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					37.220.161.212/32
@@ -210621,6 +210619,12 @@ verified-service-exact-hosts	Literal service host (resolver protection only)				
 verified-service-exact-hosts	Literal service host (resolver protection only)					46.235.186.164/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					46.235.186.238/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					46.235.186.254/32
+verified-service-exact-hosts	Literal service host (resolver protection only)					46.235.188.171/32
+verified-service-exact-hosts	Literal service host (resolver protection only)					46.235.188.172/32
+verified-service-exact-hosts	Literal service host (resolver protection only)					46.235.188.251/32
+verified-service-exact-hosts	Literal service host (resolver protection only)					46.235.189.44/32
+verified-service-exact-hosts	Literal service host (resolver protection only)					46.235.189.79/32
+verified-service-exact-hosts	Literal service host (resolver protection only)					46.235.189.201/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					46.243.227.60/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					51.250.15.93/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					51.250.34.125/32
@@ -210679,6 +210683,7 @@ verified-service-exact-hosts	Literal service host (resolver protection only)				
 verified-service-exact-hosts	Literal service host (resolver protection only)					78.41.111.224/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					78.108.80.125/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					78.155.198.17/32
+verified-service-exact-hosts	Literal service host (resolver protection only)					78.155.198.113/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					78.155.198.133/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					79.143.30.16/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					80.68.253.14/32
@@ -210896,16 +210901,14 @@ verified-service-exact-hosts	Literal service host (resolver protection only)				
 verified-service-exact-hosts	Literal service host (resolver protection only)					93.77.162.59/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					93.88.179.201/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					93.91.8.37/32
-verified-service-exact-hosts	Literal service host (resolver protection only)					93.93.88.21/32
-verified-service-exact-hosts	Literal service host (resolver protection only)					93.93.89.38/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					93.93.89.134/32
-verified-service-exact-hosts	Literal service host (resolver protection only)					93.93.89.138/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					93.93.89.154/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					93.93.89.173/32
-verified-service-exact-hosts	Literal service host (resolver protection only)					93.93.89.201/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					93.93.91.63/32
-verified-service-exact-hosts	Literal service host (resolver protection only)					93.93.91.88/32
+verified-service-exact-hosts	Literal service host (resolver protection only)					93.93.91.103/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					93.93.91.107/32
+verified-service-exact-hosts	Literal service host (resolver protection only)					93.93.91.187/32
+verified-service-exact-hosts	Literal service host (resolver protection only)					93.93.91.201/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					93.93.91.220/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					93.95.98.77/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					93.95.101.202/32
@@ -211019,8 +211022,6 @@ verified-service-exact-hosts	Literal service host (resolver protection only)				
 verified-service-exact-hosts	Literal service host (resolver protection only)					132.243.178.72/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					135.106.158.74/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					135.106.182.253/32
-verified-service-exact-hosts	Literal service host (resolver protection only)					136.234.9.153/32
-verified-service-exact-hosts	Literal service host (resolver protection only)					136.234.9.154/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					136.234.78.64/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					138.16.200.202/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					138.16.200.226/32
@@ -211052,6 +211053,7 @@ verified-service-exact-hosts	Literal service host (resolver protection only)				
 verified-service-exact-hosts	Literal service host (resolver protection only)					161.104.46.191/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					168.113.255.155/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					176.53.226.158/32
+verified-service-exact-hosts	Literal service host (resolver protection only)					176.57.65.48/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					176.57.65.88/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					176.57.65.177/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					176.57.67.55/32
@@ -211266,7 +211268,6 @@ verified-service-exact-hosts	Literal service host (resolver protection only)				
 verified-service-exact-hosts	Literal service host (resolver protection only)					185.215.4.13/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					185.215.4.40/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					185.215.4.45/32
-verified-service-exact-hosts	Literal service host (resolver protection only)					185.215.4.66/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					185.216.207.222/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					185.243.86.2/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					185.243.86.7/32
@@ -211394,7 +211395,6 @@ verified-service-exact-hosts	Literal service host (resolver protection only)				
 verified-service-exact-hosts	Literal service host (resolver protection only)					195.242.83.14/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					195.245.206.101/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					195.246.218.77/32
-verified-service-exact-hosts	Literal service host (resolver protection only)					212.11.151.57/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					212.11.155.134/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					212.11.155.165/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					212.20.1.22/32
@@ -211441,6 +211441,8 @@ verified-service-exact-hosts	Literal service host (resolver protection only)				
 verified-service-exact-hosts	Literal service host (resolver protection only)					212.193.146.235/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					212.193.147.29/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					212.193.147.121/32
+verified-service-exact-hosts	Literal service host (resolver protection only)					212.193.147.201/32
+verified-service-exact-hosts	Literal service host (resolver protection only)					212.193.147.203/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					212.193.147.211/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					212.193.147.238/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					212.193.152.39/32
@@ -211452,12 +211454,9 @@ verified-service-exact-hosts	Literal service host (resolver protection only)				
 verified-service-exact-hosts	Literal service host (resolver protection only)					212.193.152.137/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					212.193.152.147/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					212.193.152.165/32
-verified-service-exact-hosts	Literal service host (resolver protection only)					212.193.152.230/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					212.193.152.252/32
-verified-service-exact-hosts	Literal service host (resolver protection only)					212.193.153.0/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					212.193.153.14/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					212.193.153.24/32
-verified-service-exact-hosts	Literal service host (resolver protection only)					212.193.153.34/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					212.193.153.45/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					212.193.153.124/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					212.193.153.131/32
@@ -211467,9 +211466,9 @@ verified-service-exact-hosts	Literal service host (resolver protection only)				
 verified-service-exact-hosts	Literal service host (resolver protection only)					212.193.153.154/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					212.193.156.205/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					212.193.156.238/32
-verified-service-exact-hosts	Literal service host (resolver protection only)					212.193.156.251/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					212.193.157.64/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					212.193.157.88/32
+verified-service-exact-hosts	Literal service host (resolver protection only)					212.193.157.127/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					212.193.157.189/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					212.193.157.209/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					212.193.157.252/32
@@ -212149,8 +212148,6 @@ verified-service-resolver-protected	Verified service resolver protection					130
 verified-service-resolver-protected	Verified service resolver protection					132.243.178.72/32
 verified-service-resolver-protected	Verified service resolver protection					135.106.158.74/32
 verified-service-resolver-protected	Verified service resolver protection					135.106.182.253/32
-verified-service-resolver-protected	Verified service resolver protection					136.234.9.153/32
-verified-service-resolver-protected	Verified service resolver protection					136.234.9.154/32
 verified-service-resolver-protected	Verified service resolver protection					136.234.78.64/32
 verified-service-resolver-protected	Verified service resolver protection					138.16.192.0/20
 verified-service-resolver-protected	Verified service resolver protection					138.16.240.0/20
@@ -212171,6 +212168,7 @@ verified-service-resolver-protected	Verified service resolver protection					168
 verified-service-resolver-protected	Verified service resolver protection					168.113.248.0/24
 verified-service-resolver-protected	Verified service resolver protection					168.113.255.155/32
 verified-service-resolver-protected	Verified service resolver protection					176.53.226.158/32
+verified-service-resolver-protected	Verified service resolver protection					176.57.65.48/32
 verified-service-resolver-protected	Verified service resolver protection					176.57.65.88/32
 verified-service-resolver-protected	Verified service resolver protection					176.57.65.177/32
 verified-service-resolver-protected	Verified service resolver protection					176.57.67.55/32
@@ -212333,7 +212331,6 @@ verified-service-resolver-protected	Verified service resolver protection					185
 verified-service-resolver-protected	Verified service resolver protection					185.215.4.13/32
 verified-service-resolver-protected	Verified service resolver protection					185.215.4.40/32
 verified-service-resolver-protected	Verified service resolver protection					185.215.4.45/32
-verified-service-resolver-protected	Verified service resolver protection					185.215.4.66/32
 verified-service-resolver-protected	Verified service resolver protection					185.216.207.222/32
 verified-service-resolver-protected	Verified service resolver protection					185.226.52.0/22
 verified-service-resolver-protected	Verified service resolver protection					185.241.192.0/22
@@ -212553,6 +212550,8 @@ verified-service-resolver-protected	Verified service resolver protection					212
 verified-service-resolver-protected	Verified service resolver protection					212.193.147.29/32
 verified-service-resolver-protected	Verified service resolver protection					212.193.147.121/32
 verified-service-resolver-protected	Verified service resolver protection					212.193.147.144/31
+verified-service-resolver-protected	Verified service resolver protection					212.193.147.201/32
+verified-service-resolver-protected	Verified service resolver protection					212.193.147.203/32
 verified-service-resolver-protected	Verified service resolver protection					212.193.147.211/32
 verified-service-resolver-protected	Verified service resolver protection					212.193.147.238/32
 verified-service-resolver-protected	Verified service resolver protection					212.193.152.0/23
