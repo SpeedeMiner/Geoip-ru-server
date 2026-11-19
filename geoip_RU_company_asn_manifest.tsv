@@ -29,7 +29,7 @@ AS31163	MegaFon	PJSC MegaFon (MF-KAVKAZ-AS)	https://rdap.db.ripe.net/autnum/3116
 AS31174	Raiffeisenbank RU	AO Raiffeisenbank	https://rdap.db.ripe.net/autnum/31174	yes	RU	2	0	yes	no
 AS31200	ER-Telecom	Novotelecom Ltd (Electronic City, subsidiary)	https://rdap.db.ripe.net/autnum/31200	yes	RU	9	1	yes	no
 AS31483	ER-Telecom	JSC ER-Telecom Holding (ERTELECOM-DC-AS)	https://rdap.db.ripe.net/autnum/31483	yes	RU	8	5	yes	no
-AS34879	NGENIX	NGENIX	https://asnbase.com/countries/ru?type=content	yes	RU	28	0	yes	no
+AS34879	NGENIX	NGENIX	https://asnbase.com/countries/ru?type=content	yes	RU	30	0	yes	no
 AS35022	Gazprombank	Gazprombank JSC	https://2ip.io/as/35022/	yes	RU	2	0	yes	no
 AS35237	Sberbank	Sberbank of Russia PJSC	https://bgp.he.net/AS35237	yes	RU	8	1	yes	no
 AS35298	MegaFon	PJSC MegaFon (MF-MGSM-AS)	https://rdap.db.ripe.net/autnum/35298	yes	RU	4	1	yes	no
@@ -66,7 +66,7 @@ AS49238	Dr.Web	Doctor Web LLC	https://rdap.db.ripe.net/autnum/49238	yes	RU	1	0	y
 AS49505	Selectel	JSC Selectel	https://bgp.he.net/AS49505	yes	RU	189	2	yes	no
 AS49675	SKB Kontur	SKB Kontur Production JSC	https://www.peeringdb.com/asn/49675	yes	RU	3	1	yes	no
 AS50339	NSPK	JSC National System of Payment Cards	https://rdap.db.ripe.net/autnum/50339	yes	RU	2	0	yes	no
-AS50340	Selectel	JSC Selectel MSK	https://bgp.he.net/AS50340	yes	RU	287	10	yes	no
+AS50340	Selectel	JSC Selectel MSK	https://bgp.he.net/AS50340	yes	RU	287	11	yes	no
 AS50464	MKB	Credit Bank of Moscow PJSC	https://rdap.db.ripe.net/autnum/50464	yes	RU	1	0	yes	no
 AS51115	Qrator	HLL LLC (High Load Lab / Qrator)	https://bgp.tools/as/51115	yes	RU	7	1	yes	no
 AS51136	Sovcombank	PJSC Sovkombank (HCFBank legacy origin)	https://rdap.db.ripe.net/autnum/51136	yes	RU	1	0	yes	no
@@ -109,5 +109,5 @@ AS212066	Yandex	Buyuk Reklam Cozumleri LLC (Yandex Turkey; origin ASN, not upstr
 AS213533	Beget	Beget LLC (regional origin)	https://rdap.db.ripe.net/autnum/213533	yes	RU	2	0	yes	no
 AS213952	Yandex	Yandex.Telecom LLC	https://ipgeolocation.io/browse/asn/AS213952	no	-	0	0	yes	no
 AS214822	RuVDS	MT Finance LLC	https://rdap.db.ripe.net/autnum/214822	yes	RU	62	0	yes	no
-AS215013	Yandex	Yandex.Cloud LLC (YCCDN)	https://ipctl.io/as/215013	yes	RU	7	2	yes	no
+AS215013	Yandex	Yandex.Cloud LLC (YCCDN)	https://ipctl.io/as/215013	yes	RU	6	2	yes	no
 AS215109	Yandex	YANDEX LLC (not visible in global BGP since 2025-11-13)	https://bgp.he.net/AS215109	no	-	0	0	yes	no

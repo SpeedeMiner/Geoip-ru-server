@@ -2,7 +2,7 @@ SOURCE	STATUS	DATA_LINES	VALID_UNIQUE_PREFIXES	APPROVED_PREFIXES	REVIEW_PREFIXES
 antifilter-ip.lst	AVAILABLE	50620	50620	50620	0	0
 antifilter-ipresolve.lst	AVAILABLE	154198	154198	154157	41	0
 antifilter-subnet.lst	AVAILABLE	69	69	68	1	0
-community-antifilter-community.lst	AVAILABLE	933	933	0	933	0
+community-antifilter-community.lst	AVAILABLE	942	942	0	942	0
 re-filter-ipsum.lst	AVAILABLE	27622	27602	0	27602	0
 v38-approved-baseline	AVAILABLE	193307	193307	193307	0	0
 v38-historical-ip.lst	AVAILABLE	50830	50830	50830	0	0
@@ -11,4 +11,4 @@ v38-historical-subnet.lst	AVAILABLE	71	71	71	0	0
 reviewed-rkn-ip-record	AVAILABLE	746	746	746	0	0
 runetfreedom-static-telegram	CURATED	12	12	12	0	0
 TOTAL_APPROVED_UNIQUE	-	-	200967	200967	-	-
-TOTAL_REVIEW_ROWS	-	-	-	0	28577	-
+TOTAL_REVIEW_ROWS	-	-	-	0	28586	-
