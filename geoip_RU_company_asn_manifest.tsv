@@ -29,7 +29,7 @@ AS31163	MegaFon	PJSC MegaFon (MF-KAVKAZ-AS)	https://rdap.db.ripe.net/autnum/3116
 AS31174	Raiffeisenbank RU	AO Raiffeisenbank	https://rdap.db.ripe.net/autnum/31174	yes	RU	2	0	yes	no
 AS31200	ER-Telecom	Novotelecom Ltd (Electronic City, subsidiary)	https://rdap.db.ripe.net/autnum/31200	yes	RU	9	1	yes	no
 AS31483	ER-Telecom	JSC ER-Telecom Holding (ERTELECOM-DC-AS)	https://rdap.db.ripe.net/autnum/31483	yes	RU	8	5	yes	no
-AS34879	NGENIX	NGENIX	https://asnbase.com/countries/ru?type=content	yes	RU	30	0	yes	no
+AS34879	NGENIX	NGENIX	https://asnbase.com/countries/ru?type=content	yes	RU	32	0	yes	no
 AS35022	Gazprombank	Gazprombank JSC	https://2ip.io/as/35022/	yes	RU	2	0	yes	no
 AS35237	Sberbank	Sberbank of Russia PJSC	https://bgp.he.net/AS35237	yes	RU	8	1	yes	no
 AS35298	MegaFon	PJSC MegaFon (MF-MGSM-AS)	https://rdap.db.ripe.net/autnum/35298	yes	RU	4	1	yes	no
@@ -87,8 +87,8 @@ AS197068	Qrator	HLL LLC (High Load Lab / Qrator DDoS mitigation)	https://bgp.too
 AS197258	Sovcombank	PJSC Sovkombank	https://rdap.db.ripe.net/autnum/197258	yes	RU	3	0	yes	no
 AS197482	2GIS	DoubleGIS LLC	https://bgp.tools/as/197482	yes	RU	2	0	yes	no
 AS197695	REG.RU	Domain names registrar REG.RU Ltd	https://rdap.db.ripe.net/autnum/197695	yes	RU	150	14	yes	no
-AS198610	Beget	Beget LLC	https://rdap.db.ripe.net/autnum/198610	yes	RU	77	1	yes	no
-AS200107	Kaspersky	Kaspersky Lab Switzerland GmbH (global KSN/update origin ASN)	https://bgp.tools/as/200107	yes	CH	15	16	no	no
+AS198610	Beget	Beget LLC	https://rdap.db.ripe.net/autnum/198610	yes	RU	80	1	yes	no
+AS200107	Kaspersky	Kaspersky Lab Switzerland GmbH (global KSN/update origin ASN)	https://bgp.tools/as/200107	yes	CH	16	15	no	no
 AS200350	Yandex	Yandex.Cloud LLC	https://wbdt.ru/AS200350	yes	RU	34	2	yes	no
 AS201012	Avito	KEH eCommerce LLC (Avito)	https://bgp.tools/as/201012	yes	RU	4	0	yes	no
 AS201512	Wildberries	LLC Wildberries (CDN ASN)	https://iamroot.tech/asndatabase/?search=AS201512	yes	RU	4	1	yes	no
@@ -98,12 +98,12 @@ AS205638	T-Bank	TBANK JSC (TM-AS-MSK)	https://2ip.io/ru/as/205638/	yes	RU	5	0	ye
 AS207207	Yandex	Yandex.OFD LLC	https://whois.ipip.net/AS207207	yes	RU	1	1	yes	no
 AS207304	Yandex	Y. Izdeu men Jarnama LLP (Yandex Kazakhstan)	https://www.iplocate.io/AS207304	yes	KZ	1	1	no	yes
 AS207353	RUTUBE	Ruform LLC	https://rdap.db.ripe.net/autnum/207353	yes	RU	11	0	yes	no
-AS208677	Cloud.ru	Cloud Technologies LLC / Cloud.ru	https://asn.ipinfo.app/AS208677	yes	RU	96	1	yes	no
+AS208677	Cloud.ru	Cloud Technologies LLC / Cloud.ru	https://asn.ipinfo.app/AS208677	yes	RU	97	1	yes	no
 AS208795	Yandex	Cloud Services Kazakhstan LLP (Yandex Cloud public-connectivity ASN; KZ regional origin, not an ownership claim)	https://yandex.cloud/ru-kz/docs/interconnect/concepts/pub-con	yes	KZ	6	1	no	yes
-AS209030	Kaspersky	AO Kaspersky Lab	https://bgp.he.net/AS209030	yes	RU	3	0	yes	no
+AS209030	Kaspersky	AO Kaspersky Lab	https://bgp.he.net/AS209030	yes	RU	2	0	yes	no
 AS209973	Sovcombank	PJSC Sovkombank (Moscow origin)	https://rdap.db.ripe.net/autnum/209973	yes	RU	1	0	yes	no
 AS210656	Yandex	Yandex.Cloud LLC	https://whois.ipip.net/AS210656	yes	RU	9	0	yes	no
-AS210756	EdgeCenter	EdgeCenter LLC	https://www.bigdatacloud.com/asn-lookup/AS210756	yes	RU	74	11	yes	no
+AS210756	EdgeCenter	EdgeCenter LLC	https://www.bigdatacloud.com/asn-lookup/AS210756	yes	RU	73	12	yes	no
 AS211517	Wildberries	LLC Wildberries (Georgia/affiliate ASN)	https://iamroot.tech/asndatabase/?search=AS211517	yes	RU	1	2	yes	no
 AS212066	Yandex	Buyuk Reklam Cozumleri LLC (Yandex Turkey; origin ASN, not upstream)	https://www.iplocate.io/AS212066	yes	TR	2	2	no	no
 AS213533	Beget	Beget LLC (regional origin)	https://rdap.db.ripe.net/autnum/213533	yes	RU	2	0	yes	no
