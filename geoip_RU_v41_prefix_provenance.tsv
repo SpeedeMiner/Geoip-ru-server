@@ -1189,14 +1189,13 @@ w1zardz-service-direct						37.140.192.41/32
 w1zardz-service-direct						37.220.161.51/32
 w1zardz-service-direct						37.220.161.64/32
 w1zardz-service-direct						37.220.161.117/32
-w1zardz-service-direct						37.220.161.124/32
 w1zardz-service-direct						37.220.161.127/32
 w1zardz-service-direct						37.220.161.129/32
 w1zardz-service-direct						37.220.161.200/32
 w1zardz-service-direct						37.220.161.212/32
 w1zardz-service-direct						37.220.161.219/32
 w1zardz-service-direct						37.220.161.222/32
-w1zardz-service-direct						37.220.161.236/31
+w1zardz-service-direct						37.220.161.237/32
 w1zardz-service-direct						37.220.161.251/32
 w1zardz-service-direct						37.220.162.231/32
 w1zardz-service-direct						37.220.162.232/32
@@ -1215,6 +1214,7 @@ w1zardz-service-direct						45.84.128.0/22
 w1zardz-service-direct						45.130.41.212/32
 w1zardz-service-direct						45.136.20.0/22
 w1zardz-service-direct						45.155.105.30/32
+w1zardz-service-direct						46.8.141.131/32
 w1zardz-service-direct						46.8.197.246/32
 w1zardz-service-direct						46.17.203.154/32
 w1zardz-service-direct						46.17.206.11/32
@@ -1234,17 +1234,21 @@ w1zardz-service-direct						46.226.122.0/24
 w1zardz-service-direct						46.235.184.68/32
 w1zardz-service-direct						46.235.184.84/32
 w1zardz-service-direct						46.235.184.89/32
+w1zardz-service-direct						46.235.184.152/32
 w1zardz-service-direct						46.235.184.195/32
 w1zardz-service-direct						46.235.184.197/32
 w1zardz-service-direct						46.235.184.211/32
 w1zardz-service-direct						46.235.185.73/32
 w1zardz-service-direct						46.235.185.169/32
 w1zardz-service-direct						46.235.186.41/32
+w1zardz-service-direct						46.235.186.67/32
 w1zardz-service-direct						46.235.186.77/32
 w1zardz-service-direct						46.235.186.164/32
 w1zardz-service-direct						46.235.186.238/32
 w1zardz-service-direct						46.235.186.254/32
 w1zardz-service-direct						46.235.188.129/32
+w1zardz-service-direct						46.235.188.171/32
+w1zardz-service-direct						46.235.188.251/32
 w1zardz-service-direct						46.235.189.44/32
 w1zardz-service-direct						46.235.189.79/32
 w1zardz-service-direct						46.235.189.201/32
@@ -1270,7 +1274,6 @@ w1zardz-service-direct						78.40.217.75/32
 w1zardz-service-direct						78.41.110.46/32
 w1zardz-service-direct						78.41.110.103/32
 w1zardz-service-direct						78.41.110.143/32
-w1zardz-service-direct						78.41.110.157/32
 w1zardz-service-direct						78.41.110.211/32
 w1zardz-service-direct						78.41.110.215/32
 w1zardz-service-direct						78.41.110.216/32
@@ -1279,7 +1282,6 @@ w1zardz-service-direct						78.41.111.11/32
 w1zardz-service-direct						78.41.111.34/32
 w1zardz-service-direct						78.41.111.154/32
 w1zardz-service-direct						78.41.111.199/32
-w1zardz-service-direct						78.41.111.224/32
 w1zardz-service-direct						78.108.80.125/32
 w1zardz-service-direct						78.155.198.17/32
 w1zardz-service-direct						78.155.198.113/32
@@ -1315,7 +1317,6 @@ w1zardz-service-direct						81.19.92.86/32
 w1zardz-service-direct						81.22.46.142/32
 w1zardz-service-direct						81.26.191.59/32
 w1zardz-service-direct						81.30.199.238/32
-w1zardz-service-direct						81.161.98.78/32
 w1zardz-service-direct						81.177.122.5/32
 w1zardz-service-direct						81.177.128.0/19
 w1zardz-service-direct						81.177.164.124/32
@@ -1461,6 +1462,7 @@ w1zardz-service-direct						91.221.164.73/32
 w1zardz-service-direct						91.221.164.120/32
 w1zardz-service-direct						91.221.164.151/32
 w1zardz-service-direct						91.221.165.118/32
+w1zardz-service-direct						91.221.165.156/32
 w1zardz-service-direct						91.221.165.177/32
 w1zardz-service-direct						91.222.128.11/32
 w1zardz-service-direct						91.222.130.250/32
@@ -1498,8 +1500,8 @@ w1zardz-service-direct						93.93.89.134/32
 w1zardz-service-direct						93.93.89.154/32
 w1zardz-service-direct						93.93.89.173/32
 w1zardz-service-direct						93.93.91.63/32
-w1zardz-service-direct						93.93.91.103/32
 w1zardz-service-direct						93.93.91.107/32
+w1zardz-service-direct						93.93.91.187/32
 w1zardz-service-direct						93.95.101.202/32
 w1zardz-service-direct						93.158.128.0/18
 w1zardz-service-direct						93.186.224.0/20
@@ -1513,7 +1515,6 @@ w1zardz-service-direct						94.26.249.177/32
 w1zardz-service-direct						94.79.51.12/31
 w1zardz-service-direct						94.79.51.14/32
 w1zardz-service-direct						94.79.51.135/32
-w1zardz-service-direct						94.79.51.170/32
 w1zardz-service-direct						94.79.51.184/31
 w1zardz-service-direct						94.79.51.186/32
 w1zardz-service-direct						94.100.176.0/20
@@ -1723,7 +1724,6 @@ w1zardz-service-direct						185.12.152.144/32
 w1zardz-service-direct						185.15.39.100/32
 w1zardz-service-direct						185.16.148.0/22
 w1zardz-service-direct						185.16.244.0/22
-w1zardz-service-direct						185.22.155.27/32
 w1zardz-service-direct						185.27.195.146/32
 w1zardz-service-direct						185.31.112.0/22
 w1zardz-service-direct						185.32.187.0/24
@@ -1836,6 +1836,7 @@ w1zardz-service-direct						185.187.63.0/24
 w1zardz-service-direct						185.200.242.8/32
 w1zardz-service-direct						185.206.167.35/32
 w1zardz-service-direct						185.206.167.50/32
+w1zardz-service-direct						185.214.76.146/32
 w1zardz-service-direct						185.215.4.13/32
 w1zardz-service-direct						185.216.207.222/32
 w1zardz-service-direct						185.226.52.0/22
@@ -1960,7 +1961,7 @@ w1zardz-service-direct						195.242.83.14/32
 w1zardz-service-direct						195.245.206.101/32
 w1zardz-service-direct						195.246.218.77/32
 w1zardz-service-direct						195.246.246.0/24
-w1zardz-service-direct						212.11.151.56/32
+w1zardz-service-direct						212.11.151.56/31
 w1zardz-service-direct						212.11.155.134/32
 w1zardz-service-direct						212.11.155.165/32
 w1zardz-service-direct						212.11.155.166/31
@@ -2000,12 +2001,12 @@ w1zardz-service-direct						212.193.146.120/32
 w1zardz-service-direct						212.193.146.140/32
 w1zardz-service-direct						212.193.146.142/32
 w1zardz-service-direct						212.193.146.157/32
+w1zardz-service-direct						212.193.146.235/32
 w1zardz-service-direct						212.193.147.29/32
 w1zardz-service-direct						212.193.147.121/32
 w1zardz-service-direct						212.193.147.144/31
 w1zardz-service-direct						212.193.147.201/32
 w1zardz-service-direct						212.193.147.203/32
-w1zardz-service-direct						212.193.147.211/32
 w1zardz-service-direct						212.193.147.238/32
 w1zardz-service-direct						212.193.152.39/32
 w1zardz-service-direct						212.193.152.77/32
@@ -2019,6 +2020,7 @@ w1zardz-service-direct						212.193.152.230/32
 w1zardz-service-direct						212.193.152.252/32
 w1zardz-service-direct						212.193.153.14/32
 w1zardz-service-direct						212.193.153.24/32
+w1zardz-service-direct						212.193.153.45/32
 w1zardz-service-direct						212.193.153.124/32
 w1zardz-service-direct						212.193.153.131/32
 w1zardz-service-direct						212.193.153.133/32
@@ -2027,6 +2029,7 @@ w1zardz-service-direct						212.193.153.141/32
 w1zardz-service-direct						212.193.153.154/32
 w1zardz-service-direct						212.193.155.0/24
 w1zardz-service-direct						212.193.156.238/32
+w1zardz-service-direct						212.193.156.251/32
 w1zardz-service-direct						212.193.157.25/32
 w1zardz-service-direct						212.193.157.40/32
 w1zardz-service-direct						212.193.157.64/32
@@ -2053,6 +2056,7 @@ w1zardz-service-direct						213.24.127.0/24
 w1zardz-service-direct						213.33.155.164/32
 w1zardz-service-direct						213.59.235.104/32
 w1zardz-service-direct						213.59.253.6/31
+w1zardz-service-direct						213.59.253.8/32
 w1zardz-service-direct						213.59.254.6/31
 w1zardz-service-direct						213.59.254.8/32
 w1zardz-service-direct						213.87.50.0/23
@@ -143852,6 +143856,7 @@ hydra-direct	routing-intent					2.26.104.0/24
 hydra-direct	routing-intent					2.26.119.0/24
 hydra-direct	routing-intent					2.26.121.0/24
 hydra-direct	routing-intent					2.26.170.0/24
+hydra-direct	routing-intent					2.26.186.0/24
 hydra-direct	routing-intent					2.26.195.0/24
 hydra-direct	routing-intent					2.26.216.0/24
 hydra-direct	routing-intent					2.27.0.0/24
@@ -151871,55 +151876,6 @@ hydra-direct	routing-intent					78.40.116.240/29
 hydra-direct	routing-intent					78.40.116.248/30
 hydra-direct	routing-intent					78.40.116.252/32
 hydra-direct	routing-intent					78.40.116.254/31
-hydra-direct	routing-intent					78.40.117.0/28
-hydra-direct	routing-intent					78.40.117.16/31
-hydra-direct	routing-intent					78.40.117.18/32
-hydra-direct	routing-intent					78.40.117.20/30
-hydra-direct	routing-intent					78.40.117.24/29
-hydra-direct	routing-intent					78.40.117.32/29
-hydra-direct	routing-intent					78.40.117.40/31
-hydra-direct	routing-intent					78.40.117.43/32
-hydra-direct	routing-intent					78.40.117.44/32
-hydra-direct	routing-intent					78.40.117.46/31
-hydra-direct	routing-intent					78.40.117.48/28
-hydra-direct	routing-intent					78.40.117.64/28
-hydra-direct	routing-intent					78.40.117.80/29
-hydra-direct	routing-intent					78.40.117.88/31
-hydra-direct	routing-intent					78.40.117.90/32
-hydra-direct	routing-intent					78.40.117.92/30
-hydra-direct	routing-intent					78.40.117.96/28
-hydra-direct	routing-intent					78.40.117.112/30
-hydra-direct	routing-intent					78.40.117.116/32
-hydra-direct	routing-intent					78.40.117.118/31
-hydra-direct	routing-intent					78.40.117.120/32
-hydra-direct	routing-intent					78.40.117.122/31
-hydra-direct	routing-intent					78.40.117.124/30
-hydra-direct	routing-intent					78.40.117.128/30
-hydra-direct	routing-intent					78.40.117.132/31
-hydra-direct	routing-intent					78.40.117.135/32
-hydra-direct	routing-intent					78.40.117.136/29
-hydra-direct	routing-intent					78.40.117.144/28
-hydra-direct	routing-intent					78.40.117.160/29
-hydra-direct	routing-intent					78.40.117.168/31
-hydra-direct	routing-intent					78.40.117.171/32
-hydra-direct	routing-intent					78.40.117.172/30
-hydra-direct	routing-intent					78.40.117.176/28
-hydra-direct	routing-intent					78.40.117.192/29
-hydra-direct	routing-intent					78.40.117.201/32
-hydra-direct	routing-intent					78.40.117.202/31
-hydra-direct	routing-intent					78.40.117.204/30
-hydra-direct	routing-intent					78.40.117.208/30
-hydra-direct	routing-intent					78.40.117.212/31
-hydra-direct	routing-intent					78.40.117.215/32
-hydra-direct	routing-intent					78.40.117.216/30
-hydra-direct	routing-intent					78.40.117.220/32
-hydra-direct	routing-intent					78.40.117.222/31
-hydra-direct	routing-intent					78.40.117.224/28
-hydra-direct	routing-intent					78.40.117.240/29
-hydra-direct	routing-intent					78.40.117.248/32
-hydra-direct	routing-intent					78.40.117.250/31
-hydra-direct	routing-intent					78.40.117.252/32
-hydra-direct	routing-intent					78.40.117.254/31
 hydra-direct	routing-intent					78.40.118.0/23
 hydra-direct	routing-intent					78.40.126.128/25
 hydra-direct	routing-intent					78.40.184.0/21
@@ -163686,7 +163642,6 @@ hydra-direct	routing-intent					109.239.208.0/20
 hydra-direct	routing-intent					109.248.0.0/21
 hydra-direct	routing-intent					109.248.10.0/23
 hydra-direct	routing-intent					109.248.12.0/22
-hydra-direct	routing-intent					109.248.32.231/32
 hydra-direct	routing-intent					109.248.33.0/24
 hydra-direct	routing-intent					109.248.34.0/23
 hydra-direct	routing-intent					109.248.36.0/22
@@ -163779,7 +163734,8 @@ hydra-direct	routing-intent					109.254.248.0/22
 hydra-direct	routing-intent					109.254.253.0/24
 hydra-direct	routing-intent					109.254.254.0/23
 hydra-direct	routing-intent					111.88.78.0/24
-hydra-direct	routing-intent					111.88.80.0/21
+hydra-direct	routing-intent					111.88.80.0/22
+hydra-direct	routing-intent					111.88.84.0/23
 hydra-direct	routing-intent					111.88.96.0/19
 hydra-direct	routing-intent					111.88.128.0/22
 hydra-direct	routing-intent					111.88.135.0/24
@@ -163908,6 +163864,9 @@ hydra-direct	routing-intent					130.49.219.128/25
 hydra-direct	routing-intent					130.49.220.0/22
 hydra-direct	routing-intent					130.49.224.0/19
 hydra-direct	routing-intent					130.78.18.0/24
+hydra-direct	routing-intent					130.78.192.0/20
+hydra-direct	routing-intent					130.78.208.0/21
+hydra-direct	routing-intent					130.78.248.0/21
 hydra-direct	routing-intent					130.94.88.0/23
 hydra-direct	routing-intent					130.94.90.0/24
 hydra-direct	routing-intent					130.193.32.0/19
@@ -164150,6 +164109,7 @@ hydra-direct	routing-intent					140.174.177.0/24
 hydra-direct	routing-intent					140.174.180.0/24
 hydra-direct	routing-intent					140.209.223.128/26
 hydra-direct	routing-intent					140.225.112.0/20
+hydra-direct	routing-intent					140.225.176.0/20
 hydra-direct	routing-intent					140.233.186.0/24
 hydra-direct	routing-intent					141.0.176.0/21
 hydra-direct	routing-intent					141.8.128.0/18
@@ -165512,6 +165472,7 @@ hydra-direct	routing-intent					167.150.223.0/27
 hydra-direct	routing-intent					167.150.223.225/32
 hydra-direct	routing-intent					167.150.223.229/32
 hydra-direct	routing-intent					167.150.223.232/32
+hydra-direct	routing-intent					167.253.23.0/24
 hydra-direct	routing-intent					168.80.1.0/24
 hydra-direct	routing-intent					168.81.57.0/24
 hydra-direct	routing-intent					168.81.59.0/24
@@ -167263,7 +167224,6 @@ hydra-direct	routing-intent					178.159.247.250/32
 hydra-direct	routing-intent					178.159.247.252/30
 hydra-direct	routing-intent					178.159.248.0/21
 hydra-direct	routing-intent					178.160.193.233/32
-hydra-direct	routing-intent					178.160.193.234/32
 hydra-direct	routing-intent					178.161.128.0/17
 hydra-direct	routing-intent					178.162.0.0/17
 hydra-direct	routing-intent					178.163.0.0/17
@@ -168103,6 +168063,7 @@ hydra-direct	routing-intent					179.236.42.0/24
 hydra-direct	routing-intent					179.252.219.0/24
 hydra-direct	routing-intent					179.252.220.0/23
 hydra-direct	routing-intent					179.253.111.0/24
+hydra-direct	routing-intent					179.253.146.0/24
 hydra-direct	routing-intent					179.253.163.0/24
 hydra-direct	routing-intent					179.253.173.0/24
 hydra-direct	routing-intent					179.253.177.0/24
@@ -174105,6 +174066,7 @@ hydra-direct	routing-intent					192.144.17.0/24
 hydra-direct	routing-intent					192.144.18.0/24
 hydra-direct	routing-intent					192.144.28.0/22
 hydra-direct	routing-intent					192.144.36.0/23
+hydra-direct	routing-intent					192.144.38.0/24
 hydra-direct	routing-intent					192.144.40.0/22
 hydra-direct	routing-intent					192.144.48.0/22
 hydra-direct	routing-intent					192.144.56.0/24
@@ -174315,7 +174277,7 @@ hydra-direct	routing-intent					193.25.221.0/24
 hydra-direct	routing-intent					193.26.16.0/24
 hydra-direct	routing-intent					193.26.18.0/23
 hydra-direct	routing-intent					193.26.122.0/24
-hydra-direct	routing-intent					193.26.132.0/23
+hydra-direct	routing-intent					193.26.133.0/24
 hydra-direct	routing-intent					193.26.135.0/24
 hydra-direct	routing-intent					193.26.208.0/24
 hydra-direct	routing-intent					193.26.214.0/24
@@ -175991,9 +175953,6 @@ hydra-direct	routing-intent					194.0.162.0/24
 hydra-direct	routing-intent					194.0.209.0/24
 hydra-direct	routing-intent					194.0.219.0/24
 hydra-direct	routing-intent					194.1.145.0/24
-hydra-direct	routing-intent					194.1.152.3/32
-hydra-direct	routing-intent					194.1.152.25/32
-hydra-direct	routing-intent					194.1.152.30/32
 hydra-direct	routing-intent					194.1.152.173/32
 hydra-direct	routing-intent					194.1.152.190/32
 hydra-direct	routing-intent					194.1.152.222/32
@@ -178901,7 +178860,8 @@ hydra-direct	routing-intent					212.67.16.0/20
 hydra-direct	routing-intent					212.69.96.0/19
 hydra-direct	routing-intent					212.69.132.0/24
 hydra-direct	routing-intent					212.69.134.0/24
-hydra-direct	routing-intent					212.73.64.116/30
+hydra-direct	routing-intent					212.73.64.117/32
+hydra-direct	routing-intent					212.73.64.118/32
 hydra-direct	routing-intent					212.73.96.0/19
 hydra-direct	routing-intent					212.74.192.0/19
 hydra-direct	routing-intent					212.74.224.0/22
@@ -179473,6 +179433,7 @@ hydra-direct	routing-intent					213.168.32.0/19
 hydra-direct	routing-intent					213.168.128.0/19
 hydra-direct	routing-intent					213.170.64.0/18
 hydra-direct	routing-intent					213.170.192.0/22
+hydra-direct	routing-intent					213.170.223.0/24
 hydra-direct	routing-intent					213.171.0.0/18
 hydra-direct	routing-intent					213.172.0.0/19
 hydra-direct	routing-intent					213.176.19.0/24
@@ -187375,9 +187336,7 @@ all-company-asn-origins	curated company ASN origin					5.53.120.0/22
 all-company-asn-origins	curated company ASN origin					5.53.126.0/23
 all-company-asn-origins	curated company ASN origin					5.61.16.0/21
 all-company-asn-origins	curated company ASN origin					5.61.232.0/21
-all-company-asn-origins	curated company ASN origin					5.63.152.0/24
-all-company-asn-origins	curated company ASN origin					5.63.154.0/23
-all-company-asn-origins	curated company ASN origin					5.63.156.0/22
+all-company-asn-origins	curated company ASN origin					5.63.152.0/21
 all-company-asn-origins	curated company ASN origin					5.77.0.0/20
 all-company-asn-origins	curated company ASN origin					5.101.40.0/22
 all-company-asn-origins	curated company ASN origin					5.101.48.0/22
@@ -187423,6 +187382,7 @@ all-company-asn-origins	curated company ASN origin					5.181.108.0/22
 all-company-asn-origins	curated company ASN origin					5.182.4.0/22
 all-company-asn-origins	curated company ASN origin					5.182.224.0/22
 all-company-asn-origins	curated company ASN origin					5.188.2.0/23
+all-company-asn-origins	curated company ASN origin					5.188.7.0/24
 all-company-asn-origins	curated company ASN origin					5.188.35.0/24
 all-company-asn-origins	curated company ASN origin					5.188.37.0/24
 all-company-asn-origins	curated company ASN origin					5.188.38.0/23
@@ -187444,7 +187404,7 @@ all-company-asn-origins	curated company ASN origin					5.188.150.0/24
 all-company-asn-origins	curated company ASN origin					5.188.156.0/22
 all-company-asn-origins	curated company ASN origin					5.188.160.0/22
 all-company-asn-origins	curated company ASN origin					5.188.166.0/24
-all-company-asn-origins	curated company ASN origin					5.188.170.0/24
+all-company-asn-origins	curated company ASN origin					5.188.170.0/23
 all-company-asn-origins	curated company ASN origin					5.188.176.0/22
 all-company-asn-origins	curated company ASN origin					5.188.184.0/22
 all-company-asn-origins	curated company ASN origin					5.188.196.0/22
@@ -188130,9 +188090,7 @@ all-company-asn-origins	curated company ASN origin					78.40.217.0/24
 all-company-asn-origins	curated company ASN origin					78.40.218.0/23
 all-company-asn-origins	curated company ASN origin					78.41.96.0/22
 all-company-asn-origins	curated company ASN origin					78.41.100.0/22
-all-company-asn-origins	curated company ASN origin					78.41.104.0/23
-all-company-asn-origins	curated company ASN origin					78.41.106.0/24
-all-company-asn-origins	curated company ASN origin					78.41.108.0/22
+all-company-asn-origins	curated company ASN origin					78.41.104.0/21
 all-company-asn-origins	curated company ASN origin					78.81.0.0/16
 all-company-asn-origins	curated company ASN origin					78.85.0.0/16
 all-company-asn-origins	curated company ASN origin					78.106.0.0/15
@@ -188614,6 +188572,7 @@ all-company-asn-origins	curated company ASN origin					85.198.64.0/21
 all-company-asn-origins	curated company ASN origin					85.198.76.0/22
 all-company-asn-origins	curated company ASN origin					85.198.80.0/22
 all-company-asn-origins	curated company ASN origin					85.198.84.0/22
+all-company-asn-origins	curated company ASN origin					85.198.96.0/21
 all-company-asn-origins	curated company ASN origin					85.202.240.0/20
 all-company-asn-origins	curated company ASN origin					85.208.85.0/24
 all-company-asn-origins	curated company ASN origin					85.208.86.0/23
@@ -189136,6 +189095,7 @@ all-company-asn-origins	curated company ASN origin					92.223.122.0/23
 all-company-asn-origins	curated company ASN origin					92.242.45.0/24
 all-company-asn-origins	curated company ASN origin					92.242.57.0/24
 all-company-asn-origins	curated company ASN origin					92.242.60.0/23
+all-company-asn-origins	curated company ASN origin					92.242.70.0/23
 all-company-asn-origins	curated company ASN origin					92.243.96.0/19
 all-company-asn-origins	curated company ASN origin					92.245.32.0/19
 all-company-asn-origins	curated company ASN origin					92.246.76.0/24
@@ -189171,9 +189131,7 @@ all-company-asn-origins	curated company ASN origin					93.91.232.0/23
 all-company-asn-origins	curated company ASN origin					93.92.80.0/23
 all-company-asn-origins	curated company ASN origin					93.92.80.0/24
 all-company-asn-origins	curated company ASN origin					93.92.113.0/24
-all-company-asn-origins	curated company ASN origin					93.93.88.0/22
-all-company-asn-origins	curated company ASN origin					93.93.92.0/23
-all-company-asn-origins	curated company ASN origin					93.93.94.0/24
+all-company-asn-origins	curated company ASN origin					93.93.88.0/21
 all-company-asn-origins	curated company ASN origin					93.93.136.0/21
 all-company-asn-origins	curated company ASN origin					93.93.207.0/24
 all-company-asn-origins	curated company ASN origin					93.120.128.0/17
@@ -189556,6 +189514,7 @@ all-company-asn-origins	curated company ASN origin					109.62.240.0/21
 all-company-asn-origins	curated company ASN origin					109.63.128.0/17
 all-company-asn-origins	curated company ASN origin					109.68.168.0/21
 all-company-asn-origins	curated company ASN origin					109.68.212.0/22
+all-company-asn-origins	curated company ASN origin					109.69.16.0/21
 all-company-asn-origins	curated company ASN origin					109.71.8.0/21
 all-company-asn-origins	curated company ASN origin					109.71.200.0/21
 all-company-asn-origins	curated company ASN origin					109.71.243.0/24
@@ -189811,10 +189770,7 @@ all-company-asn-origins	curated company ASN origin					147.45.253.0/24
 all-company-asn-origins	curated company ASN origin					147.45.254.0/24
 all-company-asn-origins	curated company ASN origin					149.154.128.0/20
 all-company-asn-origins	curated company ASN origin					151.237.240.0/21
-all-company-asn-origins	curated company ASN origin					151.248.112.0/21
-all-company-asn-origins	curated company ASN origin					151.248.120.0/23
-all-company-asn-origins	curated company ASN origin					151.248.123.0/24
-all-company-asn-origins	curated company ASN origin					151.248.124.0/22
+all-company-asn-origins	curated company ASN origin					151.248.112.0/20
 all-company-asn-origins	curated company ASN origin					152.89.196.0/24
 all-company-asn-origins	curated company ASN origin					153.51.32.0/19
 all-company-asn-origins	curated company ASN origin					153.51.96.0/19
@@ -189823,6 +189779,7 @@ all-company-asn-origins	curated company ASN origin					153.80.233.0/24
 all-company-asn-origins	curated company ASN origin					153.80.253.0/24
 all-company-asn-origins	curated company ASN origin					154.90.70.0/23
 all-company-asn-origins	curated company ASN origin					155.212.128.0/20
+all-company-asn-origins	curated company ASN origin					155.212.144.0/22
 all-company-asn-origins	curated company ASN origin					155.212.152.0/23
 all-company-asn-origins	curated company ASN origin					155.212.156.0/22
 all-company-asn-origins	curated company ASN origin					155.212.176.0/21
@@ -189850,6 +189807,7 @@ all-company-asn-origins	curated company ASN origin					164.138.101.0/24
 all-company-asn-origins	curated company ASN origin					164.138.102.0/23
 all-company-asn-origins	curated company ASN origin					164.177.176.0/21
 all-company-asn-origins	curated company ASN origin					168.113.128.0/20
+all-company-asn-origins	curated company ASN origin					168.113.251.0/24
 all-company-asn-origins	curated company ASN origin					168.113.252.0/22
 all-company-asn-origins	curated company ASN origin					168.222.142.0/23
 all-company-asn-origins	curated company ASN origin					168.222.176.0/24
@@ -189932,6 +189890,7 @@ all-company-asn-origins	curated company ASN origin					176.222.200.0/21
 all-company-asn-origins	curated company ASN origin					176.222.216.0/21
 all-company-asn-origins	curated company ASN origin					176.241.96.0/21
 all-company-asn-origins	curated company ASN origin					177.1.199.0/24
+all-company-asn-origins	curated company ASN origin					177.122.6.0/24
 all-company-asn-origins	curated company ASN origin					178.21.8.0/24
 all-company-asn-origins	curated company ASN origin					178.21.10.0/23
 all-company-asn-origins	curated company ASN origin					178.22.88.0/21
@@ -190176,7 +190135,8 @@ all-company-asn-origins	curated company ASN origin					185.155.118.0/24
 all-company-asn-origins	curated company ASN origin					185.157.96.0/23
 all-company-asn-origins	curated company ASN origin					185.157.99.0/24
 all-company-asn-origins	curated company ASN origin					185.161.64.0/22
-all-company-asn-origins	curated company ASN origin					185.161.180.0/22
+all-company-asn-origins	curated company ASN origin					185.161.181.0/24
+all-company-asn-origins	curated company ASN origin					185.161.182.0/23
 all-company-asn-origins	curated company ASN origin					185.168.236.0/22
 all-company-asn-origins	curated company ASN origin					185.169.100.0/22
 all-company-asn-origins	curated company ASN origin					185.170.0.0/24
@@ -190384,6 +190344,7 @@ all-company-asn-origins	curated company ASN origin					193.35.34.0/24
 all-company-asn-origins	curated company ASN origin					193.39.168.0/22
 all-company-asn-origins	curated company ASN origin					193.42.113.0/24
 all-company-asn-origins	curated company ASN origin					193.42.116.0/23
+all-company-asn-origins	curated company ASN origin					193.42.124.0/22
 all-company-asn-origins	curated company ASN origin					193.43.79.0/24
 all-company-asn-origins	curated company ASN origin					193.43.91.0/24
 all-company-asn-origins	curated company ASN origin					193.43.94.0/24
@@ -190984,6 +190945,7 @@ all-company-asn-origins	curated company ASN origin					217.25.88.0/23
 all-company-asn-origins	curated company ASN origin					217.25.90.0/24
 all-company-asn-origins	curated company ASN origin					217.25.92.0/22
 all-company-asn-origins	curated company ASN origin					217.26.0.0/20
+all-company-asn-origins	curated company ASN origin					217.26.24.0/21
 all-company-asn-origins	curated company ASN origin					217.28.224.0/20
 all-company-asn-origins	curated company ASN origin					217.65.80.0/20
 all-company-asn-origins	curated company ASN origin					217.66.148.0/22
@@ -191125,6 +191087,7 @@ all-company-asn-origins	curated company ASN origin					2a02:2698:782a::/47
 all-company-asn-origins	curated company ASN origin					2a02:2698:a002::/48
 all-company-asn-origins	curated company ASN origin					2a02:2698:a100::/40
 all-company-asn-origins	curated company ASN origin					2a02:2698:a200::/40
+all-company-asn-origins	curated company ASN origin					2a02:26a8:f001::/48
 all-company-asn-origins	curated company ASN origin					2a02:26a8:fffe::/47
 all-company-asn-origins	curated company ASN origin					2a02:28d8::/36
 all-company-asn-origins	curated company ASN origin					2a02:5f80::/36
@@ -191281,8 +191244,7 @@ all-company-asn-origins	curated company ASN origin					2a11:27c0::/43
 all-company-asn-origins	curated company ASN origin					2a11:27c0:20::/44
 all-company-asn-origins	curated company ASN origin					2a11:27c0:100::/43
 all-company-asn-origins	curated company ASN origin					2a11:27c0:120::/44
-all-company-asn-origins	curated company ASN origin					2a11:27c0:140::/44
-all-company-asn-origins	curated company ASN origin					2a11:27c0:160::/43
+all-company-asn-origins	curated company ASN origin					2a11:27c0:140::/42
 all-company-asn-origins	curated company ASN origin					2a11:27c0:180::/42
 all-company-asn-origins	curated company ASN origin					2a11:27c0:1d0::/44
 all-company-asn-origins	curated company ASN origin					2a11:27c0:1e0::/43
@@ -191490,6 +191452,7 @@ core-company-asn-origins	CORE_CORPORATE exact origin					157.22.224.0/22
 core-company-asn-origins	CORE_CORPORATE exact origin					160.5.208.0/20
 core-company-asn-origins	CORE_CORPORATE exact origin					161.104.104.0/21
 core-company-asn-origins	CORE_CORPORATE exact origin					168.113.128.0/20
+core-company-asn-origins	CORE_CORPORATE exact origin					168.113.251.0/24
 core-company-asn-origins	CORE_CORPORATE exact origin					176.101.88.0/24
 core-company-asn-origins	CORE_CORPORATE exact origin					176.101.90.0/24
 core-company-asn-origins	CORE_CORPORATE exact origin					176.109.112.0/23
@@ -191535,7 +191498,8 @@ core-company-asn-origins	CORE_CORPORATE exact origin					185.138.252.0/22
 core-company-asn-origins	CORE_CORPORATE exact origin					185.154.124.0/24
 core-company-asn-origins	CORE_CORPORATE exact origin					185.157.96.0/23
 core-company-asn-origins	CORE_CORPORATE exact origin					185.157.99.0/24
-core-company-asn-origins	CORE_CORPORATE exact origin					185.161.180.0/22
+core-company-asn-origins	CORE_CORPORATE exact origin					185.161.181.0/24
+core-company-asn-origins	CORE_CORPORATE exact origin					185.161.182.0/23
 core-company-asn-origins	CORE_CORPORATE exact origin					185.170.0.0/24
 core-company-asn-origins	CORE_CORPORATE exact origin					185.170.1.0/24
 core-company-asn-origins	CORE_CORPORATE exact origin					185.170.2.0/23
@@ -191621,6 +191585,7 @@ core-company-asn-origins	CORE_CORPORATE exact origin					2a02:6b0::/32
 core-company-asn-origins	CORE_CORPORATE exact origin					2a02:6b8::/29
 core-company-asn-origins	CORE_CORPORATE exact origin					2a02:6b8:215::/48
 core-company-asn-origins	CORE_CORPORATE exact origin					2a02:6bf:8000::/34
+core-company-asn-origins	CORE_CORPORATE exact origin					2a02:26a8:f001::/48
 core-company-asn-origins	CORE_CORPORATE exact origin					2a02:26a8:fffe::/47
 core-company-asn-origins	CORE_CORPORATE exact origin					2a03:720::/32
 core-company-asn-origins	CORE_CORPORATE exact origin					2a03:720:70::/48
@@ -191710,9 +191675,7 @@ shared-infrastructure-asn-origins	SHARED_INFRA exact origin					5.44.62.0/23
 shared-infrastructure-asn-origins	SHARED_INFRA exact origin					5.53.120.0/21
 shared-infrastructure-asn-origins	SHARED_INFRA exact origin					5.53.120.0/22
 shared-infrastructure-asn-origins	SHARED_INFRA exact origin					5.53.126.0/23
-shared-infrastructure-asn-origins	SHARED_INFRA exact origin					5.63.152.0/24
-shared-infrastructure-asn-origins	SHARED_INFRA exact origin					5.63.154.0/23
-shared-infrastructure-asn-origins	SHARED_INFRA exact origin					5.63.156.0/22
+shared-infrastructure-asn-origins	SHARED_INFRA exact origin					5.63.152.0/21
 shared-infrastructure-asn-origins	SHARED_INFRA exact origin					5.77.0.0/20
 shared-infrastructure-asn-origins	SHARED_INFRA exact origin					5.101.48.0/22
 shared-infrastructure-asn-origins	SHARED_INFRA exact origin					5.101.68.0/23
@@ -191755,6 +191718,7 @@ shared-infrastructure-asn-origins	SHARED_INFRA exact origin					5.181.108.0/22
 shared-infrastructure-asn-origins	SHARED_INFRA exact origin					5.182.4.0/22
 shared-infrastructure-asn-origins	SHARED_INFRA exact origin					5.182.224.0/22
 shared-infrastructure-asn-origins	SHARED_INFRA exact origin					5.188.2.0/23
+shared-infrastructure-asn-origins	SHARED_INFRA exact origin					5.188.7.0/24
 shared-infrastructure-asn-origins	SHARED_INFRA exact origin					5.188.35.0/24
 shared-infrastructure-asn-origins	SHARED_INFRA exact origin					5.188.37.0/24
 shared-infrastructure-asn-origins	SHARED_INFRA exact origin					5.188.38.0/23
@@ -191775,7 +191739,7 @@ shared-infrastructure-asn-origins	SHARED_INFRA exact origin					5.188.150.0/24
 shared-infrastructure-asn-origins	SHARED_INFRA exact origin					5.188.156.0/22
 shared-infrastructure-asn-origins	SHARED_INFRA exact origin					5.188.160.0/22
 shared-infrastructure-asn-origins	SHARED_INFRA exact origin					5.188.166.0/24
-shared-infrastructure-asn-origins	SHARED_INFRA exact origin					5.188.170.0/24
+shared-infrastructure-asn-origins	SHARED_INFRA exact origin					5.188.170.0/23
 shared-infrastructure-asn-origins	SHARED_INFRA exact origin					5.188.176.0/22
 shared-infrastructure-asn-origins	SHARED_INFRA exact origin					5.188.184.0/22
 shared-infrastructure-asn-origins	SHARED_INFRA exact origin					5.188.196.0/22
@@ -192429,9 +192393,7 @@ shared-infrastructure-asn-origins	SHARED_INFRA exact origin					78.40.217.0/24
 shared-infrastructure-asn-origins	SHARED_INFRA exact origin					78.40.218.0/23
 shared-infrastructure-asn-origins	SHARED_INFRA exact origin					78.41.96.0/22
 shared-infrastructure-asn-origins	SHARED_INFRA exact origin					78.41.100.0/22
-shared-infrastructure-asn-origins	SHARED_INFRA exact origin					78.41.104.0/23
-shared-infrastructure-asn-origins	SHARED_INFRA exact origin					78.41.106.0/24
-shared-infrastructure-asn-origins	SHARED_INFRA exact origin					78.41.108.0/22
+shared-infrastructure-asn-origins	SHARED_INFRA exact origin					78.41.104.0/21
 shared-infrastructure-asn-origins	SHARED_INFRA exact origin					78.81.0.0/16
 shared-infrastructure-asn-origins	SHARED_INFRA exact origin					78.85.0.0/16
 shared-infrastructure-asn-origins	SHARED_INFRA exact origin					78.106.0.0/15
@@ -192886,6 +192848,7 @@ shared-infrastructure-asn-origins	SHARED_INFRA exact origin					85.193.94.0/24
 shared-infrastructure-asn-origins	SHARED_INFRA exact origin					85.198.64.0/21
 shared-infrastructure-asn-origins	SHARED_INFRA exact origin					85.198.80.0/22
 shared-infrastructure-asn-origins	SHARED_INFRA exact origin					85.198.84.0/22
+shared-infrastructure-asn-origins	SHARED_INFRA exact origin					85.198.96.0/21
 shared-infrastructure-asn-origins	SHARED_INFRA exact origin					85.208.85.0/24
 shared-infrastructure-asn-origins	SHARED_INFRA exact origin					85.208.86.0/23
 shared-infrastructure-asn-origins	SHARED_INFRA exact origin					85.208.208.0/24
@@ -193358,6 +193321,7 @@ shared-infrastructure-asn-origins	SHARED_INFRA exact origin					92.223.122.0/23
 shared-infrastructure-asn-origins	SHARED_INFRA exact origin					92.242.45.0/24
 shared-infrastructure-asn-origins	SHARED_INFRA exact origin					92.242.57.0/24
 shared-infrastructure-asn-origins	SHARED_INFRA exact origin					92.242.60.0/23
+shared-infrastructure-asn-origins	SHARED_INFRA exact origin					92.242.70.0/23
 shared-infrastructure-asn-origins	SHARED_INFRA exact origin					92.243.96.0/19
 shared-infrastructure-asn-origins	SHARED_INFRA exact origin					92.245.32.0/19
 shared-infrastructure-asn-origins	SHARED_INFRA exact origin					92.246.76.0/24
@@ -193391,9 +193355,7 @@ shared-infrastructure-asn-origins	SHARED_INFRA exact origin					93.91.224.0/24
 shared-infrastructure-asn-origins	SHARED_INFRA exact origin					93.91.232.0/23
 shared-infrastructure-asn-origins	SHARED_INFRA exact origin					93.92.80.0/23
 shared-infrastructure-asn-origins	SHARED_INFRA exact origin					93.92.80.0/24
-shared-infrastructure-asn-origins	SHARED_INFRA exact origin					93.93.88.0/22
-shared-infrastructure-asn-origins	SHARED_INFRA exact origin					93.93.92.0/23
-shared-infrastructure-asn-origins	SHARED_INFRA exact origin					93.93.94.0/24
+shared-infrastructure-asn-origins	SHARED_INFRA exact origin					93.93.88.0/21
 shared-infrastructure-asn-origins	SHARED_INFRA exact origin					93.93.136.0/21
 shared-infrastructure-asn-origins	SHARED_INFRA exact origin					93.93.207.0/24
 shared-infrastructure-asn-origins	SHARED_INFRA exact origin					93.120.128.0/17
@@ -193749,6 +193711,7 @@ shared-infrastructure-asn-origins	SHARED_INFRA exact origin					109.62.240.0/21
 shared-infrastructure-asn-origins	SHARED_INFRA exact origin					109.63.128.0/17
 shared-infrastructure-asn-origins	SHARED_INFRA exact origin					109.68.168.0/21
 shared-infrastructure-asn-origins	SHARED_INFRA exact origin					109.68.212.0/22
+shared-infrastructure-asn-origins	SHARED_INFRA exact origin					109.69.16.0/21
 shared-infrastructure-asn-origins	SHARED_INFRA exact origin					109.71.8.0/21
 shared-infrastructure-asn-origins	SHARED_INFRA exact origin					109.71.200.0/21
 shared-infrastructure-asn-origins	SHARED_INFRA exact origin					109.71.243.0/24
@@ -193993,10 +193956,7 @@ shared-infrastructure-asn-origins	SHARED_INFRA exact origin					147.45.253.0/24
 shared-infrastructure-asn-origins	SHARED_INFRA exact origin					147.45.254.0/24
 shared-infrastructure-asn-origins	SHARED_INFRA exact origin					149.154.128.0/20
 shared-infrastructure-asn-origins	SHARED_INFRA exact origin					151.237.240.0/21
-shared-infrastructure-asn-origins	SHARED_INFRA exact origin					151.248.112.0/21
-shared-infrastructure-asn-origins	SHARED_INFRA exact origin					151.248.120.0/23
-shared-infrastructure-asn-origins	SHARED_INFRA exact origin					151.248.123.0/24
-shared-infrastructure-asn-origins	SHARED_INFRA exact origin					151.248.124.0/22
+shared-infrastructure-asn-origins	SHARED_INFRA exact origin					151.248.112.0/20
 shared-infrastructure-asn-origins	SHARED_INFRA exact origin					152.89.196.0/24
 shared-infrastructure-asn-origins	SHARED_INFRA exact origin					153.51.32.0/19
 shared-infrastructure-asn-origins	SHARED_INFRA exact origin					153.51.96.0/19
@@ -194004,6 +193964,7 @@ shared-infrastructure-asn-origins	SHARED_INFRA exact origin					153.51.160.0/19
 shared-infrastructure-asn-origins	SHARED_INFRA exact origin					153.80.233.0/24
 shared-infrastructure-asn-origins	SHARED_INFRA exact origin					153.80.253.0/24
 shared-infrastructure-asn-origins	SHARED_INFRA exact origin					155.212.128.0/20
+shared-infrastructure-asn-origins	SHARED_INFRA exact origin					155.212.144.0/22
 shared-infrastructure-asn-origins	SHARED_INFRA exact origin					155.212.152.0/23
 shared-infrastructure-asn-origins	SHARED_INFRA exact origin					155.212.156.0/22
 shared-infrastructure-asn-origins	SHARED_INFRA exact origin					155.212.176.0/21
@@ -194103,6 +194064,7 @@ shared-infrastructure-asn-origins	SHARED_INFRA exact origin					176.222.200.0/21
 shared-infrastructure-asn-origins	SHARED_INFRA exact origin					176.222.216.0/21
 shared-infrastructure-asn-origins	SHARED_INFRA exact origin					176.241.96.0/21
 shared-infrastructure-asn-origins	SHARED_INFRA exact origin					177.1.199.0/24
+shared-infrastructure-asn-origins	SHARED_INFRA exact origin					177.122.6.0/24
 shared-infrastructure-asn-origins	SHARED_INFRA exact origin					178.21.8.0/24
 shared-infrastructure-asn-origins	SHARED_INFRA exact origin					178.21.10.0/23
 shared-infrastructure-asn-origins	SHARED_INFRA exact origin					178.34.0.0/17
@@ -194501,6 +194463,7 @@ shared-infrastructure-asn-origins	SHARED_INFRA exact origin					193.35.34.0/24
 shared-infrastructure-asn-origins	SHARED_INFRA exact origin					193.39.168.0/22
 shared-infrastructure-asn-origins	SHARED_INFRA exact origin					193.42.113.0/24
 shared-infrastructure-asn-origins	SHARED_INFRA exact origin					193.42.116.0/23
+shared-infrastructure-asn-origins	SHARED_INFRA exact origin					193.42.124.0/22
 shared-infrastructure-asn-origins	SHARED_INFRA exact origin					193.43.79.0/24
 shared-infrastructure-asn-origins	SHARED_INFRA exact origin					193.43.91.0/24
 shared-infrastructure-asn-origins	SHARED_INFRA exact origin					193.43.94.0/24
@@ -195051,6 +195014,7 @@ shared-infrastructure-asn-origins	SHARED_INFRA exact origin					217.25.88.0/23
 shared-infrastructure-asn-origins	SHARED_INFRA exact origin					217.25.90.0/24
 shared-infrastructure-asn-origins	SHARED_INFRA exact origin					217.25.92.0/22
 shared-infrastructure-asn-origins	SHARED_INFRA exact origin					217.26.0.0/20
+shared-infrastructure-asn-origins	SHARED_INFRA exact origin					217.26.24.0/21
 shared-infrastructure-asn-origins	SHARED_INFRA exact origin					217.28.224.0/20
 shared-infrastructure-asn-origins	SHARED_INFRA exact origin					217.65.80.0/20
 shared-infrastructure-asn-origins	SHARED_INFRA exact origin					217.66.148.0/22
@@ -195304,8 +195268,7 @@ shared-infrastructure-asn-origins	SHARED_INFRA exact origin					2a11:27c0::/43
 shared-infrastructure-asn-origins	SHARED_INFRA exact origin					2a11:27c0:20::/44
 shared-infrastructure-asn-origins	SHARED_INFRA exact origin					2a11:27c0:100::/43
 shared-infrastructure-asn-origins	SHARED_INFRA exact origin					2a11:27c0:120::/44
-shared-infrastructure-asn-origins	SHARED_INFRA exact origin					2a11:27c0:140::/44
-shared-infrastructure-asn-origins	SHARED_INFRA exact origin					2a11:27c0:160::/43
+shared-infrastructure-asn-origins	SHARED_INFRA exact origin					2a11:27c0:140::/42
 shared-infrastructure-asn-origins	SHARED_INFRA exact origin					2a11:27c0:180::/42
 shared-infrastructure-asn-origins	SHARED_INFRA exact origin					2a11:27c0:1d0::/44
 shared-infrastructure-asn-origins	SHARED_INFRA exact origin					2a11:27c0:1e0::/43
@@ -195380,6 +195343,7 @@ rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver excep
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					5.1.48.0/21
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					5.2.32.0/19
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					5.3.9.0/24
+rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					5.3.10.0/23
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					5.3.19.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					5.3.20.0/23
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					5.3.23.0/24
@@ -195786,7 +195750,6 @@ rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver excep
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					31.44.240.0/20
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					31.47.112.0/20
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					31.47.160.0/19
-rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					31.56.13.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					31.56.14.0/23
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					31.56.82.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					31.56.208.0/24
@@ -196497,7 +196460,6 @@ rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver excep
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					45.141.198.0/23
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					45.141.208.0/22
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					45.141.248.0/22
-rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					45.142.31.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					45.142.32.0/23
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					45.142.34.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					45.142.36.0/24
@@ -196540,6 +196502,7 @@ rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver excep
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					45.146.228.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					45.147.2.0/23
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					45.147.31.0/24
+rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					45.147.56.0/22
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					45.147.80.0/23
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					45.147.120.0/22
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					45.147.144.0/21
@@ -196621,6 +196584,7 @@ rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver excep
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					45.159.107.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					45.159.200.0/22
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					45.196.111.0/24
+rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					45.196.115.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					45.196.170.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					46.0.0.0/16
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					46.8.0.0/22
@@ -196888,8 +196852,7 @@ rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver excep
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					46.166.216.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					46.166.220.0/22
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					46.166.224.0/22
-rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					46.166.232.0/22
-rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					46.166.236.0/23
+rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					46.166.232.0/21
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					46.166.240.0/21
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					46.167.64.0/18
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					46.172.0.0/18
@@ -197059,6 +197022,7 @@ rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver excep
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					48.103.217.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					48.103.218.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					48.103.233.0/24
+rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					48.103.242.0/23
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					62.3.13.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					62.3.34.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					62.3.48.0/24
@@ -197148,10 +197112,7 @@ rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver excep
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					62.113.56.0/23
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					62.113.59.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					62.113.60.0/22
-rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					62.113.64.0/22
-rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					62.113.69.0/24
-rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					62.113.70.0/23
-rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					62.113.72.0/21
+rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					62.113.64.0/20
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					62.113.80.0/22
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					62.113.84.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					62.113.86.0/24
@@ -199956,7 +199917,6 @@ rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver excep
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					91.208.29.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					91.208.33.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					91.208.35.0/24
-rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					91.208.39.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					91.208.42.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					91.208.84.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					91.208.121.0/24
@@ -200025,7 +199985,6 @@ rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver excep
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					91.210.228.0/22
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					91.211.4.0/22
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					91.211.16.0/21
-rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					91.211.26.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					91.211.28.0/22
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					91.211.36.0/22
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					91.211.44.0/22
@@ -201006,7 +200965,10 @@ rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver excep
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					92.242.48.0/21
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					92.242.56.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					92.242.62.0/23
-rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					92.242.64.0/19
+rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					92.242.64.0/22
+rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					92.242.68.0/23
+rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					92.242.72.0/21
+rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					92.242.80.0/20
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					92.242.96.0/22
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					92.242.110.0/23
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					92.242.112.0/22
@@ -201331,6 +201293,7 @@ rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver excep
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					93.190.14.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					93.190.16.0/21
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					93.190.104.0/21
+rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					93.190.125.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					93.190.176.0/21
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					93.190.200.0/21
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					93.190.224.0/21
@@ -201942,6 +201905,7 @@ rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver excep
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					103.241.108.0/22
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					104.143.201.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					104.164.62.0/24
+rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					104.164.82.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					104.164.93.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					104.165.244.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					104.167.0.0/24
@@ -202600,7 +202564,7 @@ rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver excep
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					146.120.252.0/22
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					146.158.0.0/22
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					146.158.4.0/24
-rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					146.158.6.0/24
+rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					146.158.6.0/23
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					146.158.8.0/22
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					146.158.12.0/23
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					146.158.14.0/24
@@ -202725,10 +202689,7 @@ rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver excep
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					151.0.32.0/22
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					151.0.40.0/21
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					151.0.48.0/20
-rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					151.236.64.0/22
-rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					151.236.68.0/23
-rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					151.236.71.0/24
-rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					151.236.72.0/21
+rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					151.236.64.0/20
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					151.236.80.0/21
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					151.236.89.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					151.236.90.0/23
@@ -202899,7 +202860,8 @@ rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver excep
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					170.168.51.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					170.168.62.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					170.168.64.0/22
-rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					170.168.72.0/22
+rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					170.168.72.0/23
+rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					170.168.75.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					170.168.77.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					170.168.78.0/23
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					170.168.90.0/24
@@ -203297,6 +203259,7 @@ rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver excep
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					177.28.7.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					177.29.246.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					177.29.252.0/24
+rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					177.122.7.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					177.122.64.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					177.122.107.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					177.122.160.0/24
@@ -204581,7 +204544,8 @@ rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver excep
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					185.156.176.0/22
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					185.157.98.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					185.157.120.0/24
-rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					185.157.124.0/22
+rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					185.157.124.0/23
+rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					185.157.126.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					185.157.188.0/22
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					185.157.252.0/23
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					185.157.254.0/24
@@ -204732,7 +204696,7 @@ rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver excep
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					185.187.18.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					185.187.88.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					185.187.112.0/22
-rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					185.187.197.0/24
+rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					185.187.196.0/23
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					185.187.198.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					185.188.96.0/22
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					185.189.16.0/22
@@ -204813,6 +204777,7 @@ rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver excep
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					185.201.28.0/23
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					185.201.30.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					185.201.45.0/24
+rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					185.201.46.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					185.201.52.0/23
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					185.201.54.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					185.201.88.0/22
@@ -205215,6 +205180,7 @@ rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver excep
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					188.94.160.0/21
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					188.94.208.0/21
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					188.94.224.0/21
+rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					188.95.71.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					188.95.92.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					188.95.95.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					188.95.104.0/21
@@ -205263,7 +205229,7 @@ rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver excep
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					188.130.152.0/23
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					188.130.155.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					188.130.156.0/22
-rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					188.130.160.0/23
+rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					188.130.160.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					188.130.163.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					188.130.165.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					188.130.166.0/23
@@ -205405,6 +205371,8 @@ rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver excep
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					191.44.48.0/22
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					191.44.52.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					191.44.60.0/22
+rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					191.133.68.0/24
+rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					191.133.245.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					191.217.211.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					191.217.214.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					191.217.230.0/24
@@ -205424,6 +205392,7 @@ rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver excep
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					192.109.243.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					192.109.248.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					192.109.250.0/24
+rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					192.109.253.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					192.124.171.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					192.124.180.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					192.124.184.0/22
@@ -205749,7 +205718,6 @@ rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver excep
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					193.105.126.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					193.105.129.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					193.105.131.0/24
-rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					193.105.156.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					193.105.169.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					193.105.174.0/23
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					193.105.198.0/24
@@ -206885,9 +206853,7 @@ rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver excep
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					195.19.128.0/22
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					195.19.132.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					195.19.135.0/24
-rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					195.19.136.0/22
-rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					195.19.140.0/23
-rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					195.19.142.0/24
+rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					195.19.136.0/21
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					195.19.145.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					195.19.146.0/23
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					195.19.148.0/22
@@ -207121,6 +207087,7 @@ rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver excep
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					195.114.112.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					195.114.116.0/23
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					195.114.119.0/24
+rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					195.114.122.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					195.128.48.0/20
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					195.128.64.0/19
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					195.128.96.0/22
@@ -207810,6 +207777,7 @@ rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver excep
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					212.193.8.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					212.193.10.0/23
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					212.193.14.0/23
+rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					212.193.25.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					212.193.31.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					212.193.32.0/21
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					212.193.44.0/23
@@ -208076,7 +208044,8 @@ rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver excep
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					213.226.100.0/23
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					213.226.113.0/24
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					213.226.115.0/24
-rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					213.226.120.0/22
+rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					213.226.120.0/24
+rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					213.226.122.0/23
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					213.232.68.0/22
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					213.232.194.0/23
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					213.232.196.0/23
@@ -209297,8 +209266,7 @@ rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver excep
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a06:a005:760::/45
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a06:a005:780::/44
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a06:a005:1e70::/45
-rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a06:a180:20::/47
-rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a06:a180:23::/48
+rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a06:a180:20::/46
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a06:b400::/29
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a06:b800:1000::/36
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a06:c000::/30
@@ -209363,7 +209331,9 @@ rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver excep
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a09:3ec0:5::/48
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a09:3ec0:8::/48
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a09:4980::/32
+rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a09:4d40::/32
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a09:4d42::/31
+rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a09:4d47::/32
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a09:4e00::/29
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a09:55c0::/35
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a09:6140::/29
@@ -209497,6 +209467,7 @@ rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver excep
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a0b:6903:fdb::/48
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a0b:6a00::/29
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a0b:6cc0::/29
+rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a0b:6e80::/29
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a0b:7100:2::/48
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a0b:7540::/29
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a0b:7ec0:1320::/48
@@ -209637,7 +209608,6 @@ rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver excep
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a0d:5ec0::/32
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a0d:5ec1:3000::/36
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a0d:5ec1:4000::/36
-rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a0d:5ec1:b000::/36
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a0d:5ec1:d000::/36
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a0d:60c0::/29
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a0d:7740::/29
@@ -209778,6 +209748,7 @@ rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver excep
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a0e:eac0:2020::/48
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a0e:eac0:2100::/43
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a0e:eac0:2200::/48
+rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a0e:eec3::/32
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a0e:f400::/29
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a0e:fb41::/32
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a0e:fb42::/32
@@ -209862,6 +209833,7 @@ rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver excep
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a11:200:e000::/36
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a11:206::/32
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a11:680::/29
+rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a11:780:2000::/36
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a11:780:7000::/36
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a11:c80:f000::/36
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a11:d80::/35
@@ -209967,6 +209939,7 @@ rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver excep
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a12:2207::/32
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a12:2802::/32
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a12:2806::/31
+rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a12:2fc4::/32
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a12:3580::/29
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a12:3b45::/32
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a12:3bc1::/32
@@ -210058,6 +210031,7 @@ rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver excep
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a14:a083::/32
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a14:a084::/35
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a14:a084:2000::/36
+rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a14:a084:c000::/35
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a14:a405::/32
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a14:a406::/32
 rir-rukzby-selected-origin-protected	RIR RU+BY+KZ selected-origin resolver exception					2a14:c380:15::/48
@@ -210104,13 +210078,13 @@ verified-service-exact-hosts	Literal service host (resolver protection only)				
 verified-service-exact-hosts	Literal service host (resolver protection only)					37.220.161.51/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					37.220.161.64/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					37.220.161.117/32
-verified-service-exact-hosts	Literal service host (resolver protection only)					37.220.161.124/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					37.220.161.127/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					37.220.161.129/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					37.220.161.200/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					37.220.161.212/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					37.220.161.219/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					37.220.161.222/32
+verified-service-exact-hosts	Literal service host (resolver protection only)					37.220.161.237/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					37.220.161.251/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					37.220.162.231/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					37.220.162.232/32
@@ -210147,17 +210121,21 @@ verified-service-exact-hosts	Literal service host (resolver protection only)				
 verified-service-exact-hosts	Literal service host (resolver protection only)					46.235.184.68/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					46.235.184.84/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					46.235.184.89/32
+verified-service-exact-hosts	Literal service host (resolver protection only)					46.235.184.152/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					46.235.184.195/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					46.235.184.197/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					46.235.184.211/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					46.235.185.73/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					46.235.185.169/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					46.235.186.41/32
+verified-service-exact-hosts	Literal service host (resolver protection only)					46.235.186.67/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					46.235.186.77/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					46.235.186.164/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					46.235.186.238/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					46.235.186.254/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					46.235.188.129/32
+verified-service-exact-hosts	Literal service host (resolver protection only)					46.235.188.171/32
+verified-service-exact-hosts	Literal service host (resolver protection only)					46.235.188.251/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					46.235.189.44/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					46.235.189.79/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					46.235.189.201/32
@@ -210207,7 +210185,6 @@ verified-service-exact-hosts	Literal service host (resolver protection only)				
 verified-service-exact-hosts	Literal service host (resolver protection only)					78.41.110.46/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					78.41.110.103/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					78.41.110.143/32
-verified-service-exact-hosts	Literal service host (resolver protection only)					78.41.110.157/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					78.41.110.211/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					78.41.110.215/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					78.41.110.216/32
@@ -210216,7 +210193,6 @@ verified-service-exact-hosts	Literal service host (resolver protection only)				
 verified-service-exact-hosts	Literal service host (resolver protection only)					78.41.111.34/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					78.41.111.154/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					78.41.111.199/32
-verified-service-exact-hosts	Literal service host (resolver protection only)					78.41.111.224/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					78.108.80.125/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					78.155.198.17/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					78.155.198.113/32
@@ -210245,7 +210221,6 @@ verified-service-exact-hosts	Literal service host (resolver protection only)				
 verified-service-exact-hosts	Literal service host (resolver protection only)					81.22.46.142/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					81.26.191.59/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					81.30.199.238/32
-verified-service-exact-hosts	Literal service host (resolver protection only)					81.161.98.78/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					81.177.122.5/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					81.177.164.124/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					81.177.220.114/32
@@ -210412,6 +210387,7 @@ verified-service-exact-hosts	Literal service host (resolver protection only)				
 verified-service-exact-hosts	Literal service host (resolver protection only)					91.221.164.120/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					91.221.164.151/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					91.221.165.118/32
+verified-service-exact-hosts	Literal service host (resolver protection only)					91.221.165.156/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					91.221.165.177/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					91.222.128.11/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					91.222.130.250/32
@@ -210442,8 +210418,8 @@ verified-service-exact-hosts	Literal service host (resolver protection only)				
 verified-service-exact-hosts	Literal service host (resolver protection only)					93.93.89.154/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					93.93.89.173/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					93.93.91.63/32
-verified-service-exact-hosts	Literal service host (resolver protection only)					93.93.91.103/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					93.93.91.107/32
+verified-service-exact-hosts	Literal service host (resolver protection only)					93.93.91.187/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					93.95.98.77/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					93.95.101.202/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					93.157.232.96/32
@@ -210461,7 +210437,6 @@ verified-service-exact-hosts	Literal service host (resolver protection only)				
 verified-service-exact-hosts	Literal service host (resolver protection only)					94.79.19.57/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					94.79.51.14/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					94.79.51.135/32
-verified-service-exact-hosts	Literal service host (resolver protection only)					94.79.51.170/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					94.79.51.186/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					94.100.180.61/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					94.100.180.215/32
@@ -210695,7 +210670,6 @@ verified-service-exact-hosts	Literal service host (resolver protection only)				
 verified-service-exact-hosts	Literal service host (resolver protection only)					185.17.9.144/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					185.17.9.153/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					185.17.9.161/32
-verified-service-exact-hosts	Literal service host (resolver protection only)					185.22.155.27/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					185.27.195.146/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					185.37.63.68/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					185.40.155.13/32
@@ -210800,6 +210774,7 @@ verified-service-exact-hosts	Literal service host (resolver protection only)				
 verified-service-exact-hosts	Literal service host (resolver protection only)					185.206.167.35/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					185.206.167.50/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					185.209.85.222/32
+verified-service-exact-hosts	Literal service host (resolver protection only)					185.214.76.146/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					185.215.4.10/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					185.215.4.13/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					185.215.4.40/32
@@ -210930,7 +210905,6 @@ verified-service-exact-hosts	Literal service host (resolver protection only)				
 verified-service-exact-hosts	Literal service host (resolver protection only)					195.242.83.14/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					195.245.206.101/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					195.246.218.77/32
-verified-service-exact-hosts	Literal service host (resolver protection only)					212.11.151.56/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					212.11.155.134/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					212.11.155.165/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					212.20.1.22/32
@@ -210974,11 +210948,11 @@ verified-service-exact-hosts	Literal service host (resolver protection only)				
 verified-service-exact-hosts	Literal service host (resolver protection only)					212.193.146.140/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					212.193.146.142/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					212.193.146.157/32
+verified-service-exact-hosts	Literal service host (resolver protection only)					212.193.146.235/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					212.193.147.29/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					212.193.147.121/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					212.193.147.201/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					212.193.147.203/32
-verified-service-exact-hosts	Literal service host (resolver protection only)					212.193.147.211/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					212.193.147.238/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					212.193.152.39/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					212.193.152.77/32
@@ -210992,6 +210966,7 @@ verified-service-exact-hosts	Literal service host (resolver protection only)				
 verified-service-exact-hosts	Literal service host (resolver protection only)					212.193.152.252/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					212.193.153.14/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					212.193.153.24/32
+verified-service-exact-hosts	Literal service host (resolver protection only)					212.193.153.45/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					212.193.153.124/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					212.193.153.131/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					212.193.153.133/32
@@ -210999,6 +210974,7 @@ verified-service-exact-hosts	Literal service host (resolver protection only)				
 verified-service-exact-hosts	Literal service host (resolver protection only)					212.193.153.141/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					212.193.153.154/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					212.193.156.238/32
+verified-service-exact-hosts	Literal service host (resolver protection only)					212.193.156.251/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					212.193.157.25/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					212.193.157.40/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					212.193.157.64/32
@@ -211021,6 +210997,7 @@ verified-service-exact-hosts	Literal service host (resolver protection only)				
 verified-service-exact-hosts	Literal service host (resolver protection only)					213.59.197.5/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					213.59.197.65/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					213.59.235.104/32
+verified-service-exact-hosts	Literal service host (resolver protection only)					213.59.253.8/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					213.59.253.21/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					213.59.253.40/32
 verified-service-exact-hosts	Literal service host (resolver protection only)					213.59.254.8/32
@@ -211765,7 +211742,6 @@ verified-service-resolver-protected	Verified service resolver protection					185
 verified-service-resolver-protected	Verified service resolver protection					185.17.9.146/31
 verified-service-resolver-protected	Verified service resolver protection					185.17.9.153/32
 verified-service-resolver-protected	Verified service resolver protection					185.17.9.161/32
-verified-service-resolver-protected	Verified service resolver protection					185.22.155.27/32
 verified-service-resolver-protected	Verified service resolver protection					185.27.195.146/32
 verified-service-resolver-protected	Verified service resolver protection					185.29.130.0/24
 verified-service-resolver-protected	Verified service resolver protection					185.31.112.0/22
@@ -211863,6 +211839,7 @@ verified-service-resolver-protected	Verified service resolver protection					185
 verified-service-resolver-protected	Verified service resolver protection					185.200.242.8/32
 verified-service-resolver-protected	Verified service resolver protection					185.206.164.0/22
 verified-service-resolver-protected	Verified service resolver protection					185.209.85.222/32
+verified-service-resolver-protected	Verified service resolver protection					185.214.76.146/32
 verified-service-resolver-protected	Verified service resolver protection					185.215.4.10/32
 verified-service-resolver-protected	Verified service resolver protection					185.215.4.13/32
 verified-service-resolver-protected	Verified service resolver protection					185.215.4.40/32
@@ -212081,12 +212058,12 @@ verified-service-resolver-protected	Verified service resolver protection					212
 verified-service-resolver-protected	Verified service resolver protection					212.193.146.140/32
 verified-service-resolver-protected	Verified service resolver protection					212.193.146.142/32
 verified-service-resolver-protected	Verified service resolver protection					212.193.146.157/32
+verified-service-resolver-protected	Verified service resolver protection					212.193.146.235/32
 verified-service-resolver-protected	Verified service resolver protection					212.193.147.29/32
 verified-service-resolver-protected	Verified service resolver protection					212.193.147.121/32
 verified-service-resolver-protected	Verified service resolver protection					212.193.147.144/31
 verified-service-resolver-protected	Verified service resolver protection					212.193.147.201/32
 verified-service-resolver-protected	Verified service resolver protection					212.193.147.203/32
-verified-service-resolver-protected	Verified service resolver protection					212.193.147.211/32
 verified-service-resolver-protected	Verified service resolver protection					212.193.147.238/32
 verified-service-resolver-protected	Verified service resolver protection					212.193.152.0/23
 verified-service-resolver-protected	Verified service resolver protection					212.193.155.0/24
@@ -212112,6 +212089,7 @@ verified-service-resolver-protected	Verified service resolver protection					213
 verified-service-resolver-protected	Verified service resolver protection					213.59.197.65/32
 verified-service-resolver-protected	Verified service resolver protection					213.59.235.104/32
 verified-service-resolver-protected	Verified service resolver protection					213.59.253.6/31
+verified-service-resolver-protected	Verified service resolver protection					213.59.253.8/32
 verified-service-resolver-protected	Verified service resolver protection					213.59.253.21/32
 verified-service-resolver-protected	Verified service resolver protection					213.59.253.40/32
 verified-service-resolver-protected	Verified service resolver protection					213.59.254.6/31
@@ -216187,6 +216165,7 @@ rir-resource-RU	RIR resource registration	RU				91.212.68.0/24
 rir-resource-RU	RIR resource registration	RU				91.212.81.0/24
 rir-resource-RU	RIR resource registration	RU				91.212.97.0/24
 rir-resource-RU	RIR resource registration	RU				91.212.118.0/24
+rir-resource-RU	RIR resource registration	RU				91.212.133.0/24
 rir-resource-RU	RIR resource registration	RU				91.212.137.0/24
 rir-resource-RU	RIR resource registration	RU				91.212.146.0/24
 rir-resource-RU	RIR resource registration	RU				91.212.150.0/24
@@ -218321,7 +218300,8 @@ rir-resource-RU	RIR resource registration	RU				136.234.120.0/22
 rir-resource-RU	RIR resource registration	RU				136.234.124.0/23
 rir-resource-RU	RIR resource registration	RU				136.234.126.0/24
 rir-resource-RU	RIR resource registration	RU				137.22.144.0/21
-rir-resource-RU	RIR resource registration	RU				137.22.152.0/22
+rir-resource-RU	RIR resource registration	RU				137.22.153.0/24
+rir-resource-RU	RIR resource registration	RU				137.22.154.0/23
 rir-resource-RU	RIR resource registration	RU				137.22.156.0/24
 rir-resource-RU	RIR resource registration	RU				137.22.157.0/24
 rir-resource-RU	RIR resource registration	RU				137.22.158.0/24
@@ -218353,6 +218333,7 @@ rir-resource-RU	RIR resource registration	RU				139.100.192.0/19
 rir-resource-RU	RIR resource registration	RU				139.100.224.0/21
 rir-resource-RU	RIR resource registration	RU				139.100.232.0/21
 rir-resource-RU	RIR resource registration	RU				139.100.240.0/20
+rir-resource-RU	RIR resource registration	RU				140.225.112.0/20
 rir-resource-RU	RIR resource registration	RU				141.0.176.0/21
 rir-resource-RU	RIR resource registration	RU				141.8.128.0/18
 rir-resource-RU	RIR resource registration	RU				141.8.192.0/21
@@ -218433,6 +218414,7 @@ rir-resource-RU	RIR resource registration	RU				147.45.0.0/16
 rir-resource-RU	RIR resource registration	RU				147.78.8.0/22
 rir-resource-RU	RIR resource registration	RU				147.78.180.0/22
 rir-resource-RU	RIR resource registration	RU				147.78.188.0/22
+rir-resource-RU	RIR resource registration	RU				147.138.224.0/19
 rir-resource-RU	RIR resource registration	RU				149.62.0.0/19
 rir-resource-RU	RIR resource registration	RU				149.62.48.0/21
 rir-resource-RU	RIR resource registration	RU				149.62.160.0/21
@@ -218558,6 +218540,7 @@ rir-resource-RU	RIR resource registration	RU				159.194.196.0/22
 rir-resource-RU	RIR resource registration	RU				159.194.200.0/21
 rir-resource-RU	RIR resource registration	RU				159.194.208.0/20
 rir-resource-RU	RIR resource registration	RU				159.194.224.0/19
+rir-resource-RU	RIR resource registration	RU				159.200.80.0/20
 rir-resource-RU	RIR resource registration	RU				159.200.128.0/18
 rir-resource-RU	RIR resource registration	RU				159.200.200.0/24
 rir-resource-RU	RIR resource registration	RU				159.200.201.0/24
@@ -226319,6 +226302,7 @@ rir-resource-KZ	RIR resource registration	KZ				77.94.3.0/24
 rir-resource-KZ	RIR resource registration	KZ				77.94.4.0/22
 rir-resource-KZ	RIR resource registration	KZ				77.94.8.0/21
 rir-resource-KZ	RIR resource registration	KZ				77.94.16.0/20
+rir-resource-KZ	RIR resource registration	KZ				77.110.80.0/20
 rir-resource-KZ	RIR resource registration	KZ				77.220.206.0/23
 rir-resource-KZ	RIR resource registration	KZ				77.240.32.0/24
 rir-resource-KZ	RIR resource registration	KZ				77.240.33.0/24
@@ -226505,7 +226489,6 @@ rir-resource-KZ	RIR resource registration	KZ				91.207.8.0/24
 rir-resource-KZ	RIR resource registration	KZ				91.207.74.0/23
 rir-resource-KZ	RIR resource registration	KZ				91.210.172.0/22
 rir-resource-KZ	RIR resource registration	KZ				91.212.93.0/24
-rir-resource-KZ	RIR resource registration	KZ				91.212.133.0/24
 rir-resource-KZ	RIR resource registration	KZ				91.213.49.0/24
 rir-resource-KZ	RIR resource registration	KZ				91.213.247.0/24
 rir-resource-KZ	RIR resource registration	KZ				91.214.42.0/23

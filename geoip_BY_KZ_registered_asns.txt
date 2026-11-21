@@ -1,5 +1,5 @@
 # Unique BY/KZ ASNs from allocated, assigned and legacy records in five RIR delegated stats files
-# BY ASNs: 116; KZ ASNs: 272
+# BY ASNs: 116; KZ ASNs: 271
 AS5498
 AS6697
 AS8200
@@ -98,7 +98,6 @@ AS48716
 AS48988
 AS49089
 AS49091
-AS49108
 AS49243
 AS49393
 AS49526

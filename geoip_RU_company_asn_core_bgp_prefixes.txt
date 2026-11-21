@@ -1,6 +1,6 @@
 # v41 CORE_CORPORATE origin prefixes (protected from resolver-only blocks)
 # Exact selected-origin prefixes from the same pinned ipverse snapshot used by the base builder.
-# selected_origin_input_sha256=0cd083a2eebc738a12b037f14dfe0e918d3f55e530eeae2eac68156348932ae9
+# selected_origin_input_sha256=428bac196153bae6ff2d0eb63b9613a6bd5a14d83cb35c37bddb2d928581aa05
 # company_registry_sha256=70aee31f271fa0f3ab4d6ba2bd11748701f32fb551d94a8f6eaf7f8da386e26c
 # exception_policy_sha256=4056fd58e987a2b96c20127b79642c40e700860ec928bc5d0e68f94abb143346
 5.22.157.0/24 # AS57898
@@ -173,6 +173,7 @@
 160.5.208.0/20 # AS47764
 161.104.104.0/21 # AS47764
 168.113.128.0/20 # AS47764
+168.113.251.0/24 # AS209030
 176.101.88.0/24 # AS57073
 176.101.90.0/24 # AS57073
 176.109.112.0/23 # AS201012
@@ -218,7 +219,8 @@
 185.154.124.0/24 # AS15632
 185.157.96.0/23 # AS35237
 185.157.99.0/24 # AS35237
-185.161.180.0/22 # AS49675
+185.161.181.0/24 # AS49675
+185.161.182.0/23 # AS49675
 185.170.0.0/24 # AS60967
 185.170.1.0/24 # AS50339
 185.170.2.0/23 # AS41185
@@ -304,6 +306,7 @@
 2a02:6b8::/29 # AS13238
 2a02:6b8:215::/48 # AS212066
 2a02:6bf:8000::/34 # AS44534
+2a02:26a8:f001::/48 # AS49675
 2a02:26a8:fffe::/47 # AS49675
 2a03:720::/32 # AS57073
 2a03:720:70::/48 # AS211517

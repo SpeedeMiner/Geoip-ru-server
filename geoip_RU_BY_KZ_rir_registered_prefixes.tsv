@@ -223,6 +223,7 @@ KZ	77.94.3.0/24	ripencc	allocated
 KZ	77.94.4.0/22	ripencc	allocated
 KZ	77.94.8.0/21	ripencc	allocated
 KZ	77.94.16.0/20	ripencc	allocated
+KZ	77.110.80.0/20	ripencc	allocated
 KZ	77.220.206.0/23	ripencc	allocated
 KZ	77.240.32.0/24	ripencc	allocated
 KZ	77.240.33.0/24	ripencc	allocated
@@ -409,7 +410,6 @@ KZ	91.207.8.0/24	ripencc	assigned
 KZ	91.207.74.0/23	ripencc	assigned
 KZ	91.210.172.0/22	ripencc	assigned
 KZ	91.212.93.0/24	ripencc	allocated
-KZ	91.212.133.0/24	ripencc	assigned
 KZ	91.213.49.0/24	ripencc	allocated
 KZ	91.213.247.0/24	ripencc	assigned
 KZ	91.214.42.0/23	ripencc	assigned
@@ -4712,6 +4712,7 @@ RU	91.212.68.0/24	ripencc	assigned
 RU	91.212.81.0/24	ripencc	assigned
 RU	91.212.97.0/24	ripencc	assigned
 RU	91.212.118.0/24	ripencc	assigned
+RU	91.212.133.0/24	ripencc	assigned
 RU	91.212.137.0/24	ripencc	assigned
 RU	91.212.146.0/24	ripencc	assigned
 RU	91.212.150.0/24	ripencc	assigned
@@ -6846,7 +6847,8 @@ RU	136.234.120.0/22	ripencc	allocated
 RU	136.234.124.0/23	ripencc	allocated
 RU	136.234.126.0/24	ripencc	allocated
 RU	137.22.144.0/21	ripencc	allocated
-RU	137.22.152.0/22	ripencc	assigned
+RU	137.22.153.0/24	ripencc	assigned
+RU	137.22.154.0/23	ripencc	assigned
 RU	137.22.156.0/24	ripencc	assigned
 RU	137.22.157.0/24	ripencc	assigned
 RU	137.22.158.0/24	ripencc	assigned
@@ -6878,6 +6880,7 @@ RU	139.100.192.0/19	ripencc	allocated
 RU	139.100.224.0/21	ripencc	allocated
 RU	139.100.232.0/21	ripencc	allocated
 RU	139.100.240.0/20	ripencc	allocated
+RU	140.225.112.0/20	ripencc	assigned
 RU	141.0.176.0/21	ripencc	allocated
 RU	141.8.128.0/18	ripencc	allocated
 RU	141.8.192.0/21	ripencc	allocated
@@ -6958,6 +6961,7 @@ RU	147.45.0.0/16	ripencc	allocated
 RU	147.78.8.0/22	ripencc	allocated
 RU	147.78.180.0/22	ripencc	allocated
 RU	147.78.188.0/22	ripencc	allocated
+RU	147.138.224.0/19	ripencc	allocated
 RU	149.62.0.0/19	ripencc	allocated
 RU	149.62.48.0/21	ripencc	allocated
 RU	149.62.160.0/21	ripencc	allocated
@@ -7083,6 +7087,7 @@ RU	159.194.196.0/22	ripencc	assigned
 RU	159.194.200.0/21	ripencc	assigned
 RU	159.194.208.0/20	ripencc	assigned
 RU	159.194.224.0/19	ripencc	assigned
+RU	159.200.80.0/20	ripencc	assigned
 RU	159.200.128.0/18	ripencc	allocated
 RU	159.200.200.0/24	ripencc	allocated
 RU	159.200.201.0/24	ripencc	assigned
