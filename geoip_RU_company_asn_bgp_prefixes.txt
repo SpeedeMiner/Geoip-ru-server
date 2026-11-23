@@ -1,6 +1,6 @@
 # v41 all allowlisted company-ASN origin prefixes
 # Exact selected-origin prefixes from the same pinned ipverse snapshot used by the base builder.
-# selected_origin_input_sha256=ac1b9d3f5eb50e8b210a601cd4f52b4483b6e1663095f40b93872c39fc33fb6d
+# selected_origin_input_sha256=c8c286b0776d3ddba9080debbf490ae8bd08b10e76f31a1dac1eab138163954f
 # company_registry_sha256=70aee31f271fa0f3ab4d6ba2bd11748701f32fb551d94a8f6eaf7f8da386e26c
 # exception_policy_sha256=4056fd58e987a2b96c20127b79642c40e700860ec928bc5d0e68f94abb143346
 2.16.20.0/23 # AS12389
@@ -2422,10 +2422,7 @@
 128.204.72.0/23 # AS31133
 128.204.76.0/22 # AS25159
 129.101.92.0/22 # AS197695
-129.101.96.0/21 # AS9123
-129.101.104.0/22 # AS9123
-129.101.108.0/23 # AS9123
-129.101.110.0/24 # AS9123
+129.101.96.0/20 # AS9123
 130.0.216.0/21 # AS12714
 130.49.148.0/22 # AS197695
 130.49.182.0/23 # AS12389

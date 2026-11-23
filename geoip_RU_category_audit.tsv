@@ -1,7 +1,7 @@
 SOURCE	NORMALIZED_CATEGORY	ASSIGNED_ROLE	VALID_CIDR_INPUT_RECORDS
 davoyan	apple	ignored	20
 davoyan	private	ignored	28
-davoyan	ru	ru	37355
+davoyan	ru	ru	37349
 davoyan	wl-ru	candidate	88
 digne	blocked-ru	ignored	1146
 digne	private	ignored	28
@@ -22,7 +22,7 @@ grimbird	ru-payments	ru	7
 grimbird	ru-vk	ru	5
 grimbird	ru-wildberries	ru	8
 grimbird	ru-yandex	ru	16
-hydra	direct	candidate	36697
+hydra	direct	candidate	36700
 hydra	private	ignored	27
 hydra	whitelist	candidate	6710
 kirill	whitelist	candidate	32839
