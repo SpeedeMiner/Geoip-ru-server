@@ -1,12 +1,12 @@
-Generated UTC: 2026-11-24T14:18:00.611773+00:00
-Freshness reference UTC date: 2026-11-24
+Generated UTC: 2026-11-25T13:31:11.680842+00:00
+Freshness reference UTC date: 2026-11-25
 Rows are resource registration evidence; they do not imply physical geolocation or current BGP reachability.
-afrinic: snapshot=2026-11-24; resource_records=0; CIDR_components=0; unique_country_registry_rows=0
-apnic: snapshot=2026-11-23; resource_records=0; CIDR_components=0; unique_country_registry_rows=0
+afrinic: snapshot=2026-11-25; resource_records=0; CIDR_components=0; unique_country_registry_rows=0
+apnic: snapshot=2026-11-24; resource_records=0; CIDR_components=0; unique_country_registry_rows=0
 arin: snapshot=2026-11-24; resource_records=0; CIDR_components=0; unique_country_registry_rows=0
-lacnic: snapshot=2026-11-23; resource_records=0; CIDR_components=0; unique_country_registry_rows=0
-ripencc: snapshot=2026-11-23; resource_records=14594; CIDR_components=14628; unique_country_registry_rows=14628
-RU: unique_ipv4_prefixes=11512; unique_ipv6_prefixes=2179
+lacnic: snapshot=2026-11-24; resource_records=0; CIDR_components=0; unique_country_registry_rows=0
+ripencc: snapshot=2026-11-24; resource_records=14595; CIDR_components=14629; unique_country_registry_rows=14629
+RU: unique_ipv4_prefixes=11513; unique_ipv6_prefixes=2179
 BY: unique_ipv4_prefixes=110; unique_ipv6_prefixes=32
 KZ: unique_ipv4_prefixes=697; unique_ipv6_prefixes=98
-Total RU+BY+KZ resource rows: 14628
+Total RU+BY+KZ resource rows: 14629

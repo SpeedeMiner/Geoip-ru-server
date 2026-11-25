@@ -251,6 +251,7 @@
 2.26.90.185/32 # sources=antifilter-ip.lst
 2.26.96.26/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 2.26.96.252/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
+2.26.101.0/32 # sources=antifilter-ip.lst
 2.26.101.32/32 # sources=antifilter-ip.lst
 2.26.109.249/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 2.26.117.187/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
@@ -267,6 +268,7 @@
 2.27.5.78/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 2.27.12.197/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 2.27.14.39/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
+2.27.14.106/32 # sources=antifilter-ip.lst
 2.27.21.66/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 2.27.24.17/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 2.27.24.32/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
@@ -287,6 +289,7 @@
 2.27.201.124/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 2.27.202.54/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 2.27.244.65/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
+2.27.249.8/32 # sources=antifilter-ip.lst
 2.28.15.166/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 2.28.20.162/32 # sources=antifilter-ip.lst
 2.28.204.179/32 # sources=antifilter-ip.lst
@@ -3514,8 +3517,10 @@
 5.10.245.209/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 5.10.245.216/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 5.10.245.227/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
+5.10.245.237/32 # sources=antifilter-ip.lst
 5.10.245.238/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 5.10.246.1/32 # sources=antifilter-ip.lst
+5.10.246.3/32 # sources=antifilter-ip.lst
 5.10.246.4/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 5.10.246.30/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 5.10.246.31/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
@@ -16238,6 +16243,7 @@
 23.111.147.15/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve.lst-dns
 23.111.147.84/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve.lst-dns
 23.111.149.138/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve.lst-dns
+23.111.150.34/32 # sources=antifilter-ip.lst
 23.111.155.58/32 # sources=antifilter-ip.lst,antifilter-ipresolve.lst,v38-historical-ip.lst-dns,v38-historical-ipresolve.lst-dns
 23.111.159.118/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 23.111.169.31/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve.lst-dns
@@ -17082,6 +17088,7 @@
 31.31.196.128/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 31.31.196.139/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 31.31.196.141/32 # sources=antifilter-ipresolve.lst,v38-historical-ip.lst-dns,v38-historical-ipresolve.lst-dns
+31.31.196.142/32 # sources=antifilter-ip.lst
 31.31.196.143/32 # sources=antifilter-ip.lst
 31.31.196.158/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 31.31.196.159/32 # sources=antifilter-ip.lst
@@ -17345,6 +17352,7 @@
 31.56.177.174/32 # sources=antifilter-ip.lst
 31.56.179.91/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 31.56.189.177/32 # sources=antifilter-ip.lst
+31.56.196.122/32 # sources=antifilter-ip.lst
 31.56.209.186/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 31.57.35.62/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 31.57.46.212/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
@@ -20576,6 +20584,7 @@
 37.128.200.51/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 37.128.201.56/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 37.128.201.141/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
+37.128.201.195/32 # sources=antifilter-ip.lst
 37.128.201.205/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 37.128.202.40/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 37.128.202.50/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
@@ -22329,6 +22338,7 @@
 45.9.188.20/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 45.10.40.125/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve.lst-dns
 45.10.41.2/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
+45.10.41.66/32 # sources=antifilter-ip.lst
 45.10.41.108/32 # sources=antifilter-ip.lst,antifilter-ipresolve.lst,v38-historical-ip.lst-dns,v38-historical-ipresolve.lst-dns
 45.10.41.162/32 # sources=antifilter-ip.lst,antifilter-ipresolve.lst,v38-historical-ip.lst-dns,v38-historical-ipresolve.lst-dns
 45.10.41.249/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
@@ -22688,6 +22698,9 @@
 45.11.229.134/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 45.12.6.7/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve.lst-dns
 45.12.6.172/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve.lst-dns
+45.12.7.140/32 # sources=antifilter-ip.lst
+45.12.7.162/32 # sources=antifilter-ip.lst
+45.12.7.164/32 # sources=antifilter-ip.lst
 45.12.7.168/32 # sources=antifilter-ip.lst
 45.12.16.102/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve.lst-dns
 45.12.16.199/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve.lst-dns
@@ -22723,7 +22736,7 @@
 45.12.30.25/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve.lst-dns
 45.12.30.26/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve.lst-dns
 45.12.30.27/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve.lst-dns
-45.12.30.28/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve.lst-dns
+45.12.30.28/32 # sources=antifilter-ip.lst,antifilter-ipresolve.lst,v38-historical-ipresolve.lst-dns
 45.12.30.29/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve.lst-dns
 45.12.30.30/32 # sources=antifilter-ip.lst,antifilter-ipresolve.lst,v38-historical-ip.lst-dns,v38-historical-ipresolve.lst-dns
 45.12.30.31/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve.lst-dns
@@ -22800,7 +22813,7 @@
 45.12.30.119/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve.lst-dns
 45.12.30.120/32 # sources=antifilter-ip.lst,antifilter-ipresolve.lst,v38-historical-ip.lst-dns,v38-historical-ipresolve.lst-dns
 45.12.30.122/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve.lst-dns
-45.12.30.123/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve.lst-dns
+45.12.30.123/32 # sources=antifilter-ip.lst,antifilter-ipresolve.lst,v38-historical-ipresolve.lst-dns
 45.12.30.126/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve.lst-dns
 45.12.30.127/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve.lst-dns
 45.12.30.128/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve.lst-dns
@@ -22982,7 +22995,7 @@
 45.12.31.85/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve.lst-dns
 45.12.31.86/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve.lst-dns
 45.12.31.87/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve.lst-dns
-45.12.31.88/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve.lst-dns
+45.12.31.88/32 # sources=antifilter-ip.lst,antifilter-ipresolve.lst,v38-historical-ipresolve.lst-dns
 45.12.31.89/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve.lst-dns
 45.12.31.90/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve.lst-dns
 45.12.31.91/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve.lst-dns
@@ -23882,6 +23895,7 @@
 45.66.12.54/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve.lst-dns
 45.66.13.246/32 # sources=antifilter-ip.lst
 45.66.15.97/32 # sources=antifilter-ip.lst
+45.66.118.214/32 # sources=antifilter-ip.lst
 45.66.162.68/32 # sources=v38-historical-ip.lst-dns
 45.67.35.120/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve.lst-dns
 45.67.35.125/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve.lst-dns
@@ -25605,6 +25619,7 @@
 45.131.182.236/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 45.131.182.239/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 45.131.183.193/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
+45.131.183.221/32 # sources=antifilter-ip.lst
 45.131.186.31/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 45.131.214.233/32 # sources=antifilter-ip.lst
 45.132.8.223/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve.lst-dns
@@ -26308,6 +26323,7 @@
 45.137.190.202/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 45.137.198.50/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 45.137.201.176/32 # sources=antifilter-ip.lst
+45.137.201.182/32 # sources=antifilter-ip.lst
 45.137.201.183/32 # sources=antifilter-ip.lst
 45.137.206.20/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 45.137.206.87/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve.lst-dns
@@ -29680,6 +29696,7 @@
 46.174.143.183/32 # sources=v38-historical-ip.lst-dns
 46.174.143.201/32 # sources=antifilter-ip.lst
 46.174.143.214/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
+46.174.143.217/32 # sources=antifilter-ip.lst
 46.174.143.226/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 46.174.143.227/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 46.174.143.234/32 # sources=v38-historical-ip.lst-dns
@@ -30113,6 +30130,7 @@
 48.102.54.85/32 # sources=antifilter-ip.lst
 48.102.145.44/32 # sources=antifilter-ip.lst
 48.102.164.44/32 # sources=antifilter-ip.lst
+48.102.245.53/32 # sources=antifilter-ip.lst
 48.103.149.225/32 # sources=antifilter-ip.lst
 48.103.180.15/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 48.209.161.125/32 # sources=v38-historical-ip.lst-dns
@@ -38680,6 +38698,7 @@
 62.113.113.194/32 # sources=v38-historical-ip.lst-dns
 62.113.114.74/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 62.113.114.93/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
+62.113.114.150/32 # sources=antifilter-ip.lst
 62.113.114.223/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 62.113.115.10/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 62.113.115.14/32 # sources=v38-historical-ip.lst-dns
@@ -42928,6 +42947,7 @@
 69.165.107.69/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 69.166.236.98/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 69.167.137.96/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve.lst-dns
+69.167.168.5/32 # sources=antifilter-ip.lst
 69.167.169.231/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 69.167.170.108/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 69.167.171.206/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve.lst-dns
@@ -46291,6 +46311,7 @@
 80.89.238.80/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve.lst-dns
 80.89.238.90/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve.lst-dns
 80.89.238.98/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve.lst-dns
+80.89.238.108/32 # sources=antifilter-ip.lst
 80.89.238.110/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 80.89.238.114/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 80.89.238.147/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
@@ -47279,6 +47300,7 @@
 81.180.92.122/32 # sources=antifilter-ip.lst
 81.180.92.148/32 # sources=antifilter-ip.lst
 81.180.92.199/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
+81.180.92.220/32 # sources=antifilter-ip.lst
 81.180.93.22/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 81.180.93.108/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 81.180.93.143/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
@@ -47415,6 +47437,7 @@
 82.29.128.77/32 # sources=v38-historical-ip.lst-dns
 82.29.128.215/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 82.29.132.203/32 # sources=antifilter-ip.lst
+82.29.153.121/32 # sources=antifilter-ip.lst
 82.29.154.4/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 82.29.154.42/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 82.29.154.44/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
@@ -47445,6 +47468,7 @@
 82.39.109.129/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 82.39.215.7/32 # sources=antifilter-ip.lst
 82.40.23.175/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
+82.40.58.174/32 # sources=antifilter-ip.lst
 82.40.62.35/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 82.41.36.9/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 82.41.181.96/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
@@ -47534,6 +47558,7 @@
 82.112.249.192/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 82.112.250.208/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 82.115.6.140/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
+82.115.7.117/32 # sources=antifilter-ip.lst
 82.115.7.129/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 82.115.43.45/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 82.115.43.182/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
@@ -47570,6 +47595,7 @@
 82.118.17.97/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve.lst-dns
 82.118.17.147/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve.lst-dns
 82.118.18.170/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
+82.118.18.242/32 # sources=antifilter-ip.lst
 82.118.19.53/32 # sources=antifilter-ip.lst
 82.118.19.185/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve.lst-dns
 82.118.19.187/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve.lst-dns
@@ -48604,6 +48630,7 @@
 83.217.215.42/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 83.217.215.110/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 83.217.215.245/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
+83.217.221.233/32 # sources=antifilter-ip.lst
 83.217.223.190/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 83.219.14.218/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve.lst-dns
 83.219.97.114/32 # sources=v38-historical-ip.lst-dns
@@ -49016,7 +49043,7 @@
 84.200.33.31/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 84.200.33.63/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 84.200.33.140/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
-84.200.33.142/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
+84.200.33.142/32 # sources=v38-historical-ip.lst-dns
 84.200.33.164/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 84.200.33.171/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 84.200.33.175/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
@@ -49388,6 +49415,7 @@
 85.119.149.127/32 # sources=antifilter-ip.lst,antifilter-ipresolve.lst,v38-historical-ip.lst-dns,v38-historical-ipresolve.lst-dns
 85.119.149.185/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 85.120.52.95/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
+85.120.52.96/32 # sources=antifilter-ip.lst
 85.120.52.98/32 # sources=antifilter-ip.lst
 85.120.52.115/32 # sources=antifilter-ip.lst
 85.120.52.116/32 # sources=antifilter-ip.lst
@@ -49516,6 +49544,7 @@
 85.121.176.195/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 85.121.177.2/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 85.121.177.15/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
+85.121.177.65/32 # sources=antifilter-ip.lst
 85.121.177.87/32 # sources=v38-historical-ip.lst-dns
 85.121.177.99/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 85.121.177.158/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
@@ -49800,7 +49829,9 @@
 85.158.148.183/32 # sources=v38-historical-ip.lst-dns
 85.158.148.237/32 # sources=v38-historical-ip.lst-dns
 85.158.149.180/32 # sources=v38-historical-ip.lst-dns
+85.158.149.184/32 # sources=antifilter-ip.lst
 85.158.149.194/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
+85.158.150.88/32 # sources=antifilter-ip.lst
 85.159.66.62/32 # sources=antifilter-ip.lst,antifilter-ipresolve.lst,v38-historical-ip.lst-dns,v38-historical-ipresolve.lst-dns
 85.159.66.93/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 85.159.208.174/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve.lst-dns
@@ -49987,6 +50018,7 @@
 85.209.90.214/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve.lst-dns
 85.209.91.206/32 # sources=antifilter-ip.lst,antifilter-ipresolve.lst,v38-historical-ip.lst-dns,v38-historical-ipresolve.lst-dns
 85.209.91.208/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve.lst-dns
+85.209.129.24/32 # sources=antifilter-ip.lst
 85.209.135.43/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 85.209.135.79/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 85.209.148.14/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve.lst-dns
@@ -50476,6 +50508,7 @@
 87.199.208.238/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 87.199.209.125/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 87.199.209.239/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
+87.199.210.31/32 # sources=antifilter-ip.lst
 87.199.210.91/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 87.224.195.178/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 87.228.33.239/32 # sources=v38-historical-ip.lst-dns
@@ -53021,6 +53054,7 @@
 89.124.124.232/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 89.124.251.5/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 89.125.2.176/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
+89.125.29.162/32 # sources=antifilter-ip.lst
 89.125.34.55/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 89.125.34.228/32 # sources=antifilter-ip.lst
 89.125.35.129/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
@@ -55760,6 +55794,7 @@
 91.203.69.239/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 91.203.69.240/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 91.203.69.241/32 # sources=antifilter-ip.lst,antifilter-ipresolve.lst,v38-historical-ip.lst-dns,v38-historical-ipresolve.lst-dns
+91.203.71.70/32 # sources=antifilter-ip.lst
 91.203.71.126/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 91.203.147.237/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve.lst-dns
 91.203.187.6/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve.lst-dns
@@ -56008,6 +56043,7 @@
 91.213.248.46/32 # sources=v38-historical-ip.lst-dns
 91.214.22.205/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve.lst-dns
 91.214.22.217/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve.lst-dns
+91.214.78.152/32 # sources=antifilter-ip.lst
 91.214.190.3/32 # sources=v38-historical-ip.lst-dns
 91.214.190.43/32 # sources=v38-historical-ip.lst-dns
 91.214.190.49/32 # sources=v38-historical-ip.lst-dns
@@ -56060,6 +56096,7 @@
 91.215.86.192/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 91.215.87.36/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 91.215.87.38/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
+91.215.87.39/32 # sources=antifilter-ip.lst
 91.215.87.121/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 91.215.136.134/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve.lst-dns
 91.215.137.223/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve.lst-dns
@@ -56134,6 +56171,7 @@
 91.216.248.21/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 91.216.248.22/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 91.216.248.23/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
+91.217.9.47/32 # sources=antifilter-ip.lst
 91.217.9.172/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 91.217.9.180/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 91.217.246.57/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve.lst-dns
@@ -59420,6 +59458,7 @@
 94.72.107.72/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 94.72.111.26/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 94.72.112.178/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve.lst-dns
+94.72.125.38/32 # sources=antifilter-ip.lst
 94.72.125.221/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 94.72.126.175/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 94.73.146.210/32 # sources=antifilter-ip.lst
@@ -60410,6 +60449,7 @@
 95.111.210.181/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 95.111.211.73/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 95.111.214.50/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
+95.111.227.155/32 # sources=antifilter-ip.lst
 95.111.245.189/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve.lst-dns
 95.111.249.30/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 95.111.251.172/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve.lst-dns
@@ -60598,7 +60638,6 @@
 95.142.43.13/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve.lst-dns
 95.142.43.31/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve.lst-dns
 95.142.43.62/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve.lst-dns
-95.142.43.204/32 # sources=antifilter-ip.lst
 95.142.44.37/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 95.142.44.84/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve.lst-dns
 95.142.44.98/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve.lst-dns
@@ -62791,7 +62830,7 @@
 103.246.147.59/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 103.246.147.115/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve.lst-dns
 103.246.147.137/32 # sources=v38-historical-ip.lst-dns
-103.246.147.166/32 # sources=v38-historical-ip.lst-dns
+103.246.147.166/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 103.246.147.204/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve.lst-dns
 103.246.147.232/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve.lst-dns
 103.246.147.242/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
@@ -118171,6 +118210,7 @@
 104.194.133.169/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 104.194.134.238/32 # sources=v38-historical-ip.lst-dns
 104.194.141.127/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
+104.194.145.44/32 # sources=antifilter-ip.lst
 104.194.146.12/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 104.194.151.203/32 # sources=v38-historical-ip.lst-dns
 104.194.152.195/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
@@ -122164,6 +122204,7 @@
 109.172.90.112/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 109.172.90.168/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 109.172.91.13/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
+109.172.91.241/32 # sources=antifilter-ip.lst
 109.172.97.104/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 109.172.101.159/32 # sources=v38-historical-ip.lst-dns
 109.172.101.220/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
@@ -123358,6 +123399,7 @@
 116.204.169.9/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 116.204.171.26/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve.lst-dns
 116.206.52.21/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
+116.206.95.201/32 # sources=antifilter-ip.lst
 116.247.3.21/32 # sources=antifilter-ip.lst
 116.254.101.100/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 117.5.16.253/32 # sources=antifilter-ip.lst
@@ -123813,6 +123855,7 @@
 129.101.97.68/32 # sources=antifilter-ip.lst
 129.101.99.75/32 # sources=antifilter-ip.lst
 129.101.104.126/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
+129.101.106.55/32 # sources=antifilter-ip.lst
 129.101.112.9/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 129.101.113.105/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 129.101.124.167/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
@@ -123887,7 +123930,7 @@
 130.91.203.158/32 # sources=v38-historical-ip.lst-dns
 130.94.15.228/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 130.94.65.70/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
-130.94.90.167/32 # sources=v38-historical-ip.lst-dns
+130.94.90.167/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 130.94.95.190/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 130.94.107.112/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 130.94.117.57/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
@@ -124355,6 +124398,7 @@
 132.243.194.27/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 132.243.194.54/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 132.243.195.44/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
+132.243.209.37/32 # sources=antifilter-ip.lst
 132.243.213.214/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 132.243.214.31/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 132.243.230.87/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
@@ -125294,6 +125338,7 @@
 136.144.239.161/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 136.148.83.170/32 # sources=antifilter-ip.lst
 136.148.213.63/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
+136.148.213.183/32 # sources=antifilter-ip.lst
 136.169.144.143/32 # sources=antifilter-ip.lst
 136.175.10.14/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 136.176.74.67/32 # sources=v38-historical-ip.lst-dns
@@ -125657,6 +125702,7 @@
 138.16.181.199/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 138.16.181.230/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 138.16.181.231/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
+138.16.182.53/32 # sources=antifilter-ip.lst
 138.16.182.74/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 138.16.182.240/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 138.16.183.6/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
@@ -128217,6 +128263,7 @@
 143.255.158.28/32 # sources=antifilter-ip.lst,antifilter-ipresolve.lst,v38-historical-ip.lst-dns,v38-historical-ipresolve.lst-dns
 144.6.28.110/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 144.31.1.73/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
+144.31.1.139/32 # sources=antifilter-ip.lst
 144.31.5.14/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 144.31.14.191/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 144.31.17.180/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
@@ -128459,6 +128506,7 @@
 144.124.252.237/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 144.124.253.82/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 144.124.253.89/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
+144.124.253.149/32 # sources=antifilter-ip.lst
 144.124.253.158/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 144.124.253.175/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 144.124.253.207/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
@@ -128850,6 +128898,7 @@
 145.223.124.224/32 # sources=antifilter-ip.lst
 145.223.124.226/32 # sources=antifilter-ip.lst
 145.223.124.234/32 # sources=v38-historical-ip.lst-dns
+145.223.124.237/32 # sources=antifilter-ip.lst
 145.223.124.238/32 # sources=antifilter-ip.lst
 145.223.124.242/32 # sources=v38-historical-ip.lst-dns
 145.223.124.247/32 # sources=antifilter-ip.lst
@@ -129428,6 +129477,7 @@
 146.88.234.136/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve.lst-dns
 146.103.40.17/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 146.103.40.85/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
+146.103.42.82/32 # sources=antifilter-ip.lst
 146.103.42.87/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 146.103.42.90/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 146.103.42.142/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
@@ -129733,6 +129783,7 @@
 147.45.213.186/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 147.45.214.56/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 147.45.216.159/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
+147.45.221.88/32 # sources=antifilter-ip.lst
 147.45.224.241/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 147.45.227.151/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 147.45.236.217/32 # sources=v38-historical-ip.lst-dns
@@ -134376,6 +134427,7 @@
 160.153.0.175/32 # sources=antifilter-ip.lst,antifilter-ipresolve.lst,v38-historical-ip.lst-dns,v38-historical-ipresolve.lst-dns
 160.153.0.176/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve.lst-dns
 160.153.0.179/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
+160.153.0.180/32 # sources=antifilter-ip.lst
 160.153.0.181/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 160.153.0.183/32 # sources=antifilter-ip.lst,antifilter-ipresolve.lst,v38-historical-ip.lst-dns,v38-historical-ipresolve.lst-dns
 160.153.0.189/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
@@ -138753,6 +138805,7 @@
 168.76.254.209/32 # sources=v38-historical-ip.lst-dns
 168.100.8.11/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 168.100.8.236/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve.lst-dns
+168.100.9.46/32 # sources=antifilter-ip.lst
 168.100.9.236/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 168.100.11.86/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve.lst-dns
 168.100.11.253/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
@@ -138918,6 +138971,7 @@
 169.40.40.160/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 169.40.40.183/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 169.40.40.185/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
+169.40.40.189/32 # sources=antifilter-ip.lst
 169.40.40.191/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 169.40.40.200/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 169.40.40.207/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
@@ -166436,6 +166490,7 @@
 176.57.65.80/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 176.57.65.83/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 176.57.65.86/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
+176.57.65.89/32 # sources=antifilter-ip.lst
 176.57.65.93/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 176.57.65.94/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 176.57.65.98/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
@@ -167265,6 +167320,7 @@
 177.177.220.236/32 # sources=antifilter-ip.lst
 177.189.243.217/32 # sources=antifilter-ip.lst,antifilter-ipresolve.lst,v38-historical-ip.lst-dns,v38-historical-ipresolve.lst-dns
 177.190.32.168/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
+177.202.74.182/32 # sources=antifilter-ip.lst
 177.202.90.71/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 177.203.59.90/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 177.210.68.213/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
@@ -168642,6 +168698,7 @@
 178.208.83.15/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 178.208.83.19/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve.lst-dns
 178.208.83.27/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve.lst-dns
+178.208.83.40/32 # sources=antifilter-ip.lst
 178.208.83.51/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve.lst-dns
 178.208.84.109/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve.lst-dns
 178.208.84.209/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve.lst-dns
@@ -174596,7 +174653,7 @@
 185.81.128.189/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve.lst-dns
 185.81.128.246/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve.lst-dns
 185.81.129.4/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve.lst-dns
-185.81.129.8/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve.lst-dns
+185.81.129.8/32 # sources=antifilter-ip.lst,antifilter-ipresolve.lst,v38-historical-ipresolve.lst-dns
 185.81.129.13/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve.lst-dns
 185.81.129.18/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve.lst-dns
 185.81.129.19/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve.lst-dns
@@ -174748,6 +174805,7 @@
 185.82.219.16/32 # sources=antifilter-ip.lst,antifilter-ipresolve.lst,v38-historical-ip.lst-dns,v38-historical-ipresolve.lst-dns
 185.82.219.26/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 185.82.219.68/32 # sources=v38-historical-ip.lst-dns
+185.82.219.111/32 # sources=antifilter-ip.lst
 185.82.219.128/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 185.82.219.167/32 # sources=v38-historical-ip.lst-dns
 185.82.219.169/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
@@ -175927,6 +175985,7 @@
 185.130.249.52/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 185.130.249.146/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 185.130.251.59/32 # sources=antifilter-ip.lst
+185.130.251.138/32 # sources=antifilter-ip.lst
 185.130.251.179/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 185.131.53.219/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 185.131.60.97/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
@@ -177484,7 +177543,11 @@
 185.171.229.91/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 185.171.229.99/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 185.171.229.100/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
+185.171.229.103/32 # sources=antifilter-ip.lst
+185.171.229.104/32 # sources=antifilter-ip.lst
+185.171.229.105/32 # sources=antifilter-ip.lst
 185.171.229.106/32 # sources=antifilter-ip.lst
+185.171.229.107/32 # sources=antifilter-ip.lst
 185.171.229.109/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 185.171.230.1/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve.lst-dns
 185.171.230.2/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve.lst-dns
@@ -178569,7 +178632,6 @@
 185.192.22.66/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 185.192.22.70/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 185.192.22.78/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
-185.192.22.89/32 # sources=antifilter-ip.lst
 185.192.22.92/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 185.192.22.112/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 185.192.22.120/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
@@ -179075,6 +179137,7 @@
 185.203.240.33/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve.lst-dns
 185.203.240.82/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 185.203.240.194/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve.lst-dns
+185.203.241.14/32 # sources=antifilter-ip.lst
 185.203.241.39/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 185.203.241.43/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 185.203.241.58/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
@@ -179638,6 +179701,7 @@
 185.216.86.127/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 185.216.86.153/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 185.216.86.172/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
+185.216.86.197/32 # sources=antifilter-ip.lst
 185.216.86.218/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 185.216.86.227/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 185.216.86.235/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
@@ -179844,6 +179908,7 @@
 185.225.191.9/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 185.225.191.104/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 185.225.200.102/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve.lst-dns
+185.225.201.202/32 # sources=antifilter-ip.lst
 185.225.201.251/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 185.225.210.213/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve.lst-dns
 185.226.93.186/32 # sources=v38-historical-ip.lst-dns
@@ -180529,6 +180594,7 @@
 185.243.218.96/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve.lst-dns
 185.243.218.203/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve.lst-dns
 185.243.242.33/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
+185.244.28.76/32 # sources=antifilter-ip.lst
 185.244.36.22/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 185.244.36.156/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 185.244.36.216/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve.lst-dns
@@ -180557,6 +180623,7 @@
 185.244.181.226/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 185.244.182.109/32 # sources=antifilter-ip.lst
 185.244.183.88/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
+185.244.183.218/32 # sources=antifilter-ip.lst
 185.244.183.246/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 185.244.195.200/32 # sources=antifilter-ip.lst,antifilter-ipresolve.lst,v38-historical-ip.lst-dns,v38-historical-ipresolve.lst-dns
 185.244.216.25/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve.lst-dns
@@ -181000,6 +181067,7 @@
 186.2.175.87/32 # sources=antifilter-ip.lst
 186.2.175.117/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 186.2.175.125/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
+186.2.175.143/32 # sources=antifilter-ip.lst
 186.2.175.194/32 # sources=v38-historical-ip.lst-dns
 186.2.175.201/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 186.2.175.205/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
@@ -181524,6 +181592,7 @@
 188.42.196.100/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 188.42.196.101/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 188.42.196.103/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
+188.42.196.117/32 # sources=antifilter-ip.lst
 188.42.196.130/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 188.42.196.147/32 # sources=antifilter-ip.lst,antifilter-ipresolve.lst,v38-historical-ip.lst-dns,v38-historical-ipresolve.lst-dns
 188.42.196.148/32 # sources=antifilter-ip.lst,antifilter-ipresolve.lst,v38-historical-ip.lst-dns,v38-historical-ipresolve.lst-dns
@@ -182736,6 +182805,7 @@
 188.137.231.120/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 188.137.231.172/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 188.137.231.191/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
+188.137.231.194/32 # sources=antifilter-ip.lst
 188.137.231.231/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 188.137.232.51/32 # sources=antifilter-ip.lst
 188.137.233.110/32 # sources=v38-historical-ip.lst-dns
@@ -182855,7 +182925,7 @@
 188.137.248.129/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 188.137.248.150/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 188.137.248.177/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
-188.137.248.184/32 # sources=v38-historical-ip.lst-dns
+188.137.248.184/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 188.137.248.186/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 188.137.248.190/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 188.137.248.205/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
@@ -184026,6 +184096,7 @@
 190.115.16.15/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 190.115.16.21/32 # sources=v38-historical-ip.lst-dns
 190.115.16.104/32 # sources=antifilter-ip.lst
+190.115.16.123/32 # sources=antifilter-ip.lst
 190.115.16.129/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 190.115.16.130/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 190.115.16.157/32 # sources=antifilter-ip.lst
@@ -185319,6 +185390,7 @@
 192.144.58.224/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 192.144.58.230/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 192.144.59.13/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
+192.144.59.41/32 # sources=antifilter-ip.lst
 192.144.59.42/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 192.144.59.72/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 192.144.59.97/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
@@ -186114,6 +186186,7 @@
 193.39.168.22/32 # sources=antifilter-ip.lst
 193.39.185.8/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve.lst-dns
 193.41.5.123/32 # sources=v38-historical-ip.lst-dns
+193.41.86.15/32 # sources=antifilter-ip.lst
 193.41.194.100/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 193.42.36.151/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve.lst-dns
 193.42.36.223/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve.lst-dns
@@ -189010,6 +189083,7 @@
 195.2.79.96/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 195.2.79.116/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 195.2.79.135/32 # sources=antifilter-ip.lst
+195.2.79.151/32 # sources=antifilter-ip.lst
 195.2.79.252/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 195.2.80.10/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve.lst-dns
 195.2.80.32/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
@@ -189462,6 +189536,7 @@
 195.58.55.20/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 195.58.55.40/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 195.58.55.54/32 # sources=antifilter-ip.lst
+195.58.55.85/32 # sources=antifilter-ip.lst
 195.58.55.176/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 195.58.55.242/32 # sources=v38-historical-ip.lst-dns
 195.58.56.5/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
@@ -190058,6 +190133,7 @@
 195.123.225.141/32 # sources=v38-historical-ip.lst-dns
 195.123.225.143/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 195.123.225.146/32 # sources=antifilter-ip.lst
+195.123.225.149/32 # sources=antifilter-ip.lst
 195.123.225.150/32 # sources=v38-historical-ip.lst-dns
 195.123.225.151/32 # sources=antifilter-ip.lst
 195.123.225.169/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
@@ -190100,6 +190176,7 @@
 195.123.227.83/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 195.123.227.87/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve.lst-dns
 195.123.227.89/32 # sources=antifilter-ip.lst
+195.123.227.103/32 # sources=antifilter-ip.lst
 195.123.227.113/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve.lst-dns
 195.123.227.114/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve.lst-dns
 195.123.227.173/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
@@ -190128,6 +190205,7 @@
 195.123.228.189/32 # sources=antifilter-ip.lst
 195.123.228.254/32 # sources=antifilter-ip.lst
 195.123.229.122/32 # sources=antifilter-ip.lst
+195.123.229.237/32 # sources=antifilter-ip.lst
 195.123.230.66/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 195.123.230.88/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 195.123.233.11/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
@@ -191099,6 +191177,7 @@
 198.37.107.38/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 198.37.107.40/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 198.37.107.42/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
+198.37.107.49/32 # sources=antifilter-ip.lst
 198.37.107.66/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve.lst-dns
 198.37.107.68/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 198.37.107.71/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
@@ -191478,6 +191557,7 @@
 198.54.116.157/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve.lst-dns
 198.54.116.163/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve.lst-dns
 198.54.116.175/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve.lst-dns
+198.54.116.177/32 # sources=antifilter-ip.lst
 198.54.116.197/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve.lst-dns
 198.54.116.202/32 # sources=antifilter-ip.lst
 198.54.116.204/32 # sources=antifilter-ip.lst,antifilter-ipresolve.lst,v38-historical-ip.lst-dns,v38-historical-ipresolve.lst-dns
@@ -192664,11 +192744,13 @@
 201.4.72.113/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 201.4.72.120/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 201.4.72.126/32 # sources=antifilter-ip.lst
+201.4.72.137/32 # sources=antifilter-ip.lst
 201.4.72.162/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 201.4.72.165/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 201.4.72.169/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 201.4.72.172/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 201.4.72.176/32 # sources=v38-historical-ip.lst-dns
+201.4.72.216/32 # sources=antifilter-ip.lst
 201.4.72.217/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 201.4.72.218/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 201.5.43.209/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
@@ -193648,6 +193730,7 @@
 203.24.103.120/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 203.24.103.121/32 # sources=antifilter-ip.lst,antifilter-ipresolve.lst,v38-historical-ip.lst-dns,v38-historical-ipresolve.lst-dns
 203.24.103.122/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve.lst-dns
+203.24.103.124/32 # sources=antifilter-ip.lst
 203.24.103.125/32 # sources=antifilter-ip.lst,antifilter-ipresolve.lst,v38-historical-ip.lst-dns,v38-historical-ipresolve.lst-dns
 203.24.103.126/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve.lst-dns
 203.24.103.127/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
@@ -194162,6 +194245,7 @@
 203.29.52.57/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 203.29.52.58/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve.lst-dns
 203.29.52.59/32 # sources=antifilter-ip.lst,antifilter-ipresolve.lst,v38-historical-ip.lst-dns,v38-historical-ipresolve.lst-dns
+203.29.52.61/32 # sources=antifilter-ip.lst
 203.29.52.68/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve.lst-dns
 203.29.52.72/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve.lst-dns
 203.29.52.73/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve.lst-dns
@@ -195223,6 +195307,7 @@
 203.32.121.172/32 # sources=antifilter-ip.lst,antifilter-ipresolve.lst,v38-historical-ip.lst-dns,v38-historical-ipresolve.lst-dns
 203.32.121.173/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve.lst-dns
 203.32.121.174/32 # sources=antifilter-ip.lst,antifilter-ipresolve.lst,v38-historical-ip.lst-dns,v38-historical-ipresolve.lst-dns
+203.32.121.175/32 # sources=antifilter-ip.lst
 203.32.121.178/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve.lst-dns
 203.32.121.180/32 # sources=v38-historical-ip.lst-dns
 203.32.121.183/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
@@ -195372,6 +195457,7 @@
 203.34.80.9/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve.lst-dns
 203.34.80.10/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve.lst-dns
 203.34.80.13/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve.lst-dns
+203.34.80.15/32 # sources=antifilter-ip.lst
 203.34.80.16/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve.lst-dns
 203.34.80.17/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve.lst-dns
 203.34.80.19/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
@@ -195822,6 +195908,7 @@
 204.155.150.121/32 # sources=antifilter-ip.lst,antifilter-ipresolve.lst,v38-historical-ip.lst-dns,v38-historical-ipresolve.lst-dns
 204.155.150.123/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve.lst-dns
 204.155.150.125/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve.lst-dns
+204.155.154.5/32 # sources=antifilter-ip.lst
 204.155.154.39/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 204.155.154.40/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 204.155.154.45/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
@@ -197580,6 +197667,7 @@
 209.172.38.199/32 # sources=antifilter-ip.lst
 209.177.102.103/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 209.182.100.161/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
+209.182.100.209/32 # sources=antifilter-ip.lst
 209.182.100.211/32 # sources=antifilter-ip.lst
 209.182.196.26/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 209.182.197.44/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
@@ -198256,6 +198344,7 @@
 212.43.151.81/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 212.43.152.189/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 212.43.153.79/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
+212.43.154.106/32 # sources=antifilter-ip.lst
 212.43.154.151/32 # sources=antifilter-ip.lst
 212.43.155.36/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 212.43.155.51/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
@@ -198514,7 +198603,7 @@
 212.86.109.244/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 212.86.114.27/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 212.86.114.64/32 # sources=antifilter-ip.lst,antifilter-ipresolve.lst,v38-historical-ip.lst-dns,v38-historical-ipresolve.lst-dns
-212.86.114.86/32 # sources=v38-historical-ip.lst-dns
+212.86.114.86/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 212.86.114.89/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve.lst-dns
 212.86.114.93/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 212.86.114.101/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
@@ -198563,6 +198652,7 @@
 212.86.127.155/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 212.86.127.158/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 212.86.127.160/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
+212.86.127.161/32 # sources=antifilter-ip.lst
 212.87.29.156/32 # sources=antifilter-ip.lst
 212.87.190.190/32 # sources=antifilter-ip.lst
 212.89.14.89/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve.lst-dns
@@ -199767,7 +199857,6 @@
 213.171.7.135/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 213.171.12.10/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 213.171.26.253/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
-213.171.30.37/32 # sources=antifilter-ip.lst
 213.171.30.206/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 213.171.195.105/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 213.171.208.217/32 # sources=antifilter-ipresolve.lst,v38-historical-ipresolve.lst-dns
@@ -201479,6 +201568,7 @@
 217.199.254.220/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 217.216.110.207/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 217.217.97.42/32 # sources=antifilter-ip.lst
+217.217.227.230/32 # sources=antifilter-ip.lst
 217.217.235.185/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 217.234.150.252/32 # sources=antifilter-ip.lst,v38-historical-ip.lst-dns
 217.243.211.69/32 # sources=antifilter-ip.lst,antifilter-ipresolve.lst,v38-historical-ip.lst-dns,v38-historical-ipresolve.lst-dns

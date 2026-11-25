@@ -1062,6 +1062,7 @@ v41-resolver-only-candidates	2.26.85.239/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	2.26.90.185/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	2.26.96.26/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	2.26.96.252/32	IPv4	1	0	0	0	0	0
+v41-resolver-only-candidates	2.26.101.0/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	2.26.101.32/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	2.26.109.249/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	2.26.117.187/32	IPv4	1	0	0	0	0	0
@@ -1078,6 +1079,7 @@ v41-resolver-only-candidates	2.27.4.240/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	2.27.5.78/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	2.27.12.197/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	2.27.14.39/32	IPv4	1	0	0	0	0	0
+v41-resolver-only-candidates	2.27.14.106/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	2.27.21.66/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	2.27.24.17/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	2.27.24.32/32	IPv4	1	0	0	0	0	0
@@ -1098,6 +1100,7 @@ v41-resolver-only-candidates	2.27.131.105/32	IPv4	1	1	0	0	0	0
 v41-resolver-only-candidates	2.27.201.124/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	2.27.202.54/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	2.27.244.65/32	IPv4	1	0	0	0	0	0
+v41-resolver-only-candidates	2.27.249.8/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	2.28.15.166/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	2.28.20.162/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	2.28.204.179/32	IPv4	1	0	0	0	0	0
@@ -3925,8 +3928,10 @@ v41-resolver-only-candidates	5.10.245.190/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	5.10.245.209/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	5.10.245.216/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	5.10.245.227/32	IPv4	1	0	0	0	0	0
+v41-resolver-only-candidates	5.10.245.237/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	5.10.245.238/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	5.10.246.1/32	IPv4	1	0	0	0	0	0
+v41-resolver-only-candidates	5.10.246.3/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	5.10.246.4/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	5.10.246.30/31	IPv4	2	0	0	0	0	0
 v41-resolver-only-candidates	5.10.246.32/31	IPv4	2	0	0	0	0	0
@@ -13770,6 +13775,7 @@ v41-resolver-only-candidates	23.111.147.12/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	23.111.147.15/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	23.111.147.84/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	23.111.149.138/32	IPv4	1	0	0	0	0	0
+v41-resolver-only-candidates	23.111.150.34/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	23.111.155.58/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	23.111.159.118/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	23.111.169.31/32	IPv4	1	0	0	0	0	0
@@ -14471,7 +14477,7 @@ v41-resolver-only-candidates	31.31.196.122/32	IPv4	1	1	0	0	1	0
 v41-resolver-only-candidates	31.31.196.128/32	IPv4	1	1	0	0	1	0
 v41-resolver-only-candidates	31.31.196.139/32	IPv4	1	1	0	0	1	0
 v41-resolver-only-candidates	31.31.196.141/32	IPv4	1	1	0	0	1	0
-v41-resolver-only-candidates	31.31.196.143/32	IPv4	1	1	0	0	1	0
+v41-resolver-only-candidates	31.31.196.142/31	IPv4	2	2	0	0	2	0
 v41-resolver-only-candidates	31.31.196.158/31	IPv4	2	2	0	0	2	0
 v41-resolver-only-candidates	31.31.196.160/30	IPv4	4	4	0	0	4	0
 v41-resolver-only-candidates	31.31.196.164/31	IPv4	2	2	0	0	2	0
@@ -14677,6 +14683,7 @@ v41-resolver-only-candidates	31.56.177.164/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	31.56.177.174/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	31.56.179.91/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	31.56.189.177/32	IPv4	1	0	0	0	0	0
+v41-resolver-only-candidates	31.56.196.122/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	31.56.209.186/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	31.57.35.62/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	31.57.46.212/32	IPv4	1	0	0	0	0	0
@@ -17776,6 +17783,7 @@ v41-resolver-only-candidates	37.128.200.38/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	37.128.200.51/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	37.128.201.56/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	37.128.201.141/32	IPv4	1	0	0	0	0	0
+v41-resolver-only-candidates	37.128.201.195/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	37.128.201.205/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	37.128.202.40/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	37.128.202.50/32	IPv4	1	0	0	0	0	0
@@ -19466,6 +19474,7 @@ v41-resolver-only-candidates	45.9.180.12/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	45.9.188.20/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	45.10.40.125/32	IPv4	1	1	0	0	1	0
 v41-resolver-only-candidates	45.10.41.2/32	IPv4	1	1	0	0	1	0
+v41-resolver-only-candidates	45.10.41.66/32	IPv4	1	1	0	0	1	0
 v41-resolver-only-candidates	45.10.41.108/32	IPv4	1	1	0	0	1	0
 v41-resolver-only-candidates	45.10.41.162/32	IPv4	1	1	0	0	1	0
 v41-resolver-only-candidates	45.10.41.249/32	IPv4	1	1	0	0	1	0
@@ -19590,6 +19599,9 @@ v41-resolver-only-candidates	45.11.183.234/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	45.11.229.134/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	45.12.6.7/32	IPv4	1	1	0	0	0	0
 v41-resolver-only-candidates	45.12.6.172/32	IPv4	1	1	0	0	0	0
+v41-resolver-only-candidates	45.12.7.140/32	IPv4	1	1	0	0	0	0
+v41-resolver-only-candidates	45.12.7.162/32	IPv4	1	1	0	0	0	0
+v41-resolver-only-candidates	45.12.7.164/32	IPv4	1	1	0	0	0	0
 v41-resolver-only-candidates	45.12.7.168/32	IPv4	1	1	0	0	0	0
 v41-resolver-only-candidates	45.12.16.102/32	IPv4	1	1	0	0	1	0
 v41-resolver-only-candidates	45.12.16.199/32	IPv4	1	1	0	0	1	0
@@ -20444,6 +20456,7 @@ v41-resolver-only-candidates	45.66.12.52/31	IPv4	2	2	0	0	0	0
 v41-resolver-only-candidates	45.66.12.54/32	IPv4	1	1	0	0	0	0
 v41-resolver-only-candidates	45.66.13.246/32	IPv4	1	1	0	0	0	0
 v41-resolver-only-candidates	45.66.15.97/32	IPv4	1	1	0	0	0	0
+v41-resolver-only-candidates	45.66.118.214/32	IPv4	1	1	0	0	1	0
 v41-resolver-only-candidates	45.66.162.68/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	45.67.35.120/32	IPv4	1	1	0	0	0	0
 v41-resolver-only-candidates	45.67.35.125/32	IPv4	1	1	0	0	0	0
@@ -21804,6 +21817,7 @@ v41-resolver-only-candidates	45.131.182.200/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	45.131.182.236/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	45.131.182.239/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	45.131.183.193/32	IPv4	1	0	0	0	0	0
+v41-resolver-only-candidates	45.131.183.221/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	45.131.186.31/32	IPv4	1	1	0	0	0	0
 v41-resolver-only-candidates	45.131.214.233/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	45.132.8.223/32	IPv4	1	0	0	0	0	0
@@ -22309,7 +22323,7 @@ v41-resolver-only-candidates	45.137.190.186/32	IPv4	1	1	0	0	0	0
 v41-resolver-only-candidates	45.137.190.202/32	IPv4	1	1	0	0	0	0
 v41-resolver-only-candidates	45.137.198.50/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	45.137.201.176/32	IPv4	1	0	0	0	0	0
-v41-resolver-only-candidates	45.137.201.183/32	IPv4	1	0	0	0	0	0
+v41-resolver-only-candidates	45.137.201.182/31	IPv4	2	0	0	0	0	0
 v41-resolver-only-candidates	45.137.206.20/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	45.137.206.87/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	45.137.212.32/32	IPv4	1	0	0	0	0	0
@@ -24855,6 +24869,7 @@ v41-resolver-only-candidates	46.174.143.145/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	46.174.143.183/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	46.174.143.201/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	46.174.143.214/32	IPv4	1	0	0	0	0	0
+v41-resolver-only-candidates	46.174.143.217/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	46.174.143.226/31	IPv4	2	0	0	0	0	0
 v41-resolver-only-candidates	46.174.143.234/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	46.174.143.244/31	IPv4	2	0	0	0	0	0
@@ -25248,6 +25263,7 @@ v41-resolver-only-candidates	48.101.67.178/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	48.102.54.85/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	48.102.145.44/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	48.102.164.44/32	IPv4	1	0	0	0	0	0
+v41-resolver-only-candidates	48.102.245.53/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	48.103.149.225/32	IPv4	1	1	0	0	0	0
 v41-resolver-only-candidates	48.103.180.15/32	IPv4	1	1	0	0	0	0
 v41-resolver-only-candidates	48.209.161.125/32	IPv4	1	0	0	0	0	0
@@ -32606,6 +32622,7 @@ v41-resolver-only-candidates	62.113.113.127/32	IPv4	1	1	0	0	0	0
 v41-resolver-only-candidates	62.113.113.194/32	IPv4	1	1	0	0	0	0
 v41-resolver-only-candidates	62.113.114.74/32	IPv4	1	1	0	0	0	0
 v41-resolver-only-candidates	62.113.114.93/32	IPv4	1	1	0	0	0	0
+v41-resolver-only-candidates	62.113.114.150/32	IPv4	1	1	0	0	0	0
 v41-resolver-only-candidates	62.113.114.223/32	IPv4	1	1	0	0	0	0
 v41-resolver-only-candidates	62.113.115.10/32	IPv4	1	1	0	0	0	0
 v41-resolver-only-candidates	62.113.115.14/32	IPv4	1	1	0	0	0	0
@@ -36439,6 +36456,7 @@ v41-resolver-only-candidates	69.165.105.12/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	69.165.107.69/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	69.166.236.98/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	69.167.137.96/32	IPv4	1	0	0	0	0	0
+v41-resolver-only-candidates	69.167.168.5/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	69.167.169.231/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	69.167.170.108/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	69.167.171.206/32	IPv4	1	0	0	0	0	0
@@ -39540,6 +39558,7 @@ v41-resolver-only-candidates	80.89.238.78/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	80.89.238.80/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	80.89.238.90/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	80.89.238.98/32	IPv4	1	0	0	0	0	0
+v41-resolver-only-candidates	80.89.238.108/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	80.89.238.110/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	80.89.238.114/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	80.89.238.147/32	IPv4	1	0	0	0	0	0
@@ -40420,6 +40439,7 @@ v41-resolver-only-candidates	81.180.92.93/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	81.180.92.122/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	81.180.92.148/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	81.180.92.199/32	IPv4	1	0	0	0	0	0
+v41-resolver-only-candidates	81.180.92.220/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	81.180.93.22/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	81.180.93.108/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	81.180.93.143/32	IPv4	1	0	0	0	0	0
@@ -40552,6 +40572,7 @@ v41-resolver-only-candidates	82.29.87.82/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	82.29.128.77/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	82.29.128.215/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	82.29.132.203/32	IPv4	1	0	0	0	0	0
+v41-resolver-only-candidates	82.29.153.121/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	82.29.154.4/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	82.29.154.42/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	82.29.154.44/32	IPv4	1	0	0	0	0	0
@@ -40582,6 +40603,7 @@ v41-resolver-only-candidates	82.39.86.73/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	82.39.109.129/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	82.39.215.7/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	82.40.23.175/32	IPv4	1	0	0	0	0	0
+v41-resolver-only-candidates	82.40.58.174/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	82.40.62.35/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	82.41.36.9/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	82.41.181.96/32	IPv4	1	0	0	0	0	0
@@ -40667,6 +40689,7 @@ v41-resolver-only-candidates	82.112.243.114/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	82.112.249.192/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	82.112.250.208/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	82.115.6.140/32	IPv4	1	0	0	0	0	0
+v41-resolver-only-candidates	82.115.7.117/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	82.115.7.129/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	82.115.43.45/32	IPv4	1	1	0	0	0	0
 v41-resolver-only-candidates	82.115.43.182/32	IPv4	1	1	0	0	0	0
@@ -40703,6 +40726,7 @@ v41-resolver-only-candidates	82.118.16.131/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	82.118.17.97/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	82.118.17.147/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	82.118.18.170/32	IPv4	1	0	0	0	0	0
+v41-resolver-only-candidates	82.118.18.242/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	82.118.19.53/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	82.118.19.185/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	82.118.19.187/32	IPv4	1	0	0	0	0	0
@@ -41619,6 +41643,7 @@ v41-resolver-only-candidates	83.217.214.164/32	IPv4	1	1	0	0	0	0
 v41-resolver-only-candidates	83.217.215.42/32	IPv4	1	1	0	0	0	0
 v41-resolver-only-candidates	83.217.215.110/32	IPv4	1	1	0	0	0	0
 v41-resolver-only-candidates	83.217.215.245/32	IPv4	1	1	0	0	0	0
+v41-resolver-only-candidates	83.217.221.233/32	IPv4	1	1	0	0	1	0
 v41-resolver-only-candidates	83.217.223.190/32	IPv4	1	1	0	0	1	0
 v41-resolver-only-candidates	83.219.14.218/32	IPv4	1	1	0	0	1	0
 v41-resolver-only-candidates	83.219.97.114/32	IPv4	1	0	0	0	0	0
@@ -42321,6 +42346,7 @@ v41-resolver-only-candidates	85.119.149.98/31	IPv4	2	2	0	0	2	0
 v41-resolver-only-candidates	85.119.149.127/32	IPv4	1	1	0	0	1	0
 v41-resolver-only-candidates	85.119.149.185/32	IPv4	1	1	0	0	1	0
 v41-resolver-only-candidates	85.120.52.95/32	IPv4	1	0	0	0	0	0
+v41-resolver-only-candidates	85.120.52.96/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	85.120.52.98/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	85.120.52.115/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	85.120.52.116/32	IPv4	1	0	0	0	0	0
@@ -42434,6 +42460,7 @@ v41-resolver-only-candidates	85.121.176.144/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	85.121.176.195/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	85.121.177.2/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	85.121.177.15/32	IPv4	1	0	0	0	0	0
+v41-resolver-only-candidates	85.121.177.65/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	85.121.177.87/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	85.121.177.99/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	85.121.177.158/32	IPv4	1	0	0	0	0	0
@@ -42647,7 +42674,7 @@ v41-resolver-only-candidates	85.137.62.92/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	85.137.91.134/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	85.137.94.165/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	85.137.170.193/32	IPv4	1	0	0	0	0	0
-v41-resolver-only-candidates	85.137.212.26/32	IPv4	1	1	1	0	0	0
+v41-resolver-only-candidates	85.137.212.26/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	85.137.248.140/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	85.137.248.144/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	85.137.248.178/32	IPv4	1	0	0	0	0	0
@@ -42668,7 +42695,9 @@ v41-resolver-only-candidates	85.158.148.78/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	85.158.148.183/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	85.158.148.237/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	85.158.149.180/32	IPv4	1	0	0	0	0	0
+v41-resolver-only-candidates	85.158.149.184/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	85.158.149.194/32	IPv4	1	0	0	0	0	0
+v41-resolver-only-candidates	85.158.150.88/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	85.159.66.62/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	85.159.66.93/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	85.159.208.174/32	IPv4	1	0	0	0	0	0
@@ -42850,6 +42879,7 @@ v41-resolver-only-candidates	85.209.90.185/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	85.209.90.214/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	85.209.91.206/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	85.209.91.208/32	IPv4	1	0	0	0	0	0
+v41-resolver-only-candidates	85.209.129.24/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	85.209.135.43/32	IPv4	1	1	0	0	0	0
 v41-resolver-only-candidates	85.209.135.79/32	IPv4	1	1	0	0	0	0
 v41-resolver-only-candidates	85.209.148.14/32	IPv4	1	1	0	0	0	0
@@ -43315,6 +43345,7 @@ v41-resolver-only-candidates	87.199.208.190/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	87.199.208.238/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	87.199.209.125/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	87.199.209.239/32	IPv4	1	0	0	0	0	0
+v41-resolver-only-candidates	87.199.210.31/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	87.199.210.91/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	87.224.195.178/32	IPv4	1	1	0	0	0	0
 v41-resolver-only-candidates	87.228.33.239/32	IPv4	1	1	0	0	1	0
@@ -45511,6 +45542,7 @@ v41-resolver-only-candidates	89.124.124.128/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	89.124.124.232/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	89.124.251.5/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	89.125.2.176/32	IPv4	1	0	0	0	0	0
+v41-resolver-only-candidates	89.125.29.162/32	IPv4	1	1	0	0	0	0
 v41-resolver-only-candidates	89.125.34.55/32	IPv4	1	1	0	0	0	0
 v41-resolver-only-candidates	89.125.34.228/32	IPv4	1	1	0	0	0	0
 v41-resolver-only-candidates	89.125.35.129/32	IPv4	1	0	0	0	0	0
@@ -47529,6 +47561,7 @@ v41-resolver-only-candidates	91.203.69.221/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	91.203.69.224/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	91.203.69.239/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	91.203.69.240/31	IPv4	2	0	0	0	0	0
+v41-resolver-only-candidates	91.203.71.70/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	91.203.71.126/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	91.203.147.237/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	91.203.187.6/32	IPv4	1	0	0	0	0	0
@@ -47756,6 +47789,7 @@ v41-resolver-only-candidates	91.213.248.42/32	IPv4	1	1	0	0	0	0
 v41-resolver-only-candidates	91.213.248.46/32	IPv4	1	1	0	0	0	0
 v41-resolver-only-candidates	91.214.22.205/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	91.214.22.217/32	IPv4	1	0	0	0	0	0
+v41-resolver-only-candidates	91.214.78.152/32	IPv4	1	1	1	0	0	0
 v41-resolver-only-candidates	91.214.190.3/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	91.214.190.43/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	91.214.190.49/32	IPv4	1	0	0	0	0	0
@@ -47802,7 +47836,7 @@ v41-resolver-only-candidates	91.215.43.254/32	IPv4	1	1	0	0	1	0
 v41-resolver-only-candidates	91.215.86.173/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	91.215.86.192/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	91.215.87.36/32	IPv4	1	0	0	0	0	0
-v41-resolver-only-candidates	91.215.87.38/32	IPv4	1	0	0	0	0	0
+v41-resolver-only-candidates	91.215.87.38/31	IPv4	2	0	0	0	0	0
 v41-resolver-only-candidates	91.215.87.121/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	91.215.136.134/32	IPv4	1	1	0	0	0	0
 v41-resolver-only-candidates	91.215.137.223/32	IPv4	1	1	0	0	0	0
@@ -47866,6 +47900,7 @@ v41-resolver-only-candidates	91.216.220.133/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	91.216.220.138/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	91.216.248.21/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	91.216.248.22/31	IPv4	2	0	0	0	0	0
+v41-resolver-only-candidates	91.217.9.47/32	IPv4	1	1	0	0	0	0
 v41-resolver-only-candidates	91.217.9.172/32	IPv4	1	1	0	0	0	0
 v41-resolver-only-candidates	91.217.9.180/32	IPv4	1	1	0	0	0	0
 v41-resolver-only-candidates	91.217.246.57/32	IPv4	1	0	0	0	0	0
@@ -50498,6 +50533,7 @@ v41-resolver-only-candidates	94.72.102.18/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	94.72.107.72/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	94.72.111.26/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	94.72.112.178/32	IPv4	1	0	0	0	0	0
+v41-resolver-only-candidates	94.72.125.38/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	94.72.125.221/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	94.72.126.175/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	94.73.146.210/32	IPv4	1	0	0	0	0	0
@@ -51351,6 +51387,7 @@ v41-resolver-only-candidates	95.111.210.157/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	95.111.210.181/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	95.111.211.73/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	95.111.214.50/32	IPv4	1	0	0	0	0	0
+v41-resolver-only-candidates	95.111.227.155/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	95.111.245.189/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	95.111.249.30/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	95.111.251.172/32	IPv4	1	0	0	0	0	0
@@ -51524,7 +51561,6 @@ v41-resolver-only-candidates	95.142.42.168/32	IPv4	1	1	0	0	0	0
 v41-resolver-only-candidates	95.142.43.13/32	IPv4	1	1	0	0	0	0
 v41-resolver-only-candidates	95.142.43.31/32	IPv4	1	1	0	0	0	0
 v41-resolver-only-candidates	95.142.43.62/32	IPv4	1	1	0	0	0	0
-v41-resolver-only-candidates	95.142.43.204/32	IPv4	1	1	0	0	0	0
 v41-resolver-only-candidates	95.142.44.37/32	IPv4	1	1	0	0	0	0
 v41-resolver-only-candidates	95.142.44.84/32	IPv4	1	1	0	0	0	0
 v41-resolver-only-candidates	95.142.44.98/32	IPv4	1	1	0	0	0	0
@@ -79607,6 +79643,7 @@ v41-resolver-only-candidates	104.194.133.66/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	104.194.133.169/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	104.194.134.238/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	104.194.141.127/32	IPv4	1	0	0	0	0	0
+v41-resolver-only-candidates	104.194.145.44/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	104.194.146.12/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	104.194.151.203/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	104.194.152.195/32	IPv4	1	0	0	0	0	0
@@ -82306,6 +82343,7 @@ v41-resolver-only-candidates	109.172.89.184/32	IPv4	1	1	0	0	0	0
 v41-resolver-only-candidates	109.172.90.112/32	IPv4	1	1	0	0	0	0
 v41-resolver-only-candidates	109.172.90.168/32	IPv4	1	1	0	0	0	0
 v41-resolver-only-candidates	109.172.91.13/32	IPv4	1	1	0	0	0	0
+v41-resolver-only-candidates	109.172.91.241/32	IPv4	1	1	0	0	0	0
 v41-resolver-only-candidates	109.172.97.104/32	IPv4	1	1	0	0	0	0
 v41-resolver-only-candidates	109.172.101.159/32	IPv4	1	1	0	0	0	0
 v41-resolver-only-candidates	109.172.101.220/32	IPv4	1	1	0	0	0	0
@@ -83367,6 +83405,7 @@ v41-resolver-only-candidates	116.203.249.145/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	116.204.169.9/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	116.204.171.26/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	116.206.52.21/32	IPv4	1	0	0	0	0	0
+v41-resolver-only-candidates	116.206.95.201/32	IPv4	1	1	0	0	0	0
 v41-resolver-only-candidates	116.247.3.21/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	116.254.101.100/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	117.5.16.253/32	IPv4	1	0	0	0	0	0
@@ -83800,6 +83839,7 @@ v41-resolver-only-candidates	129.36.169.113/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	129.101.97.68/32	IPv4	1	1	0	0	1	0
 v41-resolver-only-candidates	129.101.99.75/32	IPv4	1	1	0	0	1	0
 v41-resolver-only-candidates	129.101.104.126/32	IPv4	1	1	0	0	1	0
+v41-resolver-only-candidates	129.101.106.55/32	IPv4	1	1	0	0	1	0
 v41-resolver-only-candidates	129.101.112.9/32	IPv4	1	1	0	0	0	0
 v41-resolver-only-candidates	129.101.113.105/32	IPv4	1	1	0	0	0	0
 v41-resolver-only-candidates	129.101.124.167/32	IPv4	1	1	0	0	0	0
@@ -84301,6 +84341,7 @@ v41-resolver-only-candidates	132.243.191.143/32	IPv4	1	1	0	0	0	0
 v41-resolver-only-candidates	132.243.194.27/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	132.243.194.54/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	132.243.195.44/32	IPv4	1	1	0	0	0	0
+v41-resolver-only-candidates	132.243.209.37/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	132.243.213.214/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	132.243.214.31/32	IPv4	1	1	0	0	0	0
 v41-resolver-only-candidates	132.243.230.87/32	IPv4	1	1	0	0	0	0
@@ -85184,6 +85225,7 @@ v41-resolver-only-candidates	136.144.231.147/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	136.144.239.161/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	136.148.83.170/32	IPv4	1	1	0	0	0	0
 v41-resolver-only-candidates	136.148.213.63/32	IPv4	1	0	0	0	0	0
+v41-resolver-only-candidates	136.148.213.183/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	136.169.144.143/32	IPv4	1	1	0	0	0	0
 v41-resolver-only-candidates	136.175.10.14/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	136.176.74.67/32	IPv4	1	0	0	0	0	0
@@ -85535,6 +85577,7 @@ v41-resolver-only-candidates	138.16.181.148/32	IPv4	1	1	0	0	0	0
 v41-resolver-only-candidates	138.16.181.178/32	IPv4	1	1	0	0	0	0
 v41-resolver-only-candidates	138.16.181.199/32	IPv4	1	1	0	0	0	0
 v41-resolver-only-candidates	138.16.181.230/31	IPv4	2	2	0	0	0	0
+v41-resolver-only-candidates	138.16.182.53/32	IPv4	1	1	0	0	0	0
 v41-resolver-only-candidates	138.16.182.74/32	IPv4	1	1	0	0	0	0
 v41-resolver-only-candidates	138.16.182.240/32	IPv4	1	1	0	0	0	0
 v41-resolver-only-candidates	138.16.183.6/32	IPv4	1	1	0	0	0	0
@@ -87842,6 +87885,7 @@ v41-resolver-only-candidates	143.246.223.176/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	143.255.158.28/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	144.6.28.110/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	144.31.1.73/32	IPv4	1	0	0	0	0	0
+v41-resolver-only-candidates	144.31.1.139/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	144.31.5.14/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	144.31.14.191/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	144.31.17.180/32	IPv4	1	0	0	0	0	0
@@ -88078,6 +88122,7 @@ v41-resolver-only-candidates	144.124.252.2/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	144.124.252.237/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	144.124.253.82/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	144.124.253.89/32	IPv4	1	0	0	0	0	0
+v41-resolver-only-candidates	144.124.253.149/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	144.124.253.158/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	144.124.253.175/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	144.124.253.207/32	IPv4	1	0	0	0	0	0
@@ -88416,6 +88461,7 @@ v41-resolver-only-candidates	145.223.124.220/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	145.223.124.224/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	145.223.124.226/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	145.223.124.234/32	IPv4	1	0	0	0	0	0
+v41-resolver-only-candidates	145.223.124.237/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	145.223.124.238/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	145.223.124.242/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	145.223.124.247/32	IPv4	1	0	0	0	0	0
@@ -88919,6 +88965,7 @@ v41-resolver-only-candidates	146.88.234.116/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	146.88.234.136/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	146.103.40.17/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	146.103.40.85/32	IPv4	1	0	0	0	0	0
+v41-resolver-only-candidates	146.103.42.82/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	146.103.42.87/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	146.103.42.90/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	146.103.42.142/32	IPv4	1	0	0	0	0	0
@@ -89223,6 +89270,7 @@ v41-resolver-only-candidates	147.45.211.17/32	IPv4	1	1	0	0	0	0
 v41-resolver-only-candidates	147.45.213.186/32	IPv4	1	1	0	0	1	0
 v41-resolver-only-candidates	147.45.214.56/32	IPv4	1	1	0	0	1	0
 v41-resolver-only-candidates	147.45.216.159/32	IPv4	1	1	0	0	0	0
+v41-resolver-only-candidates	147.45.221.88/32	IPv4	1	1	0	0	0	0
 v41-resolver-only-candidates	147.45.224.241/32	IPv4	1	1	0	0	0	0
 v41-resolver-only-candidates	147.45.227.151/32	IPv4	1	1	0	0	0	0
 v41-resolver-only-candidates	147.45.236.217/32	IPv4	1	1	0	0	1	0
@@ -93409,7 +93457,7 @@ v41-resolver-only-candidates	160.153.0.173/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	160.153.0.175/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	160.153.0.176/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	160.153.0.179/32	IPv4	1	0	0	0	0	0
-v41-resolver-only-candidates	160.153.0.181/32	IPv4	1	0	0	0	0	0
+v41-resolver-only-candidates	160.153.0.180/31	IPv4	2	0	0	0	0	0
 v41-resolver-only-candidates	160.153.0.183/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	160.153.0.189/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	160.153.0.190/32	IPv4	1	0	0	0	0	0
@@ -97426,6 +97474,7 @@ v41-resolver-only-candidates	168.76.254.165/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	168.76.254.209/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	168.100.8.11/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	168.100.8.236/32	IPv4	1	0	0	0	0	0
+v41-resolver-only-candidates	168.100.9.46/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	168.100.9.236/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	168.100.11.86/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	168.100.11.253/32	IPv4	1	0	0	0	0	0
@@ -97586,6 +97635,7 @@ v41-resolver-only-candidates	169.40.40.158/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	169.40.40.160/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	169.40.40.183/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	169.40.40.185/32	IPv4	1	0	0	0	0	0
+v41-resolver-only-candidates	169.40.40.189/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	169.40.40.191/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	169.40.40.200/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	169.40.40.207/32	IPv4	1	0	0	0	0	0
@@ -102009,6 +102059,7 @@ v41-resolver-only-candidates	176.57.65.76/32	IPv4	1	1	0	0	1	0
 v41-resolver-only-candidates	176.57.65.80/32	IPv4	1	1	0	0	1	0
 v41-resolver-only-candidates	176.57.65.83/32	IPv4	1	1	0	0	1	0
 v41-resolver-only-candidates	176.57.65.86/32	IPv4	1	1	0	0	1	0
+v41-resolver-only-candidates	176.57.65.89/32	IPv4	1	1	0	0	1	0
 v41-resolver-only-candidates	176.57.65.93/32	IPv4	1	1	0	0	1	0
 v41-resolver-only-candidates	176.57.65.94/32	IPv4	1	1	0	0	1	0
 v41-resolver-only-candidates	176.57.65.98/32	IPv4	1	1	0	0	1	0
@@ -102758,6 +102809,7 @@ v41-resolver-only-candidates	177.177.219.250/32	IPv4	1	1	0	0	0	0
 v41-resolver-only-candidates	177.177.220.236/32	IPv4	1	1	0	0	0	0
 v41-resolver-only-candidates	177.189.243.217/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	177.190.32.168/32	IPv4	1	0	0	0	0	0
+v41-resolver-only-candidates	177.202.74.182/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	177.202.90.71/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	177.203.59.90/32	IPv4	1	1	0	0	0	0
 v41-resolver-only-candidates	177.210.68.213/32	IPv4	1	0	0	0	0	0
@@ -104077,6 +104129,7 @@ v41-resolver-only-candidates	178.208.82.185/32	IPv4	1	1	0	0	0	0
 v41-resolver-only-candidates	178.208.83.15/32	IPv4	1	1	0	0	0	0
 v41-resolver-only-candidates	178.208.83.19/32	IPv4	1	1	0	0	0	0
 v41-resolver-only-candidates	178.208.83.27/32	IPv4	1	1	0	0	0	0
+v41-resolver-only-candidates	178.208.83.40/32	IPv4	1	1	0	0	0	0
 v41-resolver-only-candidates	178.208.83.51/32	IPv4	1	1	0	0	0	0
 v41-resolver-only-candidates	178.208.84.109/32	IPv4	1	1	0	0	0	0
 v41-resolver-only-candidates	178.208.84.209/32	IPv4	1	1	0	0	0	0
@@ -107623,6 +107676,7 @@ v41-resolver-only-candidates	185.82.219.13/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	185.82.219.16/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	185.82.219.26/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	185.82.219.68/32	IPv4	1	0	0	0	0	0
+v41-resolver-only-candidates	185.82.219.111/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	185.82.219.128/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	185.82.219.167/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	185.82.219.169/32	IPv4	1	0	0	0	0	0
@@ -108620,6 +108674,7 @@ v41-resolver-only-candidates	185.130.226.35/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	185.130.249.52/32	IPv4	1	1	0	0	0	0
 v41-resolver-only-candidates	185.130.249.146/32	IPv4	1	1	0	0	0	0
 v41-resolver-only-candidates	185.130.251.59/32	IPv4	1	1	0	0	0	0
+v41-resolver-only-candidates	185.130.251.138/32	IPv4	1	1	0	0	0	0
 v41-resolver-only-candidates	185.130.251.179/32	IPv4	1	1	0	0	0	0
 v41-resolver-only-candidates	185.131.53.219/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	185.131.60.97/32	IPv4	1	0	0	0	0	0
@@ -109709,7 +109764,8 @@ v41-resolver-only-candidates	185.171.229.48/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	185.171.229.91/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	185.171.229.99/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	185.171.229.100/32	IPv4	1	0	0	0	0	0
-v41-resolver-only-candidates	185.171.229.106/32	IPv4	1	0	0	0	0	0
+v41-resolver-only-candidates	185.171.229.103/32	IPv4	1	0	0	0	0	0
+v41-resolver-only-candidates	185.171.229.104/30	IPv4	4	0	0	0	0	0
 v41-resolver-only-candidates	185.171.229.109/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	185.171.230.1/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	185.171.230.2/31	IPv4	2	0	0	0	0	0
@@ -110522,7 +110578,6 @@ v41-resolver-only-candidates	185.192.22.64/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	185.192.22.66/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	185.192.22.70/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	185.192.22.78/32	IPv4	1	0	0	0	0	0
-v41-resolver-only-candidates	185.192.22.89/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	185.192.22.92/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	185.192.22.112/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	185.192.22.120/32	IPv4	1	0	0	0	0	0
@@ -110936,6 +110991,7 @@ v41-resolver-only-candidates	185.203.119.56/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	185.203.240.33/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	185.203.240.82/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	185.203.240.194/32	IPv4	1	0	0	0	0	0
+v41-resolver-only-candidates	185.203.241.14/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	185.203.241.39/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	185.203.241.43/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	185.203.241.58/32	IPv4	1	0	0	0	0	0
@@ -111434,6 +111490,7 @@ v41-resolver-only-candidates	185.216.86.115/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	185.216.86.126/31	IPv4	2	0	0	0	0	0
 v41-resolver-only-candidates	185.216.86.153/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	185.216.86.172/32	IPv4	1	0	0	0	0	0
+v41-resolver-only-candidates	185.216.86.197/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	185.216.86.218/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	185.216.86.227/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	185.216.86.235/32	IPv4	1	0	0	0	0	0
@@ -111636,6 +111693,7 @@ v41-resolver-only-candidates	185.225.115.104/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	185.225.191.9/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	185.225.191.104/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	185.225.200.102/32	IPv4	1	1	0	0	0	0
+v41-resolver-only-candidates	185.225.201.202/32	IPv4	1	1	0	0	0	0
 v41-resolver-only-candidates	185.225.201.251/32	IPv4	1	1	0	0	0	0
 v41-resolver-only-candidates	185.225.210.213/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	185.226.93.186/32	IPv4	1	0	0	0	0	0
@@ -112222,6 +112280,7 @@ v41-resolver-only-candidates	185.243.218.56/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	185.243.218.96/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	185.243.218.203/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	185.243.242.33/32	IPv4	1	0	0	0	0	0
+v41-resolver-only-candidates	185.244.28.76/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	185.244.36.22/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	185.244.36.156/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	185.244.36.216/32	IPv4	1	0	0	0	0	0
@@ -112249,6 +112308,7 @@ v41-resolver-only-candidates	185.244.181.103/32	IPv4	1	1	0	0	0	0
 v41-resolver-only-candidates	185.244.181.226/32	IPv4	1	1	0	0	0	0
 v41-resolver-only-candidates	185.244.182.109/32	IPv4	1	1	0	0	0	0
 v41-resolver-only-candidates	185.244.183.88/32	IPv4	1	1	0	0	0	0
+v41-resolver-only-candidates	185.244.183.218/32	IPv4	1	1	0	0	0	0
 v41-resolver-only-candidates	185.244.183.246/32	IPv4	1	1	0	0	0	0
 v41-resolver-only-candidates	185.244.195.200/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	185.244.216.25/32	IPv4	1	0	0	0	0	0
@@ -112548,7 +112608,7 @@ v41-resolver-only-candidates	186.2.161.126/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	186.2.161.136/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	186.2.161.157/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	186.2.161.168/32	IPv4	1	0	0	0	0	0
-v41-resolver-only-candidates	186.2.161.175/32	IPv4	1	1	1	0	0	0
+v41-resolver-only-candidates	186.2.161.175/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	186.2.161.176/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	186.2.161.185/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	186.2.161.194/32	IPv4	1	0	0	0	0	0
@@ -112671,6 +112731,7 @@ v41-resolver-only-candidates	186.2.175.61/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	186.2.175.87/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	186.2.175.117/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	186.2.175.125/32	IPv4	1	1	1	0	0	0
+v41-resolver-only-candidates	186.2.175.143/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	186.2.175.194/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	186.2.175.201/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	186.2.175.205/32	IPv4	1	0	0	0	0	0
@@ -113106,6 +113167,7 @@ v41-resolver-only-candidates	188.42.196.83/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	188.42.196.98/31	IPv4	2	0	0	0	0	0
 v41-resolver-only-candidates	188.42.196.100/31	IPv4	2	0	0	0	0	0
 v41-resolver-only-candidates	188.42.196.103/32	IPv4	1	0	0	0	0	0
+v41-resolver-only-candidates	188.42.196.117/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	188.42.196.130/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	188.42.196.147/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	188.42.196.148/32	IPv4	1	0	0	0	0	0
@@ -114056,6 +114118,7 @@ v41-resolver-only-candidates	188.137.231.118/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	188.137.231.120/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	188.137.231.172/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	188.137.231.191/32	IPv4	1	0	0	0	0	0
+v41-resolver-only-candidates	188.137.231.194/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	188.137.231.231/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	188.137.232.51/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	188.137.233.110/32	IPv4	1	0	0	0	0	0
@@ -115303,6 +115366,7 @@ v41-resolver-only-candidates	190.115.16.5/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	190.115.16.15/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	190.115.16.21/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	190.115.16.104/32	IPv4	1	0	0	0	0	0
+v41-resolver-only-candidates	190.115.16.123/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	190.115.16.129/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	190.115.16.130/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	190.115.16.157/32	IPv4	1	0	0	0	0	0
@@ -115338,7 +115402,7 @@ v41-resolver-only-candidates	190.115.21.18/31	IPv4	2	0	0	0	0	0
 v41-resolver-only-candidates	190.115.21.42/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	190.115.21.44/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	190.115.21.62/32	IPv4	1	0	0	0	0	0
-v41-resolver-only-candidates	190.115.21.78/31	IPv4	2	1	1	0	0	0
+v41-resolver-only-candidates	190.115.21.78/31	IPv4	2	0	0	0	0	0
 v41-resolver-only-candidates	190.115.21.81/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	190.115.21.83/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	190.115.21.86/32	IPv4	1	0	0	0	0	0
@@ -116267,6 +116331,7 @@ v41-resolver-only-candidates	192.144.58.173/32	IPv4	1	1	0	0	0	0
 v41-resolver-only-candidates	192.144.58.224/32	IPv4	1	1	0	0	0	0
 v41-resolver-only-candidates	192.144.58.230/32	IPv4	1	1	0	0	0	0
 v41-resolver-only-candidates	192.144.59.13/32	IPv4	1	1	0	0	0	0
+v41-resolver-only-candidates	192.144.59.41/32	IPv4	1	1	0	0	0	0
 v41-resolver-only-candidates	192.144.59.42/32	IPv4	1	1	0	0	0	0
 v41-resolver-only-candidates	192.144.59.72/32	IPv4	1	1	0	0	0	0
 v41-resolver-only-candidates	192.144.59.97/32	IPv4	1	1	0	0	0	0
@@ -116964,6 +117029,7 @@ v41-resolver-only-candidates	193.39.168.17/32	IPv4	1	1	0	0	1	0
 v41-resolver-only-candidates	193.39.168.22/32	IPv4	1	1	0	0	1	0
 v41-resolver-only-candidates	193.39.185.8/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	193.41.5.123/32	IPv4	1	0	0	0	0	0
+v41-resolver-only-candidates	193.41.86.15/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	193.41.194.100/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	193.42.36.151/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	193.42.36.223/32	IPv4	1	0	0	0	0	0
@@ -119109,6 +119175,7 @@ v41-resolver-only-candidates	195.2.79.75/32	IPv4	1	1	0	0	0	0
 v41-resolver-only-candidates	195.2.79.96/32	IPv4	1	1	0	0	0	0
 v41-resolver-only-candidates	195.2.79.116/32	IPv4	1	1	0	0	0	0
 v41-resolver-only-candidates	195.2.79.135/32	IPv4	1	1	0	0	0	0
+v41-resolver-only-candidates	195.2.79.151/32	IPv4	1	1	0	0	0	0
 v41-resolver-only-candidates	195.2.79.252/32	IPv4	1	1	0	0	0	0
 v41-resolver-only-candidates	195.2.80.10/32	IPv4	1	1	0	0	0	0
 v41-resolver-only-candidates	195.2.80.32/32	IPv4	1	1	0	0	0	0
@@ -119540,6 +119607,7 @@ v41-resolver-only-candidates	195.58.54.246/32	IPv4	1	1	0	0	1	0
 v41-resolver-only-candidates	195.58.55.20/32	IPv4	1	1	0	0	0	0
 v41-resolver-only-candidates	195.58.55.40/32	IPv4	1	1	0	0	0	0
 v41-resolver-only-candidates	195.58.55.54/32	IPv4	1	1	0	0	0	0
+v41-resolver-only-candidates	195.58.55.85/32	IPv4	1	1	0	0	0	0
 v41-resolver-only-candidates	195.58.55.176/32	IPv4	1	1	0	0	0	0
 v41-resolver-only-candidates	195.58.55.242/32	IPv4	1	1	0	0	0	0
 v41-resolver-only-candidates	195.58.56.5/32	IPv4	1	1	0	0	0	0
@@ -120012,6 +120080,7 @@ v41-resolver-only-candidates	195.123.225.136/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	195.123.225.141/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	195.123.225.143/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	195.123.225.146/32	IPv4	1	0	0	0	0	0
+v41-resolver-only-candidates	195.123.225.149/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	195.123.225.150/31	IPv4	2	0	0	0	0	0
 v41-resolver-only-candidates	195.123.225.169/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	195.123.225.175/32	IPv4	1	0	0	0	0	0
@@ -120051,6 +120120,7 @@ v41-resolver-only-candidates	195.123.227.80/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	195.123.227.83/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	195.123.227.87/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	195.123.227.89/32	IPv4	1	0	0	0	0	0
+v41-resolver-only-candidates	195.123.227.103/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	195.123.227.113/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	195.123.227.114/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	195.123.227.173/32	IPv4	1	0	0	0	0	0
@@ -120075,6 +120145,7 @@ v41-resolver-only-candidates	195.123.228.187/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	195.123.228.189/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	195.123.228.254/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	195.123.229.122/32	IPv4	1	0	0	0	0	0
+v41-resolver-only-candidates	195.123.229.237/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	195.123.230.66/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	195.123.230.88/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	195.123.233.11/32	IPv4	1	0	0	0	0	0
@@ -120846,6 +120917,7 @@ v41-resolver-only-candidates	198.37.107.36/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	198.37.107.38/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	198.37.107.40/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	198.37.107.42/32	IPv4	1	0	0	0	0	0
+v41-resolver-only-candidates	198.37.107.49/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	198.37.107.66/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	198.37.107.68/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	198.37.107.71/32	IPv4	1	0	0	0	0	0
@@ -121159,6 +121231,7 @@ v41-resolver-only-candidates	198.54.116.138/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	198.54.116.157/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	198.54.116.163/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	198.54.116.175/32	IPv4	1	0	0	0	0	0
+v41-resolver-only-candidates	198.54.116.177/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	198.54.116.197/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	198.54.116.202/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	198.54.116.204/32	IPv4	1	0	0	0	0	0
@@ -122259,12 +122332,13 @@ v41-resolver-only-candidates	201.4.72.110/31	IPv4	2	0	0	0	0	0
 v41-resolver-only-candidates	201.4.72.112/31	IPv4	2	0	0	0	0	0
 v41-resolver-only-candidates	201.4.72.120/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	201.4.72.126/32	IPv4	1	0	0	0	0	0
+v41-resolver-only-candidates	201.4.72.137/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	201.4.72.162/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	201.4.72.165/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	201.4.72.169/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	201.4.72.172/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	201.4.72.176/32	IPv4	1	0	0	0	0	0
-v41-resolver-only-candidates	201.4.72.217/32	IPv4	1	0	0	0	0	0
+v41-resolver-only-candidates	201.4.72.216/31	IPv4	2	0	0	0	0	0
 v41-resolver-only-candidates	201.4.72.218/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	201.5.43.209/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	201.5.43.236/32	IPv4	1	0	0	0	0	0
@@ -123054,8 +123128,7 @@ v41-resolver-only-candidates	203.24.103.115/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	203.24.103.117/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	203.24.103.120/31	IPv4	2	0	0	0	0	0
 v41-resolver-only-candidates	203.24.103.122/32	IPv4	1	0	0	0	0	0
-v41-resolver-only-candidates	203.24.103.125/32	IPv4	1	0	0	0	0	0
-v41-resolver-only-candidates	203.24.103.126/31	IPv4	2	0	0	0	0	0
+v41-resolver-only-candidates	203.24.103.124/30	IPv4	4	0	0	0	0	0
 v41-resolver-only-candidates	203.24.103.132/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	203.24.103.135/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	203.24.103.136/32	IPv4	1	0	0	0	0	0
@@ -123453,6 +123526,7 @@ v41-resolver-only-candidates	203.29.52.51/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	203.29.52.53/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	203.29.52.55/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	203.29.52.56/30	IPv4	4	0	0	0	0	0
+v41-resolver-only-candidates	203.29.52.61/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	203.29.52.68/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	203.29.52.72/31	IPv4	2	0	0	0	0	0
 v41-resolver-only-candidates	203.29.52.75/32	IPv4	1	0	0	0	0	0
@@ -124253,8 +124327,7 @@ v41-resolver-only-candidates	203.32.121.159/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	203.32.121.162/31	IPv4	2	0	0	0	0	0
 v41-resolver-only-candidates	203.32.121.164/30	IPv4	4	0	0	0	0	0
 v41-resolver-only-candidates	203.32.121.169/32	IPv4	1	0	0	0	0	0
-v41-resolver-only-candidates	203.32.121.172/31	IPv4	2	0	0	0	0	0
-v41-resolver-only-candidates	203.32.121.174/32	IPv4	1	0	0	0	0	0
+v41-resolver-only-candidates	203.32.121.172/30	IPv4	4	0	0	0	0	0
 v41-resolver-only-candidates	203.32.121.178/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	203.32.121.180/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	203.32.121.183/32	IPv4	1	0	0	0	0	0
@@ -124369,6 +124442,7 @@ v41-resolver-only-candidates	203.34.80.6/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	203.34.80.9/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	203.34.80.10/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	203.34.80.13/32	IPv4	1	0	0	0	0	0
+v41-resolver-only-candidates	203.34.80.15/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	203.34.80.16/31	IPv4	2	0	0	0	0	0
 v41-resolver-only-candidates	203.34.80.19/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	203.34.80.22/31	IPv4	2	0	0	0	0	0
@@ -124745,6 +124819,7 @@ v41-resolver-only-candidates	204.155.150.119/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	204.155.150.121/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	204.155.150.123/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	204.155.150.125/32	IPv4	1	0	0	0	0	0
+v41-resolver-only-candidates	204.155.154.5/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	204.155.154.39/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	204.155.154.40/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	204.155.154.45/32	IPv4	1	0	0	0	0	0
@@ -126405,6 +126480,7 @@ v41-resolver-only-candidates	209.172.32.149/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	209.172.38.199/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	209.177.102.103/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	209.182.100.161/32	IPv4	1	1	0	0	0	0
+v41-resolver-only-candidates	209.182.100.209/32	IPv4	1	1	0	0	0	0
 v41-resolver-only-candidates	209.182.100.211/32	IPv4	1	1	0	0	0	0
 v41-resolver-only-candidates	209.182.196.26/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	209.182.197.44/32	IPv4	1	0	0	0	0	0
@@ -126994,6 +127070,7 @@ v41-resolver-only-candidates	212.43.150.174/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	212.43.151.81/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	212.43.152.189/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	212.43.153.79/32	IPv4	1	0	0	0	0	0
+v41-resolver-only-candidates	212.43.154.106/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	212.43.154.151/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	212.43.155.36/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	212.43.155.51/32	IPv4	1	0	0	0	0	0
@@ -127280,7 +127357,7 @@ v41-resolver-only-candidates	212.86.127.97/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	212.86.127.151/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	212.86.127.152/30	IPv4	4	0	0	0	0	0
 v41-resolver-only-candidates	212.86.127.158/32	IPv4	1	0	0	0	0	0
-v41-resolver-only-candidates	212.86.127.160/32	IPv4	1	0	0	0	0	0
+v41-resolver-only-candidates	212.86.127.160/31	IPv4	2	0	0	0	0	0
 v41-resolver-only-candidates	212.87.29.156/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	212.87.190.190/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	212.89.14.89/32	IPv4	1	0	0	0	0	0
@@ -128202,7 +128279,6 @@ v41-resolver-only-candidates	213.169.158.247/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	213.171.7.135/32	IPv4	1	1	0	0	1	0
 v41-resolver-only-candidates	213.171.12.10/32	IPv4	1	1	0	0	1	0
 v41-resolver-only-candidates	213.171.26.253/32	IPv4	1	1	0	0	1	0
-v41-resolver-only-candidates	213.171.30.37/32	IPv4	1	1	0	0	1	0
 v41-resolver-only-candidates	213.171.30.206/32	IPv4	1	1	0	0	1	0
 v41-resolver-only-candidates	213.171.195.105/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	213.171.208.217/32	IPv4	1	0	0	0	0	0
@@ -129721,6 +129797,7 @@ v41-resolver-only-candidates	217.199.253.126/32	IPv4	1	1	0	0	1	0
 v41-resolver-only-candidates	217.199.254.220/32	IPv4	1	1	0	0	1	0
 v41-resolver-only-candidates	217.216.110.207/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	217.217.97.42/32	IPv4	1	0	0	0	0	0
+v41-resolver-only-candidates	217.217.227.230/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	217.217.235.185/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	217.234.150.252/32	IPv4	1	0	0	0	0	0
 v41-resolver-only-candidates	217.243.211.69/32	IPv4	1	0	0	0	0	0
@@ -129889,6 +129966,7 @@ antifilter-ipsum-24-review-only	2.27.131.0/24	IPv4	256	256	0	0	0	0
 antifilter-ipsum-24-review-only	2.27.201.0/24	IPv4	256	0	0	0	0	0
 antifilter-ipsum-24-review-only	2.27.202.0/24	IPv4	256	0	0	0	0	0
 antifilter-ipsum-24-review-only	2.27.244.0/24	IPv4	256	0	0	0	0	0
+antifilter-ipsum-24-review-only	2.27.249.0/24	IPv4	256	0	0	0	0	0
 antifilter-ipsum-24-review-only	2.28.15.0/24	IPv4	256	0	0	0	0	0
 antifilter-ipsum-24-review-only	2.28.20.0/24	IPv4	256	0	0	0	0	0
 antifilter-ipsum-24-review-only	2.28.204.0/24	IPv4	256	0	0	0	0	0
@@ -131455,6 +131533,7 @@ antifilter-ipsum-24-review-only	23.111.26.0/24	IPv4	256	0	0	0	0	0
 antifilter-ipsum-24-review-only	23.111.70.0/24	IPv4	256	0	0	0	0	0
 antifilter-ipsum-24-review-only	23.111.73.0/24	IPv4	256	0	0	0	0	0
 antifilter-ipsum-24-review-only	23.111.80.0/24	IPv4	256	0	0	0	0	0
+antifilter-ipsum-24-review-only	23.111.150.0/24	IPv4	256	0	0	0	0	0
 antifilter-ipsum-24-review-only	23.111.155.0/24	IPv4	256	0	0	0	0	0
 antifilter-ipsum-24-review-only	23.111.159.0/24	IPv4	256	0	0	0	0	0
 antifilter-ipsum-24-review-only	23.111.183.0/24	IPv4	256	0	0	0	0	0
@@ -131643,6 +131722,7 @@ antifilter-ipsum-24-review-only	31.56.117.0/24	IPv4	256	0	0	0	0	0
 antifilter-ipsum-24-review-only	31.56.177.0/24	IPv4	256	0	0	0	0	0
 antifilter-ipsum-24-review-only	31.56.179.0/24	IPv4	256	0	0	0	0	0
 antifilter-ipsum-24-review-only	31.56.189.0/24	IPv4	256	0	0	0	0	0
+antifilter-ipsum-24-review-only	31.56.196.0/24	IPv4	256	0	0	0	0	0
 antifilter-ipsum-24-review-only	31.56.209.0/24	IPv4	256	0	0	0	0	0
 antifilter-ipsum-24-review-only	31.57.35.0/24	IPv4	256	0	0	0	0	0
 antifilter-ipsum-24-review-only	31.57.46.0/24	IPv4	256	0	0	0	0	0
@@ -132758,6 +132838,7 @@ antifilter-ipsum-24-review-only	45.66.10.0/24	IPv4	256	0	0	0	0	0
 antifilter-ipsum-24-review-only	45.66.11.0/24	IPv4	256	0	0	0	0	0
 antifilter-ipsum-24-review-only	45.66.13.0/24	IPv4	256	256	0	0	0	0
 antifilter-ipsum-24-review-only	45.66.15.0/24	IPv4	256	256	0	0	0	0
+antifilter-ipsum-24-review-only	45.66.118.0/24	IPv4	256	256	0	0	256	0
 antifilter-ipsum-24-review-only	45.67.57.0/24	IPv4	256	256	0	0	256	0
 antifilter-ipsum-24-review-only	45.67.128.0/24	IPv4	256	0	0	0	0	0
 antifilter-ipsum-24-review-only	45.67.129.0/24	IPv4	256	0	0	0	0	0
@@ -133557,6 +133638,7 @@ antifilter-ipsum-24-review-only	48.101.67.0/24	IPv4	256	0	0	0	0	0
 antifilter-ipsum-24-review-only	48.102.54.0/24	IPv4	256	0	0	0	0	0
 antifilter-ipsum-24-review-only	48.102.145.0/24	IPv4	256	0	0	0	0	0
 antifilter-ipsum-24-review-only	48.102.164.0/24	IPv4	256	0	0	0	0	0
+antifilter-ipsum-24-review-only	48.102.245.0/24	IPv4	256	0	0	0	0	0
 antifilter-ipsum-24-review-only	48.103.149.0/24	IPv4	256	256	0	0	0	0
 antifilter-ipsum-24-review-only	48.103.180.0/24	IPv4	256	256	0	0	0	0
 antifilter-ipsum-24-review-only	49.12.13.0/24	IPv4	256	0	0	0	0	0
@@ -135373,6 +135455,7 @@ antifilter-ipsum-24-review-only	69.164.244.0/24	IPv4	256	0	0	0	0	0
 antifilter-ipsum-24-review-only	69.165.103.0/24	IPv4	256	0	0	0	0	0
 antifilter-ipsum-24-review-only	69.165.107.0/24	IPv4	256	0	0	0	0	0
 antifilter-ipsum-24-review-only	69.166.236.0/24	IPv4	256	0	0	0	0	0
+antifilter-ipsum-24-review-only	69.167.168.0/24	IPv4	256	0	0	0	0	0
 antifilter-ipsum-24-review-only	69.167.169.0/24	IPv4	256	0	0	0	0	0
 antifilter-ipsum-24-review-only	69.167.170.0/24	IPv4	256	0	0	0	0	0
 antifilter-ipsum-24-review-only	69.168.91.0/24	IPv4	256	0	0	0	0	0
@@ -136390,6 +136473,7 @@ antifilter-ipsum-24-review-only	82.27.201.0/24	IPv4	256	0	0	0	0	0
 antifilter-ipsum-24-review-only	82.29.67.0/24	IPv4	256	0	0	0	0	0
 antifilter-ipsum-24-review-only	82.29.128.0/24	IPv4	256	0	0	0	0	0
 antifilter-ipsum-24-review-only	82.29.132.0/24	IPv4	256	0	0	0	0	0
+antifilter-ipsum-24-review-only	82.29.153.0/24	IPv4	256	0	0	0	0	0
 antifilter-ipsum-24-review-only	82.29.154.0/24	IPv4	256	0	0	0	0	0
 antifilter-ipsum-24-review-only	82.29.157.0/24	IPv4	256	0	0	0	0	0
 antifilter-ipsum-24-review-only	82.29.173.0/24	IPv4	256	0	0	0	0	0
@@ -136407,6 +136491,7 @@ antifilter-ipsum-24-review-only	82.39.86.0/24	IPv4	256	0	0	0	0	0
 antifilter-ipsum-24-review-only	82.39.109.0/24	IPv4	256	0	0	0	0	0
 antifilter-ipsum-24-review-only	82.39.215.0/24	IPv4	256	0	0	0	0	0
 antifilter-ipsum-24-review-only	82.40.23.0/24	IPv4	256	0	0	0	0	0
+antifilter-ipsum-24-review-only	82.40.58.0/24	IPv4	256	0	0	0	0	0
 antifilter-ipsum-24-review-only	82.40.62.0/24	IPv4	256	0	0	0	0	0
 antifilter-ipsum-24-review-only	82.41.36.0/24	IPv4	256	0	0	0	0	0
 antifilter-ipsum-24-review-only	82.41.181.0/24	IPv4	256	0	0	0	0	0
@@ -136598,6 +136683,7 @@ antifilter-ipsum-24-review-only	83.217.212.0/24	IPv4	256	256	0	0	0	0
 antifilter-ipsum-24-review-only	83.217.213.0/24	IPv4	256	256	0	0	0	0
 antifilter-ipsum-24-review-only	83.217.214.0/24	IPv4	256	256	0	0	0	0
 antifilter-ipsum-24-review-only	83.217.215.0/24	IPv4	256	256	0	0	0	0
+antifilter-ipsum-24-review-only	83.217.221.0/24	IPv4	256	256	0	0	256	0
 antifilter-ipsum-24-review-only	83.217.223.0/24	IPv4	256	256	0	0	256	0
 antifilter-ipsum-24-review-only	83.220.168.0/24	IPv4	256	256	0	0	0	0
 antifilter-ipsum-24-review-only	83.220.169.0/24	IPv4	256	256	0	0	0	0
@@ -136855,7 +136941,7 @@ antifilter-ipsum-24-review-only	85.137.62.0/24	IPv4	256	0	0	0	0	0
 antifilter-ipsum-24-review-only	85.137.91.0/24	IPv4	256	0	0	0	0	0
 antifilter-ipsum-24-review-only	85.137.94.0/24	IPv4	256	0	0	0	0	0
 antifilter-ipsum-24-review-only	85.137.170.0/24	IPv4	256	0	0	0	0	0
-antifilter-ipsum-24-review-only	85.137.212.0/24	IPv4	256	256	1	0	0	255
+antifilter-ipsum-24-review-only	85.137.212.0/24	IPv4	256	0	0	0	0	0
 antifilter-ipsum-24-review-only	85.137.248.0/24	IPv4	256	0	0	0	0	0
 antifilter-ipsum-24-review-only	85.137.249.0/24	IPv4	256	0	0	0	0	0
 antifilter-ipsum-24-review-only	85.152.58.0/24	IPv4	256	0	0	0	0	0
@@ -136865,6 +136951,7 @@ antifilter-ipsum-24-review-only	85.158.110.0/24	IPv4	256	0	0	0	0	0
 antifilter-ipsum-24-review-only	85.158.145.0/24	IPv4	256	0	0	0	0	0
 antifilter-ipsum-24-review-only	85.158.148.0/24	IPv4	256	0	0	0	0	0
 antifilter-ipsum-24-review-only	85.158.149.0/24	IPv4	256	0	0	0	0	0
+antifilter-ipsum-24-review-only	85.158.150.0/24	IPv4	256	0	0	0	0	0
 antifilter-ipsum-24-review-only	85.159.66.0/24	IPv4	256	0	0	0	0	0
 antifilter-ipsum-24-review-only	85.159.232.0/24	IPv4	256	0	0	0	0	0
 antifilter-ipsum-24-review-only	85.172.74.0/24	IPv4	256	256	0	0	256	0
@@ -136914,6 +137001,7 @@ antifilter-ipsum-24-review-only	85.208.186.0/24	IPv4	256	0	0	0	0	0
 antifilter-ipsum-24-review-only	85.208.187.0/24	IPv4	256	0	0	0	0	0
 antifilter-ipsum-24-review-only	85.208.208.0/24	IPv4	256	256	0	0	256	0
 antifilter-ipsum-24-review-only	85.209.91.0/24	IPv4	256	0	0	0	0	0
+antifilter-ipsum-24-review-only	85.209.129.0/24	IPv4	256	0	0	0	0	0
 antifilter-ipsum-24-review-only	85.209.135.0/24	IPv4	256	256	0	0	0	0
 antifilter-ipsum-24-review-only	85.209.148.0/24	IPv4	256	256	0	0	0	0
 antifilter-ipsum-24-review-only	85.209.156.0/24	IPv4	256	0	0	0	0	0
@@ -137456,6 +137544,7 @@ antifilter-ipsum-24-review-only	89.124.123.0/24	IPv4	256	0	0	0	0	0
 antifilter-ipsum-24-review-only	89.124.124.0/24	IPv4	256	0	0	0	0	0
 antifilter-ipsum-24-review-only	89.124.251.0/24	IPv4	256	0	0	0	0	0
 antifilter-ipsum-24-review-only	89.125.2.0/24	IPv4	256	0	0	0	0	0
+antifilter-ipsum-24-review-only	89.125.29.0/24	IPv4	256	256	0	0	0	0
 antifilter-ipsum-24-review-only	89.125.34.0/24	IPv4	256	256	0	0	0	0
 antifilter-ipsum-24-review-only	89.125.35.0/24	IPv4	256	0	0	0	0	0
 antifilter-ipsum-24-review-only	89.125.50.0/24	IPv4	256	0	0	0	0	0
@@ -137878,6 +137967,7 @@ antifilter-ipsum-24-review-only	91.212.229.0/24	IPv4	256	0	0	0	0	0
 antifilter-ipsum-24-review-only	91.213.160.0/24	IPv4	256	0	0	0	0	0
 antifilter-ipsum-24-review-only	91.213.227.0/24	IPv4	256	0	0	0	0	0
 antifilter-ipsum-24-review-only	91.213.248.0/24	IPv4	256	256	0	0	0	0
+antifilter-ipsum-24-review-only	91.214.78.0/24	IPv4	256	256	1	0	0	255
 antifilter-ipsum-24-review-only	91.215.40.0/24	IPv4	256	256	0	0	256	0
 antifilter-ipsum-24-review-only	91.215.41.0/24	IPv4	256	256	0	0	256	0
 antifilter-ipsum-24-review-only	91.215.42.0/24	IPv4	256	256	0	0	256	0
@@ -138607,6 +138697,7 @@ antifilter-ipsum-24-review-only	95.111.208.0/24	IPv4	256	0	0	0	0	0
 antifilter-ipsum-24-review-only	95.111.210.0/24	IPv4	256	0	0	0	0	0
 antifilter-ipsum-24-review-only	95.111.211.0/24	IPv4	256	0	0	0	0	0
 antifilter-ipsum-24-review-only	95.111.214.0/24	IPv4	256	0	0	0	0	0
+antifilter-ipsum-24-review-only	95.111.227.0/24	IPv4	256	0	0	0	0	0
 antifilter-ipsum-24-review-only	95.111.249.0/24	IPv4	256	0	0	0	0	0
 antifilter-ipsum-24-review-only	95.128.40.0/24	IPv4	256	0	0	0	0	0
 antifilter-ipsum-24-review-only	95.129.232.0/24	IPv4	256	256	0	0	256	0
@@ -138630,7 +138721,6 @@ antifilter-ipsum-24-review-only	95.142.38.0/24	IPv4	256	256	0	0	0	0
 antifilter-ipsum-24-review-only	95.142.39.0/24	IPv4	256	256	0	0	0	0
 antifilter-ipsum-24-review-only	95.142.40.0/24	IPv4	256	256	0	0	0	0
 antifilter-ipsum-24-review-only	95.142.42.0/24	IPv4	256	256	0	0	0	0
-antifilter-ipsum-24-review-only	95.142.43.0/24	IPv4	256	256	0	0	0	0
 antifilter-ipsum-24-review-only	95.142.44.0/24	IPv4	256	256	0	0	0	0
 antifilter-ipsum-24-review-only	95.142.45.0/24	IPv4	256	256	0	0	0	0
 antifilter-ipsum-24-review-only	95.142.46.0/24	IPv4	256	256	0	0	0	0
@@ -139309,6 +139399,7 @@ antifilter-ipsum-24-review-only	104.194.11.0/24	IPv4	256	0	0	0	0	0
 antifilter-ipsum-24-review-only	104.194.132.0/24	IPv4	256	0	0	0	0	0
 antifilter-ipsum-24-review-only	104.194.133.0/24	IPv4	256	0	0	0	0	0
 antifilter-ipsum-24-review-only	104.194.141.0/24	IPv4	256	0	0	0	0	0
+antifilter-ipsum-24-review-only	104.194.145.0/24	IPv4	256	0	0	0	0	0
 antifilter-ipsum-24-review-only	104.194.146.0/24	IPv4	256	0	0	0	0	0
 antifilter-ipsum-24-review-only	104.194.152.0/24	IPv4	256	0	0	0	0	0
 antifilter-ipsum-24-review-only	104.194.158.0/24	IPv4	256	0	0	0	0	0
@@ -139970,6 +140061,7 @@ antifilter-ipsum-24-review-only	116.203.232.0/24	IPv4	256	0	0	0	0	0
 antifilter-ipsum-24-review-only	116.203.233.0/24	IPv4	256	0	0	0	0	0
 antifilter-ipsum-24-review-only	116.204.169.0/24	IPv4	256	0	0	0	0	0
 antifilter-ipsum-24-review-only	116.206.52.0/24	IPv4	256	0	0	0	0	0
+antifilter-ipsum-24-review-only	116.206.95.0/24	IPv4	256	256	0	0	0	0
 antifilter-ipsum-24-review-only	116.247.3.0/24	IPv4	256	0	0	0	0	0
 antifilter-ipsum-24-review-only	116.254.101.0/24	IPv4	256	0	0	0	0	0
 antifilter-ipsum-24-review-only	117.5.16.0/24	IPv4	256	0	0	0	0	0
@@ -140119,6 +140211,7 @@ antifilter-ipsum-24-review-only	129.28.76.0/24	IPv4	256	0	0	0	0	0
 antifilter-ipsum-24-review-only	129.101.97.0/24	IPv4	256	256	0	0	256	0
 antifilter-ipsum-24-review-only	129.101.99.0/24	IPv4	256	256	0	0	256	0
 antifilter-ipsum-24-review-only	129.101.104.0/24	IPv4	256	256	0	0	256	0
+antifilter-ipsum-24-review-only	129.101.106.0/24	IPv4	256	256	0	0	256	0
 antifilter-ipsum-24-review-only	129.101.112.0/24	IPv4	256	256	0	0	0	0
 antifilter-ipsum-24-review-only	129.101.113.0/24	IPv4	256	256	0	0	0	0
 antifilter-ipsum-24-review-only	129.101.124.0/24	IPv4	256	256	0	0	0	0
@@ -140162,6 +140255,7 @@ antifilter-ipsum-24-review-only	130.78.31.0/24	IPv4	256	0	0	0	0	0
 antifilter-ipsum-24-review-only	130.78.185.0/24	IPv4	256	0	0	0	0	0
 antifilter-ipsum-24-review-only	130.94.15.0/24	IPv4	256	0	0	0	0	0
 antifilter-ipsum-24-review-only	130.94.65.0/24	IPv4	256	0	0	0	0	0
+antifilter-ipsum-24-review-only	130.94.90.0/24	IPv4	256	256	1	0	0	255
 antifilter-ipsum-24-review-only	130.94.95.0/24	IPv4	256	0	0	0	0	0
 antifilter-ipsum-24-review-only	130.94.107.0/24	IPv4	256	0	0	0	0	0
 antifilter-ipsum-24-review-only	130.94.117.0/24	IPv4	256	0	0	0	0	0
@@ -140243,6 +140337,7 @@ antifilter-ipsum-24-review-only	132.243.190.0/24	IPv4	256	256	0	0	0	0
 antifilter-ipsum-24-review-only	132.243.191.0/24	IPv4	256	256	0	0	0	0
 antifilter-ipsum-24-review-only	132.243.194.0/24	IPv4	256	0	0	0	0	0
 antifilter-ipsum-24-review-only	132.243.195.0/24	IPv4	256	256	0	0	0	0
+antifilter-ipsum-24-review-only	132.243.209.0/24	IPv4	256	0	0	0	0	0
 antifilter-ipsum-24-review-only	132.243.213.0/24	IPv4	256	0	0	0	0	0
 antifilter-ipsum-24-review-only	132.243.214.0/24	IPv4	256	256	0	0	0	0
 antifilter-ipsum-24-review-only	132.243.230.0/24	IPv4	256	256	0	0	0	0
@@ -141310,6 +141405,7 @@ antifilter-ipsum-24-review-only	147.45.211.0/24	IPv4	256	256	0	0	0	0
 antifilter-ipsum-24-review-only	147.45.213.0/24	IPv4	256	256	0	0	256	0
 antifilter-ipsum-24-review-only	147.45.214.0/24	IPv4	256	256	0	0	256	0
 antifilter-ipsum-24-review-only	147.45.216.0/24	IPv4	256	256	0	0	0	0
+antifilter-ipsum-24-review-only	147.45.221.0/24	IPv4	256	256	0	0	0	0
 antifilter-ipsum-24-review-only	147.45.224.0/24	IPv4	256	256	0	0	0	0
 antifilter-ipsum-24-review-only	147.45.227.0/24	IPv4	256	256	0	0	0	0
 antifilter-ipsum-24-review-only	147.45.245.0/24	IPv4	256	256	0	0	256	0
@@ -143841,6 +143937,7 @@ antifilter-ipsum-24-review-only	177.177.219.0/24	IPv4	256	256	0	0	0	0
 antifilter-ipsum-24-review-only	177.177.220.0/24	IPv4	256	256	0	0	0	0
 antifilter-ipsum-24-review-only	177.189.243.0/24	IPv4	256	0	0	0	0	0
 antifilter-ipsum-24-review-only	177.190.32.0/24	IPv4	256	0	0	0	0	0
+antifilter-ipsum-24-review-only	177.202.74.0/24	IPv4	256	0	0	0	0	0
 antifilter-ipsum-24-review-only	177.202.90.0/24	IPv4	256	0	0	0	0	0
 antifilter-ipsum-24-review-only	177.203.59.0/24	IPv4	256	256	0	0	0	0
 antifilter-ipsum-24-review-only	177.210.68.0/24	IPv4	256	0	0	0	0	0
@@ -145408,6 +145505,7 @@ antifilter-ipsum-24-review-only	185.243.3.0/24	IPv4	256	0	0	0	0	0
 antifilter-ipsum-24-review-only	185.243.112.0/24	IPv4	256	0	0	0	0	0
 antifilter-ipsum-24-review-only	185.243.215.0/24	IPv4	256	0	0	0	0	0
 antifilter-ipsum-24-review-only	185.243.242.0/24	IPv4	256	0	0	0	0	0
+antifilter-ipsum-24-review-only	185.244.28.0/24	IPv4	256	0	0	0	0	0
 antifilter-ipsum-24-review-only	185.244.36.0/24	IPv4	256	0	0	0	0	0
 antifilter-ipsum-24-review-only	185.244.40.0/24	IPv4	256	0	0	0	0	0
 antifilter-ipsum-24-review-only	185.244.48.0/24	IPv4	256	0	0	0	0	0
@@ -145471,8 +145569,8 @@ antifilter-ipsum-24-review-only	185.255.135.0/24	IPv4	256	256	0	0	0	0
 antifilter-ipsum-24-review-only	186.2.162.0/24	IPv4	256	0	0	0	0	0
 antifilter-ipsum-24-review-only	186.2.163.0/24	IPv4	256	1	0	0	0	1
 antifilter-ipsum-24-review-only	186.2.165.0/24	IPv4	256	0	0	0	0	0
-antifilter-ipsum-24-review-only	186.2.166.0/24	IPv4	256	113	6	0	0	107
-antifilter-ipsum-24-review-only	186.2.171.0/24	IPv4	256	227	5	0	0	222
+antifilter-ipsum-24-review-only	186.2.166.0/24	IPv4	256	111	6	0	0	105
+antifilter-ipsum-24-review-only	186.2.171.0/24	IPv4	256	226	5	0	0	221
 antifilter-ipsum-24-review-only	186.2.174.0/24	IPv4	256	0	0	0	0	0
 antifilter-ipsum-24-review-only	186.2.175.0/24	IPv4	256	69	2	0	0	67
 antifilter-ipsum-24-review-only	186.64.118.0/24	IPv4	256	0	0	0	0	0
@@ -145919,8 +146017,8 @@ antifilter-ipsum-24-review-only	190.113.0.0/24	IPv4	256	0	0	0	0	0
 antifilter-ipsum-24-review-only	190.115.16.0/24	IPv4	256	0	0	0	0	0
 antifilter-ipsum-24-review-only	190.115.18.0/24	IPv4	256	0	0	0	0	0
 antifilter-ipsum-24-review-only	190.115.19.0/24	IPv4	256	0	0	0	0	0
-antifilter-ipsum-24-review-only	190.115.21.0/24	IPv4	256	153	1	0	0	152
-antifilter-ipsum-24-review-only	190.115.22.0/24	IPv4	256	64	0	0	0	64
+antifilter-ipsum-24-review-only	190.115.21.0/24	IPv4	256	155	0	0	0	155
+antifilter-ipsum-24-review-only	190.115.22.0/24	IPv4	256	65	0	0	0	65
 antifilter-ipsum-24-review-only	190.115.24.0/24	IPv4	256	1	0	0	0	1
 antifilter-ipsum-24-review-only	190.115.26.0/24	IPv4	256	248	0	0	0	248
 antifilter-ipsum-24-review-only	190.115.28.0/24	IPv4	256	0	0	0	0	0
@@ -146240,6 +146338,7 @@ antifilter-ipsum-24-review-only	193.38.55.0/24	IPv4	256	256	0	0	0	0
 antifilter-ipsum-24-review-only	193.39.14.0/24	IPv4	256	0	0	0	0	0
 antifilter-ipsum-24-review-only	193.39.68.0/24	IPv4	256	256	0	0	0	0
 antifilter-ipsum-24-review-only	193.39.168.0/24	IPv4	256	256	0	0	256	0
+antifilter-ipsum-24-review-only	193.41.86.0/24	IPv4	256	0	0	0	0	0
 antifilter-ipsum-24-review-only	193.41.194.0/24	IPv4	256	0	0	0	0	0
 antifilter-ipsum-24-review-only	193.42.62.0/24	IPv4	256	0	0	0	0	0
 antifilter-ipsum-24-review-only	193.42.108.0/24	IPv4	256	253	2	0	0	251
@@ -148666,6 +148765,7 @@ antifilter-ipsum-24-review-only	217.199.253.0/24	IPv4	256	256	0	0	256	0
 antifilter-ipsum-24-review-only	217.199.254.0/24	IPv4	256	256	0	0	256	0
 antifilter-ipsum-24-review-only	217.216.110.0/24	IPv4	256	0	0	0	0	0
 antifilter-ipsum-24-review-only	217.217.97.0/24	IPv4	256	0	0	0	0	0
+antifilter-ipsum-24-review-only	217.217.227.0/24	IPv4	256	0	0	0	0	0
 antifilter-ipsum-24-review-only	217.217.235.0/24	IPv4	256	0	0	0	0	0
 antifilter-ipsum-24-review-only	217.234.150.0/24	IPv4	256	0	0	0	0	0
 antifilter-ipsum-24-review-only	217.243.211.0/24	IPv4	256	0	0	0	0	0
