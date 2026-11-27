@@ -1,24 +1,24 @@
-Generated UTC: 2026-11-26T13:11:28.178390+00:00
-Freshness reference UTC date: 2026-11-26
-Unique RU-registered ASNs: 5778
-Unique BY-registered ASNs: 116
+Generated UTC: 2026-11-27T13:10:24.856226+00:00
+Freshness reference UTC date: 2026-11-27
+Unique RU-registered ASNs: 5777
+Unique BY-registered ASNs: 117
 Unique KZ-registered ASNs: 271
-Unique BY/KZ-registered ASNs (deduplicated): 387
-Unique RU-registered IPv4 CIDRs after cross-registry de-duplication: 11513
+Unique BY/KZ-registered ASNs (deduplicated): 388
+Unique RU-registered IPv4 CIDRs after cross-registry de-duplication: 11515
 Unique RU-registered IPv6 CIDRs after cross-registry de-duplication: 2180
-Unique RU-registered IPv4/IPv6 CIDRs after cross-registry de-duplication: 13693
-Raw IPv4 resource records: 11480
-IPv4 CIDR components emitted before de-duplication: 11513
+Unique RU-registered IPv4/IPv6 CIDRs after cross-registry de-duplication: 13695
+Raw IPv4 resource records: 11482
+IPv4 CIDR components emitted before de-duplication: 11515
 IPv4 CIDR expansion delta (components minus raw records): 33
 Raw IPv6 resource records: 2180
 Non-canonical RU IPv6 resource rows normalized: 0
 IPv6 CIDR components emitted before de-duplication: 2180
 IPv6 CIDR expansion delta (components minus raw records): 0
-Raw ASN resource records: 5778
+Raw ASN resource records: 5777
 Interpretation: one raw IPv4 resource interval can expand to multiple CIDR components; this is conversion, not contribution from another RIR. Unique output CIDRs are de-duplicated across all registries.
 Caveat: RIR country describes registration, not physical hosting location.
 afrinic: snapshot=2026-11-26, ASN records=0, IPv4 resource records=0, IPv4 CIDR components=0, IPv6 resource records=0, IPv6 CIDR components=0, registry-local unique CIDRs=0 (zero valid for an RIR with no RU records of this type)
-apnic: snapshot=2026-11-25, ASN records=0, IPv4 resource records=0, IPv4 CIDR components=0, IPv6 resource records=0, IPv6 CIDR components=0, registry-local unique CIDRs=0 (zero valid for an RIR with no RU records of this type)
-arin: snapshot=2026-11-25, ASN records=0, IPv4 resource records=0, IPv4 CIDR components=0, IPv6 resource records=0, IPv6 CIDR components=0, registry-local unique CIDRs=0 (zero valid for an RIR with no RU records of this type)
-lacnic: snapshot=2026-11-25, ASN records=0, IPv4 resource records=0, IPv4 CIDR components=0, IPv6 resource records=0, IPv6 CIDR components=0, registry-local unique CIDRs=0 (zero valid for an RIR with no RU records of this type)
-ripencc: snapshot=2026-11-25, ASN records=5778, IPv4 resource records=11480, IPv4 CIDR components=11513, IPv6 resource records=2180, IPv6 CIDR components=2180, registry-local unique CIDRs=13693 (zero valid for an RIR with no RU records of this type)
+apnic: snapshot=2026-11-26, ASN records=0, IPv4 resource records=0, IPv4 CIDR components=0, IPv6 resource records=0, IPv6 CIDR components=0, registry-local unique CIDRs=0 (zero valid for an RIR with no RU records of this type)
+arin: snapshot=2026-11-26, ASN records=0, IPv4 resource records=0, IPv4 CIDR components=0, IPv6 resource records=0, IPv6 CIDR components=0, registry-local unique CIDRs=0 (zero valid for an RIR with no RU records of this type)
+lacnic: snapshot=2026-11-26, ASN records=0, IPv4 resource records=0, IPv4 CIDR components=0, IPv6 resource records=0, IPv6 CIDR components=0, registry-local unique CIDRs=0 (zero valid for an RIR with no RU records of this type)
+ripencc: snapshot=2026-11-26, ASN records=5777, IPv4 resource records=11482, IPv4 CIDR components=11515, IPv6 resource records=2180, IPv6 CIDR components=2180, registry-local unique CIDRs=13695 (zero valid for an RIR with no RU records of this type)

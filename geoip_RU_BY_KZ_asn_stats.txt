@@ -1,29 +1,29 @@
-Generated UTC: 2026-11-26T13:12:12.333125+00:00
-ipverse aggregated.json files: 97600
-RIR delegated-stats registered RU ASNs: 5778
-RIR delegated-stats registered BY/KZ ASNs: 387
+Generated UTC: 2026-11-27T13:11:03.531073+00:00
+ipverse aggregated.json files: 97617
+RIR delegated-stats registered RU ASNs: 5777
+RIR delegated-stats registered BY/KZ ASNs: 388
 Curated Russian-company ASN allowlist entries: 112
 Curated company ASNs with ipverse BGP data: 108
-Selected RIR-RU/BY/KZ or company ASNs with ipverse BGP data: 5346
+Selected RIR-RU/BY/KZ or company ASNs with ipverse BGP data: 5350
 Active BY/KZ RIR ASNs with ipverse announcements: 338
-Unique prefixes originated by RIR-RU ASNs: 21558
-Unique prefixes originated by RIR-BY/KZ ASNs: 2126
-Unique prefixes originated by curated Russian-company/affiliate ASNs (observed in ipverse): 4023
-Unique prefixes in DIRECT company-ASN layer (observed + static overrides): 4023
+Unique prefixes originated by RIR-RU ASNs: 21564
+Unique prefixes originated by RIR-BY/KZ ASNs: 2131
+Unique prefixes originated by curated Russian-company/affiliate ASNs (observed in ipverse): 4024
+Unique prefixes in DIRECT company-ASN layer (observed + static overrides): 4024
 Static DIRECT override list: 45.148.65.0/24, 156.224.80.0/24, 156.241.186.0/24, 177.29.246.0/24, 177.122.107.0/24, 177.122.160.0/24, 177.166.21.0/24, 2a14:48c6::/48
 Static DIRECT BGP-covered overrides: 2 of 8
 Static DIRECT selected overrides: 8 of 8
-Unique prefixes in DIRECT ASN-origin/pinned layer (RIR-RU/BY/KZ OR company allowlist): 23724
-Raw selected IPv4 prefix records (RIR-RU OR company allowlist): 21663
-Raw selected IPv6 prefix records (RIR-RU OR company allowlist): 2161
+Unique prefixes in DIRECT ASN-origin/pinned layer (RIR-RU/BY/KZ OR company allowlist): 23735
+Raw selected IPv4 prefix records (RIR-RU OR company allowlist): 21675
+Raw selected IPv6 prefix records (RIR-RU OR company allowlist): 2158
 Raw company-allowlisted IPv4 prefix records: 3752
 Raw company-allowlisted IPv6 prefix records: 283
-Raw RIR-RU IPv4 prefix records: 19751
-Raw RIR-RU IPv6 prefix records: 1900
-Unique global ipverse prefixes: 521488
-Raw global IPv4 prefix records: 427933
-Raw global IPv6 prefix records: 97974
-Prefixes originated by multiple selected ASNs: 100
+Raw RIR-RU IPv4 prefix records: 19759
+Raw RIR-RU IPv6 prefix records: 1896
+Unique global ipverse prefixes: 521443
+Raw global IPv4 prefix records: 427981
+Raw global IPv6 prefix records: 97877
+Prefixes originated by multiple selected ASNs: 98
 Company ASN ipverse countryCode distribution (audit only): BY=3, CH=1, KZ=6, RU=99, TR=1
 RIR-RU ASN ipverse countryCode mismatches (audit only): UNKNOWN=264
 RIR-BY/KZ ASN ipverse countryCode mismatches (audit only): UNKNOWN=9

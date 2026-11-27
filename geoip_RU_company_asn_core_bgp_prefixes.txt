@@ -1,6 +1,6 @@
 # v41 CORE_CORPORATE origin prefixes (protected from resolver-only blocks)
 # Exact selected-origin prefixes from the same pinned ipverse snapshot used by the base builder.
-# selected_origin_input_sha256=ab9ade17319417a1a7769c3f4386978228b0d5f5540f7ef6cab191e200b84f6a
+# selected_origin_input_sha256=1171e5200c4c441184a50439e691e56fb5f87fd9e69fbacd36b4335b3f6881cf
 # company_registry_sha256=70aee31f271fa0f3ab4d6ba2bd11748701f32fb551d94a8f6eaf7f8da386e26c
 # exception_policy_sha256=4056fd58e987a2b96c20127b79642c40e700860ec928bc5d0e68f94abb143346
 5.22.157.0/24 # AS57898
@@ -39,6 +39,7 @@
 45.138.0.0/24 # AS207304
 45.148.65.0/24 # AS212066
 46.17.200.0/21 # AS49675
+46.161.43.0/24 # AS207353
 46.226.122.0/24 # AS44386
 62.217.160.0/20 # AS47764
 77.74.176.0/21 # AS200107
@@ -98,7 +99,7 @@
 90.156.216.0/22 # AS47764
 90.156.232.0/21 # AS47764
 90.156.245.0/24 # AS211517
-90.156.247.0/24 # AS57073,AS201512
+90.156.247.0/24 # AS57073
 91.107.80.0/22 # AS202611
 91.192.148.0/22 # AS42481
 91.194.226.0/23 # AS43399

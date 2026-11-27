@@ -3,11 +3,11 @@ davoyan	apple	ignored	20
 davoyan	private	ignored	28
 davoyan	ru	ru	35756
 davoyan	wl-ru	candidate	88
-digne	blocked-ru	ignored	1144
+digne	blocked-ru	ignored	1131
 digne	private	ignored	28
-digne	ru	ru	25365
+digne	ru	ru	25421
 digne	telegram	ignored	12
-digne	whitelist	candidate	25365
+digne	whitelist	candidate	25421
 golukon	private	ignored	18
 golukon	ru	ru	13241
 grimbird	private	ignored	18
@@ -22,7 +22,7 @@ grimbird	ru-payments	ru	7
 grimbird	ru-vk	ru	5
 grimbird	ru-wildberries	ru	8
 grimbird	ru-yandex	ru	16
-hydra	direct	candidate	36989
+hydra	direct	candidate	36481
 hydra	private	ignored	27
 hydra	whitelist	candidate	6710
 kirill	whitelist	candidate	32839
