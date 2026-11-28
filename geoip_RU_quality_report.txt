@@ -1,7 +1,7 @@
 GeoIP DIRECT RU+BY+KZ CLIENT v41 — provenance-aware IP exclusions
-Generated UTC: 2026-11-27T13:12:03.894157+00:00
-Base v37 GeoIP SHA-256: 1717a1e2b48eb82b684c757f0b34db618b037aa0622339cf99dc5dd90aad0b89
-v41 GeoIP SHA-256: 32dc3614d4617b0cbf32fe418352c36688b230447ac4b61155cbae4d50f89c4a
+Generated UTC: 2026-11-28T12:27:07.042485+00:00
+Base v37 GeoIP SHA-256: 94c90b82f36dee056f785f3623bb881ad21d21794c1372a4c4126ec20b4632d0
+v41 GeoIP SHA-256: 352b5853845d01e6fd922128bc5dec52d0d7df7f1849f3cfa40512b94b072775
 
 POLICY
 - Only reviewed exact foreign conflicts constrain geographic admission; explicit Hydra DIRECT/WHITELIST or a measured CDN IP can survive.
@@ -21,39 +21,39 @@ POLICY
 - IP GeoIP cannot distinguish unrelated tenants on shared IPs; broad RKN summaries can overblock co-resident services.
 
 BASELINE V37
-RU CIDRs: 79096
-RU IPv4 addresses: 52720068
-RU IPv6 addresses: 1194828723321488934397701146017792
+RU CIDRs: 78585
+RU IPv4 addresses: 52727129
+RU IPv6 addresses: 1194828705187601640178263525425153
 
 V41 FINAL
-RU CIDRs: 33166
-RU IPv4 addresses: 53500644
-RU IPv6 addresses: 1207233199173431400320323884679168
-New IPv4 addresses vs v37 after PRIVATE/RKN/company-ASN exception: 780576
-New IPv6 addresses vs v37 after PRIVATE/RKN/company-ASN exception: 12404480687645744381139437486080
+RU CIDRs: 33121
+RU IPv4 addresses: 53500398
+RU IPv6 addresses: 1207233179830618286486257089380352
+New IPv4 addresses vs v37 after PRIVATE/RKN/company-ASN exception: 773269
+New IPv6 addresses vs v37 after PRIVATE/RKN/company-ASN exception: 12404479478719924766510262779903
 PRIVATE IPv4 addresses: 592708862
 PRIVATE IPv6 addresses: 4325545831231176725068219651071148031
 
 RIR RESOURCE INVENTORY
 RU resource CIDRs: 13695
 BY resource CIDRs: 142
-KZ resource CIDRs: 795
-RIR rows with registry/status provenance: 14632
+KZ resource CIDRs: 796
+RIR rows with registry/status provenance: 14633
 RIR registration is resource-holder evidence, not physical geolocation or proof of current BGP reachability.
 
 HYDRA ROUTING-INTENT COVERAGE
-Hydra DIRECT CIDRs: 36481
+Hydra DIRECT CIDRs: 36494
 Hydra WHITELIST CIDRs: 6710
-Hydra DIRECT/WHITELIST eligible after PRIVATE and v41 blocks: {'ipv4': 49192385, 'ipv6': 2847604221122585543341491879936}
+Hydra DIRECT/WHITELIST eligible after PRIVATE and v41 blocks: {'ipv4': 49196487, 'ipv6': 2847604221122585543341491879936}
 Hydra is routing-intent, not a geolocation or corporate attribution; it does not override blocked/PRIVATE.
 
 SERVICE DIRECT INPUTS
 Kyoresuas Standard services represented in service catalog: 90
-W1ZARDZ unique service/direct prefixes: 1033
+W1ZARDZ unique service/direct prefixes: 1032
 IPv4 addresses removed from the W1ZARDZ input by the gaming policy: 262
 Escapingworm operator whitelist prefixes: 88
-Literal service hosts (resolver protection only): 855
-Service resolver-protected address space: {'ipv4': 882075, 'ipv6': 3243489945586708573536284311558}
+Literal service hosts (resolver protection only): 846
+Service resolver-protected address space: {'ipv4': 882330, 'ipv6': 3243491154512528188165459017733}
 Service and operator whitelist routes are separate from geographic/RIR resource evidence.
 Explicit service DIRECT can overlap shared providers; only reviewed exact foreign conflicts constrain geographic admission.
 
@@ -62,22 +62,22 @@ HXEHEX host diagnostic input status: AVAILABLE
 HXEHEX is retained for comparison only. It contributes no DIRECT routes or resolver exemptions.
 
 RKN BLOCKS AND CORPORATE COMPANY-ASN EXCEPTION
-Original v37 approved blocked CIDRs: 200368
-Effective v41 blocked CIDRs after class-aware exceptions: 119097
-Total block addresses exempted: IPv4=11016 IPv6=0
-Total exempted addresses intersecting DIRECT after PRIVATE: IPv4=11016 IPv6=0
+Original v37 approved blocked CIDRs: 199214
+Effective v41 blocked CIDRs after class-aware exceptions: 118291
+Total block addresses exempted: IPv4=10935 IPv6=0
+Total exempted addresses intersecting DIRECT after PRIVATE: IPv4=10935 IPv6=0
 CORE_CORPORATE exempted DIRECT addresses after PRIVATE: IPv4=34 IPv6=0
-SHARED_INFRA resolver-only exempted DIRECT addresses: IPv4=3378 IPv6=0
-All company origin prefixes: 4024; IPv4 addresses=21736192; IPv6 addresses=24956406964478534324363257184256
-CORE_CORPORATE origin prefixes: 331; SHARED_INFRA origin prefixes: 3693
-Antifilter ipsum REVIEW-ONLY IPv4 /24 prefixes: 16304
-Antifilter ipsum raw/valid/invalid rows: 16304/16304/0
+SHARED_INFRA resolver-only exempted DIRECT addresses: IPv4=3340 IPv6=0
+All company origin prefixes: 4025; IPv4 addresses=21736192; IPv6 addresses=24956406964478534324363257184256
+CORE_CORPORATE origin prefixes: 331; SHARED_INFRA origin prefixes: 3694
+Antifilter ipsum REVIEW-ONLY IPv4 /24 prefixes: 13718
+Antifilter ipsum raw/valid/invalid rows: 13718/13718/0
 Antifilter ipsum diagnostic input status: AVAILABLE
-Potential additional IPv4 DIRECT address space affected by /24 review candidates: 19255
+Potential additional IPv4 DIRECT address space affected by /24 review candidates: 16720
 Potential additional IPv6 DIRECT address space affected by /24 review candidates: 0
 ipsum /24 candidates remain review-only. DNS-derived and unverified historical evidence cannot carve selected origin or RIR-resource coverage. Explicit IP/subnet evidence and Telegram take precedence.
 The /24 impact estimate excludes the exact corporate company-ASN prefix space exempted by the v41 policy.
-Combined v41 effective blocked IPv4 address space: 576587
+Combined v41 effective blocked IPv4 address space: 575514
 Combined v41 effective blocked IPv6 address space: 79232998217542796110242775040
 ipsum is a third-party RKN-derived /24 summary, not a direct official RKN API.
 Every /24 carve affects the whole 256-address block; on shared hosting/CDNs it may send unrelated co-resident destinations through VPN.
@@ -90,7 +90,7 @@ FILES
 - geoip_RU_v41_blocked_ip_exclusions.txt: effective non-corporate blocked set applied to v41.
 - geoip_RU_company_asn_bgp_prefixes.txt: exact prefixes originated by the curated corporate company-ASN allowlist.
 
-SHA-256 output: 32dc3614d4617b0cbf32fe418352c36688b230447ac4b61155cbae4d50f89c4a
+SHA-256 output: 352b5853845d01e6fd922128bc5dec52d0d7df7f1849f3cfa40512b94b072775
 
 PRE_PUBLICATION_V41_HARD_POLICY_GATE
 Status: PASS

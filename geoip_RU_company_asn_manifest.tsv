@@ -25,11 +25,11 @@ AS25513	MGTS	PJSC Moscow City Telephone Network	https://ipcheckerpro.com/asn?cc=
 AS28709	VK/Mail.ru	LLC VK	https://wbdt.ru/AS28709	yes	RU	15	3	yes	no
 AS28812	Rostelecom	PJSC Bashinformsvyaz (Rostelecom subsidiary)	https://rdap.db.ripe.net/autnum/28812	yes	RU	12	1	yes	no
 AS31133	MegaFon	PJSC MegaFon (MF-MGSM)	https://asnbase.com/countries/ru	yes	RU	54	26	yes	no
-AS31163	MegaFon	PJSC MegaFon (MF-KAVKAZ-AS)	https://rdap.db.ripe.net/autnum/31163	yes	RU	67	9	yes	no
+AS31163	MegaFon	PJSC MegaFon (MF-KAVKAZ-AS)	https://rdap.db.ripe.net/autnum/31163	yes	RU	68	9	yes	no
 AS31174	Raiffeisenbank RU	AO Raiffeisenbank	https://rdap.db.ripe.net/autnum/31174	yes	RU	2	0	yes	no
 AS31200	ER-Telecom	Novotelecom Ltd (Electronic City, subsidiary)	https://rdap.db.ripe.net/autnum/31200	yes	RU	9	1	yes	no
 AS31483	ER-Telecom	JSC ER-Telecom Holding (ERTELECOM-DC-AS)	https://rdap.db.ripe.net/autnum/31483	yes	RU	8	5	yes	no
-AS34879	NGENIX	NGENIX	https://asnbase.com/countries/ru?type=content	yes	RU	27	0	yes	no
+AS34879	NGENIX	NGENIX	https://asnbase.com/countries/ru?type=content	yes	RU	25	0	yes	no
 AS35022	Gazprombank	Gazprombank JSC	https://2ip.io/as/35022/	yes	RU	2	0	yes	no
 AS35237	Sberbank	Sberbank of Russia PJSC	https://bgp.he.net/AS35237	yes	RU	8	1	yes	no
 AS35298	MegaFon	PJSC MegaFon (MF-MGSM-AS)	https://rdap.db.ripe.net/autnum/35298	yes	RU	4	1	yes	no
@@ -103,7 +103,7 @@ AS208795	Yandex	Cloud Services Kazakhstan LLP (Yandex Cloud public-connectivity 
 AS209030	Kaspersky	AO Kaspersky Lab	https://bgp.he.net/AS209030	yes	RU	3	0	yes	no
 AS209973	Sovcombank	PJSC Sovkombank (Moscow origin)	https://rdap.db.ripe.net/autnum/209973	yes	RU	1	0	yes	no
 AS210656	Yandex	Yandex.Cloud LLC	https://whois.ipip.net/AS210656	yes	RU	9	0	yes	no
-AS210756	EdgeCenter	EdgeCenter LLC	https://www.bigdatacloud.com/asn-lookup/AS210756	yes	RU	74	11	yes	no
+AS210756	EdgeCenter	EdgeCenter LLC	https://www.bigdatacloud.com/asn-lookup/AS210756	yes	RU	76	11	yes	no
 AS211517	Wildberries	LLC Wildberries (Georgia/affiliate ASN)	https://iamroot.tech/asndatabase/?search=AS211517	yes	RU	1	2	yes	no
 AS212066	Yandex	Buyuk Reklam Cozumleri LLC (Yandex Turkey; origin ASN, not upstream)	https://www.iplocate.io/AS212066	yes	TR	2	2	no	no
 AS213533	Beget	Beget LLC (regional origin)	https://rdap.db.ripe.net/autnum/213533	yes	RU	2	0	yes	no
